@@ -1,0 +1,37 @@
+{
+  "name": "ts-celestial",
+  "version": "1.0.0",
+  "description": "The client-side of Celestial",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack --watch & live-server --port=8085"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaiGeffen/CelestialTS.git"
+  },
+  "author": "Kai Geffen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaiGeffen/CelestialTS/issues"
+  },
+  "homepage": "https://github.com/KaiGeffen/CelestialTS#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.31",
+    "live-server": "^1.2.1",
+    "phaser": "^3.52.0",
+    "express": "^4.17.1",
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.1.5",
+    "webpack": "^5.23.0",
+    "webpack-cli": "^4.5.0"
+  },
+  "dependencies": {
+    "@types/socket.io": "^2.1.13",
+    "path-browserify": "^1.0.1",
+    "socket.io": "^3.1.2",
+    "socket.io-client": "^3.1.2"
+  }
+}
