@@ -4,6 +4,6 @@ export const collectibleCards: Card[] = data;
 
 export interface Card {
   name: string;
-  // cost: number;
+  cost: number;
   // text: string;
 }

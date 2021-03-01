@@ -5,7 +5,7 @@ import { ScoreScene } from "./scoreScene";
 import { BuilderScene } from "./builderScene"
 const config: Phaser.Types.Core.GameConfig = {
   title: "Starfall",
-  width: 1000,
+  width: 1100,
   height: 650,
   parent: "game",
   scene: [WelcomeScene, GameScene, ScoreScene, BuilderScene],

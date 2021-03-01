@@ -10,6 +10,11 @@ const catalog = collectibleCards;
 //     "AI"
 // ];
 
+const buttonStyle = {
+      font: '36px Arial Bold',
+      color: '#090'
+    };
+
 const space = {
   cardSize: 100,
   pad: 20,
@@ -119,9 +124,16 @@ export class BuilderScene extends Phaser.Scene {
   }
   
   create(): void {
-    this.catalogRegion.create()
+    this.catalogRegion.create();
+    this.deckRegion.create();
+
+    // // Add keyboard commands
+    // this.input.keyboard.on('keydown-TAB', function (event) {
+    //   console.log(this.deckRegion);
+    //   // this.deckRegion.sort();
+    // });
   }
-};
+}
 
 
 class CatalogRegion {
@@ -178,13 +190,14 @@ class CatalogRegion {
 
     return [x, y];
   }
-};
+}
 
 
 class DeckRegion {
   scene: Phaser.Scene;
   container: Phaser.GameObjects.Container;
   deck: CardImage[];
+  btnStart: Phaser.GameObjects.Text;
 
   constructor(scene: Phaser.Scene) {
     this.init(scene);
@@ -197,11 +210,26 @@ class DeckRegion {
     this.deck = [];
   }
 
-  update(time: number): void {
-    if (this.scene.input.keyboard.addKey('A').isDown) {
-      console.log('fff');
-      this.sort();
-    }
+  create(): void {
+    // Sort button 
+    let btnSort = this.scene.add.text(0, -125, 'Sort', buttonStyle);
+    btnSort.setInteractive();
+
+    let deckRegion = this;
+    btnSort.on('pointerdown', function (event) {
+      deckRegion.sort();
+    })
+
+    this.container.add(btnSort);
+
+    // Start button
+    this.btnStart = this.scene.add.text(0, -75, '', buttonStyle);
+    this.btnStart.setInteractive();
+    this.btnStart.on('pointerdown', function (event) {
+      
+    })
+    this.updateStartButton();
+    this.container.add(this.btnStart);
   }
 
   addCard(card: Card): void {
@@ -223,6 +251,20 @@ class DeckRegion {
     this.container.add(image);
 
     this.deck.push(new CardImage(card, image));
+
+    this.updateStartButton();
+  }
+
+  private updateStartButton(): void {
+    if (this.deck.length === 15) {
+      this.btnStart.text = 'Start';
+      this.btnStart.input.enabled = true;
+    }
+    else
+    {
+      this.btnStart.text = `${this.deck.length}/15`;
+      this.btnStart.input.enabled = false;
+    }
   }
 
   private getCardPosition(index: number): [number, number] {
@@ -245,28 +287,46 @@ class DeckRegion {
       this.deck.splice(index, 1);
 
       this.correctDeckIndices();
+
+      this.updateStartButton();
     }
   }
 
   // Set each card in deck to have the right position and onCLick events for its index
   private correctDeckIndices(): void {
-    for (var i = this.deck.length - 1; i >= 0; i--) {
-      this.deck[i].image.setPosition(...this.getCardPosition(i));
+    for (var i = 0; i < this.deck.length; i++) {
+      let image = this.deck[i].image;
+
+      image.setPosition(...this.getCardPosition(i));
+
+      // Send to back
+      this.container.bringToTop(image)
 
       // Remove the previous onclick event and add one with the updated index
-      this.deck[i].image.removeAllListeners('pointerdown');
-      this.deck[i].image.on('pointerdown', this.onClick(i), this);
+      image.removeAllListeners('pointerdown');
+      image.on('pointerdown', this.onClick(i), this);
     }
   }
 
   private sort(): void {
-    this.deck.sort();
+    this.deck.sort(function (card1, card2): number {
+      if (card1.card.cost < card2.card.cost)
+      {
+        return -1;
+      }
+      else if (card1.card.cost > card2.card.cost)
+      {
+        return 1;
+      }
+      else
+      {
+        return card1.card.name.localeCompare(card2.card.name);
+      }
+    });
+
     this.correctDeckIndices();
   }
 }
-
-
-
 
 
 
