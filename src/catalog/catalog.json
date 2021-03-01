@@ -1,12 +1,38 @@
 [
-  {"name": "Crossed Bones", "cost": 1, "points": 2, "text": "1:2, becomes 2x 1:0 fleeting broken bones after resolving"},
-  {"name": "Spy", "cost": 1, "points": 2, "text": "1:0, create a 2:0 camera in opponent's hand which gives you sight each upkeep"},
-  {"name": "Swift", "cost": 2, "points": 2, "text": "2:2, visible, if the next card costs 1, +1"},
-  {"name": "Sine", "cost": 2, "points": 2, "text": "2:4, starve 4 (Your next card gives -4 points)"},
-  {"name": "Fruiting", "cost": 3, "points": 2, "text": "3:0, nourish 3 (Your next card gives +3 points)"},
-  {"name": "Gift", "cost": 3, "points": 2, "text": "3:3, both players draw 1"},
-  {"name": "Desert", "cost": 4, "points": 2,
-    "text": "4:0, modal:\n0: +1, later cards this round are worth -2\n\n1-2: Reset\n3+: +4"},
-  {"name": "Hurricane", "cost": 4, "points": 2, "text": "4:0, reset"},
-  {"name": "Nightmare", "cost": 8, "points": 2, "text": "8:6, opponent discards 2"}
+  {"name": "Crossed Bones", "id": 0,
+    "cost": 1, "points": 2,
+    "text": "1:2, becomes 2x 1:0 fleeting broken bones after resolving"
+  },
+  {"name": "Spy", "id": 1,
+    "cost": 1, "points": 2,
+    "text": "1:0, create a 2:0 camera in opponent's hand which gives you sight each upkeep"
+  },
+  {"name": "Swift", "id": 2,
+    "cost": 2, "points": 2,
+    "text": "2:2, visible, if the next card costs 1, +1"
+  },
+  {"name": "Sine", "id": 3,
+    "cost": 2, "points": 2,
+    "text": "2:4, starve 4 (Your next card gives -4 points)"
+  },
+  {"name": "Fruiting", "id": 4,
+    "cost": 3, "points": 2,
+    "text": "3:0, nourish 3 (Your next card gives +3 points)"
+  },
+  {"name": "Gift", "id": 5,
+    "cost": 3, "points": 2,
+    "text": "3:3, both players draw 1"
+  },
+  {"name": "Desert", "id": 6,
+    "cost": 4, "points": 2,
+    "text": "4:0, modal:\n0: +1, later cards this round are worth -2\n\n1-2: Reset\n3+: +4"
+  },
+  {"name": "Hurricane", "id": 7,
+    "cost": 4, "points": 2,
+    "text": "4:0, reset"
+  },
+  {"name": "Nightmare", "id": 8,
+    "cost": 8, "points": 2,
+    "text": "8:6, opponent discards 2"
+  }
 ]
