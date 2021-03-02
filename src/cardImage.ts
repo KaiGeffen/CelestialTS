@@ -40,7 +40,7 @@ export class CardImage {
 
   private onHover(): () => void {
     return function() {
-      this.image.setTint(0xffff00);
+      this.image.setTint(0xffff00)
 
       cardInfo.text = this.card.text;
 

@@ -1,5 +1,5 @@
 import "phaser";
-import { collectibleCards, Card } from "./catalog/catalog";
+import { collectibleCards, tokenCards, Card } from "./catalog/catalog";
 import { CardImage, addCardInfoToScene } from "./cardImage"
 
 
@@ -53,7 +53,10 @@ export class BuilderScene extends Phaser.Scene {
 
     catalog.forEach( (card) => {
       this.load.image(card.name, `${card.name}.png`)
-    });
+    })
+    tokenCards.forEach( (card) => {
+      this.load.image(card.name, `${card.name}.png`)
+    })
   }
   
   create(): void {

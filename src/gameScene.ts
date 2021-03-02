@@ -1,5 +1,5 @@
 import "phaser";
-import { collectibleCards, Card } from "./catalog/catalog";
+import { collectibleCards, Card, cardback } from "./catalog/catalog";
 
 import { Network } from "./net"
 import ClientState from "./clientState"
@@ -16,6 +16,8 @@ const space = {
 
 export class GameScene extends Phaser.Scene {
 	net;
+	handContainer: Phaser.GameObjects.Container
+	opponentHandContainer: Phaser.GameObjects.Container
 
 	constructor() {
 		super({
@@ -26,19 +28,28 @@ export class GameScene extends Phaser.Scene {
 	init(params: any): void {
 		// Connect with the server
 		this.net = new Network(params.deck, this)
+		this.handContainer = this.add.container(0, 650 - 140)
+		this.opponentHandContainer = this.add.container(0, 0)
+	}
+
+	create(): void {
+		addCardInfoToScene(this)
 	}
 
 	// Display the given game state
 	displayState(state: ClientState): void {
 		// Hands
 		for (var i = state.hand.length - 1; i >= 0; i--) {
-			this.addCard(state.hand[i], i)
+			this.addCard(state.hand[i], i, this.handContainer)
+		}
+		for (var i = state.opponentHand - 1; i >= 0; i--) {
+			this.addCard(cardback, i, this.opponentHandContainer)
 		}
 	}
 
-	private addCard(card: Card, index: number): void {
+	private addCard(card: Card, index: number, container: Phaser.GameObjects.Container): void {
 		var image: Phaser.GameObjects.Image;
-		var [x, y] = this.getCardPosition(index);
+		var [x, y] = this.getCardPosition(index, container);
 
 		image = this.add.image(x, y, card.name);
 		image.setDisplaySize(100, 100);
@@ -46,20 +57,30 @@ export class GameScene extends Phaser.Scene {
 		// image.setInteractive();
 		// image.on('pointerdown', this.onClick(card), this);
 
-		// this.container.add(image);
+		container.add(image);
 
 		// This enables hovertext etc
 		new CardImage(card, image);
 	}
 
-	private getCardPosition(index: number): [number, number] {
-    let col = index
-    let xPad = (1 + col) * space.pad
-    let x = col * space.cardSize + xPad + space.cardSize / 2
+	private getCardPosition(index: number, container): [number, number] {
+		let x = 0
+		let y = 0
 
-    let y = 0
+		switch (container) {
+			case this.handContainer:
+			case this.opponentHandContainer:
+				let col = index
+				let xPad = (1 + col) * space.pad
+				x = col * space.cardSize + xPad + space.cardSize/2
 
-    return [x, y]
-  }
+				y = space.pad + space.cardSize/2
+				break;
+			
+		}
+	    
+
+	    return [x, y]
+  	}
 
 }
