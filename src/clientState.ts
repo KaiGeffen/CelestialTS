@@ -1,5 +1,6 @@
 import { Card } from "./catalog/catalog";
-import { decodeDeck } from "./catalog/codec"
+import { decodeDeck, decodeStory } from "./catalog/codec"
+import Story from "./story"
 
 
 export default class ClientState {
@@ -31,7 +32,7 @@ export default class ClientState {
 		this.mana = state.mana
 		// this.status = state.status
 		// this.opponentStatus = 
-		// this.story = 
+		this.story = decodeStory(state.story)
 		this.priority = state.priotity
 		this.passes = state.passes
 		this.MulligansComplete = state.MulligansComplete

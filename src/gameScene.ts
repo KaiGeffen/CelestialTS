@@ -53,7 +53,7 @@ export class GameScene extends Phaser.Scene {
 		for (var i = state.opponentHand - 1; i >= 0; i--) {
 			this.addCard(cardback, i, this.opponentHandContainer)
 		}
-		for (var i = state.story.length - 1; i >= 0; i--) {
+		for (var i = state.story.acts.length - 1; i >= 0; i--) {
 			let act = state.story.acts[i]
 
 			this.addCard(act.card, i, this.storyContainer, act.owner)
@@ -70,9 +70,9 @@ export class GameScene extends Phaser.Scene {
 		image = this.add.image(x, y, card.name);
 		image.setDisplaySize(100, 100);
 
-
-		// image.setInteractive();
-		// image.on('pointerdown', this.onClick(card), this);
+		// TODO Remove this line
+		image.setInteractive()
+		image.on('pointerdown', this.clickCard(index), this)
 
 		container.add(image);
 
@@ -104,6 +104,13 @@ export class GameScene extends Phaser.Scene {
 	    
 
 	    return [x, y]
+  	}
+
+  	private clickCard(index: number): () => void  {
+  		let net = this.net
+  		return function() {
+  			net.playCard(index)
+  		}
   	}
 
 }

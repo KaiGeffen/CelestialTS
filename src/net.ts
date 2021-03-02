@@ -12,6 +12,8 @@ const bufSize = 4096 * 2
 const port = 6789
 
 export class Network {
+	socket: WebSocket
+
 	constructor(deck, scene) {
 
 		let encodedDeck = encodeDeck(deck)
@@ -21,12 +23,13 @@ export class Network {
 		})
 
 		// Create WebSocket connection.
-		const socket = new WebSocket(`ws://localhost:${port}`);
+		let socket = new WebSocket(`ws://localhost:${port}`)
+		this.socket = socket
 
 		// Connection opened
 		socket.addEventListener('open', function (event) {
 			
-		});
+		})
 
 		// Listen for messages
 		socket.addEventListener('message', function (event) {
@@ -40,8 +43,23 @@ export class Network {
 
 				case 'transmit_state':
 					scene.displayState(new ClientState(msg.value))
+					
+					// TODO Allow for mulliganing
+					socket.send(JSON.stringify({
+						"type": "mulligan",
+						"value": "000"
+					}))
+
 					break
 			}
 		})
+	}
+
+	playCard(index: number) {
+		let msg = {
+			"type": "play_card",
+			"value": index
+		}
+		this.socket.send(JSON.stringify(msg))
 	}
 }

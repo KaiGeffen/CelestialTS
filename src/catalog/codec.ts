@@ -1,4 +1,5 @@
 import { Card, collectibleCards } from "./catalog";
+import Story from "../story"
 
 
 const delims = ['¡', '™', '£']
@@ -10,7 +11,7 @@ function encodeCard(card: Card): string {
 function decodeCard(s: string): Card {
 	// Todo dynamic text
 	let id: number = +s;
-	
+
 	return collectibleCards.find(card => card.id === id)
 }
 
@@ -19,13 +20,26 @@ function encodeDeck(deck: Card[]): string {
 }
 
 function decodeDeck(s: string): Card[] {
-	console.log('Decoding deck ', s)
 	let cardStrings: string[] = s.split(delims[1])
-	console.log('to these strings', cardStrings)
-	let result: Card[] = cardStrings.map(decodeCard)
-	console.log(result)
-	return result
+
+	return cardStrings.map(decodeCard)
 }
 
-export {encodeCard, decodeCard, encodeDeck, decodeDeck}
+function decodeStory(s: string): Story {
+	let story = new Story()
+	if (s === '') return story
 
+	s.split(delims[1]).forEach( function(act) {
+		let l = act.split(delims[2])
+
+		let card = decodeCard(l[0])
+		let owner = +l[1]
+
+		story.addAct(card, owner, -1)
+	})
+	
+	return story
+}
+
+
+export {encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory}
