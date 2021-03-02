@@ -1,6 +1,7 @@
 // import { io } from "socket.io-client"
 // import * as dgram from "dgram"
 import { encodeDeck } from "./catalog/codec"
+import ClientState from "./clientState"
 
 const messageHeaders = {
 	init: 'Init'
@@ -11,7 +12,7 @@ const bufSize = 4096 * 2
 const port = 6789
 
 export class Network {
-	constructor(deck) {
+	constructor(deck, scene) {
 
 		let encodedDeck = encodeDeck(deck)
 		let initMessage = JSON.stringify({
@@ -33,14 +34,12 @@ export class Network {
 			switch (msg.type) {
 				case 'both_players_connected':
 					if (msg.value) {
-						console.log('READY FOR ACTION')
-						
 						socket.send(initMessage)
 					}
 					break
 
-				case 'state':
-					console.log(msg.value)
+				case 'transmit_state':
+					scene.displayState(new ClientState(msg.value))
 					break
 			}
 		})

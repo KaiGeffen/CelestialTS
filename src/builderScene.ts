@@ -1,13 +1,10 @@
 import "phaser";
 import { collectibleCards, Card } from "./catalog/catalog";
+import { CardImage, addCardInfoToScene } from "./cardImage"
+
 
 // Load this from a json shared with python repo
 const catalog = collectibleCards;
-// [
-//   "Crossed Bones", "Spy", "Swift", "Sine",
-//     "Fruiting", "Gift", "Desert", "Nightmare",
-//     "AI"
-// ];
 
 const buttonStyle = {
       font: '36px Arial Bold',
@@ -22,71 +19,8 @@ const space = {
   stackOverlap: 40
 }
 
-class CardImage {
-  card: Card;
-  image: Phaser.GameObjects.Image;
+var cardInfo: Phaser.GameObjects.Text
 
-  constructor(card: Card, image: Phaser.GameObjects.Image) {
-    this.init(card, image);
-  }
-
-  init(card: Card, image: Phaser.GameObjects.Image) {
-    this.card = card;
-    this.image = image;
-
-    image.setInteractive();
-    image.on('pointerover', this.onHover(), this);
-    image.on('pointerout', this.onHoverExit(), this);
-  }
-
-  destroy(): void {
-    this.image.destroy();
-  }
-
-  private onHover(): () => void {
-    return function() {
-      this.image.setTint(0xffff00);
-
-      info.text = this.card.text;
-
-      // Copy the position of the card in its local space
-      let container = this.image.parentContainer;
-      let x = this.image.x + container.x;
-      let y = this.image.y + container.y;
-
-      // Change alignment of text based on horizontal position on screen
-      if (x <= info.width / 2) // Left
-      {
-        x = 0;
-      }
-      else if (x >= 1000 - info.width / 2) // Right side
-      {
-        x = 1000 - info.width;
-      }
-      else
-      {
-        x = x - info.width / 2;
-      }
-
-      if (y + info.height > 650) {
-        y = 650 - info.height;
-      }
-      
-      info.setX(x);
-      info.setY(y);
-    }
-  }
-
-  private onHoverExit(): () => void {
-    return function() {
-      this.image.clearTint();
-
-      info.text = '';
-    }
-  }
-}
-
-var info: Phaser.GameObjects.Text;
 
 export class BuilderScene extends Phaser.Scene {
   catalogRegion;
@@ -102,14 +36,13 @@ export class BuilderScene extends Phaser.Scene {
     this.deckRegion = new DeckRegion(this);
     this.catalogRegion = new CatalogRegion(this, this.deckRegion);
 
-    let style = {
-      font: '36px Arial Bold',
-      color: '#d00',
-      backgroundColor: '#88a',
-      wordWrap: { width: 500, useAdvancedWrap: true }
-    };
-    info = this.add.text(10, 650, '', style);
-    info.alpha = 0.9;
+    // let style = {
+    //   font: '36px Arial Bold',
+    //   color: '#d00',
+    //   backgroundColor: '#88a',
+    //   wordWrap: { width: 500, useAdvancedWrap: true }
+    // };
+    cardInfo = addCardInfoToScene(this)
   }
 
   preload(): void {
@@ -281,7 +214,7 @@ class DeckRegion {
 
   private onClick(index: number): () => void {
     return function() {
-      info.text = '';
+      cardInfo.text = '';
 
       // Remove the image
       this.deck[index].destroy();
