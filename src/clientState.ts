@@ -13,7 +13,7 @@ export default class ClientState {
 	mana: number[]
 	// status: string[]
 	// opponentStatus: string[]
-	// story: Story TODO
+	story: Story
 	priority: number
 	passes: number
 	// recap: Recap TODO
