@@ -10,14 +10,8 @@ function encodeCard(card: Card): string {
 function decodeCard(s: string): Card {
 	// Todo dynamic text
 	let id: number = +s;
-
-	collectibleCards.forEach( (card) => {
-		if (id === card.id) {
-			return card
-		}
-	})
-
-	return undefined;
+	
+	return collectibleCards.find(card => card.id === id)
 }
 
 function encodeDeck(deck: Card[]): string {
@@ -25,8 +19,12 @@ function encodeDeck(deck: Card[]): string {
 }
 
 function decodeDeck(s: string): Card[] {
+	console.log('Decoding deck ', s)
 	let cardStrings: string[] = s.split(delims[1])
-	return cardStrings.map(decodeCard)
+	console.log('to these strings', cardStrings)
+	let result: Card[] = cardStrings.map(decodeCard)
+	console.log(result)
+	return result
 }
 
 export {encodeCard, decodeCard, encodeDeck, decodeDeck}
