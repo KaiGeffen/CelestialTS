@@ -1,6 +1,5 @@
 import "phaser";
 import { collectibleCards, Card } from "./catalog/catalog";
-import { io } from "socket.io-client";
 
 // Load this from a json shared with python repo
 const catalog = collectibleCards;
@@ -224,11 +223,15 @@ class DeckRegion {
 
     // Start button
     this.btnStart = this.scene.add.text(0, -75, '', buttonStyle);
+
     this.btnStart.setInteractive();
     this.btnStart.on('pointerdown', function (event) {
-      
+      let deck: Card[] = deckRegion.deck.map( (cardImage) => cardImage.card)
+      this.scene.scene.start("GameScene", {deck: deck})
     })
+    
     this.updateStartButton();
+    
     this.container.add(this.btnStart);
   }
 
@@ -263,7 +266,7 @@ class DeckRegion {
     else
     {
       this.btnStart.text = `${this.deck.length}/15`;
-      this.btnStart.input.enabled = false;
+      this.btnStart.input.enabled = true; // TODO false
     }
   }
 

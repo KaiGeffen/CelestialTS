@@ -28,3 +28,6 @@ function decodeDeck(s: string): Card[] {
 	let cardStrings: string[] = s.split(delims[1])
 	return cardStrings.map(decodeCard)
 }
+
+export {encodeCard, decodeCard, encodeDeck, decodeDeck}
+
