@@ -1,24 +1,11 @@
 import "phaser";
 import { collectibleCards, tokenCards, Card } from "./catalog/catalog";
 import { CardImage, addCardInfoToScene } from "./cardImage"
+import { buttonStyle, space } from "./settings"
 
 
 // Load this from a json shared with python repo
-const catalog = collectibleCards;
-
-const buttonStyle = {
-      font: '36px Arial Bold',
-      color: '#090'
-    };
-
-// TODO DRY
-const space = {
-  cardSize: 100,
-  pad: 20,
-  cardsPerRow: 8,
-  stackOffset: 30,
-  stackOverlap: 40
-}
+const catalog = collectibleCards
 
 var cardInfo: Phaser.GameObjects.Text
 

@@ -11,14 +11,14 @@ export default class ClientState {
 	pile: Card[][]
 	wins: number[]
 	maxMana: number[]
-	mana: number[]
+	mana: number
 	// status: string[]
 	// opponentStatus: string[]
 	story: Story
 	priority: number
 	passes: number
 	// recap: Recap TODO
-	MulligansComplete: boolean[]
+	mulligansComplete: boolean[]
 	// versionNumber: number
 
 	constructor(state) {
@@ -28,14 +28,14 @@ export default class ClientState {
 		this.opponentDeck = state.opp_deck
 		this.pile = state.pile.map(pile => decodeDeck(pile))
 		this.wins = state.wins
-		this.maxMana = state.maxMana
+		this.maxMana = state.max_mana
 		this.mana = state.mana
 		// this.status = state.status
 		// this.opponentStatus = 
 		this.story = decodeStory(state.story)
-		this.priority = state.priotity
+		this.priority = state.priority
 		this.passes = state.passes
-		this.MulligansComplete = state.MulligansComplete
-		// this.versionNumber
+		this.mulligansComplete = state.mulligans_complete
+		// this.version_number
 	}
 }

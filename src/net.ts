@@ -44,11 +44,11 @@ export class Network {
 				case 'transmit_state':
 					scene.displayState(new ClientState(msg.value))
 					
-					// TODO Allow for mulliganing
-					socket.send(JSON.stringify({
-						"type": "mulligan",
-						"value": "000"
-					}))
+					// // TODO Allow for mulliganing
+					// socket.send(JSON.stringify({
+					// 	"type": "mulligan",
+					// 	"value": "000"
+					// }))
 
 					break
 			}
@@ -59,6 +59,13 @@ export class Network {
 		let msg = {
 			"type": "play_card",
 			"value": index
+		}
+		this.socket.send(JSON.stringify(msg))
+	}
+
+	passTurn() {
+		let msg = {
+			"type": "pass_turn"
 		}
 		this.socket.send(JSON.stringify(msg))
 	}
