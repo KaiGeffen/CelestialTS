@@ -1,0 +1,18 @@
+[
+  {"name": "Cog", "id": 73,
+    "cost": 0, "points": 0,
+    "text": "0:0, build 1 (+1 to a robot in your hand, or make a 0:1 fleeting robot)"
+  },
+  {"name": "Fishing Boat", "id": 68,
+    "cost": 2,
+    "text": "2:0, tutor 1 3 times.\n(Search for a card that costs 1 and add it to your hand. Search order deck -> discard pile, top to bottom)"
+  },
+  {"name": "Angler", "id": 62,
+    "cost": 4,
+    "text": "4:4, visible, tutor 1.\n(Search for a card that costs 1 and add it to your hand. Search order deck -> discard pile, top to bottom)"
+  },
+  {"name": "Desert", "id": 6,
+    "cost": 4, "points": 2,
+    "text": "4:0, modal:\n0: +1, later cards this round are worth -2\n\n1-2: Reset\n3+: +4"
+  },
+]

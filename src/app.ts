@@ -1,14 +1,14 @@
 import "phaser";
 import { WelcomeScene } from "./welcomeScene";
 import { GameScene } from "./gameScene";
-import { ScoreScene } from "./scoreScene";
 import { BuilderScene } from "./builderScene"
+
 const config: Phaser.Types.Core.GameConfig = {
-  title: "Starfall",
+  title: "Celestial",
   width: 1100,
   height: 650,
   parent: "game",
-  scene: [WelcomeScene, GameScene, ScoreScene, BuilderScene],
+  scene: [WelcomeScene, GameScene, BuilderScene],
   physics: {
     default: "arcade",
     arcade: {
@@ -16,14 +16,14 @@ const config: Phaser.Types.Core.GameConfig = {
     }
   },
   backgroundColor: "#202070"
-};
+}
 
-export class StarfallGame extends Phaser.Game {
+export class CelestialGame extends Phaser.Game {
   constructor(config: Phaser.Types.Core.GameConfig) {
-    super(config);
+    super(config)
   }
 }
 
 window.onload = () => {
-  var game = new StarfallGame(config);
-};
+  var game = new CelestialGame(config)
+}

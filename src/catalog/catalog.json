@@ -11,6 +11,7 @@
     "cost": 0, "points": 0,
     "text": "0:0, build 1 (+1 to a robot in your hand, or make a 0:1 fleeting robot)"
   },
+
   {"name": "Crossed Bones", "id": 0,
     "cost": 1, "points": 2,
     "text": "1:2, becomes 2x 1:0 fleeting broken bones after resolving"
@@ -19,17 +20,51 @@
     "cost": 1, "points": 2,
     "text": "1:0, create a 2:0 camera in opponent's hand which gives you sight each upkeep"
   },
-  {"name": "Swift", "id": 2,
-    "cost": 2, "points": 2,
-    "text": "2:2, visible, if the next card costs 1, +1"
+  {"name": "Mute", "id": 51,
+    "cost": 1, "points": 1,
+    "text": "1:1, restrict 1 (Your opponent can't play their leftmost unrestricted card next turn)"
   },
+  {"name": "Juggle", "id": 136,
+    "cost": 1, "points": 1,
+    "text": "1:1. When played, put up to 3 cards from your hand on the bottom of your deck, then draw that many"
+  },
+  {"name": "Drown", "id": 94,
+    "cost": 1, "points": 1,
+    "text": "1:1, mill yourself 3 (Discard the top 3 cards of your deck)"
+  },
+
   {"name": "Sine", "id": 3,
     "cost": 2, "points": 2,
     "text": "2:4, starve 4 (Your next card gives -4 points)"
   },
+  {"name": "Dash", "id": 10,
+    "cost": 2,
+    "text": "2:3, flare (Worth 1 less for every card in the story before this one)"
+  },
+  {"name": "Swift", "id": 2,
+    "cost": 2, "points": 2,
+    "text": "2:2, visible, if the next card costs 1, +1"
+  },
+  {"name": "Raise Dead", "id": 95,
+    "cost": 2,
+    "text": "2:2, put the top card of your discard pile on top of your deck"
+  },
+  {"name": "Bastet", "id": 116,
+    "cost": 2,
+    "text": "2:1, this card retains all changes to points as it resolves (Nourish, starve, boost, oppress)"
+  },
   {"name": "Gears", "id": 75,
     "cost": 2, "points": 0,
     "text": "2:0, build 2 (+2 to a robot in your hand, or make a 0:2 fleeting robot)"
+  },
+  {"name": "Cosmos", "id": 40,
+    "cost": 2,
+    "text": "2:0, inspire 1 + 1 for each card you play later this round"
+  },
+
+  {"name": "Factory", "id": 76,
+    "cost": 3,
+    "text": "3:0, build X, where X is the number of cards later in the story"
   },
   {"name": "Fruiting", "id": 4,
     "cost": 3, "points": 2,
@@ -39,16 +74,62 @@
     "cost": 3, "points": 2,
     "text": "3:3, both players draw 1"
   },
-  {"name": "Desert", "id": 6,
-    "cost": 4, "points": 2,
-    "text": "4:0, modal:\n0: +1, later cards this round are worth -2\n\n1-2: Reset\n3+: +4"
+  {"name": "Charcoal", "id": 13,
+    "cost": 3,
+    "text": "3:4, visible, discard a card"
   },
+
   {"name": "Hurricane", "id": 7,
     "cost": 4, "points": 2,
     "text": "4:0, reset"
   },
+  {"name": "Dinosaur Bones", "id": 86,
+    "cost": 4,
+    "text": "4:5, becomes 3x 1:0 fleeting broken bones after resolving"
+  },
+  {"name": "Mine", "id": 85,
+    "cost": 4,
+    "text": "4:4, remove from the game the top 4 cards of your discard pile"
+  },
+
+  {"name": "Force", "id": 16,
+    "cost": 5,
+    "text": "5:6, flare (Worth 1 less for every card in the story before this one)"
+  },
+  {"name": "Tumulus", "id": 99,
+    "cost": 5,
+    "text": "5:4, +2 if your discard pile has at least 8 cards in it"
+  },
+
+  {"name": "Uprising", "id": 134,
+    "cost": 6,
+    "text": "6:3, +1 for each card before this in the story"
+  },
+  {"name": "Stalker", "id": 55,
+    "cost": 6,
+    "text": "X:4, where X is the number of cards in your opponent's hand"
+  },
+  {"name": "Sarcophagus", "id": 100,
+    "cost": 6,
+    "text": "6:X, put the highest cost card from your discard pile on top of your deck, X is its cost"
+  },
+
+  {"name": "Anubis", "id": 101,
+    "cost": 7,
+    "text": "7:7, costs 0 if you have at least 12 cards in your discard pile"
+  },
+
+
   {"name": "Nightmare", "id": 8,
     "cost": 8, "points": 2,
     "text": "8:6, opponent discards 2"
+  },
+  {"name": "AI", "id": 79,
+    "cost": 8,
+    "text": "8:4, draw 1. Costs X less where X is the total robot points in hand"
+  },
+  {"name": "Oak", "id": 49,
+    "cost": 8,
+    "text": "8:8, if you win this round, convert to nourish any excess points that you won by.\n(For example, if you win 8 to 5 you get 2 points nourish)"
   }
 ]

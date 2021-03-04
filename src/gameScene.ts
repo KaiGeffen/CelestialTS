@@ -5,6 +5,7 @@ import { Network } from "./net"
 import ClientState from "./clientState"
 import { CardImage, addCardInfoToScene } from "./cardImage"
 import { buttonStyle, textStyle, smallTextStyle, stylePassed, styleSizes, space } from "./settings"
+import Recap from './recap'
 
 
 var cardInfo: Phaser.GameObjects.Text
@@ -13,6 +14,7 @@ var storyHiddenLock: boolean = false
 
 export class GameScene extends Phaser.Scene {
 	net: Network
+	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
 	
 	handContainer: Phaser.GameObjects.Container
@@ -35,6 +37,9 @@ export class GameScene extends Phaser.Scene {
 
 	txtPass: Phaser.GameObjects.Text
 	txtOpponentPass: Phaser.GameObjects.Text
+
+	txtRecapTotals: Phaser.GameObjects.Text
+
 	txtDeckSize: Phaser.GameObjects.Text
 	txtOpponentDeckSize: Phaser.GameObjects.Text
 	txtDiscardSize: Phaser.GameObjects.Text
@@ -69,7 +74,7 @@ export class GameScene extends Phaser.Scene {
 
 	create(): void {
 		// Middle line, below everything
-		let midline = this.add.rectangle(0, 650/2, 1100, 20, 0xff0000, 0.4).setOrigin(0)
+		let midline = this.add.rectangle(0, 650/2, 1100, 20, 0xff0000, 0.4).setOrigin(0, 0.5)
 		this.children.sendToBack(midline)
 
 		cardInfo = addCardInfoToScene(this)
@@ -145,7 +150,11 @@ export class GameScene extends Phaser.Scene {
 	    this.stackContainer.add(stacks)
 
 	    // Recap text and hidden text
-	    let btnRecap = this.add.text(1100 - space.pad, 650/2 - 30, 'Recap', buttonStyle).setOrigin(1, 0.5)
+	    this.txtRecapTotals = this.add.text(
+	    	0, space.cardSize/2 + space.stackOffset, '', stylePassed).setOrigin(0, 0.5)
+	    this.recapContainer.add(this.txtRecapTotals)
+
+	    let btnRecap = this.add.text(1100 - space.pad, 650/2 - 40, 'Recap', buttonStyle).setOrigin(1, 0.5)
 	    btnRecap.setInteractive()
 	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer), this)
 	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer), this)
@@ -177,12 +186,16 @@ export class GameScene extends Phaser.Scene {
 
 		// Recap
 		let playList = state.recap.playList
+		let x = 0
 		for (var i = 0; i < playList.length; i++) {
 			let owner = playList[i][1]
 
 			this.addCard(playList[i][0], i, this.recapContainer, owner)
-			this.addPlayRecap(playList[i][2], i, owner)
+			x = this.addCardRecap(playList[i][2], i, owner).x + space.cardSize
 		}
+		this.txtRecapTotals.setX(x + space.pad)
+		let s = this.getRecapTotalText(state.recap)
+		this.txtRecapTotals.setText(s)
 
 		// Deck, discard piles
 		for (var i = 0; i < state.deck.length; i++) {
@@ -313,12 +326,11 @@ export class GameScene extends Phaser.Scene {
 				break
 			
 		}
-	    
 
 	    return [x, y]
   	}
 
-  	private addPlayRecap(s: string, index: number, owner: number): void {
+  	private addCardRecap(s: string, index: number, owner: number): Phaser.GameObjects.Text {
   		let [x, y] = this.getCardPosition(index, this.recapContainer, owner)
   		x -= space.cardSize/2
   		
@@ -332,6 +344,32 @@ export class GameScene extends Phaser.Scene {
   		this.recapContainer.add(txt)
 
   		this.temporaryObjs.push(txt)
+
+  		return txt
+  	}
+
+  	private getRecapTotalText(recap: Recap): string {
+  		let result = ''
+
+  		let p1Done = false;
+  		[1, 0].forEach( function(player) {
+  			result += `${recap.sums[player]}`
+
+  			if (recap.safety[player] > 0) {
+  				result += `[${recap.safety[player]}]`
+  			}
+
+  			for (var i = 0; i < recap.wins[player]; i++) {
+  				result += '*'
+  			}
+
+  			if (!p1Done) {
+  				result += '\n\n'
+  				p1Done = true
+  			}
+  		})
+
+  		return result
   	}
 
   	private clickCard(index: number): () => void  {
@@ -364,7 +402,9 @@ export class GameScene extends Phaser.Scene {
   	private clickAlternateView(): () => void {
   		let time = this.time
   		return function() {
-  			time.delayedCall(1, () => storyHiddenLock = true)
+  			if (!storyHiddenLock) {
+  				time.delayedCall(1, () => storyHiddenLock = true)
+  			}
   		}
   	}
 
