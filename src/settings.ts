@@ -13,6 +13,11 @@ export const stylePassed = {
       color: '#f71'
 }
 
+export const styleSizes = {
+      font: '100px Arial',
+      color: '#e9b'
+}
+
 export const space = {
   cardSize: 100,
   pad: 20,

@@ -5,10 +5,10 @@ import Story from "./story"
 
 export default class ClientState {
 	hand: Card[]
-	opponentHand: number
+	opponentHandSize: number
 	deck: Card[]
-	opponentDeck: number
-	pile: Card[][]
+	opponentDeckSize: number
+	discard: Card[][]
 	wins: number[]
 	maxMana: number[]
 	mana: number
@@ -23,10 +23,10 @@ export default class ClientState {
 
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
-		this.opponentHand = state.opp_hand
+		this.opponentHandSize = state.opp_hand
 		this.deck = decodeDeck(state.deck)
-		this.opponentDeck = state.opp_deck
-		this.pile = state.pile.map(pile => decodeDeck(pile))
+		this.opponentDeckSize = state.opp_deck
+		this.discard = state.pile.map(pile => decodeDeck(pile))
 		this.wins = state.wins
 		this.maxMana = state.max_mana
 		this.mana = state.mana
