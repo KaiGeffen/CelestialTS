@@ -1,6 +1,7 @@
 import { Card } from "./catalog/catalog";
-import { decodeDeck, decodeStory, decodeStatuses } from "./catalog/codec"
+import { decodeDeck, decodeStory, decodeStatuses, decodeRecap } from "./catalog/codec"
 import Story from "./story"
+import Recap from "./recap"
 
 
 export default class ClientState {
@@ -17,7 +18,7 @@ export default class ClientState {
 	story: Story
 	priority: number
 	passes: number
-	// recap: Recap TODO
+	recap: Recap
 	mulligansComplete: boolean[]
 	// versionNumber: number
 
@@ -35,6 +36,7 @@ export default class ClientState {
 		this.story = decodeStory(state.story)
 		this.priority = state.priority
 		this.passes = state.passes
+		this.recap = decodeRecap(state.recap)
 		this.mulligansComplete = state.mulligans_complete
 		// this.version_number
 	}

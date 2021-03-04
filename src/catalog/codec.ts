@@ -1,6 +1,6 @@
 import { Card, allCards } from "./catalog";
-import Story from "../story"
-
+import Story from '../story'
+import Recap from '../recap'
 
 const delims = ['¡', '™', '£']
 
@@ -78,4 +78,36 @@ function decodeStatuses(s: string): string {
 	return result.slice(0, -2)
 }
 
-export {encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses}
+function decodeRecap(s: string): Recap {
+	console.log('decoding recap ', s)
+	let sections = s.split(delims[0])
+	console.log('sections are ', sections)
+	let sums = sections[0].split(delims[1]).map(parseFloat)
+	console.log(sums)
+	let wins = sections[1].split(delims[1]).map(parseFloat)
+	let safety = sections[2].split(delims[1]).map(parseFloat)
+
+	if (sections.length === 3) {
+		return new Recap(sums, wins, safety)
+	}
+
+	let plays = sections.slice(3)
+	console.log('plays is ', plays)
+
+	function decodePlay(play: string): [Card, number, string] {
+		let l = play.split(delims[1])
+
+		let card = decodeCard(l[0])
+		let owner = +l[1]
+		let text = l[2]
+
+		return [card, owner, text]
+	}
+
+	let playList = plays.map(decodePlay)
+	console.log('playlist is ', playList)
+
+	return new Recap(sums, wins, safety, playList)
+}
+
+export {encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses, decodeRecap}

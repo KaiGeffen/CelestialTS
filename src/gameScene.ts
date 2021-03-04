@@ -22,7 +22,7 @@ export class GameScene extends Phaser.Scene {
 	opponentDiscardContainer: Phaser.GameObjects.Container
 	storyContainer: Phaser.GameObjects.Container
 	stackContainer: Phaser.GameObjects.Container
-	opponentStackContainer: Phaser.GameObjects.Container // TODO remove
+	recapContainer: Phaser.GameObjects.Container
 
 	priorityRectangle: Phaser.GameObjects.Rectangle
 	manaText: Phaser.GameObjects.Text
@@ -56,6 +56,7 @@ export class GameScene extends Phaser.Scene {
 		this.deckContainer = this.add.container(0, 650/2).setVisible(false)
 		this.discardContainer = this.add.container(0, 650/2).setVisible(false)
 		this.opponentDiscardContainer = this.add.container(0, 650/2).setVisible(false)
+		this.recapContainer = this.add.container(0, 650/2 - 80).setVisible(false)
 		this.storyContainer = this.add.container(0, 650/2 - 80)
 		this.stackContainer = this.add.container(800, 0)
 
@@ -74,7 +75,7 @@ export class GameScene extends Phaser.Scene {
 		cardInfo = addCardInfoToScene(this)
 
 		// Pass button
-    	let btnPass = this.add.text(1100 - space.pad, 650/2, 'Pass', buttonStyle).setOrigin(1, 0.5)
+    	let btnPass = this.add.text(1100 - space.pad, 650/2 + 40, 'Pass', buttonStyle).setOrigin(1, 0.5)
     	btnPass.setInteractive()
 
 	    let net = this.net
@@ -114,8 +115,8 @@ export class GameScene extends Phaser.Scene {
 	    	650 - space.pad - space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtDeckSize.setInteractive()
-	    this.txtDeckSize.on('pointerover', this.hoverDeck(), this)
-	    this.txtDeckSize.on('pointerout', this.hoverDeckExit(), this)
+	    this.txtDeckSize.on('pointerover', this.hoverAlternateView(this.deckContainer), this)
+	    this.txtDeckSize.on('pointerout', this.hoverAlternateViewExit(this.deckContainer), this)
 	    this.txtDeckSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    this.txtDiscardSize = this.add.text(
@@ -123,8 +124,8 @@ export class GameScene extends Phaser.Scene {
 	    	650 - space.pad - space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtDiscardSize.setInteractive()
-	    this.txtDiscardSize.on('pointerover', this.hoverDiscard(0), this)
-	    this.txtDiscardSize.on('pointerout', this.hoverDiscardExit(0), this)
+	    this.txtDiscardSize.on('pointerover', this.hoverAlternateView(this.discardContainer), this)
+	    this.txtDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.discardContainer), this)
 	    this.txtDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 
 	    this.txtOpponentDeckSize = this.add.text(
@@ -136,12 +137,19 @@ export class GameScene extends Phaser.Scene {
 	    	space.pad + space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtOpponentDiscardSize.setInteractive()
-	    this.txtOpponentDiscardSize.on('pointerover', this.hoverDiscard(1), this)
-	    this.txtOpponentDiscardSize.on('pointerout', this.hoverDiscardExit(1), this)
+	    this.txtOpponentDiscardSize.on('pointerover', this.hoverAlternateView(this.opponentDiscardContainer), this)
+	    this.txtOpponentDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.opponentDiscardContainer), this)
 	    this.txtOpponentDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    let stacks = [this.txtDeckSize, this.txtDiscardSize, this.txtOpponentDeckSize, this.txtOpponentDiscardSize]
 	    this.stackContainer.add(stacks)
+
+	    // Recap text and hidden text
+	    let btnRecap = this.add.text(1100 - space.pad, 650/2 - 30, 'Recap', buttonStyle).setOrigin(1, 0.5)
+	    btnRecap.setInteractive()
+	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer), this)
+	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer), this)
+	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
 	}
 
 	// Display the given game state
@@ -165,6 +173,12 @@ export class GameScene extends Phaser.Scene {
 			let act = state.story.acts[i]
 
 			this.addCard(act.card, i, this.storyContainer, act.owner)
+		}
+
+		// Recap
+		let playList = state.recap.playList
+		for (var i = 0; i < playList.length; i++) {
+			this.addCard(playList[i][0], i, this.recapContainer, playList[i][1])
 		}
 
 		// Deck, discard piles
@@ -266,6 +280,7 @@ export class GameScene extends Phaser.Scene {
 				y = space.pad + space.cardSize/2
 				break
 
+			case this.recapContainer:
 			case this.storyContainer:
 				let filledSpace = index * (space.cardSize - space.stackOverlap)
 				x = space.pad + space.cardSize/2 + filledSpace
@@ -276,11 +291,13 @@ export class GameScene extends Phaser.Scene {
 					y = space.cardSize/2 + space.stackOffset * 2
 				}
 				break
+
 			case this.deckContainer:
 			case this.discardContainer:
 			case this.opponentDiscardContainer:
 				x = space.pad + space.cardSize/2 + (space.cardSize - space.stackOverlap)  * index
 				break
+
 			case this.stackContainer:
 				// Deck is 0, discard is 1
 				if (index === 0) x = space.cardSize/2
@@ -310,7 +327,8 @@ export class GameScene extends Phaser.Scene {
   		let hiddenContainers = [
   		this.deckContainer,
   		this.discardContainer,
-  		this.opponentDiscardContainer]
+  		this.opponentDiscardContainer,
+  		this.recapContainer]
 
   		let storyContainer = this.storyContainer
   		
@@ -331,52 +349,22 @@ export class GameScene extends Phaser.Scene {
   		}
   	}
 
-  	private hoverDeck(): () => void {
-  		let deckC = this.deckContainer
-  		let storyC = this.storyContainer
+  	private hoverAlternateView(revealedContainer: Phaser.GameObjects.Container): () => void {
+  		let storyContainer = this.storyContainer
   		return function() {
   			if (!storyHiddenLock) {
-	  			deckC.setVisible(true)
-	  			storyC.setVisible(false)
-	  		}
-  		}
-  	}
-
-  	private hoverDeckExit(): () => void {
-  		let deckC = this.deckContainer
-  		let storyC = this.storyContainer
-  		return function() {
-  			if (!storyHiddenLock) {
-  				deckC.setVisible(false)
-  				storyC.setVisible(true)
+  				revealedContainer.setVisible(true)
+  				storyContainer.setVisible(false)
   			}
   		}
   	}
 
-  	private hoverDiscard(owner: number): () => void {
-  		let discardC = undefined
-  		if (owner === 0) discardC = this.discardContainer;
-  		else discardC = this.opponentDiscardContainer
-
-  		let storyC = this.storyContainer
+  	private hoverAlternateViewExit(revealedContainer: Phaser.GameObjects.Container): () => void {
+  		let storyContainer = this.storyContainer
   		return function() {
   			if (!storyHiddenLock) {
-	  			discardC.setVisible(true)
-	  			storyC.setVisible(false)
-  			}
-  		}
-  	}
-
-  	private hoverDiscardExit(owner: number): () => void {
-  		let discardC = undefined
-  		if (owner === 0) discardC = this.discardContainer;
-  		else discardC = this.opponentDiscardContainer
-
-  		let storyC = this.storyContainer
-  		return function() {
-  			if (!storyHiddenLock) {
-  				discardC.setVisible(false)
-  				storyC.setVisible(true)
+  				revealedContainer.setVisible(false)
+  				storyContainer.setVisible(true)
   			}
   		}
   	}

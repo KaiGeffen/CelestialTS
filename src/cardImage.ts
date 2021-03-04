@@ -42,10 +42,12 @@ export class CardImage {
     return function() {
       this.image.setTint(0xffff00)
 
+      // Set the hover text
+      cardInfo.text = this.card.name + '\n'
       if (this.card.dynamicText !== undefined) {
-        cardInfo.text = this.card.dynamicText
+        cardInfo.text += this.card.dynamicText
       } else {
-        cardInfo.text = this.card.text
+        cardInfo.text += this.card.text
       }
 
       // Copy the position of the card in its local space
