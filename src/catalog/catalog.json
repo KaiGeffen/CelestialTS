@@ -1,4 +1,16 @@
 [
+  {"name": "Stars", "id": 39,
+    "cost": 0, "points": 0,
+    "text": "0:0, inspire (Next turn gain 1 temporary mana)"
+  },
+  {"name": "Bone Knife", "id": 50,
+    "cost": 0, "points": 0,
+    "text": "0:0, opponent discards 1"
+  },
+  {"name": "Cog", "id": 73,
+    "cost": 0, "points": 0,
+    "text": "0:0, build 1 (+1 to a robot in your hand, or make a 0:1 fleeting robot)"
+  },
   {"name": "Crossed Bones", "id": 0,
     "cost": 1, "points": 2,
     "text": "1:2, becomes 2x 1:0 fleeting broken bones after resolving"
@@ -14,6 +26,10 @@
   {"name": "Sine", "id": 3,
     "cost": 2, "points": 2,
     "text": "2:4, starve 4 (Your next card gives -4 points)"
+  },
+  {"name": "Gears", "id": 75,
+    "cost": 2, "points": 0,
+    "text": "2:0, build 2 (+2 to a robot in your hand, or make a 0:2 fleeting robot)"
   },
   {"name": "Fruiting", "id": 4,
     "cost": 3, "points": 2,

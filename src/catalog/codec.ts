@@ -9,11 +9,21 @@ function encodeCard(card: Card): string {
 }
 
 function decodeCard(s: string): Card {
-	// Todo dynamic text
-	let id: number = +s;
-	let result = allCards.find(card => card.id === id)
+	let sections = s.split(delims[2])
 
-	return result
+	let cardId = +sections[0]
+	let baseCard = allCards.find(card => card.id === cardId)
+
+	if (sections.length == 1) {
+		return baseCard
+	} else {
+		let dynamicText = sections[1]
+
+		let dynamicCard = JSON.parse(JSON.stringify(baseCard))
+		dynamicCard.dynamicText = dynamicText
+
+		return dynamicCard
+	}
 }
 
 function encodeDeck(deck: Card[]): string {
@@ -45,7 +55,7 @@ function decodeStory(s: string): Story {
 }
 
 // TODO Make a more robust status module once the desired functionality is known
-const allStatuses = ['Inspires', 'Nourish', 'Starve', 'Restricted']
+const allStatuses = ['Inspired', 'Nourish', 'Starve', 'Restricted']
 
 function decodeStatuses(s: string): string {
 	if (s === '') return ''
