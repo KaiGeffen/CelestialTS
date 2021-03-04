@@ -44,5 +44,28 @@ function decodeStory(s: string): Story {
 	return story
 }
 
+// TODO Make a more robust status module once the desired functionality is known
+const allStatuses = ['Inspires', 'Nourish', 'Starve', 'Restricted']
 
-export {encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory}
+function decodeStatuses(s: string): string {
+	if (s === '') return ''
+
+	let statuses = s.split(delims[0])
+
+	let result = ''
+	allStatuses.forEach(function(statusType) {
+
+		let count = 0
+		statuses.forEach(function(status) {
+			if (status === statusType) {
+				count++
+			}
+		})
+
+		if (count > 0) result += `${statusType} ${count}, `
+	})
+
+	return result.slice(0, -2)
+}
+
+export {encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses}

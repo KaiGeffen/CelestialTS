@@ -9,6 +9,8 @@ import { buttonStyle, textStyle, stylePassed, styleSizes, space } from "./settin
 
 var cardInfo: Phaser.GameObjects.Text
 
+var storyHiddenLock: boolean = false
+
 export class GameScene extends Phaser.Scene {
 	net: Network
 	cards: CardImage[]
@@ -27,6 +29,9 @@ export class GameScene extends Phaser.Scene {
 	opponentManaText: Phaser.GameObjects.Text
 	scoreText: Phaser.GameObjects.Text
 	opponentScoreText: Phaser.GameObjects.Text
+
+	txtStatus: Phaser.GameObjects.Text
+	txtOpponentStatus: Phaser.GameObjects.Text
 
 	txtPass: Phaser.GameObjects.Text
 	txtOpponentPass: Phaser.GameObjects.Text
@@ -52,11 +57,13 @@ export class GameScene extends Phaser.Scene {
 		this.discardContainer = this.add.container(0, 650/2).setVisible(false)
 		this.opponentDiscardContainer = this.add.container(0, 650/2).setVisible(false)
 		this.storyContainer = this.add.container(0, 650/2 - 80)
-		this.stackContainer = this.add.container(680, 0)
+		this.stackContainer = this.add.container(800, 0)
 
 		let height = space.cardSize + 2 * space.pad
 		this.priorityRectangle = this.add.rectangle(0, -500, 1100, height, 0xffffff, 0.1)
 		this.priorityRectangle.setOrigin(0, 0)
+
+		this.input.on('pointerdown', this.clickAnywhere(), this)
 	}
 
 	create(): void {
@@ -75,15 +82,33 @@ export class GameScene extends Phaser.Scene {
 	      net.passTurn()
 	    })
 
-	    this.manaText = this.add.text(1100 - space.pad, 650 - 30, '', textStyle).setOrigin(1.0, 0.5)
-	    this.opponentManaText = this.add.text(1100 - space.pad, 30, '', textStyle).setOrigin(1.0, 0.5)
+	    // Mana text
+	    this.manaText = this.add.text(1100 - space.pad,
+	    	650 - 30 - space.cardSize - space.pad * 2,
+	    	'', textStyle).setOrigin(1.0, 0.5)
+	    this.opponentManaText = this.add.text(1100 - space.pad,
+	    	30 + space.cardSize + space.pad * 2,
+	    	'', textStyle).setOrigin(1.0, 0.5)
 
-	    this.scoreText = this.add.text(1100 - space.pad, 650 - 70, '', textStyle).setOrigin(1.0, 0.5)
-	    this.opponentScoreText = this.add.text(1100 - space.pad, 70, '', textStyle).setOrigin(1.0, 0.5)
+	    this.scoreText = this.add.text(1100 - space.pad,
+	    	650 - 70 - space.cardSize - space.pad * 2,
+	    	'', textStyle).setOrigin(1.0, 0.5)
+	    this.opponentScoreText = this.add.text(1100 - space.pad,
+	    	70 + space.cardSize + space.pad * 2,
+	    	'', textStyle).setOrigin(1.0, 0.5)
+
+	    // Status text
+	    this.txtStatus = this.add.text(0,
+	    	650 - space.cardSize - space.pad * 2,
+	    	'', textStyle).setOrigin(0, 1)
+	    this.txtOpponentStatus = this.add.text(0,
+	    	space.cardSize + space.pad * 2,
+	    	'', textStyle).setOrigin(0, 0)
 
 	    this.txtPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    this.txtOpponentPass = this.add.text(space.pad, 650 - 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    
+	    // Alternate views presented when hovering over/clicking any stacks
 	    this.txtDeckSize = this.add.text(
 	    	space.cardSize/2,
 	    	650 - space.pad - space.cardSize/2,
@@ -91,6 +116,7 @@ export class GameScene extends Phaser.Scene {
 	    this.txtDeckSize.setInteractive()
 	    this.txtDeckSize.on('pointerover', this.hoverDeck(), this)
 	    this.txtDeckSize.on('pointerout', this.hoverDeckExit(), this)
+	    this.txtDeckSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    this.txtDiscardSize = this.add.text(
 	    	space.cardSize*3/2 + space.pad,
@@ -99,6 +125,7 @@ export class GameScene extends Phaser.Scene {
 	    this.txtDiscardSize.setInteractive()
 	    this.txtDiscardSize.on('pointerover', this.hoverDiscard(0), this)
 	    this.txtDiscardSize.on('pointerout', this.hoverDiscardExit(0), this)
+	    this.txtDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 
 	    this.txtOpponentDeckSize = this.add.text(
 	    	space.cardSize/2,
@@ -111,6 +138,7 @@ export class GameScene extends Phaser.Scene {
 	    this.txtOpponentDiscardSize.setInteractive()
 	    this.txtOpponentDiscardSize.on('pointerover', this.hoverDiscard(1), this)
 	    this.txtOpponentDiscardSize.on('pointerout', this.hoverDiscardExit(1), this)
+	    this.txtOpponentDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    let stacks = [this.txtDeckSize, this.txtDiscardSize, this.txtOpponentDeckSize, this.txtOpponentDiscardSize]
 	    this.stackContainer.add(stacks)
@@ -140,13 +168,13 @@ export class GameScene extends Phaser.Scene {
 		}
 
 		// Deck, discard piles
-		for (var i = state.deck.length - 1; i >= 0; i--) {
+		for (var i = 0; i < state.deck.length; i++) {
 			this.addCard(state.deck[i], i, this.deckContainer)
 		}
-		for (var i = state.discard[0].length - 1; i >= 0; i--) {
+		for (var i = 0; i < state.discard[0].length; i++) {
 			this.addCard(state.discard[0][i], i, this.discardContainer)
 		}
-		for (var i = state.discard[1].length - 1; i >= 0; i--) {
+		for (var i = 0; i < state.discard[1].length; i++) {
 			this.addCard(state.discard[1][i], i, this.opponentDiscardContainer)
 		}
 
@@ -162,12 +190,12 @@ export class GameScene extends Phaser.Scene {
 		} else this.txtOpponentDeckSize.setText('')
 
 		if (state.discard[0].length > 0) {
-			this.addCard(state.discard[0][0], 1, this.stackContainer, 0)
+			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
 			this.txtDiscardSize.setText(state.discard[0].length.toString())
 		} else this.txtDiscardSize.setText('')
 		
 		if (state.discard[1].length > 0) {
-			this.addCard(state.discard[1][0], 1, this.stackContainer, 1)
+			this.addCard(state.discard[1].slice(-1)[0], 1, this.stackContainer, 1)
 			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
 		} else this.txtOpponentDiscardSize.setText('')
 
@@ -183,6 +211,10 @@ export class GameScene extends Phaser.Scene {
 		// Mana
 		this.manaText.setText(`Mana: ${state.mana}/${state.maxMana[0]}`)
 		this.opponentManaText.setText(`Mana: ?/${state.maxMana[1]}`)
+
+		// Status
+		this.txtStatus.setText(state.status)
+		this.txtOpponentStatus.setText(state.opponentStatus)
 
 		// Score
 		this.scoreText.setText(`Score: ${state.wins[0]}`)
@@ -273,12 +305,40 @@ export class GameScene extends Phaser.Scene {
   		}
   	}
 
+  	// Disables the story hidden lock seen below
+  	private clickAnywhere(): () => void {
+  		let hiddenContainers = [
+  		this.deckContainer,
+  		this.discardContainer,
+  		this.opponentDiscardContainer]
+
+  		let storyContainer = this.storyContainer
+  		
+  		return function() {
+  			if (storyHiddenLock) {
+	  			hiddenContainers.forEach(c => c.setVisible(false))
+	  			storyContainer.setVisible(true)
+
+  				storyHiddenLock = false
+  			}
+  		}
+  	}
+
+  	private clickAlternateView(): () => void {
+  		let time = this.time
+  		return function() {
+  			time.delayedCall(1, () => storyHiddenLock = true)
+  		}
+  	}
+
   	private hoverDeck(): () => void {
   		let deckC = this.deckContainer
   		let storyC = this.storyContainer
   		return function() {
-  			deckC.setVisible(true)
-  			storyC.setVisible(false)
+  			if (!storyHiddenLock) {
+	  			deckC.setVisible(true)
+	  			storyC.setVisible(false)
+	  		}
   		}
   	}
 
@@ -286,8 +346,10 @@ export class GameScene extends Phaser.Scene {
   		let deckC = this.deckContainer
   		let storyC = this.storyContainer
   		return function() {
-  			deckC.setVisible(false)
-  			storyC.setVisible(true)
+  			if (!storyHiddenLock) {
+  				deckC.setVisible(false)
+  				storyC.setVisible(true)
+  			}
   		}
   	}
 
@@ -298,8 +360,10 @@ export class GameScene extends Phaser.Scene {
 
   		let storyC = this.storyContainer
   		return function() {
-  			discardC.setVisible(true)
-  			storyC.setVisible(false)
+  			if (!storyHiddenLock) {
+	  			discardC.setVisible(true)
+	  			storyC.setVisible(false)
+  			}
   		}
   	}
 
@@ -310,8 +374,10 @@ export class GameScene extends Phaser.Scene {
 
   		let storyC = this.storyContainer
   		return function() {
-  			discardC.setVisible(false)
-  			storyC.setVisible(true)
+  			if (!storyHiddenLock) {
+  				discardC.setVisible(false)
+  				storyC.setVisible(true)
+  			}
   		}
   	}
 }
