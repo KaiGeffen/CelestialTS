@@ -15,6 +15,9 @@ export class GameScene extends Phaser.Scene {
 	
 	handContainer: Phaser.GameObjects.Container
 	opponentHandContainer: Phaser.GameObjects.Container
+	deckContainer: Phaser.GameObjects.Container
+	discardContainer: Phaser.GameObjects.Container
+	opponentDiscardContainer: Phaser.GameObjects.Container
 	storyContainer: Phaser.GameObjects.Container
 	stackContainer: Phaser.GameObjects.Container
 	opponentStackContainer: Phaser.GameObjects.Container // TODO remove
@@ -45,6 +48,9 @@ export class GameScene extends Phaser.Scene {
 
 		this.handContainer = this.add.container(0, 650 - 140)
 		this.opponentHandContainer = this.add.container(0, 0)
+		this.deckContainer = this.add.container(0, 650/2).setVisible(false)
+		this.discardContainer = this.add.container(0, 650/2).setVisible(false)
+		this.opponentDiscardContainer = this.add.container(0, 650/2).setVisible(false)
 		this.storyContainer = this.add.container(0, 650/2 - 80)
 		this.stackContainer = this.add.container(680, 0)
 
@@ -82,10 +88,18 @@ export class GameScene extends Phaser.Scene {
 	    	space.cardSize/2,
 	    	650 - space.pad - space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
+	    this.txtDeckSize.setInteractive()
+	    this.txtDeckSize.on('pointerover', this.hoverDeck(), this)
+	    this.txtDeckSize.on('pointerout', this.hoverDeckExit(), this)
+	    
 	    this.txtDiscardSize = this.add.text(
 	    	space.cardSize*3/2 + space.pad,
 	    	650 - space.pad - space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
+	    this.txtDiscardSize.setInteractive()
+	    this.txtDiscardSize.on('pointerover', this.hoverDiscard(0), this)
+	    this.txtDiscardSize.on('pointerout', this.hoverDiscardExit(0), this)
+
 	    this.txtOpponentDeckSize = this.add.text(
 	    	space.cardSize/2,
 	    	space.pad + space.cardSize/2,
@@ -94,6 +108,9 @@ export class GameScene extends Phaser.Scene {
 	    	space.cardSize*3/2 + space.pad,
 	    	space.pad + space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
+	    this.txtOpponentDiscardSize.setInteractive()
+	    this.txtOpponentDiscardSize.on('pointerover', this.hoverDiscard(1), this)
+	    this.txtOpponentDiscardSize.on('pointerout', this.hoverDiscardExit(1), this)
 	    
 	    let stacks = [this.txtDeckSize, this.txtDiscardSize, this.txtOpponentDeckSize, this.txtOpponentDiscardSize]
 	    this.stackContainer.add(stacks)
@@ -122,6 +139,17 @@ export class GameScene extends Phaser.Scene {
 			this.addCard(act.card, i, this.storyContainer, act.owner)
 		}
 
+		// Deck, discard piles
+		for (var i = state.deck.length - 1; i >= 0; i--) {
+			this.addCard(state.deck[i], i, this.deckContainer)
+		}
+		for (var i = state.discard[0].length - 1; i >= 0; i--) {
+			this.addCard(state.discard[0][i], i, this.discardContainer)
+		}
+		for (var i = state.discard[1].length - 1; i >= 0; i--) {
+			this.addCard(state.discard[1][i], i, this.opponentDiscardContainer)
+		}
+
 		// Stacks
 		if (state.deck.length > 0) {
 			this.addCard(cardback, 0, this.stackContainer, 0)
@@ -135,12 +163,12 @@ export class GameScene extends Phaser.Scene {
 
 		if (state.discard[0].length > 0) {
 			this.addCard(state.discard[0][0], 1, this.stackContainer, 0)
-			this.txtDiscardSize.setText(state.deck.length.toString())
+			this.txtDiscardSize.setText(state.discard[0].length.toString())
 		} else this.txtDiscardSize.setText('')
 		
 		if (state.discard[1].length > 0) {
 			this.addCard(state.discard[1][0], 1, this.stackContainer, 1)
-			this.txtOpponentDiscardSize.setText(state.deck.length.toString())
+			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
 		} else this.txtOpponentDiscardSize.setText('')
 
 		this.stackContainer.bringToTop(this.txtDeckSize)
@@ -216,6 +244,11 @@ export class GameScene extends Phaser.Scene {
 					y = space.cardSize/2 + space.stackOffset * 2
 				}
 				break
+			case this.deckContainer:
+			case this.discardContainer:
+			case this.opponentDiscardContainer:
+				x = space.pad + space.cardSize/2 + (space.cardSize - space.stackOverlap)  * index
+				break
 			case this.stackContainer:
 				// Deck is 0, discard is 1
 				if (index === 0) x = space.cardSize/2
@@ -237,6 +270,48 @@ export class GameScene extends Phaser.Scene {
   		let net = this.net
   		return function() {
   			net.playCard(index)
+  		}
+  	}
+
+  	private hoverDeck(): () => void {
+  		let deckC = this.deckContainer
+  		let storyC = this.storyContainer
+  		return function() {
+  			deckC.setVisible(true)
+  			storyC.setVisible(false)
+  		}
+  	}
+
+  	private hoverDeckExit(): () => void {
+  		let deckC = this.deckContainer
+  		let storyC = this.storyContainer
+  		return function() {
+  			deckC.setVisible(false)
+  			storyC.setVisible(true)
+  		}
+  	}
+
+  	private hoverDiscard(owner: number): () => void {
+  		let discardC = undefined
+  		if (owner === 0) discardC = this.discardContainer;
+  		else discardC = this.opponentDiscardContainer
+
+  		let storyC = this.storyContainer
+  		return function() {
+  			discardC.setVisible(true)
+  			storyC.setVisible(false)
+  		}
+  	}
+
+  	private hoverDiscardExit(owner: number): () => void {
+  		let discardC = undefined
+  		if (owner === 0) discardC = this.discardContainer;
+  		else discardC = this.opponentDiscardContainer
+
+  		let storyC = this.storyContainer
+  		return function() {
+  			discardC.setVisible(false)
+  			storyC.setVisible(true)
   		}
   	}
 }

@@ -12,7 +12,6 @@ function decodeCard(s: string): Card {
 	// Todo dynamic text
 	let id: number = +s;
 	let result = allCards.find(card => card.id === id)
-	console.log('decoding card: ', s, result)
 
 	return result
 }
