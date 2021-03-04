@@ -8,6 +8,11 @@ export const textStyle = {
       color: '#000'
 }
 
+export const smallTextStyle = {
+      font: '12px Arial',
+      color: '#000'
+}
+
 export const stylePassed = {
       font: '50px Arial',
       color: '#f71'

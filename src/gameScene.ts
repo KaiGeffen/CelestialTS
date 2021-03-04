@@ -4,7 +4,7 @@ import { collectibleCards, Card, cardback } from "./catalog/catalog";
 import { Network } from "./net"
 import ClientState from "./clientState"
 import { CardImage, addCardInfoToScene } from "./cardImage"
-import { buttonStyle, textStyle, stylePassed, styleSizes, space } from "./settings"
+import { buttonStyle, textStyle, smallTextStyle, stylePassed, styleSizes, space } from "./settings"
 
 
 var cardInfo: Phaser.GameObjects.Text
@@ -13,7 +13,7 @@ var storyHiddenLock: boolean = false
 
 export class GameScene extends Phaser.Scene {
 	net: Network
-	cards: CardImage[]
+	temporaryObjs
 	
 	handContainer: Phaser.GameObjects.Container
 	opponentHandContainer: Phaser.GameObjects.Container
@@ -49,7 +49,7 @@ export class GameScene extends Phaser.Scene {
 	init(params: any): void {
 		// Connect with the server
 		this.net = new Network(params.deck, this)
-		this.cards = []
+		this.temporaryObjs = []
 
 		this.handContainer = this.add.container(0, 650 - 140)
 		this.opponentHandContainer = this.add.container(0, 0)
@@ -157,8 +157,8 @@ export class GameScene extends Phaser.Scene {
 		cardInfo.text = ''
 
 		// Remove all of the existing cards
-		this.cards.forEach(cardImage => cardImage.destroy())
-		this.cards = []
+		this.temporaryObjs.forEach(obj => obj.destroy())
+		this.temporaryObjs = []
 
 		// Hands
 		for (var i = state.hand.length - 1; i >= 0; i--) {
@@ -178,7 +178,10 @@ export class GameScene extends Phaser.Scene {
 		// Recap
 		let playList = state.recap.playList
 		for (var i = 0; i < playList.length; i++) {
-			this.addCard(playList[i][0], i, this.recapContainer, playList[i][1])
+			let owner = playList[i][1]
+
+			this.addCard(playList[i][0], i, this.recapContainer, owner)
+			this.addPlayRecap(playList[i][2], i, owner)
 		}
 
 		// Deck, discard piles
@@ -252,10 +255,10 @@ export class GameScene extends Phaser.Scene {
 					index: number,
 					container: Phaser.GameObjects.Container,
 					owner: number = 0): void {
-		var image: Phaser.GameObjects.Image;
-		var [x, y] = this.getCardPosition(index, container, owner)
+		let image: Phaser.GameObjects.Image
+		let [x, y] = this.getCardPosition(index, container, owner)
 
-		image = this.add.image(x, y, card.name);
+		image = this.add.image(x, y, card.name)
 		image.setDisplaySize(100, 100)
 
 		// TODO Remove this line
@@ -264,7 +267,7 @@ export class GameScene extends Phaser.Scene {
 
 		container.add(image)
 
-		this.cards.push(new CardImage(card, image))
+		this.temporaryObjs.push(new CardImage(card, image))
 	}
 
 	private getCardPosition(index: number, container, owner: number): [number, number] {
@@ -313,6 +316,22 @@ export class GameScene extends Phaser.Scene {
 	    
 
 	    return [x, y]
+  	}
+
+  	private addPlayRecap(s: string, index: number, owner: number): void {
+  		let [x, y] = this.getCardPosition(index, this.recapContainer, owner)
+  		x -= space.cardSize/2
+  		
+  		if (owner === 0) y += space.cardSize/2 + space.pad
+  		else y -= space.cardSize/2 + space.pad
+
+  		let txt = this.add.text(x, y, s, smallTextStyle)
+  		if (owner === 0) txt.setOrigin(0, 0)
+  		else txt.setOrigin(0, 1)
+
+  		this.recapContainer.add(txt)
+
+  		this.temporaryObjs.push(txt)
   	}
 
   	private clickCard(index: number): () => void  {
