@@ -16,6 +16,10 @@ export class GameScene extends Phaser.Scene {
 	net: Network
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
+
+	mulligansComplete = false
+	mulliganHighlights: Phaser.GameObjects.Rectangle[] = []
+	txtOpponentMulligan: Phaser.GameObjects.Text
 	
 	handContainer: Phaser.GameObjects.Container
 	opponentHandContainer: Phaser.GameObjects.Container
@@ -79,13 +83,43 @@ export class GameScene extends Phaser.Scene {
 
 		cardInfo = addCardInfoToScene(this)
 
+		// Mulligan highlights and button
+		for (var i = 0; i < 3; i++) {
+			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
+			let highlight = this.add.rectangle(x, y, 100, 140, 0xffaaaa, 1).setVisible(false)
+			this.handContainer.add(highlight)
+  			
+  			this.mulliganHighlights.push(highlight)
+		}
+		
+		this.txtOpponentMulligan = this.add.text(space.pad, 200, 'Opponent mulliganing...', stylePassed).setOrigin(0, 0.5)
+
+		let btnMulligan = this.add.text(space.pad, 650 - 200, 'Mulligan', buttonStyle).setOrigin(0, 0.5)
+		btnMulligan.setInteractive()
+
+		let that = this
+		btnMulligan.on('pointerdown', function (event) {
+			let mulligans = ''
+			for (var i = 0; i < that.mulliganHighlights.length; i++) {
+				if (that.mulliganHighlights[i].visible) mulligans += '1'
+				else mulligans += '0'
+			}
+			console.log(mulligans)
+
+			that.net.doMulligan(mulligans)
+
+			// Remove all mulligan objects
+			that.mulliganHighlights.forEach(o => o.destroy())
+			btnMulligan.destroy()
+			that.mulligansComplete = true
+		})
+
 		// Pass button
     	let btnPass = this.add.text(1100 - space.pad, 650/2 + 40, 'Pass', buttonStyle).setOrigin(1, 0.5)
     	btnPass.setInteractive()
 
-	    let net = this.net
 	    btnPass.on('pointerdown', function (event) {
-	      net.passTurn()
+	      that.net.passTurn()
 	    })
 
 	    // Mana text
@@ -111,6 +145,7 @@ export class GameScene extends Phaser.Scene {
 	    	space.cardSize + space.pad * 2,
 	    	'', textStyle).setOrigin(0, 0)
 
+	    // TODO these are backwards
 	    this.txtPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    this.txtOpponentPass = this.add.text(space.pad, 650 - 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    
@@ -168,6 +203,9 @@ export class GameScene extends Phaser.Scene {
 		// Remove all of the existing cards
 		this.temporaryObjs.forEach(obj => obj.destroy())
 		this.temporaryObjs = []
+
+		// Mulligan
+		this.txtOpponentMulligan.setVisible(!state.mulligansComplete[1])
 
 		// Hands
 		for (var i = state.hand.length - 1; i >= 0; i--) {
@@ -373,9 +411,17 @@ export class GameScene extends Phaser.Scene {
   	}
 
   	private clickCard(index: number): () => void  {
-  		let net = this.net
+
+  		let that = this
   		return function() {
-  			net.playCard(index)
+  			if (that.mulligansComplete) {
+  				that.net.playCard(index)
+  			}
+  			else
+  			{
+  				let highlight = that.mulliganHighlights[index]
+  				highlight.setVisible(!highlight.visible)
+  			}
   		}
   	}
 

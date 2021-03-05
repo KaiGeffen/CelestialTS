@@ -9,7 +9,9 @@ const messageHeaders = {
 
 const bufSize = 4096 * 2
 
-const port = 6789
+const ip = '192.168.1.152'
+const port = 5555
+
 
 export class Network {
 	socket: WebSocket
@@ -23,7 +25,7 @@ export class Network {
 		})
 
 		// Create WebSocket connection.
-		let socket = new WebSocket(`ws://localhost:${port}`)
+		let socket = new WebSocket(`ws://${ip}:${port}`)
 		this.socket = socket
 
 		// Connection opened
@@ -43,13 +45,6 @@ export class Network {
 
 				case 'transmit_state':
 					scene.displayState(new ClientState(msg.value))
-					
-					// // TODO Allow for mulliganing
-					// socket.send(JSON.stringify({
-					// 	"type": "mulligan",
-					// 	"value": "000"
-					// }))
-
 					break
 			}
 		})
@@ -59,6 +54,15 @@ export class Network {
 		let msg = {
 			"type": "play_card",
 			"value": index
+		}
+		this.socket.send(JSON.stringify(msg))
+	}
+
+	// String in the format '001' to mulligan just 3rd card, etc
+	doMulligan(mulligans: string) {
+		let msg = {
+			"type": "mulligan",
+			"value": mulligans
 		}
 		this.socket.send(JSON.stringify(msg))
 	}

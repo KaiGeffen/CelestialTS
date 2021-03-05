@@ -9,7 +9,7 @@ export const textStyle = {
 }
 
 export const smallTextStyle = {
-      font: '12px Arial',
+      font: '14px Arial',
       color: '#000'
 }
 
