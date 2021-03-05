@@ -25,7 +25,7 @@ export class Network {
 		})
 
 		// Create WebSocket connection.
-		let socket = new WebSocket(`ws://${ip}:${port}`, 'websocket')
+		let socket = new WebSocket(`ws://${ip}:${port}`)
 		this.socket = socket
 
 		// Connection opened
