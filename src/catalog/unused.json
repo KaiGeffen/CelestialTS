@@ -1,7 +1,7 @@
 [
-  {"name": "Cog", "id": 73,
-    "cost": 0, "points": 0,
-    "text": "0:0, build 1 (+1 to a robot in your hand, or make a 0:1 fleeting robot)"
+  {"name": "Bastet", "id": 116,
+    "cost": 2,
+    "text": "2:1, this card retains all changes to points as it resolves (Nourish, starve, boost, oppress)"
   },
   {"name": "Fishing Boat", "id": 68,
     "cost": 2,

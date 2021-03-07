@@ -18,7 +18,7 @@
   },
   {"name": "Spy", "id": 1,
     "cost": 1, "points": 2,
-    "text": "1:0, create a 2:0 camera in opponent's hand which gives you sight each upkeep"
+    "text": "1:0, create a 2:0 camera in opponent's hand which gives you sight 4 each upkeep"
   },
   {"name": "Mute", "id": 51,
     "cost": 1, "points": 1,
@@ -49,10 +49,6 @@
     "cost": 2,
     "text": "2:2, put the top card of your discard pile on top of your deck"
   },
-  {"name": "Bastet", "id": 116,
-    "cost": 2,
-    "text": "2:1, this card retains all changes to points as it resolves (Nourish, starve, boost, oppress)"
-  },
   {"name": "Gears", "id": 75,
     "cost": 2, "points": 0,
     "text": "2:0, build 2 (+2 to a robot in your hand, or make a 0:2 fleeting robot)"
@@ -77,6 +73,10 @@
   {"name": "Charcoal", "id": 13,
     "cost": 3,
     "text": "3:4, visible, discard a card"
+  },
+  {"name": "Paranoia", "id": 21,
+    "cost": 3,
+    "text": "3:3, sight 1 for each card before this in the story (Sight X means that you can see the first X cards of the story this round)"
   },
 
   {"name": "Hurricane", "id": 7,
