@@ -1,4 +1,8 @@
 [
+  {"name": "Raise Dead", "id": 95,
+    "cost": 2,
+    "text": "2:2, put the top card of your discard pile on top of your deck"
+  },
   {"name": "Bastet", "id": 116,
     "cost": 2,
     "text": "2:1, this card retains all changes to points as it resolves (Nourish, starve, boost, oppress)"

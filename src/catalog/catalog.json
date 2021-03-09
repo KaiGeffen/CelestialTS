@@ -45,10 +45,6 @@
     "cost": 2, "points": 2,
     "text": "2:2, visible, if the next card costs 1, +1"
   },
-  {"name": "Raise Dead", "id": 95,
-    "cost": 2,
-    "text": "2:2, put the top card of your discard pile on top of your deck"
-  },
   {"name": "Gears", "id": 75,
     "cost": 2, "points": 0,
     "text": "2:0, build 2 (+2 to a robot in your hand, or make a 0:2 fleeting robot)"
@@ -56,6 +52,10 @@
   {"name": "Cosmos", "id": 40,
     "cost": 2,
     "text": "2:0, inspire 1 + 1 for each card you play later this round"
+  },
+  {"name": "Fishing Boat", "id": 68,
+    "cost": 2,
+    "text": "2:0, draw 3 1-cost cards. (Priority for the cards drawn is deck top to bottom, discard pile top to bottom)"
   },
 
   {"name": "Factory", "id": 76,

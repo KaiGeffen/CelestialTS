@@ -1,7 +1,7 @@
 import "phaser";
 import { collectibleCards, tokenCards, Card } from "./catalog/catalog";
 import { CardImage, addCardInfoToScene } from "./cardImage"
-import { buttonStyle, space } from "./settings"
+import { buttonStyle, filterButtonStyle, space } from "./settings"
 
 
 // Load this from a json shared with python repo
@@ -11,18 +11,20 @@ var cardInfo: Phaser.GameObjects.Text
 
 
 export class BuilderScene extends Phaser.Scene {
-  catalogRegion;
-  deckRegion;
+  catalogRegion
+  deckRegion
+  filterRegion
 
   constructor() {
     super({
       key: "BuilderScene"
-    });
+    })
   }
   
   init(): void {
-    this.deckRegion = new DeckRegion(this);
-    this.catalogRegion = new CatalogRegion(this, this.deckRegion);
+    this.deckRegion = new DeckRegion(this)
+    this.catalogRegion = new CatalogRegion(this, this.deckRegion)
+    this.filterRegion = new FilterRegion(this, this.catalogRegion)
 
     // let style = {
     //   font: '36px Arial Bold',
@@ -47,14 +49,9 @@ export class BuilderScene extends Phaser.Scene {
   }
   
   create(): void {
-    this.catalogRegion.create();
-    this.deckRegion.create();
-
-    // // Add keyboard commands
-    // this.input.keyboard.on('keydown-TAB', function (event) {
-    //   console.log(this.deckRegion);
-    //   // this.deckRegion.sort();
-    // });
+    this.catalogRegion.create()
+    this.deckRegion.create()
+    this.filterRegion.create()
   }
 }
 
@@ -62,7 +59,8 @@ export class BuilderScene extends Phaser.Scene {
 class CatalogRegion {
   scene: Phaser.Scene;
   container: Phaser.GameObjects.Container;
-  deckRegion;
+  deckRegion
+  cardImages: CardImage[] = []
 
   constructor(scene: Phaser.Scene, deckRegion) {
     this.init(scene, deckRegion);
@@ -78,6 +76,12 @@ class CatalogRegion {
     for (var i = catalog.length - 1; i >= 0; i--) {
       this.addCard(catalog[i], i);
     }
+  }
+
+  filter(filterFunction): void {
+    this.cardImages.forEach( (cardImage) => {
+      cardImage.image.setVisible(filterFunction(cardImage.card))
+    })
   }
 
   private onClick(card: Card): () => void {
@@ -98,8 +102,7 @@ class CatalogRegion {
 
     this.container.add(image);
 
-    // TODO Use this maybe
-    new CardImage(card, image);
+    this.cardImages.push(new CardImage(card, image))
   }
 
   private getCardPosition(index: number): [number, number] {
@@ -256,6 +259,93 @@ class DeckRegion {
 }
 
 
+class FilterRegion {
+  scene: Phaser.Scene
+  container: Phaser.GameObjects.Container
+  catalogRegion
+  filter: boolean[] = []
+
+  constructor(scene: Phaser.Scene, catalogRegion) {
+    this.init(scene, catalogRegion);
+  }
+
+  init(scene, catalogRegion): void {
+    this.scene = scene
+    this.container = this.scene.add.container(1000, 20)
+    this.catalogRegion = catalogRegion
+  }
+
+  create(): void {
+    // Add each of the number buttons
+    let btnNumbers: Phaser.GameObjects.Text[] = []
+    for (var i = 0; i <= 8; i++) {
+      this.filter[i] = false
+
+      let y = 50 * (i + 1)
+      let btn = this.scene.add.text(30, y, i.toString(), filterButtonStyle)
+      
+      btn.setInteractive()
+      btn.on('pointerdown', this.onClick(i, btn))
+
+      this.container.add(btn)
+
+      btnNumbers.push(btn)
+    }
+
+    // Add the X (Clear) button
+    let btnClear = this.scene.add.text(30, 0, 'x', filterButtonStyle)
+    btnClear.setInteractive()
+    btnClear.on('pointerdown', this.onClear(btnNumbers))
+    this.container.add(btnClear)
+  }
+
+  private onClick(i: number, btn): () => void {
+    let that = this
+
+    return function() {
+        // Highlight the button, or remove its Highlight
+        if (btn.isTinted) {
+          btn.clearTint()
+        }
+        else
+        {
+          btn.setTint(0xffff00, 0xffff00, 0xffff00, 0xffff00)
+        }
+
+        // Toggle filtering the chosen number
+        that.filter[i] = !that.filter[i]
+
+        // If nothing is filtered, all cards are shown
+        let filterFunction
+        if (that.filter.every(v => v === false)) {
+          filterFunction = function (card: Card) {return true}
+        }
+        else
+        {
+          filterFunction = function (card: Card) {
+            return that.filter[card.cost]
+          }
+        }
+
+        that.catalogRegion.filter(filterFunction)
+    }
+  }
+
+  private onClear(btns: Phaser.GameObjects.Text[]): () => void {
+    let that = this
+    return function() {
+      btns.forEach( (btn) => btn.clearTint())
+
+      for (var i = 0; i < that.filter.length; i++) {
+        that.filter[i] = false
+      }
+
+      that.catalogRegion.filter(
+        function (card: Card) {return true}
+      )
+    }
+  }
+}
 
 
 

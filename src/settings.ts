@@ -3,6 +3,10 @@ export const buttonStyle = {
       color: '#090'
 }
 
+export const filterButtonStyle = {
+  font: '38px Arial Bold'
+}
+
 export const textStyle = {
       font: '36px Arial',
       color: '#000'
