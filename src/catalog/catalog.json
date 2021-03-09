@@ -45,6 +45,10 @@
     "cost": 2, "points": 2,
     "text": "2:2, visible, if the next card costs 1, +1"
   },
+  {"name": "Crypt", "id": 119,
+    "cost": 2,
+    "text": "2:2, your last card in the story transforms into the first card in your discard pile with the same cost as it"
+  },
   {"name": "Gears", "id": 75,
     "cost": 2, "points": 0,
     "text": "2:0, build 2 (+2 to a robot in your hand, or make a 0:2 fleeting robot)"

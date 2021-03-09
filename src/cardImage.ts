@@ -13,7 +13,7 @@ let style = {
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add.text(0, 0, '', style)
-  cardInfo.alpha = 0.9
+  cardInfo.alpha = 0.8
   return cardInfo
 }
 
