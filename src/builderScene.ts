@@ -6,6 +6,8 @@ import { buttonStyle, filterButtonStyle, space } from "./settings"
 
 const catalog = collectibleCards
 
+const DECK_PARAM = 'deck'
+
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
 
@@ -181,6 +183,11 @@ class DeckRegion {
     this.updateStartButton()
     
     this.container.add(this.btnStart)
+
+    // If this page had params specifying the deck, make that deck
+    let urlParams = new URLSearchParams(window.location.search)
+    let deckCode = urlParams.get(DECK_PARAM)
+    if (deckCode) this.addStartingDeck(deckCode)
   }
 
   addCard(card: Card): void {
@@ -204,6 +211,12 @@ class DeckRegion {
     this.deck.push(new CardImage(card, image))
 
     this.updateStartButton()
+  }
+
+  private addStartingDeck(deckCode: string): void {
+    let cardCodes: string[] = deckCode.split(':')
+    
+    cardCodes.forEach( (cardCode) => this.addCard(catalog[+cardCode]))
   }
 
   private updateStartButton(): void {
