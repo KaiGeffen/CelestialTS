@@ -309,7 +309,7 @@ class FilterRegion {
         }
         else
         {
-          btn.setTint(0xffff00, 0xffff00, 0xffff00, 0xffff00)
+          btn.setTint(0xffaf00, 0xffaf00, 0xffaf00, 0xffaf00)
         }
 
         // Toggle filtering the chosen number

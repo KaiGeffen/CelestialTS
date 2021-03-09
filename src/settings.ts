@@ -4,7 +4,7 @@ export const buttonStyle = {
 }
 
 export const filterButtonStyle = {
-  font: '38px Arial Bold'
+  font: '44px Arial Bold'
 }
 
 export const textStyle = {
