@@ -79,8 +79,34 @@ class CatalogRegion {
   }
 
   filter(filterFunction): void {
-    this.cardImages.forEach( (cardImage) => {
-      cardImage.image.setVisible(filterFunction(cardImage.card))
+    let cardsRemoved = false
+    let visibleIndex = 0
+
+    for (var i = this.cardImages.length - 1; i >= 0; i--) {
+      let cardImage = this.cardImages[i]
+      
+      // This card is present
+      if (filterFunction(cardImage.card)) {
+        cardImage.image.setVisible(true)
+
+        // If cards are being removed, shift into position, otherwise snap
+        let newPosition = this.getCardPosition(visibleIndex)
+        if (cardsRemoved) {
+          // TODO move over time (moveTo)
+          cardImage.image.setPosition(...newPosition)
+        } else {
+          cardImage.image.setPosition(...newPosition)
+        }
+
+        visibleIndex++
+      }
+      else
+      {
+        // If it was visible but now isn't, this filter is removing more cards
+        if (cardImage.image.visible) cardsRemoved = true
+
+        cardImage.image.setVisible(false)
+      }
     })
   }
 
