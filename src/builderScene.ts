@@ -2,6 +2,7 @@ import "phaser";
 import { collectibleCards, tokenCards, Card } from "./catalog/catalog";
 import { CardImage, addCardInfoToScene } from "./cardImage"
 import { buttonStyle, filterButtonStyle, space } from "./settings"
+import { decodeCard, encodeCard } from "./catalog/codec"
 
 
 const catalog = collectibleCards
@@ -161,7 +162,7 @@ class DeckRegion {
 
   create(): void {
     // Sort button 
-    let btnSort = this.scene.add.text(0, -125, 'Sort', buttonStyle)
+    let btnSort = this.scene.add.text(0, -100, 'Sort', buttonStyle)
     btnSort.setInteractive()
 
     let that = this
@@ -172,7 +173,7 @@ class DeckRegion {
     this.container.add(btnSort)
 
     // Start button
-    this.btnStart = this.scene.add.text(0, -75, '', buttonStyle)
+    this.btnStart = this.scene.add.text(0, -50, '', buttonStyle)
 
     this.btnStart.setInteractive()
     this.btnStart.on('pointerdown', function (event) {
@@ -183,6 +184,22 @@ class DeckRegion {
     this.updateStartButton()
     
     this.container.add(this.btnStart)
+
+    // Save button
+    let btnCopy = this.scene.add.text(0, -150, 'Copy', buttonStyle)
+
+    btnCopy.setInteractive()
+    // Copy to clipboard this url with the param describing player's current deck
+    btnCopy.on('pointerdown', function (event) {
+      let text = window.location.href.split('?')[0]
+      text += `?${DECK_PARAM}=`
+
+      that.deck.forEach( (cardImage) => text += `${encodeCard(cardImage.card)}:`)
+      text = text.slice(0, -1)
+
+      navigator.clipboard.writeText(text)
+    })
+    this.container.add(btnCopy)
 
     // If this page had params specifying the deck, make that deck
     let urlParams = new URLSearchParams(window.location.search)
@@ -215,8 +232,8 @@ class DeckRegion {
 
   private addStartingDeck(deckCode: string): void {
     let cardCodes: string[] = deckCode.split(':')
-    
-    cardCodes.forEach( (cardCode) => this.addCard(catalog[+cardCode]))
+
+    cardCodes.forEach( (cardCode) => this.addCard(decodeCard(cardCode)))
   }
 
   private updateStartButton(): void {
@@ -307,7 +324,7 @@ class FilterRegion {
   init(scene, catalogRegion): void {
     this.scene = scene
     this.catalogRegion = catalogRegion
-    this.container = this.scene.add.container(1000, 20)
+    this.container = this.scene.add.container(1000, 0)
   }
 
   create(): void {
