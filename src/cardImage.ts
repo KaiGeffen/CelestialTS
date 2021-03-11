@@ -1,5 +1,6 @@
 import "phaser"
 import { Card } from "./catalog/catalog"
+import { decodeCard } from "./catalog/codec"
 
 
 var cardInfo: Phaser.GameObjects.Text;
@@ -13,7 +14,7 @@ let style = {
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add.text(0, 0, '', style)
-  cardInfo.alpha = 0.8
+  cardInfo.alpha = 0.88
   return cardInfo
 }
 
@@ -38,17 +39,53 @@ export class CardImage {
     this.image.destroy();
   }
 
+  private getCardText(card): string {
+    // Set the hover text
+    let result = card.name + '\n'
+
+    if (card.dynamicText !== undefined)
+    {
+      result += card.dynamicText
+    }
+    else
+    {
+      result += card.text
+    }
+
+    // Find each id refence and add the refenced card's text at the end
+    // let expr = RegExp("\${(\d+)}", "g")
+    let expr = /\${(\d+)}/
+    
+    // Replace all id references with the name of the card they reference
+    let cards: Card[] = []
+    function replaceName(match: string, p1: string, ...args): string
+    {
+      let referencedCard = decodeCard(p1)
+
+      // Add to a list of refenced cards
+      if (!cards.includes(referencedCard)) {
+        cards.push(referencedCard)
+      }
+
+      return `${referencedCard.name} (${referencedCard.text})`
+    }
+    result = result.replace(expr, replaceName)
+
+    // For each refenced card, add that card's text to the end of result
+    // cards.forEach( (referencedCard) => {
+    //   let cardText = referencedCard.text
+    //   // let cardText = this.getCardText(referencedCard)
+    //   result += `\n\n(${cardText})`
+    // })
+
+    return result
+  }
+
   private onHover(): () => void {
     return function() {
       this.image.setTint(0xffff00)
 
-      // Set the hover text
-      cardInfo.text = this.card.name + '\n'
-      if (this.card.dynamicText !== undefined) {
-        cardInfo.text += this.card.dynamicText
-      } else {
-        cardInfo.text += this.card.text
-      }
+      cardInfo.text = this.getCardText(this.card)
 
       // Copy the position of the card in its local space
       let container = this.image.parentContainer;

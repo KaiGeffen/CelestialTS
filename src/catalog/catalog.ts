@@ -10,5 +10,5 @@ export interface Card {
   name: string;
   id: number;
   cost: number;
-  // text: string;
+  text: string;
 }

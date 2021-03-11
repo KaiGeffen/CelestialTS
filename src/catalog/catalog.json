@@ -1,11 +1,11 @@
 [
   {"name": "Stars", "id": 39,
     "cost": 0, "points": 0,
-    "text": "0:0, inspire (Next turn gain 1 temporary mana)"
+    "text": "0:0, inspire 1 (Next turn, gain 1 temporary mana)"
   },
   {"name": "Bone Knife", "id": 50,
     "cost": 0, "points": 0,
-    "text": "0:0, opponent discards 1"
+    "text": "0:0, your opponent discards 1 card"
   },
   {"name": "Cog", "id": 73,
     "cost": 0, "points": 0,
@@ -14,11 +14,11 @@
 
   {"name": "Crossed Bones", "id": 0,
     "cost": 1, "points": 2,
-    "text": "1:2, becomes 2x 1:0 fleeting broken bones after resolving"
+    "text": "1:2, fleeting, put 2 copies of ${144} in your discard pile"
   },
   {"name": "Spy", "id": 1,
     "cost": 1, "points": 2,
-    "text": "1:0, create a 2:0 camera in opponent's hand which gives you sight 4 each upkeep"
+    "text": "1:0, create a ${143} in your opponent's hand"
   },
   {"name": "Mute", "id": 51,
     "cost": 1, "points": 1,
@@ -30,7 +30,7 @@
   },
   {"name": "Drown", "id": 94,
     "cost": 1, "points": 1,
-    "text": "1:1, mill yourself 3 (Discard the top 3 cards of your deck)"
+    "text": "1:1, discard the top 3 cards of your deck"
   },
 
   {"name": "Sine", "id": 3,
@@ -85,11 +85,11 @@
 
   {"name": "Hurricane", "id": 7,
     "cost": 4, "points": 2,
-    "text": "4:0, reset"
+    "text": "4:0, set both players points to 0"
   },
   {"name": "Dinosaur Bones", "id": 86,
     "cost": 4,
-    "text": "4:5, becomes 3x 1:0 fleeting broken bones after resolving"
+    "text": "4:5, fleeting, put 3 copies of ${144} in your discard pile"
   },
   {"name": "Mine", "id": 85,
     "cost": 4,
