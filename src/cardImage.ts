@@ -19,8 +19,9 @@ export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text
 }
 
 export class CardImage {
-  card: Card;
-  image: Phaser.GameObjects.Image;
+  card: Card
+  image: Phaser.GameObjects.Image
+  unplayable: boolean = false
 
   constructor(card: Card, image: Phaser.GameObjects.Image) {
     this.init(card, image);
@@ -37,6 +38,12 @@ export class CardImage {
 
   destroy(): void {
     this.image.destroy();
+  }
+
+  // Set this card image to be unplayable
+  setUnplayable(): void {
+    this.image.setTint(0x888888)
+    this.unplayable = true
   }
 
   private getCardText(card): string {
@@ -83,7 +90,7 @@ export class CardImage {
 
   private onHover(): () => void {
     return function() {
-      this.image.setTint(0xffff00)
+      if (!this.unplayable) this.image.setTint(0xffff00)
 
       cardInfo.text = this.getCardText(this.card)
 
@@ -117,9 +124,9 @@ export class CardImage {
 
   private onHoverExit(): () => void {
     return function() {
-      this.image.clearTint();
+      if (!this.unplayable) this.image.clearTint()
 
-      cardInfo.text = '';
+      cardInfo.text = ''
     }
   }
 }

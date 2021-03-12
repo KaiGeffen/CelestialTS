@@ -150,6 +150,8 @@ export class GameScene extends Phaser.Scene {
 	    this.txtOpponentPass = this.add.text(space.pad, 650 - 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    
 	    // Alternate views presented when hovering over/clicking any stacks
+	    // TODO hit area
+
 	    this.txtDeckSize = this.add.text(
 	    	space.cardSize/2,
 	    	650 - space.pad - space.cardSize/2,
@@ -209,7 +211,8 @@ export class GameScene extends Phaser.Scene {
 
 		// Hands
 		for (var i = state.hand.length - 1; i >= 0; i--) {
-			this.addCard(state.hand[i], i, this.handContainer)
+			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
+			if (cardImage.card.cost > state.mana) cardImage.setUnplayable()
 		}
 		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
 			this.addCard(cardback, i, this.opponentHandContainer)
@@ -310,20 +313,20 @@ export class GameScene extends Phaser.Scene {
 	private addCard(card: Card,
 					index: number,
 					container: Phaser.GameObjects.Container,
-					owner: number = 0): void {
+					owner: number = 0): CardImage {
 		let image: Phaser.GameObjects.Image
 		let [x, y] = this.getCardPosition(index, container, owner)
 
 		image = this.add.image(x, y, card.name)
 		image.setDisplaySize(100, 100)
 
-		// TODO Remove this line
-		image.setInteractive()
 		image.on('pointerdown', this.clickCard(index), this)
 
 		container.add(image)
 
-		this.temporaryObjs.push(new CardImage(card, image))
+		let cardImage = new CardImage(card, image)
+		this.temporaryObjs.push(cardImage)
+		return cardImage
 	}
 
 	private getCardPosition(index: number, container, owner: number): [number, number] {
