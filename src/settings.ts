@@ -14,7 +14,8 @@ export const textStyle = {
 
 export const smallTextStyle = {
       font: '14px Arial',
-      color: '#000'
+      color: '#000',
+      wordWrap: { width: 70, useAdvancedWrap: true }
 }
 
 export const stylePassed = {
