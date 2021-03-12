@@ -46,6 +46,11 @@ export class Network {
 				case 'transmit_state':
 					scene.displayState(new ClientState(msg.value))
 					break
+
+				// Signal to the user that they chose an illegal action
+				case 'signal_error':
+					scene.signalError()
+					break
 			}
 		})
 	}

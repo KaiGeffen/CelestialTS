@@ -302,6 +302,11 @@ export class GameScene extends Phaser.Scene {
 
 	}
 
+	// Alert the user that they have taken an illegal or impossible action
+	signalError(): void {
+		this.cameras.main.flash(300, 0, 0, 0.1)
+	}
+
 	private addCard(card: Card,
 					index: number,
 					container: Phaser.GameObjects.Container,
