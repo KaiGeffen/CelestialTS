@@ -206,6 +206,9 @@ export class GameScene extends Phaser.Scene {
 		this.temporaryObjs.forEach(obj => obj.destroy())
 		this.temporaryObjs = []
 
+		// TODO Remove or have a setting for Autopass
+		if (state.hand.length === 0 && state.priority === 0) this.net.passTurn()
+
 		// Mulligan
 		this.txtOpponentMulligan.setVisible(!state.mulligansComplete[1])
 
