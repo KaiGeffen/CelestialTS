@@ -138,10 +138,10 @@ export class GameScene extends Phaser.Scene {
 	    	'', textStyle).setOrigin(1.0, 0.5)
 
 	    // Status text
-	    this.txtStatus = this.add.text(0,
+	    this.txtStatus = this.add.text(space.pad,
 	    	650 - space.cardSize - space.pad * 2,
 	    	'', textStyle).setOrigin(0, 1)
-	    this.txtOpponentStatus = this.add.text(0,
+	    this.txtOpponentStatus = this.add.text(space.pad,
 	    	space.cardSize + space.pad * 2,
 	    	'', textStyle).setOrigin(0, 0)
 
