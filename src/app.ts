@@ -9,6 +9,9 @@ const config: Phaser.Types.Core.GameConfig = {
   height: 650,
   parent: "game",
   scene: [WelcomeScene, GameScene, BuilderScene],
+  scale: {
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   physics: {
     default: "arcade",
     arcade: {
