@@ -146,8 +146,8 @@ export class GameScene extends Phaser.Scene {
 	    	'', textStyle).setOrigin(0, 0)
 
 	    // TODO these are backwards
-	    this.txtPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
-	    this.txtOpponentPass = this.add.text(space.pad, 650 - 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
+	    this.txtPass = this.add.text(space.pad, 650 - 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
+	    this.txtOpponentPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    
 	    // Alternate views presented when hovering over/clicking any stacks
 	    // TODO hit area
@@ -299,11 +299,11 @@ export class GameScene extends Phaser.Scene {
 			this.txtPass.setVisible(false)
 			this.txtOpponentPass.setVisible(false)
 		} else if (state.priority === 0) {
-			this.txtPass.setVisible(true)
-			this.txtOpponentPass.setVisible(false)
-		} else {
 			this.txtPass.setVisible(false)
 			this.txtOpponentPass.setVisible(true)
+		} else {
+			this.txtPass.setVisible(true)
+			this.txtOpponentPass.setVisible(false)
 		}
 
 	}
