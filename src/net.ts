@@ -40,6 +40,10 @@ export class Network {
 				case 'both_players_connected':
 					if (msg.value) {
 						socket.send(initMessage)
+						scene.displaySearchingStatus(false)
+					}
+					else {
+						scene.displaySearchingStatus(true)
 					}
 					break
 

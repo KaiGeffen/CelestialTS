@@ -19,6 +19,9 @@ export class GameScene extends Phaser.Scene {
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
 
+	searchingBackground: Phaser.GameObjects.Rectangle
+	txtSearching: Phaser.GameObjects.Text
+
 	mulligansComplete = false
 	mulliganHighlights: Phaser.GameObjects.Rectangle[] = []
 	txtOpponentMulligan: Phaser.GameObjects.Text
@@ -80,10 +83,9 @@ export class GameScene extends Phaser.Scene {
 
 		this.input.on('pointerdown', this.clickAnywhere(), this)
 
-		// If this page had params specifying the deck, make that deck
+		// If this page had params specifying any options, set those options
 	    let urlParams = new URLSearchParams(window.location.search)
 	    this.autoRecap = (urlParams.get(AUTO_RECAP_PARAM) === 'true')
-	    
 	}
 
 	create(): void {
@@ -205,6 +207,21 @@ export class GameScene extends Phaser.Scene {
 	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer), this)
 	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer), this)
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
+	}
+
+	// Display searching for opponent if still looking, else remove that text
+	displaySearchingStatus(searching: boolean): void {
+		if (searching) {
+			let style = {
+	      		font: '70px Arial',
+	      		color: '#f71'
+			}
+			this.searchingBackground = this.add.rectangle(0, 0, 1100, 650, 0x202070).setOrigin(0, 0)
+			this.txtSearching = this.add.text(1100/2, 650/2, 'Searching for an opponent...', style).setOrigin(0.5, 0.5)
+		} else {
+			this.searchingBackground.destroy()
+			this.txtSearching.destroy()
+		}
 	}
 
 	// Display the given game state
