@@ -79,11 +79,8 @@ function decodeStatuses(s: string): string {
 }
 
 function decodeRecap(s: string): Recap {
-	console.log('decoding recap ', s)
 	let sections = s.split(delims[0])
-	console.log('sections are ', sections)
 	let sums = sections[0].split(delims[1]).map(parseFloat)
-	console.log(sums)
 	let wins = sections[1].split(delims[1]).map(parseFloat)
 	let safety = sections[2].split(delims[1]).map(parseFloat)
 
@@ -92,7 +89,6 @@ function decodeRecap(s: string): Recap {
 	}
 
 	let plays = sections.slice(3)
-	console.log('plays is ', plays)
 
 	function decodePlay(play: string): [Card, number, string] {
 		let l = play.split(delims[1])
@@ -105,7 +101,6 @@ function decodeRecap(s: string): Recap {
 	}
 
 	let playList = plays.map(decodePlay)
-	console.log('playlist is ', playList)
 
 	return new Recap(sums, wins, safety, playList)
 }

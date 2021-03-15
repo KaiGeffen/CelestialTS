@@ -8,6 +8,8 @@ import { buttonStyle, textStyle, smallTextStyle, stylePassed, styleSizes, space 
 import Recap from './recap'
 
 
+const AUTO_RECAP_PARAM = 'ar'
+
 var cardInfo: Phaser.GameObjects.Text
 
 var storyHiddenLock: boolean = false
@@ -49,6 +51,9 @@ export class GameScene extends Phaser.Scene {
 	txtDiscardSize: Phaser.GameObjects.Text
 	txtOpponentDiscardSize: Phaser.GameObjects.Text
 
+	// Option to show the recap after a round ends
+	autoRecap: boolean
+
 	constructor() {
 		super({
 			key: "GameScene"
@@ -74,6 +79,11 @@ export class GameScene extends Phaser.Scene {
 		this.priorityRectangle.setOrigin(0, 0)
 
 		this.input.on('pointerdown', this.clickAnywhere(), this)
+
+		// If this page had params specifying the deck, make that deck
+	    let urlParams = new URLSearchParams(window.location.search)
+	    this.autoRecap = (urlParams.get(AUTO_RECAP_PARAM) === 'true')
+	    
 	}
 
 	create(): void {
@@ -145,7 +155,6 @@ export class GameScene extends Phaser.Scene {
 	    	space.cardSize + space.pad * 2,
 	    	'', textStyle).setOrigin(0, 0)
 
-	    // TODO these are backwards
 	    this.txtPass = this.add.text(space.pad, 650 - 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    this.txtOpponentPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    
@@ -206,8 +215,8 @@ export class GameScene extends Phaser.Scene {
 		this.temporaryObjs.forEach(obj => obj.destroy())
 		this.temporaryObjs = []
 
-		// TODO Remove or have a setting for Autopass
-		if (state.hand.length === 0 && state.priority === 0) this.net.passTurn()
+		// Autopass - TODO Remove or have a setting for Autopass
+		if (state.hand.length === 0 && state.priority === 0) this.net.passTurn();
 
 		// Mulligan
 		this.txtOpponentMulligan.setVisible(!state.mulligansComplete[1])
@@ -306,6 +315,13 @@ export class GameScene extends Phaser.Scene {
 			this.txtOpponentPass.setVisible(false)
 		}
 
+
+		// If the round just started, show the recap
+		if (this.autoRecap &&
+			state.story.acts.length === 0 && state.passes === 0 && state.maxMana[0] > 1) {
+			this.hoverAlternateView(this.recapContainer)()
+			this.clickAlternateView()()
+		}
 	}
 
 	// Alert the user that they have taken an illegal or impossible action

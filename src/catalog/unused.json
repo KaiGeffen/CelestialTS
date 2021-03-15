@@ -1,4 +1,9 @@
 [
+  
+  {"name": "Mute", "id": 51,
+    "cost": 1, "points": 1,
+    "text": "1:1, restrict 1 (Your opponent can't play their leftmost unrestricted card next turn)"
+  },
   {"name": "Raise Dead", "id": 95,
     "cost": 2,
     "text": "2:2, put the top card of your discard pile on top of your deck"
@@ -19,4 +24,8 @@
     "cost": 4, "points": 2,
     "text": "4:0, modal:\n0: +1, later cards this round are worth -2\n\n1-2: Reset\n3+: +4"
   },
+  {"name": "Nightmare", "id": 8,
+    "cost": 8, "points": 2,
+    "text": "8:6, opponent discards 2"
+  }
 ]
