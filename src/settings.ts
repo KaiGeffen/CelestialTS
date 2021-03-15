@@ -25,7 +25,9 @@ export const stylePassed = {
 
 export const styleSizes = {
       font: '100px Arial',
-      color: '#e9b'
+      color: '#e9b',
+      fixedWidth: 100,
+      align: 'center'
 }
 
 export const space = {

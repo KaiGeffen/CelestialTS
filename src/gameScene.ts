@@ -161,8 +161,6 @@ export class GameScene extends Phaser.Scene {
 	    this.txtOpponentPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    
 	    // Alternate views presented when hovering over/clicking any stacks
-	    // TODO hit area
-
 	    this.txtDeckSize = this.add.text(
 	    	space.cardSize/2,
 	    	650 - space.pad - space.cardSize/2,
