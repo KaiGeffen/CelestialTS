@@ -21,6 +21,7 @@ export default class ClientState {
 	recap: Recap
 	mulligansComplete: boolean[]
 	// versionNumber: number
+	cardsPlayable: boolean[]
 
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
@@ -39,5 +40,6 @@ export default class ClientState {
 		this.recap = decodeRecap(state.recap)
 		this.mulligansComplete = state.mulligans_complete
 		// this.version_number
+		this.cardsPlayable = state.cards_playable
 	}
 }
