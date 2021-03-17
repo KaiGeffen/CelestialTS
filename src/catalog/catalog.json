@@ -130,5 +130,9 @@
   {"name": "Oak", "id": 49,
     "cost": 8,
     "text": "8:8, if you win this round, convert to nourish any excess points that you won by.\n(For example, if you win 8 to 5 you get 2 points nourish)"
+  },
+  {"name": "Enrage", "id": 6,
+    "cost": 8,
+    "text": "8:1, give each card later in the story -X, where X is its cost.\nWhen played, give each card ealier in the story -X."
   }
 ]
