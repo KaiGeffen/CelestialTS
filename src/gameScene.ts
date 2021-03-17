@@ -93,8 +93,6 @@ export class GameScene extends Phaser.Scene {
 		let midline = this.add.rectangle(0, 650/2, 1100, 20, 0xff0000, 0.4).setOrigin(0, 0.5)
 		this.children.sendToBack(midline)
 
-		cardInfo = addCardInfoToScene(this)
-
 		// Mulligan highlights and button
 		for (var i = 0; i < 3; i++) {
 			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
@@ -205,6 +203,9 @@ export class GameScene extends Phaser.Scene {
 	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer), this)
 	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer), this)
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
+
+	    // Add card info here so that it's on top of other GameObjects
+	    cardInfo = addCardInfoToScene(this)
 	}
 
 	// Display searching for opponent if still looking, else remove that text
