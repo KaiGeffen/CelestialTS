@@ -34,6 +34,7 @@ export class GameScene extends Phaser.Scene {
 	storyContainer: Phaser.GameObjects.Container
 	stackContainer: Phaser.GameObjects.Container
 	recapContainer: Phaser.GameObjects.Container
+	passContainer: Phaser.GameObjects.Container
 
 	priorityRectangle: Phaser.GameObjects.Rectangle
 	manaText: Phaser.GameObjects.Text
@@ -76,6 +77,7 @@ export class GameScene extends Phaser.Scene {
 		this.recapContainer = this.add.container(0, 650/2 - 80).setVisible(false)
 		this.storyContainer = this.add.container(0, 650/2 - 80)
 		this.stackContainer = this.add.container(800, 0)
+		this.passContainer = this.add.container(1100 - space.pad, 650/2 - 40).setVisible(false)
 
 		let height = space.cardSize + 2 * space.pad
 		this.priorityRectangle = this.add.rectangle(0, -500, 1100, height, 0xffffff, 0.1)
@@ -125,7 +127,8 @@ export class GameScene extends Phaser.Scene {
 		})
 
 		// Pass button
-    	let btnPass = this.add.text(1100 - space.pad, 650/2 + 40, 'Pass', buttonStyle).setOrigin(1, 0.5)
+    	let btnPass = this.add.text(0, 80, 'Pass', buttonStyle).setOrigin(1, 0.5)
+    	this.passContainer.add(btnPass)
     	btnPass.setInteractive()
 
 	    btnPass.on('pointerdown', function (event) {
@@ -198,7 +201,8 @@ export class GameScene extends Phaser.Scene {
 	    	0, space.cardSize/2 + space.stackOffset, '', stylePassed).setOrigin(0, 0.5)
 	    this.recapContainer.add(this.txtRecapTotals)
 
-	    let btnRecap = this.add.text(1100 - space.pad, 650/2 - 40, 'Recap', buttonStyle).setOrigin(1, 0.5)
+	    let btnRecap = this.add.text(0, 0, 'Recap', buttonStyle).setOrigin(1, 0.5)
+	    this.passContainer.add(btnRecap)
 	    btnRecap.setInteractive()
 	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer), this)
 	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer), this)
@@ -238,6 +242,7 @@ export class GameScene extends Phaser.Scene {
 
 		// Mulligan
 		this.txtOpponentMulligan.setVisible(!state.mulligansComplete[1])
+		this.passContainer.setVisible(!state.mulligansComplete.includes(false))
 
 		// Hands
 		for (var i = state.hand.length - 1; i >= 0; i--) {
@@ -332,7 +337,6 @@ export class GameScene extends Phaser.Scene {
 			this.txtPass.setVisible(true)
 			this.txtOpponentPass.setVisible(false)
 		}
-
 
 		// If the round just started, show the recap
 		if (this.autoRecap &&
