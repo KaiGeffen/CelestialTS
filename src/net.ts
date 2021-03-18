@@ -3,13 +3,14 @@
 import { encodeDeck } from "./catalog/codec"
 import ClientState from "./clientState"
 
+
 const messageHeaders = {
 	init: 'Init'
 }
 
 const bufSize = 4096 * 2
 
-const ip = process.env.WS
+const ip = '10.244.30.242'
 //'10.244.10.228'//'216.193.175.49'
 //'127.0.0.1'//'192.168.1.154' //'server-6d66b4ccc9-xc989'
 const port = 5555
