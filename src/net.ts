@@ -42,7 +42,16 @@ export class Network {
 
 		// Listen for messages
 		socket.addEventListener('message', function (event) {
-			let msg = JSON.parse(event.data)
+			console.log('event is ' + event)
+
+			let msg
+			try {
+				msg = JSON.parse(event.data)
+			} catch (e) {
+				console.log('Not valid json.')
+				return
+			}
+
 			switch (msg.type) {
 				case 'both_players_connected':
 					if (msg.value) {
