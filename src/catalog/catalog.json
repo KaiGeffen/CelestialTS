@@ -1,7 +1,7 @@
 [
   {"name": "Stars", "id": 39,
     "cost": 0, "points": 0,
-    "text": "0:0, inspire 1 (Next round you have 1 extra temporary mana)"
+    "text": "0:0, inspire 1 (Next round you have 1 extra mana)"
   },
   {"name": "Bone Knife", "id": 50,
     "cost": 0, "points": 0,
@@ -9,7 +9,7 @@
   },
   {"name": "Cog", "id": 73,
     "cost": 0, "points": 0,
-    "text": "0:0, build 1 (+1 to a robot in your hand, or make a 0:1 fleeting robot)"
+    "text": "0:0, build 1 (If you have a robot in hand, give it +1. Otherwise, create a 0:1 fleeting robot in hand)"
   },
 
   {"name": "Crossed Bones", "id": 0,
@@ -22,7 +22,7 @@
   },
   {"name": "Juggle", "id": 136,
     "cost": 1, "points": 1,
-    "text": "1:1. When played, put up to 3 cards from your hand on the bottom of your deck, then draw that many"
+    "text": "1:1. When played, put up to 3 cards from your hand on the bottom of your deck, then draw that many. (Your leftmost card will be the closest to the top of the deck)"
   },
   {"name": "Drown", "id": 94,
     "cost": 1, "points": 1,
@@ -35,11 +35,11 @@
 
   {"name": "Sine", "id": 3,
     "cost": 2, "points": 2,
-    "text": "2:4, starve 4 (Your next card gives -4 points)"
+    "text": "2:4, starve 4 (The next time you resolve a card, it is worth -4 points)"
   },
   {"name": "Dash", "id": 10,
     "cost": 2,
-    "text": "2:3, flare (Worth 1 less for every card in the story before this one)"
+    "text": "2:3, flare (This card is worth 1 less for every card in the story before it)"
   },
   {"name": "Swift", "id": 2,
     "cost": 2, "points": 2,
@@ -51,7 +51,7 @@
   },
   {"name": "Gears", "id": 75,
     "cost": 2, "points": 0,
-    "text": "2:0, build 2 (+2 to a robot in your hand, or make a 0:2 fleeting robot)"
+    "text": "2:0, build 2 (If you have a robot in hand, give it +2. Otherwise, create a 0:2 fleeting robot in hand)"
   },
   {"name": "Cosmos", "id": 40,
     "cost": 2,
@@ -94,7 +94,7 @@
 
   {"name": "Force", "id": 16,
     "cost": 5,
-    "text": "5:6, flare (Worth 1 less for every card in the story before this one)"
+    "text": "5:6, flare (This card is worth 1 less for every card in the story before it)"
   },
   {"name": "Tumulus", "id": 99,
     "cost": 5,
@@ -107,7 +107,7 @@
   },
   {"name": "Stalker", "id": 55,
     "cost": 6,
-    "text": "X:4, where X is the number of cards in your opponent's hand"
+    "text": "X:4, where X is the number of cards in your opponent's hand.\n(This card's base cost is 6)"
   },
   {"name": "Sarcophagus", "id": 100,
     "cost": 6,
@@ -125,7 +125,7 @@
 
   {"name": "AI", "id": 79,
     "cost": 8,
-    "text": "8:4, draw 1. Costs X less where X is the total robot points in hand"
+    "text": "8:4, draw 1. Costs X less where X is the total point value of all robots in your hand"
   },
   {"name": "Oak", "id": 49,
     "cost": 8,

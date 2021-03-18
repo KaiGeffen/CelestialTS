@@ -9,7 +9,8 @@ const messageHeaders = {
 
 const bufSize = 4096 * 2
 
-const ip = '216.193.175.49'//'127.0.0.1'//'192.168.1.154'
+const ip = 'server'
+// '216.193.175.49'//'127.0.0.1'//'192.168.1.154'
 const port = 5555
 
 
