@@ -87,7 +87,7 @@ export class GameScene extends Phaser.Scene {
 
 		// If this page had params specifying any options, set those options
 	    let urlParams = new URLSearchParams(window.location.search)
-	    this.autoRecap = (urlParams.get(AUTO_RECAP_PARAM) === 'true')
+	    this.autoRecap = (urlParams.has('ar'))
 	}
 
 	create(): void {
