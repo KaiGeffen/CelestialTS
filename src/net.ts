@@ -30,7 +30,7 @@ export class Network {
 		// Create WebSocket connection.
 		// let socket = new WebSocket(`ws://${ip}:${port}`, 'echo-protocol')
 		let loc = window.location
-		let fullPath = `ws://${loc.host}${loc.pathname}/ws`
+		let fullPath = `ws://${loc.host}${loc.pathname}ws`
 		let socket = new WebSocket(fullPath)
 
 		this.socket = socket
