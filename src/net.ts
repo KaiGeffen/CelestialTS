@@ -10,7 +10,7 @@ const messageHeaders = {
 
 const bufSize = 4096 * 2
 
-const ip = 'server'//'10.244.30.242'
+const ip = '127.0.0.1' //'10.244.30.242'
 //'10.244.10.228'//'216.193.175.49'
 //'127.0.0.1'//'192.168.1.154' //'server-6d66b4ccc9-xc989'
 const port = 5555
@@ -27,11 +27,17 @@ export class Network {
 			value: encodedDeck
 		})
 
-		// Create WebSocket connection.
-		// let socket = new WebSocket(`ws://${ip}:${port}`, 'echo-protocol')
-		let loc = window.location
-		let fullPath = `ws://${loc.host}${loc.pathname}ws`
-		let socket = new WebSocket(fullPath)
+
+		// Establish a websocket based on the environment (Dev runs on 4949)
+		let socket
+		if (location.port === '4949') {
+			socket = new WebSocket(`ws://${ip}:${port}`, 'echo-protocol')
+		} else {
+			// The WS location on DO
+			let loc = window.location
+			let fullPath = `ws://${loc.host}${loc.pathname}ws`
+			socket = new WebSocket(fullPath)
+		}
 
 		this.socket = socket
 
