@@ -42,7 +42,7 @@ export class Network {
 
 		// Listen for messages
 		socket.addEventListener('message', function (event) {
-			console.log('event is ' + event)
+			console.log('event data is ' + event.data)
 
 			let msg
 			try {
