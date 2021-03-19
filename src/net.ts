@@ -15,6 +15,8 @@ const ip = '127.0.0.1' //'10.244.30.242'
 //'127.0.0.1'//'192.168.1.154' //'server-6d66b4ccc9-xc989'
 const port = 5555
 
+const MATCH_MAKING_PARAM = 'mm'
+
 
 export class Network {
 	socket: WebSocket
@@ -27,15 +29,20 @@ export class Network {
 			value: encodedDeck
 		})
 
+		// Get matchmaking key
+		let urlParams = new URLSearchParams(window.location.search)
+		let matchmakingKey = urlParams.get(MATCH_MAKING_PARAM)
+    	if (matchmakingKey === undefined) matchmakingKey = ''
+
 
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
 		if (location.port === '4949') {
-			socket = new WebSocket(`ws://${ip}:${port}`, 'echo-protocol')
+			socket = new WebSocket(`ws://${ip}:${port}/${matchmakingKey}`, 'echo-protocol')
 		} else {
 			// The WS location on DO
 			let loc = window.location
-			let fullPath = `ws://${loc.host}${loc.pathname}ws`
+			let fullPath = `ws://${loc.host}${loc.pathname}ws/${matchmakingKey}`
 			socket = new WebSocket(fullPath)
 		}
 
