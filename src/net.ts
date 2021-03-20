@@ -1,7 +1,7 @@
 // import { io } from "socket.io-client"
 // import * as dgram from "dgram"
-import { encodeDeck } from "./catalog/codec"
-import ClientState from "./clientState"
+import { encodeDeck } from "./lib/codec"
+import ClientState from "./lib/clientState"
 
 
 const messageHeaders = {

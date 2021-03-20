@@ -1,8 +1,8 @@
 import "phaser"
 import { collectibleCards, tokenCards, Card } from "../catalog/catalog"
-import { CardImage, addCardInfoToScene } from "../cardImage"
+import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 import { buttonStyle, filterButtonStyle, space } from "../settings"
-import { decodeCard, encodeCard } from "../catalog/codec"
+import { decodeCard, encodeCard } from "../lib/codec"
 
 
 const catalog = collectibleCards

@@ -1,11 +1,11 @@
 import "phaser";
-import { collectibleCards, Card, cardback } from "../catalog/catalog";
+import { collectibleCards, Card, cardback } from "../catalog/catalog"
 
 import { Network } from "../net"
-import ClientState from "../clientState"
-import { CardImage, addCardInfoToScene } from "../cardImage"
+import ClientState from "../lib/clientState"
+import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 import { buttonStyle, textStyle, smallTextStyle, stylePassed, styleSizes, space } from "../settings"
-import Recap from '../recap'
+import Recap from '../lib/recap'
 
 
 const AUTO_RECAP_PARAM = 'ar'
