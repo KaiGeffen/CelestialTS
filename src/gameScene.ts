@@ -105,7 +105,7 @@ export class GameScene extends Phaser.Scene {
   			this.mulliganHighlights.push(highlight)
 		}
 		
-		this.txtOpponentMulligan = this.add.text(space.pad, 200, 'Opponent mulliganing...', stylePassed).setOrigin(0, 0.5)
+		this.txtOpponentMulligan = this.add.text(space.pad, 200, 'Opponent is still mulliganing...', stylePassed).setOrigin(0, 0.5)
 
 		let btnMulligan = this.add.text(space.pad, 650 - 200, 'Mulligan', buttonStyle).setOrigin(0, 0.5)
 		btnMulligan.setInteractive()
