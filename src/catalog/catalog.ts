@@ -1,5 +1,6 @@
-import data from "./catalog.json";
+import data from "./catalog.json"
 import tokenData from "./tokens.json"
+
 
 export const collectibleCards: Card[] = data
 export const tokenCards: Card[] = tokenData

@@ -1,7 +1,8 @@
-import "phaser";
-import { WelcomeScene } from "./scene/welcomeScene";
-import { GameScene } from "./scene/gameScene";
+import "phaser"
+import { WelcomeScene } from "./scene/welcomeScene"
+import { GameScene } from "./scene/gameScene"
 import { BuilderScene } from "./scene/builderScene"
+
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Celestial",

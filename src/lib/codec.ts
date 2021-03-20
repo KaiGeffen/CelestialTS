@@ -2,6 +2,7 @@ import { Card, allCards } from "../catalog/catalog"
 import Story from './story'
 import Recap from './recap'
 
+
 const delims = ['¡', '™', '£']
 
 function encodeCard(card: Card): string {
