@@ -54,13 +54,11 @@ export class Network {
 
 		// Listen for messages
 		socket.addEventListener('message', function (event) {
-			console.log('event data is ' + event.data)
-
 			let msg
 			try {
 				msg = JSON.parse(event.data)
 			} catch (e) {
-				console.log('Not valid json.')
+				console.log('Not valid json: ' + event.data)
 				return
 			}
 

@@ -117,7 +117,6 @@ export class GameScene extends Phaser.Scene {
 				if (that.mulliganHighlights[i].visible) mulligans += '1'
 				else mulligans += '0'
 			}
-			console.log(mulligans)
 
 			that.net.doMulligan(mulligans)
 
