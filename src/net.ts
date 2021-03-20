@@ -34,7 +34,6 @@ export class Network {
 		let matchmakingKey = urlParams.get(MATCH_MAKING_PARAM)
     	if (matchmakingKey === undefined) matchmakingKey = ''
 
-
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
 		if (location.port === '4949') {

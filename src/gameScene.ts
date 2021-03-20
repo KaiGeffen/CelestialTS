@@ -54,6 +54,7 @@ export class GameScene extends Phaser.Scene {
 	txtOpponentDeckSize: Phaser.GameObjects.Text
 	txtDiscardSize: Phaser.GameObjects.Text
 	txtOpponentDiscardSize: Phaser.GameObjects.Text
+	btnRecap: Phaser.GameObjects.Text
 
 	// Option to show the recap after a round ends
 	autoRecap: boolean
@@ -167,8 +168,8 @@ export class GameScene extends Phaser.Scene {
 	    	650 - space.pad - space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtDeckSize.setInteractive()
-	    this.txtDeckSize.on('pointerover', this.hoverAlternateView(this.deckContainer), this)
-	    this.txtDeckSize.on('pointerout', this.hoverAlternateViewExit(this.deckContainer), this)
+	    this.txtDeckSize.on('pointerover', this.hoverAlternateView(this.deckContainer, this.txtDeckSize), this)
+	    this.txtDeckSize.on('pointerout', this.hoverAlternateViewExit(this.deckContainer, this.txtDeckSize), this)
 	    this.txtDeckSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    this.txtDiscardSize = this.add.text(
@@ -176,8 +177,8 @@ export class GameScene extends Phaser.Scene {
 	    	650 - space.pad - space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtDiscardSize.setInteractive()
-	    this.txtDiscardSize.on('pointerover', this.hoverAlternateView(this.discardContainer), this)
-	    this.txtDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.discardContainer), this)
+	    this.txtDiscardSize.on('pointerover', this.hoverAlternateView(this.discardContainer, this.txtDiscardSize), this)
+	    this.txtDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.discardContainer, this.txtDiscardSize), this)
 	    this.txtDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 
 	    this.txtOpponentDeckSize = this.add.text(
@@ -189,8 +190,8 @@ export class GameScene extends Phaser.Scene {
 	    	space.pad + space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtOpponentDiscardSize.setInteractive()
-	    this.txtOpponentDiscardSize.on('pointerover', this.hoverAlternateView(this.opponentDiscardContainer), this)
-	    this.txtOpponentDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.opponentDiscardContainer), this)
+	    this.txtOpponentDiscardSize.on('pointerover', this.hoverAlternateView(this.opponentDiscardContainer, this.txtOpponentDiscardSize), this)
+	    this.txtOpponentDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.opponentDiscardContainer, this.txtOpponentDiscardSize), this)
 	    this.txtOpponentDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    let stacks = [this.txtDeckSize, this.txtDiscardSize, this.txtOpponentDeckSize, this.txtOpponentDiscardSize]
@@ -204,9 +205,10 @@ export class GameScene extends Phaser.Scene {
 	    let btnRecap = this.add.text(0, 0, 'Recap', buttonStyle).setOrigin(1, 0.5)
 	    this.passContainer.add(btnRecap)
 	    btnRecap.setInteractive()
-	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer), this)
-	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer), this)
+	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer, btnRecap), this)
+	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer, btnRecap), this)
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
+	    this.btnRecap = btnRecap
 
 	    // Add card info here so that it's on top of other GameObjects
 	    cardInfo = addCardInfoToScene(this)
@@ -341,7 +343,7 @@ export class GameScene extends Phaser.Scene {
 		// If the round just started, show the recap
 		if (this.autoRecap &&
 			state.story.acts.length === 0 && state.passes === 0 && state.maxMana[0] > 1) {
-			this.hoverAlternateView(this.recapContainer)()
+			this.hoverAlternateView(this.recapContainer, this.btnRecap)()
 			this.clickAlternateView()()
 		}
 	}
@@ -476,18 +478,24 @@ export class GameScene extends Phaser.Scene {
 
   	// Disables the story hidden lock seen below
   	private clickAnywhere(): () => void {
-  		let hiddenContainers = [
-  		this.deckContainer,
-  		this.discardContainer,
-  		this.opponentDiscardContainer,
-  		this.recapContainer]
-
-  		let storyContainer = this.storyContainer
-  		
+  		let that = this
   		return function() {
+  			let hiddenContainers = [
+		  		that.deckContainer,
+		  		that.discardContainer,
+		  		that.opponentDiscardContainer,
+		  		that.recapContainer]
+
+	  		let highlightedObjects = [
+		  		that.txtDeckSize,
+		  		that.txtDiscardSize,
+		  		that.txtOpponentDiscardSize,
+		  		that.btnRecap]
+
   			if (storyHiddenLock) {
 	  			hiddenContainers.forEach(c => c.setVisible(false))
-	  			storyContainer.setVisible(true)
+	  			highlightedObjects.forEach(o => o.setShadow())
+	  			that.storyContainer.setVisible(true)
 
   				storyHiddenLock = false
   			}
@@ -503,22 +511,34 @@ export class GameScene extends Phaser.Scene {
   		}
   	}
 
-  	private hoverAlternateView(revealedContainer: Phaser.GameObjects.Container): () => void {
+  	private hoverAlternateView(
+  		revealedContainer: Phaser.GameObjects.Container,
+  		highlightedObject: Phaser.GameObjects.Text
+  		): () => void {
+  		
   		let storyContainer = this.storyContainer
   		return function() {
   			if (!storyHiddenLock) {
   				revealedContainer.setVisible(true)
   				storyContainer.setVisible(false)
+
+  				highlightedObject.setShadow(2, 2, '#ff0')
   			}
   		}
   	}
 
-  	private hoverAlternateViewExit(revealedContainer: Phaser.GameObjects.Container): () => void {
+  	private hoverAlternateViewExit(
+  		revealedContainer: Phaser.GameObjects.Container,
+  		highlightedObject: Phaser.GameObjects.Text
+  		): () => void {
+  		
   		let storyContainer = this.storyContainer
   		return function() {
   			if (!storyHiddenLock) {
   				revealedContainer.setVisible(false)
   				storyContainer.setVisible(true)
+
+  				highlightedObject.setShadow()
   			}
   		}
   	}
