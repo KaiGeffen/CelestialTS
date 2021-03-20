@@ -185,6 +185,15 @@ class DeckRegion {
     
     this.container.add(this.btnStart)
 
+    // Text confirming that user copied their decklist
+    let styleConfirm = {
+      font: '106px Arial Bold',
+      color: '#ddd',
+      backgroundColor: '#88a'
+    }
+    let txtCopyConfirm = this.scene.add.text(1100/2, 310, ' Copied ', styleConfirm).setOrigin(0.5, 0.5)
+    txtCopyConfirm.setVisible(false)
+
     // Save button
     let btnCopy = this.scene.add.text(0, -150, 'Copy', buttonStyle)
 
@@ -198,6 +207,10 @@ class DeckRegion {
       text = text.slice(0, -1)
 
       navigator.clipboard.writeText(text)
+
+      // Alert user that decklist was copied
+      txtCopyConfirm.setVisible(true)
+      that.scene.time.delayedCall(600, () => txtCopyConfirm.setVisible(false))
     })
     this.container.add(btnCopy)
 
