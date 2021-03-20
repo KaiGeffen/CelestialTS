@@ -41,7 +41,7 @@ export class Network {
 		} else {
 			// The WS location on DO
 			let loc = window.location
-			let fullPath = `ws://${loc.host}${loc.pathname}ws/${matchmakingKey}`
+			let fullPath = `wss://${loc.host}${loc.pathname}ws/${matchmakingKey}`
 			socket = new WebSocket(fullPath)
 		}
 
