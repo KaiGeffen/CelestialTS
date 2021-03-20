@@ -23,30 +23,13 @@ export class Network {
 	socket: WebSocket
 
 	constructor(deck, scene) {
-
-		let encodedDeck = encodeDeck(deck)
+		// The first message sent to server once the match starts
 		let initMessage = JSON.stringify({
 			type: 'init',
-			value: encodedDeck
+			value: encodeDeck(deck)
 		})
 
-		// Get matchmaking key
-		let urlParams = new URLSearchParams(window.location.search)
-		let matchmakingKey = urlParams.get(MATCH_MAKING_PARAM)
-    	if (matchmakingKey === null) matchmakingKey = ''
-
-		// Establish a websocket based on the environment (Dev runs on 4949)
-		let socket
-		if (location.port === '4949') {
-			socket = new WebSocket(`ws://${ip}:${port}/${matchmakingKey}`)
-		} else {
-			// The WS location on DO
-			let loc = window.location
-			let fullPath = `wss://${loc.host}${loc.pathname}ws/${matchmakingKey}`
-			socket = new WebSocket(fullPath)
-		}
-
-		this.socket = socket
+		let socket = this.socket = this.getSocket()
 
 		// Connection opened
 		socket.addEventListener('open', function (event) {
@@ -109,4 +92,26 @@ export class Network {
 		}
 		this.socket.send(JSON.stringify(msg))
 	}
+
+	// Get the appropriate websocket for this environment / url params
+	private getSocket(): WebSocket {
+		// Get matchmaking key
+		let urlParams = new URLSearchParams(window.location.search)
+		let matchmakingKey = urlParams.get(MATCH_MAKING_PARAM)
+    	if (matchmakingKey === null) matchmakingKey = ''
+
+		// Establish a websocket based on the environment (Dev runs on 4949)
+		let socket
+		if (location.port === '4949') {
+			socket = new WebSocket(`ws://${ip}:${port}/${matchmakingKey}`)
+		} else {
+			// The WS location on DO
+			let loc = window.location
+			let fullPath = `wss://${loc.host}${loc.pathname}ws/${matchmakingKey}`
+			socket = new WebSocket(fullPath)
+		}
+
+		return socket
+	}
+
 }
