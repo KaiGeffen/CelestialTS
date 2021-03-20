@@ -22,7 +22,7 @@
   },
   {"name": "Juggle", "id": 136,
     "cost": 1, "points": 1,
-    "text": "1:1. When played, put up to 3 cards from your hand on the bottom of your deck, then draw that many. (Your leftmost card will be the closest to the top of the deck)"
+    "text": "1:1. When played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many. (Of the 3, your leftmost card will be closest to the top of the deck)"
   },
   {"name": "Drown", "id": 94,
     "cost": 1, "points": 1,
@@ -35,11 +35,11 @@
 
   {"name": "Sine", "id": 3,
     "cost": 2, "points": 2,
-    "text": "2:4, starve 4 (The next time you resolve a card, it is worth -4 points)"
+    "text": "2:4, starve 4 (The next card you resolve is worth 4 less points)"
   },
   {"name": "Dash", "id": 10,
     "cost": 2,
-    "text": "2:3, flare (This card is worth 1 less for every card in the story before it)"
+    "text": "2:3, flare (This card is worth 1 less for every card before it in the story)"
   },
   {"name": "Swift", "id": 2,
     "cost": 2, "points": 2,
@@ -47,7 +47,7 @@
   },
   {"name": "Crypt", "id": 119,
     "cost": 2,
-    "text": "2:2, your last card in the story transforms into the first card in your discard pile with the same cost as it"
+    "text": "2:2, your last card in the story transforms into the top card in your discard pile with the same cost as it"
   },
   {"name": "Gears", "id": 75,
     "cost": 2, "points": 0,
@@ -68,7 +68,7 @@
   },
   {"name": "Fruiting", "id": 4,
     "cost": 3, "points": 2,
-    "text": "3:0, nourish 3 (The next time you resolve a card, it is worth +3 points)"
+    "text": "3:0, nourish 3 (The next card you resolve is worth 3 more points)"
   },
   {"name": "Gift", "id": 5,
     "cost": 3, "points": 2,
@@ -94,7 +94,7 @@
 
   {"name": "Force", "id": 16,
     "cost": 5,
-    "text": "5:6, flare (This card is worth 1 less for every card in the story before it)"
+    "text": "5:6, flare (This card is worth 1 less for every card before it in the story)"
   },
   {"name": "Tumulus", "id": 99,
     "cost": 5,
