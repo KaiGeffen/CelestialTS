@@ -32,12 +32,12 @@ export class Network {
 		// Get matchmaking key
 		let urlParams = new URLSearchParams(window.location.search)
 		let matchmakingKey = urlParams.get(MATCH_MAKING_PARAM)
-    	if (matchmakingKey === undefined) matchmakingKey = ''
+    	if (matchmakingKey === null) matchmakingKey = ''
 
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
 		if (location.port === '4949') {
-			socket = new WebSocket(`ws://${ip}:${port}/${matchmakingKey}`, 'echo-protocol')
+			socket = new WebSocket(`ws://${ip}:${port}/${matchmakingKey}`)
 		} else {
 			// The WS location on DO
 			let loc = window.location
