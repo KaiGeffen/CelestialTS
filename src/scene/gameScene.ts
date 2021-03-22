@@ -333,7 +333,7 @@ export class GameScene extends Phaser.Scene {
 			this.txtVision.setText(state.vision.toString())
 
 			let x = this.getCardPosition(state.vision, this.storyContainer, 0)[0] - space.cardSize/2
-			this.visionRectangle.setX(x)
+			this.visionRectangle.setX(Math.min(x, 1100))
 		}
 
 		// Mana
