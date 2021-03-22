@@ -37,6 +37,9 @@ export class GameScene extends Phaser.Scene {
 	passContainer: Phaser.GameObjects.Container
 
 	priorityRectangle: Phaser.GameObjects.Rectangle
+	visionRectangle: Phaser.GameObjects.Rectangle
+	txtVision: Phaser.GameObjects.Text
+
 	manaText: Phaser.GameObjects.Text
 	opponentManaText: Phaser.GameObjects.Text
 	scoreText: Phaser.GameObjects.Text
@@ -80,10 +83,6 @@ export class GameScene extends Phaser.Scene {
 		this.stackContainer = this.add.container(800, 0)
 		this.passContainer = this.add.container(1100 - space.pad, 650/2 - 40).setVisible(false)
 
-		let height = space.cardSize + 2 * space.pad
-		this.priorityRectangle = this.add.rectangle(0, -500, 1100, height, 0xffffff, 0.1)
-		this.priorityRectangle.setOrigin(0, 0)
-
 		this.input.on('pointerdown', this.clickAnywhere(), this)
 
 		// If this page had params specifying any options, set those options
@@ -95,6 +94,15 @@ export class GameScene extends Phaser.Scene {
 		// Middle line, below everything
 		let midline = this.add.rectangle(0, 650/2, 1100, 20, 0xff0000, 0.4).setOrigin(0, 0.5)
 		this.children.sendToBack(midline)
+
+		// Priority highlight
+		let height = space.cardSize + 2 * space.pad
+		this.priorityRectangle = this.add.rectangle(0, -500, 1100, height, 0xffffff, 0.1).setOrigin(0, 0)
+
+		// Vision highlight and text
+		height = space.cardSize + 2 * space.stackOffset + 2 * space.pad
+		this.visionRectangle = this.add.rectangle(0, 650/2, 1100, height, 0xffffff, 0.1).setOrigin(1, 0.5)
+		this.txtVision = this.add.text(0, 650/2, '', smallTextStyle).setOrigin(0, 0.5)
 
 		// Mulligan highlights and button
 		for (var i = 0; i < 3; i++) {
@@ -314,6 +322,19 @@ export class GameScene extends Phaser.Scene {
 		// Priority
 		if (state.priority === 1) { this.priorityRectangle.setY(0) }
 		else { this.priorityRectangle.setY(650 - 140) }
+
+		// Vision
+		if (state.vision === 0) {
+			this.txtVision.setText('')
+			
+			this.visionRectangle.setX(0)
+		}
+		else {
+			this.txtVision.setText(state.vision.toString())
+
+			let x = this.getCardPosition(state.vision, this.storyContainer, 0)[0] - space.cardSize/2
+			this.visionRectangle.setX(x)
+		}
 
 		// Mana
 		this.manaText.setText(`Mana: ${state.mana}/${state.maxMana[0]}`)
