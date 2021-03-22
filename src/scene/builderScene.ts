@@ -34,9 +34,7 @@ export class BuilderScene extends Phaser.Scene {
 
   // Load all of the card and token images
   preload(): void {
-    this.load.setBaseURL(
-      "https://raw.githubusercontent.com/KaiGeffen/" +
-      "Celestial/master/images/")
+    this.load.path = "assets/images/"
 
     catalog.forEach( (card) => {
       this.load.image(card.name, `${card.name}.png`)
@@ -121,7 +119,7 @@ class CatalogRegion {
     var [x, y] = this.getCardPosition(index)
     
     image = this.scene.add.image(x, y, card.name)
-    image.setDisplaySize(100, 100)
+    image.setDisplaySize(space.cardSize, space.cardSize)
 
     image.setInteractive()
     image.on('pointerdown', this.onClick(card), this)
