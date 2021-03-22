@@ -1,0 +1,8 @@
+# Text editor backups #
+*~
+
+# Modules #
+node_modules/
+
+# Project settings #
+.idea/
