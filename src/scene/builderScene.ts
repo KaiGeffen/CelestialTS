@@ -17,6 +17,7 @@ export class BuilderScene extends Phaser.Scene {
   catalogRegion
   deckRegion
   filterRegion
+  menuRegion
 
   constructor() {
     super({
@@ -28,6 +29,7 @@ export class BuilderScene extends Phaser.Scene {
     this.deckRegion = new DeckRegion(this)
     this.catalogRegion = new CatalogRegion(this, this.deckRegion)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
+    this.menuRegion = new MenuRegion(this)
 
     cardInfo = addCardInfoToScene(this)
   }
@@ -48,6 +50,7 @@ export class BuilderScene extends Phaser.Scene {
     this.catalogRegion.create()
     this.deckRegion.create()
     this.filterRegion.create()
+    this.menuRegion.create()
   }
 }
 
@@ -155,7 +158,7 @@ class DeckRegion {
 
   init(scene): void {
     this.scene = scene
-    this.container = this.scene.add.container(1000, 650)
+    this.container = this.scene.add.container(988, 650)
   }
 
   create(): void {
@@ -193,7 +196,7 @@ class DeckRegion {
     txtCopyConfirm.setVisible(false)
 
     // Save button
-    let btnCopy = this.scene.add.text(0, -150, 'Copy', buttonStyle)
+    let btnCopy = this.scene.add.text(0, -150, 'Menu', buttonStyle)
 
     btnCopy.setInteractive()
     // Copy to clipboard this url with the param describing player's current deck
@@ -318,6 +321,9 @@ class DeckRegion {
     })
 
     this.correctDeckIndices()
+
+    var person = prompt("Where are my show?", "idk")
+    console.log(person)
   }
 }
 
@@ -410,6 +416,75 @@ class FilterRegion {
   }
 }
 
+class MenuRegion {
+  scene: Phaser.Scene
+  container: Phaser.GameObjects.Container
+
+  vsAi = false
+  autoRecap = true
+  
+  constructor(scene: Phaser.Scene) {
+    this.init(scene)
+  }
+
+  init(scene: Phaser.Scene): void {
+    this.scene = scene
+    this.container = this.scene.add.container(space.cardSize * 2 + space.pad * 3, space.pad)
+  }
+
+  create(): void {
+    // Background rectangle
+    let width = space.cardSize * 5 + space.pad * 4
+    let height = space.cardSize * 4 + space.pad * 3
+    let backgroundRectangle = this.scene.add.rectangle(0, 0, width, height, 0x662b00, 0.9).setOrigin(0, 0)
+    this.container.add(backgroundRectangle)
+
+    // Vs AI, Auto recap, Matchmaking code
+    let txt = 'Play versus Computer          X'
+    let btnVsAi = this.scene.add.text(space.pad, space.pad, txt, buttonStyle).setOrigin(0, 0)
+    btnVsAi.setInteractive()
+    btnVsAi.on('pointerdown', this.onVsAi(btnVsAi))
+    this.container.add(btnVsAi)
+
+    txt = 'Show recap automatically    ✓'
+    let btnAutoRecap = this.scene.add.text(space.pad, space.pad + space.cardSize, txt, buttonStyle).setOrigin(0, 0)
+    btnAutoRecap.setInteractive()
+    btnAutoRecap.on('pointerdown', this.onAutoRecap(btnAutoRecap))
+    this.container.add(btnAutoRecap)
+
+    // Save deck-code, copy deck code
+
+    // let btnClear = this.scene.add.text(30, 0, 'x', filterButtonStyle)
+    // btnClear.setInteractive()
+    // btnClear.on('pointerdown', this.onClear(btnNumbers))
+    // this.container.add(btnClear)
+  }
+
+  private onVsAi(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
+    return function() {
+      that.vsAi = !that.vsAi
+
+      that.setCheckOrX(btn, that.vsAi)
+    }
+  }
+
+  private onAutoRecap(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
+    return function() {
+      that.autoRecap = !that.autoRecap
+
+      that.setCheckOrX(btn, that.autoRecap)
+    }
+  }
+
+  // Set the btn to end with a check or an X based on the conditional
+  private setCheckOrX(btn: Phaser.GameObjects.Text, conditional: Boolean): void {
+      let finalChar = conditional ? "✓":"X"
+      let newText = btn.text.slice(0, -1) + finalChar
+      btn.setText(newText)
+  }
+}
 
 
 
