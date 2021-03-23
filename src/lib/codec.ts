@@ -12,7 +12,7 @@ function encodeCard(card: Card): string {
 function decodeCard(s: string): Card {
 	let sections = s.split(delims[2])
 
-	let cardId = +sections[0]
+	let cardId = parseInt(sections[0])
 	let baseCard = allCards.find(card => card.id === cardId)
 
 	// if (baseCard === undefined) {

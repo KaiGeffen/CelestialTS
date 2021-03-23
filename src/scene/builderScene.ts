@@ -12,6 +12,12 @@ const DECK_PARAM = 'deck'
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
 
+// Settings for the game that are passed to the GameScene
+var gameSettings = {
+  vsAi: false,
+  autoRecap: true,
+  mmCode: ''
+}
 
 export class BuilderScene extends Phaser.Scene {
   catalogRegion
@@ -180,7 +186,7 @@ class DeckRegion {
     this.btnStart.setInteractive()
     this.btnStart.on('pointerdown', function (event) {
       let deck: Card[] = that.deck.map( (cardImage) => cardImage.card)
-      this.scene.scene.start("GameScene", {deck: deck})
+      this.scene.scene.start("GameScene", {deck: deck, settings: gameSettings})
     })
     
     this.updateStartButton()
@@ -230,6 +236,7 @@ class DeckRegion {
     let cardCodes: string[] = deckCode.split(':')
 
     let deck: Card[] = cardCodes.map( (cardCode) => decodeCard(cardCode))
+    if (deckCode === '') deck = []
 
     if (deck.includes(undefined))
     {
@@ -425,10 +432,6 @@ class MenuRegion {
   scene: Phaser.Scene
   deckRegion
   container: Phaser.GameObjects.Container
-
-  vsAi = false
-  autoRecap = true
-  mmCode: String = ''
   deck: Card[] = []
   
   constructor(scene: Phaser.Scene, deckRegion) {
@@ -509,18 +512,18 @@ class MenuRegion {
   private onVsAi(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
-      that.vsAi = !that.vsAi
+      gameSettings['vsAi'] = !gameSettings['vsAi']
 
-      that.setCheckOrX(btn, that.vsAi)
+      that.setCheckOrX(btn, gameSettings['vsAi'])
     }
   }
 
   private onAutoRecap(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
-      that.autoRecap = !that.autoRecap
+      gameSettings['autoRecap'] = !gameSettings['autoRecap']
 
-      that.setCheckOrX(btn, that.autoRecap)
+      that.setCheckOrX(btn, gameSettings['autoRecap'])
     }
   }
 
@@ -532,11 +535,10 @@ class MenuRegion {
   }
 
   private onSetMatchmaking(btn: Phaser.GameObjects.Text): () => void {
-    let that = this
     return function() {
       var code = prompt("Enter matchmaking code:")
       if (code != null) {
-        that.mmCode = code
+        gameSettings['mmCode'] = code
 
         let newText = btn.text.split('>')[0] + '> ' + code
         btn.setText(newText)

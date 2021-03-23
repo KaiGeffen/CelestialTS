@@ -22,14 +22,14 @@ const MATCH_MAKING_PARAM = 'mm'
 export class Network {
 	socket: WebSocket
 
-	constructor(deck, scene) {
+	constructor(deck, scene, mmCode) {
 		// The first message sent to server once the match starts
 		let initMessage = JSON.stringify({
 			type: 'init',
 			value: encodeDeck(deck)
 		})
 
-		let socket = this.socket = this.getSocket()
+		let socket = this.socket = this.getSocket(mmCode)
 
 		// Connection opened
 		socket.addEventListener('open', function (event) {
@@ -93,21 +93,16 @@ export class Network {
 		this.socket.send(JSON.stringify(msg))
 	}
 
-	// Get the appropriate websocket for this environment / url params
-	private getSocket(): WebSocket {
-		// Get matchmaking key
-		let urlParams = new URLSearchParams(window.location.search)
-		let matchmakingKey = urlParams.get(MATCH_MAKING_PARAM)
-    	if (matchmakingKey === null) matchmakingKey = ''
-
+	// Get the appropriate websocket for this environment / matchmaking code
+	private getSocket(mmCode): WebSocket {
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
 		if (location.port === '4949') {
-			socket = new WebSocket(`ws://${ip}:${port}/${matchmakingKey}`)
+			socket = new WebSocket(`ws://${ip}:${port}/${mmCode}`)
 		} else {
 			// The WS location on DO
 			let loc = window.location
-			let fullPath = `wss://${loc.host}${loc.pathname}ws/${matchmakingKey}`
+			let fullPath = `wss://${loc.host}${loc.pathname}ws/${mmCode}`
 			socket = new WebSocket(fullPath)
 		}
 
