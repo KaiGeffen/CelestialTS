@@ -245,13 +245,30 @@ class DeckRegion {
     this.updateStartButton()
   }
 
-  setDeck(deckCode: string): void {
-    // Remove the current deck
-    let removeFirstCard = this.removeCard(0)
-    while (this.deck.length > 0) removeFirstCard()
-
+  // Set the current deck based on given deck code, returns true if deck was valid
+  setDeck(deckCode: string): boolean {
+    // Get the deck from this code
     let cardCodes: string[] = deckCode.split(':')
-    cardCodes.forEach( (cardCode) => this.addCard(decodeCard(cardCode)))
+
+    let deck: Card[] = cardCodes.map( (cardCode) => decodeCard(cardCode))
+
+    if (deck.includes(undefined))
+    {
+      return false
+    }
+    else
+    {
+      // Remove the current deck
+      this.deck.forEach( (cardImage) => cardImage.destroy())
+      this.deck = []
+      cardInfo.text = ''
+      this.updateStartButton()
+      
+      // Add the new deck
+      deck.forEach( (card) => this.addCard(card))
+
+      return true
+    }
   }
 
   private updateStartButton(): void {
@@ -276,19 +293,20 @@ class DeckRegion {
   }
 
   private removeCard(index: number): () => void {
+    let that = this
     return function() {
       // The text for the removed card would otherwise linger
       cardInfo.text = ''
 
       // Remove the image
-      this.deck[index].destroy()
+      that.deck[index].destroy()
 
       // Remove from the deck array
-      this.deck.splice(index, 1)
+      that.deck.splice(index, 1)
 
-      this.correctDeckIndices()
+      that.correctDeckIndices()
 
-      this.updateStartButton()
+      that.updateStartButton()
     }
   }
 
@@ -477,7 +495,7 @@ class MenuRegion {
     txt = 'Load deck from a code'
     let btnLoad = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 4, txt, buttonStyle).setOrigin(0, 0)
     btnLoad.setInteractive()
-    btnLoad.on('pointerdown', this.onLoadDeck())
+    btnLoad.on('pointerdown', this.onLoadDeck(btnLoad))
     this.container.add(btnLoad)
 
 
@@ -546,12 +564,19 @@ class MenuRegion {
     }
   }
 
-  private onLoadDeck(): () => void {
+  private onLoadDeck(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
       let code = prompt("Enter deck code:")
       if (code != null) {
-        that.deckRegion.setDeck(code)
+
+        let isValid = that.deckRegion.setDeck(code)
+        if (!isValid) {
+          // Alert user if deck code is invalid
+          let previousText = btn.text
+          btn.setText('Invalid code!')
+          that.scene.time.delayedCall(600, () => btn.setText(previousText))
+        }
       }
     }
   }
