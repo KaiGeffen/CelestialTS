@@ -151,6 +151,7 @@ class DeckRegion {
   container: Phaser.GameObjects.Container
   deck: CardImage[] = []
   btnStart: Phaser.GameObjects.Text
+  btnMenu: Phaser.GameObjects.Text
 
   constructor(scene: Phaser.Scene) {
     this.init(scene)
@@ -195,31 +196,9 @@ class DeckRegion {
     let txtCopyConfirm = this.scene.add.text(1100/2, 310, ' Copied ', styleConfirm).setOrigin(0.5, 0.5)
     txtCopyConfirm.setVisible(false)
 
-    // Save button
-    let btnCopy = this.scene.add.text(0, -150, 'Menu', buttonStyle)
-
-    btnCopy.setInteractive()
-    // Copy to clipboard this url with the param describing player's current deck
-    btnCopy.on('pointerdown', function (event) {
-      let text = window.location.href.split('?')[0]
-      text += `?${DECK_PARAM}=`
-
-      that.deck.forEach( (cardImage) => text += `${encodeCard(cardImage.card)}:`)
-      text = text.slice(0, -1)
-
-      navigator.clipboard.writeText(text)
-
-      // Alert user that decklist was copied
-      txtCopyConfirm.setVisible(true)
-      that.scene.time.delayedCall(600, () => txtCopyConfirm.setVisible(false))
-    })
-    this.container.add(btnCopy)
-
-    // TODO deprecated remove
-    // If this page had params specifying the deck, make that deck
-    // let urlParams = new URLSearchParams(window.location.search)
-    // let deckCode = urlParams.get(DECK_PARAM)
-    // if (deckCode) this.addStartingDeck(deckCode)
+    // Menu button, the callback is set by menu region during its init
+    this.btnMenu = this.scene.add.text(0, -150, 'Menu', buttonStyle)
+    this.container.add(this.btnMenu)
   }
 
   addCard(card: Card): void {
@@ -269,6 +248,12 @@ class DeckRegion {
 
       return true
     }
+  }
+
+  // Set the callback for showing the menu
+  setShowMenu(callback: () => void): void {
+    this.btnMenu.setInteractive()
+    this.btnMenu.on('pointerdown', callback)
   }
 
   private updateStartButton(): void {
@@ -435,6 +420,7 @@ class FilterRegion {
   }
 }
 
+
 class MenuRegion {
   scene: Phaser.Scene
   deckRegion
@@ -452,11 +438,22 @@ class MenuRegion {
   init(scene: Phaser.Scene, deckRegion): void {
     this.scene = scene
     this.deckRegion = deckRegion
+    
     this.container = this.scene.add.container(space.cardSize * 2 + space.pad * 3, space.pad)
+    this.container.setVisible(false)
   }
 
   create(): void {
-    // Background rectangle
+    // Visible and invisible background rectangles, stops other containers from being clicked
+    let invisBackground = this.scene.add.rectangle(0, 0, 1100*2, 650*2, 0xffffff, 0)
+    invisBackground.setInteractive()
+    let cont = this.container
+    invisBackground.on('pointerdown', function() {cont.setVisible(false)})
+    this.container.add(invisBackground)
+
+    // Set the callback for deckRegion menu button
+    this.deckRegion.setShowMenu(function() {cont.setVisible(true)})
+
     let width = space.cardSize * 5 + space.pad * 4
     let height = space.cardSize * 4 + space.pad * 3
     let backgroundRectangle = this.scene.add.rectangle(0, 0, width, height, 0x662b00, 0.95).setOrigin(0, 0)
