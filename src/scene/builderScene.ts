@@ -321,9 +321,6 @@ class DeckRegion {
     })
 
     this.correctDeckIndices()
-
-    var person = prompt("Where are my show?", "idk")
-    console.log(person)
   }
 }
 
@@ -422,6 +419,7 @@ class MenuRegion {
 
   vsAi = false
   autoRecap = true
+  mmCode: String = ''
   
   constructor(scene: Phaser.Scene) {
     this.init(scene)
@@ -437,9 +435,10 @@ class MenuRegion {
     let width = space.cardSize * 5 + space.pad * 4
     let height = space.cardSize * 4 + space.pad * 3
     let backgroundRectangle = this.scene.add.rectangle(0, 0, width, height, 0x662b00, 0.9).setOrigin(0, 0)
+    backgroundRectangle.setInteractive()
     this.container.add(backgroundRectangle)
 
-    // Vs AI, Auto recap, Matchmaking code
+    // Vs ai toggleable button
     let txt = 'Play versus Computer          X'
     let btnVsAi = this.scene.add.text(space.pad, space.pad, txt, buttonStyle).setOrigin(0, 0)
     btnVsAi.setInteractive()
@@ -451,6 +450,14 @@ class MenuRegion {
     btnAutoRecap.setInteractive()
     btnAutoRecap.on('pointerdown', this.onAutoRecap(btnAutoRecap))
     this.container.add(btnAutoRecap)
+
+    txt = 'Use matchmaking code...'
+    let btnMatchmaking = this.scene.add.text(space.pad, space.pad + space.cardSize * 2, txt, buttonStyle).setOrigin(0, 0)
+    btnMatchmaking.setInteractive()
+    btnMatchmaking.on('pointerdown', this.onSetMatchmaking(btnMatchmaking))
+    this.container.add(btnMatchmaking)
+
+    // TODO Autopass
 
     // Save deck-code, copy deck code
 
@@ -483,6 +490,20 @@ class MenuRegion {
       let finalChar = conditional ? "✓":"X"
       let newText = btn.text.slice(0, -1) + finalChar
       btn.setText(newText)
+  }
+
+  private onSetMatchmaking(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
+    return function() {
+      var code = prompt("Enter matchmaking code:")
+      if (code != null) {
+        that.mmCode = code
+
+        let newText = btn.text.split('\n')[0] + '\n> ' + code
+        btn.setText(newText)
+      }
+      
+    }
   }
 }
 
