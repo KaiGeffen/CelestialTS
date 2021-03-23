@@ -103,8 +103,9 @@ export class GameScene extends Phaser.Scene {
 
 		// Vision highlight and text
 		height = space.cardSize + 2 * space.stackOffset + 2 * space.pad
-		this.visionRectangle = this.add.rectangle(0, 650/2, 1100, height, 0xffffff, 0.1).setOrigin(1, 0.5)
-		this.txtVision = this.add.text(0, 650/2, '', smallTextStyle).setOrigin(0, 0.5)
+		this.visionRectangle = this.add.rectangle(0, 80, 1100, height, 0xffffff, 0.1).setOrigin(1, 0.5)
+		this.txtVision = this.add.text(0, 80, '', smallTextStyle).setOrigin(0, 0.5)
+		this.storyContainer.add([this.visionRectangle, this.txtVision])
 
 		// Mulligan highlights and button
 		for (var i = 0; i < 3; i++) {
