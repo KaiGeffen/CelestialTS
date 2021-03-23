@@ -12,11 +12,18 @@ const DECK_PARAM = 'deck'
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
 
+// Settings for the game that are passed to the GameScene
+var gameSettings = {
+  vsAi: false,
+  autoRecap: true,
+  mmCode: ''
+}
 
 export class BuilderScene extends Phaser.Scene {
   catalogRegion
   deckRegion
   filterRegion
+  menuRegion
 
   constructor() {
     super({
@@ -28,6 +35,7 @@ export class BuilderScene extends Phaser.Scene {
     this.deckRegion = new DeckRegion(this)
     this.catalogRegion = new CatalogRegion(this, this.deckRegion)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
+    this.menuRegion = new MenuRegion(this, this.deckRegion)
 
     cardInfo = addCardInfoToScene(this)
   }
@@ -48,6 +56,7 @@ export class BuilderScene extends Phaser.Scene {
     this.catalogRegion.create()
     this.deckRegion.create()
     this.filterRegion.create()
+    this.menuRegion.create()
   }
 }
 
@@ -148,6 +157,7 @@ class DeckRegion {
   container: Phaser.GameObjects.Container
   deck: CardImage[] = []
   btnStart: Phaser.GameObjects.Text
+  btnMenu: Phaser.GameObjects.Text
 
   constructor(scene: Phaser.Scene) {
     this.init(scene)
@@ -155,7 +165,7 @@ class DeckRegion {
 
   init(scene): void {
     this.scene = scene
-    this.container = this.scene.add.container(1000, 650)
+    this.container = this.scene.add.container(988, 650)
   }
 
   create(): void {
@@ -176,7 +186,7 @@ class DeckRegion {
     this.btnStart.setInteractive()
     this.btnStart.on('pointerdown', function (event) {
       let deck: Card[] = that.deck.map( (cardImage) => cardImage.card)
-      this.scene.scene.start("GameScene", {deck: deck})
+      this.scene.scene.start("GameScene", {deck: deck, settings: gameSettings})
     })
     
     this.updateStartButton()
@@ -192,30 +202,9 @@ class DeckRegion {
     let txtCopyConfirm = this.scene.add.text(1100/2, 310, ' Copied ', styleConfirm).setOrigin(0.5, 0.5)
     txtCopyConfirm.setVisible(false)
 
-    // Save button
-    let btnCopy = this.scene.add.text(0, -150, 'Copy', buttonStyle)
-
-    btnCopy.setInteractive()
-    // Copy to clipboard this url with the param describing player's current deck
-    btnCopy.on('pointerdown', function (event) {
-      let text = window.location.href.split('?')[0]
-      text += `?${DECK_PARAM}=`
-
-      that.deck.forEach( (cardImage) => text += `${encodeCard(cardImage.card)}:`)
-      text = text.slice(0, -1)
-
-      navigator.clipboard.writeText(text)
-
-      // Alert user that decklist was copied
-      txtCopyConfirm.setVisible(true)
-      that.scene.time.delayedCall(600, () => txtCopyConfirm.setVisible(false))
-    })
-    this.container.add(btnCopy)
-
-    // If this page had params specifying the deck, make that deck
-    let urlParams = new URLSearchParams(window.location.search)
-    let deckCode = urlParams.get(DECK_PARAM)
-    if (deckCode) this.addStartingDeck(deckCode)
+    // Menu button, the callback is set by menu region during its init
+    this.btnMenu = this.scene.add.text(0, -150, 'Menu', buttonStyle)
+    this.container.add(this.btnMenu)
   }
 
   addCard(card: Card): void {
@@ -232,7 +221,7 @@ class DeckRegion {
     image.setDisplaySize(100, 100)
 
     image.setInteractive()
-    image.on('pointerdown', this.onClick(index), this)
+    image.on('pointerdown', this.removeCard(index), this)
 
     this.container.add(image)
 
@@ -241,10 +230,37 @@ class DeckRegion {
     this.updateStartButton()
   }
 
-  private addStartingDeck(deckCode: string): void {
+  // Set the current deck based on given deck code, returns true if deck was valid
+  setDeck(deckCode: string): boolean {
+    // Get the deck from this code
     let cardCodes: string[] = deckCode.split(':')
 
-    cardCodes.forEach( (cardCode) => this.addCard(decodeCard(cardCode)))
+    let deck: Card[] = cardCodes.map( (cardCode) => decodeCard(cardCode))
+    if (deckCode === '') deck = []
+
+    if (deck.includes(undefined))
+    {
+      return false
+    }
+    else
+    {
+      // Remove the current deck
+      this.deck.forEach( (cardImage) => cardImage.destroy())
+      this.deck = []
+      cardInfo.text = ''
+      this.updateStartButton()
+      
+      // Add the new deck
+      deck.forEach( (card) => this.addCard(card))
+
+      return true
+    }
+  }
+
+  // Set the callback for showing the menu
+  setShowMenu(callback: () => void): void {
+    this.btnMenu.setInteractive()
+    this.btnMenu.on('pointerdown', callback)
   }
 
   private updateStartButton(): void {
@@ -268,20 +284,21 @@ class DeckRegion {
     return [-x, -y]
   }
 
-  private onClick(index: number): () => void {
+  private removeCard(index: number): () => void {
+    let that = this
     return function() {
       // The text for the removed card would otherwise linger
       cardInfo.text = ''
 
       // Remove the image
-      this.deck[index].destroy()
+      that.deck[index].destroy()
 
       // Remove from the deck array
-      this.deck.splice(index, 1)
+      that.deck.splice(index, 1)
 
-      this.correctDeckIndices()
+      that.correctDeckIndices()
 
-      this.updateStartButton()
+      that.updateStartButton()
     }
   }
 
@@ -296,7 +313,7 @@ class DeckRegion {
 
       // Remove the previous onclick event and add one with the updated index
       image.removeAllListeners('pointerdown')
-      image.on('pointerdown', this.onClick(i), this)
+      image.on('pointerdown', this.removeCard(i), this)
     }
   }
 
@@ -410,6 +427,159 @@ class FilterRegion {
   }
 }
 
+
+class MenuRegion {
+  scene: Phaser.Scene
+  deckRegion
+  container: Phaser.GameObjects.Container
+  deck: Card[] = []
+  
+  constructor(scene: Phaser.Scene, deckRegion) {
+    this.init(scene, deckRegion)
+  }
+
+  init(scene: Phaser.Scene, deckRegion): void {
+    this.scene = scene
+    this.deckRegion = deckRegion
+    
+    this.container = this.scene.add.container(space.cardSize * 2 + space.pad * 3, space.pad)
+    this.container.setVisible(false)
+  }
+
+  create(): void {
+    // Visible and invisible background rectangles, stops other containers from being clicked
+    let invisBackground = this.scene.add.rectangle(0, 0, 1100*2, 650*2, 0xffffff, 0)
+    invisBackground.setInteractive()
+    let cont = this.container
+    invisBackground.on('pointerdown', function() {cont.setVisible(false)})
+    this.container.add(invisBackground)
+
+    // Set the callback for deckRegion menu button
+    this.deckRegion.setShowMenu(function() {cont.setVisible(true)})
+
+    let width = space.cardSize * 5 + space.pad * 4
+    let height = space.cardSize * 4 + space.pad * 3
+    let backgroundRectangle = this.scene.add.rectangle(0, 0, width, height, 0x662b00, 0.95).setOrigin(0, 0)
+    backgroundRectangle.setInteractive()
+    this.container.add(backgroundRectangle)
+
+    // Vs ai toggleable button
+    let txt = 'Play versus Computer          X'
+    let btnVsAi = this.scene.add.text(space.pad, space.pad/2, txt, buttonStyle).setOrigin(0, 0)
+    btnVsAi.setInteractive()
+    btnVsAi.on('pointerdown', this.onVsAi(btnVsAi))
+    this.container.add(btnVsAi)
+
+    // Show recap toggleable button
+    txt = 'Show recap automatically    ✓'
+    let btnAutoRecap = this.scene.add.text(space.pad, space.pad/2 + space.cardSize, txt, buttonStyle).setOrigin(0, 0)
+    btnAutoRecap.setInteractive()
+    btnAutoRecap.on('pointerdown', this.onAutoRecap(btnAutoRecap))
+    this.container.add(btnAutoRecap)
+
+    // Prompt for matchmaking code
+    txt = 'Use matchmaking code...' + '\n      > '
+    let btnMatchmaking = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 2, txt, buttonStyle).setOrigin(0, 0)
+    btnMatchmaking.setInteractive()
+    btnMatchmaking.on('pointerdown', this.onSetMatchmaking(btnMatchmaking))
+    this.container.add(btnMatchmaking)
+
+    // Button to save deck code
+    txt = 'Copy deck to clipboard'
+    let btnCopy = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 3, txt, buttonStyle).setOrigin(0, 0)
+    btnCopy.setInteractive()
+    btnCopy.on('pointerdown', this.onCopy(btnCopy))
+    this.container.add(btnCopy)
+
+    // Button to load deck code
+    txt = 'Load deck from a code'
+    let btnLoad = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 4, txt, buttonStyle).setOrigin(0, 0)
+    btnLoad.setInteractive()
+    btnLoad.on('pointerdown', this.onLoadDeck(btnLoad))
+    this.container.add(btnLoad)
+
+
+    // TODO Autopass
+
+    // Save deck-code, copy deck code
+
+    // let btnClear = this.scene.add.text(30, 0, 'x', filterButtonStyle)
+    // btnClear.setInteractive()
+    // btnClear.on('pointerdown', this.onClear(btnNumbers))
+    // this.container.add(btnClear)
+  }
+
+  private onVsAi(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
+    return function() {
+      gameSettings['vsAi'] = !gameSettings['vsAi']
+
+      that.setCheckOrX(btn, gameSettings['vsAi'])
+    }
+  }
+
+  private onAutoRecap(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
+    return function() {
+      gameSettings['autoRecap'] = !gameSettings['autoRecap']
+
+      that.setCheckOrX(btn, gameSettings['autoRecap'])
+    }
+  }
+
+  // Set the btn to end with a check or an X based on the conditional
+  private setCheckOrX(btn: Phaser.GameObjects.Text, conditional: Boolean): void {
+      let finalChar = conditional ? "✓":"X"
+      let newText = btn.text.slice(0, -1) + finalChar
+      btn.setText(newText)
+  }
+
+  private onSetMatchmaking(btn: Phaser.GameObjects.Text): () => void {
+    return function() {
+      var code = prompt("Enter matchmaking code:")
+      if (code != null) {
+        gameSettings['mmCode'] = code
+
+        let newText = btn.text.split('>')[0] + '> ' + code
+        btn.setText(newText)
+      }
+      
+    }
+  }
+
+  private onCopy(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
+    return function() {
+      let txt = ''
+      that.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+      txt = txt.slice(0, -1)
+
+      navigator.clipboard.writeText(txt)
+
+      // Alert user that decklist was copied
+      let previousText = btn.text
+      btn.setText('Copied!')
+      that.scene.time.delayedCall(600, () => btn.setText(previousText))
+    }
+  }
+
+  private onLoadDeck(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
+    return function() {
+      let code = prompt("Enter deck code:")
+      if (code != null) {
+
+        let isValid = that.deckRegion.setDeck(code)
+        if (!isValid) {
+          // Alert user if deck code is invalid
+          let previousText = btn.text
+          btn.setText('Invalid code!')
+          that.scene.time.delayedCall(600, () => btn.setText(previousText))
+        }
+      }
+    }
+  }
+}
 
 
 

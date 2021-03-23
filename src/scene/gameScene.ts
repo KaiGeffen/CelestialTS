@@ -69,8 +69,14 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	init(params: any): void {
+		// Game settings from deckbuilder
+	    this.autoRecap = params.settings['autoRecap']
+		// Code to matchmake player with ('ai' if versus computer)
+	    let mmCode = params.settings['mmCode']
+	    if (params.settings['vsAi']) mmCode = 'ai'
+
 		// Connect with the server
-		this.net = new Network(params.deck, this)
+		this.net = new Network(params.deck, this, mmCode)
 		this.temporaryObjs = []
 
 		this.handContainer = this.add.container(0, 650 - 140)
@@ -84,10 +90,6 @@ export class GameScene extends Phaser.Scene {
 		this.passContainer = this.add.container(1100 - space.pad, 650/2 - 40).setVisible(false)
 
 		this.input.on('pointerdown', this.clickAnywhere(), this)
-
-		// If this page had params specifying any options, set those options
-	    let urlParams = new URLSearchParams(window.location.search)
-	    this.autoRecap = (urlParams.has('ar'))
 	}
 
 	create(): void {
