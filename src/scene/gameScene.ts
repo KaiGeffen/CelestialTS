@@ -423,7 +423,10 @@ export class GameScene extends Phaser.Scene {
 			case this.deckContainer:
 			case this.discardContainer:
 			case this.opponentDiscardContainer:
-				x = space.pad + space.cardSize/2 + (space.cardSize - space.stackOverlap)  * index
+				// Each row contains 15 cards, then next row of cards is below with some overlap
+				x = space.pad + space.cardSize/2 + (space.cardSize - space.stackOverlap)  * (index%15)
+				y = Math.floor(index / 15) * (space.cardSize - space.stackOffset)
+
 				break
 
 			case this.stackContainer:
