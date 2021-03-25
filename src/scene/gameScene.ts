@@ -252,6 +252,22 @@ export class GameScene extends Phaser.Scene {
 
 	// Display the given game state
 	displayState(state: ClientState): void {
+		// Display victory / defeat
+		if (state.winner === 0) {
+			let txtResult = this.add.text(space.pad, 0, "You won!\n\nClick to continue...", stylePassed).setOrigin(0, 0)
+			txtResult.setInteractive()
+			txtResult.on('pointerdown', this.exitScene, this)
+			this.storyContainer.add(txtResult)
+		}
+		else if (state.winner === 1)
+		{
+			let txtResult = this.add.text(space.pad, 0, "You lost!\n\nClick to continue...", stylePassed).setOrigin(0, 0)
+			txtResult.setInteractive()
+			txtResult.on('pointerdown', this.exitScene, this)
+			this.storyContainer.add(txtResult)
+		}
+
+		// Reset the hover text in case the hovered card moved with object replacement
 		cardInfo.text = ''
 
 		// Remove all of the existing cards
@@ -383,6 +399,15 @@ export class GameScene extends Phaser.Scene {
 	// Alert the user that they have taken an illegal or impossible action
 	signalError(): void {
 		this.cameras.main.flash(300, 0, 0, 0.1)
+	}
+
+	// Signal to the user that the game is now over
+	signalGameOver(youWon: boolean): void {
+		// Show text to signify victory / defeat
+		console.log('its over: ' + youWon)
+
+		// Change pass button to exit button
+
 	}
 
 	private addCard(card: Card,
@@ -576,5 +601,9 @@ export class GameScene extends Phaser.Scene {
   				highlightedObject.setShadow()
   			}
   		}
+  	}
+
+  	private exitScene(): void {
+  		this.scene.start("BuilderScene")
   	}
 }
