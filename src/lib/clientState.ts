@@ -23,6 +23,7 @@ export default class ClientState {
 	// versionNumber: number
 	cardsPlayable: boolean[]
 	vision: number
+	winner: number
 
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
@@ -43,5 +44,6 @@ export default class ClientState {
 		// this.version_number
 		this.cardsPlayable = state.cards_playable
 		this.vision = state.vision
+		this.winner = state.winner
 	}
 }
