@@ -93,6 +93,10 @@ export class Network {
 		this.socket.send(JSON.stringify(msg))
 	}
 
+	closeSocket() {
+		this.socket.close(1000)
+	}
+
 	// Get the appropriate websocket for this environment / matchmaking code
 	private getSocket(mmCode): WebSocket {
 		// Establish a websocket based on the environment (Dev runs on 4949)

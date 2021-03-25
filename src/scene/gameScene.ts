@@ -604,6 +604,7 @@ export class GameScene extends Phaser.Scene {
   	}
 
   	private exitScene(): void {
+  		this.net.closeSocket()
   		this.scene.start("BuilderScene")
   	}
 }
