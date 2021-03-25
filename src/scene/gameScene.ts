@@ -173,13 +173,16 @@ export class GameScene extends Phaser.Scene {
 	    this.txtOpponentPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    
 	    // Alternate views presented when hovering over/clicking any stacks
+	    // TODO Make a method that replaces each of these sections, since they are all nearly identical
 	    this.txtDeckSize = this.add.text(
 	    	space.cardSize/2,
 	    	650 - space.pad - space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtDeckSize.setInteractive()
 	    this.txtDeckSize.on('pointerover', this.hoverAlternateView(this.deckContainer, this.txtDeckSize), this)
-	    this.txtDeckSize.on('pointerout', this.hoverAlternateViewExit(this.deckContainer, this.txtDeckSize), this)
+	    let hoverExit = this.hoverAlternateViewExit(this.deckContainer, this.txtDeckSize)
+	    this.txtDeckSize.on('pointerout', hoverExit, this)
+	    this.input.on('gameout', hoverExit, this)
 	    this.txtDeckSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    this.txtDiscardSize = this.add.text(
@@ -188,7 +191,9 @@ export class GameScene extends Phaser.Scene {
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtDiscardSize.setInteractive()
 	    this.txtDiscardSize.on('pointerover', this.hoverAlternateView(this.discardContainer, this.txtDiscardSize), this)
-	    this.txtDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.discardContainer, this.txtDiscardSize), this)
+	    hoverExit = this.hoverAlternateViewExit(this.discardContainer, this.txtDiscardSize)
+	    this.txtDiscardSize.on('pointerout', hoverExit, this)
+	    this.input.on('gameout', hoverExit, this)
 	    this.txtDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 
 	    this.txtOpponentDeckSize = this.add.text(
@@ -201,7 +206,9 @@ export class GameScene extends Phaser.Scene {
 	    	'', styleSizes).setOrigin(0.5, 0.5)
 	    this.txtOpponentDiscardSize.setInteractive()
 	    this.txtOpponentDiscardSize.on('pointerover', this.hoverAlternateView(this.opponentDiscardContainer, this.txtOpponentDiscardSize), this)
-	    this.txtOpponentDiscardSize.on('pointerout', this.hoverAlternateViewExit(this.opponentDiscardContainer, this.txtOpponentDiscardSize), this)
+	    hoverExit = this.hoverAlternateViewExit(this.opponentDiscardContainer, this.txtOpponentDiscardSize)
+	    this.txtOpponentDiscardSize.on('pointerout', hoverExit, this)
+	    this.input.on('gameout', hoverExit, this)
 	    this.txtOpponentDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    let stacks = [this.txtDeckSize, this.txtDiscardSize, this.txtOpponentDeckSize, this.txtOpponentDiscardSize]
@@ -216,7 +223,9 @@ export class GameScene extends Phaser.Scene {
 	    this.passContainer.add(btnRecap)
 	    btnRecap.setInteractive()
 	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer, btnRecap), this)
-	    btnRecap.on('pointerout', this.hoverAlternateViewExit(this.recapContainer, btnRecap), this)
+	    hoverExit = this.hoverAlternateViewExit(this.recapContainer, btnRecap)
+	    btnRecap.on('pointerout', hoverExit, this)
+	    this.input.on('gameout', hoverExit, this)
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
 	    this.btnRecap = btnRecap
 
