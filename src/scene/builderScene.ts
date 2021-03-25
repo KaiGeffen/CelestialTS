@@ -464,21 +464,23 @@ class MenuRegion {
     this.container.add(backgroundRectangle)
 
     // Vs ai toggleable button
-    let txt = 'Play versus Computer          X'
+    let txt = 'Play versus Computer          '
+    txt += gameSettings.vsAi ? '✓' : 'X'
     let btnVsAi = this.scene.add.text(space.pad, space.pad/2, txt, buttonStyle).setOrigin(0, 0)
     btnVsAi.setInteractive()
     btnVsAi.on('pointerdown', this.onVsAi(btnVsAi))
     this.container.add(btnVsAi)
 
     // Show recap toggleable button
-    txt = 'Show recap automatically    ✓'
+    txt = 'Show recap automatically    '
+    txt += gameSettings.autoRecap ? '✓' : 'X'
     let btnAutoRecap = this.scene.add.text(space.pad, space.pad/2 + space.cardSize, txt, buttonStyle).setOrigin(0, 0)
     btnAutoRecap.setInteractive()
     btnAutoRecap.on('pointerdown', this.onAutoRecap(btnAutoRecap))
     this.container.add(btnAutoRecap)
 
     // Prompt for matchmaking code
-    txt = 'Use matchmaking code...' + '\n      > '
+    txt = 'Use matchmaking code...' + '\n      > ' + gameSettings.mmCode
     let btnMatchmaking = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 2, txt, buttonStyle).setOrigin(0, 0)
     btnMatchmaking.setInteractive()
     btnMatchmaking.on('pointerdown', this.onSetMatchmaking(btnMatchmaking))
