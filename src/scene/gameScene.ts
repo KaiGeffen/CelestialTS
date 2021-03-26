@@ -405,15 +405,6 @@ export class GameScene extends Phaser.Scene {
 		this.cameras.main.flash(300, 0, 0, 0.1)
 	}
 
-	// Signal to the user that the game is now over
-	signalGameOver(youWon: boolean): void {
-		// Show text to signify victory / defeat
-		console.log('its over: ' + youWon)
-
-		// Change pass button to exit button
-
-	}
-
 	private addCard(card: Card,
 					index: number,
 					container: Phaser.GameObjects.Container,
@@ -526,11 +517,9 @@ export class GameScene extends Phaser.Scene {
   	}
 
   	private clickCard(index: number): () => void  {
-  		console.log("when click card is made, mulligans are : " + this.mulligansComplete)
 
   		let that = this
   		return function() {
-  			console.log("inside the method mulligans are : " + that.mulligansComplete)
   			if (that.mulligansComplete) {
   				that.net.playCard(index)
   			}
