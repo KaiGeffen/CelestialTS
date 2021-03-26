@@ -22,8 +22,8 @@ export class GameScene extends Phaser.Scene {
 	searchingBackground: Phaser.GameObjects.Rectangle
 	txtSearching: Phaser.GameObjects.Text
 
-	mulligansComplete = false
-	mulliganHighlights: Phaser.GameObjects.Rectangle[] = []
+	mulligansComplete: Boolean
+	mulliganHighlights: Phaser.GameObjects.Rectangle[]
 	txtOpponentMulligan: Phaser.GameObjects.Text
 	
 	handContainer: Phaser.GameObjects.Container
@@ -77,6 +77,8 @@ export class GameScene extends Phaser.Scene {
 
 		// Connect with the server
 		this.net = new Network(params.deck, this, mmCode)
+
+		// Make a list of objects that are temporary with game state
 		this.temporaryObjs = []
 
 		this.handContainer = this.add.container(0, 650 - 140)
@@ -108,6 +110,8 @@ export class GameScene extends Phaser.Scene {
 		this.storyContainer.add([this.visionRectangle, this.txtVision])
 
 		// Mulligan highlights and button
+		this.mulligansComplete = false
+		this.mulliganHighlights = []
 		for (var i = 0; i < 3; i++) {
 			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
 			let highlight = this.add.rectangle(x, y, 100, 140, 0xffaaaa, 1).setVisible(false)
@@ -522,9 +526,11 @@ export class GameScene extends Phaser.Scene {
   	}
 
   	private clickCard(index: number): () => void  {
+  		console.log("when click card is made, mulligans are : " + this.mulligansComplete)
 
   		let that = this
   		return function() {
+  			console.log("inside the method mulligans are : " + that.mulligansComplete)
   			if (that.mulligansComplete) {
   				that.net.playCard(index)
   			}
