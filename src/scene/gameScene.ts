@@ -30,7 +30,9 @@ export class GameScene extends Phaser.Scene {
 	opponentHandContainer: Phaser.GameObjects.Container
 	deckContainer: Phaser.GameObjects.Container
 	discardContainer: Phaser.GameObjects.Container
+	opponentDeckContainer: Phaser.GameObjects.Container
 	opponentDiscardContainer: Phaser.GameObjects.Container
+
 	storyContainer: Phaser.GameObjects.Container
 	stackContainer: Phaser.GameObjects.Container
 	recapContainer: Phaser.GameObjects.Container
@@ -86,6 +88,8 @@ export class GameScene extends Phaser.Scene {
 		this.deckContainer = this.add.container(0, 650/2).setVisible(false)
 		this.discardContainer = this.add.container(0, 650/2).setVisible(false)
 		this.opponentDiscardContainer = this.add.container(0, 650/2).setVisible(false)
+		this.opponentDeckContainer = this.add.container(0, 650/2).setVisible(false)
+
 		this.recapContainer = this.add.container(0, 650/2 - 80).setVisible(false)
 		this.storyContainer = this.add.container(0, 650/2 - 80)
 		this.stackContainer = this.add.container(800, 0)
@@ -204,6 +208,13 @@ export class GameScene extends Phaser.Scene {
 	    	space.cardSize/2,
 	    	space.pad + space.cardSize/2,
 	    	'', styleSizes).setOrigin(0.5, 0.5)
+	    this.txtOpponentDeckSize.setInteractive()
+	    this.txtOpponentDeckSize.on('pointerover', this.hoverAlternateView(this.opponentDeckContainer, this.txtOpponentDeckSize), this)
+	    hoverExit = this.hoverAlternateViewExit(this.opponentDeckContainer, this.txtOpponentDeckSize)
+	    this.txtOpponentDeckSize.on('pointerout', hoverExit, this)
+	    this.input.on('gameout', hoverExit, this)
+	    this.txtOpponentDeckSize.on('pointerdown', this.clickAlternateView(), this)
+
 	    this.txtOpponentDiscardSize = this.add.text(
 	    	space.cardSize*3/2 + space.pad,
 	    	space.pad + space.cardSize/2,
@@ -217,6 +228,11 @@ export class GameScene extends Phaser.Scene {
 	    
 	    let stacks = [this.txtDeckSize, this.txtDiscardSize, this.txtOpponentDeckSize, this.txtOpponentDiscardSize]
 	    this.stackContainer.add(stacks)
+
+	    let txtLastShuffleExplanation = this.add.text(
+	    	space.pad, -(space.cardSize/2 + space.pad), "Opponent's last known shuffle:", textStyle)
+	    txtLastShuffleExplanation.setOrigin(0, 1)
+	    this.opponentDeckContainer.add(txtLastShuffleExplanation)
 
 	    // Recap text and hidden text
 	    this.txtRecapTotals = this.add.text(
@@ -256,6 +272,8 @@ export class GameScene extends Phaser.Scene {
 
 	// Display the given game state
 	displayState(state: ClientState): void {
+		console.log(state.lastShuffle)
+
 		// Display victory / defeat
 		if (state.winner === 0) {
 			let txtResult = this.add.text(space.pad, 0, "You won!\n\nClick to continue...", stylePassed).setOrigin(0, 0)
@@ -321,20 +339,19 @@ export class GameScene extends Phaser.Scene {
 		for (var i = 0; i < state.discard[0].length; i++) {
 			this.addCard(state.discard[0][i], i, this.discardContainer)
 		}
+		for (var i = 0; i < state.lastShuffle[1].length; i++) {
+			this.addCard(state.lastShuffle[1][i], i, this.opponentDeckContainer)
+		}
 		for (var i = 0; i < state.discard[1].length; i++) {
 			this.addCard(state.discard[1][i], i, this.opponentDiscardContainer)
 		}
 
 		// Stacks
-		if (state.deck.length > 0) {
-			this.addCard(cardback, 0, this.stackContainer, 0)
-			this.txtDeckSize.setText(state.deck.length.toString())
-		} else this.txtDeckSize.setText('')
+		this.addCard(cardback, 0, this.stackContainer, 0)
+		this.txtDeckSize.setText(state.deck.length.toString())
 
-		if (state.opponentDeckSize > 0) {
-			this.addCard(cardback, 0, this.stackContainer, 1)
-			this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
-		} else this.txtOpponentDeckSize.setText('')
+		this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
+		this.addCard(cardback, 0, this.stackContainer, 1)	
 
 		if (state.discard[0].length > 0) {
 			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
@@ -451,6 +468,7 @@ export class GameScene extends Phaser.Scene {
 
 			case this.deckContainer:
 			case this.discardContainer:
+			case this.opponentDeckContainer:
 			case this.opponentDiscardContainer:
 				// Each row contains 15 cards, then next row of cards is below with some overlap
 				x = space.pad + space.cardSize/2 + (space.cardSize - space.stackOverlap)  * (index%15)
@@ -538,12 +556,14 @@ export class GameScene extends Phaser.Scene {
   			let hiddenContainers = [
 		  		that.deckContainer,
 		  		that.discardContainer,
+		  		that.opponentDeckContainer,
 		  		that.opponentDiscardContainer,
 		  		that.recapContainer]
 
 	  		let highlightedObjects = [
 		  		that.txtDeckSize,
 		  		that.txtDiscardSize,
+		  		that.txtOpponentDeckSize,
 		  		that.txtOpponentDiscardSize,
 		  		that.btnRecap]
 
