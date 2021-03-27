@@ -2,7 +2,7 @@ import "phaser"
 import { collectibleCards, tokenCards, Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 import { buttonStyle, filterButtonStyle, space } from "../settings"
-import { decodeCard, encodeCard } from "../lib/codec"
+import { decodeCard, encodeCard, encodeDeck } from "../lib/codec"
 
 
 const catalog = collectibleCards
@@ -18,6 +18,9 @@ var gameSettings = {
   autoRecap: true,
   mmCode: ''
 }
+// The last deck of cards the player had, which gets repopulated after their match
+var lastDeck: Card[] = []
+
 
 export class BuilderScene extends Phaser.Scene {
   catalogRegion
@@ -169,7 +172,7 @@ class DeckRegion {
   }
 
   create(): void {
-    // Sort button 
+    // Sort button
     let btnSort = this.scene.add.text(0, -100, 'Sort', buttonStyle)
     btnSort.setInteractive()
 
@@ -185,26 +188,21 @@ class DeckRegion {
 
     this.btnStart.setInteractive()
     this.btnStart.on('pointerdown', function (event) {
-      let deck: Card[] = that.deck.map( (cardImage) => cardImage.card)
-      this.scene.scene.start("GameScene", {deck: deck, settings: gameSettings})
+      lastDeck = that.deck.map( (cardImage) => cardImage.card)
+      this.scene.scene.start("GameScene", {deck: lastDeck, settings: gameSettings})
     })
     
     this.updateStartButton()
     
     this.container.add(this.btnStart)
 
-    // Text confirming that user copied their decklist
-    let styleConfirm = {
-      font: '106px Arial Bold',
-      color: '#ddd',
-      backgroundColor: '#88a'
-    }
-    let txtCopyConfirm = this.scene.add.text(1100/2, 310, ' Copied ', styleConfirm).setOrigin(0.5, 0.5)
-    txtCopyConfirm.setVisible(false)
-
     // Menu button, the callback is set by menu region during its init
     this.btnMenu = this.scene.add.text(0, -150, 'Menu', buttonStyle)
     this.container.add(this.btnMenu)
+
+
+    // Add all cards that were in the last deck the player had, if any
+    this.setDeck(encodeDeck(lastDeck))
   }
 
   addCard(card: Card): void {

@@ -93,7 +93,7 @@ export class CardImage {
 
   private onHover(): () => void {
     return function() {
-      if (!this.unplayable) this.image.setTint(0xffff00)
+      if (!this.unplayable) this.image.setTint(0xa0a034)
 
       cardInfo.text = this.getCardText(this.card)
 
