@@ -1,5 +1,48 @@
 [
   
+  {"name": "Bee", "id": 126,
+    "cost": 0,
+    "text": "0:1, visible"
+  },
+  {"name": "Butterfly", "id": 128,
+    "cost": 0,
+    "text": "0:0, nourish 1 (The next card you resolve is worth 1 more point)"
+  },
+  {"name": "Raise Dead", "id": 95,
+    "cost": 2,
+    "text": "2:2, put the top card of your discard pile on top of your deck"
+  },
+  {"name": "Bastet", "id": 116,
+    "cost": 2,
+    "text": "2:1, this card retains all changes to points as it resolves (For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
+  },
+  {"name": "Beehive", "id": 127,
+    "cost": 2,
+    "text": "2:0, swarm 3 (After your next draw step, create 3 ${126} in your hand)"
+  },
+
+  {"name": "Stable", "id": 125,
+    "cost": 3,
+    "text": "3:3, store the top card of your discard pile in this card. This card's effect becomes to add one of the stored card to your hand."
+  },
+
+  {"name": "Honey", "id": 132,
+    "cost": 4,
+    "text": "4:X, swarm X, where X is the number of rounds you have won"
+  },
+  {"name": "Beekeep", "id": 133,
+    "cost": 5,
+    "text": "5:5, store all 0-cost cards in your discard pile in this card. This card's effect becomes to add them back to your discard pile."
+  },
+
+
+
+
+
+
+
+
+
   {"name": "Mute", "id": 51,
     "cost": 1, "points": 1,
     "text": "1:1, restrict 1 (Your opponent can't play their leftmost unrestricted card next turn)"

@@ -272,8 +272,6 @@ export class GameScene extends Phaser.Scene {
 
 	// Display the given game state
 	displayState(state: ClientState): void {
-		console.log(state.lastShuffle)
-
 		// Display victory / defeat
 		if (state.winner === 0) {
 			let txtResult = this.add.text(space.pad, 0, "You won!\n\nClick to continue...", stylePassed).setOrigin(0, 0)

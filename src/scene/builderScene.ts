@@ -2,7 +2,7 @@ import "phaser"
 import { collectibleCards, tokenCards, Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 import { buttonStyle, filterButtonStyle, space } from "../settings"
-import { decodeCard, encodeCard, encodeDeck } from "../lib/codec"
+import { decodeCard, encodeCard } from "../lib/codec"
 
 
 const catalog = collectibleCards
@@ -142,9 +142,13 @@ class CatalogRegion {
   }
 
   private getCardPosition(index: number): [number, number] {
+    let pageNumber = Math.floor(index / space.cardsPerPage)
+    index = index % space.cardsPerPage
+
     let col = index % space.cardsPerRow
     let xPad = (1 + col) * space.pad
     let x = col * space.cardSize + xPad + space.cardSize / 2
+    x += pageNumber * 1100
 
     let row = Math.floor(index / space.cardsPerRow)
     let yPad = (1 + row) * space.pad
@@ -200,9 +204,9 @@ class DeckRegion {
     this.btnMenu = this.scene.add.text(0, -150, 'Menu', buttonStyle)
     this.container.add(this.btnMenu)
 
-
     // Add all cards that were in the last deck the player had, if any
-    this.setDeck(encodeDeck(lastDeck))
+    let lastDeckCode = lastDeck.map((card) => card.id).join(':')
+    this.setDeck(lastDeckCode)
   }
 
   addCard(card: Card): void {
