@@ -15,8 +15,11 @@ var cardInfo: Phaser.GameObjects.Text
 // Settings for the game that are passed to the GameScene
 var gameSettings = {
   vsAi: false,
-  autoRecap: true,
+  autoRecap: false,
   mmCode: ''
+}
+if (location.port === '4949') {
+  gameSettings.vsAi = true
 }
 // The last deck of cards the player had, which gets repopulated after their match
 var lastDeck: Card[] = []
