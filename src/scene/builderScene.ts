@@ -70,6 +70,7 @@ export class BuilderScene extends Phaser.Scene {
 class CatalogRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
+  cardContainer: Phaser.GameObjects.Container
   deckRegion
   cardImages: CardImage[] = []
   currentPage: number = 0
@@ -81,6 +82,7 @@ class CatalogRegion {
   init(scene, deckRegion): void {
     this.scene = scene
     this.container = this.scene.add.container(0, 0)
+    this.cardContainer = this.scene.add.container(0, 0)
     this.deckRegion = deckRegion
   }
 
@@ -91,13 +93,20 @@ class CatalogRegion {
     if (catalog.length > space.cardsPerPage) {
       let x = space.cardsPerRow * (space.cardSize + space.pad) + space.pad
       let y = 2 * (space.cardSize + space.pad) + space.pad/2
+
+      // TODO If these are on the main scene instead of in a container, they need to be inactive
+      // When the menu is open, or they will be above the invisible exit rectangle
+      // Better to have these be on this catalog or maybe on a container which has the card
+      // container
       let btnNext = this.scene.add.text(x, y, '>', buttonStyle).setOrigin(0, 0)
       btnNext.setInteractive()
       btnNext.on('pointerdown', this.goNextPage())
+      this.container.add(btnNext)
 
       let btnPrev = this.scene.add.text(x, y, '<', buttonStyle).setOrigin(0, 1)
       btnPrev.setInteractive()
       btnPrev.on('pointerdown', this.goPrevPage())
+      this.container.add(btnPrev)
     }
   }
 
@@ -154,7 +163,7 @@ class CatalogRegion {
     image.setInteractive()
     image.on('pointerdown', this.onClick(card), this)
 
-    this.container.add(image)
+    this.cardContainer.add(image)
 
     this.cardImages.push(new CardImage(card, image))
   }
@@ -198,7 +207,7 @@ class CatalogRegion {
   }
 
   private goToPage(pageNum: number): void {
-    this.container.x = -(pageNum * space.pageOffset)
+    this.cardContainer.x = -(pageNum * space.pageOffset)
     this.currentPage = pageNum
   }
 }
