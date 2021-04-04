@@ -72,6 +72,7 @@ class CatalogRegion {
   container: Phaser.GameObjects.Container
   deckRegion
   cardImages: CardImage[] = []
+  currentPage: number = 0
 
   constructor(scene: Phaser.Scene, deckRegion) {
     this.init(scene, deckRegion)
@@ -87,6 +88,17 @@ class CatalogRegion {
     for (var i = catalog.length - 1; i >= 0; i--) {
       this.addCard(catalog[i], i)
     }
+    if (catalog.length > space.cardsPerPage) {
+      let x = space.cardsPerRow * (space.cardSize + space.pad) + space.pad
+      let y = 2 * (space.cardSize + space.pad) + space.pad/2
+      let btnNext = this.scene.add.text(x, y, '>', buttonStyle).setOrigin(0, 0)
+      btnNext.setInteractive()
+      btnNext.on('pointerdown', this.goNextPage())
+
+      let btnPrev = this.scene.add.text(x, y, '<', buttonStyle).setOrigin(0, 1)
+      btnPrev.setInteractive()
+      btnPrev.on('pointerdown', this.goPrevPage())
+    }
   }
 
   // Filter which cards are visible
@@ -95,6 +107,7 @@ class CatalogRegion {
     let cardsRemoved = false
     let visibleIndex = 0
 
+    // TODO Explain this
     for (var i = this.cardImages.length - 1; i >= 0; i--) {
       let cardImage = this.cardImages[i]
 
@@ -121,6 +134,8 @@ class CatalogRegion {
         cardImage.image.setVisible(false)
       }
     }
+
+    this.goToPage(0)
   }
 
   private onClick(card: Card): () => void {
@@ -151,13 +166,40 @@ class CatalogRegion {
     let col = index % space.cardsPerRow
     let xPad = (1 + col) * space.pad
     let x = col * space.cardSize + xPad + space.cardSize / 2
-    x += pageNumber * 1100
+    x += pageNumber * space.pageOffset
 
     let row = Math.floor(index / space.cardsPerRow)
     let yPad = (1 + row) * space.pad
     let y = row * space.cardSize + yPad + space.cardSize / 2
 
     return [x, y]
+  }
+
+  private goNextPage(): () => void {
+    let that = this
+    return function() {
+      let numVisibleCards = that.cardImages.filter(function(cardImage) {
+        return cardImage.image.visible
+      }).length
+
+      if (numVisibleCards > (that.currentPage + 1) * space.cardsPerPage) {
+        that.goToPage(that.currentPage + 1)
+      }
+    }
+  }
+
+  private goPrevPage(): () => void {
+    let that = this
+    return function() {
+      if (that.currentPage > 0) {
+        that.goToPage(that.currentPage - 1)
+      }
+    }
+  }
+
+  private goToPage(pageNum: number): void {
+    this.container.x = -(pageNum * space.pageOffset)
+    this.currentPage = pageNum
   }
 }
 

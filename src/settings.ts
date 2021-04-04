@@ -37,5 +37,6 @@ export const space = {
   rowsPerPage: 4,
   cardsPerPage: 8 * 4,
   stackOffset: 30,
-  stackOverlap: 40
+  stackOverlap: 40,
+  pageOffset: 1200
 }
