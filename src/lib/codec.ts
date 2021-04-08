@@ -99,6 +99,7 @@ function decodeRecap(s: string): Recap {
 	let arr = s.split(full_state_delim)
 	let simpleRecap = arr[0]
 	arr = arr.slice(1)
+	// console.log(arr)
 
 	// The list of states player sees before/after each act in the story
 	let stateList: ClientState[] = arr.map(s => new ClientState(JSON.parse(s)))

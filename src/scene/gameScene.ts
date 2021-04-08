@@ -271,7 +271,28 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	// Display the given game state
-	displayState(state: ClientState): void {
+	displayState(state: ClientState, recap: Boolean = false): void {
+		let start_of_a_round = state.story.acts.length === 0 && state.passes === 0 && state.maxMana[0] > 1
+
+		if (recap){
+			this.cameras.main.setBackgroundColor("#707070")
+		}
+		else
+		{
+			this.cameras.main.setBackgroundColor("#202070")
+		}
+
+		if (start_of_a_round && state.recap.stateList.length > 0) {
+			let firstRecappedState = state.recap.stateList.shift()
+			this.displayState(firstRecappedState, recap=true)
+
+			let that = this
+			setTimeout(function() {
+				that.displayState(state)
+			}, 1000)
+			return
+		}
+
 		// Display victory / defeat
 		if (state.winner === 0) {
 			let txtResult = this.add.text(space.pad, 0, "You won!\n\nClick to continue...", stylePassed).setOrigin(0, 0)
@@ -408,8 +429,7 @@ export class GameScene extends Phaser.Scene {
 		}
 
 		// If the round just started, show the recap
-		if (this.autoRecap &&
-			state.story.acts.length === 0 && state.passes === 0 && state.maxMana[0] > 1) {
+		if (this.autoRecap && start_of_a_round) {
 			this.hoverAlternateView(this.recapContainer, this.btnRecap)()
 			this.clickAlternateView()()
 		}
