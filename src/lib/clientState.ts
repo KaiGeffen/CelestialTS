@@ -26,6 +26,9 @@ export default class ClientState {
 	vision: number
 	winner: number
 
+	// Score is only for viewing the recap of states between each act in story
+	score: [number, number]
+
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
 		this.opponentHandSize = state.opp_hand
@@ -47,5 +50,6 @@ export default class ClientState {
 		this.cardsPlayable = state.cards_playable
 		this.vision = state.vision
 		this.winner = state.winner
+		this.score = state.score
 	}
 }

@@ -1,9 +1,11 @@
 import { Card, allCards } from "../catalog/catalog"
 import Story from './story'
 import Recap from './recap'
+import ClientState from './clientState'
 
 
 const delims = ['¡', '™', '£']
+const full_state_delim = 'ª'
 
 function encodeCard(card: Card): string {
 	return card.id.toString()
@@ -70,7 +72,7 @@ function decodeStory(s: string): Story {
 }
 
 // TODO Make a more robust status module once the desired functionality is known
-const allStatuses = ['Inspired', 'Nourish', 'Starve', 'Restricted']
+const allStatuses = ['Inspired', 'Inspire', 'Nourish', 'Starve', 'Restricted']
 
 function decodeStatuses(s: string): string {
 	if (s === '') return ''
@@ -94,7 +96,15 @@ function decodeStatuses(s: string): string {
 }
 
 function decodeRecap(s: string): Recap {
-	let sections = s.split(delims[0])
+	let arr = s.split(full_state_delim)
+	let simpleRecap = arr[0]
+	arr = arr.slice(1)
+	// console.log(arr)
+
+	// The list of states player sees before/after each act in the story
+	let stateList: ClientState[] = arr.map(s => new ClientState(JSON.parse(s)))
+
+	let sections = simpleRecap.split(delims[0])
 	let sums = sections[0].split(delims[1]).map(parseFloat)
 	let wins = sections[1].split(delims[1]).map(parseFloat)
 	let safety = sections[2].split(delims[1]).map(parseFloat)
@@ -117,7 +127,7 @@ function decodeRecap(s: string): Recap {
 
 	let playList = plays.map(decodePlay)
 
-	return new Recap(sums, wins, safety, playList)
+	return new Recap(sums, wins, safety, playList, stateList)
 }
 
 export {encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses, decodeRecap}
