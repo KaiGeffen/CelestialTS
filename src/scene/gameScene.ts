@@ -155,7 +155,9 @@ export class GameScene extends Phaser.Scene {
     	btnPass.setInteractive()
 
 	    btnPass.on('pointerdown', function (event) {
-	      that.net.passTurn()
+	    	if (!that.recapPlaying) {
+	    		that.net.passTurn()
+	    	}
 	    })
 
 	    // Mana text
@@ -600,7 +602,10 @@ export class GameScene extends Phaser.Scene {
 
   		let that = this
   		return function() {
-  			if (that.mulligansComplete) {
+  			if (that.recapPlaying) {
+  				that.signalError()
+  			}
+  			else if (that.mulligansComplete) {
   				that.net.playCard(index)
   			}
   			else
