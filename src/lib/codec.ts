@@ -72,7 +72,7 @@ function decodeStory(s: string): Story {
 }
 
 // TODO Make a more robust status module once the desired functionality is known
-const allStatuses = ['Inspired', 'Nourish', 'Starve', 'Restricted']
+const allStatuses = ['Inspired', 'Inspire', 'Nourish', 'Starve', 'Restricted']
 
 function decodeStatuses(s: string): string {
 	if (s === '') return ''

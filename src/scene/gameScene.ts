@@ -9,6 +9,7 @@ import Recap from '../lib/recap'
 
 
 const AUTO_RECAP_PARAM = 'ar'
+const RECAP_TIME = 1000
 
 var cardInfo: Phaser.GameObjects.Text
 
@@ -60,6 +61,9 @@ export class GameScene extends Phaser.Scene {
 	txtDiscardSize: Phaser.GameObjects.Text
 	txtOpponentDiscardSize: Phaser.GameObjects.Text
 	btnRecap: Phaser.GameObjects.Text
+
+	// Information about the recap that is playing
+	txtScores: Phaser.GameObjects.Text
 
 	// Option to show the recap after a round ends
 	autoRecap: boolean
@@ -179,7 +183,7 @@ export class GameScene extends Phaser.Scene {
 
 	    this.txtPass = this.add.text(space.pad, 650 - 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
 	    this.txtOpponentPass = this.add.text(space.pad, 200, 'Passed', stylePassed).setVisible(false).setOrigin(0, 0.5)
-	    
+
 	    // Alternate views presented when hovering over/clicking any stacks
 	    // TODO Make a method that replaces each of these sections, since they are all nearly identical
 	    this.txtDeckSize = this.add.text(
@@ -234,6 +238,11 @@ export class GameScene extends Phaser.Scene {
 	    txtLastShuffleExplanation.setOrigin(0, 1)
 	    this.opponentDeckContainer.add(txtLastShuffleExplanation)
 
+	    // Scores text for recap states
+	    this.txtScores = this.add.text(
+	    	800, space.cardSize/2 + space.stackOffset, '', stylePassed).setOrigin(0, 0.5)
+	    this.storyContainer.add(this.txtScores)
+
 	    // Recap text and hidden text
 	    this.txtRecapTotals = this.add.text(
 	    	0, space.cardSize/2 + space.stackOffset, '', stylePassed).setOrigin(0, 0.5)
@@ -270,27 +279,62 @@ export class GameScene extends Phaser.Scene {
 		}
 	}
 
+	// If a recap of states is playing, wait to show the new state until after it has finished
+	recapPlaying: Boolean = false
+	queuedState: ClientState = undefined
 	// Display the given game state
-	displayState(state: ClientState, recap: Boolean = false): void {
+	displayState(state: ClientState, recap: Boolean = false, ): void {
+		let that = this
 		let start_of_a_round = state.story.acts.length === 0 && state.passes === 0 && state.maxMana[0] > 1
 
-		if (recap){
+		// If currently watching a recap, change the colors and display scores
+		if (recap)
+		{
 			this.cameras.main.setBackgroundColor("#707070")
+			let s = `${state.score[1]}\n\n${state.score[0]}`
+			this.txtScores.setText(s)
 		}
+		// Queue this for after recap finishes
+		else if (this.recapPlaying)
+		{
+			this.queuedState = state
+			return
+		}
+		// Display this non-recap state, with normal background and no scores displayed
 		else
 		{
 			this.cameras.main.setBackgroundColor("#202070")
-		}
+			this.txtScores.setText('')
 
-		if (start_of_a_round && state.recap.stateList.length > 0) {
-			let firstRecappedState = state.recap.stateList.shift()
-			this.displayState(firstRecappedState, recap=true)
+			// If a round just ended, recap each state that the game was in throughout the story
+			let numberStates = state.recap.stateList.length
+			if (start_of_a_round && numberStates > 0) {
+				this.recapPlaying = true
+				
+				// Display each recapped state
+				for (var i = 0; i < numberStates; i++) {
+					let delayBeforeDisplay = i * RECAP_TIME
+					let recapState = state.recap.stateList[i]
 
-			let that = this
-			setTimeout(function() {
-				that.displayState(state)
-			}, 1000)
-			return
+					setTimeout(function() {
+						that.displayState(recapState, recap=true)
+					}, delayBeforeDisplay)
+				}
+
+				// Display this state without any recapped states
+				state.recap.stateList = []
+				setTimeout(function() {
+					that.recapPlaying = false
+
+					if (that.queuedState !== undefined) {
+						that.displayState(that.queuedState)
+						that.queuedState = undefined
+					} else {
+						that.displayState(state)
+					}
+				}, numberStates * RECAP_TIME)
+				return
+			}
 		}
 
 		// Display victory / defeat
