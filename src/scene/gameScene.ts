@@ -475,7 +475,7 @@ export class GameScene extends Phaser.Scene {
 		}
 
 		// If the round just started, show the recap
-		if (this.autoRecap && start_of_a_round) {
+		if (this.autoRecap && start_of_a_round && !recap) {
 			this.hoverAlternateView(this.recapContainer, this.btnRecap)()
 			this.clickAlternateView()()
 		}
