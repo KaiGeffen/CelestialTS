@@ -274,10 +274,14 @@ export class GameScene extends Phaser.Scene {
 			this.searchingBackground = this.add.rectangle(0, 0, 1100, 650, 0x202070).setOrigin(0, 0)
 			this.txtSearching = this.add.text(1100/2, 650/2, 'Searching for an opponent...', style).setOrigin(0.5, 0.5)
 		}
-		else if (this.searchingBackground) // Only destroy if they exist
-		{
-			this.searchingBackground.destroy()
-			this.txtSearching.destroy()
+		else {
+			this.sound.play('success')
+
+			if (this.searchingBackground) // Only destroy if they exist
+			{
+				this.searchingBackground.destroy()
+				this.txtSearching.destroy()
+			}
 		}
 	}
 

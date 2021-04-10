@@ -8,6 +8,11 @@ import { decodeCard, encodeCard } from "../lib/codec"
 const catalog = collectibleCards
 
 const DECK_PARAM = 'deck'
+const SOUNDS = [
+  'success',
+  'failure',
+  'click'
+]
 
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
@@ -46,15 +51,20 @@ export class BuilderScene extends Phaser.Scene {
     cardInfo = addCardInfoToScene(this)
   }
 
-  // Load all of the card and token images
   preload(): void {
-    this.load.path = "assets/images/"
+    // Load all of the card and token images
+    this.load.path = "assets/"
 
     catalog.forEach( (card) => {
-      this.load.image(card.name, `${card.name}.png`)
+      this.load.image(card.name, `images/${card.name}.png`)
     })
     tokenCards.forEach( (card) => {
-      this.load.image(card.name, `${card.name}.png`)
+      this.load.image(card.name, `images/${card.name}.png`)
+    })
+
+    // Load all used audio
+    SOUNDS.forEach( (sound) => {
+      this.load.audio(sound, `sfx/${sound}.wav`)
     })
   }
   
@@ -148,8 +158,17 @@ class CatalogRegion {
   }
 
   private onClick(card: Card): () => void {
+    let that = this
     return function() {
-      this.deckRegion.addCard(card)
+      if (that.deckRegion.addCard(card)) {
+        that.scene.sound.play('click')
+      }
+      else {
+        that.scene.sound.play('failure') 
+
+        that.scene.cameras.main.flash(300, 0, 0, 0.1)
+      }
+      
     }
   }
 
@@ -236,6 +255,8 @@ class DeckRegion {
 
     let that = this
     btnSort.on('pointerdown', function (event) {
+      that.scene.sound.play('click')
+
       that.sort()
     })
 
@@ -263,10 +284,9 @@ class DeckRegion {
     this.setDeck(lastDeckCode)
   }
 
-  addCard(card: Card): void {
+  addCard(card: Card): boolean {
     if (this.deck.length >= 15) {
-      this.scene.cameras.main.flash(300, 0, 0, 0.1)
-      return
+      return false
     }
 
     let index = this.deck.length
@@ -284,6 +304,8 @@ class DeckRegion {
     this.deck.push(new CardImage(card, image))
 
     this.updateStartButton()
+
+    return true
   }
 
   // Set the current deck based on given deck code, returns true if deck was valid
@@ -343,6 +365,9 @@ class DeckRegion {
   private removeCard(index: number): () => void {
     let that = this
     return function() {
+      // Play a sound
+      that.scene.sound.play('click')
+
       // The text for the removed card would otherwise linger
       cardInfo.text = ''
 
@@ -630,6 +655,8 @@ class MenuRegion {
         let isValid = that.deckRegion.setDeck(code)
         if (!isValid) {
           // Alert user if deck code is invalid
+          that.scene.sound.play('failure')
+
           let previousText = btn.text
           btn.setText('Invalid code!')
           that.scene.time.delayedCall(600, () => btn.setText(previousText))
