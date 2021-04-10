@@ -285,9 +285,9 @@ export class GameScene extends Phaser.Scene {
 	recapPlaying: Boolean = false
 	queuedState: ClientState = undefined
 	// Display the given game state
-	displayState(state: ClientState, recap: Boolean = false, ): void {
+	displayState(state: ClientState, recap: Boolean = false): void {
 		let that = this
-		let start_of_a_round = state.story.acts.length === 0 && state.passes === 0 && state.maxMana[0] > 1
+		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 
 		// If currently watching a recap, change the colors and display scores
 		if (recap)
@@ -305,12 +305,16 @@ export class GameScene extends Phaser.Scene {
 		// Display this non-recap state, with normal background and no scores displayed
 		else
 		{
+			// TODO Sometimes this should happen even in a recap, such is if a card is discarded
+			// Reset the hover text in case the hovered card moved with object replacement
+			cardInfo.text = ''
+
 			this.cameras.main.setBackgroundColor("#202070")
 			this.txtScores.setText('')
 
 			// If a round just ended, recap each state that the game was in throughout the story
 			let numberStates = state.recap.stateList.length
-			if (start_of_a_round && numberStates > 0) {
+			if (isRoundStart && numberStates > 0) {
 				this.recapPlaying = true
 				
 				// Display each recapped state
@@ -354,9 +358,6 @@ export class GameScene extends Phaser.Scene {
 			this.storyContainer.add(txtResult)
 		}
 
-		// Reset the hover text in case the hovered card moved with object replacement
-		cardInfo.text = ''
-
 		// Remove all of the existing cards
 		this.temporaryObjs.forEach(obj => obj.destroy())
 		this.temporaryObjs = []
@@ -378,10 +379,23 @@ export class GameScene extends Phaser.Scene {
 		}
 
 		// Story
+		let numActsCompleted = 0
+		if (recap) {
+			numActsCompleted = state.recap.playList.length
+
+			for (var i = 0; i < numActsCompleted; i++) {
+				let completedAct: [Card, number, string] = state.recap.playList[i]
+				let card = completedAct[0]
+				let owner = completedAct[1]
+
+				this.addCard(card, i, this.storyContainer, owner, true)
+			}
+		}
 		for (var i = 0; i < state.story.acts.length; i++) {
 			let act = state.story.acts[i]
 
-			this.addCard(act.card, i, this.storyContainer, act.owner)
+			let storyIndex = i + numActsCompleted
+			this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
 		}
 
 		// Recap
@@ -475,10 +489,10 @@ export class GameScene extends Phaser.Scene {
 		}
 
 		// If the round just started, show the recap
-		if (this.autoRecap && start_of_a_round && !recap) {
-			this.hoverAlternateView(this.recapContainer, this.btnRecap)()
-			this.clickAlternateView()()
-		}
+		// if (this.autoRecap && isRoundStart && !recap && state.maxMana[0] > 1) {
+		// 	this.hoverAlternateView(this.recapContainer, this.btnRecap)()
+		// 	this.clickAlternateView()()
+		// }
 	}
 
 	// Alert the user that they have taken an illegal or impossible action
@@ -489,7 +503,8 @@ export class GameScene extends Phaser.Scene {
 	private addCard(card: Card,
 					index: number,
 					container: Phaser.GameObjects.Container,
-					owner: number = 0): CardImage {
+					owner: number = 0,
+					transparent: boolean = false): CardImage {
 		let image: Phaser.GameObjects.Image
 		let [x, y] = this.getCardPosition(index, container, owner)
 
@@ -501,6 +516,8 @@ export class GameScene extends Phaser.Scene {
 		container.add(image)
 
 		let cardImage = new CardImage(card, image)
+		if (transparent) cardImage.setTransparent()
+		
 		this.temporaryObjs.push(cardImage)
 		return cardImage
 	}

@@ -49,6 +49,10 @@ export class CardImage {
     this.unplayable = true
   }
 
+  setTransparent(): void {
+    this.image.setAlpha(0.2)
+  }
+
   private getCardText(card): string {
     // Set the hover text
     let result = card.name + '\n'
