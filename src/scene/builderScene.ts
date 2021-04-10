@@ -12,7 +12,7 @@ const SOUNDS = [
   'success',
   'failure',
   'click',
-  'open'
+  'close'
 ]
 
 // The card hover text for this scene, which is referenced in the regions
@@ -511,7 +511,7 @@ class FilterRegion {
     let that = this
     return function() {
       that.scene.sound.play('click')
-      
+
       btns.forEach( (btn) => btn.clearTint())
 
       for (var i = 0; i < that.filterCostAry.length; i++) {

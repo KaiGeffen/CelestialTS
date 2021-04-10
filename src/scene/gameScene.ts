@@ -501,6 +501,8 @@ export class GameScene extends Phaser.Scene {
 
 	// Alert the user that they have taken an illegal or impossible action
 	signalError(): void {
+      	this.sound.play('failure')
+
 		this.cameras.main.flash(300, 0, 0, 0.1)
 	}
 
@@ -626,8 +628,9 @@ export class GameScene extends Phaser.Scene {
   			else if (that.mulligansComplete) {
   				that.net.playCard(index)
   			}
-  			else
-  			{
+  			else {
+      			this.sound.play('click')
+
   				let highlight = that.mulliganHighlights[index]
   				highlight.setVisible(!highlight.visible)
   			}
@@ -653,6 +656,8 @@ export class GameScene extends Phaser.Scene {
 		  		that.btnRecap]
 
   			if (storyHiddenLock) {
+      			that.sound.play('close')
+
 	  			hiddenContainers.forEach(c => c.setVisible(false))
 	  			highlightedObjects.forEach(o => o.setShadow())
 	  			that.storyContainer.setVisible(true)
@@ -663,10 +668,12 @@ export class GameScene extends Phaser.Scene {
   	}
 
   	private clickAlternateView(): () => void {
-  		let time = this.time
+  		let that = this
   		return function() {
   			if (!storyHiddenLock) {
-  				time.delayedCall(1, () => storyHiddenLock = true)
+      			that.sound.play('click')
+
+  				that.time.delayedCall(1, () => storyHiddenLock = true)
   			}
   		}
   	}
