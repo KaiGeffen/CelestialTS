@@ -326,7 +326,6 @@ export class GameScene extends Phaser.Scene {
 				for (var i = 0; i < numberStates; i++) {
 					let delayBeforeDisplay = i * RECAP_TIME
 					let recapState = state.recap.stateList[i]
-					console.log(recapState)
 
 					setTimeout(function() {
 						that.displayState(recapState, recap=true)
@@ -347,6 +346,12 @@ export class GameScene extends Phaser.Scene {
 				}, numberStates * RECAP_TIME)
 				return
 			}
+		}
+
+		// Play whatever sound this new state brings
+		if (state.soundEffect !== null) {
+			console.log(state.soundEffect)
+			this.sound.play(state.soundEffect)
 		}
 
 		// Display victory / defeat

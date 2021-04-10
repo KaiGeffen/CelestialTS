@@ -12,7 +12,9 @@ const SOUNDS = [
   'success',
   'failure',
   'click',
-  'close'
+  'close',
+  'play',
+  'pass'
 ]
 
 // The card hover text for this scene, which is referenced in the regions

@@ -29,6 +29,9 @@ export default class ClientState {
 	// Score is only for viewing the recap of states between each act in story
 	score: [number, number]
 
+	// The new thing that happened in this state. For instance a card was played
+	soundEffect: string
+
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
 		this.opponentHandSize = state.opp_hand
@@ -51,5 +54,6 @@ export default class ClientState {
 		this.vision = state.vision
 		this.winner = state.winner
 		this.score = state.score
+		this.soundEffect = state.sound_effect
 	}
 }
