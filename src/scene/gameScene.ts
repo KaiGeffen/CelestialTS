@@ -240,14 +240,14 @@ export class GameScene extends Phaser.Scene {
 	    txtLastShuffleExplanation.setOrigin(0, 1)
 	    this.opponentDeckContainer.add(txtLastShuffleExplanation)
 
-	    // Scores text for recap states
+	    // Scores text for recap states, same as below text but viewed when recalling recap states
 	    this.txtScores = this.add.text(
 	    	800, space.cardSize/2 + space.stackOffset, '', stylePassed).setOrigin(0, 0.5)
 	    this.storyContainer.add(this.txtScores)
 
 	    // Recap text and hidden text
 	    this.txtRecapTotals = this.add.text(
-	    	0, space.cardSize/2 + space.stackOffset, '', stylePassed).setOrigin(0, 0.5)
+	    	800, space.cardSize/2 + space.stackOffset, '', stylePassed).setOrigin(0, 0.5)
 	    this.recapContainer.add(this.txtRecapTotals)
 
 	    let btnRecap = this.add.text(0, 0, 'Recap', buttonStyle).setOrigin(1, 0.5)
@@ -293,6 +293,7 @@ export class GameScene extends Phaser.Scene {
 		if (recap)
 		{
 			this.cameras.main.setBackgroundColor("#707070")
+
 			let s = `${state.score[1]}\n\n${state.score[0]}`
 			this.txtScores.setText(s)
 		}
@@ -321,6 +322,7 @@ export class GameScene extends Phaser.Scene {
 				for (var i = 0; i < numberStates; i++) {
 					let delayBeforeDisplay = i * RECAP_TIME
 					let recapState = state.recap.stateList[i]
+					console.log(recapState)
 
 					setTimeout(function() {
 						that.displayState(recapState, recap=true)
@@ -328,7 +330,6 @@ export class GameScene extends Phaser.Scene {
 				}
 
 				// Display this state without any recapped states
-				state.recap.stateList = []
 				setTimeout(function() {
 					that.recapPlaying = false
 
@@ -336,6 +337,7 @@ export class GameScene extends Phaser.Scene {
 						that.displayState(that.queuedState)
 						that.queuedState = undefined
 					} else {
+						state.recap.stateList = []
 						that.displayState(state)
 					}
 				}, numberStates * RECAP_TIME)
@@ -350,8 +352,7 @@ export class GameScene extends Phaser.Scene {
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
 		}
-		else if (state.winner === 1)
-		{
+		else if (state.winner === 1) {
 			let txtResult = this.add.text(space.pad, 0, "You lost!\n\nClick to continue...", stylePassed).setOrigin(0, 0)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
@@ -388,7 +389,7 @@ export class GameScene extends Phaser.Scene {
 				let card = completedAct[0]
 				let owner = completedAct[1]
 
-				this.addCard(card, i, this.storyContainer, owner, true)
+				this.addCard(card, i, this.storyContainer, owner).setTransparent()
 			}
 		}
 		for (var i = 0; i < state.story.acts.length; i++) {
@@ -407,7 +408,6 @@ export class GameScene extends Phaser.Scene {
 			this.addCard(playList[i][0], i, this.recapContainer, owner)
 			x = this.addCardRecap(playList[i][2], i, owner).x + space.cardSize
 		}
-		this.txtRecapTotals.setX(x + space.pad)
 		let s = this.getRecapTotalText(state.recap)
 		this.txtRecapTotals.setText(s)
 
@@ -503,8 +503,7 @@ export class GameScene extends Phaser.Scene {
 	private addCard(card: Card,
 					index: number,
 					container: Phaser.GameObjects.Container,
-					owner: number = 0,
-					transparent: boolean = false): CardImage {
+					owner: number = 0): CardImage {
 		let image: Phaser.GameObjects.Image
 		let [x, y] = this.getCardPosition(index, container, owner)
 
@@ -516,8 +515,6 @@ export class GameScene extends Phaser.Scene {
 		container.add(image)
 
 		let cardImage = new CardImage(card, image)
-		if (transparent) cardImage.setTransparent()
-		
 		this.temporaryObjs.push(cardImage)
 		return cardImage
 	}
