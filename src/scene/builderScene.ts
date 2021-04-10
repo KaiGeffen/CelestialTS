@@ -11,7 +11,8 @@ const DECK_PARAM = 'deck'
 const SOUNDS = [
   'success',
   'failure',
-  'click'
+  'click',
+  'open'
 ]
 
 // The card hover text for this scene, which is referenced in the regions
@@ -62,7 +63,7 @@ export class BuilderScene extends Phaser.Scene {
       this.load.image(card.name, `images/${card.name}.png`)
     })
 
-    // Load all used audio
+    // Load all audio
     SOUNDS.forEach( (sound) => {
       this.load.audio(sound, `sfx/${sound}.wav`)
     })
@@ -211,7 +212,12 @@ class CatalogRegion {
       }).length
 
       if (numVisibleCards > (that.currentPage + 1) * space.cardsPerPage) {
+        that.scene.sound.play('click')
+
         that.goToPage(that.currentPage + 1)
+      }
+      else {
+        that.scene.sound.play('failure')
       }
     }
   }
@@ -220,7 +226,12 @@ class CatalogRegion {
     let that = this
     return function() {
       if (that.currentPage > 0) {
+        that.scene.sound.play('click')
+
         that.goToPage(that.currentPage - 1)
+      }
+      else {
+        that.scene.sound.play('failure')
       }
     }
   }
@@ -267,6 +278,8 @@ class DeckRegion {
 
     this.btnStart.setInteractive()
     this.btnStart.on('pointerdown', function (event) {
+      that.scene.sound.play('click')
+
       lastDeck = that.deck.map( (cardImage) => cardImage.card)
       this.scene.scene.start("GameScene", {deck: lastDeck, settings: gameSettings})
     })
@@ -464,6 +477,8 @@ class FilterRegion {
     let that = this
 
     return function() {
+        that.scene.sound.play('click')
+
         // Highlight the button, or remove its highlight
         if (btn.isTinted) {
           btn.clearTint()
@@ -495,6 +510,8 @@ class FilterRegion {
   private onClear(btns: Phaser.GameObjects.Text[]): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+      
       btns.forEach( (btn) => btn.clearTint())
 
       for (var i = 0; i < that.filterCostAry.length; i++) {
@@ -536,7 +553,11 @@ class MenuRegion {
     this.container.add(invisBackground)
 
     // Set the callback for deckRegion menu button
-    this.deckRegion.setShowMenu(function() {cont.setVisible(true)})
+    let that = this
+    this.deckRegion.setShowMenu(function() {
+      that.scene.sound.play('click')
+      cont.setVisible(true)
+    })
 
     let width = space.cardSize * 5 + space.pad * 4
     let height = space.cardSize * 4 + space.pad * 3
@@ -595,6 +616,8 @@ class MenuRegion {
   private onVsAi(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+
       gameSettings['vsAi'] = !gameSettings['vsAi']
 
       that.setCheckOrX(btn, gameSettings['vsAi'])
@@ -604,6 +627,8 @@ class MenuRegion {
   private onAutoRecap(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+
       gameSettings['autoRecap'] = !gameSettings['autoRecap']
 
       that.setCheckOrX(btn, gameSettings['autoRecap'])
@@ -618,9 +643,13 @@ class MenuRegion {
   }
 
   private onSetMatchmaking(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
     return function() {
       var code = prompt("Enter matchmaking code:")
       if (code != null) {
+        // This is necessary to not cut off part of the sound from prompt
+        that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
+
         gameSettings['mmCode'] = code
 
         let newText = btn.text.split('>')[0] + '> ' + code
@@ -633,6 +662,8 @@ class MenuRegion {
   private onCopy(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+
       let txt = ''
       that.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
       txt = txt.slice(0, -1)
@@ -653,9 +684,13 @@ class MenuRegion {
       if (code != null) {
 
         let isValid = that.deckRegion.setDeck(code)
-        if (!isValid) {
+        if (isValid) {
+          // This is necessary to not cut off part of the sound from prompt
+          that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
+        }
+        else {
           // Alert user if deck code is invalid
-          that.scene.sound.play('failure')
+          that.scene.time.delayedCall(100, () => that.scene.sound.play('failure'))
 
           let previousText = btn.text
           btn.setText('Invalid code!')
