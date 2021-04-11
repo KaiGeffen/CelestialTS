@@ -244,12 +244,12 @@ export class GameScene extends Phaser.Scene {
 
 	    // Scores text for recap states, same as below text but viewed when recalling recap states
 	    this.txtScores = this.add.text(
-	    	space.announceOffset, space.cardSize/2 + space.stackOffset, '', StyleSettings.announcement).setOrigin(1, 0.5)
+	    	space.scoresOffset, space.cardSize/2 + space.stackOffset, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
 	    this.storyContainer.add(this.txtScores)
 
 	    // Recap text and hidden text
 	    this.txtRecapTotals = this.add.text(
-	    	space.announceOffset, space.cardSize/2 + space.stackOffset, '', StyleSettings.announcement).setOrigin(1, 0.5)
+	    	space.scoresOffset, space.cardSize/2 + space.stackOffset, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
 	    this.recapContainer.add(this.txtRecapTotals)
 
 	    let btnRecap = this.add.text(0, 0, 'Recap', StyleSettings.button).setOrigin(1, 0.5)
