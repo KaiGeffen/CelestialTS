@@ -27,6 +27,7 @@ export const styleSizes = {
       font: '85px Arial',
       color: '#e9b',
       fixedWidth: 100,
+      fixedHeight: 100,
       align: 'center'
 }
 
