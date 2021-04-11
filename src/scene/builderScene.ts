@@ -8,6 +8,7 @@ import { decodeCard, encodeCard } from "../lib/codec"
 const catalog = collectibleCards
 
 const DECK_PARAM = 'deck'
+// TODO This scene is taking on the role of preloading as well as being a deck-builder, decouple that functionality
 const SOUNDS = [
   'success',
   'failure',
@@ -16,8 +17,19 @@ const SOUNDS = [
   'play',
   'pass',
   'draw',
+  'discard',
+  'create',
   'shuffle',
-  'resolve'
+  'resolve',
+  'win',
+  'lose',
+  'tie',
+
+  'build',
+  'inspire',
+  'nourish',
+
+  'yell'
 ]
 
 // The card hover text for this scene, which is referenced in the regions
@@ -68,7 +80,7 @@ export class BuilderScene extends Phaser.Scene {
       this.load.image(card.name, `images/${card.name}.png`)
     })
 
-    // Load all audio
+    // Load all audio 
     SOUNDS.forEach( (sound) => {
       this.load.audio(sound, `sfx/${sound}.wav`)
     })
