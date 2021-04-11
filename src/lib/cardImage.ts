@@ -1,5 +1,5 @@
 import "phaser"
-import { Card } from "../catalog/catalog"
+import { Card, cardback } from "../catalog/catalog"
 import { decodeCard } from "./codec"
 import { ColorSettings, StyleSettings } from "../settings"
 
@@ -50,6 +50,10 @@ export class CardImage {
   }
 
   private getCardText(card): string {
+    if (card === cardback) {
+      return '?'
+    }
+    
     // Set the hover text
     let result = card.name + '\n'
 
@@ -97,7 +101,7 @@ export class CardImage {
     return function() {
       cardInfo.setVisible(true)
 
-      if (!that.unplayable) {
+      if (!that.unplayable && that.card !== cardback) {
         that.image.setTint(ColorSettings.cardHighlight)
       }
 
