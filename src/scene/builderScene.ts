@@ -14,7 +14,10 @@ const SOUNDS = [
   'click',
   'close',
   'play',
-  'pass'
+  'pass',
+  'draw',
+  'shuffle',
+  'resolve'
 ]
 
 // The card hover text for this scene, which is referenced in the regions
