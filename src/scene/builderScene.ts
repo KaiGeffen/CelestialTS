@@ -553,15 +553,18 @@ class MenuRegion {
     // Visible and invisible background rectangles, stops other containers from being clicked
     let invisBackground = this.scene.add.rectangle(0, 0, 1100*2, 650*2, 0xffffff, 0)
     invisBackground.setInteractive()
-    let cont = this.container
-    invisBackground.on('pointerdown', function() {cont.setVisible(false)})
+
+    let that = this
+    invisBackground.on('pointerdown', function() {
+      that.scene.sound.play('close')
+      that.container.setVisible(false)
+    })
     this.container.add(invisBackground)
 
     // Set the callback for deckRegion menu button
-    let that = this
     this.deckRegion.setShowMenu(function() {
       that.scene.sound.play('click')
-      cont.setVisible(true)
+      that.container.setVisible(true)
     })
 
     let width = space.cardSize * 5 + space.pad * 4

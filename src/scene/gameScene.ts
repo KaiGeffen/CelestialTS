@@ -350,7 +350,6 @@ export class GameScene extends Phaser.Scene {
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
-			console.log(state.soundEffect)
 			this.sound.play(state.soundEffect)
 		}
 
