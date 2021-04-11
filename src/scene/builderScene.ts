@@ -1,7 +1,7 @@
 import "phaser"
 import { collectibleCards, tokenCards, Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
-import { StyleSettings, space } from "../settings"
+import { StyleSettings, ColorSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 
 
@@ -118,9 +118,9 @@ class CatalogRegion {
     for (var i = catalog.length - 1; i >= 0; i--) {
       this.addCard(catalog[i], i)
     }
-    if (catalog.length > space.cardsPerPage) {
-      let x = space.cardsPerRow * (space.cardSize + space.pad) + space.pad
-      let y = 2 * (space.cardSize + space.pad) + space.pad/2
+    if (catalog.length > Space.cardsPerPage) {
+      let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad
+      let y = 2 * (Space.cardSize + Space.pad) + Space.pad/2
 
       // TODO If these are on the main scene instead of in a container, they need to be inactive
       // When the menu is open, or they will be above the invisible exit rectangle
@@ -195,7 +195,7 @@ class CatalogRegion {
     var [x, y] = this.getCardPosition(index)
     
     image = this.scene.add.image(x, y, card.name)
-    image.setDisplaySize(space.cardSize, space.cardSize)
+    image.setDisplaySize(Space.cardSize, Space.cardSize)
 
     image.setInteractive()
     image.on('pointerdown', this.onClick(card), this)
@@ -206,17 +206,17 @@ class CatalogRegion {
   }
 
   private getCardPosition(index: number): [number, number] {
-    let pageNumber = Math.floor(index / space.cardsPerPage)
-    index = index % space.cardsPerPage
+    let pageNumber = Math.floor(index / Space.cardsPerPage)
+    index = index % Space.cardsPerPage
 
-    let col = index % space.cardsPerRow
-    let xPad = (1 + col) * space.pad
-    let x = col * space.cardSize + xPad + space.cardSize / 2
-    x += pageNumber * space.pageOffset
+    let col = index % Space.cardsPerRow
+    let xPad = (1 + col) * Space.pad
+    let x = col * Space.cardSize + xPad + Space.cardSize / 2
+    x += pageNumber * Space.pageOffset
 
-    let row = Math.floor(index / space.cardsPerRow)
-    let yPad = (1 + row) * space.pad
-    let y = row * space.cardSize + yPad + space.cardSize / 2
+    let row = Math.floor(index / Space.cardsPerRow)
+    let yPad = (1 + row) * Space.pad
+    let y = row * Space.cardSize + yPad + Space.cardSize / 2
 
     return [x, y]
   }
@@ -228,7 +228,7 @@ class CatalogRegion {
         return cardImage.image.visible
       }).length
 
-      if (numVisibleCards > (that.currentPage + 1) * space.cardsPerPage) {
+      if (numVisibleCards > (that.currentPage + 1) * Space.cardsPerPage) {
         that.scene.sound.play('click')
 
         that.goToPage(that.currentPage + 1)
@@ -254,7 +254,7 @@ class CatalogRegion {
   }
 
   private goToPage(pageNum: number): void {
-    this.cardContainer.x = -(pageNum * space.pageOffset)
+    this.cardContainer.x = -(pageNum * Space.pageOffset)
     this.currentPage = pageNum
   }
 }
@@ -384,10 +384,10 @@ class DeckRegion {
   }
 
   private getCardPosition(index: number): [number, number] {
-    let xPad = space.pad
-    let x = index * (space.cardSize - space.stackOverlap) + xPad + space.cardSize/2
+    let xPad = Space.pad
+    let x = index * (Space.cardSize - Space.stackOverlap) + xPad + Space.cardSize/2
 
-    let y = space.pad + space.cardSize/2 + (index%2) * space.stackOffset
+    let y = Space.pad + Space.cardSize/2 + (index%2) * Space.stackOffset
 
     return [-x, -y]
   }
@@ -502,7 +502,7 @@ class FilterRegion {
         }
         else
         {
-          btn.setTint(0xffaf00, 0xffaf00, 0xffaf00, 0xffaf00)
+          btn.setTint(ColorSettings.filterSelected)
         }
 
         // Toggle filtering the chosen number
@@ -557,7 +557,7 @@ class MenuRegion {
     this.scene = scene
     this.deckRegion = deckRegion
     
-    this.container = this.scene.add.container(space.cardSize * 2 + space.pad * 3, space.pad)
+    this.container = this.scene.add.container(Space.cardSize * 2 + Space.pad * 3, Space.pad)
     this.container.setVisible(false)
   }
 
@@ -579,16 +579,16 @@ class MenuRegion {
       that.container.setVisible(true)
     })
 
-    let width = space.cardSize * 5 + space.pad * 4
-    let height = space.cardSize * 4 + space.pad * 3
-    let backgroundRectangle = this.scene.add.rectangle(0, 0, width, height, 0x662b00, 0.95).setOrigin(0, 0)
+    let width = Space.cardSize * 5 + Space.pad * 4
+    let height = Space.cardSize * 4 + Space.pad * 3
+    let backgroundRectangle = this.scene.add.rectangle(0, 0, width, height, ColorSettings.menuBackground, 0.95).setOrigin(0, 0)
     backgroundRectangle.setInteractive()
     this.container.add(backgroundRectangle)
 
     // Vs ai toggleable button
     let txt = 'Play versus Computer          '
     txt += gameSettings.vsAi ? '✓' : 'X'
-    let btnVsAi = this.scene.add.text(space.pad, space.pad/2, txt, StyleSettings.button).setOrigin(0, 0)
+    let btnVsAi = this.scene.add.text(Space.pad, Space.pad/2, txt, StyleSettings.button).setOrigin(0, 0)
     btnVsAi.setInteractive()
     btnVsAi.on('pointerdown', this.onVsAi(btnVsAi))
     this.container.add(btnVsAi)
@@ -596,28 +596,28 @@ class MenuRegion {
     // Show recap toggleable button
     txt = 'Show recap automatically    '
     txt += gameSettings.autoRecap ? '✓' : 'X'
-    let btnAutoRecap = this.scene.add.text(space.pad, space.pad/2 + space.cardSize, txt, StyleSettings.button).setOrigin(0, 0)
+    let btnAutoRecap = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize, txt, StyleSettings.button).setOrigin(0, 0)
     btnAutoRecap.setInteractive()
     btnAutoRecap.on('pointerdown', this.onAutoRecap(btnAutoRecap))
     this.container.add(btnAutoRecap)
 
     // Prompt for matchmaking code
     txt = 'Use matchmaking code...' + '\n      > ' + gameSettings.mmCode
-    let btnMatchmaking = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 2, txt, StyleSettings.button).setOrigin(0, 0)
+    let btnMatchmaking = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 2, txt, StyleSettings.button).setOrigin(0, 0)
     btnMatchmaking.setInteractive()
     btnMatchmaking.on('pointerdown', this.onSetMatchmaking(btnMatchmaking))
     this.container.add(btnMatchmaking)
 
     // Button to save deck code
     txt = 'Copy deck to clipboard'
-    let btnCopy = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 3, txt, StyleSettings.button).setOrigin(0, 0)
+    let btnCopy = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 3, txt, StyleSettings.button).setOrigin(0, 0)
     btnCopy.setInteractive()
     btnCopy.on('pointerdown', this.onCopy(btnCopy))
     this.container.add(btnCopy)
 
     // Button to load deck code
     txt = 'Load deck from a code'
-    let btnLoad = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 4, txt, StyleSettings.button).setOrigin(0, 0)
+    let btnLoad = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 4, txt, StyleSettings.button).setOrigin(0, 0)
     btnLoad.setInteractive()
     btnLoad.on('pointerdown', this.onLoadDeck(btnLoad))
     this.container.add(btnLoad)

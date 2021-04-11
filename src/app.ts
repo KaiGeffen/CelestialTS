@@ -2,18 +2,19 @@ import "phaser"
 import { WelcomeScene } from "./scene/welcomeScene"
 import { GameScene } from "./scene/gameScene"
 import { BuilderScene } from "./scene/builderScene"
+import { ColorSettings, Space } from "./settings"
 
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Celestial",
-  width: 1100,
-  height: 650,
+  width: Space.windowWidth,
+  height: Space.windowHeight,
   parent: "game",
   scene: [WelcomeScene, GameScene, BuilderScene],
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  backgroundColor: "#202070"
+  backgroundColor: ColorSettings.background
 }
 
 export class CelestialGame extends Phaser.Game {

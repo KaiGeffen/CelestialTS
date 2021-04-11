@@ -1,5 +1,21 @@
 import "phaser"
 
+export const Space = {
+  windowWidth: 1100,
+  windowHeight: 650,
+  cardSize: 100,
+  pad: 20,
+  cardsPerRow: 8,
+  rowsPerPage: 4,
+  cardsPerPage: 8 * 4,
+  stackOffset: 30,
+  stackOverlap: 40,
+  // How far from the left announcement text should start (Passed!, Mulliganing, etc) 
+  announceOffset: 800 - 20,
+  scoresOffset: 800 + 50,
+  pageOffset: 1200
+}
+
 export const ColorSettings: Record<string, any> = {
   background: '#202070',
   recapBackground: '#707070',
@@ -13,14 +29,21 @@ export const ColorSettings: Record<string, any> = {
   cardTextBackground: '#88a',
 
   cardHighlight: 0xa0a034,
-  cardUnplayable: 0x888888
+  cardUnplayable: 0x888888,
+
+  middleLine: 0xd00000,
+  mulliganHighlight: 0xffaaaa,
+
+  filterSelected: 0xffaf00,
+  menuBackground: 0x704820 //0x662b00
 }
 
 const FontSettings: Record<string, string> = {
   standard: '36px Arial Bold',
-  small: '14px Arial',
+  small: '14px Arial Italic',
   large: '44px Arial Bold',
   huge: '54px Calibri Bold',
+  stack: '85px Arial Bold'
 }
 
 export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
@@ -39,7 +62,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
   small: {
     font: FontSettings.small,
     color: '#000',
-    wordWrap: { width: 70, useAdvancedWrap: true }
+    wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: true }
   },
   announcement: {
     font: FontSettings.huge,
@@ -57,27 +80,13 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     strokeThickness: 0
   },
   stack: {
-    font: '85px Arial',
+    font: FontSettings.stack,
     color: ColorSettings.stack,
-    fixedWidth: 100,
-    fixedHeight: 100,
+    fixedWidth: Space.cardSize,
+    fixedHeight: Space.cardSize,
     align: 'center'
   },
   filter: {
     font: FontSettings.standard,
   }
-}
-
-export const space = {
-  cardSize: 100,
-  pad: 20,
-  cardsPerRow: 8,
-  rowsPerPage: 4,
-  cardsPerPage: 8 * 4,
-  stackOffset: 30,
-  stackOverlap: 40,
-  // How far from the left announcement text should start (Passed!, Mulliganing, etc) 
-  announceOffset: 800 - 20,
-  scoresOffset: 800 + 50,
-  pageOffset: 1200
 }
