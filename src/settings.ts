@@ -1,4 +1,6 @@
-export const ColorSettings = {
+import "phaser"
+
+export const ColorSettings: Record<string, any> = {
   background: '#202070',
   recapBackground: '#707070',
   textHighlight: '#ff0',
@@ -14,17 +16,19 @@ export const ColorSettings = {
   cardUnplayable: 0x888888
 }
 
-const FontSettings = {
+const FontSettings: Record<string, string> = {
   standard: '36px Arial Bold',
   small: '14px Arial',
   large: '44px Arial Bold',
-  huge: '54px Arial Bold',
+  huge: '54px Calibri Bold',
 }
 
-export const StyleSettings = {
+export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   basic: {
     font: FontSettings.standard,
-    color: '#000'
+    color: '#fff',
+    stroke: '#000',
+    strokeThickness: 3
   },
   button: {
     font: FontSettings.large,
@@ -37,7 +41,9 @@ export const StyleSettings = {
   },
   announcement: {
     font: FontSettings.huge,
-    color: ColorSettings.announcement//'#f71'
+    color: '#fff',
+    stroke: '#000',
+    strokeThickness: 5
   },
   cardText: {
     font: FontSettings.standard,
