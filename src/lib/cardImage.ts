@@ -1,19 +1,13 @@
 import "phaser"
 import { Card } from "../catalog/catalog"
 import { decodeCard } from "./codec"
+import { ColorSettings, StyleSettings } from "../settings"
 
 
 var cardInfo: Phaser.GameObjects.Text;
 
-let style = {
-      font: '36px Arial Bold',
-      color: '#d00',
-      backgroundColor: '#88a',
-      wordWrap: { width: 500, useAdvancedWrap: true }
-    };
-
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add.text(0, 0, '', style)
+  cardInfo = scene.add.text(0, 0, '', StyleSettings.cardText)
   cardInfo.alpha = 0.88
   return cardInfo
 }
@@ -45,7 +39,7 @@ export class CardImage {
 
   // Set this card image to be unplayable
   setUnplayable(): void {
-    this.image.setTint(0x888888)
+    this.image.setTint(ColorSettings.cardUnplayable)
     this.unplayable = true
   }
 
@@ -96,15 +90,19 @@ export class CardImage {
   }
 
   private onHover(): () => void {
-    return function() {
-      if (!this.unplayable) this.image.setTint(0xa0a034)
+    let that = this
 
-      cardInfo.text = this.getCardText(this.card)
+    return function() {
+      if (!that.unplayable) {
+        that.image.setTint(ColorSettings.cardHighlight)
+      }
+
+      cardInfo.text = that.getCardText(that.card)
 
       // Copy the position of the card in its local space
-      let container = this.image.parentContainer;
-      let x = this.image.x + container.x;
-      let y = this.image.y + container.y;
+      let container = that.image.parentContainer;
+      let x = that.image.x + container.x;
+      let y = that.image.y + container.y;
 
       // Change alignment of text based on horizontal position on screen
       if (x <= cardInfo.width / 2) // Left

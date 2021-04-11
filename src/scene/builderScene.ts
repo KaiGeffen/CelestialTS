@@ -1,7 +1,7 @@
 import "phaser"
 import { collectibleCards, tokenCards, Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
-import { buttonStyle, filterButtonStyle, space } from "../settings"
+import { StyleSettings, space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 
 
@@ -126,12 +126,12 @@ class CatalogRegion {
       // When the menu is open, or they will be above the invisible exit rectangle
       // Better to have these be on this catalog or maybe on a container which has the card
       // container
-      let btnNext = this.scene.add.text(x, y, '>', buttonStyle).setOrigin(0, 0)
+      let btnNext = this.scene.add.text(x, y, '>', StyleSettings.button).setOrigin(0, 0)
       btnNext.setInteractive()
       btnNext.on('pointerdown', this.goNextPage())
       this.container.add(btnNext)
 
-      let btnPrev = this.scene.add.text(x, y, '<', buttonStyle).setOrigin(0, 1)
+      let btnPrev = this.scene.add.text(x, y, '<', StyleSettings.button).setOrigin(0, 1)
       btnPrev.setInteractive()
       btnPrev.on('pointerdown', this.goPrevPage())
       this.container.add(btnPrev)
@@ -278,7 +278,7 @@ class DeckRegion {
 
   create(): void {
     // Sort button
-    let btnSort = this.scene.add.text(0, -100, 'Sort', buttonStyle)
+    let btnSort = this.scene.add.text(0, -100, 'Sort', StyleSettings.button)
     btnSort.setInteractive()
 
     let that = this
@@ -291,7 +291,7 @@ class DeckRegion {
     this.container.add(btnSort)
 
     // Start button
-    this.btnStart = this.scene.add.text(0, -50, '', buttonStyle)
+    this.btnStart = this.scene.add.text(0, -50, '', StyleSettings.button)
 
     this.btnStart.setInteractive()
     this.btnStart.on('pointerdown', function (event) {
@@ -306,7 +306,7 @@ class DeckRegion {
     this.container.add(this.btnStart)
 
     // Menu button, the callback is set by menu region during its init
-    this.btnMenu = this.scene.add.text(0, -150, 'Menu', buttonStyle)
+    this.btnMenu = this.scene.add.text(0, -150, 'Menu', StyleSettings.button)
     this.container.add(this.btnMenu)
 
     // Add all cards that were in the last deck the player had, if any
@@ -473,7 +473,7 @@ class FilterRegion {
       this.filterCostAry[i] = false
 
       let y = 50 * (i + 1)
-      let btn = this.scene.add.text(30, y, i.toString(), filterButtonStyle)
+      let btn = this.scene.add.text(30, y, i.toString(), StyleSettings.filter)
       
       btn.setInteractive()
       btn.on('pointerdown', this.onClick(i, btn))
@@ -484,7 +484,7 @@ class FilterRegion {
     }
 
     // Add the X (Clear) button
-    let btnClear = this.scene.add.text(30, 0, 'x', filterButtonStyle)
+    let btnClear = this.scene.add.text(30, 0, 'x', StyleSettings.filter)
     btnClear.setInteractive()
     btnClear.on('pointerdown', this.onClear(btnNumbers))
     this.container.add(btnClear)
@@ -588,7 +588,7 @@ class MenuRegion {
     // Vs ai toggleable button
     let txt = 'Play versus Computer          '
     txt += gameSettings.vsAi ? '✓' : 'X'
-    let btnVsAi = this.scene.add.text(space.pad, space.pad/2, txt, buttonStyle).setOrigin(0, 0)
+    let btnVsAi = this.scene.add.text(space.pad, space.pad/2, txt, StyleSettings.button).setOrigin(0, 0)
     btnVsAi.setInteractive()
     btnVsAi.on('pointerdown', this.onVsAi(btnVsAi))
     this.container.add(btnVsAi)
@@ -596,28 +596,28 @@ class MenuRegion {
     // Show recap toggleable button
     txt = 'Show recap automatically    '
     txt += gameSettings.autoRecap ? '✓' : 'X'
-    let btnAutoRecap = this.scene.add.text(space.pad, space.pad/2 + space.cardSize, txt, buttonStyle).setOrigin(0, 0)
+    let btnAutoRecap = this.scene.add.text(space.pad, space.pad/2 + space.cardSize, txt, StyleSettings.button).setOrigin(0, 0)
     btnAutoRecap.setInteractive()
     btnAutoRecap.on('pointerdown', this.onAutoRecap(btnAutoRecap))
     this.container.add(btnAutoRecap)
 
     // Prompt for matchmaking code
     txt = 'Use matchmaking code...' + '\n      > ' + gameSettings.mmCode
-    let btnMatchmaking = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 2, txt, buttonStyle).setOrigin(0, 0)
+    let btnMatchmaking = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 2, txt, StyleSettings.button).setOrigin(0, 0)
     btnMatchmaking.setInteractive()
     btnMatchmaking.on('pointerdown', this.onSetMatchmaking(btnMatchmaking))
     this.container.add(btnMatchmaking)
 
     // Button to save deck code
     txt = 'Copy deck to clipboard'
-    let btnCopy = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 3, txt, buttonStyle).setOrigin(0, 0)
+    let btnCopy = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 3, txt, StyleSettings.button).setOrigin(0, 0)
     btnCopy.setInteractive()
     btnCopy.on('pointerdown', this.onCopy(btnCopy))
     this.container.add(btnCopy)
 
     // Button to load deck code
     txt = 'Load deck from a code'
-    let btnLoad = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 4, txt, buttonStyle).setOrigin(0, 0)
+    let btnLoad = this.scene.add.text(space.pad, space.pad/2 + space.cardSize * 4, txt, StyleSettings.button).setOrigin(0, 0)
     btnLoad.setInteractive()
     btnLoad.on('pointerdown', this.onLoadDeck(btnLoad))
     this.container.add(btnLoad)
