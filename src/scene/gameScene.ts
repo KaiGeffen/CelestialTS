@@ -274,10 +274,14 @@ export class GameScene extends Phaser.Scene {
 			this.searchingBackground = this.add.rectangle(0, 0, 1100, 650, 0x202070).setOrigin(0, 0)
 			this.txtSearching = this.add.text(1100/2, 650/2, 'Searching for an opponent...', style).setOrigin(0.5, 0.5)
 		}
-		else if (this.searchingBackground) // Only destroy if they exist
-		{
-			this.searchingBackground.destroy()
-			this.txtSearching.destroy()
+		else {
+			this.sound.play('success')
+
+			if (this.searchingBackground) // Only destroy if they exist
+			{
+				this.searchingBackground.destroy()
+				this.txtSearching.destroy()
+			}
 		}
 	}
 
@@ -322,7 +326,6 @@ export class GameScene extends Phaser.Scene {
 				for (var i = 0; i < numberStates; i++) {
 					let delayBeforeDisplay = i * RECAP_TIME
 					let recapState = state.recap.stateList[i]
-					console.log(recapState)
 
 					setTimeout(function() {
 						that.displayState(recapState, recap=true)
@@ -343,6 +346,11 @@ export class GameScene extends Phaser.Scene {
 				}, numberStates * RECAP_TIME)
 				return
 			}
+		}
+
+		// Play whatever sound this new state brings
+		if (state.soundEffect !== null) {
+			this.sound.play(state.soundEffect)
 		}
 
 		// Display victory / defeat
@@ -497,6 +505,8 @@ export class GameScene extends Phaser.Scene {
 
 	// Alert the user that they have taken an illegal or impossible action
 	signalError(): void {
+      	this.sound.play('failure')
+
 		this.cameras.main.flash(300, 0, 0, 0.1)
 	}
 
@@ -622,8 +632,9 @@ export class GameScene extends Phaser.Scene {
   			else if (that.mulligansComplete) {
   				that.net.playCard(index)
   			}
-  			else
-  			{
+  			else {
+      			this.sound.play('click')
+
   				let highlight = that.mulliganHighlights[index]
   				highlight.setVisible(!highlight.visible)
   			}
@@ -649,6 +660,8 @@ export class GameScene extends Phaser.Scene {
 		  		that.btnRecap]
 
   			if (storyHiddenLock) {
+      			that.sound.play('close')
+
 	  			hiddenContainers.forEach(c => c.setVisible(false))
 	  			highlightedObjects.forEach(o => o.setShadow())
 	  			that.storyContainer.setVisible(true)
@@ -659,10 +672,12 @@ export class GameScene extends Phaser.Scene {
   	}
 
   	private clickAlternateView(): () => void {
-  		let time = this.time
+  		let that = this
   		return function() {
   			if (!storyHiddenLock) {
-  				time.delayedCall(1, () => storyHiddenLock = true)
+      			that.sound.play('click')
+
+  				that.time.delayedCall(1, () => storyHiddenLock = true)
   			}
   		}
   	}

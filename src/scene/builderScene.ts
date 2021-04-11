@@ -8,6 +8,29 @@ import { decodeCard, encodeCard } from "../lib/codec"
 const catalog = collectibleCards
 
 const DECK_PARAM = 'deck'
+// TODO This scene is taking on the role of preloading as well as being a deck-builder, decouple that functionality
+const SOUNDS = [
+  'success',
+  'failure',
+  'click',
+  'close',
+  'play',
+  'pass',
+  'draw',
+  'discard',
+  'create',
+  'shuffle',
+  'resolve',
+  'win',
+  'lose',
+  'tie',
+
+  'build',
+  'inspire',
+  'nourish',
+
+  'yell'
+]
 
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
@@ -46,15 +69,20 @@ export class BuilderScene extends Phaser.Scene {
     cardInfo = addCardInfoToScene(this)
   }
 
-  // Load all of the card and token images
   preload(): void {
-    this.load.path = "assets/images/"
+    // Load all of the card and token images
+    this.load.path = "assets/"
 
     catalog.forEach( (card) => {
-      this.load.image(card.name, `${card.name}.png`)
+      this.load.image(card.name, `images/${card.name}.png`)
     })
     tokenCards.forEach( (card) => {
-      this.load.image(card.name, `${card.name}.png`)
+      this.load.image(card.name, `images/${card.name}.png`)
+    })
+
+    // Load all audio 
+    SOUNDS.forEach( (sound) => {
+      this.load.audio(sound, `sfx/${sound}.wav`)
     })
   }
   
@@ -148,8 +176,17 @@ class CatalogRegion {
   }
 
   private onClick(card: Card): () => void {
+    let that = this
     return function() {
-      this.deckRegion.addCard(card)
+      if (that.deckRegion.addCard(card)) {
+        that.scene.sound.play('click')
+      }
+      else {
+        that.scene.sound.play('failure') 
+
+        that.scene.cameras.main.flash(300, 0, 0, 0.1)
+      }
+      
     }
   }
 
@@ -192,7 +229,12 @@ class CatalogRegion {
       }).length
 
       if (numVisibleCards > (that.currentPage + 1) * space.cardsPerPage) {
+        that.scene.sound.play('click')
+
         that.goToPage(that.currentPage + 1)
+      }
+      else {
+        that.scene.sound.play('failure')
       }
     }
   }
@@ -201,7 +243,12 @@ class CatalogRegion {
     let that = this
     return function() {
       if (that.currentPage > 0) {
+        that.scene.sound.play('click')
+
         that.goToPage(that.currentPage - 1)
+      }
+      else {
+        that.scene.sound.play('failure')
       }
     }
   }
@@ -236,6 +283,8 @@ class DeckRegion {
 
     let that = this
     btnSort.on('pointerdown', function (event) {
+      that.scene.sound.play('click')
+
       that.sort()
     })
 
@@ -246,6 +295,8 @@ class DeckRegion {
 
     this.btnStart.setInteractive()
     this.btnStart.on('pointerdown', function (event) {
+      that.scene.sound.play('click')
+
       lastDeck = that.deck.map( (cardImage) => cardImage.card)
       this.scene.scene.start("GameScene", {deck: lastDeck, settings: gameSettings})
     })
@@ -263,10 +314,9 @@ class DeckRegion {
     this.setDeck(lastDeckCode)
   }
 
-  addCard(card: Card): void {
+  addCard(card: Card): boolean {
     if (this.deck.length >= 15) {
-      this.scene.cameras.main.flash(300, 0, 0, 0.1)
-      return
+      return false
     }
 
     let index = this.deck.length
@@ -284,6 +334,8 @@ class DeckRegion {
     this.deck.push(new CardImage(card, image))
 
     this.updateStartButton()
+
+    return true
   }
 
   // Set the current deck based on given deck code, returns true if deck was valid
@@ -343,6 +395,9 @@ class DeckRegion {
   private removeCard(index: number): () => void {
     let that = this
     return function() {
+      // Play a sound
+      that.scene.sound.play('click')
+
       // The text for the removed card would otherwise linger
       cardInfo.text = ''
 
@@ -439,6 +494,8 @@ class FilterRegion {
     let that = this
 
     return function() {
+        that.scene.sound.play('click')
+
         // Highlight the button, or remove its highlight
         if (btn.isTinted) {
           btn.clearTint()
@@ -470,6 +527,8 @@ class FilterRegion {
   private onClear(btns: Phaser.GameObjects.Text[]): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+
       btns.forEach( (btn) => btn.clearTint())
 
       for (var i = 0; i < that.filterCostAry.length; i++) {
@@ -506,12 +565,19 @@ class MenuRegion {
     // Visible and invisible background rectangles, stops other containers from being clicked
     let invisBackground = this.scene.add.rectangle(0, 0, 1100*2, 650*2, 0xffffff, 0)
     invisBackground.setInteractive()
-    let cont = this.container
-    invisBackground.on('pointerdown', function() {cont.setVisible(false)})
+
+    let that = this
+    invisBackground.on('pointerdown', function() {
+      that.scene.sound.play('close')
+      that.container.setVisible(false)
+    })
     this.container.add(invisBackground)
 
     // Set the callback for deckRegion menu button
-    this.deckRegion.setShowMenu(function() {cont.setVisible(true)})
+    this.deckRegion.setShowMenu(function() {
+      that.scene.sound.play('click')
+      that.container.setVisible(true)
+    })
 
     let width = space.cardSize * 5 + space.pad * 4
     let height = space.cardSize * 4 + space.pad * 3
@@ -570,6 +636,8 @@ class MenuRegion {
   private onVsAi(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+
       gameSettings['vsAi'] = !gameSettings['vsAi']
 
       that.setCheckOrX(btn, gameSettings['vsAi'])
@@ -579,6 +647,8 @@ class MenuRegion {
   private onAutoRecap(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+
       gameSettings['autoRecap'] = !gameSettings['autoRecap']
 
       that.setCheckOrX(btn, gameSettings['autoRecap'])
@@ -593,9 +663,13 @@ class MenuRegion {
   }
 
   private onSetMatchmaking(btn: Phaser.GameObjects.Text): () => void {
+    let that = this
     return function() {
       var code = prompt("Enter matchmaking code:")
       if (code != null) {
+        // This is necessary to not cut off part of the sound from prompt
+        that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
+
         gameSettings['mmCode'] = code
 
         let newText = btn.text.split('>')[0] + '> ' + code
@@ -608,6 +682,8 @@ class MenuRegion {
   private onCopy(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
+      that.scene.sound.play('click')
+
       let txt = ''
       that.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
       txt = txt.slice(0, -1)
@@ -628,8 +704,14 @@ class MenuRegion {
       if (code != null) {
 
         let isValid = that.deckRegion.setDeck(code)
-        if (!isValid) {
+        if (isValid) {
+          // This is necessary to not cut off part of the sound from prompt
+          that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
+        }
+        else {
           // Alert user if deck code is invalid
+          that.scene.time.delayedCall(100, () => that.scene.sound.play('failure'))
+
           let previousText = btn.text
           btn.setText('Invalid code!')
           that.scene.time.delayedCall(600, () => btn.setText(previousText))
