@@ -9,6 +9,8 @@ var cardInfo: Phaser.GameObjects.Text;
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add.text(0, 0, '', StyleSettings.cardText)
   cardInfo.alpha = 0.88
+  cardInfo.setVisible(false)
+
   return cardInfo
 }
 
@@ -93,6 +95,8 @@ export class CardImage {
     let that = this
 
     return function() {
+      cardInfo.setVisible(true)
+
       if (!that.unplayable) {
         that.image.setTint(ColorSettings.cardHighlight)
       }
@@ -129,9 +133,11 @@ export class CardImage {
 
   private onHoverExit(): () => void {
     return function() {
-      if (!this.unplayable) this.image.clearTint()
+      if (!this.unplayable) {
+        this.image.clearTint()
+      }
 
-      cardInfo.text = ''
+      cardInfo.setVisible(false)
     }
   }
 }

@@ -355,7 +355,7 @@ class DeckRegion {
       // Remove the current deck
       this.deck.forEach( (cardImage) => cardImage.destroy())
       this.deck = []
-      cardInfo.text = ''
+      cardInfo.setVisible(false)
       this.updateStartButton()
       
       // Add the new deck
@@ -399,7 +399,7 @@ class DeckRegion {
       that.scene.sound.play('click')
 
       // The text for the removed card would otherwise linger
-      cardInfo.text = ''
+      cardInfo.setVisible(false)
 
       // Remove the image
       that.deck[index].destroy()

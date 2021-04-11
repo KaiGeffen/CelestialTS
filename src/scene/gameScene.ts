@@ -310,7 +310,7 @@ export class GameScene extends Phaser.Scene {
 		{
 			// TODO Sometimes this should happen even in a recap, such is if a card is discarded
 			// Reset the hover text in case the hovered card moved with object replacement
-			cardInfo.text = ''
+			cardInfo.setVisible(false)
 
 			this.cameras.main.setBackgroundColor(ColorSettings.background)
 			this.txtScores.setText('')

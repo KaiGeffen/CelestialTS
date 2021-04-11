@@ -52,8 +52,9 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     color: ColorSettings.cardText,
     backgroundColor: ColorSettings.cardTextBackground,
     wordWrap: { width: 500, useAdvancedWrap: true },
+    padding: { x: 10, y: 5 },
     stroke: '#000',
-    strokeThickness: 1
+    strokeThickness: 0
   },
   stack: {
     font: '85px Arial',
