@@ -381,7 +381,14 @@ export class GameScene extends Phaser.Scene {
 		// Hands
 		for (var i = state.hand.length - 1; i >= 0; i--) {
 			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
-			if (!state.cardsPlayable[i]) cardImage.setUnplayable()
+
+			// TODO Immediately play a sound based on if it's playable, and ignore the next sound from server (Immediate card sound)
+			if (!state.cardsPlayable[i]) {
+				cardImage.setUnplayable()
+			}
+
+			// Play the card if it's clicked on (Even if unplayable, will signal error)
+			cardImage.image.on('pointerdown', this.clickCard(i), this)
 		}
 		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
 			this.addCard(cardback, i, this.opponentHandContainer)
@@ -519,8 +526,6 @@ export class GameScene extends Phaser.Scene {
 
 		image = this.add.image(x, y, card.name)
 		image.setDisplaySize(100, 100)
-
-		image.on('pointerdown', this.clickCard(index), this)
 
 		container.add(image)
 
