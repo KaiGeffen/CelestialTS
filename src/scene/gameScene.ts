@@ -105,7 +105,7 @@ export class GameScene extends Phaser.Scene {
 
 	create(): void {
 		// Middle line, below everything
-		let midline = this.add.rectangle(0, 650/2, 1100, 20, ColorSettings.middleLine, 0.4).setOrigin(0, 0.5)
+		let midline = this.add.rectangle(0, 650/2, 1100, 20, ColorSettings.middleLine, 1).setOrigin(0, 0.5)
 		this.children.sendToBack(midline)
 
 		// Priority highlight
