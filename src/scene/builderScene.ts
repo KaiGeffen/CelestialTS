@@ -473,7 +473,7 @@ class FilterRegion {
       this.filterCostAry[i] = false
 
       let y = 50 * (i + 1)
-      let btn = this.scene.add.text(30, y, i.toString(), StyleSettings.filter)
+      let btn = this.scene.add.text(30, y, i.toString(), StyleSettings.basic)
       
       btn.setInteractive()
       btn.on('pointerdown', this.onClick(i, btn))
@@ -484,7 +484,7 @@ class FilterRegion {
     }
 
     // Add the X (Clear) button
-    let btnClear = this.scene.add.text(30, 0, 'x', StyleSettings.filter)
+    let btnClear = this.scene.add.text(30, 0, 'x', StyleSettings.basic)
     btnClear.setInteractive()
     btnClear.on('pointerdown', this.onClear(btnNumbers))
     this.container.add(btnClear)

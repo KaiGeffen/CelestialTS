@@ -28,11 +28,13 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     font: FontSettings.standard,
     color: '#fff',
     stroke: '#000',
-    strokeThickness: 3
+    strokeThickness: 2
   },
   button: {
     font: FontSettings.large,
-    color: ColorSettings.button
+    color: ColorSettings.button,
+    stroke: '#000',
+    strokeThickness: 3
   },
   small: {
     font: FontSettings.small,
@@ -43,13 +45,15 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     font: FontSettings.huge,
     color: '#fff',
     stroke: '#000',
-    strokeThickness: 5
+    strokeThickness: 4
   },
   cardText: {
     font: FontSettings.standard,
     color: ColorSettings.cardText,
     backgroundColor: ColorSettings.cardTextBackground,
-    wordWrap: { width: 500, useAdvancedWrap: true }
+    wordWrap: { width: 500, useAdvancedWrap: true },
+    stroke: '#000',
+    strokeThickness: 1
   },
   stack: {
     font: '85px Arial',

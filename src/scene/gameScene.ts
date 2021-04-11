@@ -131,7 +131,8 @@ export class GameScene extends Phaser.Scene {
 		
 		this.txtOpponentMulligan = this.add.text(space.announceOffset, 200, 'Opponent is still mulliganing...', StyleSettings.announcement).setOrigin(1, 0.5)
 
-		let btnMulligan = this.add.text(space.pad, 650 - 200, 'Mulligan', StyleSettings.button).setOrigin(0, 0.5)
+		let x = space.pad * 2 + space.cardSize * 1.5
+		let btnMulligan = this.add.text(x, 650 - 200, 'Mulligan', StyleSettings.button).setOrigin(0.5, 0.5)
 		btnMulligan.setInteractive()
 
 		let that = this
@@ -268,12 +269,8 @@ export class GameScene extends Phaser.Scene {
 	// Display searching for opponent if still looking, else remove that text
 	displaySearchingStatus(searching: boolean): void {
 		if (searching) {
-			let style = {
-	      		font: '70px Arial',
-	      		color: '#f71'
-			}
 			this.searchingBackground = this.add.rectangle(0, 0, 1100, 650, 0x202070).setOrigin(0, 0)
-			this.txtSearching = this.add.text(1100/2, 650/2, 'Searching for an opponent...', style).setOrigin(0.5, 0.5)
+			this.txtSearching = this.add.text(1100/2, 650/2, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
 		}
 		else {
 			this.sound.play('success')
