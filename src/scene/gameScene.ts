@@ -353,13 +353,13 @@ export class GameScene extends Phaser.Scene {
 
 		// Display victory / defeat
 		if (state.winner === 0) {
-			let txtResult = this.add.text(Space.pad, 0, "You won!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0)
+			let txtResult = this.add.text(Space.pad, Space.stackOverlap * 2, "You won!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
 		}
 		else if (state.winner === 1) {
-			let txtResult = this.add.text(Space.pad, 0, "You lost!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0)
+			let txtResult = this.add.text(Space.pad, Space.stackOverlap * 2, "You lost!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
