@@ -17,13 +17,13 @@ export const Space = {
 }
 
 export const ColorSettings: Record<string, any> = {
-  background: '#202070',
-  recapBackground: '#707070',
-  textHighlight: '#ff0',
+  background: 0x202070,
+  recapBackground: 0x707070,
 
   button: '#090',
   announcement: '#703420',
   stack: '#e9b',
+  textHighlight: '#ff0',
 
   cardText: '#d00',
   cardTextBackground: '#88a',
