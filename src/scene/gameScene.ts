@@ -447,13 +447,17 @@ export class GameScene extends Phaser.Scene {
 
 		if (state.discard[0].length > 0) {
 			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
+
+			this.txtDiscardSize.setVisible(true)
 			this.txtDiscardSize.setText(state.discard[0].length.toString())
-		} else this.txtDiscardSize.setText('')
+		} else this.txtDiscardSize.setVisible(false)
 		
 		if (state.discard[1].length > 0) {
 			this.addCard(state.discard[1].slice(-1)[0], 1, this.stackContainer, 1)
+
+			this.txtOpponentDiscardSize.setVisible(true)
 			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
-		} else this.txtOpponentDiscardSize.setText('')
+		} else this.txtOpponentDiscardSize.setVisible(false)
 
 		this.stackContainer.bringToTop(this.txtDeckSize)
 		this.stackContainer.bringToTop(this.txtOpponentDeckSize)
