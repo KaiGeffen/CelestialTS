@@ -91,15 +91,15 @@ export class GameScene extends Phaser.Scene {
 		// Make a list of objects that are temporary with game state
 		this.temporaryObjs = []
 
-		this.handContainer = this.add.container(0, 650 - 140)
+		this.handContainer = this.add.container(0, 0)
 		this.opponentHandContainer = this.add.container(0, 0)
-		this.deckContainer = this.add.container(0, 650/2).setVisible(false)
-		this.discardContainer = this.add.container(0, 650/2).setVisible(false)
-		this.opponentDiscardContainer = this.add.container(0, 650/2).setVisible(false)
-		this.opponentDeckContainer = this.add.container(0, 650/2).setVisible(false)
+		this.deckContainer = this.add.container(0, 0).setVisible(false)
+		this.discardContainer = this.add.container(0, 0).setVisible(false)
+		this.opponentDiscardContainer = this.add.container(0, 0).setVisible(false)
+		this.opponentDeckContainer = this.add.container(0, 0).setVisible(false)
 
-		this.recapContainer = this.add.container(0, 650/2 - 80).setVisible(false)
-		this.storyContainer = this.add.container(0, 650/2 - 80)
+		this.recapContainer = this.add.container(0, 0).setVisible(false)
+		this.storyContainer = this.add.container(0, 0)
 		this.stackContainer = this.add.container(800, 0)
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
 
@@ -119,8 +119,8 @@ export class GameScene extends Phaser.Scene {
 
 		// Vision highlight and text
 		height = Space.cardSize + 2 * Space.stackOffset + 2 * Space.pad
-		this.visionRectangle = this.add.rectangle(0, 80, 1100, height, 0xffffff, 0.1).setOrigin(1, 0.5)
-		this.txtVision = this.add.text(0, 80, '', StyleSettings.small).setOrigin(0, 0.5)
+		this.visionRectangle = this.add.rectangle(0, Space.windowHeight/2, 1100, height, 0xffffff, 0.1).setOrigin(1, 0.5)
+		this.txtVision = this.add.text(0, Space.windowHeight/2, '', StyleSettings.small).setOrigin(0, 0.5)
 		this.storyContainer.add([this.visionRectangle, this.txtVision])
 
 		// Mulligan highlights and button
@@ -243,18 +243,20 @@ export class GameScene extends Phaser.Scene {
 	    this.stackContainer.add(stacks)
 
 	    let txtLastShuffleExplanation = this.add.text(
-	    	Space.pad, -(Space.cardSize/2 + Space.pad), "Opponent's last known shuffle:", StyleSettings.basic)
+	    	Space.pad, Space.windowHeight/2 - (Space.cardSize/2 + Space.pad), "Opponent's last known shuffle:", StyleSettings.basic)
 	    txtLastShuffleExplanation.setOrigin(0, 1)
 	    this.opponentDeckContainer.add(txtLastShuffleExplanation)
 
 	    // Scores text for recap states, same as below text but viewed when recalling recap states
 	    this.txtScores = this.add.text(
-	    	Space.scoresOffset, Space.cardSize/2 + Space.stackOffset, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
+	    	Space.scoresOffset, Space.windowHeight/2,
+	    	'', StyleSettings.announcement).setOrigin(0.5, 0.5)
 	    this.storyContainer.add(this.txtScores)
 
 	    // Recap text and hidden text
 	    this.txtRecapTotals = this.add.text(
-	    	Space.scoresOffset, Space.cardSize/2 + Space.stackOffset, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
+	    	Space.scoresOffset, Space.windowHeight/2,
+	    	'', StyleSettings.announcement).setOrigin(0.5, 0.5)
 	    this.recapContainer.add(this.txtRecapTotals)
 
 	    let btnRecap = this.add.text(0, 0, 'Recap', StyleSettings.button).setOrigin(1, 0.5)
@@ -358,13 +360,13 @@ export class GameScene extends Phaser.Scene {
 
 		// Display victory / defeat
 		if (state.winner === 0 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.stackOverlap * 2, "You won!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
+			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You won!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
 		}
 		else if (state.winner === 1 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.stackOverlap * 2, "You lost!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
+			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You lost!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
@@ -568,6 +570,9 @@ export class GameScene extends Phaser.Scene {
 				x = index * Space.cardSize + xPad + Space.cardSize/2
 
 				y = Space.pad + Space.cardSize/2
+				if (container === this.handContainer) {
+					y += Space.windowHeight - 140 // TODO
+				}
 				break
 
 			case this.recapContainer:
@@ -576,9 +581,9 @@ export class GameScene extends Phaser.Scene {
 				x = Space.pad + Space.cardSize/2 + filledSpace
 
 				if (owner === 1) {
-					y = Space.cardSize/2
+					y = Space.windowHeight/2 - Space.stackOffset
 				} else {
-					y = Space.cardSize/2 + Space.stackOffset * 2
+					y = Space.windowHeight/2 + Space.stackOffset
 				}
 				break
 
@@ -588,7 +593,7 @@ export class GameScene extends Phaser.Scene {
 			case this.opponentDiscardContainer:
 				// Each row contains 15 cards, then next row of cards is below with some overlap
 				x = Space.pad + Space.cardSize/2 + (Space.cardSize - Space.stackOverlap)  * (index%15)
-				y = Math.floor(index / 15) * (Space.cardSize - Space.stackOffset)
+				y = Math.floor(index / 15) * (Space.cardSize - Space.stackOffset) + Space.windowHeight/2
 
 				break
 
