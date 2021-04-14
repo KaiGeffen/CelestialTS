@@ -41,6 +41,9 @@ export class GameScene extends Phaser.Scene {
 	passContainer: Phaser.GameObjects.Container
 
 	priorityRectangle: Phaser.GameObjects.Rectangle
+	txtYourTurn: Phaser.GameObjects.Text
+	txtTheirTurn: Phaser.GameObjects.Text
+	
 	visionRectangle: Phaser.GameObjects.Rectangle
 	txtVision: Phaser.GameObjects.Text
 
@@ -111,6 +114,8 @@ export class GameScene extends Phaser.Scene {
 		// Priority highlight
 		let height = Space.cardSize + 2 * Space.pad
 		this.priorityRectangle = this.add.rectangle(0, -500, 1100, height, 0xffffff, 0.1).setOrigin(0, 0)
+		this.txtYourTurn = this.add.text(Space.announceOffset, 650 - 200, 'Your turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
+		this.txtTheirTurn = this.add.text(Space.announceOffset, 200, 'Their turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 
 		// Vision highlight and text
 		height = Space.cardSize + 2 * Space.stackOffset + 2 * Space.pad
@@ -464,9 +469,25 @@ export class GameScene extends Phaser.Scene {
 		this.stackContainer.bringToTop(this.txtDiscardSize)
 		this.stackContainer.bringToTop(this.txtOpponentDiscardSize)
 
-		// Priority
-		if (state.priority === 1) { this.priorityRectangle.setY(0) }
-		else { this.priorityRectangle.setY(650 - 140) }
+		// Priority (Not shown during recap, theirs hidden during their mulligan)
+		if (recap) {
+			this.priorityRectangle.setVisible(false)
+			this.txtYourTurn.setVisible(false)
+			this.txtTheirTurn.setVisible(false)
+		}
+		else if (state.priority === 1) {
+			this.priorityRectangle.setY(0).setVisible(true)
+			this.txtYourTurn.setVisible(false)
+			this.txtTheirTurn.setVisible(true)
+		}
+		else {
+			this.priorityRectangle.setY(650 - 140).setVisible(true)
+			this.txtYourTurn.setVisible(true)
+			this.txtTheirTurn.setVisible(false)
+		}
+		if (!state.mulligansComplete[1]) {
+			this.txtTheirTurn.setVisible(false)
+		}
 
 		// Vision
 		if (state.vision === 0) {
