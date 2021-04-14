@@ -14,7 +14,7 @@
 
   {"name": "Crossed Bones", "id": 0,
     "cost": 1, "points": 2,
-    "text": "1:2, fleeting, put 2 copies of ${144} in your discard pile"
+    "text": "1:2, fleeting, create 2 copies of ${144} in your discard pile"
   },
   {"name": "Dove", "id": 19,
     "cost": 1,
@@ -85,7 +85,7 @@
   },
   {"name": "Dinosaur Bones", "id": 86,
     "cost": 4,
-    "text": "4:5, fleeting, put 3 copies of ${144} in your discard pile"
+    "text": "4:5, fleeting, create 3 copies of ${144} in your discard pile"
   },
   {"name": "Mine", "id": 85,
     "cost": 4,
