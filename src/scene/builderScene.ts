@@ -13,6 +13,7 @@ const SOUNDS = [
   'success',
   'failure',
   'click',
+  'open',
   'close',
   'play',
   'pass',
@@ -575,7 +576,7 @@ class MenuRegion {
 
     // Set the callback for deckRegion menu button
     this.deckRegion.setShowMenu(function() {
-      that.scene.sound.play('click')
+      that.scene.sound.play('open')
       that.container.setVisible(true)
     })
 

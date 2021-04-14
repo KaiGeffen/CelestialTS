@@ -682,7 +682,7 @@ export class GameScene extends Phaser.Scene {
   		let that = this
   		return function() {
   			if (!storyHiddenLock) {
-      			that.sound.play('click')
+      			that.sound.play('open')
 
   				that.time.delayedCall(1, () => storyHiddenLock = true)
   			}
