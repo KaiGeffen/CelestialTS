@@ -659,6 +659,45 @@ export class GameScene extends Phaser.Scene {
   			}
   			else if (that.mulligansComplete) {
   				that.net.playCard(index)
+
+  				// Send a particle from this card to its place in the story
+  				let relativeStart = that.getCardPosition(index, that.handContainer, 0)
+  				let relativeEnd = that.getCardPosition(index, that.storyContainer, 0)
+
+  				let start = [relativeStart[0] + that.handContainer.x,
+  							 relativeStart[1] + that.handContainer.y]
+  				let end = [1,2]
+  				let particle = that.add.star(start[0], start[1], 5, 10, 40, ColorSettings.middleLine, 1)
+  				console.log(particle.y)
+  				// console.log(particle)
+
+  				let tween = that.tweens.add({
+  					targets: particle,
+  					x: end[0],
+  					y: end[1]
+  					})
+  				
+  				// that.tweens.add({
+      //       		targets: end,
+		    //         x: 0,
+		    //         y: 0,
+		    //         ease: 'Linear',
+		    //         duration: 500,
+		    //         onComplete: function (tween, targets, particle)
+		    //         {
+		    //             // particle.isSeeking = true
+		    //             particle.scene.tweens.add({
+		    //                 targets: particle,
+		    //                 speed: 150,
+		    //                 delay: 500,
+		    //                 ease: 'Sine.easeOut',
+		    //                 duration: 1000
+		    //             });
+		    //         },
+		    //         onCompleteParams: [ this ]
+		    //     });
+  				// let particle = new Particle(that, start, start)
+  				// that.add()
   			}
   			else {
       			this.sound.play('click')
