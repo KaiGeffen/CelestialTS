@@ -1,5 +1,16 @@
 import "phaser"
 
+
+export var UserSettings = {
+  vsAi: false,
+  explainKeywords: true,
+  mmCode: ''
+}
+
+if (location.port === '4949') {
+  UserSettings.vsAi = true
+}
+
 export const Space = {
   windowWidth: 1100,
   windowHeight: 650,

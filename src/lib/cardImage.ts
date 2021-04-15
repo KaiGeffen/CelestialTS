@@ -1,7 +1,7 @@
 import "phaser"
 import { Card, cardback } from "../catalog/catalog"
 import { decodeCard } from "./codec"
-import { ColorSettings, StyleSettings } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings } from "../settings"
 import { keywords, Keyword } from "../catalog/keywords"
 
 
@@ -68,7 +68,9 @@ export class CardImage {
     }
 
     result = this.replaceReferences(result)
-    result = this.explainKeywords(result)
+    if (UserSettings.explainKeywords) {
+      result = this.explainKeywords(result)
+    }
 
     return result
   }

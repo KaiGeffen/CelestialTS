@@ -1,7 +1,7 @@
 import "phaser"
 import { collectibleCards, tokenCards, Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
-import { StyleSettings, ColorSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 
 
@@ -36,15 +36,6 @@ const SOUNDS = [
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
 
-// Settings for the game that are passed to the GameScene
-var gameSettings = {
-  vsAi: false,
-  autoRecap: false,
-  mmCode: ''
-}
-if (location.port === '4949') {
-  gameSettings.vsAi = true
-}
 // The last deck of cards the player had, which gets repopulated after their match
 var lastDeck: Card[] = []
 
@@ -299,7 +290,8 @@ class DeckRegion {
       that.scene.sound.play('click')
 
       lastDeck = that.deck.map( (cardImage) => cardImage.card)
-      this.scene.scene.start("GameScene", {deck: lastDeck, settings: gameSettings})
+      // TODO
+      this.scene.scene.start("GameScene", {deck: lastDeck})
     })
     
     this.updateStartButton()
@@ -588,22 +580,22 @@ class MenuRegion {
 
     // Vs ai toggleable button
     let txt = 'Play versus Computer          '
-    txt += gameSettings.vsAi ? '✓' : 'X'
+    txt += UserSettings.vsAi ? '✓' : 'X'
     let btnVsAi = this.scene.add.text(Space.pad, Space.pad/2, txt, StyleSettings.button).setOrigin(0, 0)
     btnVsAi.setInteractive()
     btnVsAi.on('pointerdown', this.onVsAi(btnVsAi))
     this.container.add(btnVsAi)
 
     // Show recap toggleable button
-    txt = 'Show recap automatically    '
-    txt += gameSettings.autoRecap ? '✓' : 'X'
-    let btnAutoRecap = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize, txt, StyleSettings.button).setOrigin(0, 0)
-    btnAutoRecap.setInteractive()
-    btnAutoRecap.on('pointerdown', this.onAutoRecap(btnAutoRecap))
-    this.container.add(btnAutoRecap)
+    txt = 'Explain keywords                 '
+    txt += UserSettings.explainKeywords ? '✓' : 'X'
+    let btnExplainKeywords = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize, txt, StyleSettings.button).setOrigin(0, 0)
+    btnExplainKeywords.setInteractive()
+    btnExplainKeywords.on('pointerdown', this.onExplainKeywords(btnExplainKeywords))
+    this.container.add(btnExplainKeywords)
 
     // Prompt for matchmaking code
-    txt = 'Use matchmaking code...' + '\n      > ' + gameSettings.mmCode
+    txt = 'Use matchmaking code...' + '\n      > ' + UserSettings.mmCode
     let btnMatchmaking = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 2, txt, StyleSettings.button).setOrigin(0, 0)
     btnMatchmaking.setInteractive()
     btnMatchmaking.on('pointerdown', this.onSetMatchmaking(btnMatchmaking))
@@ -639,20 +631,20 @@ class MenuRegion {
     return function() {
       that.scene.sound.play('click')
 
-      gameSettings['vsAi'] = !gameSettings['vsAi']
+      UserSettings['vsAi'] = !UserSettings['vsAi']
 
-      that.setCheckOrX(btn, gameSettings['vsAi'])
+      that.setCheckOrX(btn, UserSettings['vsAi'])
     }
   }
 
-  private onAutoRecap(btn: Phaser.GameObjects.Text): () => void {
+  private onExplainKeywords(btn: Phaser.GameObjects.Text): () => void {
     let that = this
     return function() {
       that.scene.sound.play('click')
 
-      gameSettings['autoRecap'] = !gameSettings['autoRecap']
+      UserSettings['explainKeywords'] = !UserSettings['explainKeywords']
 
-      that.setCheckOrX(btn, gameSettings['autoRecap'])
+      that.setCheckOrX(btn, UserSettings['explainKeywords'])
     }
   }
 
@@ -671,7 +663,7 @@ class MenuRegion {
         // This is necessary to not cut off part of the sound from prompt
         that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
 
-        gameSettings['mmCode'] = code
+        UserSettings['mmCode'] = code
 
         let newText = btn.text.split('>')[0] + '> ' + code
         btn.setText(newText)

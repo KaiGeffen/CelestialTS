@@ -5,7 +5,7 @@ import { Network } from "../net"
 import ClientState from "../lib/clientState"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 // Import Settings itself 
-import { ColorSettings, StyleSettings, Space } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
 import Recap from '../lib/recap'
 
 
@@ -69,9 +69,6 @@ export class GameScene extends Phaser.Scene {
 	// Information about the recap that is playing
 	txtScores: Phaser.GameObjects.Text
 
-	// Option to show the recap after a round ends
-	autoRecap: boolean
-
 	constructor() {
 		super({
 			key: "GameScene"
@@ -79,11 +76,11 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	init(params: any): void {
-		// Game settings from deckbuilder
-	    this.autoRecap = params.settings['autoRecap']
 		// Code to matchmake player with ('ai' if versus computer)
-	    let mmCode = params.settings['mmCode']
-	    if (params.settings['vsAi']) mmCode = 'ai'
+	    let mmCode = UserSettings['mmCode']
+	    if (UserSettings['vsAi']) {
+	    	mmCode = 'ai'
+	    }
 
 		// Connect with the server
 		this.net = new Network(params.deck, this, mmCode)
@@ -537,12 +534,6 @@ export class GameScene extends Phaser.Scene {
 			this.txtPass.setVisible(true)
 			this.txtOpponentPass.setVisible(false)
 		}
-
-		// If the round just started, show the recap
-		// if (this.autoRecap && isRoundStart && !recap && state.maxMana[0] > 1) {
-		// 	this.hoverAlternateView(this.recapContainer, this.btnRecap)()
-		// 	this.clickAlternateView()()
-		// }
 	}
 
 	// Alert the user that they have taken an illegal or impossible action
