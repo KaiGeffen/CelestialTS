@@ -2,6 +2,7 @@ import "phaser"
 import { Card, cardback } from "../catalog/catalog"
 import { decodeCard } from "./codec"
 import { ColorSettings, StyleSettings } from "../settings"
+import { keywords, Keyword } from "../catalog/keywords"
 
 
 var cardInfo: Phaser.GameObjects.Text;
@@ -66,15 +67,22 @@ export class CardImage {
       result += card.text
     }
 
-    // Find each id refence and add the refenced card's text at the end
-    // let expr = RegExp("\${(\d+)}", "g")
+    result = this.replaceReferences(result)
+    result = this.explainKeywords(result)
+
+    return result
+  }
+
+  // Replace all refences to other cards in this cardText with those card's name + text
+  private replaceReferences(cardText: string): string {
+    // Find each id reference and add the refenced card's text at the end
     let expr = /\${(\d+)}/
     
     // Replace all id references with the name of the card they reference
     let cards: Card[] = []
-    function replaceName(match: string, p1: string, ...args): string
+    function replaceName(match: string, cardId: string, ...args): string
     {
-      let referencedCard = decodeCard(p1)
+      let referencedCard = decodeCard(cardId)
 
       // Add to a list of refenced cards
       if (!cards.includes(referencedCard)) {
@@ -83,16 +91,30 @@ export class CardImage {
 
       return `${referencedCard.name} (${referencedCard.text})`
     }
-    result = result.replace(expr, replaceName)
 
-    // For each refenced card, add that card's text to the end of result
-    // cards.forEach( (referencedCard) => {
-    //   let cardText = referencedCard.text
-    //   // let cardText = this.getCardText(referencedCard)
-    //   result += `\n\n(${cardText})`
-    // })
+    return cardText.replace(expr, replaceName)
+  }
 
-    return result
+  // Add an explanation of each existing keyword in cardText to the end of the text
+  private explainKeywords(cardText: string): string {
+
+    // Find which keywords are present
+    let presentKeywords: Keyword[] = []
+    for (const keyword of keywords) {
+
+      let regex = new RegExp(/\b/.source + keyword.key + /\b/.source, "i")
+      
+      if (regex.test(cardText)) {
+        presentKeywords.push(keyword)
+      }
+    }
+
+    // Add each present keyword's text at the end of the cardText
+    for (const keyword of presentKeywords) {
+      cardText += `\n(${keyword.text})`
+    }
+
+    return cardText
   }
 
   private onHover(): () => void {

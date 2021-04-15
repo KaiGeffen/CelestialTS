@@ -18,7 +18,7 @@
   },
   {"name": "Dove", "id": 19,
     "cost": 1,
-    "text": "1:1, visible, fleeting (After resolving, this card is removed from the game instead of moving to your discard pile)"
+    "text": "1:1, visible, fleeting"
   },
   {"name": "Juggle", "id": 136,
     "cost": 1, "points": 1,
@@ -76,7 +76,7 @@
   },
   {"name": "Paranoia", "id": 21,
     "cost": 3,
-    "text": "3:3. When played, gain sight X where X is the number of cards before this in the story (Sight X means that you can see the first X cards of the story this round)"
+    "text": "3:3. When played, gain sight X where X is the number of cards before this in the story."
   },
 
   {"name": "Hurricane", "id": 7,

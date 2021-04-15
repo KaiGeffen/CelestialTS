@@ -1,0 +1,12 @@
+[
+  {"key": "Fleeting",
+    "text": "Fleeting - After resolving, this card is removed from the game instead of moving to your discard pile"
+  },
+  {"key": "Visible",
+    "text": "Visible - This card is visible to your opponent while in the story"
+  },
+  {"key": "Sight",
+    "text": "Sight X - The first X cards in the story are visible to you this round"
+  }
+  
+]
