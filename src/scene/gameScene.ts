@@ -296,7 +296,6 @@ export class GameScene extends Phaser.Scene {
 	// Display the given game state
 	displayState(state: ClientState, recap: Boolean = false): void {
 		if (this.animationPlaying) {
-			// TODO bad
 			this.queuedState = state
 			return
 		}
@@ -393,7 +392,6 @@ export class GameScene extends Phaser.Scene {
 		for (var i = 0; i < state.hand.length; i++) {
 			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
 
-			// TODO Immediately play a sound based on if it's playable, and ignore the next sound from server (Immediate card sound)
 			if (!state.cardsPlayable[i]) {
 				cardImage.setUnplayable()
 			}
@@ -571,7 +569,7 @@ export class GameScene extends Phaser.Scene {
 
 				y = Space.pad + Space.cardSize/2
 				if (container === this.handContainer) {
-					y += Space.windowHeight - 140 // TODO
+					y += Space.windowHeight - 140
 				}
 				break
 
