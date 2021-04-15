@@ -21,10 +21,6 @@ export class GameScene extends Phaser.Scene {
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
 
-	searchingBackground: Phaser.GameObjects.Rectangle
-	txtSearching: Phaser.GameObjects.Text
-	btnExit: Phaser.GameObjects.Text
-
 	mulligansComplete: Boolean
 	mulliganHighlights: Phaser.GameObjects.Rectangle[]
 	txtOpponentMulligan: Phaser.GameObjects.Text
@@ -275,25 +271,20 @@ export class GameScene extends Phaser.Scene {
 	    this.displaySearchingStatus(true)
 	}
 
-	// Display searching for opponent if still looking, else remove that text
+	// Display searching for opponent if still looking
 	displaySearchingStatus(searching: boolean): void {
 		if (searching) {
-			this.searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.background).setOrigin(0, 0)
-			this.txtSearching = this.add.text(1100/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
+			let searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.background).setOrigin(0, 0)
+			let txtSearching = this.add.text(1100/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
-			this.btnExit = this.add.text(1100/2, 400, "Cancel", StyleSettings.button).setOrigin(0.5, 0.5)
-			this.btnExit.setInteractive()
-			this.btnExit.on('pointerdown', this.exitScene, this)
+			let btnExit = this.add.text(1100/2, 400, "Cancel", StyleSettings.button).setOrigin(0.5, 0.5)
+			btnExit.setInteractive()
+			btnExit.on('pointerdown', this.exitScene, this)
+
+			this.temporaryObjs.push(searchingBackground, txtSearching, btnExit)
 		}
 		else {
 			this.sound.play('success')
-
-			if (this.searchingBackground) // Only destroy if they exist
-			{
-				this.searchingBackground.destroy()
-				this.txtSearching.destroy()
-				this.btnExit.destroy()
-			}
 		}
 	}
 
