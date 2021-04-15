@@ -271,6 +271,8 @@ export class GameScene extends Phaser.Scene {
 
 	    // Add card info here so that it's on top of other GameObjects
 	    cardInfo = addCardInfoToScene(this)
+
+	    this.displaySearchingStatus(true)
 	}
 
 	// Display searching for opponent if still looking, else remove that text
