@@ -583,7 +583,7 @@ class MenuRegion {
     txt += UserSettings.vsAi ? '✓' : 'X'
     let btnVsAi = this.scene.add.text(Space.pad, Space.pad/2, txt, StyleSettings.button).setOrigin(0, 0)
     btnVsAi.setInteractive()
-    btnVsAi.on('pointerdown', this.onVsAi(btnVsAi))
+    btnVsAi.on('pointerdown', this.onToggleUserSetting(btnVsAi, 'vsAi'))
     this.container.add(btnVsAi)
 
     // Show recap toggleable button
@@ -591,7 +591,7 @@ class MenuRegion {
     txt += UserSettings.explainKeywords ? '✓' : 'X'
     let btnExplainKeywords = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize, txt, StyleSettings.button).setOrigin(0, 0)
     btnExplainKeywords.setInteractive()
-    btnExplainKeywords.on('pointerdown', this.onExplainKeywords(btnExplainKeywords))
+    btnExplainKeywords.on('pointerdown', this.onToggleUserSetting(btnExplainKeywords, 'explainKeywords'))
     this.container.add(btnExplainKeywords)
 
     // Prompt for matchmaking code
@@ -602,7 +602,7 @@ class MenuRegion {
     this.container.add(btnMatchmaking)
 
     // Button to save deck code
-    txt = 'Copy deck to clipboard'
+    txt = 'Copy deck code to clipboard'
     let btnCopy = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 3, txt, StyleSettings.button).setOrigin(0, 0)
     btnCopy.setInteractive()
     btnCopy.on('pointerdown', this.onCopy(btnCopy))
@@ -614,37 +614,16 @@ class MenuRegion {
     btnLoad.setInteractive()
     btnLoad.on('pointerdown', this.onLoadDeck(btnLoad))
     this.container.add(btnLoad)
-
-
-    // TODO Autopass
-
-    // Save deck-code, copy deck code
-
-    // let btnClear = this.scene.add.text(30, 0, 'x', filterButtonStyle)
-    // btnClear.setInteractive()
-    // btnClear.on('pointerdown', this.onClear(btnNumbers))
-    // this.container.add(btnClear)
   }
 
-  private onVsAi(btn: Phaser.GameObjects.Text): () => void {
+  private onToggleUserSetting(btn: Phaser.GameObjects.Text, property: string): () => void {
     let that = this
     return function() {
       that.scene.sound.play('click')
 
-      UserSettings['vsAi'] = !UserSettings['vsAi']
+      UserSettings[property] = !UserSettings[property]
 
-      that.setCheckOrX(btn, UserSettings['vsAi'])
-    }
-  }
-
-  private onExplainKeywords(btn: Phaser.GameObjects.Text): () => void {
-    let that = this
-    return function() {
-      that.scene.sound.play('click')
-
-      UserSettings['explainKeywords'] = !UserSettings['explainKeywords']
-
-      that.setCheckOrX(btn, UserSettings['explainKeywords'])
+      that.setCheckOrX(btn, UserSettings[property])
     }
   }
 
@@ -700,6 +679,10 @@ class MenuRegion {
         if (isValid) {
           // This is necessary to not cut off part of the sound from prompt
           that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
+
+          let previousText = btn.text
+          btn.setText('Loaded!')
+          that.scene.time.delayedCall(600, () => btn.setText(previousText))
         }
         else {
           // Alert user if deck code is invalid
