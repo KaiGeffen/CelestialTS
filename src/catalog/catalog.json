@@ -1,109 +1,109 @@
 [
   {"name": "Stars", "id": 39,
     "cost": 0, "points": 0,
-    "text": "0:0, inspire 1 (Next round you have 1 extra mana)"
+    "text": "0:0, Inspire 1."
   },
   {"name": "Bone Knife", "id": 50,
     "cost": 0, "points": 0,
-    "text": "0:0, your opponent discards their leftmost card"
+    "text": "0:0, your opponent discards their leftmost card."
   },
   {"name": "Cog", "id": 73,
     "cost": 0, "points": 0,
-    "text": "0:0, build 1 (If you have a robot in hand, give it +1. Otherwise, create a 0:1 fleeting robot in hand)"
+    "text": "0:0, Build 1."
   },
 
   {"name": "Crossed Bones", "id": 0,
     "cost": 1, "points": 2,
-    "text": "1:2, fleeting, create 2 copies of ${144} in your discard pile"
+    "text": "1:2, Fleeting, create 2 copies of ${144} in your discard pile."
   },
   {"name": "Dove", "id": 19,
     "cost": 1,
-    "text": "1:1, visible, fleeting"
+    "text": "1:1, Visible, Fleeting."
   },
   {"name": "Juggle", "id": 136,
     "cost": 1, "points": 1,
-    "text": "1:1. When played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many. (Of the 3, your leftmost card will be closest to the top of the deck)"
+    "text": "1:1. When played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)"
   },
   {"name": "Drown", "id": 94,
     "cost": 1, "points": 1,
-    "text": "1:1, discard the top 3 cards of your deck"
+    "text": "1:1, discard the top 3 cards of your deck."
   },
   {"name": "Spy", "id": 1,
     "cost": 1, "points": 2,
-    "text": "1:0, create a ${143} in your opponent's hand"
+    "text": "1:0, create a ${143} in your opponent's hand."
   },
 
   {"name": "Sine", "id": 3,
     "cost": 2, "points": 2,
-    "text": "2:4, starve 4 (The next card you resolve is worth 4 less points)"
+    "text": "2:4, Starve 4."
   },
   {"name": "Dash", "id": 10,
     "cost": 2,
-    "text": "2:3, flare (This card is worth 1 less for every card before it in the story)"
+    "text": "2:3, Flare."
   },
   {"name": "Swift", "id": 2,
     "cost": 2, "points": 2,
-    "text": "2:2, visible, if the next card costs 1, +1"
+    "text": "2:2, Visible, if the next card costs 1, +1."
   },
   {"name": "Crypt", "id": 119,
     "cost": 2,
-    "text": "2:2, your last card in the story transforms into the top card in your discard pile with the same cost as it"
+    "text": "2:2, your last card in the story transforms into the top card in your discard pile with the same cost as it."
   },
   {"name": "Gears", "id": 75,
     "cost": 2, "points": 0,
-    "text": "2:0, build 2 (If you have a robot in hand, give it +2. Otherwise, create a 0:2 fleeting robot in hand)"
+    "text": "2:0, Build 2."
   },
   {"name": "Cosmos", "id": 40,
     "cost": 2,
-    "text": "2:0, inspire 1 + 1 for each card you play later this round"
+    "text": "2:0, Inspire 1 + 1 for each card you play later this round."
   },
   {"name": "Fishing Boat", "id": 68,
     "cost": 2,
-    "text": "2:0, draw 3 1-cost cards. (Priority for the cards drawn is deck top to bottom, discard pile top to bottom)"
+    "text": "2:0, Tutor 1, Tutor 1, Tutor 1."
   },
 
   {"name": "Factory", "id": 76,
     "cost": 3,
-    "text": "3:0, build X, where X is the number of cards later in the story"
+    "text": "3:0, Build X, where X is the number of cards later in the story."
   },
   {"name": "Fruiting", "id": 4,
     "cost": 3, "points": 2,
-    "text": "3:0, nourish 3 (The next card you resolve is worth 3 more points)"
+    "text": "3:0, Nourish 3."
   },
   {"name": "Gift", "id": 5,
     "cost": 3, "points": 2,
-    "text": "3:3, both players draw 1"
+    "text": "3:3, both players draw 1."
   },
   {"name": "Paranoia", "id": 21,
     "cost": 3,
-    "text": "3:3. When played, gain sight X where X is the number of cards before this in the story."
+    "text": "3:3.\nWhen played, gain Sight X where X is the number of cards before this in the story."
   },
 
   {"name": "Hurricane", "id": 7,
     "cost": 4, "points": 2,
-    "text": "4:0, set both players points to 0"
+    "text": "4:0, set both players points to 0."
   },
   {"name": "Dinosaur Bones", "id": 86,
     "cost": 4,
-    "text": "4:5, fleeting, create 3 copies of ${144} in your discard pile"
+    "text": "4:5, Fleeting, create 3 copies of ${144} in your discard pile."
   },
   {"name": "Mine", "id": 85,
     "cost": 4,
-    "text": "4:4, remove from the game the top 4 cards of your discard pile"
+    "text": "4:4, remove from the game the top 4 cards of your discard pile."
   },
 
   {"name": "Force", "id": 16,
     "cost": 5,
-    "text": "5:6, flare (This card is worth 1 less for every card before it in the story)"
+    "text": "5:6, Flare."
   },
   {"name": "Tumulus", "id": 99,
     "cost": 5,
-    "text": "5:4, +2 if your discard pile has at least 8 cards in it"
+    "text": "5:4, +2 if your discard pile has at least 8 cards in it."
   },
 
   {"name": "Uprising", "id": 134,
     "cost": 6,
-    "text": "6:3, +1 for each card before this in the story"
+    "text": "6:3, +1 for each card before this in the story."
   },
   {"name": "Stalker", "id": 55,
     "cost": 6,
@@ -111,25 +111,25 @@
   },
   {"name": "Sarcophagus", "id": 100,
     "cost": 6,
-    "text": "6:X, put the highest cost card from your discard pile on top of your deck, X is its cost"
+    "text": "6:X, put the highest cost card from your discard pile on top of your deck, X is its cost."
   },
 
   {"name": "Anubis", "id": 101,
     "cost": 7,
-    "text": "7:7, costs 0 if you have at least 12 cards in your discard pile"
+    "text": "7:7, costs 0 if you have at least 12 cards in your discard pile."
   },
   {"name": "Horus", "id": 67,
     "cost": 7,
-    "text": "7:7, costs 0 if you can see at least 3 of your opponent's cards in the story"
+    "text": "7:7, costs 0 if you can see at least 3 of your opponent's cards in the story."
   },
 
   {"name": "AI", "id": 79,
     "cost": 8,
-    "text": "8:4, draw 1. Costs X less where X is the total point value of all robots in your hand"
+    "text": "8:4, draw 1. Costs X less where X is the total point value of all robots in your hand."
   },
   {"name": "Oak", "id": 49,
     "cost": 8,
-    "text": "8:8, if you win this round, convert to nourish any excess points that you won by.\n(For example, if you win 8 to 5 you get 2 points nourish)"
+    "text": "8:8, if you win this round, convert to Nourish any excess points that you won by.\n(For example, if you win 8 to 5 you get 2 points Nourish)"
   },
   {"name": "Enrage", "id": 6,
     "cost": 8,
@@ -139,11 +139,11 @@
 
   {"name": "Bee", "id": 126,
     "cost": 0,
-    "text": "0:1, visible"
+    "text": "0:1, Visible"
   },
   {"name": "Butterfly", "id": 128,
     "cost": 1,
-    "text": "1:0, nourish 1 (The next card you resolve is worth 1 more point)"
+    "text": "1:0, Nourish 1 (The next card you resolve is worth 1 more point)"
   },
   {"name": "Bandit", "id": 69,
     "cost": 1,
@@ -151,7 +151,7 @@
   },
   {"name": "Night Vision", "id": 70,
     "cost": 1,
-    "text": "1:0, tutor 2. On play, sight 3"
+    "text": "1:0, Tutor 2. On play, Sight 3"
   },
 
   {"name": "Raise Dead", "id": 95,
@@ -160,7 +160,7 @@
   },
   {"name": "Bastet", "id": 116,
     "cost": 2,
-    "text": "2:1, this card retains all changes to points as it resolves (For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
+    "text": "2:1, this card retains all changes to points as it resolves (For example, if this card was Nourished by 3, it stays a 2:4 once it is in the discard pile)"
   },
   {"name": "Beehive", "id": 127,
     "cost": 2,
@@ -191,12 +191,12 @@
   },
   {"name": "Foundry", "id": 81,
     "cost": 5,
-    "text": "5:5-X, build X, where X is the number of cards in the story before this card"
+    "text": "5:5-X, Build X, where X is the number of cards in the story before this card"
   },
 
   {"name": "Cuauhtli", "id": 71,
     "cost": 6,
-    "text": "6:6, nourish 2. When played, gain sight 4 and transform each card in your hand into a ${19}"
+    "text": "6:6, Nourish 2. When played, gain Sight 4 and transform each card in your hand into a ${19}"
   },
 
   {"name": "Icarus", "id": 27,
