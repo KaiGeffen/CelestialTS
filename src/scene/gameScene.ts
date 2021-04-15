@@ -23,6 +23,7 @@ export class GameScene extends Phaser.Scene {
 
 	searchingBackground: Phaser.GameObjects.Rectangle
 	txtSearching: Phaser.GameObjects.Text
+	btnExit: Phaser.GameObjects.Text
 
 	mulligansComplete: Boolean
 	mulliganHighlights: Phaser.GameObjects.Rectangle[]
@@ -276,7 +277,11 @@ export class GameScene extends Phaser.Scene {
 	displaySearchingStatus(searching: boolean): void {
 		if (searching) {
 			this.searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.background).setOrigin(0, 0)
-			this.txtSearching = this.add.text(1100/2, 650/2, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
+			this.txtSearching = this.add.text(1100/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
+
+			this.btnExit = this.add.text(1100/2, 400, "Cancel", StyleSettings.button).setOrigin(0.5, 0.5)
+			this.btnExit.setInteractive()
+			this.btnExit.on('pointerdown', this.exitScene, this)
 		}
 		else {
 			this.sound.play('success')
@@ -285,6 +290,7 @@ export class GameScene extends Phaser.Scene {
 			{
 				this.searchingBackground.destroy()
 				this.txtSearching.destroy()
+				this.btnExit.destroy()
 			}
 		}
 	}
