@@ -403,7 +403,7 @@ export class GameScene extends Phaser.Scene {
 			}
 
 			// Play the card if it's clicked on (Even if unplayable, will signal error)
-			cardImage.image.on('pointerdown', this.clickCard(i, cardImage, state.story.acts.length), this)
+			cardImage.image.on('pointerdown', this.clickCard(i, cardImage, state.story.acts.length, state.priority), this)
 		}
 		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
 			this.addCard(cardback, i, this.opponentHandContainer)
@@ -665,14 +665,21 @@ export class GameScene extends Phaser.Scene {
   		return result
   	}
 
-  	private clickCard(index: number, card: CardImage, storyLength: number): () => void  {
+  	private clickCard(index: number, card: CardImage, storyLength: number, priority: number): () => void  {
 
   		let that = this
   		return function() {
   			if (that.recapPlaying) {
   				that.signalError()
   			}
-  			else if (that.mulligansComplete && !card.unplayable) {
+  			else if (card.unplayable) {
+  				that.signalError()
+  			}
+  			else if (priority === 1) {
+  				that.signalError()
+  			}
+  			// Play the card
+  			else if (that.mulligansComplete) {
   				that.animationPlaying = true
 
   				that.net.playCard(index)
@@ -698,29 +705,8 @@ export class GameScene extends Phaser.Scene {
   						}
   					}
   					})
-  				
-  				// that.tweens.add({
-      //       		targets: end,
-		    //         x: 0,
-		    //         y: 0,
-		    //         ease: 'Linear',
-		    //         duration: 500,
-		    //         onComplete: function (tween, targets, particle)
-		    //         {
-		    //             // particle.isSeeking = true
-		    //             particle.scene.tweens.add({
-		    //                 targets: particle,
-		    //                 speed: 150,
-		    //                 delay: 500,
-		    //                 ease: 'Sine.easeOut',
-		    //                 duration: 1000
-		    //             });
-		    //         },
-		    //         onCompleteParams: [ this ]
-		    //     });
-  				// let particle = new Particle(that, start, start)
-  				// that.add()
   			}
+  			// Toggle mulligan for the card
   			else {
       			this.sound.play('click')
 
