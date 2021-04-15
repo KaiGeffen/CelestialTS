@@ -91,6 +91,9 @@ export class GameScene extends Phaser.Scene {
 		// Make a list of objects that are temporary with game state
 		this.temporaryObjs = []
 
+		// Story must be before hand so that hand cards are on top
+		this.storyContainer = this.add.container(0, 0)
+
 		this.handContainer = this.add.container(0, 0)
 		this.opponentHandContainer = this.add.container(0, 0)
 		this.deckContainer = this.add.container(0, 0).setVisible(false)
@@ -99,7 +102,6 @@ export class GameScene extends Phaser.Scene {
 		this.opponentDeckContainer = this.add.container(0, 0).setVisible(false)
 
 		this.recapContainer = this.add.container(0, 0).setVisible(false)
-		this.storyContainer = this.add.container(0, 0)
 		this.stackContainer = this.add.container(800, 0)
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
 
@@ -292,10 +294,17 @@ export class GameScene extends Phaser.Scene {
 
 	// If a recap of states is playing, wait to show the new state until after it has finished
 	recapPlaying: Boolean = false
+	// If an animation is playing locally, wait until that is finished before showing any new state or recaps
+	animationPlaying: Boolean = false
 	queuedState: ClientState = undefined
-	storyLength: number = 0
 	// Display the given game state
 	displayState(state: ClientState, recap: Boolean = false): void {
+		if (this.animationPlaying) {
+			// TODO bad
+			this.queuedState = state
+			return
+		}
+
 		let that = this
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 
@@ -316,8 +325,6 @@ export class GameScene extends Phaser.Scene {
 		// Display this non-recap state, with normal background and no scores displayed
 		else
 		{
-			this.storyLength = state.story.acts.length
-
 			// TODO Sometimes this should happen even in a recap, such is if a card is discarded
 			// Reset the hover text in case the hovered card moved with object replacement
 			cardInfo.setVisible(false)
@@ -387,7 +394,7 @@ export class GameScene extends Phaser.Scene {
 		this.passContainer.setVisible(!state.mulligansComplete.includes(false))
 
 		// Hands
-		for (var i = state.hand.length - 1; i >= 0; i--) {
+		for (var i = 0; i < state.hand.length; i++) {
 			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
 
 			// TODO Immediately play a sound based on if it's playable, and ignore the next sound from server (Immediate card sound)
@@ -396,7 +403,7 @@ export class GameScene extends Phaser.Scene {
 			}
 
 			// Play the card if it's clicked on (Even if unplayable, will signal error)
-			cardImage.image.on('pointerdown', this.clickCard(i), this)
+			cardImage.image.on('pointerdown', this.clickCard(i, cardImage, state.story.acts.length), this)
 		}
 		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
 			this.addCard(cardback, i, this.opponentHandContainer)
@@ -658,32 +665,37 @@ export class GameScene extends Phaser.Scene {
   		return result
   	}
 
-  	private clickCard(index: number): () => void  {
+  	private clickCard(index: number, card: CardImage, storyLength: number): () => void  {
 
   		let that = this
   		return function() {
   			if (that.recapPlaying) {
   				that.signalError()
   			}
-  			else if (that.mulligansComplete) {
+  			else if (that.mulligansComplete && !card.unplayable) {
+  				that.animationPlaying = true
+
   				that.net.playCard(index)
 
   				// Send a particle from this card to its place in the story
-  				let start = that.getCardPosition(index, that.handContainer, 0)
-  				let end = that.getCardPosition(that.storyLength, that.storyContainer, 0)
+  				// let start = that.getCardPosition(index, that.handContainer, 0)
+  				let end = that.getCardPosition(storyLength, that.storyContainer, 0)
 
-  				let particle = that.add.star(start[0], start[1], 5, 10, 15, ColorSettings.particle, 0.8)
-  				console.log(particle.y)
-  				// console.log(particle)
+  				// let particle = that.add.star(start[0], start[1], 5, 10, 15, ColorSettings.particle, 0.8)
 
   				let tween = that.tweens.add({
-  					targets: particle,
+  					targets: card.image,
   					x: end[0],
   					y: end[1],
+  					duration: 400,
   					ease: "Sine.easeInOut",
   					onComplete: function (tween, targets, _)
   					{
-  						particle.destroy()
+  						that.animationPlaying = false
+  						if (that.queuedState !== undefined) {
+  							that.displayState(that.queuedState)
+  							that.queuedState = undefined
+  						}
   					}
   					})
   				
