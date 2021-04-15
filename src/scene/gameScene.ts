@@ -669,6 +669,17 @@ export class GameScene extends Phaser.Scene {
 
   		let that = this
   		return function() {
+  			// Mulligan functionality
+  			// Toggle mulligan for the card
+  			if (!that.mulligansComplete) {
+      			this.sound.play('click')
+
+  				let highlight = that.mulliganHighlights[index]
+  				highlight.setVisible(!highlight.visible)
+  				return
+  			}
+
+  			// Non-mulligan, which can be in error for a variety of reasons
   			if (that.recapPlaying) {
   				that.signalError()
   			}
@@ -678,17 +689,13 @@ export class GameScene extends Phaser.Scene {
   			else if (priority === 1) {
   				that.signalError()
   			}
-  			// Play the card
-  			else if (that.mulligansComplete) {
+  			else {
   				that.animationPlaying = true
 
   				that.net.playCard(index)
 
-  				// Send a particle from this card to its place in the story
-  				// let start = that.getCardPosition(index, that.handContainer, 0)
+  				// Send a this card to its place in the story
   				let end = that.getCardPosition(storyLength, that.storyContainer, 0)
-
-  				// let particle = that.add.star(start[0], start[1], 5, 10, 15, ColorSettings.particle, 0.8)
 
   				let tween = that.tweens.add({
   					targets: card.image,
@@ -705,13 +712,6 @@ export class GameScene extends Phaser.Scene {
   						}
   					}
   					})
-  			}
-  			// Toggle mulligan for the card
-  			else {
-      			this.sound.play('click')
-
-  				let highlight = that.mulliganHighlights[index]
-  				highlight.setVisible(!highlight.visible)
   			}
   		}
   	}
