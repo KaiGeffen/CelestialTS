@@ -63,7 +63,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
   small: {
     font: FontSettings.small,
     color: '#000',
-    wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: true }
+    wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: false }
   },
   announcement: {
     font: FontSettings.huge,
@@ -75,7 +75,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     font: FontSettings.standard,
     color: ColorSettings.cardText,
     backgroundColor: ColorSettings.cardTextBackground,
-    wordWrap: { width: 500, useAdvancedWrap: true },
+    wordWrap: { width: 500, useAdvancedWrap: false },
     padding: { x: 10, y: 5 },
     stroke: '#000',
     strokeThickness: 0

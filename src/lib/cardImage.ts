@@ -110,8 +110,11 @@ export class CardImage {
     }
 
     // Add each present keyword's text at the end of the cardText
+    if (presentKeywords.length > 0) {
+      cardText += '\n'
+    }
     for (const keyword of presentKeywords) {
-      cardText += `\n(${keyword.text})`
+      cardText += `\n${keyword.text}`
     }
 
     return cardText
