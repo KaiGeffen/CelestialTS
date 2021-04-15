@@ -22,7 +22,7 @@
   },
   {"name": "Juggle", "id": 136,
     "cost": 1, "points": 1,
-    "text": "1:1. When played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)"
+    "text": "1:1.\nWhen played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)"
   },
   {"name": "Drown", "id": 94,
     "cost": 1, "points": 1,
@@ -160,7 +160,7 @@
   },
   {"name": "Bastet", "id": 116,
     "cost": 2,
-    "text": "2:1, this card retains all changes to points as it resolves (For example, if this card was Nourished by 3, it stays a 2:4 once it is in the discard pile)"
+    "text": "2:1, this card retains all changes to points as it resolves (For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
   },
   {"name": "Beehive", "id": 127,
     "cost": 2,
