@@ -9,7 +9,6 @@ import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
 import Recap from '../lib/recap'
 
 
-const AUTO_RECAP_PARAM = 'ar'
 const RECAP_TIME = 1000
 
 var cardInfo: Phaser.GameObjects.Text
@@ -73,6 +72,8 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	init(params: any): void {
+		this.sound.pauseOnBlur = false
+		
 		// Code to matchmake player with ('ai' if versus computer)
 	    let mmCode = UserSettings['mmCode']
 	    if (UserSettings['vsAi']) {

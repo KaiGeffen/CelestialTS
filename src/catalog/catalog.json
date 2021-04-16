@@ -76,7 +76,7 @@
   },
   {"name": "Paranoia", "id": 21,
     "cost": 3,
-    "text": "3:3.\nWhen played, gain Sight X where X is the number of cards before this in the story."
+    "text": "3:3.\nWhen played, gain Sight X, where X is the number of cards before this in the story."
   },
 
   {"name": "Hurricane", "id": 7,
@@ -125,7 +125,7 @@
 
   {"name": "AI", "id": 79,
     "cost": 8,
-    "text": "8:4, draw 1. Costs X less where X is the total point value of all robots in your hand."
+    "text": "8:4, draw 1. Costs X less, where X is the total point value of all robots in your hand."
   },
   {"name": "Oak", "id": 49,
     "cost": 8,

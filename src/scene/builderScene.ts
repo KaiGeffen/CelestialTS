@@ -53,6 +53,8 @@ export class BuilderScene extends Phaser.Scene {
   }
   
   init(): void {
+    this.sound.pauseOnBlur = false
+
     this.deckRegion = new DeckRegion(this)
     this.catalogRegion = new CatalogRegion(this, this.deckRegion)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
