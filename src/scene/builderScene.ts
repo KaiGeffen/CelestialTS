@@ -45,6 +45,7 @@ export class BuilderScene extends Phaser.Scene {
   deckRegion
   filterRegion
   menuRegion
+  tutorialRegion
 
   constructor() {
     super({
@@ -55,10 +56,13 @@ export class BuilderScene extends Phaser.Scene {
   init(): void {
     this.sound.pauseOnBlur = false
 
+    this.tutorialRegion = new TutorialRegion(this)
+
     this.deckRegion = new DeckRegion(this)
     this.catalogRegion = new CatalogRegion(this, this.deckRegion)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
     this.menuRegion = new MenuRegion(this, this.deckRegion)
+    
 
     cardInfo = addCardInfoToScene(this)
   }
@@ -78,6 +82,8 @@ export class BuilderScene extends Phaser.Scene {
   }
   
   create(): void {
+    this.tutorialRegion.create()
+
     this.catalogRegion.create()
     this.deckRegion.create()
     this.filterRegion.create()
@@ -702,6 +708,34 @@ class MenuRegion {
   }
 }
 
+class TutorialRegion {
+  scene: Phaser.Scene
+  container: Phaser.GameObjects.Container
+
+  constructor(scene: Phaser.Scene) {
+    this.init(scene)
+  }
+
+  init(scene): void {
+    this.scene = scene
+    this.container = this.scene.add.container(0, 0)
+  }
+
+  create(): void {
+    let s = 
+    `Each card has a cost (Left number) and point value (Right number).
+Some cards also have additional effects listed after that.
+
+Each round, you'll try to get more points that your opponent
+by spending mana to play cards.
+
+Try making a deck from 8 cards that cost 2 or less, 4 that cost 3-5,
+and 3 that cost 6 or more.` 
+    let txt = this.scene.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
+
+    this.container.add(txt)
+  }
+}
 
 
 
