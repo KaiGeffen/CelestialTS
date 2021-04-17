@@ -58,7 +58,7 @@ export default class WelcomeScene extends Phaser.Scene {
   create(): void {
     // Play background music
     this.sound.play('background',
-      {volume: 0.0, loop: true})
+      {volume: 0.5, loop: true})
 
     // Display text and button
     this.add.text(Space.windowWidth/2, 200, "Celestial",

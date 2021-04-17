@@ -90,44 +90,56 @@ class Explanation {
 
 let exMulligan: Explanation = new Explanation(
 	function (state) {return !state.mulligansComplete[0]},
-	"Click each card you want to redraw, then click 'Mulligan'"
+	"Click each card you want to redraw, then click 'Mulligan'."
 	)
+
 let exPlayOrPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
-	"Click a card to play it, or click 'Pass'"
+	"Click a card to play it, or click 'Pass'."
 	)
 let exRoundStart: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 1},
-	"At the start of each round, both players draw 2 cards and gain 1 mana"
+	"At the start of each round, both players draw 2 cards and gain 1 mana."
 	)
 let exRoundPriority: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 2},
-	"The player with more round-wins will act first in a round. If it's a tie, priority is decided randomly"
+	"The player who is winning will act first in a round. If it's a tie, priority is decided randomly."
 	)
 let exWinCondition: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 3},
-	"A player wins when they've won at least 5 rounds, and lead by at least 2"
+	"A player wins when they've won at least 5 rounds, and lead by at least 2."
+	)
+let exStacks: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.maxMana[0] > 4},
+	"You can mouse over or click on either player's deck or discard pile to see more information."
 	)
 
+let exRoundEnd: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.story.acts.length >= 1},
+	"Once both players have passed in a row, the round ends and points are tallied."
+	)
 let exOpponentHidden: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.story.acts.length >= 2},
-	"Unless your opponent plays a Visible card, you won't be able to see what they've played"
+	function (state) {return state.priority === 0 && state.story.acts.length >= 1},
+	"Unless your opponent plays a Visible card, you won't be able to see what they've played."
 	)
 let exDiscardShuffle: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.deck.length <= 4},
-	"After your deck runs out of cards, your discard pile becomes your deck"
+	"After your deck runs out of cards, your discard pile becomes your deck."
 	)
 let exMaxHand: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.hand.length === 6},
-	"If you have 6 cards in hand, you can't draw any more"
+	"If you have 6 cards in hand, you can't draw any more."
 	)
 
 let explanations: Explanation[] = [
 	exMulligan,
 	exPlayOrPass,
 	exRoundStart,
+	exRoundEnd,
+
 	exRoundPriority,
 	exWinCondition,
+	exStacks,
 
 	exOpponentHidden,
 	exDiscardShuffle,
