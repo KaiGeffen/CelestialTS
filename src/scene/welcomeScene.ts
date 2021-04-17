@@ -70,6 +70,13 @@ export default class WelcomeScene extends BaseScene {
     backgroundClickable.setInteractive()
     backgroundClickable.on('pointerdown', this.doStart, this)
 
+    // Tutorial Button
+    let btnTutorial = this.add.text(Space.windowWidth/2, Space.windowHeight - 125, "Tutorial",
+      StyleSettings.button).setOrigin(0.5)
+    btnTutorial.setInteractive()
+    btnTutorial.on('pointerdown', this.doTutorial, this)
+
+    // Credits button
     let btnCredits = this.add.text(Space.windowWidth/2, Space.windowHeight - 50, "Credits",
       StyleSettings.button).setOrigin(0.5)
     btnCredits.setInteractive()
@@ -79,7 +86,11 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doStart(): void {
-    this.scene.start("BuilderScene")
+    this.scene.start("BuilderScene", {isTutorial: false})
+  }
+
+  private doTutorial(): void {
+    this.scene.start("BuilderScene", {isTutorial: true})
   }
 
   private doCredits(): void {

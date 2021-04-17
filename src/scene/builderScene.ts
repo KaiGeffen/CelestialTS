@@ -18,6 +18,8 @@ var lastDeck: Card[] = []
 
 
 export default class BuilderScene extends BaseScene {
+  isTutorial: Boolean
+
   catalogRegion
   deckRegion
   filterRegion
@@ -30,22 +32,27 @@ export default class BuilderScene extends BaseScene {
     })
   }
   
-  init(): void {
+  init(params: any): void {
+    this.isTutorial = params['isTutorial']
+
     this.sound.pauseOnBlur = false
 
-    this.tutorialRegion = new TutorialRegion(this)
+    if (this.isTutorial) {
+      this.tutorialRegion = new TutorialRegion(this)
+    }
 
     this.deckRegion = new DeckRegion(this)
     this.catalogRegion = new CatalogRegion(this, this.deckRegion)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
     this.menuRegion = new MenuRegion(this, this.deckRegion)
     
-
     cardInfo = addCardInfoToScene(this)
   }
 
   create(): void {
-    this.tutorialRegion.create()
+    if (this.isTutorial) {
+      this.tutorialRegion.create()
+    }
 
     this.catalogRegion.create()
     this.deckRegion.create()
