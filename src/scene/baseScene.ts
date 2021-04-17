@@ -27,7 +27,6 @@ export default class BaseScene extends Phaser.Scene {
 		let btnExit = this.add.text(Space.windowWidth - Space.pad/2, 50, '<', StyleSettings.button).setOrigin(1, 0)
 		btnExit.setInteractive()
 		btnExit.on('pointerdown', this.doExit, this)
-
 	}
 
 	private doMute(btn: Phaser.GameObjects.Text): () => void {
@@ -46,7 +45,13 @@ export default class BaseScene extends Phaser.Scene {
 		
 	}
 
+	// Overwritten by the scenes that extend this
+	beforeExit(): void {
+		return
+	}
+
 	private doExit(): void {
+		this.beforeExit()
 		this.scene.start("WelcomeScene")
 	}
 }

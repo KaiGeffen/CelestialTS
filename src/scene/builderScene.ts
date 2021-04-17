@@ -6,15 +6,14 @@ import { decodeCard, encodeCard } from "../lib/codec"
 import BaseScene from "./baseScene"
 
 
-const catalog = starterCards
-
 const DECK_PARAM = 'deck'
 
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
 
-// The last deck of cards the player had, which gets repopulated after their match
-var lastDeck: Card[] = []
+// The last deck of cards the player had, which get repopulated each time they enter the deck builder
+var tutorialDeck: Card[] = []
+var standardDeck: Card[] = []
 
 
 export default class BuilderScene extends BaseScene {
@@ -50,16 +49,22 @@ export default class BuilderScene extends BaseScene {
   }
 
   create(): void {
+    this.catalogRegion.create(this.isTutorial)
+    this.deckRegion.create(this.isTutorial)
+
     if (this.isTutorial) {
       this.tutorialRegion.create()
     }
-
-    this.catalogRegion.create()
-    this.deckRegion.create()
-    this.filterRegion.create()
-    this.menuRegion.create()
+    else {
+      this.filterRegion.create()
+      this.menuRegion.create()
+    }
 
     super.create()
+  }
+
+  beforeExit(): void {
+    this.deckRegion.beforeExit()
   }
 }
 
@@ -83,7 +88,8 @@ class CatalogRegion {
     this.deckRegion = deckRegion
   }
 
-  create(): void {
+  create(isTutorial): void {
+    let catalog = isTutorial ? starterCards : collectibleCards
     for (var i = catalog.length - 1; i >= 0; i--) {
       this.addCard(catalog[i], i)
     }
@@ -133,7 +139,7 @@ class CatalogRegion {
         // If this card was visible but now isn't, this filter is removing more cards
         if (cardImage.image.visible) cardsRemoved = true
 
-        cardImage.image.setVisible(false)
+          cardImage.image.setVisible(false)
       }
     }
 
@@ -229,6 +235,7 @@ class DeckRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
   deck: CardImage[] = []
+  isTutorial: Boolean
 
   txtHint: Phaser.GameObjects.Text
   btnStart: Phaser.GameObjects.Text
@@ -243,8 +250,10 @@ class DeckRegion {
     this.container = this.scene.add.container(988, 650)
   }
 
-  create(): void {
+  create(isTutorial: boolean): void {
     let that = this
+
+    this.isTutorial = isTutorial
 
     // Hint text - tell user to click cards to add
     this.txtHint = this.scene.add.text(-500, -120, "Click a card to add it to your deck",
@@ -264,21 +273,20 @@ class DeckRegion {
     this.btnStart = this.scene.add.text(0, -50, '', StyleSettings.button)
 
     this.btnStart.setInteractive()
-    this.btnStart.on('pointerdown', function (event) {
-      that.scene.sound.play('click')
-
-      lastDeck = that.deck.map( (cardImage) => cardImage.card)
-      this.scene.scene.start("TutorialScene", {deck: lastDeck})
-    })
-    
-    this.updateText()
+    this.btnStart.on('pointerdown', this.onStart())
 
     // Menu button, the callback is set by menu region during its init
     this.btnMenu = this.scene.add.text(0, -150, 'Menu', StyleSettings.button)
+    if (isTutorial) {
+      this.btnMenu.setVisible(false)
+    }
 
-    // Add all cards that were in the last deck the player had, if any
-    let lastDeckCode = lastDeck.map((card) => card.id).join(':')
-    this.setDeck(lastDeckCode)
+    // If this is the tutorial, use that deck, otherwise use the other deck
+    if (isTutorial) {
+      this.setDeck(tutorialDeck)
+    } else {
+      this.setDeck(standardDeck)
+    }
 
     // Add all of these objects to this container
     this.container.add([this.txtHint, btnSort, this.btnStart, this.btnMenu])
@@ -308,14 +316,21 @@ class DeckRegion {
     return true
   }
 
-  // Set the current deck based on given deck code, returns true if deck was valid
-  setDeck(deckCode: string): boolean {
-    // Get the deck from this code
-    let cardCodes: string[] = deckCode.split(':')
+  // Set the current deck, returns true if deck was valid
+  setDeck(deckCode: string | Card[]): boolean {
+    let deck: Card[]
+    if (typeof deckCode === "string") {
+      // Get the deck from this code
+      let cardCodes: string[] = deckCode.split(':')
 
-    let deck: Card[] = cardCodes.map( (cardCode) => decodeCard(cardCode))
-    if (deckCode === '') deck = []
+      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
+    }
+    else {
+      console.log('deck is a list of cards')
+      deck = deckCode
+    }
 
+    // Check if the deck is valid, then create it if so
     if (deck.includes(undefined))
     {
       return false
@@ -339,6 +354,34 @@ class DeckRegion {
   setShowMenu(callback: () => void): void {
     this.btnMenu.setInteractive()
     this.btnMenu.on('pointerdown', callback)
+  }
+
+  // Before exiting, remember the deck player has
+  beforeExit(): void {
+    if (this.isTutorial) {
+      tutorialDeck = this.deck.map( (cardImage) => cardImage.card)
+    }
+    else {
+      standardDeck = this.deck.map( (cardImage) => cardImage.card)
+    }
+  }
+
+  private onStart(): () => void {
+    let that = this
+
+    return function () {
+      that.scene.sound.play('click')
+
+      that.beforeExit()
+      
+      // Start the right scene / deck pair
+      if (that.isTutorial) {
+        this.scene.scene.start("TutorialScene", {deck: tutorialDeck})
+      }
+      else {
+        this.scene.scene.start("GameScene", {deck: standardDeck})
+      }
+    }
   }
 
   private updateText(): void {
@@ -403,7 +446,6 @@ class DeckRegion {
       image.on('pointerdown', this.removeCard(i), this)
     }
   }
-
 
   private sort(): void {
     this.deck.sort(function (card1, card2): number {
@@ -470,33 +512,33 @@ class FilterRegion {
     let that = this
 
     return function() {
-        that.scene.sound.play('click')
+      that.scene.sound.play('click')
 
-        // Highlight the button, or remove its highlight
-        if (btn.isTinted) {
-          btn.clearTint()
-        }
-        else
-        {
-          btn.setTint(ColorSettings.filterSelected)
-        }
+      // Highlight the button, or remove its highlight
+      if (btn.isTinted) {
+        btn.clearTint()
+      }
+      else
+      {
+        btn.setTint(ColorSettings.filterSelected)
+      }
 
-        // Toggle filtering the chosen number
-        that.filterCostAry[i] = !that.filterCostAry[i]
+      // Toggle filtering the chosen number
+      that.filterCostAry[i] = !that.filterCostAry[i]
 
-        // If nothing is filtered, all cards are shown
-        let filterFunction
-        if (that.filterCostAry.every(v => v === false)) {
-          filterFunction = function (card: Card) {return true}
+      // If nothing is filtered, all cards are shown
+      let filterFunction
+      if (that.filterCostAry.every(v => v === false)) {
+        filterFunction = function (card: Card) {return true}
+      }
+      else
+      {
+        filterFunction = function (card: Card) {
+          return that.filterCostAry[card.cost]
         }
-        else
-        {
-          filterFunction = function (card: Card) {
-            return that.filterCostAry[card.cost]
-          }
-        }
+      }
 
-        that.catalogRegion.filter(filterFunction)
+      that.catalogRegion.filter(filterFunction)
     }
   }
 
@@ -513,7 +555,7 @@ class FilterRegion {
 
       that.catalogRegion.filter(
         function (card: Card) {return true}
-      )
+        )
     }
   }
 }
@@ -612,9 +654,9 @@ class MenuRegion {
 
   // Set the btn to end with a check or an X based on the conditional
   private setCheckOrX(btn: Phaser.GameObjects.Text, conditional: Boolean): void {
-      let finalChar = conditional ? "✓":"X"
-      let newText = btn.text.slice(0, -1) + finalChar
-      btn.setText(newText)
+    let finalChar = conditional ? "✓":"X"
+    let newText = btn.text.slice(0, -1) + finalChar
+    btn.setText(newText)
   }
 
   private onSetMatchmaking(btn: Phaser.GameObjects.Text): () => void {
@@ -680,6 +722,7 @@ class MenuRegion {
   }
 }
 
+
 class TutorialRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
@@ -696,13 +739,13 @@ class TutorialRegion {
   create(): void {
     let s = 
     `Each card has a cost (Left number) and point value (Right number).
-Some cards also have additional effects listed after that.
+    Some cards also have additional effects listed after that.
 
-Each round, you'll try to get more points than your opponent
-by spending mana to play cards.
+    Each round, you'll try to get more points than your opponent
+    by spending mana to play cards.
 
-Try making a deck from 8 cards that cost 2 or less, 4 that cost 3-5,
-and 3 that cost 6 or more.` 
+    Try making a deck from 8 cards that cost 2 or less, 4 that cost 3-5,
+    and 3 that cost 6 or more.` 
     let txt = this.scene.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
 
     this.container.add(txt)
