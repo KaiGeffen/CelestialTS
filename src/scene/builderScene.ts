@@ -428,11 +428,11 @@ class DeckRegion {
     this.deck.sort(function (card1, card2): number {
       if (card1.card.cost < card2.card.cost)
       {
-        return -1
+        return 1
       }
       else if (card1.card.cost > card2.card.cost)
       {
-        return 1
+        return -1
       }
       else
       {
