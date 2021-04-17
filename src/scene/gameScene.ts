@@ -17,6 +17,7 @@ var storyHiddenLock: boolean = false
 
 export default class GameScene extends Phaser.Scene {
 	net: Network
+
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
 
@@ -377,9 +378,6 @@ export default class GameScene extends Phaser.Scene {
 		this.temporaryObjs.forEach(obj => obj.destroy())
 		this.temporaryObjs = []
 
-		// Autopass - TODO Remove or have a setting for Autopass
-		if (state.hand.length === 0 && state.priority === 0) this.net.passTurn();
-
 		// Mulligan
 		this.txtOpponentMulligan.setVisible(!state.mulligansComplete[1])
 		this.passContainer.setVisible(!state.mulligansComplete.includes(false))
@@ -529,6 +527,12 @@ export default class GameScene extends Phaser.Scene {
 			this.txtPass.setVisible(true)
 			this.txtOpponentPass.setVisible(false)
 		}
+
+		// Remember what version of the game state this is, for use when communicating with server
+		this.net.setVersionNumber(state.versionNumber)
+
+		// Autopass
+		if (!recap && state.hand.length === 0 && state.priority === 0) this.net.passTurn()
 
 		// State was displayed
 		return true

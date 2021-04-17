@@ -21,7 +21,7 @@ export default class ClientState {
 	passes: number
 	recap: Recap
 	mulligansComplete: boolean[]
-	// versionNumber: number
+	versionNumber: number
 	cardsPlayable: boolean[]
 	vision: number
 	winner: number
@@ -49,7 +49,7 @@ export default class ClientState {
 		this.passes = state.passes
 		this.recap = decodeRecap(state.recap)
 		this.mulligansComplete = state.mulligans_complete
-		// this.version_number
+		this.versionNumber = state.version_number
 		this.cardsPlayable = state.cards_playable
 		this.vision = state.vision
 		this.winner = state.winner

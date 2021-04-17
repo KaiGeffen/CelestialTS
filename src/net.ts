@@ -21,6 +21,8 @@ const MATCH_MAKING_PARAM = 'mm'
 
 export class Network {
 	socket: WebSocket
+	// The version-number of that state that the client is displaying, for use with verifying with server
+	versionNumber: number = 0
 
 	constructor(deck, scene, mmCode) {
 		// The first message sent to server once the match starts
@@ -72,7 +74,8 @@ export class Network {
 	playCard(index: number) {
 		let msg = {
 			"type": "play_card",
-			"value": index
+			"value": index,
+			"version": this.versionNumber
 		}
 		this.socket.send(JSON.stringify(msg))
 	}
@@ -88,13 +91,19 @@ export class Network {
 
 	passTurn() {
 		let msg = {
-			"type": "pass_turn"
+			"type": "pass_turn",
+			"version": this.versionNumber
 		}
 		this.socket.send(JSON.stringify(msg))
 	}
 
 	closeSocket() {
 		this.socket.close(1000)
+	}
+
+	// Establish the version number of the state that the client is seeing
+	setVersionNumber(versionNumber: number): void {
+		this.versionNumber = versionNumber
 	}
 
 	// Get the appropriate websocket for this environment / matchmaking code
