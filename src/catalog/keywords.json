@@ -1,6 +1,6 @@
 [
 	{"key": "Fleeting",
-		"text": "Fleeting - After resolving, this card is removed from the game instead of moving to your discard pile."
+		"text": "Fleeting - After resolving, this card is removed from the game."
 	},
 	{"key": "Visible",
 		"text": "Visible - This card is visible to your opponent while in the story."
@@ -29,5 +29,4 @@
 	{"key": "Flare",
 		"text": "Flare - This card is worth 1 less for every card before it in the story."
 	}
-
 ]

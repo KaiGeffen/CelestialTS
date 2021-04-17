@@ -81,20 +81,31 @@ export class CardImage {
     let expr = /\${(\d+)}/
     
     // Replace all id references with the name of the card they reference
-    let cards: Card[] = []
+    let referencedCards: Card[] = []
     function replaceName(match: string, cardId: string, ...args): string
     {
-      let referencedCard = decodeCard(cardId)
+      let card = decodeCard(cardId)
 
       // Add to a list of refenced cards
-      if (!cards.includes(referencedCard)) {
-        cards.push(referencedCard)
+      if (!referencedCards.includes(card)) {
+        referencedCards.push(card)
       }
 
-      return `${referencedCard.name} (${referencedCard.text})`
+      return `${card.name}`
     }
 
-    return cardText.replace(expr, replaceName)
+    // Replace each reference with that card's name
+    cardText = cardText.replace(expr, replaceName)
+
+    // Add a full explanation of the card at the end
+    if (referencedCards.length > 0) {
+      cardText += '\n'
+    }
+    for (const card of referencedCards) {
+      cardText += `\n${card.name} - ${card.text}`
+    }
+
+    return cardText
   }
 
   // Add an explanation of each existing keyword in cardText to the end of the text
