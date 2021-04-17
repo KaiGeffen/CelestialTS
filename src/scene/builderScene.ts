@@ -116,10 +116,6 @@ class CatalogRegion {
       let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad
       let y = 2 * (Space.cardSize + Space.pad) + Space.pad/2
 
-      // TODO If these are on the main scene instead of in a container, they need to be inactive
-      // When the menu is open, or they will be above the invisible exit rectangle
-      // Better to have these be on this catalog or maybe on a container which has the card
-      // container
       let btnNext = this.scene.add.text(x, y, '>', StyleSettings.button).setOrigin(0, 0)
       btnNext.setInteractive()
       btnNext.on('pointerdown', this.goNextPage())
@@ -258,6 +254,8 @@ class DeckRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
   deck: CardImage[] = []
+
+  txtHint: Phaser.GameObjects.Text
   btnStart: Phaser.GameObjects.Text
   btnMenu: Phaser.GameObjects.Text
 
@@ -271,18 +269,21 @@ class DeckRegion {
   }
 
   create(): void {
+    let that = this
+
+    // Hint text - tell user to click cards to add
+    this.txtHint = this.scene.add.text(-500, -120, "Click a card to add it to your deck",
+      StyleSettings.announcement).setOrigin(0.5, 0)
+
     // Sort button
     let btnSort = this.scene.add.text(0, -100, 'Sort', StyleSettings.button)
-    btnSort.setInteractive()
 
-    let that = this
+    btnSort.setInteractive()
     btnSort.on('pointerdown', function (event) {
       that.scene.sound.play('click')
 
       that.sort()
     })
-
-    this.container.add(btnSort)
 
     // Start button
     this.btnStart = this.scene.add.text(0, -50, '', StyleSettings.button)
@@ -292,21 +293,20 @@ class DeckRegion {
       that.scene.sound.play('click')
 
       lastDeck = that.deck.map( (cardImage) => cardImage.card)
-      // TODO
       this.scene.scene.start("GameScene", {deck: lastDeck})
     })
     
     this.updateStartButton()
-    
-    this.container.add(this.btnStart)
 
     // Menu button, the callback is set by menu region during its init
     this.btnMenu = this.scene.add.text(0, -150, 'Menu', StyleSettings.button)
-    this.container.add(this.btnMenu)
 
     // Add all cards that were in the last deck the player had, if any
     let lastDeckCode = lastDeck.map((card) => card.id).join(':')
     this.setDeck(lastDeckCode)
+
+    // Add all of these objects to this container
+    this.container.add([this.txtHint, btnSort, this.btnStart, this.btnMenu])
   }
 
   addCard(card: Card): boolean {
@@ -315,10 +315,8 @@ class DeckRegion {
     }
 
     let index = this.deck.length
-    var image: Phaser.GameObjects.Image
-    var [x, y] = this.getCardPosition(index)
-    
-    image = this.scene.add.image(x, y, card.name)
+    let [x, y] = this.getCardPosition(index)
+    let image: Phaser.GameObjects.Image = this.scene.add.image(x, y, card.name)
     image.setDisplaySize(100, 100)
 
     image.setInteractive()
@@ -328,8 +326,13 @@ class DeckRegion {
 
     this.deck.push(new CardImage(card, image))
 
+    // Update start button to reflect new amount of cards in deck
     this.updateStartButton()
 
+    // Make the instructive hint invisible
+    this.txtHint.setVisible(false)
+
+    // Card was added successfully
     return true
   }
 
@@ -405,6 +408,10 @@ class DeckRegion {
       that.correctDeckIndices()
 
       that.updateStartButton()
+
+      if (that.deck.length === 0) {
+        that.txtHint.setVisible(true)
+      }
     }
   }
 
