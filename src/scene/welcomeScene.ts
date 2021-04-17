@@ -1,6 +1,7 @@
 import "phaser"
 import { StyleSettings, Space } from "../settings"
 import { allCards } from "../catalog/catalog"
+import BaseScene from "./baseScene"
 
 
 const SOUNDS = [
@@ -27,7 +28,7 @@ const SOUNDS = [
   'yell'
 ]
 
-export default class WelcomeScene extends Phaser.Scene {
+export default class WelcomeScene extends BaseScene {
   
   constructor() {
     super({
@@ -36,6 +37,7 @@ export default class WelcomeScene extends Phaser.Scene {
   }
 
   init(): void {
+    // TODO Make this a part of an extended child of Scene
     this.sound.pauseOnBlur = false
   }
 
@@ -56,10 +58,6 @@ export default class WelcomeScene extends Phaser.Scene {
   }
 
   create(): void {
-    // Play background music
-    this.sound.play('background',
-      {volume: 0.5, loop: true})
-
     // Display text and button
     this.add.text(Space.windowWidth/2, 200, "Celestial",
       StyleSettings.title).setOrigin(0.5)
@@ -76,6 +74,8 @@ export default class WelcomeScene extends Phaser.Scene {
       StyleSettings.button).setOrigin(0.5)
     btnCredits.setInteractive()
     btnCredits.on('pointerdown', this.doCredits, this)
+
+    super.create()
   }
 
   private doStart(): void {

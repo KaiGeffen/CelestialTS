@@ -3,6 +3,7 @@ import { collectibleCards, Card, cardback } from "../catalog/catalog"
 
 import { Network } from "../net"
 import ClientState from "../lib/clientState"
+import BaseScene from "./baseScene"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 // Import Settings itself 
 import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
@@ -15,7 +16,7 @@ var cardInfo: Phaser.GameObjects.Text
 
 var storyHiddenLock: boolean = false
 
-export default class GameScene extends Phaser.Scene {
+export default class GameScene extends BaseScene {
 	net: Network
 
 	// Objects (CardImages and text) that will be removed before displaying a new state
@@ -266,6 +267,8 @@ export default class GameScene extends Phaser.Scene {
 	    cardInfo = addCardInfoToScene(this)
 
 	    this.displaySearchingStatus(true)
+
+	    super.create()
 	}
 
 	// Display searching for opponent if still looking

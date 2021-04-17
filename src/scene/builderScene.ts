@@ -3,6 +3,7 @@ import { collectibleCards, starterCards,  Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
+import BaseScene from "./baseScene"
 
 
 const catalog = starterCards
@@ -16,7 +17,7 @@ var cardInfo: Phaser.GameObjects.Text
 var lastDeck: Card[] = []
 
 
-export default class BuilderScene extends Phaser.Scene {
+export default class BuilderScene extends BaseScene {
   catalogRegion
   deckRegion
   filterRegion
@@ -50,6 +51,8 @@ export default class BuilderScene extends Phaser.Scene {
     this.deckRegion.create()
     this.filterRegion.create()
     this.menuRegion.create()
+
+    super.create()
   }
 }
 
