@@ -1,11 +1,11 @@
 import "phaser"
-import { collectibleCards, tokenCards, Card } from "../catalog/catalog"
+import { collectibleCards, allCards, starterCards,  Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 
 
-const catalog = collectibleCards
+const catalog = starterCards
 
 const DECK_PARAM = 'deck'
 // TODO This scene is taking on the role of preloading as well as being a deck-builder, decouple that functionality
@@ -67,13 +67,10 @@ export class BuilderScene extends Phaser.Scene {
     // Load all of the card and token images
     this.load.path = "assets/"
 
-    catalog.forEach( (card) => {
+    allCards.forEach( (card) => {
       this.load.image(card.name, `images/${card.name}.png`)
     })
-    tokenCards.forEach( (card) => {
-      this.load.image(card.name, `images/${card.name}.png`)
-    })
-
+    
     // Load all audio 
     SOUNDS.forEach( (sound) => {
       this.load.audio(sound, `sfx/${sound}.wav`)
