@@ -15,7 +15,7 @@ var cardInfo: Phaser.GameObjects.Text
 
 var storyHiddenLock: boolean = false
 
-export class GameScene extends Phaser.Scene {
+export default class GameScene extends Phaser.Scene {
 	net: Network
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
@@ -64,10 +64,8 @@ export class GameScene extends Phaser.Scene {
 	// Information about the recap that is playing
 	txtScores: Phaser.GameObjects.Text
 
-	constructor() {
-		super({
-			key: "GameScene"
-		})
+	constructor(args = {key: "GameScene"}) {
+		super(args)
 	}
 
 	init(params: any): void {
@@ -291,11 +289,11 @@ export class GameScene extends Phaser.Scene {
 	// If an animation is playing locally, wait until that is finished before showing any new state or recaps
 	animationPlaying: Boolean = false
 	queuedState: ClientState = undefined
-	// Display the given game state
-	displayState(state: ClientState, recap: Boolean = false): void {
+	// Display the given game state, returns false if the state isn't shown immediately
+	displayState(state: ClientState, recap: Boolean = false): boolean {
 		if (this.animationPlaying) {
 			this.queuedState = state
-			return
+			return false
 		}
 
 		let that = this
@@ -313,7 +311,7 @@ export class GameScene extends Phaser.Scene {
 		else if (this.recapPlaying)
 		{
 			this.queuedState = state
-			return
+			return false
 		}
 		// Display this non-recap state, with normal background and no scores displayed
 		else
@@ -352,7 +350,7 @@ export class GameScene extends Phaser.Scene {
 						that.displayState(state)
 					}
 				}, numberStates * RECAP_TIME)
-				return
+				return false
 			}
 		}
 
@@ -475,8 +473,8 @@ export class GameScene extends Phaser.Scene {
 		this.stackContainer.bringToTop(this.txtDiscardSize)
 		this.stackContainer.bringToTop(this.txtOpponentDiscardSize)
 
-		// Priority (Not shown during recap, theirs hidden during their mulligan)
-		if (recap) {
+		// Priority (Not shown during recap or once game is over, theirs hidden during their mulligan)
+		if (recap || state.winner !== null) {
 			this.priorityRectangle.setVisible(false)
 			this.txtYourTurn.setVisible(false)
 			this.txtTheirTurn.setVisible(false)
@@ -531,6 +529,9 @@ export class GameScene extends Phaser.Scene {
 			this.txtPass.setVisible(true)
 			this.txtOpponentPass.setVisible(false)
 		}
+
+		// State was displayed
+		return true
 	}
 
 	// Alert the user that they have taken an illegal or impossible action

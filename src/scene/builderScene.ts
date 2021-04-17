@@ -1,5 +1,5 @@
 import "phaser"
-import { collectibleCards, allCards, starterCards,  Card } from "../catalog/catalog"
+import { collectibleCards, starterCards,  Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
@@ -8,30 +8,6 @@ import { decodeCard, encodeCard } from "../lib/codec"
 const catalog = starterCards
 
 const DECK_PARAM = 'deck'
-// TODO This scene is taking on the role of preloading as well as being a deck-builder, decouple that functionality
-const SOUNDS = [
-  'success',
-  'failure',
-  'click',
-  'open',
-  'close',
-  'play',
-  'pass',
-  'draw',
-  'discard',
-  'create',
-  'shuffle',
-  'resolve',
-  'win',
-  'lose',
-  'tie',
-
-  'build',
-  'inspire',
-  'nourish',
-
-  'yell'
-]
 
 // The card hover text for this scene, which is referenced in the regions
 var cardInfo: Phaser.GameObjects.Text
@@ -40,7 +16,7 @@ var cardInfo: Phaser.GameObjects.Text
 var lastDeck: Card[] = []
 
 
-export class BuilderScene extends Phaser.Scene {
+export default class BuilderScene extends Phaser.Scene {
   catalogRegion
   deckRegion
   filterRegion
@@ -67,20 +43,6 @@ export class BuilderScene extends Phaser.Scene {
     cardInfo = addCardInfoToScene(this)
   }
 
-  preload(): void {
-    // Load all of the card and token images
-    this.load.path = "assets/"
-
-    allCards.forEach( (card) => {
-      this.load.image(card.name, `images/${card.name}.png`)
-    })
-    
-    // Load all audio 
-    SOUNDS.forEach( (sound) => {
-      this.load.audio(sound, `sfx/${sound}.wav`)
-    })
-  }
-  
   create(): void {
     this.tutorialRegion.create()
 
@@ -296,7 +258,7 @@ class DeckRegion {
       that.scene.sound.play('click')
 
       lastDeck = that.deck.map( (cardImage) => cardImage.card)
-      this.scene.scene.start("GameScene", {deck: lastDeck})
+      this.scene.scene.start("TutorialScene", {deck: lastDeck})
     })
     
     this.updateText()

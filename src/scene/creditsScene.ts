@@ -2,7 +2,7 @@ import "phaser"
 import { StyleSettings, Space } from "../settings"
 
 
-export class CreditsScene extends Phaser.Scene {
+export default class CreditsScene extends Phaser.Scene {
   
   constructor() {
     super({

@@ -1,8 +1,33 @@
 import "phaser"
 import { StyleSettings, Space } from "../settings"
+import { allCards } from "../catalog/catalog"
 
 
-export class WelcomeScene extends Phaser.Scene {
+const SOUNDS = [
+  'success',
+  'failure',
+  'click',
+  'open',
+  'close',
+  'play',
+  'pass',
+  'draw',
+  'discard',
+  'create',
+  'shuffle',
+  'resolve',
+  'win',
+  'lose',
+  'tie',
+
+  'build',
+  'inspire',
+  'nourish',
+
+  'yell'
+]
+
+export default class WelcomeScene extends Phaser.Scene {
   
   constructor() {
     super({
@@ -10,7 +35,32 @@ export class WelcomeScene extends Phaser.Scene {
     })
   }
 
+  init(): void {
+    this.sound.pauseOnBlur = false
+  }
+
+  // Load all assets used throughout the scenes
+  preload(): void {
+    // Load all of the card and token images
+    this.load.path = "assets/"
+
+    allCards.forEach( (card) => {
+      this.load.image(card.name, `images/${card.name}.png`)
+    })
+    
+    // Load all audio 
+    SOUNDS.forEach( (sound) => {
+      this.load.audio(sound, `sfx/${sound}.wav`)
+    })
+    this.load.audio('background', 'music/background.wav')
+  }
+
   create(): void {
+    // Play background music
+    this.sound.play('background',
+      {volume: 0.0, loop: true})
+
+    // Display text and button
     this.add.text(Space.windowWidth/2, 200, "Celestial",
       StyleSettings.title).setOrigin(0.5)
 

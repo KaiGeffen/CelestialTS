@@ -47,7 +47,9 @@ export const ColorSettings: Record<string, any> = {
   mulliganHighlight: 0xffaaaa,
 
   filterSelected: 0xffaf00,
-  menuBackground: 0x704820 //0x662b00
+  menuBackground: 0x704820, //0x662b00
+
+  tutorialBackground: "#704820"
 }
 
 const FontSettings: Record<string, string> = {
@@ -83,6 +85,16 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     color: '#fff',
     stroke: '#000',
     strokeThickness: 4
+  },
+  tutorial: {
+    font: FontSettings.large,
+    color: '#fff',
+    backgroundColor: ColorSettings.cardTextBackground,
+    wordWrap: { width: Space.windowWidth - 200 },
+    fixedWidth: Space.windowWidth - 200,
+    padding: { x: 10, y: 5 },
+    stroke: '#000',
+    strokeThickness: 3
   },
   cardText: {
     font: FontSettings.standard,
