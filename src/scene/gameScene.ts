@@ -20,7 +20,6 @@ export class GameScene extends Phaser.Scene {
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
 
-	mulligansComplete: Boolean
 	mulliganHighlights: Phaser.GameObjects.Rectangle[]
 	txtOpponentMulligan: Phaser.GameObjects.Text
 	
@@ -121,7 +120,6 @@ export class GameScene extends Phaser.Scene {
 		this.storyContainer.add([this.visionRectangle, this.txtVision])
 
 		// Mulligan highlights and button
-		this.mulligansComplete = false
 		this.mulliganHighlights = []
 		for (var i = 0; i < 3; i++) {
 			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
@@ -150,7 +148,6 @@ export class GameScene extends Phaser.Scene {
 			// Remove all mulligan objects
 			that.mulliganHighlights.forEach(o => o.destroy())
 			btnMulligan.destroy()
-			that.mulligansComplete = true
 		})
 
 		// Pass button
@@ -398,7 +395,9 @@ export class GameScene extends Phaser.Scene {
 			}
 
 			// Play the card if it's clicked on (Even if unplayable, will signal error)
-			cardImage.image.on('pointerdown', this.clickCard(i, cardImage, state.story.acts.length, state.priority), this)
+			cardImage.image.on('pointerdown',
+				this.clickCard(i, cardImage, state.story.acts.length, state.priority, state.mulligansComplete),
+				this)
 		}
 		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
 			this.addCard(cardback, i, this.opponentHandContainer)
@@ -654,13 +653,13 @@ export class GameScene extends Phaser.Scene {
   		return result
   	}
 
-  	private clickCard(index: number, card: CardImage, storyLength: number, priority: number): () => void  {
+  	private clickCard(index: number, card: CardImage, storyLength: number, priority: number, mulligansComplete: boolean[]): () => void  {
 
   		let that = this
   		return function() {
   			// Mulligan functionality
   			// Toggle mulligan for the card
-  			if (!that.mulligansComplete) {
+  			if (!mulligansComplete[0]) {
       			this.sound.play('click')
 
   				let highlight = that.mulliganHighlights[index]
@@ -676,6 +675,9 @@ export class GameScene extends Phaser.Scene {
   				that.signalError()
   			}
   			else if (priority === 1) {
+  				that.signalError()
+  			}
+  			else if (!mulligansComplete[1]) {
   				that.signalError()
   			}
   			else {
