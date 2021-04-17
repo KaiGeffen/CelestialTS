@@ -296,7 +296,7 @@ class DeckRegion {
       this.scene.scene.start("GameScene", {deck: lastDeck})
     })
     
-    this.updateStartButton()
+    this.updateText()
 
     // Menu button, the callback is set by menu region during its init
     this.btnMenu = this.scene.add.text(0, -150, 'Menu', StyleSettings.button)
@@ -327,10 +327,7 @@ class DeckRegion {
     this.deck.push(new CardImage(card, image))
 
     // Update start button to reflect new amount of cards in deck
-    this.updateStartButton()
-
-    // Make the instructive hint invisible
-    this.txtHint.setVisible(false)
+    this.updateText()
 
     // Card was added successfully
     return true
@@ -354,7 +351,7 @@ class DeckRegion {
       this.deck.forEach( (cardImage) => cardImage.destroy())
       this.deck = []
       cardInfo.setVisible(false)
-      this.updateStartButton()
+      this.updateText()
       
       // Add the new deck
       deck.forEach( (card) => this.addCard(card))
@@ -369,7 +366,7 @@ class DeckRegion {
     this.btnMenu.on('pointerdown', callback)
   }
 
-  private updateStartButton(): void {
+  private updateText(): void {
     if (this.deck.length === 15) {
       this.btnStart.text = 'Start'
       this.btnStart.input.enabled = true
@@ -379,6 +376,8 @@ class DeckRegion {
       this.btnStart.text = `${this.deck.length}/15`
       this.btnStart.input.enabled = true // TODO false
     }
+
+    this.txtHint.setVisible(this.deck.length === 0)
   }
 
   private getCardPosition(index: number): [number, number] {
@@ -407,7 +406,7 @@ class DeckRegion {
 
       that.correctDeckIndices()
 
-      that.updateStartButton()
+      that.updateText()
 
       if (that.deck.length === 0) {
         that.txtHint.setVisible(true)
