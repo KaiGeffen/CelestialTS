@@ -396,7 +396,7 @@ export class GameScene extends Phaser.Scene {
 
 			// Play the card if it's clicked on (Even if unplayable, will signal error)
 			cardImage.image.on('pointerdown',
-				this.clickCard(i, cardImage, state.story.acts.length, state.priority, state.mulligansComplete),
+				this.clickCard(i, cardImage, state),
 				this)
 		}
 		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
@@ -653,13 +653,13 @@ export class GameScene extends Phaser.Scene {
   		return result
   	}
 
-  	private clickCard(index: number, card: CardImage, storyLength: number, priority: number, mulligansComplete: boolean[]): () => void  {
+  	private clickCard(index: number, card: CardImage, state: ClientState): () => void  {
 
   		let that = this
   		return function() {
   			// Mulligan functionality
   			// Toggle mulligan for the card
-  			if (!mulligansComplete[0]) {
+  			if (!state.mulligansComplete[0]) {
       			this.sound.play('click')
 
   				let highlight = that.mulliganHighlights[index]
@@ -674,10 +674,16 @@ export class GameScene extends Phaser.Scene {
   			else if (card.unplayable) {
   				that.signalError()
   			}
-  			else if (priority === 1) {
+  			// Opponent's turn
+  			else if (state.priority === 1) {
   				that.signalError()
   			}
-  			else if (!mulligansComplete[1]) {
+  			// Opponent still mulliganing
+  			else if (!state.mulligansComplete[1]) {
+  				that.signalError()
+  			}
+  			// Game is over
+  			else if (state.winner !== null) {
   				that.signalError()
   			}
   			else {
@@ -686,7 +692,7 @@ export class GameScene extends Phaser.Scene {
   				that.net.playCard(index)
 
   				// Send a this card to its place in the story
-  				let end = that.getCardPosition(storyLength, that.storyContainer, 0)
+  				let end = that.getCardPosition(state.story.acts.length, that.storyContainer, 0)
 
   				let tween = that.tweens.add({
   					targets: card.image,

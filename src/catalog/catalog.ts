@@ -8,8 +8,8 @@ export const allCards: Card[] = collectibleCards.concat(tokenCards)
 export const cardback: Card = tokenCards[0]
 
 export const starterCards: Card[] = []
-let maybes = ['Dove', 'Swift', 'Mine']
-let starterList = ['Stars', 'Crossed Bones', 'Dash', 'Gift', 'Dinosaur Bones', 'Force', 'Sarcophagus', 'Anubis']
+let maybes = ['Dove', 'Swift', 'Mine', 'Force']
+let starterList = ['Stars', 'Crossed Bones', 'Dash', 'Gift', 'Dinosaur Bones', 'Tumulus', 'Sarcophagus', 'Anubis']
 collectibleCards.forEach( (card) => {
 	if (starterList.includes(card.name)) {
 		starterCards.push(card)

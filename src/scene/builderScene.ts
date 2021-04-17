@@ -726,7 +726,7 @@ class TutorialRegion {
     `Each card has a cost (Left number) and point value (Right number).
 Some cards also have additional effects listed after that.
 
-Each round, you'll try to get more points that your opponent
+Each round, you'll try to get more points than your opponent
 by spending mana to play cards.
 
 Try making a deck from 8 cards that cost 2 or less, 4 that cost 3-5,
