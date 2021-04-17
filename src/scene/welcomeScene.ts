@@ -1,4 +1,6 @@
 import "phaser"
+import { StyleSettings, Space } from "../settings"
+
 
 export class WelcomeScene extends Phaser.Scene {
   
@@ -8,36 +10,29 @@ export class WelcomeScene extends Phaser.Scene {
     })
   }
 
-  init() {
-  }
-  
   create(): void {
-    var titleText: string = "Celestial"
-    this.add.text(1100/2, 200, titleText,
-      { font: '128px Arial Bold'}).setOrigin(0.5)
+    this.add.text(Space.windowWidth/2, 200, "Celestial",
+      StyleSettings.title).setOrigin(0.5)
 
-    var hintText: string = "Click to start"
-    this.add.text(1100/2, 350, hintText,
-      { font: '24px Arial Bold'}).setOrigin(0.5)
+    let txtStart = this.add.text(Space.windowWidth/2, 350, "Click to start",
+      StyleSettings.announcement).setOrigin(0.5)
 
-    var creditText: string = "All icons are from game-icons.net under CC BY 3.0"
-    let creditsDelapouite = "Delapouite: https://delapouite.com/"//" {Sparkles, Spy, Swift, Crypt, Fishing Boat, Factory, Mine, Force, Uprising, Sarcophagus, Anubis, Horus, Enrage}"
-    let creditsLorc = "Lorc: https://lorcblog.blogspot.com/"//" {Bone Knife, Cog, Crossed Bones, Dove, Juggle, Drown, Gears, Dash, Cosmos, Fruiting, Gift, Paranoia, Hurricane, Dinosaur Bones, Oak}"
-    let creditsBerandas = "Lord Berandas: https://www.deviantart.com/berandas"// {Sine, AI}"
-    let creditsDarkZaitzev = "Dark Zaitzev: https://www.deviantart.com/darkzaitzev"// {Stalker}"
-    let creditsCathelineau = "Cathelineau"//: {Tumulus}"
-    
-    let authors = [creditsDelapouite, creditsLorc, creditsBerandas, creditsDarkZaitzev, creditsCathelineau]
-    for (var i = 0; i < authors.length; i++) {
-      creditText += '\n' + authors[i]
-    }
+    let backgroundClickable = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight,
+      0x000, 0).setOrigin(0, 0)
+    backgroundClickable.setInteractive()
+    backgroundClickable.on('pointerdown', this.doStart, this)
 
-    this.add.text(1100/2, 550, creditText,
-      { wordWrap: { width: 1000, useAdvancedWrap: true }}).setOrigin(0.5)
+    let btnCredits = this.add.text(Space.windowWidth/2, Space.windowHeight - 50, "Credits",
+      StyleSettings.button).setOrigin(0.5)
+    btnCredits.setInteractive()
+    btnCredits.on('pointerdown', this.doCredits, this)
+  }
 
-    this.input.on('pointerdown', function (/*pointer*/) {
-      this.scene.start("BuilderScene")
-    }, this)
+  private doStart(): void {
+    this.scene.start("BuilderScene")
+  }
 
+  private doCredits(): void {
+    this.scene.start("CreditsScene")
   }
 }

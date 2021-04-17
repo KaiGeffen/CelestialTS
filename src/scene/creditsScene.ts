@@ -1,0 +1,46 @@
+import "phaser"
+import { StyleSettings, Space } from "../settings"
+
+
+export class CreditsScene extends Phaser.Scene {
+  
+  constructor() {
+    super({
+      key: "CreditsScene"
+    })
+  }
+
+  create(): void {
+    this.add.text(Space.windowWidth/2, 80, "Credits",
+      StyleSettings.title).setOrigin(0.5)
+
+    let txtStart = this.add.text(Space.windowWidth/2, Space.windowHeight - 40, "Click to exit",
+      StyleSettings.announcement).setOrigin(0.5)
+
+    let backgroundClickable = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight,
+      0x000, 0).setOrigin(0, 0)
+    backgroundClickable.setInteractive()
+    backgroundClickable.on('pointerdown', this.doWelcome, this)
+
+    // Credit for all art
+    let creditText: string = "All icons are from game-icons.net under CC BY 3.0"
+
+    let creditsDelapouite = "Delapouite: https://delapouite.com/\nSparkles, Spy, Swift, Crypt, Fishing Boat, Factory, Mine, Force, Uprising, Sarcophagus, Anubis, Horus, Enrage"
+    let creditsLorc = "Lorc: https://lorcblog.blogspot.com/\nBone Knife, Cog, Crossed Bones, Dove, Juggle, Drown, Gears, Dash, Cosmos, Fruiting, Gift, Paranoia, Hurricane, Dinosaur Bones, Oak"
+    let creditsBerandas = "Lord Berandas: https://www.deviantart.com/berandas\nSine, AI"
+    let creditsDarkZaitzev = "Dark Zaitzev: https://www.deviantart.com/darkzaitzev\nStalker"
+    let creditsCathelineau = "Cathelineau\nTumulus"
+    
+    let authors = [creditsDelapouite, creditsLorc, creditsBerandas, creditsDarkZaitzev, creditsCathelineau]
+    for (var i = 0; i < authors.length; i++) {
+      creditText += '\n\n\t\t\t\t' + authors[i]
+    }
+
+    this.add.text(Space.windowWidth/2, 150, creditText,
+      StyleSettings.credits).setOrigin(0.5, 0)
+  }
+
+  private doWelcome(): void {
+    this.scene.start("WelcomeScene")
+  }
+}

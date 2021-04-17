@@ -55,7 +55,9 @@ const FontSettings: Record<string, string> = {
   small: '14px Arial Italic',
   large: '44px Arial Bold',
   huge: '54px Calibri Bold',
-  stack: '85px Arial Bold'
+  stack: '85px Arial Bold',
+  title: '128px Calibri Bold',
+  credits: '19px Arial Bold'
 }
 
 export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
@@ -100,5 +102,18 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
   },
   filter: {
     font: FontSettings.standard,
+  },
+  title: {
+    font: FontSettings.title,
+    color: '#fff',
+    stroke: '#000',
+    strokeThickness: 6
+  },
+  credits: {
+    font: FontSettings.credits,
+    color: "#fff",
+    wordWrap: { width: 1000, useAdvancedWrap: false },
+    stroke: '#000',
+    strokeThickness: 1
   }
 }
