@@ -16,12 +16,12 @@ export default class TutorialScene extends GameScene {
 	create(): void {
 		super.create()
 
-		// this.txtOpponentMulligan.setAlpha(0)
-		// this.txtOpponentPass.setAlpha(0)
+		// Reset each explanations seen parameter
+		explanations.forEach(ex => ex.seen = false)
 
 		// Add the tutorial text
 		this.txtTutorial = this.add.text(Space.pad, Space.pad*3 + Space.cardSize, '', StyleSettings.tutorial)
-		// this.txtTutorial.setAlpha(0.8)
+		this.txtTutorial.setVisible(false)
 		this.txtTutorial.setInteractive()
 		this.txtTutorial.on('pointerdown', function() {
 			this.txtTutorial.setVisible(false)
@@ -33,7 +33,13 @@ export default class TutorialScene extends GameScene {
 	displayState(state: ClientState, recap: Boolean = false): boolean {
 		let isDisplayed = super.displayState(state, recap)
 
+		// If this state isn't displayed, do nothing
 		if (!isDisplayed) return false
+
+		this.txtTutorial.setVisible(false)
+
+		// If it's a recap, don't show an explanation
+		if (recap) return true
 
 		// Consider each explanation, display the first valid one
 		let exFound = false
@@ -46,11 +52,6 @@ export default class TutorialScene extends GameScene {
 				this.txtTutorial.setVisible(true)
 			}
 		})
-
-		// If no new explanation is displayed, hide the text
-		if (!exFound) {
-			this.txtTutorial.setVisible(false)
-		}
 
 		return true
 	}
