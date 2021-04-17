@@ -79,6 +79,11 @@ export default class GameScene extends BaseScene {
 	    	mmCode = 'ai'
 	    }
 
+	    // Tutorial should always be against ai
+	    if (params['isTutorial']) {
+	    	mmCode = 'ai'
+	    }
+
 		// Connect with the server
 		this.net = new Network(params.deck, this, mmCode)
 

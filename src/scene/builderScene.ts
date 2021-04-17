@@ -376,10 +376,10 @@ class DeckRegion {
       
       // Start the right scene / deck pair
       if (that.isTutorial) {
-        this.scene.scene.start("TutorialScene", {deck: tutorialDeck})
+        this.scene.scene.start("TutorialScene", {isTutorial: true, deck: tutorialDeck})
       }
       else {
-        this.scene.scene.start("GameScene", {deck: standardDeck})
+        this.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
       }
     }
   }

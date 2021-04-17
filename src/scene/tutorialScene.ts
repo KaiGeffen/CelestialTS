@@ -4,6 +4,8 @@ import { StyleSettings, ColorSettings, Space } from "../settings"
 import ClientState from "../lib/clientState"
 
 
+// TODO When the game is over, will it return to the tutorial deck builder?
+
 export default class TutorialScene extends GameScene {
 	txtTutorial: Phaser.GameObjects.Text
 
@@ -26,8 +28,6 @@ export default class TutorialScene extends GameScene {
 		this.txtTutorial.on('pointerdown', function() {
 			this.txtTutorial.setVisible(false)
 		}, this)
-
-		// this.txtTutorial.setText("Click each card you want to redraw, then click 'Mulligan'")
 	}
 
 	displayState(state: ClientState, recap: Boolean = false): boolean {
