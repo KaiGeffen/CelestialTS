@@ -44,6 +44,7 @@ export default class CreditsScene extends BaseScene {
   }
 
   private doWelcome(): void {
+    this.sound.play('click')
     this.scene.start("WelcomeScene")
   }
 }

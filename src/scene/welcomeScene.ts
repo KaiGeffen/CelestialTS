@@ -84,14 +84,17 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doStart(): void {
+    this.sound.play('click')
     this.scene.start("BuilderScene", {isTutorial: false})
   }
 
   private doTutorial(): void {
+    this.sound.play('click')
     this.scene.start("BuilderScene", {isTutorial: true})
   }
 
   private doCredits(): void {
+    this.sound.play('click')
     this.scene.start("CreditsScene")
   }
 }
