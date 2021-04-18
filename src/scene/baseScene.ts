@@ -44,7 +44,7 @@ export default class BaseScene extends Phaser.Scene {
 		let btnNo = this.add.text(Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', StyleSettings.button).setOrigin(0, 0.5)
 		btnNo.setInteractive().on('pointerdown', this.exitConfirmation, this)
 
-		this.confirmationContainer = this.add.container(0, 0).setVisible(false)
+		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
 		this.confirmationContainer.add([invisibleBackground, visibleBackground, txtHint, btnYes, btnNo])
 	}
 
