@@ -101,7 +101,7 @@ let exRoundStart: Explanation = new Explanation(
 	)
 let exRoundPriority: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 2},
-	"The player who is winning will act first in a round. If it's a tie, priority is decided randomly."
+	"The player who is winning will act first in a round. If it's a tie, priority is decided at random."
 	)
 let exWinCondition: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 3},
@@ -142,9 +142,4 @@ let explanations: Explanation[] = [
 	exOpponentHidden,
 	exDiscardShuffle,
 	exMaxHand
-
-
-
-
-
 ]

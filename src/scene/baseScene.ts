@@ -49,7 +49,10 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	private doMute(btn: Phaser.GameObjects.Text): () => void {
+		let that = this
 		return function() {
+			that.sound.play('click')
+
 			if (music.isPlaying) {
 				music.pause()
 
@@ -70,15 +73,21 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	private confirmExit(): void {
+      	this.sound.play('open')
+
 		this.confirmationContainer.setVisible(true)
 	}
 
 	private doExit(): void {
+		this.sound.play('click')
+
 		this.beforeExit()
 		this.scene.start("WelcomeScene")
 	}
 
 	private exitConfirmation(): void {
+		this.sound.play('close')
+
 		this.confirmationContainer.setVisible(false)
 	}
 }
