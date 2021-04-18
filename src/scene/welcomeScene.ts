@@ -36,11 +36,6 @@ export default class WelcomeScene extends BaseScene {
     })
   }
 
-  init(): void {
-    // TODO Make this a part of an extended child of Scene
-    this.sound.pauseOnBlur = false
-  }
-
   // Load all assets used throughout the scenes
   preload(): void {
     // Load all of the card and token images
@@ -50,11 +45,14 @@ export default class WelcomeScene extends BaseScene {
       this.load.image(card.name, `images/${card.name}.png`)
     })
     
-    // Load all audio 
+    // Load all audio
     SOUNDS.forEach( (sound) => {
       this.load.audio(sound, `sfx/${sound}.wav`)
     })
     this.load.audio('background', 'music/background.wav')
+
+    // Ensure that audio plays even when tab loses focus
+    this.sound.pauseOnBlur = false
   }
 
   create(): void {

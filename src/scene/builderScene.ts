@@ -31,8 +31,6 @@ export default class BuilderScene extends BaseScene {
   init(params: any): void {
     this.isTutorial = params['isTutorial']
 
-    this.sound.pauseOnBlur = false
-
     if (this.isTutorial) {
       this.tutorialRegion = new TutorialRegion(this)
     }

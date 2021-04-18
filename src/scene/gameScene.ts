@@ -69,8 +69,6 @@ export default class GameScene extends BaseScene {
 	}
 
 	init(params: any): void {
-		this.sound.pauseOnBlur = false
-		
 		// Code to matchmake player with ('ai' if versus computer)
 	    let mmCode = UserSettings['mmCode']
 	    if (UserSettings['vsAi']) {
