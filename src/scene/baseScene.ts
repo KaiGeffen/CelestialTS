@@ -3,7 +3,6 @@ import { StyleSettings, ColorSettings, Space } from "../settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 
 
-// TODO Incorporate cardInfo into this class
 var music: Phaser.Sound.BaseSound
 
 export default class BaseScene extends Phaser.Scene {
