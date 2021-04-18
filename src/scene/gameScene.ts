@@ -68,7 +68,6 @@ export default class GameScene extends BaseScene {
 
 	constructor(args = {key: "GameScene"}) {
 		super(args)
-		console.log(args)
 	}
 
 	init(params: any): void {
