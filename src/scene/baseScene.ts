@@ -1,5 +1,6 @@
 import "phaser"
 import { StyleSettings, ColorSettings, Space } from "../settings"
+import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 
 
 // TODO Incorporate cardInfo into this class
@@ -19,18 +20,21 @@ export default class BaseScene extends Phaser.Scene {
 			music.play()
 		}
 
-		// Mute icon
+		// Make sure that cardInfo is above everything else
+		addCardInfoToScene(this).setDepth(15)
+
+		// Mute button
 		let s = music.isPlaying ? '♪' : '-'
 		let btnMute = this.add.text(Space.windowWidth - Space.pad/2, 0, s, StyleSettings.button).setOrigin(1, 0)
 		btnMute.setInteractive()
 		btnMute.on('pointerdown', this.doMute(btnMute))
 
-		// Exit icon
+		// Exit button
 		let btnExit = this.add.text(Space.windowWidth - Space.pad/2, 50, '<', StyleSettings.button).setOrigin(1, 0)
 		btnExit.setInteractive()
 		btnExit.on('pointerdown', this.confirmExit, this)
 
-		// Confirmation container
+		// Exit confirmation container
 		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0xffffff, 0).setOrigin(0, 0)
 		invisibleBackground.setInteractive().on('pointerdown', this.exitConfirmation, this)
 

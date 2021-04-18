@@ -1,15 +1,12 @@
 import "phaser"
 import { collectibleCards, starterCards,  Card } from "../catalog/catalog"
-import { CardImage, addCardInfoToScene } from "../lib/cardImage"
+import { CardImage, addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import BaseScene from "./baseScene"
 
 
 const DECK_PARAM = 'deck'
-
-// The card hover text for this scene, which is referenced in the regions
-var cardInfo: Phaser.GameObjects.Text
 
 // The last deck of cards the player had, which get repopulated each time they enter the deck builder
 var tutorialDeck: Card[] = []
@@ -44,8 +41,6 @@ export default class BuilderScene extends BaseScene {
     this.catalogRegion = new CatalogRegion(this, this.deckRegion)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
     this.menuRegion = new MenuRegion(this, this.deckRegion)
-    
-    cardInfo = addCardInfoToScene(this)
   }
 
   create(): void {

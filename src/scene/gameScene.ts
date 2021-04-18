@@ -4,15 +4,13 @@ import { collectibleCards, Card, cardback } from "../catalog/catalog"
 import { Network } from "../net"
 import ClientState from "../lib/clientState"
 import BaseScene from "./baseScene"
-import { CardImage, addCardInfoToScene } from "../lib/cardImage"
+import { CardImage, addCardInfoToScene, cardInfo } from "../lib/cardImage"
 // Import Settings itself 
 import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
 import Recap from '../lib/recap'
 
 
 const RECAP_TIME = 1000
-
-var cardInfo: Phaser.GameObjects.Text
 
 var storyHiddenLock: boolean = false
 
@@ -267,9 +265,6 @@ export default class GameScene extends BaseScene {
 	    this.input.on('gameout', hoverExit, this)
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
 	    this.btnRecap = btnRecap
-
-	    // Add card info here so that it's on top of other GameObjects
-	    cardInfo = addCardInfoToScene(this)
 
 	    this.displaySearchingStatus(true)
 
