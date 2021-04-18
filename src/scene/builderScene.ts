@@ -326,7 +326,6 @@ class DeckRegion {
       deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
     }
     else {
-      console.log('deck is a list of cards')
       deck = deckCode
     }
 

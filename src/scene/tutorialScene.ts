@@ -4,8 +4,6 @@ import { StyleSettings, ColorSettings, Space } from "../settings"
 import ClientState from "../lib/clientState"
 
 
-// TODO When the game is over, will it return to the tutorial deck builder?
-
 export default class TutorialScene extends GameScene {
 	txtTutorial: Phaser.GameObjects.Text
 

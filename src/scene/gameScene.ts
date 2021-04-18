@@ -68,6 +68,7 @@ export default class GameScene extends BaseScene {
 
 	constructor(args = {key: "GameScene"}) {
 		super(args)
+		console.log(args)
 	}
 
 	init(params: any): void {
@@ -370,13 +371,13 @@ export default class GameScene extends BaseScene {
 
 		// Display victory / defeat
 		if (state.winner === 0 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You won!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
+			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
 		}
 		else if (state.winner === 1 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You lost!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
+			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
@@ -551,6 +552,11 @@ export default class GameScene extends BaseScene {
       	this.sound.play('failure')
 
 		this.cameras.main.flash(300, 0, 0, 0.1)
+	}
+
+	// Called by the BaseScene button which returns to main menu, must alert server that we are exiting
+	beforeExit(): void {
+		this.net.closeSocket()
 	}
 
 	private addCard(card: Card,
@@ -799,6 +805,7 @@ export default class GameScene extends BaseScene {
   		}
   	}
 
+  	// NOTE The deck builder will be tutorial if it was before
   	private exitScene(): void {
   		this.net.closeSocket()
   		this.scene.start("BuilderScene")
