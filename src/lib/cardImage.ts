@@ -5,7 +5,7 @@ import { ColorSettings, StyleSettings, UserSettings } from "../settings"
 import { keywords, Keyword } from "../catalog/keywords"
 
 
-var cardInfo: Phaser.GameObjects.Text;
+export var cardInfo: Phaser.GameObjects.Text
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add.text(0, 0, '', StyleSettings.cardText)

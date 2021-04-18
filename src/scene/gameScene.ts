@@ -3,7 +3,8 @@ import { collectibleCards, Card, cardback } from "../catalog/catalog"
 
 import { Network } from "../net"
 import ClientState from "../lib/clientState"
-import { CardImage, addCardInfoToScene } from "../lib/cardImage"
+import BaseScene from "./baseScene"
+import { CardImage, addCardInfoToScene, cardInfo } from "../lib/cardImage"
 // Import Settings itself 
 import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
 import Recap from '../lib/recap'
@@ -11,12 +12,11 @@ import Recap from '../lib/recap'
 
 const RECAP_TIME = 1000
 
-var cardInfo: Phaser.GameObjects.Text
-
 var storyHiddenLock: boolean = false
 
-export class GameScene extends Phaser.Scene {
+export default class GameScene extends BaseScene {
 	net: Network
+
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs
 
@@ -64,18 +64,19 @@ export class GameScene extends Phaser.Scene {
 	// Information about the recap that is playing
 	txtScores: Phaser.GameObjects.Text
 
-	constructor() {
-		super({
-			key: "GameScene"
-		})
+	constructor(args = {key: "GameScene"}) {
+		super(args)
 	}
 
 	init(params: any): void {
-		this.sound.pauseOnBlur = false
-		
 		// Code to matchmake player with ('ai' if versus computer)
 	    let mmCode = UserSettings['mmCode']
 	    if (UserSettings['vsAi']) {
+	    	mmCode = 'ai'
+	    }
+
+	    // Tutorial should always be against ai
+	    if (params['isTutorial']) {
 	    	mmCode = 'ai'
 	    }
 
@@ -85,16 +86,14 @@ export class GameScene extends Phaser.Scene {
 		// Make a list of objects that are temporary with game state
 		this.temporaryObjs = []
 
-		// Story must be before hand so that hand cards are on top
-		this.storyContainer = this.add.container(0, 0)
-
-		this.handContainer = this.add.container(0, 0)
+		this.handContainer = this.add.container(0, 0).setDepth(3)
 		this.opponentHandContainer = this.add.container(0, 0)
 		this.deckContainer = this.add.container(0, 0).setVisible(false)
 		this.discardContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDiscardContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDeckContainer = this.add.container(0, 0).setVisible(false)
 
+		this.storyContainer = this.add.container(0, 0)
 		this.recapContainer = this.add.container(0, 0).setVisible(false)
 		this.stackContainer = this.add.container(800, 0)
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
@@ -263,10 +262,9 @@ export class GameScene extends Phaser.Scene {
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
 	    this.btnRecap = btnRecap
 
-	    // Add card info here so that it's on top of other GameObjects
-	    cardInfo = addCardInfoToScene(this)
-
 	    this.displaySearchingStatus(true)
+
+	    super.create()
 	}
 
 	// Display searching for opponent if still looking
@@ -291,11 +289,11 @@ export class GameScene extends Phaser.Scene {
 	// If an animation is playing locally, wait until that is finished before showing any new state or recaps
 	animationPlaying: Boolean = false
 	queuedState: ClientState = undefined
-	// Display the given game state
-	displayState(state: ClientState, recap: Boolean = false): void {
+	// Display the given game state, returns false if the state isn't shown immediately
+	displayState(state: ClientState, recap: Boolean = false): boolean {
 		if (this.animationPlaying) {
 			this.queuedState = state
-			return
+			return false
 		}
 
 		let that = this
@@ -313,7 +311,7 @@ export class GameScene extends Phaser.Scene {
 		else if (this.recapPlaying)
 		{
 			this.queuedState = state
-			return
+			return false
 		}
 		// Display this non-recap state, with normal background and no scores displayed
 		else
@@ -352,7 +350,7 @@ export class GameScene extends Phaser.Scene {
 						that.displayState(state)
 					}
 				}, numberStates * RECAP_TIME)
-				return
+				return false
 			}
 		}
 
@@ -363,13 +361,13 @@ export class GameScene extends Phaser.Scene {
 
 		// Display victory / defeat
 		if (state.winner === 0 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You won!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
+			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
 		}
 		else if (state.winner === 1 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You lost!\n\nClick to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
+			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
 			txtResult.setInteractive()
 			txtResult.on('pointerdown', this.exitScene, this)
 			this.storyContainer.add(txtResult)
@@ -378,9 +376,6 @@ export class GameScene extends Phaser.Scene {
 		// Remove all of the existing cards
 		this.temporaryObjs.forEach(obj => obj.destroy())
 		this.temporaryObjs = []
-
-		// Autopass - TODO Remove or have a setting for Autopass
-		if (state.hand.length === 0 && state.priority === 0) this.net.passTurn();
 
 		// Mulligan
 		this.txtOpponentMulligan.setVisible(!state.mulligansComplete[1])
@@ -396,7 +391,7 @@ export class GameScene extends Phaser.Scene {
 
 			// Play the card if it's clicked on (Even if unplayable, will signal error)
 			cardImage.image.on('pointerdown',
-				this.clickCard(i, cardImage, state.story.acts.length, state.priority, state.mulligansComplete),
+				this.clickCard(i, cardImage, state),
 				this)
 		}
 		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
@@ -475,8 +470,8 @@ export class GameScene extends Phaser.Scene {
 		this.stackContainer.bringToTop(this.txtDiscardSize)
 		this.stackContainer.bringToTop(this.txtOpponentDiscardSize)
 
-		// Priority (Not shown during recap, theirs hidden during their mulligan)
-		if (recap) {
+		// Priority (Not shown during recap or once game is over, theirs hidden during their mulligan)
+		if (recap || state.winner !== null) {
 			this.priorityRectangle.setVisible(false)
 			this.txtYourTurn.setVisible(false)
 			this.txtTheirTurn.setVisible(false)
@@ -531,6 +526,15 @@ export class GameScene extends Phaser.Scene {
 			this.txtPass.setVisible(true)
 			this.txtOpponentPass.setVisible(false)
 		}
+
+		// Remember what version of the game state this is, for use when communicating with server
+		this.net.setVersionNumber(state.versionNumber)
+
+		// Autopass
+		if (!recap && state.hand.length === 0 && state.priority === 0) this.net.passTurn()
+
+		// State was displayed
+		return true
 	}
 
 	// Alert the user that they have taken an illegal or impossible action
@@ -538,6 +542,11 @@ export class GameScene extends Phaser.Scene {
       	this.sound.play('failure')
 
 		this.cameras.main.flash(300, 0, 0, 0.1)
+	}
+
+	// Called by the BaseScene button which returns to main menu, must alert server that we are exiting
+	beforeExit(): void {
+		this.net.closeSocket()
 	}
 
 	private addCard(card: Card,
@@ -653,13 +662,13 @@ export class GameScene extends Phaser.Scene {
   		return result
   	}
 
-  	private clickCard(index: number, card: CardImage, storyLength: number, priority: number, mulligansComplete: boolean[]): () => void  {
+  	private clickCard(index: number, card: CardImage, state: ClientState): () => void  {
 
   		let that = this
   		return function() {
   			// Mulligan functionality
   			// Toggle mulligan for the card
-  			if (!mulligansComplete[0]) {
+  			if (!state.mulligansComplete[0]) {
       			this.sound.play('click')
 
   				let highlight = that.mulliganHighlights[index]
@@ -674,10 +683,16 @@ export class GameScene extends Phaser.Scene {
   			else if (card.unplayable) {
   				that.signalError()
   			}
-  			else if (priority === 1) {
+  			// Opponent's turn
+  			else if (state.priority === 1) {
   				that.signalError()
   			}
-  			else if (!mulligansComplete[1]) {
+  			// Opponent still mulliganing
+  			else if (!state.mulligansComplete[1]) {
+  				that.signalError()
+  			}
+  			// Game is over
+  			else if (state.winner !== null) {
   				that.signalError()
   			}
   			else {
@@ -686,7 +701,7 @@ export class GameScene extends Phaser.Scene {
   				that.net.playCard(index)
 
   				// Send a this card to its place in the story
-  				let end = that.getCardPosition(storyLength, that.storyContainer, 0)
+  				let end = that.getCardPosition(state.story.acts.length, that.storyContainer, 0)
 
   				let tween = that.tweens.add({
   					targets: card.image,
@@ -780,6 +795,7 @@ export class GameScene extends Phaser.Scene {
   		}
   	}
 
+  	// NOTE The deck builder will be tutorial if it was before
   	private exitScene(): void {
   		this.net.closeSocket()
   		this.scene.start("BuilderScene")

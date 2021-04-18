@@ -1,8 +1,9 @@
 import "phaser"
 import { StyleSettings, Space } from "../settings"
+import BaseScene from "./baseScene"
 
 
-export class CreditsScene extends Phaser.Scene {
+export default class CreditsScene extends BaseScene {
   
   constructor() {
     super({
@@ -38,6 +39,8 @@ export class CreditsScene extends Phaser.Scene {
 
     this.add.text(Space.windowWidth/2, 150, creditText,
       StyleSettings.credits).setOrigin(0.5, 0)
+
+    super.create()
   }
 
   private doWelcome(): void {
