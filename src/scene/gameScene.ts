@@ -86,16 +86,14 @@ export default class GameScene extends BaseScene {
 		// Make a list of objects that are temporary with game state
 		this.temporaryObjs = []
 
-		// Story must be before hand so that hand cards are on top
-		this.storyContainer = this.add.container(0, 0)
-
-		this.handContainer = this.add.container(0, 0)
+		this.handContainer = this.add.container(0, 0).setDepth(3)
 		this.opponentHandContainer = this.add.container(0, 0)
 		this.deckContainer = this.add.container(0, 0).setVisible(false)
 		this.discardContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDiscardContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDeckContainer = this.add.container(0, 0).setVisible(false)
 
+		this.storyContainer = this.add.container(0, 0)
 		this.recapContainer = this.add.container(0, 0).setVisible(false)
 		this.stackContainer = this.add.container(800, 0)
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
