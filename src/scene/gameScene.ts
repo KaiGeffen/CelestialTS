@@ -304,6 +304,8 @@ export default class GameScene extends BaseScene {
 		{
 			this.cameras.main.setBackgroundColor(ColorSettings.recapBackground)
 
+			this.animatePointGain(state)
+
 			let s = `${state.score[1]}\n\n${state.score[0]}`
 			this.txtScores.setText(s)
 		}
@@ -465,6 +467,7 @@ export default class GameScene extends BaseScene {
 			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
 		} else this.txtOpponentDiscardSize.setVisible(false)
 
+		// TODO Hacky, use depth instead, don't do every time state is shown
 		this.stackContainer.bringToTop(this.txtDeckSize)
 		this.stackContainer.bringToTop(this.txtOpponentDeckSize)
 		this.stackContainer.bringToTop(this.txtDiscardSize)
@@ -795,7 +798,55 @@ export default class GameScene extends BaseScene {
   		}
   	}
 
-  	// NOTE The deck builder will be tutorial if it was before
+  	lastScore: [number, number] = [0, 0]
+  	private animatePointGain(state: ClientState): void {
+  		// The index of the card that is causing this point gain
+  		let sourceIndex = state.recap.playList.length - 1
+
+  		if (sourceIndex < 0) {
+  			this.lastScore = state.score
+  			return
+  		}
+
+  		let that = this
+  		function getGain(i: number): string {
+  			let amt = state.score[i] - that.lastScore[i]
+  			if (amt < 0) {
+  				return amt.toString()
+  			} else if (amt === 0) {
+  				return ''
+  			} else {
+  				return `+${amt}`
+  			}
+  		}
+  		let myGain = `${state.score[0]}`
+		let s = `${getGain(1)}\n\n${getGain(0)}`
+
+  		let x = this.getCardPosition(sourceIndex, this.storyContainer, 0)[0]
+
+  		// Send a this card to its place in the story
+  		let txt = this.add.text(
+	    	x, Space.windowHeight/2,
+	    	s, StyleSettings.announcement).setOrigin(0.5, 0.5)
+
+  		let tween = this.tweens.add({
+  			targets: txt,
+  			scale: 1.5,
+  			// x: Space.scoresOffset,
+  			duration: 500,
+  			ease: "Sine.easeInOut",
+  			yoyo: true,
+  			onComplete: function (tween, targets, _)
+  			{
+  				txt.destroy()
+  			}
+  		})
+
+  		// Remember what the scores were for next time
+  		this.lastScore = state.score
+  	}
+
+  	// NOTE The deck builder will be in tutorial mode if it was before
   	private exitScene(): void {
   		this.net.closeSocket()
   		this.scene.start("BuilderScene")

@@ -88,7 +88,7 @@ class Explanation {
 
 let exMulligan: Explanation = new Explanation(
 	function (state) {return !state.mulligansComplete[0]},
-	"Click each card you want to redraw, then click 'Mulligan'."
+	"Click on each card you don't want in your starting hand, then click 'Mulligan' to replace those cards with new ones."
 	)
 
 let exPlayOrPass: Explanation = new Explanation(

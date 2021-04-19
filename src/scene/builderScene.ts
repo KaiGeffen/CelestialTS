@@ -729,6 +729,11 @@ class TutorialRegion {
   }
 
   create(): void {
+    // Icon for Dash
+    // let icon = this.scene.add.
+    // Text for Dash
+    // Explanation of Dash
+
     let s = 
     `Each card has a cost (Left number) and point value (Right number).
 Some cards also have additional effects listed after that.
