@@ -53,6 +53,9 @@ export default class WelcomeScene extends BaseScene {
 
     // Ensure that audio plays even when tab loses focus
     this.sound.pauseOnBlur = false
+
+    // Lower the audio volume to be more in line with other apps
+    this.sound.volume = 0.5
   }
 
   create(): void {

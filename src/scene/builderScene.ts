@@ -8,8 +8,10 @@ import BaseScene from "./baseScene"
 
 const DECK_PARAM = 'deck'
 
+const defaultTutorialDeck: string = "101:100:100:86:86:86:86:0:0:0:0:0:39:39:39"
+
 // The last deck of cards the player had, which get repopulated each time they enter the deck builder
-var tutorialDeck: Card[] = []
+var tutorialDeck: Card[] | string = defaultTutorialDeck
 var standardDeck: Card[] = []
 
 
@@ -272,6 +274,14 @@ class DeckRegion {
     this.btnMenu = this.scene.add.text(0, -150, 'Menu', StyleSettings.button)
     if (isTutorial) {
       this.btnMenu.setVisible(false)
+
+      // Instead, include a button to reset to the default tutorial deck
+      let btnReset = this.scene.add.text(0, -150, 'Reset', StyleSettings.button)
+      btnReset.setInteractive()
+      btnReset.on('pointerdown', this.onReset, this)
+
+      this.container.add(btnReset)
+      console.log(btnReset)
     }
 
     // If this is the tutorial, use that deck, otherwise use the other deck
@@ -374,6 +384,12 @@ class DeckRegion {
         this.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
       }
     }
+  }
+
+  private onReset(): void {
+    this.scene.sound.play('click')
+
+    this.setDeck(defaultTutorialDeck)
   }
 
   private updateText(): void {
@@ -734,6 +750,32 @@ class TutorialRegion {
     // Text for Dash
     // Explanation of Dash
 
+    let s2 = 
+`Welcome to Celestial.
+Read on for this game's core mechanics.
+When you feel ready, hit Start to begin playing.
+
+
+
+This is a card...
+Costs 2 mana to play (Left number)
+Is worth 3 points (Right number)
+Has the keyword Flare, which is explained below the card's text
+Cards with Flare are worth 1 less point for each card played
+before them in the round, so try to play Dash as early as possible.
+
+
+The first player to win 5 rounds, and lead by at least 2, wins.
+
+At the start of a round, each player draws 2 cards and gains 1 mana.
+
+Players go back and forth spending mana to play cards,
+or passing priority, until both players have passed in a row.
+
+At that point, all cards on the table resolve, from left to right,
+and the player with the most points wins the round.
+`
+
     let s = 
     `Each card has a cost (Left number) and point value (Right number).
 Some cards also have additional effects listed after that.
@@ -744,6 +786,19 @@ by spending mana to play cards.
 Try making a deck from 8 cards that cost 2 or less, 4 that cost 3-5,
 and 3 that cost 6 or more.` 
     let txt = this.scene.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
+    // txt.style.fixedHeight = 1
+
+    // this.scene.tweens.add({
+    //     targets: txt.text,
+    //     length: 100,
+    //     duration: 500,
+    //     ease: "Sine.easeInOut",
+    //     yoyo: true,
+    //     onComplete: function (tween, targets, _)
+    //     {
+    //       txt.destroy()
+    //     }
+    //   })
 
     this.container.add(txt)
   }
