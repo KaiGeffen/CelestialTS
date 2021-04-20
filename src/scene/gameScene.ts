@@ -287,14 +287,19 @@ export default class GameScene extends BaseScene {
 	// If a recap of states is playing, wait to show the new state until after it has finished
 	recapPlaying: Boolean = false
 	// If an animation is playing locally, wait until that is finished before showing any new state or recaps
+	// TODO remove
 	animationPlaying: Boolean = false
 	queuedState: ClientState = undefined
 	// Display the given game state, returns false if the state isn't shown immediately
-	displayState(state: ClientState, recap: Boolean = false): boolean {
-		if (this.animationPlaying) {
+	displayState(state: ClientState, recap: Boolean = false, skipTweens: Boolean = false): boolean {
+		// If any tweens are not almost done, queue and wait for them to finish
+		let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 0})
+
+		if (anyTweenPlaying) {
 			this.queuedState = state
 			return false
 		}
+
 
 		let that = this
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
@@ -562,7 +567,6 @@ export default class GameScene extends BaseScene {
 			if (state.story.acts.length > 0) {
 				if (state.story.acts[state.story.acts.length - 1].card.name === 'Juggle') {
 					juggleModifier = 3
-					console.log(juggleModifier)
 				}
 			}
 
@@ -602,11 +606,12 @@ export default class GameScene extends BaseScene {
 			targets: image,
 			x: x,
 			delay: delay,
-			duration: 500,
+			duration: 400,
 			onStart: function (tween, targets, _)
 			{
 				image.setVisible(true)
-			}
+			},
+  			onComplete: this.tweenComplete()
 		})
 
 		return delay + 500
@@ -759,30 +764,43 @@ export default class GameScene extends BaseScene {
   				that.signalError()
   			}
   			else {
-  				that.animationPlaying = true
-
-  				that.net.playCard(index)
+  				// that.animationPlaying = true
 
   				// Send a this card to its place in the story
   				let end = that.getCardPosition(state.story.acts.length, that.storyContainer, 0)
 
-  				let tween = that.tweens.add({
+  				that.tweens.add({
   					targets: card.image,
   					x: end[0],
   					y: end[1],
-  					duration: 400,
+  					duration: 500,
   					ease: "Sine.easeInOut",
-  					onComplete: function (tween, targets, _)
-  					{
-  						that.animationPlaying = false
-  						if (that.queuedState !== undefined) {
-  							that.displayState(that.queuedState)
-  							that.queuedState = undefined
-  						}
-  					}
+  					onStart: function () {setTimeout(function() { that.net.playCard(index) }, 10)},
+  					onComplete: that.tweenComplete()
   					})
+
+  				
+
+  				// Card played onStart for tween
   			}
   		}
+  	}
+
+  	// The function to run when a tween completes
+  	private tweenComplete(): () => void {
+  		let that = this
+  		return function() {
+	  		// if (that.tweens.getAllTweens().length === 0) {
+	  			if (that.queuedState !== undefined) {
+
+	  				// Only reset the queued state if this state is actually displayed
+	  				if (that.displayState(that.queuedState)) {
+	  					that.queuedState = undefined
+	  					// TODO End of the displaySTate method should do this
+	  				}
+	  			}
+	  		// }
+	  	}
   	}
 
   	// Disables the story hidden lock seen below
@@ -860,6 +878,7 @@ export default class GameScene extends BaseScene {
 
   	lastScore: [number, number] = [0, 0]
   	private animatePointGain(state: ClientState): void {
+  		return
   		// The index of the card that is causing this point gain
   		let sourceIndex = state.recap.playList.length - 1
 
@@ -889,17 +908,19 @@ export default class GameScene extends BaseScene {
 	    	x, Space.windowHeight/2,
 	    	s, StyleSettings.announcement).setOrigin(0.5, 0.5)
 
-  		let tween = this.tweens.add({
+  		this.tweens.add({
   			targets: txt,
   			scale: 1.5,
   			// x: Space.scoresOffset,
   			duration: 500,
   			ease: "Sine.easeInOut",
   			yoyo: true,
-  			onComplete: function (tween, targets, _)
-  			{
-  				txt.destroy()
-  			}
+  			onComplete: 
+	  			function (tween, targets, _)
+	  			{
+	  				txt.destroy()
+	  				that.tweenComplete()
+	  			}
   		})
 
   		// Remember what the scores were for next time
