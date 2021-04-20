@@ -267,6 +267,20 @@ export default class GameScene extends BaseScene {
 	    super.create()
 	}
 
+	// TODO Hacky patch to states being dropped
+	timer: number = 0
+	update(time, delta): void {
+		this.timer += delta
+
+		if (this.timer > 1000) {
+			this.timer = 0
+
+			if (this.queuedState !== undefined) {
+				this.displayState(this.queuedState)
+			}
+		}
+	}
+
 	// Display searching for opponent if still looking
 	displaySearchingStatus(searching: boolean): void {
 		if (searching) {

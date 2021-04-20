@@ -22,9 +22,11 @@ const MATCH_MAKING_PARAM = 'mm'
 export class Network {
 	socket: WebSocket
 	// The version-number of that state that the client is displaying, for use with verifying with server
-	versionNumber: number = 0
+	versionNumber: number = -1
 
 	constructor(deck, scene, mmCode) {
+		let that = this
+
 		// The first message sent to server once the match starts
 		let initMessage = JSON.stringify({
 			type: 'init',
@@ -60,7 +62,10 @@ export class Network {
 					break
 
 				case 'transmit_state':
-					scene.displayState(new ClientState(msg.value))
+					let state = new ClientState(msg.value)
+					if (state.versionNumber > that.versionNumber) {
+						scene.displayState(state)
+					}
 					break
 
 				// Signal to the user that they chose an illegal action
