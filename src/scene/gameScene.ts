@@ -305,7 +305,7 @@ export default class GameScene extends BaseScene {
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 
 		// NOTE The reason to round (~10) here is because onFinish will call this when animations very nearly complete
-		let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 10})
+		let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 100})
 
 		// If currently watching a recap, change the colors and display scores
 		if (recap)
@@ -359,7 +359,6 @@ export default class GameScene extends BaseScene {
 
 					if (that.queuedState !== undefined) {
 						that.displayState(that.queuedState)
-						that.queuedState = undefined
 					} else {
 						state.recap.stateList = []
 						that.displayState(state)
