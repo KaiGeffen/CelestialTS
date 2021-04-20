@@ -284,6 +284,13 @@ export default class GameScene extends BaseScene {
 		}
 	}
 
+	// Only update if we received something newer, or queued state is undefined
+	private updateQueuedState(state: ClientState): void {
+		if (this.queuedState === undefined || state.versionNumber > this.queuedState.versionNumber) {
+			this.queuedState = state
+		}
+	}
+
 	// If a recap of states is playing, wait to show the new state until after it has finished
 	recapPlaying: Boolean = false
 	// If an animation is playing locally, wait until that is finished before showing any new state or recaps
@@ -292,17 +299,13 @@ export default class GameScene extends BaseScene {
 	queuedState: ClientState = undefined
 	// Display the given game state, returns false if the state isn't shown immediately
 	displayState(state: ClientState, recap: Boolean = false, skipTweens: Boolean = false): boolean {
-		// If any tweens are not almost done, queue and wait for them to finish
-		let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 0})
 
-		if (anyTweenPlaying) {
-			this.queuedState = state
-			return false
-		}
-
-
+		console.log(state)
 		let that = this
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
+
+		// NOTE The reason to round (~10) here is because onFinish will call this when animations very nearly complete
+		let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 10})
 
 		// If currently watching a recap, change the colors and display scores
 		if (recap)
@@ -317,7 +320,12 @@ export default class GameScene extends BaseScene {
 		// Queue this for after recap finishes
 		else if (this.recapPlaying)
 		{
-			this.queuedState = state
+			this.updateQueuedState(state)
+			return false
+		}
+		// If any tweens are not almost done, queue and wait for them to finish
+		else if (anyTweenPlaying) {
+			this.updateQueuedState(state)
 			return false
 		}
 		// Display this non-recap state, with normal background and no scores displayed
@@ -526,6 +534,12 @@ export default class GameScene extends BaseScene {
 
 		// Autopass
 		if (!recap && state.hand.length === 0 && state.priority === 0) this.net.passTurn()
+
+		// TODO Make sure this is safe
+		if (this.queuedState === state) {
+			this.queuedState = undefined
+		}
+		console.log('mad it out', state)
 
 		// State was displayed
 		return true
@@ -779,8 +793,6 @@ export default class GameScene extends BaseScene {
   					onComplete: that.tweenComplete()
   					})
 
-  				
-
   				// Card played onStart for tween
   			}
   		}
@@ -792,12 +804,12 @@ export default class GameScene extends BaseScene {
   		return function() {
 	  		// if (that.tweens.getAllTweens().length === 0) {
 	  			if (that.queuedState !== undefined) {
-
+	  				that.displayState(that.queuedState)
 	  				// Only reset the queued state if this state is actually displayed
-	  				if (that.displayState(that.queuedState)) {
-	  					that.queuedState = undefined
+	  				// if (that.displayState(that.queuedState)) {
+	  					// that.queuedState = undefined
 	  					// TODO End of the displaySTate method should do this
-	  				}
+	  				
 	  			}
 	  		// }
 	  	}
@@ -878,7 +890,6 @@ export default class GameScene extends BaseScene {
 
   	lastScore: [number, number] = [0, 0]
   	private animatePointGain(state: ClientState): void {
-  		return
   		// The index of the card that is causing this point gain
   		let sourceIndex = state.recap.playList.length - 1
 
