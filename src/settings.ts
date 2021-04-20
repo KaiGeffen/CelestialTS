@@ -24,7 +24,8 @@ export const Space = {
   // How far from the left announcement text should start (Passed!, Mulliganing, etc) 
   announceOffset: 800 - 20,
   scoresOffset: 800 + 50,
-  pageOffset: 1200
+  pageOffset: 1200,
+  stackX: 800
 }
 
 export const ColorSettings: Record<string, any> = {

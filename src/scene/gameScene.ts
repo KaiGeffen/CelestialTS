@@ -95,7 +95,7 @@ export default class GameScene extends BaseScene {
 
 		this.storyContainer = this.add.container(0, 0)
 		this.recapContainer = this.add.container(0, 0).setVisible(false)
-		this.stackContainer = this.add.container(800, 0)
+		this.stackContainer = this.add.container(Space.stackX, 0)
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
 
 		this.input.on('pointerdown', this.clickAnywhere(), this)
@@ -384,21 +384,7 @@ export default class GameScene extends BaseScene {
 		this.passContainer.setVisible(!state.mulligansComplete.includes(false))
 
 		// Hands
-		for (var i = 0; i < state.hand.length; i++) {
-			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
-
-			if (!state.cardsPlayable[i]) {
-				cardImage.setUnplayable()
-			}
-
-			// Play the card if it's clicked on (Even if unplayable, will signal error)
-			cardImage.image.on('pointerdown',
-				this.clickCard(i, cardImage, state),
-				this)
-		}
-		for (var i = state.opponentHandSize - 1; i >= 0; i--) {
-			this.addCard(cardback, i, this.opponentHandContainer)
-		}
+		this.displayHands(state)
 
 		// Story
 		let numActsCompleted = 0
@@ -550,6 +536,80 @@ export default class GameScene extends BaseScene {
 	// Called by the BaseScene button which returns to main menu, must alert server that we are exiting
 	beforeExit(): void {
 		this.net.closeSocket()
+	}
+
+	lastHandSizes: [number, number] = [0, 0]
+	private displayHands(state: ClientState): void {
+
+		// Delay before starting the current tween, updated so that cards aren't drawn at the same time
+		let delay: number = 0
+
+		// Create each card in client's hand. New cards should be animated to show that they were drawn
+		for (var i = 0; i < state.hand.length; i++) {
+			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
+
+			if (!state.cardsPlayable[i]) {
+				cardImage.setUnplayable()
+			}
+
+			// Play the card if it's clicked on (Even if unplayable, will signal error)
+			cardImage.image.on('pointerdown',
+				this.clickCard(i, cardImage, state),
+				this)
+
+			// If Juggle was just played, up to 3 cards might have just been drawn
+			let juggleModifier = 0
+			if (state.story.acts.length > 0) {
+				if (state.story.acts[state.story.acts.length - 1].card.name === 'Juggle') {
+					juggleModifier = 3
+					console.log(juggleModifier)
+				}
+			}
+
+			// If the card is new, animate it being drawn
+			if (i > this.lastHandSizes[0] - 1 - juggleModifier) {
+				delay = this.animateDraw(cardImage.image, delay)
+			}
+		}
+
+		// Opponent can draw cards at the same time as us
+		delay = 0
+
+		// Add each card in opponent's hand
+		for (var i = 0; i < state.opponentHandSize; i++) {
+			let image = this.addCard(cardback, i, this.opponentHandContainer).image
+
+			// If the card is new, animate it being drawn
+			if (i > this.lastHandSizes[1] - 1) {
+				delay = this.animateDraw(image, delay)
+			}
+		}
+
+		// Remember the size of these hands
+		this.lastHandSizes[0] = state.hand.length
+		this.lastHandSizes[1] = state.opponentHandSize
+
+	}
+	
+	// Tween the image to move to its position from the deck after delay. Return the new delay
+	private animateDraw(image: Phaser.GameObjects.Image, delay: number): number {
+		let x = image.x
+		image.setX(Space.stackX)
+
+		image.setVisible(false)
+
+		this.tweens.add({
+			targets: image,
+			x: x,
+			delay: delay,
+			duration: 500,
+			onStart: function (tween, targets, _)
+			{
+				image.setVisible(true)
+			}
+		})
+
+		return delay + 500
 	}
 
 	private addCard(card: Card,
