@@ -28,8 +28,8 @@ export default class Button extends Phaser.GameObjects.Text {
 
 	// Set the on click function for this button, removing any previous functions
 	setOnClick(f: () => void): void {
-		this.removeAllListeners('pointerdown')
-		this.on('pointerdown', this.sfxThenDo(f))
+		// this.removeAllListeners('pointerdown')
+		this.on('pointerdown', f)
 	}
 
 	private sfxThenDo(f: () => void): () => void {

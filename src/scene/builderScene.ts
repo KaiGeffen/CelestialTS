@@ -357,8 +357,6 @@ class DeckRegion {
     let that = this
 
     return function () {
-      that.scene.sound.play('click')
-
       that.beforeExit()
       
       // Start the right scene / deck pair
@@ -611,7 +609,7 @@ class MenuRegion {
 
     // Prompt for matchmaking code
     txt = 'Use matchmaking code...' + '\n      > ' + UserSettings.mmCode
-    let btnMatchmaking = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 2, txt).setOrigin(0, 0)
+    let btnMatchmaking = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 2, txt, function () {}, false).setOrigin(0, 0)
     btnMatchmaking.setOnClick(this.onSetMatchmaking(btnMatchmaking))
     this.container.add(btnMatchmaking)
 
@@ -623,7 +621,7 @@ class MenuRegion {
 
     // Button to load deck code
     txt = 'Load deck from a code'
-    let btnLoad = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 4, txt).setOrigin(0, 0)
+    let btnLoad = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 4, txt, function () {}, false).setOrigin(0, 0)
     btnLoad.setOnClick(this.onLoadDeck(btnLoad))
     this.container.add(btnLoad)
   }
@@ -631,8 +629,6 @@ class MenuRegion {
   private onToggleUserSetting(btn: Button, property: string): () => void {
     let that = this
     return function() {
-      that.scene.sound.play('click')
-
       UserSettings[property] = !UserSettings[property]
 
       that.setCheckOrX(btn, UserSettings[property])
@@ -666,8 +662,6 @@ class MenuRegion {
   private onCopy(btn: Button): () => void {
     let that = this
     return function() {
-      that.scene.sound.play('click')
-
       let txt = ''
       that.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
       txt = txt.slice(0, -1)
