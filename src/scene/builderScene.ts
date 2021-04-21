@@ -89,15 +89,15 @@ class CatalogRegion {
       this.addCard(catalog[i], i)
     }
     if (catalog.length > Space.cardsPerPage) {
-      let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad
+      let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad/2
       let y = 2 * (Space.cardSize + Space.pad) + Space.pad/2
 
-      let btnNext = this.scene.add.text(x, y, '>', StyleSettings.button).setOrigin(0, 0)
+      let btnNext = this.scene.add.text(x, y, '→', StyleSettings.button).setOrigin(0, 0)
       btnNext.setInteractive()
       btnNext.on('pointerdown', this.goNextPage())
       this.container.add(btnNext)
 
-      let btnPrev = this.scene.add.text(x, y, '<', StyleSettings.button).setOrigin(0, 1)
+      let btnPrev = this.scene.add.text(x, y, '←', StyleSettings.button).setOrigin(0, 1)
       btnPrev.setInteractive()
       btnPrev.on('pointerdown', this.goPrevPage())
       this.container.add(btnPrev)
