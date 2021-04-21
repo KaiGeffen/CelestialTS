@@ -8,6 +8,7 @@ import { CardImage, addCardInfoToScene, cardInfo } from "../lib/cardImage"
 // Import Settings itself 
 import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
 import Recap from '../lib/recap'
+import Button from '../lib/button'
 
 
 const RECAP_TIME = 1000
@@ -105,6 +106,8 @@ export default class GameScene extends BaseScene {
 	}
 
 	create(): void {
+		let that = this
+
 		// Middle line, below everything
 		let midline = this.add.rectangle(0, 650/2, 1100, 20, ColorSettings.middleLine, 1).setOrigin(0, 0.5)
 		this.children.sendToBack(midline)
@@ -122,46 +125,11 @@ export default class GameScene extends BaseScene {
 		this.storyContainer.add([this.visionRectangle, this.txtVision])
 
 		// Mulligan highlights and button
-		this.mulliganHighlights = []
-		for (var i = 0; i < 3; i++) {
-			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
-			let highlight = this.add.rectangle(x, y, 100, 140, ColorSettings.mulliganHighlight, 1).setVisible(false)
-			this.handContainer.add(highlight)
-  			
-  			this.mulliganHighlights.push(highlight)
-		}
-		
-		this.txtOpponentMulligan = this.add.text(Space.announceOffset, 200, 'Opponent is still mulliganing...', StyleSettings.announcement).setOrigin(1, 0.5)
-
-		let x = Space.pad * 2 + Space.cardSize * 1.5
-		let btnMulligan = this.add.text(x, 650 - 200, 'Mulligan', StyleSettings.button).setOrigin(0.5, 0.5)
-		btnMulligan.setInteractive()
-
-		let that = this
-		btnMulligan.on('pointerdown', function (event) {
-			let mulligans = ''
-			for (var i = 0; i < that.mulliganHighlights.length; i++) {
-				if (that.mulliganHighlights[i].visible) mulligans += '1'
-				else mulligans += '0'
-			}
-
-			that.net.doMulligan(mulligans)
-
-			// Remove all mulligan objects
-			that.mulliganHighlights.forEach(o => o.destroy())
-			btnMulligan.destroy()
-		})
+		this.createMulliganObjects()
 
 		// Pass button
-    	let btnPass = this.add.text(0, 80, 'Pass', StyleSettings.button).setOrigin(1, 0.5)
+    	let btnPass = new Button(this, 0, 80, 'Pass', this.onPass()).setOrigin(1, 0.5)
     	this.passContainer.add(btnPass)
-    	btnPass.setInteractive()
-
-	    btnPass.on('pointerdown', function (event) {
-	    	if (!that.recapPlaying) {
-	    		that.net.passTurn()
-	    	}
-	    })
 
 	    // Mana text
 	    this.manaText = this.add.text(1100 - Space.pad,
@@ -273,6 +241,42 @@ export default class GameScene extends BaseScene {
 	    super.create()
 	}
 
+	// Create all objects relating to the mulligan phase
+	private createMulliganObjects(): void {
+		// Highlights
+		this.mulliganHighlights = []
+		for (var i = 0; i < 3; i++) {
+			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
+			let highlight = this.add.rectangle(x, y, 100, 140, ColorSettings.mulliganHighlight, 1).setVisible(false)
+			this.handContainer.add(highlight)
+  			
+  			this.mulliganHighlights.push(highlight)
+		}
+
+		// Text announcing opponent is still mulliganing
+		this.txtOpponentMulligan = this.add.text(Space.announceOffset, 200, 'Opponent is still mulliganing...', StyleSettings.announcement).setOrigin(1, 0.5)
+
+		// Button for player to confirm their mulligan
+		let x = Space.pad * 2 + Space.cardSize * 1.5
+		let btnMulligan = new Button(this, x, Space.windowHeight - 200, 'Mulligan').setOrigin(0.5, 0.5)
+
+		let that = this
+		let f = function () {
+			let mulligans = ''
+			for (var i = 0; i < that.mulliganHighlights.length; i++) {
+				if (that.mulliganHighlights[i].visible) mulligans += '1'
+				else mulligans += '0'
+			}
+
+			that.net.doMulligan(mulligans)
+
+			// Remove all mulligan objects
+			that.mulliganHighlights.forEach(o => o.destroy())
+			btnMulligan.destroy()
+		}
+		btnMulligan.setOnClick(f)
+	}
+
 	// TODO Hacky patch to states being dropped
 	timer: number = 0
 	update(time, delta): void {
@@ -293,9 +297,7 @@ export default class GameScene extends BaseScene {
 			let searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.background).setOrigin(0, 0)
 			let txtSearching = this.add.text(1100/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
-			let btnExit = this.add.text(1100/2, 400, "Cancel", StyleSettings.button).setOrigin(0.5, 0.5)
-			btnExit.setInteractive()
-			btnExit.on('pointerdown', this.exitScene, this)
+			let btnExit = new Button(this, Space.windowWidth/2, 400, "Cancel", this.exitScene).setOrigin(0.5, 0.5)
 
 			this.temporaryObjs.push(searchingBackground, txtSearching, btnExit)
 		}
@@ -561,6 +563,16 @@ export default class GameScene extends BaseScene {
 		return true
 	}
 
+	// Callback for pressing the Pass button
+	private onPass(): () => void {
+		let that = this
+		return function() {
+	    	if (!that.recapPlaying) {
+	    		that.net.passTurn()
+	    	}
+	    }
+	}
+
 	// Alert the user that they have taken an illegal or impossible action
 	errorMsgTimeout: NodeJS.Timeout
 	signalError(msg: string = ''): void {
@@ -574,7 +586,7 @@ export default class GameScene extends BaseScene {
 		if (this.errorMsgTimeout !== undefined) {
 			clearTimeout(this.errorMsgTimeout)
 		}
-		
+
 		let that = this
 		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('') }, 1000)
 	}
