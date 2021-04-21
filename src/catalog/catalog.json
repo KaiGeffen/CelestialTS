@@ -175,6 +175,10 @@
     "cost": 3,
     "text": "3:3, remove from the game and note the top card of your discard pile. This card's effect becomes to add a copy of the noted card to your hand."
   },
+  {"name": "Boar", "id": 72,
+    "cost": 3,
+    "text": "3:4, discard your X leftmost cards, where X is the number of cards later in the story."
+  },
 
   {"name": "Pelican", "id": 25,
     "cost": 4,
