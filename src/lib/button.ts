@@ -21,6 +21,7 @@ export default class Button extends Phaser.GameObjects.Text {
 
 		this.on('pointerover', this.onHover, this)
     	this.on('pointerout', this.onHoverExit, this)
+    	this.scene.input.on('gameout', this.onHoverExit, this)
 
 		this.scene.add.existing(this)
 	}
