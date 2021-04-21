@@ -1,6 +1,7 @@
 import "phaser"
 import { StyleSettings, ColorSettings, Space } from "../settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
+import Button from "../lib/button"
 
 
 var music: Phaser.Sound.BaseSound
@@ -24,14 +25,11 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Mute button
 		let s = music.isPlaying ? '♪' : '-'
-		let btnMute = this.add.text(Space.windowWidth - Space.pad/2, 0, s, StyleSettings.button).setOrigin(1, 0)
-		btnMute.setInteractive()
-		btnMute.on('pointerdown', this.doMute(btnMute))
+		let btnMute = new Button(this, Space.windowWidth - Space.pad/2, 0, s).setOrigin(1, 0)
+		btnMute.setOnClick(this.doMute(btnMute))
 
 		// Exit button
-		let btnExit = this.add.text(Space.windowWidth - Space.pad/2, 50, '<', StyleSettings.button).setOrigin(1, 0)
-		btnExit.setInteractive()
-		btnExit.on('pointerdown', this.confirmExit, this)
+		let btnExit = new Button(this, Space.windowWidth - Space.pad/2, 50, '<', this.confirmExit).setOrigin(1, 0)
 
 		// Exit confirmation container
 		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0xffffff, 0).setOrigin(0, 0)
@@ -42,20 +40,16 @@ export default class BaseScene extends Phaser.Scene {
 
 		let txtHint = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 40, 'Exit to main menu?', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
-		let btnYes = this.add.text(Space.windowWidth/2 - 50, Space.windowHeight/2 + 40, 'Yes', StyleSettings.button).setOrigin(1, 0.5)
-		btnYes.setInteractive().on('pointerdown', this.doExit, this)
-		let btnNo = this.add.text(Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', StyleSettings.button).setOrigin(0, 0.5)
-		btnNo.setInteractive().on('pointerdown', this.exitConfirmation, this)
+		let btnYes = new Button(this, Space.windowWidth/2 - 50, Space.windowHeight/2 + 40, 'Yes', this.doExit).setOrigin(1, 0.5)
+		let btnNo = new Button(this, Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', this.exitConfirmation).setOrigin(0, 0.5)
 
 		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
 		this.confirmationContainer.add([invisibleBackground, visibleBackground, txtHint, btnYes, btnNo])
 	}
 
-	private doMute(btn: Phaser.GameObjects.Text): () => void {
+	private doMute(btn: Button): () => void {
 		let that = this
 		return function() {
-			that.sound.play('click')
-
 			if (music.isPlaying) {
 				music.pause()
 
@@ -66,8 +60,7 @@ export default class BaseScene extends Phaser.Scene {
 
 				btn.setText('♪')
 			}
-		}
-		
+		}	
 	}
 
 	// Overwritten by the scenes that extend this
@@ -82,8 +75,6 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	private doExit(): void {
-		this.sound.play('click')
-
 		this.beforeExit()
 		this.scene.start("WelcomeScene")
 	}
