@@ -64,6 +64,9 @@ export default class GameScene extends BaseScene {
 	// Information about the recap that is playing
 	txtScores: Phaser.GameObjects.Text
 
+	// Message explaining to user what they did wrong
+	txtError: Phaser.GameObjects.Text
+
 	constructor(args = {key: "GameScene"}) {
 		super(args)
 	}
@@ -262,6 +265,9 @@ export default class GameScene extends BaseScene {
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
 	    this.btnRecap = btnRecap
 
+	    // Error text, for when the user does something wrong they get an explanation
+		this.txtError = this.add.text(500, 650/2, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
+
 	    this.displaySearchingStatus(true)
 
 	    super.create()
@@ -313,8 +319,6 @@ export default class GameScene extends BaseScene {
 	queuedState: ClientState = undefined
 	// Display the given game state, returns false if the state isn't shown immediately
 	displayState(state: ClientState, recap: Boolean = false, skipTweens: Boolean = false): boolean {
-
-		console.log(state)
 		let that = this
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 
@@ -552,17 +556,27 @@ export default class GameScene extends BaseScene {
 		if (this.queuedState === state) {
 			this.queuedState = undefined
 		}
-		console.log('mad it out', state)
 
 		// State was displayed
 		return true
 	}
 
 	// Alert the user that they have taken an illegal or impossible action
-	signalError(): void {
+	errorMsgTimeout: NodeJS.Timeout
+	signalError(msg: string = ''): void {
       	this.sound.play('failure')
 
 		this.cameras.main.flash(300, 0, 0, 0.1)
+
+		this.txtError.setText(msg)
+
+		// Remove previous timeout, create a new one
+		if (this.errorMsgTimeout !== undefined) {
+			clearTimeout(this.errorMsgTimeout)
+		}
+		
+		let that = this
+		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('') }, 1000)
 	}
 
 	// Called by the BaseScene button which returns to main menu, must alert server that we are exiting
@@ -772,23 +786,23 @@ export default class GameScene extends BaseScene {
   			}
 
   			// Non-mulligan, which can be in error for a variety of reasons
-  			if (that.recapPlaying) {
-  				that.signalError()
-  			}
-  			else if (card.unplayable) {
-  				that.signalError()
-  			}
-  			// Opponent's turn
-  			else if (state.priority === 1) {
-  				that.signalError()
+  			// Game is over
+  			if (state.winner !== null) {
+  				that.signalError('The game is over')
   			}
   			// Opponent still mulliganing
   			else if (!state.mulligansComplete[1]) {
-  				that.signalError()
+  				that.signalError('Opponent is still mulliganing')
   			}
-  			// Game is over
-  			else if (state.winner !== null) {
-  				that.signalError()
+  			else if (that.recapPlaying) {
+  				that.signalError('Recap is playing')
+  			}
+  			// Opponent's turn
+  			else if (state.priority === 1) {
+  				that.signalError("It's not your turn")
+  			}
+  			else if (card.unplayable) {
+  				that.signalError('Not enough mana')
   			}
   			else {
   				// that.animationPlaying = true
