@@ -3,6 +3,7 @@ import { collectibleCards, starterCards,  Card } from "../catalog/catalog"
 import { CardImage, addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
+import Button from "../lib/button"
 import BaseScene from "./baseScene"
 
 
@@ -92,14 +93,10 @@ class CatalogRegion {
       let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad/2
       let y = 2 * (Space.cardSize + Space.pad) + Space.pad/2
 
-      let btnNext = this.scene.add.text(x, y, '→', StyleSettings.button).setOrigin(0, 0)
-      btnNext.setInteractive()
-      btnNext.on('pointerdown', this.goNextPage())
+      let btnNext = new Button(this.scene, x, y, '→', this.goNextPage(), false).setOrigin(0, 0)
       this.container.add(btnNext)
 
-      let btnPrev = this.scene.add.text(x, y, '←', StyleSettings.button).setOrigin(0, 1)
-      btnPrev.setInteractive()
-      btnPrev.on('pointerdown', this.goPrevPage())
+      let btnPrev = new Button(this.scene, x, y, '←', this.goPrevPage(), false).setOrigin(0, 1)
       this.container.add(btnPrev)
     }
   }
@@ -233,8 +230,8 @@ class DeckRegion {
   isTutorial: Boolean
 
   txtHint: Phaser.GameObjects.Text
-  btnStart: Phaser.GameObjects.Text
-  btnMenu: Phaser.GameObjects.Text
+  btnStart: Button
+  btnMenu: Button
 
   constructor(scene: Phaser.Scene) {
     this.init(scene)
@@ -255,33 +252,22 @@ class DeckRegion {
       StyleSettings.announcement).setOrigin(0.5, 0)
 
     // Sort button
-    let btnSort = this.scene.add.text(0, -100, 'Sort', StyleSettings.button)
-
-    btnSort.setInteractive()
-    btnSort.on('pointerdown', function (event) {
-      that.scene.sound.play('click')
-
-      that.sort()
-    })
+    let btnSort = new Button(this.scene, 0, -100, 'Sort', function() {that.sort()})
 
     // Start button
-    this.btnStart = this.scene.add.text(0, -50, '', StyleSettings.button)
-
-    this.btnStart.setInteractive()
-    this.btnStart.on('pointerdown', this.onStart())
+    this.btnStart = new Button(this.scene, 0, -50, '', this.onStart())
 
     // Menu button, the callback is set by menu region during its init
-    this.btnMenu = this.scene.add.text(0, -150, 'Menu', StyleSettings.button)
+    this.btnMenu = new Button(this.scene, 0, -150, 'Menu')
+
+    // Remove the Menu button, add a Reset button
     if (isTutorial) {
       this.btnMenu.setVisible(false)
 
       // Instead, include a button to reset to the default tutorial deck
-      let btnReset = this.scene.add.text(0, -150, 'Reset', StyleSettings.button)
-      btnReset.setInteractive()
-      btnReset.on('pointerdown', this.onReset, this)
+      let btnReset = new Button(this.scene, 0, -150, 'Reset', this.onReset())
 
       this.container.add(btnReset)
-      console.log(btnReset)
     }
 
     // If this is the tutorial, use that deck, otherwise use the other deck
@@ -354,8 +340,7 @@ class DeckRegion {
 
   // Set the callback for showing the menu
   setShowMenu(callback: () => void): void {
-    this.btnMenu.setInteractive()
-    this.btnMenu.on('pointerdown', callback)
+    this.btnMenu.setOnClick(callback)
   }
 
   // Before exiting, remember the deck player has
@@ -378,18 +363,17 @@ class DeckRegion {
       
       // Start the right scene / deck pair
       if (that.isTutorial) {
-        this.scene.scene.start("TutorialScene", {isTutorial: true, deck: tutorialDeck})
+        that.scene.scene.start("TutorialScene", {isTutorial: true, deck: tutorialDeck})
       }
       else {
-        this.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
+        that.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
       }
     }
   }
 
-  private onReset(): void {
-    this.scene.sound.play('click')
-
-    this.setDeck(defaultTutorialDeck)
+  private onReset(): () => void {
+    let that = this
+    return function() {that.setDeck(defaultTutorialDeck)}
   }
 
   private updateText(): void {
@@ -614,42 +598,37 @@ class MenuRegion {
     // Vs ai toggleable button
     let txt = 'Play versus Computer          '
     txt += UserSettings.vsAi ? '✓' : 'X'
-    let btnVsAi = this.scene.add.text(Space.pad, Space.pad/2, txt, StyleSettings.button).setOrigin(0, 0)
-    btnVsAi.setInteractive()
-    btnVsAi.on('pointerdown', this.onToggleUserSetting(btnVsAi, 'vsAi'))
+    let btnVsAi = new Button(this.scene, Space.pad, Space.pad/2, txt).setOrigin(0, 0)
+    btnVsAi.setOnClick(this.onToggleUserSetting(btnVsAi, 'vsAi'))
     this.container.add(btnVsAi)
 
     // Show recap toggleable button
     txt = 'Explain keywords                 '
     txt += UserSettings.explainKeywords ? '✓' : 'X'
-    let btnExplainKeywords = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize, txt, StyleSettings.button).setOrigin(0, 0)
-    btnExplainKeywords.setInteractive()
-    btnExplainKeywords.on('pointerdown', this.onToggleUserSetting(btnExplainKeywords, 'explainKeywords'))
+    let btnExplainKeywords = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize, txt).setOrigin(0, 0)
+    btnExplainKeywords.setOnClick(this.onToggleUserSetting(btnExplainKeywords, 'explainKeywords'))
     this.container.add(btnExplainKeywords)
 
     // Prompt for matchmaking code
     txt = 'Use matchmaking code...' + '\n      > ' + UserSettings.mmCode
-    let btnMatchmaking = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 2, txt, StyleSettings.button).setOrigin(0, 0)
-    btnMatchmaking.setInteractive()
-    btnMatchmaking.on('pointerdown', this.onSetMatchmaking(btnMatchmaking))
+    let btnMatchmaking = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 2, txt).setOrigin(0, 0)
+    btnMatchmaking.setOnClick(this.onSetMatchmaking(btnMatchmaking))
     this.container.add(btnMatchmaking)
 
     // Button to save deck code
     txt = 'Copy deck code to clipboard'
-    let btnCopy = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 3, txt, StyleSettings.button).setOrigin(0, 0)
-    btnCopy.setInteractive()
-    btnCopy.on('pointerdown', this.onCopy(btnCopy))
+    let btnCopy = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 3, txt).setOrigin(0, 0)
+    btnCopy.setOnClick(this.onCopy(btnCopy))
     this.container.add(btnCopy)
 
     // Button to load deck code
     txt = 'Load deck from a code'
-    let btnLoad = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize * 4, txt, StyleSettings.button).setOrigin(0, 0)
-    btnLoad.setInteractive()
-    btnLoad.on('pointerdown', this.onLoadDeck(btnLoad))
+    let btnLoad = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 4, txt).setOrigin(0, 0)
+    btnLoad.setOnClick(this.onLoadDeck(btnLoad))
     this.container.add(btnLoad)
   }
 
-  private onToggleUserSetting(btn: Phaser.GameObjects.Text, property: string): () => void {
+  private onToggleUserSetting(btn: Button, property: string): () => void {
     let that = this
     return function() {
       that.scene.sound.play('click')
@@ -661,13 +640,13 @@ class MenuRegion {
   }
 
   // Set the btn to end with a check or an X based on the conditional
-  private setCheckOrX(btn: Phaser.GameObjects.Text, conditional: Boolean): void {
+  private setCheckOrX(btn: Button, conditional: Boolean): void {
     let finalChar = conditional ? "✓":"X"
     let newText = btn.text.slice(0, -1) + finalChar
     btn.setText(newText)
   }
 
-  private onSetMatchmaking(btn: Phaser.GameObjects.Text): () => void {
+  private onSetMatchmaking(btn: Button): () => void {
     let that = this
     return function() {
       var code = prompt("Enter matchmaking code:")
@@ -684,7 +663,7 @@ class MenuRegion {
     }
   }
 
-  private onCopy(btn: Phaser.GameObjects.Text): () => void {
+  private onCopy(btn: Button): () => void {
     let that = this
     return function() {
       that.scene.sound.play('click')
@@ -702,7 +681,7 @@ class MenuRegion {
     }
   }
 
-  private onLoadDeck(btn: Phaser.GameObjects.Text): () => void {
+  private onLoadDeck(btn: Button): () => void {
     let that = this
     return function() {
       let code = prompt("Enter deck code:")

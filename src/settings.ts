@@ -32,8 +32,8 @@ export const ColorSettings: Record<string, any> = {
   background: 0x202070,
   recapBackground: 0x707070,
 
-  button: '#393',
-  buttonHighlight: 0x999999,
+  button: '#292',
+  buttonHighlight: 0xaaaaaa,
 
   announcement: '#703420',
   stack: '#e9b',
