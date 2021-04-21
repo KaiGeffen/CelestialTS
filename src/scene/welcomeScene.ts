@@ -2,6 +2,7 @@ import "phaser"
 import { StyleSettings, Space } from "../settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
+import Button from "../lib/button"
 
 
 const SOUNDS = [
@@ -71,17 +72,14 @@ export default class WelcomeScene extends BaseScene {
     backgroundClickable.setInteractive()
     backgroundClickable.on('pointerdown', this.doStart, this)
 
+    // Start Button
+    // let btnStart = new Button(this, Space.windowWidth/2, Space.windowHeight - 200, "Start", this.doStart).setOrigin(0.5)
+
     // Tutorial Button
-    let btnTutorial = this.add.text(Space.windowWidth/2, Space.windowHeight - 125, "Tutorial",
-      StyleSettings.button).setOrigin(0.5)
-    btnTutorial.setInteractive()
-    btnTutorial.on('pointerdown', this.doTutorial, this)
+    let btnTutorial = new Button(this, Space.windowWidth/2, Space.windowHeight - 125, "Tutorial", this.doTutorial).setOrigin(0.5)
 
     // Credits button
-    let btnCredits = this.add.text(Space.windowWidth/2, Space.windowHeight - 50, "Credits",
-      StyleSettings.button).setOrigin(0.5)
-    btnCredits.setInteractive()
-    btnCredits.on('pointerdown', this.doCredits, this)
+    let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
 
     super.create()
   }
@@ -92,12 +90,10 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doTutorial(): void {
-    this.sound.play('click')
     this.scene.start("BuilderScene", {isTutorial: true})
   }
 
   private doCredits(): void {
-    this.sound.play('click')
     this.scene.start("CreditsScene")
   }
 }
