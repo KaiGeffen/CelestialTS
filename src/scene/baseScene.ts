@@ -28,7 +28,7 @@ export default class BaseScene extends Phaser.Scene {
 		let btnMute = new Button(this, Space.windowWidth - Space.pad/2, 0, s).setOrigin(1, 0)
 		btnMute.setOnClick(this.doMute(btnMute))
 
-		// Exit button
+		// Exit button ⚙
 		let btnExit = new Button(this, Space.windowWidth - Space.pad/2, 50, '<', this.confirmExit).setOrigin(1, 0)
 
 		// Exit confirmation container

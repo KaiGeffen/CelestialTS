@@ -68,6 +68,9 @@ export default class GameScene extends BaseScene {
 	// Message explaining to user what they did wrong
 	txtError: Phaser.GameObjects.Text
 
+	// The states which are queued up and have not yet been seen, with key being their version number
+	queuedStates
+
 	constructor(args = {key: "GameScene"}) {
 		super(args)
 	}
@@ -103,6 +106,11 @@ export default class GameScene extends BaseScene {
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
 
 		this.input.on('pointerdown', this.clickAnywhere(), this)
+
+		// Defined these arguments here, so that they don't carry over between instances of Game Scene
+		this.lastHandSizes = [0, 0]
+		this.recapPlaying = false
+		this.queuedState = undefined
 	}
 
 	create(): void {
@@ -313,12 +321,15 @@ export default class GameScene extends BaseScene {
 		}
 	}
 
+	// Queue up the given state, to be displayed when correct to do so
+	queueState(state: ClientState): void {
+
+	}
+
 	// If a recap of states is playing, wait to show the new state until after it has finished
-	recapPlaying: Boolean = false
+	recapPlaying: Boolean
 	// If an animation is playing locally, wait until that is finished before showing any new state or recaps
-	// TODO remove
-	animationPlaying: Boolean = false
-	queuedState: ClientState = undefined
+	queuedState: ClientState
 	// Display the given game state, returns false if the state isn't shown immediately
 	displayState(state: ClientState, recap: Boolean = false, skipTweens: Boolean = false): boolean {
 		let that = this
@@ -596,7 +607,6 @@ export default class GameScene extends BaseScene {
 		this.net.closeSocket()
 	}
 
-	lastHandSizes: [number, number] = [0, 0]
 	private displayHands(state: ClientState): void {
 
 		// Delay before starting the current tween, updated so that cards aren't drawn at the same time
@@ -649,6 +659,7 @@ export default class GameScene extends BaseScene {
 	}
 	
 	// Tween the image to move to its position from the deck after delay. Return the new delay
+	lastHandSizes: [number, number]
 	private animateDraw(image: Phaser.GameObjects.Image, delay: number): number {
 		let x = image.x
 		image.setX(Space.stackX)
@@ -817,8 +828,6 @@ export default class GameScene extends BaseScene {
   				that.signalError('Not enough mana')
   			}
   			else {
-  				// that.animationPlaying = true
-
   				// Send a this card to its place in the story
   				let end = that.getCardPosition(state.story.acts.length, that.storyContainer, 0)
 

@@ -153,6 +153,10 @@
     "cost": 1,
     "text": "1:0, Tutor 2. On play, Sight 3"
   },
+  {"name": "Disintegrate", "id": 66,
+    "cost": 1,
+    "text": "1:1, transform the next 1-cost card in the story into a ${144}."
+  },
 
   {"name": "Raise Dead", "id": 95,
     "cost": 2,
