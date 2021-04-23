@@ -16,6 +16,12 @@ export default class TutorialScene extends GameScene {
 	create(): void {
 		super.create()
 
+		// Hide any container that are hidden in the tutorial
+		this.mulliganContainer.setVisible(false)
+		this.stackContainer.setVisible(false)
+
+		this.btnRecap.setVisible(false)
+
 		// Reset each explanations seen parameter
 		explanations.forEach(ex => ex.seen = false)
 

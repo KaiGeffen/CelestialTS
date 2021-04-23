@@ -31,6 +31,8 @@ export default class GameScene extends BaseScene {
 	opponentDeckContainer: Phaser.GameObjects.Container
 	opponentDiscardContainer: Phaser.GameObjects.Container
 
+	mulliganContainer: Phaser.GameObjects.Container
+
 	storyContainer: Phaser.GameObjects.Container
 	stackContainer: Phaser.GameObjects.Container
 	recapContainer: Phaser.GameObjects.Container
@@ -68,6 +70,9 @@ export default class GameScene extends BaseScene {
 	// Message explaining to user what they did wrong
 	txtError: Phaser.GameObjects.Text
 
+	// User is playing the tutorial experience
+	// isTutorial: Boolean
+
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates
 
@@ -84,7 +89,7 @@ export default class GameScene extends BaseScene {
 
 	    // Tutorial should always be against ai
 	    if (params['isTutorial']) {
-	    	mmCode = 'ai'
+	    	mmCode = 'tutorial'
 	    }
 
 		// Connect with the server
@@ -99,6 +104,8 @@ export default class GameScene extends BaseScene {
 		this.discardContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDiscardContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDeckContainer = this.add.container(0, 0).setVisible(false)
+
+		this.mulliganContainer = this.add.container(0, 0).setVisible(true)
 
 		this.storyContainer = this.add.container(0, 0)
 		this.recapContainer = this.add.container(0, 0).setVisible(false)
@@ -283,6 +290,8 @@ export default class GameScene extends BaseScene {
 			btnMulligan.destroy()
 		}
 		btnMulligan.setOnClick(f)
+
+		this.mulliganContainer.add([this.txtOpponentMulligan, btnMulligan])
 	}
 
 	// TODO Hacky patch to states being dropped
