@@ -42,17 +42,17 @@ export default class TutorialScene extends GameScene {
 	displayState(state: ClientState, recap: Boolean = false): boolean {
 		let isDisplayed = super.displayState(state, recap)
 
+		// If this state isn't displayed, do nothing
+		if (!isDisplayed) return false
+
 		// If player has won 2 rounds, cards now have effects and the card info should reflect that
 		if (state.wins[0] >= 2) {
 			setSimplifyCardInfo(false)
 		}
 		// If the player has won 4 rounds, display the decks and discard piles
-		if (state.wins[0] >= 4) {
+		if (state.wins[0] >= 4 && !recap) {
 			this.stackContainer.setVisible(true)
 		}
-
-		// If this state isn't displayed, do nothing
-		if (!isDisplayed) return false
 
 		this.txtTutorial.setVisible(false)
 
@@ -147,10 +147,7 @@ let exOpponentHidden: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.story.acts.length >= 1},
 	"Cards your opponent plays are hidden until the round is over."
 	)
-let exDiscardShuffle: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.deck.length <= 4},
-	"After your deck runs out of cards, your discard pile becomes your deck."
-	)
+
 let exMaxHand: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.hand.length === 6},
 	"If you have 6 cards in hand, you can't draw any more."
@@ -164,13 +161,17 @@ let exDash: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2},
 	"It's better to play a card like Dash early in a round, so it's worth the most points."
 	)
+
 let exStacks: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 4},
-	"You draw cards from your deck, and after they resolve they go to your discard pile.\
-	Once your deck is out of cards, your discard pile is shuffled into your deck."
+	"You draw cards from your deck, and after they resolve they go to your discard pile."
+	)
+let exDiscardShuffle: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.wins[0] >= 4},
+	"Once your deck runs out of cards, your discard pile is shuffled into your deck."
 	)
 
-
+// NOTE on 3, Dont show stacks on the recap during which you get to 4 wins
 
 let explanations: Explanation[] = [
 	exPlayOrPass,
@@ -182,7 +183,8 @@ let explanations: Explanation[] = [
 	exCardEffects,
 	exDash,
 
-	exStacks
+	exStacks,
+	exDiscardShuffle
 ]
 // 	[
 // 	exMulligan,
