@@ -553,8 +553,8 @@ export default class GameScene extends BaseScene {
 		this.txtOpponentStatus.setText(state.opponentStatus)
 
 		// Score
-		this.scoreText.setText(`Score: ${state.wins[0]}`)
-		this.opponentScoreText.setText(`Score: ${state.wins[1]}`)
+		this.scoreText.setText(`Score: ${state.wins[0]}/5`)
+		this.opponentScoreText.setText(`Score: ${state.wins[1]}/5`)
 
 		// Passes
 		if (state.passes === 0) {

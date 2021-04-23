@@ -45,19 +45,19 @@ export default class TutorialScene extends GameScene {
 		// If this state isn't displayed, do nothing
 		if (!isDisplayed) return false
 
+		this.txtTutorial.setVisible(false)
+
+		// If it's a recap, don't show an explanation
+		if (recap) return true
+
 		// If player has won 2 rounds, cards now have effects and the card info should reflect that
 		if (state.wins[0] >= 2) {
 			setSimplifyCardInfo(false)
 		}
 		// If the player has won 4 rounds, display the decks and discard piles
-		if (state.wins[0] >= 4 && !recap) {
+		if (state.wins[0] >= 4) {
 			this.stackContainer.setVisible(true)
 		}
-
-		this.txtTutorial.setVisible(false)
-
-		// If it's a recap, don't show an explanation
-		if (recap) return true
 
 		// Consider each explanation, display the first valid one
 		let exFound = false
@@ -149,7 +149,7 @@ let exOpponentHidden: Explanation = new Explanation(
 	)
 
 let exMaxHand: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.hand.length === 6},
+	function (state) {return state.priority === 0 && state.wins[0] >= 3},
 	"If you have 6 cards in hand, you can't draw any more."
 	)
 
@@ -168,10 +168,11 @@ let exStacks: Explanation = new Explanation(
 	)
 let exDiscardShuffle: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 4},
-	"Once your deck runs out of cards, your discard pile is shuffled into your deck."
+	"If you would draw from an empty deck, your discard pile is shuffled into your deck."
 	)
 
-// NOTE on 3, Dont show stacks on the recap during which you get to 4 wins
+
+// NOTE on 3,
 
 let explanations: Explanation[] = [
 	exPlayOrPass,
@@ -184,7 +185,9 @@ let explanations: Explanation[] = [
 	exDash,
 
 	exStacks,
-	exDiscardShuffle
+	exDiscardShuffle,
+
+	exMaxHand
 ]
 // 	[
 // 	exMulligan,
