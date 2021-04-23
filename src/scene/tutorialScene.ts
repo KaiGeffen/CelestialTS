@@ -80,6 +80,11 @@ export default class TutorialScene extends GameScene {
 		setSimplifyCardInfo(false)
 		super.beforeExit()
 	}
+
+	exitScene(): void {
+  		this.net.closeSocket()
+  		this.scene.start("WelcomeScene")
+  	}
 }
 
 
@@ -171,8 +176,6 @@ let exDiscardShuffle: Explanation = new Explanation(
 	"If you would draw from an empty deck, your discard pile is shuffled into your deck."
 	)
 
-
-// NOTE on 3,
 
 let explanations: Explanation[] = [
 	exPlayOrPass,

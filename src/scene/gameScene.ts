@@ -455,7 +455,12 @@ export default class GameScene extends BaseScene {
 			let act = state.story.acts[i]
 
 			let storyIndex = i + numActsCompleted
-			this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
+			let card = this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
+
+			// If opponent just played this card, animate it being played
+			if (!recap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
+				this.animateOpponentPlay(card.image)
+			}
 		}
 
 		// Recap
@@ -664,7 +669,6 @@ export default class GameScene extends BaseScene {
 		// Remember the size of these hands
 		this.lastHandSizes[0] = state.hand.length
 		this.lastHandSizes[1] = state.opponentHandSize
-
 	}
 	
 	// Tween the image to move to its position from the deck after delay. Return the new delay
@@ -689,6 +693,20 @@ export default class GameScene extends BaseScene {
 
 		return delay + 500
 	}
+
+	private animateOpponentPlay(card: Phaser.GameObjects.Image): void {
+		let y = card.y
+		card.setY(y - 200)
+
+		this.tweens.add({
+  					targets: card,
+  					y: y,
+  					duration: 500,
+  					ease: "Sine.easeInOut",
+  					onComplete: this.tweenComplete()
+  					})
+	}
+
 
 	private addCard(card: Card,
 					index: number,
@@ -995,8 +1013,8 @@ export default class GameScene extends BaseScene {
   		this.lastScore = state.score
   	}
 
-  	// NOTE The deck builder will be in tutorial mode if it was before
-  	private exitScene(): void {
+  	// NOTE Overwritten by Tutorial Scene
+  	exitScene(): void {
   		this.net.closeSocket()
   		this.scene.start("BuilderScene")
   	}
