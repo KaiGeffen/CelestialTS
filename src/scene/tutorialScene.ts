@@ -2,6 +2,7 @@ import "phaser"
 import GameScene from "./gameScene"
 import { StyleSettings, ColorSettings, Space } from "../settings"
 import ClientState from "../lib/clientState"
+import { setSimplifyCardInfo } from "../lib/cardImage"
 
 
 export default class TutorialScene extends GameScene {
@@ -21,6 +22,9 @@ export default class TutorialScene extends GameScene {
 		this.stackContainer.setVisible(false)
 
 		this.btnRecap.setVisible(false)
+
+		// Simplify all of the card text
+		setSimplifyCardInfo(true)
 
 		// Reset each explanations seen parameter
 		explanations.forEach(ex => ex.seen = false)
@@ -58,6 +62,13 @@ export default class TutorialScene extends GameScene {
 		})
 
 		return true
+	}
+
+	// Method called before exiting this scene
+	beforeExit(): void {
+		// Make sure that card text isn't the simplified version elsewhere
+		setSimplifyCardInfo(false)
+		super.beforeExit()
 	}
 }
 

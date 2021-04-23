@@ -5,6 +5,12 @@ import { ColorSettings, StyleSettings, UserSettings } from "../settings"
 import { keywords, Keyword } from "../catalog/keywords"
 
 
+// For the tutorial, the card info shown will only be the mana/points
+var simplifyCardInfo: Boolean = false
+export function setSimplifyCardInfo(simplify: Boolean): void {
+  simplifyCardInfo = simplify
+}
+
 export var cardInfo: Phaser.GameObjects.Text
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
@@ -70,6 +76,10 @@ export class CardImage {
     result = this.replaceReferences(result)
     if (UserSettings.explainKeywords) {
       result = this.explainKeywords(result)
+    }
+
+    if (simplifyCardInfo) {
+      result = result.split(',')[0]
     }
 
     return result
