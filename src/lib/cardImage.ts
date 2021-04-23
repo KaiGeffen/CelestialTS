@@ -80,6 +80,13 @@ export class CardImage {
 
     if (simplifyCardInfo) {
       result = result.split(',')[0]
+      result = result.replace(':', ' mana:')
+      
+      if (result.endsWith('1')) {
+        result += " point"
+      } else {
+        result += " points"
+      }
     }
 
     return result

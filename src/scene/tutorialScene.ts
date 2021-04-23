@@ -30,7 +30,8 @@ export default class TutorialScene extends GameScene {
 		explanations.forEach(ex => ex.seen = false)
 
 		// Add the tutorial text
-		this.txtTutorial = this.add.text(Space.pad, Space.pad*3 + Space.cardSize, '', StyleSettings.tutorial)
+		let y = Space.pad*2 // Space.pad*3 + Space.cardSize
+		this.txtTutorial = this.add.text(Space.pad, y, '', StyleSettings.tutorial)
 		this.txtTutorial.setVisible(false)
 		this.txtTutorial.setInteractive()
 		this.txtTutorial.on('pointerdown', function() {
@@ -40,6 +41,15 @@ export default class TutorialScene extends GameScene {
 
 	displayState(state: ClientState, recap: Boolean = false): boolean {
 		let isDisplayed = super.displayState(state, recap)
+
+		// If player has won 2 rounds, cards now have effects and the card info should reflect that
+		if (state.wins[0] >= 2) {
+			setSimplifyCardInfo(false)
+		}
+		// If the player has won 4 rounds, display the decks and discard piles
+		if (state.wins[0] >= 4) {
+			this.stackContainer.setVisible(true)
+		}
 
 		// If this state isn't displayed, do nothing
 		if (!isDisplayed) return false
@@ -110,7 +120,7 @@ let exMulligan: Explanation = new Explanation(
 
 let exPlayOrPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
-	"Click a card to play it, or click 'Pass'."
+	"Click on a card in your hand to play it, or click 'Pass'."
 	)
 let exRoundStart: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 1},
@@ -124,10 +134,10 @@ let exWinCondition: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 3},
 	"A player wins when they've won at least 5 rounds, and lead by at least 2."
 	)
-let exStacks: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.maxMana[0] > 4},
-	"You can mouse over or click on either player's deck or discard pile to see more information."
-	)
+// let exStacks: Explanation = new Explanation(
+// 	function (state) {return state.priority === 0 && state.maxMana[0] > 4},
+// 	"You can mouse over or click on either player's deck or discard pile to see more information."
+// 	)
 
 let exRoundEnd: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.story.acts.length >= 1},
@@ -135,7 +145,7 @@ let exRoundEnd: Explanation = new Explanation(
 	)
 let exOpponentHidden: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.story.acts.length >= 1},
-	"Unless your opponent plays a Visible card, you won't be able to see what they've played."
+	"Cards your opponent plays are hidden until the round is over."
 	)
 let exDiscardShuffle: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.deck.length <= 4},
@@ -146,17 +156,45 @@ let exMaxHand: Explanation = new Explanation(
 	"If you have 6 cards in hand, you can't draw any more."
 	)
 
+let exCardEffects: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.wins[0] >= 2},
+	"Each card has an effect listed after its point value. Any keywords are explained below that."
+	)
+let exDash: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.wins[0] >= 2},
+	"It's better to play a card like Dash early in a round, so it's worth the most points."
+	)
+let exStacks: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.wins[0] >= 4},
+	"You draw cards from your deck, and after they resolve they go to your discard pile.\
+	Once your deck is out of cards, your discard pile is shuffled into your deck."
+	)
+
+
+
 let explanations: Explanation[] = [
-	exMulligan,
 	exPlayOrPass,
-	exRoundStart,
 	exRoundEnd,
 
-	exRoundPriority,
-	exWinCondition,
-	exStacks,
-
+	exRoundStart,
 	exOpponentHidden,
-	exDiscardShuffle,
-	exMaxHand
+
+	exCardEffects,
+	exDash,
+
+	exStacks
 ]
+// 	[
+// 	exMulligan,
+// 	exPlayOrPass,
+// 	exRoundStart,
+// 	exRoundEnd,
+
+// 	exRoundPriority,
+// 	exWinCondition,
+// 	exStacks,
+
+// 	exOpponentHidden,
+// 	exDiscardShuffle,
+// 	exMaxHand
+// ]
