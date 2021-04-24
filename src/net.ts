@@ -63,8 +63,9 @@ export class Network {
 
 				case 'transmit_state':
 					let state = new ClientState(msg.value)
+					
 					if (state.versionNumber > that.versionNumber) {
-						scene.displayState(state)
+						scene.queueState(state)
 					}
 					break
 

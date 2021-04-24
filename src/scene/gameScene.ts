@@ -71,7 +71,7 @@ export default class GameScene extends BaseScene {
 	txtError: Phaser.GameObjects.Text
 
 	// The states which are queued up and have not yet been seen, with key being their version number
-	queuedStates
+	queuedStates: { [key: number]: ClientState}
 
 	constructor(args = {key: "GameScene"}) {
 		super(args)
@@ -118,7 +118,7 @@ export default class GameScene extends BaseScene {
 		// Defined these arguments here, so that they don't carry over between instances of Game Scene
 		this.lastHandSizes = [0, 0]
 		this.recapPlaying = false
-		this.queuedState = undefined
+		this.queuedStates = {}
 	}
 
 	create(): void {
@@ -295,16 +295,16 @@ export default class GameScene extends BaseScene {
 		this.mulliganContainer.add([this.txtOpponentMulligan, btnMulligan])
 	}
 
-	// TODO Hacky patch to states being dropped
-	timer: number = 0
+	// Try to display the next queued state TODO Recovery if we've been waiting too long
 	update(time, delta): void {
-		this.timer += delta
+		let nextVersionNumber = this.net.versionNumber + 1
 
-		if (this.timer > 1000) {
-			this.timer = 0
+		if (nextVersionNumber in this.queuedStates) {
+			let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber])
 
-			if (this.queuedState !== undefined) {
-				this.displayState(this.queuedState)
+			// If the state was just shown, delete it
+			if (isDisplayed) {
+				delete this.queuedStates[nextVersionNumber]
 			}
 		}
 	}
@@ -324,29 +324,24 @@ export default class GameScene extends BaseScene {
 		}
 	}
 
-	// Only update if we received something newer, or queued state is undefined
-	private updateQueuedState(state: ClientState): void {
-		if (this.queuedState === undefined || state.versionNumber > this.queuedState.versionNumber) {
-			this.queuedState = state
-		}
-	}
-
 	// Queue up the given state, to be displayed when correct to do so
 	queueState(state: ClientState): void {
-
+		// If a state with this version isn't in the queued states, add it
+		if (!(state.versionNumber in this.queuedStates)) {
+			this.queuedStates[state.versionNumber] = state
+		}
 	}
 
 	// If a recap of states is playing, wait to show the new state until after it has finished
 	recapPlaying: Boolean
-	// If an animation is playing locally, wait until that is finished before showing any new state or recaps
-	queuedState: ClientState
 	// Display the given game state, returns false if the state isn't shown immediately
 	displayState(state: ClientState, recap: Boolean = false, skipTweens: Boolean = false): boolean {
 		let that = this
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 
 		// NOTE The reason to round (~10) here is because onFinish will call this when animations very nearly complete
-		let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 100})
+		// let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 100})
+		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
 
 		// If currently watching a recap, change the colors and display scores
 		if (recap)
@@ -361,12 +356,10 @@ export default class GameScene extends BaseScene {
 		// Queue this for after recap finishes
 		else if (this.recapPlaying)
 		{
-			this.updateQueuedState(state)
 			return false
 		}
 		// If any tweens are not almost done, queue and wait for them to finish
 		else if (anyTweenPlaying) {
-			this.updateQueuedState(state)
 			return false
 		}
 		// Display this non-recap state, with normal background and no scores displayed
@@ -398,12 +391,8 @@ export default class GameScene extends BaseScene {
 				setTimeout(function() {
 					that.recapPlaying = false
 
-					if (that.queuedState !== undefined) {
-						that.displayState(that.queuedState)
-					} else {
-						state.recap.stateList = []
-						that.displayState(state)
-					}
+					state.recap.stateList = []
+					that.displayState(state)
 				}, numberStates * RECAP_TIME)
 				return false
 			}
@@ -580,11 +569,6 @@ export default class GameScene extends BaseScene {
 		// Autopass
 		if (!recap && state.hand.length === 0 && state.priority === 0) this.net.passTurn()
 
-		// TODO Make sure this is safe
-		if (this.queuedState === state) {
-			this.queuedState = undefined
-		}
-
 		// State was displayed
 		return true
 	}
@@ -688,8 +672,7 @@ export default class GameScene extends BaseScene {
 			onStart: function (tween, targets, _)
 			{
 				image.setVisible(true)
-			},
-  			onComplete: this.tweenComplete()
+			}
 		})
 
 		return delay + 500
@@ -703,8 +686,7 @@ export default class GameScene extends BaseScene {
   					targets: card,
   					y: y,
   					duration: 500,
-  					ease: "Sine.easeInOut",
-  					onComplete: this.tweenComplete()
+  					ease: "Sine.easeInOut"
   					})
 	}
 
@@ -865,30 +847,12 @@ export default class GameScene extends BaseScene {
   					y: end[1],
   					duration: 500,
   					ease: "Sine.easeInOut",
-  					onStart: function () {setTimeout(function() { that.net.playCard(index) }, 10)},
-  					onComplete: that.tweenComplete()
+  					onStart: function () {setTimeout(function() { that.net.playCard(index) }, 10)}
   					})
 
   				// Card played onStart for tween
   			}
   		}
-  	}
-
-  	// The function to run when a tween completes
-  	private tweenComplete(): () => void {
-  		let that = this
-  		return function() {
-	  		// if (that.tweens.getAllTweens().length === 0) {
-	  			if (that.queuedState !== undefined) {
-	  				that.displayState(that.queuedState)
-	  				// Only reset the queued state if this state is actually displayed
-	  				// if (that.displayState(that.queuedState)) {
-	  					// that.queuedState = undefined
-	  					// TODO End of the displaySTate method should do this
-	  				
-	  			}
-	  		// }
-	  	}
   	}
 
   	// Disables the story hidden lock seen below
@@ -1006,7 +970,6 @@ export default class GameScene extends BaseScene {
 	  			function (tween, targets, _)
 	  			{
 	  				txt.destroy()
-	  				that.tweenComplete()
 	  			}
   		})
 
