@@ -5,29 +5,20 @@ import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo } from "../lib/cardImage"
 
 
-export default class TutorialScene extends GameScene {
+class TutorialScene extends GameScene {
 	txtTutorial: Phaser.GameObjects.Text
+	explanations: Explanation[]
 
-	constructor() {
-		super({
-			key: "TutorialScene"
-		})
+	init(params: any): void {
+		super.init(params)
+		this.explanations = params['explanations']
 	}
 
 	create(): void {
 		super.create()
 
-		// Hide any container that are hidden in the tutorial
-		this.mulliganContainer.setVisible(false)
-		this.stackContainer.setVisible(false)
-
-		this.btnRecap.setVisible(false)
-
-		// Simplify all of the card text
-		setSimplifyCardInfo(true)
-
 		// Reset each explanations seen parameter
-		explanations.forEach(ex => ex.seen = false)
+		this.explanations.forEach(ex => ex.seen = false)
 
 		// Add the tutorial text
 		let y = Space.pad*2 // Space.pad*3 + Space.cardSize
@@ -50,18 +41,9 @@ export default class TutorialScene extends GameScene {
 		// If it's a recap, don't show an explanation
 		if (recap) return true
 
-		// If player has won 2 rounds, cards now have effects and the card info should reflect that
-		if (state.wins[0] >= 2) {
-			setSimplifyCardInfo(false)
-		}
-		// If the player has won 4 rounds, display the decks and discard piles
-		if (state.wins[0] >= 4) {
-			this.stackContainer.setVisible(true)
-		}
-
 		// Consider each explanation, display the first valid one
 		let exFound = false
-		explanations.forEach(ex => {
+		this.explanations.forEach(ex => {
 			if (!exFound && ex.isApplicable(state)) {
 				exFound = true
 
@@ -70,6 +52,59 @@ export default class TutorialScene extends GameScene {
 				this.txtTutorial.setVisible(true)
 			}
 		})
+
+		return true
+	}
+
+	exitScene(): void {
+  		this.net.closeSocket()
+  		this.scene.start("BuilderScene", {isTutorial: true})
+  	}
+}
+
+
+// The first tutorial has cards with simplified text/rules, and hides stacks until the player has nearly won
+export class TutorialScene1 extends TutorialScene {
+	constructor() {
+		super({
+			key: "TutorialScene1"
+		})
+	}
+
+	init(params: any): void {
+		params['explanations'] = explanations1
+		super.init(params)
+	}
+
+	create(): void {
+		super.create()
+
+		// Hide any container that are hidden in the tutorial
+		this.mulliganContainer.setVisible(false)
+		this.stackContainer.setVisible(false)
+
+		this.btnRecap.setVisible(false)
+
+		// Simplify all of the card text
+		setSimplifyCardInfo(true)
+	}
+
+	displayState(state: ClientState, recap: Boolean = false): boolean {
+		let result = super.displayState(state, recap)
+
+		// If the state isn't displayed or this is a recap, don't change the simplifications
+		if (!result || recap) {
+			return false
+		}
+
+		// If player has won 2 rounds, cards now have effects and the card info should reflect that
+		if (state.wins[0] >= 2) {
+			setSimplifyCardInfo(false)
+		}
+		// If the player has won 4 rounds, display the decks and discard piles
+		if (state.wins[0] >= 4) {
+			this.stackContainer.setVisible(true)
+		}
 
 		return true
 	}
@@ -83,9 +118,28 @@ export default class TutorialScene extends GameScene {
 
 	exitScene(): void {
   		this.net.closeSocket()
-  		this.scene.start("WelcomeScene")
+  		this.scene.start("BuilderScene", {isTutorial: true})
   	}
 }
+
+
+// The second tutorial is a standard match against ai, with additional explanations
+export class TutorialScene2 extends TutorialScene {
+	constructor() {
+		super({
+			key: "TutorialScene2"
+		})
+	}
+
+	init(params: any): void {
+		params['explanations'] = explanations2
+		super.init(params)
+	}
+}
+
+
+
+
 
 
 // An explanation of a mechanic in the game
@@ -137,7 +191,7 @@ let exRoundPriority: Explanation = new Explanation(
 	)
 let exWinCondition: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 3},
-	"A player wins when they've won at least 5 rounds, and lead by at least 2."
+	"You need to win 5 rounds to win the match, but you also need to be at least 2 ahead of your opponent."
 	)
 // let exStacks: Explanation = new Explanation(
 // 	function (state) {return state.priority === 0 && state.maxMana[0] > 4},
@@ -177,7 +231,7 @@ let exDiscardShuffle: Explanation = new Explanation(
 	)
 
 
-let explanations: Explanation[] = [
+let explanations1: Explanation[] = [
 	exPlayOrPass,
 	exRoundEnd,
 
@@ -192,6 +246,24 @@ let explanations: Explanation[] = [
 
 	exMaxHand
 ]
+
+let explanations2: Explanation[] = [
+	exMulligan,
+
+	exPlayOrPass,
+	exRoundEnd,
+
+	exRoundStart,
+	exOpponentHidden,
+
+	exRoundPriority,
+	exWinCondition,
+
+	exMaxHand,
+
+	exDiscardShuffle
+]
+
 // 	[
 // 	exMulligan,
 // 	exPlayOrPass,

@@ -70,9 +70,6 @@ export default class GameScene extends BaseScene {
 	// Message explaining to user what they did wrong
 	txtError: Phaser.GameObjects.Text
 
-	// User is playing the tutorial experience
-	// isTutorial: Boolean
-
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates
 
@@ -89,7 +86,11 @@ export default class GameScene extends BaseScene {
 
 	    // Tutorial should always be against ai
 	    if (params['isTutorial']) {
-	    	mmCode = 'tutorial'
+	    	if (params['tutorialNumber'] === 1) {
+	    		mmCode = 'tutorial'
+	    	} else if (params['tutorialNumber'] === 2) {
+	    		mmCode = 'ai'
+	    	}
 	    }
 
 		// Connect with the server

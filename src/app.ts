@@ -3,7 +3,7 @@ import WelcomeScene from "./scene/welcomeScene"
 import GameScene from "./scene/gameScene"
 import BuilderScene from "./scene/builderScene"
 import CreditsScene from "./scene/creditsScene"
-import TutorialScene from "./scene/tutorialScene"
+import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
 import { ColorSettings, Space } from "./settings"
 
 
@@ -13,7 +13,7 @@ const config: Phaser.Types.Core.GameConfig = {
   width: Space.windowWidth,
   height: Space.windowHeight,
   parent: "game",
-  scene: [WelcomeScene, CreditsScene, GameScene, BuilderScene, TutorialScene],
+  scene: [WelcomeScene, CreditsScene, GameScene, BuilderScene, TutorialScene1, TutorialScene2],
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },

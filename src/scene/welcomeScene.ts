@@ -90,7 +90,7 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doTutorial(): void {
-    this.scene.start("TutorialScene", {isTutorial: true, deck: []})
+    this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
 
     // this.scene.start("BuilderScene", {isTutorial: true})
   }

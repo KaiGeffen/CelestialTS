@@ -361,7 +361,7 @@ class DeckRegion {
       
       // Start the right scene / deck pair
       if (that.isTutorial) {
-        that.scene.scene.start("TutorialScene", {isTutorial: true, deck: tutorialDeck})
+        that.scene.scene.start("TutorialScene2", {isTutorial: true, tutorialNumber: 2, deck: tutorialDeck})
       }
       else {
         that.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
@@ -750,14 +750,10 @@ and the player with the most points wins the round.
 `
 
     let s = 
-    `Each card has a cost (Left number) and point value (Right number).
-Some cards also have additional effects listed after that.
+    `Great job! Now try winning a full match against an opponent.
 
-Each round, you'll try to get more points than your opponent
-by spending mana to play cards.
-
-Try making a deck from 8 cards that cost 2 or less, 4 that cost 3-5,
-and 3 that cost 6 or more.` 
+If you want to change your deck, click the cards below to remove
+them, and above to add them.`
     let txt = this.scene.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
     // txt.style.fixedHeight = 1
 
