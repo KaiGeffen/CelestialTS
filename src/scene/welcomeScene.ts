@@ -5,6 +5,8 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 
 
+
+const tutorialItem = 'tutorialKnown'
 const SOUNDS = [
   'success',
   'failure',
@@ -82,17 +84,16 @@ export default class WelcomeScene extends BaseScene {
     let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
 
     super.create()
-
-    // Guide user to Tutorial if this is their first time here
-    // if (!JSON.parse(localStorage.getItem('tutorialComplete')) === true) {
-    //   this.createTutorialPrompt()
-    // }
   }
 
   private createTutorialPrompt(): void {
     let promptContainer = this.add.container(0, 0).setDepth(25)
     let exitPrompt = function() {
-      promptContainer.setVisible(false)
+      // Set that user has been prompted to try the tutorial
+      localStorage.setItem(tutorialItem, JSON.stringify(true))
+
+      this.scene.start("BuilderScene", {isTutorial: false})
+      // promptContainer.setVisible(false)
     }
 
     // Exit confirmation container
@@ -112,10 +113,20 @@ export default class WelcomeScene extends BaseScene {
 
   private doStart(): void {
     this.sound.play('click')
-    this.scene.start("BuilderScene", {isTutorial: false})
+
+    // Guide user to Tutorial if this is their first time here
+    if (localStorage.getItem(tutorialItem) === null) {
+      this.createTutorialPrompt()
+    }
+    else {
+      this.scene.start("BuilderScene", {isTutorial: false})
+    }
   }
 
   private doTutorial(): void {
+    // Set that user has seen the tutorial
+    localStorage.setItem(tutorialItem, JSON.stringify(true))
+
     this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
 
     // this.scene.start("BuilderScene", {isTutorial: true})
