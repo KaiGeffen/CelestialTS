@@ -426,7 +426,7 @@ export default class GameScene extends BaseScene {
 		this.passContainer.setVisible(!state.mulligansComplete.includes(false))
 
 		// Hands
-		this.displayHands(state)
+		this.displayHands(state, recap)
 
 		// Story
 		let numActsCompleted = 0
@@ -606,7 +606,7 @@ export default class GameScene extends BaseScene {
 		this.net.closeSocket()
 	}
 
-	private displayHands(state: ClientState): void {
+	private displayHands(state: ClientState, recap: Boolean): void {
 
 		// Delay before starting the current tween, updated so that cards aren't drawn at the same time
 		let delay: number = 0
@@ -627,8 +627,11 @@ export default class GameScene extends BaseScene {
 			// If Juggle was just played, up to 3 cards might have just been drawn
 			let juggleModifier = 0
 			if (state.story.acts.length > 0) {
-				if (state.story.acts[state.story.acts.length - 1].card.name === 'Juggle') {
-					juggleModifier = 3
+				if (state.story.acts[state.story.acts.length - 1].card.name === 'Juggle' &&
+					!recap &&
+					state.passes === 0
+					) {
+					juggleModifier = 3 + 1 // The 1 is juggle moving from hand to table
 				}
 			}
 
