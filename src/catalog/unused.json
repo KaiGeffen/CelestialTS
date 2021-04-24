@@ -34,6 +34,11 @@
     "cost": 5,
     "text": "5:5, store all 0-cost cards in your discard pile in this card. This card's effect becomes to add them back to your discard pile."
   },
+  
+  {"name": "Foundry", "id": 81,
+    "cost": 5,
+    "text": "5:5-X, Build X, where X is the number of cards in the story before this card"
+  },
 
 
 

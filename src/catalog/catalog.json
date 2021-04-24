@@ -166,10 +166,6 @@
     "cost": 2,
     "text": "2:1, this card retains all changes to points as it resolves (For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
   },
-  {"name": "Beehive", "id": 127,
-    "cost": 2,
-    "text": "2:0, swarm 3 (After your next draw step, create 3 ${126} in your hand)"
-  },
   {"name": "Imprison", "id": 53,
     "cost": 2,
     "text": "2:0, set both players points to 0, then give your opponent 1 point for each card in their hand"
@@ -188,21 +184,13 @@
     "cost": 4,
     "text": "4:4, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed"
   },
-  {"name": "Honey", "id": 132,
-    "cost": 4,
-    "text": "4:X, swarm X, where X is the number of rounds you have won"
-  },
 
   {"name": "Beekeep", "id": 133,
     "cost": 5,
     "text": "5:5, remove from the game and note all 0-cost cards in your discard pile. This card's effect becomes to add to your discard pile a copy of each of the noted cards."
   },
-  {"name": "Foundry", "id": 81,
-    "cost": 5,
-    "text": "5:5-X, Build X, where X is the number of cards in the story before this card"
-  },
 
-  {"name": "Cuauhtli", "id": 71,
+  {"name": "Eagle", "id": 71,
     "cost": 6,
     "text": "6:6, Nourish 2. When played, gain Sight 4 and transform each card in your hand into a ${19}"
   },
