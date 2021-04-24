@@ -13,8 +13,8 @@ export default class Recap {
 	constructor(sums: number[],
 		wins: number[],
 		safety: number[],
-		playList: [Card, number, string][] = [],
-		stateList: ClientState[] = []) {
+		playList: [Card, number, string][],
+		stateList: ClientState[]) {
 		
 		this.sums = sums
 		this.wins = wins

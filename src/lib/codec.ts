@@ -108,10 +108,6 @@ function decodeRecap(s: string): Recap {
 	let wins = sections[1].split(delims[1]).map(parseFloat)
 	let safety = sections[2].split(delims[1]).map(parseFloat)
 
-	if (sections.length === 3) {
-		return new Recap(sums, wins, safety)
-	}
-
 	let plays = sections.slice(3)
 
 	function decodePlay(play: string): [Card, number, string] {
