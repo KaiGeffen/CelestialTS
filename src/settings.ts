@@ -26,7 +26,8 @@ export function ensureUserSettings(): void {
     vsAi: true,
     explainKeywords: true,
     mmCode: '',
-    volume: 0.4
+    volume: 0.4,
+    music: true
   }
 
   for (var key in defaultSettings) {

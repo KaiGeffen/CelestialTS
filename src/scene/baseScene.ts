@@ -19,6 +19,11 @@ export default class BaseScene extends Phaser.Scene {
 		if (music === undefined) {
 			music = this.sound.add('background', {volume: 0.5, loop: true})
 			music.play()
+
+			// If user prefers no music, pause it
+			if (!UserSettings._get('music')) {
+				music.pause()
+			}
 		}
 
 		// Make sure that cardInfo is above everything else
@@ -117,11 +122,13 @@ export default class BaseScene extends Phaser.Scene {
 				music.pause()
 
 				btn.setText('-')
+				UserSettings._set('music', false)
 			}
 			else {
 				music.resume()
 
 				btn.setText('♪')
+				UserSettings._set('music', true)
 			}
 		}	
 	}
