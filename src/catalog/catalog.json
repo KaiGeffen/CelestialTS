@@ -20,10 +20,6 @@
     "cost": 1,
     "text": "1:1, Visible, Fleeting."
   },
-  {"name": "Juggle", "id": 136,
-    "cost": 1, "points": 1,
-    "text": "1:1.\nWhen played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)"
-  },
   {"name": "Drown", "id": 94,
     "cost": 1, "points": 1,
     "text": "1:1, discard the top 3 cards of your deck."
@@ -100,6 +96,10 @@
     "cost": 5,
     "text": "5:4, +2 if your discard pile has at least 8 cards in it."
   },
+  {"name": "Lotus", "id": 46,
+    "cost": 5,
+    "text": "5:0, Inspire 2. If this is your last card in the story, set both players points to 0."
+  },
 
   {"name": "Uprising", "id": 134,
     "cost": 6,
@@ -139,36 +139,40 @@
 
   {"name": "Bee", "id": 126,
     "cost": 0,
-    "text": "0:1, Visible"
+    "text": "0:1, Visible."
   },
   {"name": "Butterfly", "id": 128,
     "cost": 1,
-    "text": "1:0, Nourish 1 (The next card you resolve is worth 1 more point)"
+    "text": "1:0, Nourish 1."
   },
   {"name": "Bandit", "id": 69,
     "cost": 1,
-    "text": "1:2, create a ${146} in your opponent's hand"
+    "text": "1:2, create a ${146} in your opponent's hand."
   },
   {"name": "Night Vision", "id": 70,
     "cost": 1,
-    "text": "1:0, Tutor 2. On play, Sight 3"
+    "text": "1:0, Tutor 2.\nWhen played, gain Sight 3."
   },
   {"name": "Disintegrate", "id": 66,
     "cost": 1,
     "text": "1:1, transform the next 1-cost card in the story into a ${144}."
   },
+  {"name": "Juggle", "id": 136,
+    "cost": 1, "points": 1,
+    "text": "1:1.\nWhen played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)"
+  },
 
   {"name": "Raise Dead", "id": 95,
     "cost": 2,
-    "text": "2:2, put the top card of your discard pile on top of your deck"
+    "text": "2:2, put the top card of your discard pile on top of your deck."
   },
   {"name": "Bastet", "id": 116,
     "cost": 2,
-    "text": "2:1, this card retains all changes to points as it resolves (For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
+    "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
   },
   {"name": "Imprison", "id": 53,
     "cost": 2,
-    "text": "2:0, set both players points to 0, then give your opponent 1 point for each card in their hand"
+    "text": "2:0, set both players points to 0, then give your opponent 1 point for each card in their hand."
   },
 
   {"name": "Stable", "id": 125,
@@ -182,7 +186,7 @@
 
   {"name": "Pelican", "id": 25,
     "cost": 4,
-    "text": "4:4, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed"
+    "text": "4:4, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed."
   },
 
   {"name": "Beekeep", "id": 133,
@@ -192,18 +196,16 @@
 
   {"name": "Eagle", "id": 71,
     "cost": 6,
-    "text": "6:6, Nourish 2. When played, gain Sight 4 and transform each card in your hand into a ${19}"
+    "text": "6:6, Nourish 2.\nWhen played, gain Sight 4 and transform each card in your hand into a ${19}"
   },
 
   {"name": "Icarus", "id": 27,
     "cost": 7,
     "text": "7:7, costs 0 if you have 5 cards in the story"
+  },
+  {"name": "Ecology", "id": 65,
+    "cost": 7,
+    "text": "7:2.\nWhen played, gain 12 mana this round."
   }
-  
-
-
-
-
-
 
 ]
