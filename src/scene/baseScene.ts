@@ -43,7 +43,7 @@ export default class BaseScene extends Phaser.Scene {
 		invisibleBackground.setInteractive().on('pointerdown', this.exitConfirmation, this)
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add.rexRoundRectangle(Space.windowWidth/2, Space.windowHeight/2, 500, 400, 30, ColorSettings.menuBackground).setAlpha(0.95)
+		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 400, 30, ColorSettings.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
 
 		// Radio button for whether keywords should be explained
@@ -67,13 +67,13 @@ export default class BaseScene extends Phaser.Scene {
 		y += 110
 		let txtVolumeHint = this.add.text(x, y, 'Volume:', StyleSettings.announcement).setOrigin(0, 0.5)
 
-		this.sliderVolume = this.rexUI.add.slider({
+		this.sliderVolume = this['rexUI'].add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
 			value: this.sound.volume,
 
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.background),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.background),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
 
             valuechangeCallback: function (value) {
                 that.sound.volume = value

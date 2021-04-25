@@ -59,41 +59,9 @@ export default class WelcomeScene extends BaseScene {
   }
 
   create(): void {
-    // // this.add.tween()
-    // // this.rexUI.add.slider()
-    // // console.log(this.rexUI)
-    // const COLOR_PRIMARY = 0x4e342e;
-    // const COLOR_LIGHT = 0x7b5e57;
-    // const COLOR_DARK = 0x260e04;
-    // let a = this.rexUI.add.slider({
-    //         x: 200,
-    //         y: 200,
-    //         width: 200,
-    //         height: 20,
-    //         orientation: 'x',
-
-    //         track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
-    //         thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
-
-    //         space: {
-    //             top: 4,
-    //             bottom: 4
-    //         },
-    //         input: 'drag', // 'drag'|'click'
-    //     })
-    //         .layout();
-
     // Display text and button
     this.add.text(Space.windowWidth/2, 200, "Celestial",
       StyleSettings.title).setOrigin(0.5)
-
-    // let txtStart = this.add.text(Space.windowWidth/2, 350, "Click to Start",
-    //   StyleSettings.announcement).setOrigin(0.5)
-    
-    // let backgroundClickable = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight,
-    //   0x000, 0).setOrigin(0, 0)
-    // backgroundClickable.setInteractive()
-    // backgroundClickable.on('pointerdown', this.doStart, this)
 
     // Start Button
     new Button(this, Space.windowWidth/2, 350, "Click to Start", this.doStart).setOrigin(0.5).setStyle(StyleSettings.announcement)
