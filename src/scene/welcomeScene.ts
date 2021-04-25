@@ -5,7 +5,6 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 
 
-
 const tutorialItem = 'tutorialKnown'
 const SOUNDS = [
   'success',
@@ -57,12 +56,33 @@ export default class WelcomeScene extends BaseScene {
 
     // Ensure that audio plays even when tab loses focus
     this.sound.pauseOnBlur = false
-
-    // Lower the audio volume to be more in line with other apps
-    this.sound.volume = 0.5
   }
 
   create(): void {
+    // // this.add.tween()
+    // // this.rexUI.add.slider()
+    // // console.log(this.rexUI)
+    // const COLOR_PRIMARY = 0x4e342e;
+    // const COLOR_LIGHT = 0x7b5e57;
+    // const COLOR_DARK = 0x260e04;
+    // let a = this.rexUI.add.slider({
+    //         x: 200,
+    //         y: 200,
+    //         width: 200,
+    //         height: 20,
+    //         orientation: 'x',
+
+    //         track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
+    //         thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+
+    //         space: {
+    //             top: 4,
+    //             bottom: 4
+    //         },
+    //         input: 'drag', // 'drag'|'click'
+    //     })
+    //         .layout();
+
     // Display text and button
     this.add.text(Space.windowWidth/2, 200, "Celestial",
       StyleSettings.title).setOrigin(0.5)

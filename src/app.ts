@@ -6,6 +6,8 @@ import CreditsScene from "./scene/creditsScene"
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
 import { ColorSettings, Space } from "./settings"
 
+import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
+import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js';
 
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -17,7 +19,19 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  backgroundColor: ColorSettings.background
+  backgroundColor: ColorSettings.background,
+  plugins: {
+    scene: [{
+      key: 'rexUI',
+      plugin: UIPlugin,
+      mapping: 'rexUI'
+    }],
+    global: [{
+      key: 'rexRoundRectanglePlugin',
+      plugin: RoundRectanglePlugin,
+      start: true
+    }]
+  }
 }
 
 export class CelestialGame extends Phaser.Game {

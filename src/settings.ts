@@ -50,7 +50,9 @@ export const ColorSettings: Record<string, any> = {
   mulliganHighlight: 0xffaaaa,
 
   filterSelected: 0xffaf00,
-  menuBackground: 0x704820, //0x662b00
+  menuBackground: 0x43438a,// 0x704820, //0x662b00
+  sliderButton: 0x703420,
+  slider: 0x3bc9c7,
 
   tutorialBackground: "#704820"
 }
