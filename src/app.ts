@@ -42,4 +42,11 @@ export class CelestialGame extends Phaser.Game {
 
 window.onload = () => {
   var game = new CelestialGame(config)
+
+  if (location.port === '4949') {
+    game.sound.volume = 0
+  } else {
+    game.sound.volume = 0.4
+  }
+  
 }

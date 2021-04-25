@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
 
@@ -36,6 +36,8 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	private createMenu(): void {
+		let that = this
+
 		// Invisible background, which closes menu when clicked
 		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0xffffff, 0).setOrigin(0, 0)
 		invisibleBackground.setInteractive().on('pointerdown', this.exitConfirmation, this)
@@ -44,13 +46,29 @@ export default class BaseScene extends Phaser.Scene {
 		let visibleBackground = this.add.rexRoundRectangle(Space.windowWidth/2, Space.windowHeight/2, 500, 400, 30, ColorSettings.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
 
-		// Slider for music
-		let y = Space.windowHeight/2 - 120
-		let txtVolumeHint = this.add.text(Space.windowWidth/2 - 33, y, 'Volume:', StyleSettings.announcement).setOrigin(1, 0.5)
+		// Radio button for whether keywords should be explained
+		let x = Space.windowWidth/2 - 210
+		let y = Space.windowHeight/2 - 140
+		let txtKeywordHint = this.add.text(x, y, 'Keyword text:', StyleSettings.announcement).setOrigin(0, 0.5)
 
-		let that = this
+		let radio = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, ColorSettings.background)
+		if (UserSettings.explainKeywords) {radio.setFillStyle(ColorSettings.background)}
+
+		radio.setInteractive()
+		radio.on('pointerdown', function() {
+			that.sound.play('click')
+
+			UserSettings.explainKeywords = !UserSettings.explainKeywords
+
+			radio.setFillStyle((UserSettings.explainKeywords) ? ColorSettings.background : undefined)
+		})
+
+		// Slider for music
+		y += 110
+		let txtVolumeHint = this.add.text(x, y, 'Volume:', StyleSettings.announcement).setOrigin(0, 0.5)
+
 		this.sliderVolume = this.rexUI.add.slider({
-			x: Space.windowWidth/2, y: y, width: 200, height: 20, orientation: 'x',
+			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
 			value: this.sound.volume,
 
             track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
@@ -58,7 +76,6 @@ export default class BaseScene extends Phaser.Scene {
             thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
 
             valuechangeCallback: function (value) {
-            	console.log(value)
                 that.sound.volume = value
             },
             space: {
@@ -70,17 +87,24 @@ export default class BaseScene extends Phaser.Scene {
         this.sliderVolume.layout()
 
 		// Prompt asking users if they want to exit
-		let txtExitHint = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 40, 'Exit to main menu?', StyleSettings.announcement).setOrigin(0.5, 0.5)
+		y += 110
+		let txtExitHint = this.add.text(x, y, 'Exit to main menu?', StyleSettings.announcement).setOrigin(0, 0.5)
 
 		// Yes/No buttons
-		let btnYes = new Button(this, Space.windowWidth/2 - 50, Space.windowHeight/2 + 40, 'Yes', this.doExit).setOrigin(1, 0.5)
-		let btnNo = new Button(this, Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', this.exitConfirmation).setOrigin(0, 0.5)
+		y += 80
+		let btnYes = new Button(this, Space.windowWidth/2 - 50, y, 'Yes', this.doExit).setOrigin(1, 0.5)
+		let btnNo = new Button(this, Space.windowWidth/2 + 50, y, 'No', this.exitConfirmation).setOrigin(0, 0.5)
 
-		// Menu container which is toggled visible/not
-		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
 		// Custom rexUI sliders don't work in containers
 		this.sliderVolume.setDepth(21).setVisible(false)
-		this.confirmationContainer.add([invisibleBackground, visibleBackground, txtVolumeHint, txtExitHint, btnYes, btnNo])
+		// Menu container which is toggled visible/not
+		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
+
+		this.confirmationContainer.add([invisibleBackground, visibleBackground,
+			txtKeywordHint, radio,
+			txtVolumeHint,
+			txtExitHint, btnYes, btnNo
+			])
 	}
 
 	private doMute(btn: Button): () => void {
