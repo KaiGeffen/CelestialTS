@@ -587,11 +587,13 @@ class MenuRegion {
       that.container.setVisible(true)
     })
 
+    // Visible background, which does nothing when clicked
     let width = Space.cardSize * 5 + Space.pad * 4
     let height = Space.cardSize * 4 + Space.pad * 3
-    let backgroundRectangle = this.scene.add.rectangle(0, 0, width, height, ColorSettings.menuBackground, 0.95).setOrigin(0, 0)
-    backgroundRectangle.setInteractive()
-    this.container.add(backgroundRectangle)
+
+    let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
+    visibleBackground.setInteractive()
+    this.container.add(visibleBackground)
 
     // Vs ai toggleable button
     let txt = 'Play versus Computer          '
@@ -601,11 +603,11 @@ class MenuRegion {
     this.container.add(btnVsAi)
 
     // Show recap toggleable button
-    txt = 'Explain keywords                 '
-    txt += UserSettings._get('explainKeywords') ? '✓' : 'X'
-    let btnExplainKeywords = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize, txt).setOrigin(0, 0)
-    btnExplainKeywords.setOnClick(this.onToggleUserSetting(btnExplainKeywords, 'explainKeywords'))
-    this.container.add(btnExplainKeywords)
+    // txt = 'Explain keywords                 '
+    // txt += UserSettings._get('explainKeywords') ? '✓' : 'X'
+    // let btnExplainKeywords = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize, txt).setOrigin(0, 0)
+    // btnExplainKeywords.setOnClick(this.onToggleUserSetting(btnExplainKeywords, 'explainKeywords'))
+    // this.container.add(btnExplainKeywords)
 
     // Prompt for matchmaking code
     txt = 'Use matchmaking code...' + '\n      > ' + UserSettings._get('mmCode')
@@ -631,7 +633,7 @@ class MenuRegion {
     return function() {
       UserSettings._set(property, !UserSettings._get(property))
 
-      that.setCheckOrX(btn, UserSettings[property])
+      that.setCheckOrX(btn, UserSettings._get(property))
     }
   }
 
