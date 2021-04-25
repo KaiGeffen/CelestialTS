@@ -78,6 +78,7 @@ export default class BaseScene extends Phaser.Scene {
             thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
 
             valuechangeCallback: function (value) {
+            	UserSettings._set('volume', value)
                 that.sound.volume = value
             },
             space: {

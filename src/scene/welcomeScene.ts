@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, Space, ensureUserSettings } from "../settings"
+import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings } from "../settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
@@ -39,6 +39,7 @@ export default class WelcomeScene extends BaseScene {
     })
   }
 
+  // TODO This should happen once, somewhere before here. This scene is preloaded many times
   // Load all assets used throughout the scenes
   preload(): void {
     // Load all of the card and token images
@@ -59,6 +60,8 @@ export default class WelcomeScene extends BaseScene {
 
     // Ensure that every user setting is either set, or set it to its default value
     ensureUserSettings()
+
+    this.sound.volume = UserSettings._get('volume')
   }
 
   create(): void {

@@ -2,9 +2,17 @@ import "phaser"
 
 
 export class UserSettings {
-  values = ['vsAi', 'explainKeywords', 'mmCode']
+  static values = [
+  'vsAi',
+  'explainKeywords',
+  'mmCode',
+  'volume']
 
   static _get(s: string) {
+    // if (!this.values.includes(s)) {
+    //   new Error()
+    // }
+
     return JSON.parse(localStorage.getItem(s))
   }
 
@@ -17,7 +25,8 @@ export function ensureUserSettings(): void {
   const defaultSettings = {
     vsAi: true,
     explainKeywords: true,
-    mmCode: ''
+    mmCode: '',
+    volume: 0.4
   }
 
   for (var key in defaultSettings) {
