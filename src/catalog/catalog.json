@@ -122,6 +122,10 @@
     "cost": 7,
     "text": "7:7, costs 0 if you can see at least 3 of your opponent's cards in the story."
   },
+  {"name": "Ecology", "id": 65,
+    "cost": 7,
+    "text": "7:2.\nWhen played, gain 12 mana this round."
+  },
 
   {"name": "AI", "id": 79,
     "cost": 8,
@@ -130,10 +134,6 @@
   {"name": "Oak", "id": 49,
     "cost": 8,
     "text": "8:8, if you win this round, convert to Nourish any excess points that you won by.\n(For example, if you win 8 to 5 you get 2 points Nourish)"
-  },
-  {"name": "Enrage", "id": 6,
-    "cost": 8,
-    "text": "8:1, give each card later in the story -X, where X is its cost.\nWhen played, give each card ealier in the story -X."
   },
 
 
@@ -196,16 +196,17 @@
 
   {"name": "Eagle", "id": 71,
     "cost": 6,
-    "text": "6:6, Nourish 2.\nWhen played, gain Sight 4 and transform each card in your hand into a ${19}"
+    "text": "6:6, Nourish 2.\nWhen played, gain Sight 4 and transform each card in your hand into a ${19}."
   },
 
   {"name": "Icarus", "id": 27,
     "cost": 7,
     "text": "7:7, costs 0 if you have 5 cards in the story"
   },
-  {"name": "Ecology", "id": 65,
-    "cost": 7,
-    "text": "7:2.\nWhen played, gain 12 mana this round."
+
+  {"name": "Enrage", "id": 6,
+    "cost": 8,
+    "text": "8:2, give each card later in the story -X, where X is its cost.\nWhen played, give each card ealier in the story -X."
   }
 
 ]

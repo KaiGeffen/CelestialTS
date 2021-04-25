@@ -28,6 +28,7 @@ const SOUNDS = [
   'inspire',
   'nourish',
 
+  'meow',
   'yell'
 ]
 
