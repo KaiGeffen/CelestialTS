@@ -595,20 +595,20 @@ class MenuRegion {
 
     // Vs ai toggleable button
     let txt = 'Play versus Computer          '
-    txt += UserSettings.vsAi ? '✓' : 'X'
+    txt += UserSettings._get('vsAi') ? '✓' : 'X'
     let btnVsAi = new Button(this.scene, Space.pad, Space.pad/2, txt).setOrigin(0, 0)
     btnVsAi.setOnClick(this.onToggleUserSetting(btnVsAi, 'vsAi'))
     this.container.add(btnVsAi)
 
     // Show recap toggleable button
     txt = 'Explain keywords                 '
-    txt += UserSettings.explainKeywords ? '✓' : 'X'
+    txt += UserSettings._get('explainKeywords') ? '✓' : 'X'
     let btnExplainKeywords = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize, txt).setOrigin(0, 0)
     btnExplainKeywords.setOnClick(this.onToggleUserSetting(btnExplainKeywords, 'explainKeywords'))
     this.container.add(btnExplainKeywords)
 
     // Prompt for matchmaking code
-    txt = 'Use matchmaking code...' + '\n      > ' + UserSettings.mmCode
+    txt = 'Use matchmaking code...' + '\n      > ' + UserSettings._get('mmCode')
     let btnMatchmaking = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 2, txt, function () {}, false).setOrigin(0, 0)
     btnMatchmaking.setOnClick(this.onSetMatchmaking(btnMatchmaking))
     this.container.add(btnMatchmaking)
@@ -629,7 +629,7 @@ class MenuRegion {
   private onToggleUserSetting(btn: Button, property: string): () => void {
     let that = this
     return function() {
-      UserSettings[property] = !UserSettings[property]
+      UserSettings._set(property, !UserSettings._get(property))
 
       that.setCheckOrX(btn, UserSettings[property])
     }
@@ -650,7 +650,7 @@ class MenuRegion {
         // This is necessary to not cut off part of the sound from prompt
         that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
 
-        UserSettings['mmCode'] = code
+        UserSettings._set('mmCode', code)
 
         let newText = btn.text.split('>')[0] + '> ' + code
         btn.setText(newText)

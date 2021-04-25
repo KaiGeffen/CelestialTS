@@ -79,8 +79,8 @@ export default class GameScene extends BaseScene {
 
 	init(params: any): void {
 		// Code to matchmake player with ('ai' if versus computer)
-	    let mmCode = UserSettings['mmCode']
-	    if (UserSettings['vsAi']) {
+		let mmCode = UserSettings._get('mmCode')
+	    if (UserSettings._get('vsAi')) {
 	    	mmCode = 'ai'
 	    }
 

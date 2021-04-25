@@ -52,15 +52,17 @@ export default class BaseScene extends Phaser.Scene {
 		let txtKeywordHint = this.add.text(x, y, 'Keyword text:', StyleSettings.announcement).setOrigin(0, 0.5)
 
 		let radio = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, ColorSettings.background)
-		if (UserSettings.explainKeywords) {radio.setFillStyle(ColorSettings.background)}
+		if (UserSettings._get('explainKeywords')) {
+			radio.setFillStyle(ColorSettings.background)
+		}
 
 		radio.setInteractive()
 		radio.on('pointerdown', function() {
 			that.sound.play('click')
 
-			UserSettings.explainKeywords = !UserSettings.explainKeywords
+			UserSettings._set('explainKeywords', !UserSettings._get('explainKeywords'))
 
-			radio.setFillStyle((UserSettings.explainKeywords) ? ColorSettings.background : undefined)
+			radio.setFillStyle((UserSettings._get('explainKeywords')) ? ColorSettings.background : undefined)
 		})
 
 		// Slider for music

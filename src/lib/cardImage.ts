@@ -74,7 +74,7 @@ export class CardImage {
     }
 
     result = this.replaceReferences(result)
-    if (UserSettings.explainKeywords) {
+    if (UserSettings._get('explainKeywords')) {
       result = this.explainKeywords(result)
     }
 

@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, Space, ensureUserSettings } from "../settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
@@ -56,6 +56,9 @@ export default class WelcomeScene extends BaseScene {
 
     // Ensure that audio plays even when tab loses focus
     this.sound.pauseOnBlur = false
+
+    // Ensure that every user setting is either set, or set it to its default value
+    ensureUserSettings()
   }
 
   create(): void {

@@ -1,14 +1,32 @@
 import "phaser"
 
 
-export var UserSettings = {
-  vsAi: false,
-  explainKeywords: true,
-  mmCode: ''
+export class UserSettings {
+  values = ['vsAi', 'explainKeywords', 'mmCode']
+
+  static _get(s: string) {
+    return JSON.parse(localStorage.getItem(s))
+  }
+
+  static _set(key: string, value: any) {
+    localStorage.setItem(key, JSON.stringify(value))
+  }
 }
 
-if (location.port === '4949') {
-  UserSettings.vsAi = true
+export function ensureUserSettings(): void {
+  const defaultSettings = {
+    vsAi: true,
+    explainKeywords: true,
+    mmCode: ''
+  }
+
+  for (var key in defaultSettings) {
+
+    // If this value isn't set in local storage, set it to its default
+    if (localStorage.getItem(key) === null) {
+      UserSettings._set(key, defaultSettings[key])
+    }
+  }
 }
 
 export const Space = {
