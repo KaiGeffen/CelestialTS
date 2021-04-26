@@ -45,10 +45,10 @@ export default class GameScene extends BaseScene {
 	visionRectangle: Phaser.GameObjects.Rectangle
 	txtVision: Phaser.GameObjects.Text
 
-	manaText: Phaser.GameObjects.Text
-	opponentManaText: Phaser.GameObjects.Text
-	scoreText: Phaser.GameObjects.Text
-	opponentScoreText: Phaser.GameObjects.Text
+	txtMana: Phaser.GameObjects.Text
+	txtOpponentMana: Phaser.GameObjects.Text
+	txtWins: Phaser.GameObjects.Text
+	txtOpponentWins: Phaser.GameObjects.Text
 
 	txtStatus: Phaser.GameObjects.Text
 	txtOpponentStatus: Phaser.GameObjects.Text
@@ -148,17 +148,17 @@ export default class GameScene extends BaseScene {
     	this.passContainer.add(btnPass)
 
 	    // Mana text
-	    this.manaText = this.add.text(1100 - Space.pad,
+	    this.txtMana = this.add.text(1100 - Space.pad,
 	    	650 - 30 - Space.cardSize - Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
-	    this.opponentManaText = this.add.text(1100 - Space.pad,
+	    this.txtOpponentMana = this.add.text(1100 - Space.pad,
 	    	30 + Space.cardSize + Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
 
-	    this.scoreText = this.add.text(1100 - Space.pad,
+	    this.txtWins = this.add.text(1100 - Space.pad,
 	    	650 - 70 - Space.cardSize - Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
-	    this.opponentScoreText = this.add.text(1100 - Space.pad,
+	    this.txtOpponentWins = this.add.text(1100 - Space.pad,
 	    	70 + Space.cardSize + Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
 
@@ -541,8 +541,8 @@ export default class GameScene extends BaseScene {
 		}
 
 		// Mana
-		this.manaText.setText(`Mana: ${state.mana}/${state.maxMana[0]}`)
-		this.opponentManaText.setText('')//`Mana: ?/${state.maxMana[1]}`)
+		this.txtMana.setText(`Mana: ${state.mana}/${state.maxMana[0]}`)
+		this.txtOpponentMana.setText('')//`Mana: ?/${state.maxMana[1]}`)
 
 		// Status
 		this.txtStatus.setText(state.status)
@@ -550,11 +550,11 @@ export default class GameScene extends BaseScene {
 
 		// Score
 		// TODO rename to txtScoreText
-		this.scoreText.setText(`Wins: ${state.wins[0]}`)
-		this.opponentScoreText.setText(`Wins: ${state.wins[1]}`)
+		this.txtWins.setText(`Wins: ${state.wins[0]}`)
+		this.txtOpponentWins.setText(`Wins: ${state.wins[1]}`)
 		if (state.soundEffect === 'win') {
 			this.tweens.add({
-	  			targets: this.scoreText,
+	  			targets: this.txtWins,
 	  			scale: 1.5,
 	  			duration: 500,
 	  			ease: "Sine.easeInOut",
@@ -562,7 +562,7 @@ export default class GameScene extends BaseScene {
 	  		})
 		} else if (state.soundEffect === 'lose') {
 			this.tweens.add({
-	  			targets: this.opponentScoreText,
+	  			targets: this.txtOpponentWins,
 	  			scale: 1.5,
 	  			duration: 500,
 	  			ease: "Sine.easeInOut",
