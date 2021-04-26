@@ -7,14 +7,18 @@ import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
 import { ColorSettings, Space } from "./settings"
 
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
-import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js';
+import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js'
+import InputTextPlugin from 'phaser3-rex-plugins/plugins/inputtext-plugin.js'
 
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Celestial",
   width: Space.windowWidth,
   height: Space.windowHeight,
-  parent: "game",
+  parent: "divId",
+  dom: {
+    createContainer: true
+  },
   scene: [WelcomeScene, CreditsScene, GameScene, BuilderScene, TutorialScene1, TutorialScene2],
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
@@ -30,7 +34,13 @@ const config: Phaser.Types.Core.GameConfig = {
       key: 'rexRoundRectanglePlugin',
       plugin: RoundRectanglePlugin,
       start: true
-    }]
+    },
+    {
+      key: 'rexInputTextPlugin',
+      plugin: InputTextPlugin,
+      start: true
+    }
+    ]
   }
 }
 

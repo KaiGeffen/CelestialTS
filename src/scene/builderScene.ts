@@ -6,6 +6,8 @@ import { decodeCard, encodeCard } from "../lib/codec"
 import Button from "../lib/button"
 import BaseScene from "./baseScene"
 
+import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
+
 
 const DECK_PARAM = 'deck'
 
@@ -610,10 +612,90 @@ class MenuRegion {
     // this.container.add(btnExplainKeywords)
 
     // Prompt for matchmaking code
-    txt = 'Use matchmaking code...' + '\n      > ' + UserSettings._get('mmCode')
-    let btnMatchmaking = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 2, txt, function () {}, false).setOrigin(0, 0)
-    btnMatchmaking.setOnClick(this.onSetMatchmaking(btnMatchmaking))
-    this.container.add(btnMatchmaking)
+    txt = 'Use matchmaking code:'// + '\n      > ' + UserSettings._get('mmCode')
+    let txtMatchmaking = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize, txt, StyleSettings.announcement).setOrigin(0, 0)
+    this.container.add(txtMatchmaking)
+
+
+    let x = Space.pad*2
+    let y = Space.pad*1.5 + Space.cardSize * 1.5
+
+    // var printText = this.scene.add.text(x, y, '', {
+    //   fontSize: '12px',
+    //   fixedWidth: 100,
+    //   fixedHeight: 100,
+    // }).setOrigin(0.5)
+
+    let textBox = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
+      type: 'textarea',
+      text: UserSettings._get('mmCode'),
+      font: 'Arial',
+      fontSize: '36px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#444',
+      maxLength: 24
+    })
+    .setOrigin(0)
+    .on('textchange', function (inputText) {
+      inputText.text = inputText.text.replace('\n', '')
+      UserSettings._set('mmCode', inputText.text)
+    })
+
+    // printText.text = textBox.text
+    this.container.add(textBox)
+    // this.container.add(printText)
+
+    
+    
+    //         .resize(100, 100)
+    //         .setOrigin(0.5)
+    //         .on('textchange', function (inputText) {
+    //             printText.text = inputText.text;
+    //         })
+    //         .on('focus', function (inputText) {
+    //             console.log('On focus');
+    //         })
+    //         .on('blur', function (inputText) {
+    //             console.log('On blur');
+    //         })
+    //         .on('click', function (inputText) {
+    //             console.log('On click');
+    //         })
+    //         .on('dblclick', function (inputText) {
+    //             console.log('On dblclick');
+    //         }){
+    //   // anchor: undefined,
+    //     type: 'text',    // 'text'|'password'|'textarea'|'number'|'color'|...
+
+    //     // Element properties
+    //     id: undefined,
+    //     text: undefined,
+    //     maxLength: undefined,
+    //     minLength: undefined,    
+    //     placeholder: undefined,
+    //     tooltip: undefined,
+    //     readOnly: false,
+    //     spellCheck: false,
+    //     autoComplete: 'off',
+
+    //     // Style properties
+    //     align: undefined,
+    //     paddingLeft: undefined,
+    //     paddingRight: undefined,
+    //     paddingTop: undefined,
+    //     paddingBottom: undefined,
+    //     fontFamily: undefined,
+    //     fontSize: undefined,
+    //     color: '#ffffff',
+    //     border: 0,
+    //     backgroundColor: 'transparent',
+    //     borderColor: 'transparent',
+    //     outline: 'none',
+
+    //     selectAll: false
+    // }).
 
     // Button to save deck code
     txt = 'Copy deck code to clipboard'
