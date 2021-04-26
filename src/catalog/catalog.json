@@ -124,7 +124,7 @@
   },
   {"name": "Ecology", "id": 65,
     "cost": 7,
-    "text": "7:2.\nWhen played, gain 12 mana this round."
+    "text": "7:2.\nWhen played, gain 10 mana this round."
   },
 
   {"name": "AI", "id": 79,
