@@ -384,7 +384,12 @@ class DeckRegion {
     else
     {
       this.btnStart.text = `${this.deck.length}/15`
-      this.btnStart.input.enabled = true // TODO false
+
+      // TODO Grey out the button, have a disable method for button class
+      // For debugging, allow sub-15 card decks locally
+      if (location.port !== '4949') {
+        this.btnStart.input.enabled = false
+      }
     }
 
     this.txtHint.setVisible(this.deck.length === 0)
