@@ -403,6 +403,7 @@ export default class GameScene extends BaseScene {
 			this.sound.play(state.soundEffect)
 		}
 
+		// TODO Make these buttons (Hover tints them)
 		// Display victory / defeat
 		if (state.winner === 0 && !recap) {
 			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
@@ -541,15 +542,33 @@ export default class GameScene extends BaseScene {
 
 		// Mana
 		this.manaText.setText(`Mana: ${state.mana}/${state.maxMana[0]}`)
-		this.opponentManaText.setText(`Mana: ?/${state.maxMana[1]}`)
+		this.opponentManaText.setText('')//`Mana: ?/${state.maxMana[1]}`)
 
 		// Status
 		this.txtStatus.setText(state.status)
 		this.txtOpponentStatus.setText(state.opponentStatus)
 
 		// Score
-		this.scoreText.setText(`Score: ${state.wins[0]}/5`)
-		this.opponentScoreText.setText(`Score: ${state.wins[1]}/5`)
+		// TODO rename to txtScoreText
+		this.scoreText.setText(`Wins: ${state.wins[0]}`)
+		this.opponentScoreText.setText(`Wins: ${state.wins[1]}`)
+		if (state.soundEffect === 'win') {
+			this.tweens.add({
+	  			targets: this.scoreText,
+	  			scale: 1.5,
+	  			duration: 500,
+	  			ease: "Sine.easeInOut",
+	  			yoyo: true
+	  		})
+		} else if (state.soundEffect === 'lose') {
+			this.tweens.add({
+	  			targets: this.opponentScoreText,
+	  			scale: 1.5,
+	  			duration: 500,
+	  			ease: "Sine.easeInOut",
+	  			yoyo: true
+	  		})
+		}
 
 		// Passes
 		if (state.passes === 0) {
