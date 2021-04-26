@@ -58,7 +58,7 @@ export default class BaseScene extends Phaser.Scene {
 
 		let radio = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, ColorSettings.background)
 		if (UserSettings._get('explainKeywords')) {
-			radio.setFillStyle(ColorSettings.background)
+			radio.setFillStyle(ColorSettings.cardHighlight)
 		}
 
 		radio.setInteractive()
@@ -67,7 +67,7 @@ export default class BaseScene extends Phaser.Scene {
 
 			UserSettings._set('explainKeywords', !UserSettings._get('explainKeywords'))
 
-			radio.setFillStyle((UserSettings._get('explainKeywords')) ? ColorSettings.background : undefined)
+			radio.setFillStyle((UserSettings._get('explainKeywords')) ? ColorSettings.cardHighlight : undefined)
 		})
 
 		// Slider for music

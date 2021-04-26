@@ -618,7 +618,7 @@ class MenuRegion {
 
     let radio = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
     if (UserSettings._get('vsAi')) {
-      radio.setFillStyle(ColorSettings.background)
+      radio.setFillStyle(ColorSettings.cardHighlight)
     }
 
     radio.setInteractive()
@@ -627,7 +627,7 @@ class MenuRegion {
 
       UserSettings._set('vsAi', !UserSettings._get('vsAi'))
 
-      radio.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.background : undefined)
+      radio.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.cardHighlight : undefined)
     })
     this.container.add(radio)
 
