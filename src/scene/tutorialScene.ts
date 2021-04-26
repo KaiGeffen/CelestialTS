@@ -41,11 +41,13 @@ class TutorialScene extends GameScene {
 		// If it's a recap, don't show an explanation
 		if (recap) return true
 
-		// Consider each explanation, display the first valid one
+		// Consider each explanation, display the first valid one, let it alter the game scene
 		let exFound = false
 		this.explanations.forEach(ex => {
 			if (!exFound && ex.isApplicable(state)) {
 				exFound = true
+
+				ex.alterScene(this)
 
 				let s = ex.explain()
 				this.txtTutorial.setText(s)
@@ -97,15 +99,6 @@ export class TutorialScene1 extends TutorialScene {
 			return false
 		}
 
-		// If player has won 2 rounds, cards now have effects and the card info should reflect that
-		if (state.wins[0] >= 2) {
-			setSimplifyCardInfo(false)
-		}
-		// If the player has won 4 rounds, display the decks and discard piles
-		if (state.wins[0] >= 4) {
-			this.stackContainer.setVisible(true)
-		}
-
 		return true
 	}
 
@@ -149,10 +142,18 @@ class Explanation {
 	// Whether this explanation has been seen already
 	seen: boolean = false
 	text: string
+
+	// How the scene is affected after this explanation has been seen
+	effect: (_: Phaser.Scene) => void
 	
-	constructor(condition: (_: ClientState) => boolean, text: string) {
+	constructor(condition: (_: ClientState) => boolean,
+		text: string,
+		effect: (that: Phaser.Scene) => void = function() {})
+	{
 		this.condition = condition
 		this.text = text
+
+		this.effect = effect
 	}
 
 	// Return true if the given state should be explained and this explanation hasn't yet been seen
@@ -170,6 +171,11 @@ class Explanation {
 
 		return this.text
 	}
+
+	// Change the game scene to reflect something that is being explained
+	alterScene(that: TutorialScene): void {
+		this.effect(that)
+	}
 }
 
 let exMulligan: Explanation = new Explanation(
@@ -181,18 +187,68 @@ let exPlayOrPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
 	"Click on a card in your hand to play it, or click 'Pass'."
 	)
+
+
+
+
+
+
+
+let exPlay: Explanation = new Explanation(
+	function (state) {return state.priority === 0},
+	"Click on a card in your hand to play it.\nYou must also spend mana equal to its mana cost.",
+	function (state) {
+		state.txtMana.setX((Space.pad + Space.cardSize) * 3)
+
+		// Make it so that user can't pass yet
+		state.btnPass.setVisible(false)
+	}
+	)
+let exPass: Explanation = new Explanation(
+	function (state) {return state.priority === 0},
+	"Click 'Pass' once you're done playing cards.\
+	Once both players have passed in a row, the round ends and points are tallied.",
+	function (state) {
+		// Mana text moves to its normal position
+		state.tweens.add({
+			targets: state.txtMana,
+          	x: Space.windowWidth - Space.pad,
+          	duration: 2000,
+          ease: "Sine.easeInOut",
+        })
+
+        state.btnPass.setVisible(true)
+        // state.btnPass.setX((Space.pad + Space.cardSize) * 3)
+	}
+	)
+
+
+
+
 let exRoundStart: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 1},
 	"At the start of each round, both players draw 2 cards and gain 1 mana."
 	)
+
+
+
+let exWin: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.wins[0] > 0},
+	"If you score more points than your opponent in a round, you win that round."
+	)
+let exWinCondition: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.wins[0] > 0},
+	"Once you've won 5 rounds, you win the match. However, you must also be at least 2 wins ahead of your opponent."
+	)
+	
+
+
+
 let exRoundPriority: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 2},
 	"The player who is winning will act first in a round. If it's a tie, priority is decided at random."
 	)
-let exWinCondition: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.maxMana[0] > 3},
-	"You need to win 5 rounds to win the match, but you also need to be at least 2 ahead of your opponent."
-	)
+
 // let exStacks: Explanation = new Explanation(
 // 	function (state) {return state.priority === 0 && state.maxMana[0] > 4},
 // 	"You can mouse over or click on either player's deck or discard pile to see more information."
@@ -211,10 +267,17 @@ let exMaxHand: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 3},
 	"If you have 6 cards in hand, you can't draw any more."
 	)
+let exGift: Explanation = new Explanation(
+	function (state) {return state.priority === 0 && state.wins[0] >= 3},
+	"Try not to play cards like Gift when your hand is nearly full."
+	)
+
+
 
 let exCardEffects: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2},
-	"Each card has an effect listed after its point value. Any keywords are explained below that."
+	"Each card has an effect listed after its point value. Any keywords are explained below that.",
+	function(_) {setSimplifyCardInfo(false)}
 	)
 let exDash: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2},
@@ -223,29 +286,42 @@ let exDash: Explanation = new Explanation(
 
 let exStacks: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 4},
-	"You draw cards from your deck, and after they resolve they go to your discard pile."
+	"You draw cards from your deck, and after they resolve they go to your discard pile.",
+	function (scene) {scene.stackContainer.setVisible(true)}
 	)
+
 let exDiscardShuffle: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 4},
 	"If you would draw from an empty deck, your discard pile is shuffled into your deck."
 	)
 
 
+
+
+
 let explanations1: Explanation[] = [
-	exPlayOrPass,
-	exRoundEnd,
+	exPlay,
+	exPass,
 
 	exRoundStart,
 	exOpponentHidden,
 
+	exWin,
+	exWinCondition,
+
 	exCardEffects,
 	exDash,
 
-	exStacks,
-	exDiscardShuffle,
+	exMaxHand,
+	exGift,
 
-	exMaxHand
+	exStacks,
+	exDiscardShuffle
+
+	
 ]
+
+
 
 let explanations2: Explanation[] = [
 	exMulligan,

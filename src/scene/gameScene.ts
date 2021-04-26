@@ -23,6 +23,8 @@ export default class GameScene extends BaseScene {
 
 	mulliganHighlights: Phaser.GameObjects.Rectangle[]
 	txtOpponentMulligan: Phaser.GameObjects.Text
+
+	btnPass: Button
 	
 	handContainer: Phaser.GameObjects.Container
 	opponentHandContainer: Phaser.GameObjects.Container
@@ -144,8 +146,8 @@ export default class GameScene extends BaseScene {
 		this.createMulliganObjects()
 
 		// Pass button
-    	let btnPass = new Button(this, 0, 80, 'Pass', this.onPass()).setOrigin(1, 0.5)
-    	this.passContainer.add(btnPass)
+    	this.btnPass = new Button(this, 0, 80, 'Pass', this.onPass()).setOrigin(1, 0.5)
+    	this.passContainer.add(this.btnPass)
 
 	    // Mana text
 	    this.txtMana = this.add.text(1100 - Space.pad,
