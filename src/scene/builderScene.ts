@@ -607,7 +607,7 @@ class MenuRegion {
     // Prompt for matchmaking code
     let y = Space.pad/2 + Space.cardSize
 
-    txt = 'Use matchmaking code:'
+    txt = 'Matchmaking code:'
     let txtMatchmaking = this.scene.add.text(Space.pad, y, txt, StyleSettings.announcement).setOrigin(0, 0)
     this.container.add(txtMatchmaking)
 
@@ -631,7 +631,7 @@ class MenuRegion {
     this.container.add(textBoxMM)
     
     // Text field for the deck-code
-    y += Space.cardSize
+    y += Space.cardSize*3/4
     let txtDeckCode = this.scene.add.text(Space.pad, y, 'Deck code:', StyleSettings.announcement).setOrigin(0, 0)
     this.container.add(txtDeckCode)
 
@@ -650,21 +650,13 @@ class MenuRegion {
     .setOrigin(0)
     .on('textchange', function (inputText) {
       inputText.text = inputText.text.replace('\n', '')
-      // TODO Try to load this deck
+      
+      that.deckRegion.setDeck(inputText.text)
+    })
+    .on('blur', function (inputText) {
+      that.textBoxDeckCode.text = that.getDeckCode()
     })
     this.container.add(this.textBoxDeckCode)
-
-    // Button to save deck code
-    // txt = 'Copy deck code to clipboard'
-    // let btnCopy = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 3, txt).setOrigin(0, 0)
-    // btnCopy.setOnClick(this.onCopy(btnCopy))
-    // this.container.add(btnCopy)
-
-    // // Button to load deck code
-    // txt = 'Load deck from a code'
-    // let btnLoad = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 4, txt, function () {}, false).setOrigin(0, 0)
-    // btnLoad.setOnClick(this.onLoadDeck(btnLoad))
-    // this.container.add(btnLoad)
   }
 
   private onOpenMenu(): () => void {
@@ -674,12 +666,17 @@ class MenuRegion {
       that.container.setVisible(true)
 
       // Set the deck-code textbox to have current deck described
-      let txt = ''
-      that.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
-      txt = txt.slice(0, -1)
-
-      that.textBoxDeckCode.text = txt
+      that.textBoxDeckCode.text = that.getDeckCode()
     }
+  }
+
+  // Get the deck code for player's current deck
+  private getDeckCode(): string {
+    let txt = ''
+    this.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+    txt = txt.slice(0, -1)
+
+    return txt
   }
 
   private onToggleUserSetting(btn: Button, property: string): () => void {
@@ -696,66 +693,6 @@ class MenuRegion {
     let finalChar = conditional ? "✓":"X"
     let newText = btn.text.slice(0, -1) + finalChar
     btn.setText(newText)
-  }
-
-  private onSetMatchmaking(btn: Button): () => void {
-    let that = this
-    return function() {
-      var code = prompt("Enter matchmaking code:")
-      if (code != null) {
-        // This is necessary to not cut off part of the sound from prompt
-        that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
-
-        UserSettings._set('mmCode', code)
-
-        let newText = btn.text.split('>')[0] + '> ' + code
-        btn.setText(newText)
-      }
-      
-    }
-  }
-
-  private onCopy(btn: Button): () => void {
-    let that = this
-    return function() {
-      let txt = ''
-      that.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
-      txt = txt.slice(0, -1)
-
-      navigator.clipboard.writeText(txt)
-
-      // Alert user that decklist was copied
-      let previousText = btn.text
-      btn.setText('Copied!')
-      that.scene.time.delayedCall(600, () => btn.setText(previousText))
-    }
-  }
-
-  private onLoadDeck(btn: Button): () => void {
-    let that = this
-    return function() {
-      let code = prompt("Enter deck code:")
-      if (code != null) {
-
-        let isValid = that.deckRegion.setDeck(code)
-        if (isValid) {
-          // This is necessary to not cut off part of the sound from prompt
-          that.scene.time.delayedCall(100, () => that.scene.sound.play('click'))
-
-          let previousText = btn.text
-          btn.setText('Loaded!')
-          that.scene.time.delayedCall(600, () => btn.setText(previousText))
-        }
-        else {
-          // Alert user if deck code is invalid
-          that.scene.time.delayedCall(100, () => that.scene.sound.play('failure'))
-
-          let previousText = btn.text
-          btn.setText('Invalid code!')
-          that.scene.time.delayedCall(600, () => btn.setText(previousText))
-        }
-      }
-    }
   }
 }
 
