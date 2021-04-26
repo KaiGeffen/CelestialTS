@@ -166,11 +166,11 @@ class Explanation {
 	text: string
 
 	// How the scene is affected after this explanation has been seen
-	effect: (_: Phaser.Scene) => void
+	effect: (scene: TutorialScene) => void
 	
 	constructor(condition: (_: ClientState) => boolean,
 		text: string,
-		effect: (that: Phaser.Scene) => void = function() {})
+		effect: (scene: TutorialScene) => void = function() {})
 	{
 		this.condition = condition
 		this.text = text
@@ -219,27 +219,27 @@ let exPlayOrPass: Explanation = new Explanation(
 let exPlay: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
 	"Click on a card in your hand to play it.\nYou must also spend mana equal to its mana cost.",
-	function (state) {
-		state.txtMana.setX((Space.pad + Space.cardSize) * 3)
+	function (scene) {
+		scene.txtMana.setX((Space.pad + Space.cardSize) * 3)
 
 		// Make it so that user can't pass yet
-		state.btnPass.setVisible(false)
+		scene.btnPass.setVisible(false)
 	}
 	)
 let exPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
 	"Click 'Pass' once you're done playing cards.\
 	Once both players have passed in a row, the round ends and points are tallied.",
-	function (state) {
+	function (scene) {
 		// Mana text moves to its normal position
-		state.tweens.add({
-			targets: state.txtMana,
+		scene.tweens.add({
+			targets: scene.txtMana,
           	x: Space.windowWidth - Space.pad,
           	duration: 2000,
           ease: "Sine.easeInOut",
         })
 
-        state.btnPass.setVisible(true)
+        scene.btnPass.setVisible(true)
         // state.btnPass.setX((Space.pad + Space.cardSize) * 3)
 	}
 	)
@@ -299,7 +299,7 @@ let exGift: Explanation = new Explanation(
 let exCardEffects: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2},
 	"Each card has an effect listed after its point value. Any keywords are explained below that.",
-	function(_) {setSimplifyCardInfo(false)}
+	function(scene) {setSimplifyCardInfo(false)}
 	)
 let exDash: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2},

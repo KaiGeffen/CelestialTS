@@ -405,7 +405,6 @@ export default class GameScene extends BaseScene {
 			this.sound.play(state.soundEffect)
 		}
 
-		// TODO Make these buttons (Hover tints them)
 		// Display victory / defeat
 		if (!recap) {
 			this.displayWinLose(state)
