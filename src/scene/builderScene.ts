@@ -558,6 +558,9 @@ class MenuRegion {
   deckRegion
   container: Phaser.GameObjects.Container
   deck: Card[] = []
+
+  // The textbox which contains the deck code for player's current deck
+  textBoxDeckCode: any
   
   constructor(scene: Phaser.Scene, deckRegion) {
     this.init(scene, deckRegion)
@@ -584,10 +587,7 @@ class MenuRegion {
     this.container.add(invisBackground)
 
     // Set the callback for deckRegion menu button
-    this.deckRegion.setShowMenu(function() {
-      that.scene.sound.play('open')
-      that.container.setVisible(true)
-    })
+    this.deckRegion.setShowMenu(this.onOpenMenu())
 
     // Visible background, which does nothing when clicked
     let width = Space.cardSize * 5 + Space.pad * 4
@@ -604,29 +604,15 @@ class MenuRegion {
     btnVsAi.setOnClick(this.onToggleUserSetting(btnVsAi, 'vsAi'))
     this.container.add(btnVsAi)
 
-    // Show recap toggleable button
-    // txt = 'Explain keywords                 '
-    // txt += UserSettings._get('explainKeywords') ? '✓' : 'X'
-    // let btnExplainKeywords = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize, txt).setOrigin(0, 0)
-    // btnExplainKeywords.setOnClick(this.onToggleUserSetting(btnExplainKeywords, 'explainKeywords'))
-    // this.container.add(btnExplainKeywords)
-
     // Prompt for matchmaking code
-    txt = 'Use matchmaking code:'// + '\n      > ' + UserSettings._get('mmCode')
-    let txtMatchmaking = this.scene.add.text(Space.pad, Space.pad/2 + Space.cardSize, txt, StyleSettings.announcement).setOrigin(0, 0)
+    let y = Space.pad/2 + Space.cardSize
+
+    txt = 'Use matchmaking code:'
+    let txtMatchmaking = this.scene.add.text(Space.pad, y, txt, StyleSettings.announcement).setOrigin(0, 0)
     this.container.add(txtMatchmaking)
 
-
-    let x = Space.pad*2
-    let y = Space.pad*1.5 + Space.cardSize * 1.5
-
-    // var printText = this.scene.add.text(x, y, '', {
-    //   fontSize: '12px',
-    //   fixedWidth: 100,
-    //   fixedHeight: 100,
-    // }).setOrigin(0.5)
-
-    let textBox = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
+    y += Space.pad + Space.cardSize/2
+    let textBoxMM = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
       type: 'textarea',
       text: UserSettings._get('mmCode'),
       font: 'Arial',
@@ -642,72 +628,58 @@ class MenuRegion {
       inputText.text = inputText.text.replace('\n', '')
       UserSettings._set('mmCode', inputText.text)
     })
-
-    // printText.text = textBox.text
-    this.container.add(textBox)
-    // this.container.add(printText)
-
+    this.container.add(textBoxMM)
     
-    
-    //         .resize(100, 100)
-    //         .setOrigin(0.5)
-    //         .on('textchange', function (inputText) {
-    //             printText.text = inputText.text;
-    //         })
-    //         .on('focus', function (inputText) {
-    //             console.log('On focus');
-    //         })
-    //         .on('blur', function (inputText) {
-    //             console.log('On blur');
-    //         })
-    //         .on('click', function (inputText) {
-    //             console.log('On click');
-    //         })
-    //         .on('dblclick', function (inputText) {
-    //             console.log('On dblclick');
-    //         }){
-    //   // anchor: undefined,
-    //     type: 'text',    // 'text'|'password'|'textarea'|'number'|'color'|...
+    // Text field for the deck-code
+    y += Space.cardSize
+    let txtDeckCode = this.scene.add.text(Space.pad, y, 'Deck code:', StyleSettings.announcement).setOrigin(0, 0)
+    this.container.add(txtDeckCode)
 
-    //     // Element properties
-    //     id: undefined,
-    //     text: undefined,
-    //     maxLength: undefined,
-    //     minLength: undefined,    
-    //     placeholder: undefined,
-    //     tooltip: undefined,
-    //     readOnly: false,
-    //     spellCheck: false,
-    //     autoComplete: 'off',
-
-    //     // Style properties
-    //     align: undefined,
-    //     paddingLeft: undefined,
-    //     paddingRight: undefined,
-    //     paddingTop: undefined,
-    //     paddingBottom: undefined,
-    //     fontFamily: undefined,
-    //     fontSize: undefined,
-    //     color: '#ffffff',
-    //     border: 0,
-    //     backgroundColor: 'transparent',
-    //     borderColor: 'transparent',
-    //     outline: 'none',
-
-    //     selectAll: false
-    // }).
+    y += Space.pad + Space.cardSize/2
+    this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize, {
+      type: 'textarea',
+      text: '',
+      font: 'Arial',
+      fontSize: '36px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#444',
+      maxLength: 15 * 3
+    })
+    .setOrigin(0)
+    .on('textchange', function (inputText) {
+      inputText.text = inputText.text.replace('\n', '')
+      // TODO Try to load this deck
+    })
+    this.container.add(this.textBoxDeckCode)
 
     // Button to save deck code
-    txt = 'Copy deck code to clipboard'
-    let btnCopy = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 3, txt).setOrigin(0, 0)
-    btnCopy.setOnClick(this.onCopy(btnCopy))
-    this.container.add(btnCopy)
+    // txt = 'Copy deck code to clipboard'
+    // let btnCopy = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 3, txt).setOrigin(0, 0)
+    // btnCopy.setOnClick(this.onCopy(btnCopy))
+    // this.container.add(btnCopy)
 
-    // Button to load deck code
-    txt = 'Load deck from a code'
-    let btnLoad = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 4, txt, function () {}, false).setOrigin(0, 0)
-    btnLoad.setOnClick(this.onLoadDeck(btnLoad))
-    this.container.add(btnLoad)
+    // // Button to load deck code
+    // txt = 'Load deck from a code'
+    // let btnLoad = new Button(this.scene, Space.pad, Space.pad/2 + Space.cardSize * 4, txt, function () {}, false).setOrigin(0, 0)
+    // btnLoad.setOnClick(this.onLoadDeck(btnLoad))
+    // this.container.add(btnLoad)
+  }
+
+  private onOpenMenu(): () => void {
+    let that = this
+    return function() {
+      that.scene.sound.play('open')
+      that.container.setVisible(true)
+
+      // Set the deck-code textbox to have current deck described
+      let txt = ''
+      that.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+      txt = txt.slice(0, -1)
+
+      that.textBoxDeckCode.text = txt
+    }
   }
 
   private onToggleUserSetting(btn: Button, property: string): () => void {
