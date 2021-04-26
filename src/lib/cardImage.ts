@@ -56,6 +56,39 @@ export class CardImage {
     this.image.setAlpha(0.2)
   }
 
+  // Animate the card 'Camera' when it should be given attention
+  animateCamera(delay: number): void {
+    let that = this
+    let scene = this.image.scene
+
+    // Scale and shrink twice after delay, send a 'Sight' text object at the same time
+    scene.tweens.add({
+      targets: this.image,
+      scale: 1.5,
+      delay: delay,
+      duration: 250,
+      repeat: 1,
+      ease: "Sine.easeInOut",
+      yoyo: true,
+      onStart: function () {
+        // Create a text object 'Sight' that goes from Camera to opponent
+        let txt = scene.add.text(that.image.x, that.image.y, 'Sight 4', StyleSettings.basic).setOrigin(0.5, 0.5)
+
+        scene.tweens.add({
+          targets: txt,
+          y: 200,
+          duration: 1500,
+          // ease: "Sine.easeInOut",
+          onComplete: 
+          function (tween, targets, _)
+          {
+            txt.destroy()
+          }
+        })
+      }
+    })
+  }
+
   private getCardText(card): string {
     if (card === cardback) {
       return '?'

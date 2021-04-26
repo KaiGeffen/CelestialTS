@@ -427,7 +427,7 @@ export default class GameScene extends BaseScene {
 		this.passContainer.setVisible(!state.mulligansComplete.includes(false))
 
 		// Hands
-		this.displayHands(state, recap)
+		this.displayHands(state, recap, isRoundStart)
 
 		// Story
 		let numActsCompleted = 0
@@ -625,7 +625,8 @@ export default class GameScene extends BaseScene {
 		this.net.closeSocket()
 	}
 
-	private displayHands(state: ClientState, recap: Boolean): void {
+	// Display cards in each player's hand
+	private displayHands(state: ClientState, recap: Boolean, isRoundStart: Boolean): void {
 
 		// Delay before starting the current tween, updated so that cards aren't drawn at the same time
 		let delay: number = 0
@@ -657,6 +658,11 @@ export default class GameScene extends BaseScene {
 			// If the card is new, animate it being drawn
 			if (i > this.lastHandSizes[0] - 1 - juggleModifier) {
 				delay = this.animateDraw(cardImage.image, delay)
+			}
+
+			// If the card is a Camera and this is the start of a round, animate it
+			if (isRoundStart && !recap && cardImage.card.name === 'Camera') {
+				cardImage.animateCamera(delay)
 			}
 		}
 
