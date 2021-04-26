@@ -572,22 +572,29 @@ class MenuRegion {
     
     this.container = this.scene.add.container(Space.cardSize * 2 + Space.pad * 3, Space.pad)
     this.container.setVisible(false)
+    // Menu will be above button to open the other menu
+    this.container.setDepth(20)
   }
 
   create(): void {
+    let that = this
+
     // Visible and invisible background rectangles, stops other containers from being clicked
-    let invisBackground = this.scene.add.rectangle(0, 0, 1100*2, 650*2, 0xffffff, 0)
+    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0xffffff, 0)
     invisBackground.setInteractive()
 
-    let that = this
     invisBackground.on('pointerdown', function() {
       that.scene.sound.play('close')
       that.container.setVisible(false)
     })
     this.container.add(invisBackground)
 
+
+
     // Set the callback for deckRegion menu button
     this.deckRegion.setShowMenu(this.onOpenMenu())
+
+
 
     // Visible background, which does nothing when clicked
     let width = Space.cardSize * 5 + Space.pad * 4
@@ -597,18 +604,33 @@ class MenuRegion {
     visibleBackground.setInteractive()
     this.container.add(visibleBackground)
 
+
+
     // Vs ai toggleable button
-    let txt = 'Play versus Computer          '
-    txt += UserSettings._get('vsAi') ? '✓' : 'X'
-    let btnVsAi = new Button(this.scene, Space.pad, Space.pad/2, txt).setOrigin(0, 0)
-    btnVsAi.setOnClick(this.onToggleUserSetting(btnVsAi, 'vsAi'))
-    this.container.add(btnVsAi)
+    let y = Space.pad/2
+    let txtVsAi = this.scene.add.text(Space.pad, y, 'Play vs Computer:', StyleSettings.announcement).setOrigin(0)
+    this.container.add(txtVsAi)
+
+    let radio = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    if (UserSettings._get('vsAi')) {
+      radio.setFillStyle(ColorSettings.background)
+    }
+
+    radio.setInteractive()
+    radio.on('pointerdown', function() {
+      that.scene.sound.play('click')
+
+      UserSettings._set('vsAi', !UserSettings._get('vsAi'))
+
+      radio.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.background : undefined)
+    })
+    this.container.add(radio)
+
+
 
     // Prompt for matchmaking code
-    let y = Space.pad/2 + Space.cardSize
-
-    txt = 'Matchmaking code:'
-    let txtMatchmaking = this.scene.add.text(Space.pad, y, txt, StyleSettings.announcement).setOrigin(0, 0)
+    y += Space.cardSize
+    let txtMatchmaking = this.scene.add.text(Space.pad, y, 'Matchmaking code:', StyleSettings.announcement).setOrigin(0)
     this.container.add(txtMatchmaking)
 
     y += Space.pad + Space.cardSize/2
@@ -630,9 +652,11 @@ class MenuRegion {
     })
     this.container.add(textBoxMM)
     
+
+
     // Text field for the deck-code
     y += Space.cardSize*3/4
-    let txtDeckCode = this.scene.add.text(Space.pad, y, 'Deck code:', StyleSettings.announcement).setOrigin(0, 0)
+    let txtDeckCode = this.scene.add.text(Space.pad, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
     this.container.add(txtDeckCode)
 
     y += Space.pad + Space.cardSize/2
