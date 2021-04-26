@@ -407,17 +407,8 @@ export default class GameScene extends BaseScene {
 
 		// TODO Make these buttons (Hover tints them)
 		// Display victory / defeat
-		if (state.winner === 0 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
-			txtResult.setInteractive()
-			txtResult.on('pointerdown', this.exitScene, this)
-			this.storyContainer.add(txtResult)
-		}
-		else if (state.winner === 1 && !recap) {
-			let txtResult = this.add.text(Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to continue...", StyleSettings.announcement).setOrigin(0, 0.5)
-			txtResult.setInteractive()
-			txtResult.on('pointerdown', this.exitScene, this)
-			this.storyContainer.add(txtResult)
+		if (!recap) {
+			this.displayWinLose(state)
 		}
 
 		// Remove all of the existing cards
@@ -684,6 +675,22 @@ export default class GameScene extends BaseScene {
 		// Remember the size of these hands
 		this.lastHandSizes[0] = state.hand.length
 		this.lastHandSizes[1] = state.opponentHandSize
+	}
+
+	// Tell player that they won or lost, public so that Tutorial can overwrite
+	displayWinLose(state: ClientState): void {
+		if (state.winner === 0) {
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.exitScene).setOrigin(0, 0.5)
+			btnResult.setStyle(StyleSettings.announcement)
+			
+			this.storyContainer.add(btnResult)
+		}
+		else if (state.winner === 1) {
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to continue...", this.exitScene).setOrigin(0, 0.5)
+			btnResult.setStyle(StyleSettings.announcement)
+
+			this.storyContainer.add(btnResult)
+		}
 	}
 	
 	// Tween the image to move to its position from the deck after delay. Return the new delay

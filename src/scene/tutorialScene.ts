@@ -3,6 +3,7 @@ import GameScene from "./gameScene"
 import { StyleSettings, ColorSettings, Space } from "../settings"
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo } from "../lib/cardImage"
+import Button from "../lib/button"
 
 
 class TutorialScene extends GameScene {
@@ -109,9 +110,30 @@ export class TutorialScene1 extends TutorialScene {
 		super.beforeExit()
 	}
 
+	// Display what the user sees when they win or lose
+	displayWinLose(state: ClientState): void {
+		if (state.winner === 0) {
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.exitScene).setOrigin(0, 0.5)
+			btnResult.setStyle(StyleSettings.announcement)
+			
+			this.storyContainer.add(btnResult)
+		}
+		else if (state.winner === 1) {
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to retry...", this.retryTutorial).setOrigin(0, 0.5)
+			btnResult.setStyle(StyleSettings.announcement)
+
+			this.storyContainer.add(btnResult)
+		}
+	}
+
 	exitScene(): void {
   		this.net.closeSocket()
   		this.scene.start("BuilderScene", {isTutorial: true})
+  	}
+
+  	retryTutorial(): void {
+  		this.net.closeSocket()
+    	this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
   	}
 }
 
