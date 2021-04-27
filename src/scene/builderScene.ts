@@ -269,7 +269,11 @@ class DeckRegion {
       // Instead, include a button to reset to the default tutorial deck
       let btnReset = new Button(this.scene, 0, -150, 'Reset', this.onReset())
 
+      // Also include a button to return to the catalog scene
+      let btnBack = new Button(this.scene, 0, -200, 'Back', this.onBack())
+
       this.container.add(btnReset)
+      this.container.add(btnBack)
     }
 
     // If this is the tutorial, use that deck, otherwise use the other deck
@@ -374,6 +378,11 @@ class DeckRegion {
   private onReset(): () => void {
     let that = this
     return function() {that.setDeck(defaultTutorialDeck)}
+  }
+
+  private onBack(): () => void {
+    let that = this
+    return function() {that.scene.scene.start("CatalogScene")}
   }
 
   private updateText(): void {
@@ -740,56 +749,18 @@ class TutorialRegion {
   }
 
   create(): void {
-    // Icon for Dash
-    // let icon = this.scene.add.
-    // Text for Dash
-    // Explanation of Dash
-
-    let s2 = 
-`Welcome to Celestial.
-Read on for this game's core mechanics.
-When you feel ready, hit Start to begin playing.
-
-
-
-This is a card...
-Costs 2 mana to play (Left number)
-Is worth 3 points (Right number)
-Has the keyword Flare, which is explained below the card's text
-Cards with Flare are worth 1 less point for each card played
-before them in the round, so try to play Dash as early as possible.
-
-
-The first player to win 5 rounds, and lead by at least 2, wins.
-
-At the start of a round, each player draws 2 cards and gains 1 mana.
-
-Players go back and forth spending mana to play cards,
-or passing priority, until both players have passed in a row.
-
-At that point, all cards on the table resolve, from left to right,
-and the player with the most points wins the round.
-`
-
+    
     let s = 
-    `Great job! Now try winning a full match against an opponent.
+`Now try winning a full match against a computer opponent.
 
-If you want to change your deck, click the cards below to remove
-them, and above to add them.`
+The deck provided below wins early rounds with Crossed Bones,
+plays Anubis for free in later rounds, then uses Sarcophagus
+to put him back on top of the deck to wrap up the match.
+
+If you want to make changes, click any of the cards in the
+deck to remove them, then add cards from the choices above.
+`
     let txt = this.scene.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
-    // txt.style.fixedHeight = 1
-
-    // this.scene.tweens.add({
-    //     targets: txt.text,
-    //     length: 100,
-    //     duration: 500,
-    //     ease: "Sine.easeInOut",
-    //     yoyo: true,
-    //     onComplete: function (tween, targets, _)
-    //     {
-    //       txt.destroy()
-    //     }
-    //   })
 
     this.container.add(txt)
   }

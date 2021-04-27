@@ -138,7 +138,6 @@ export default class CatalogScene extends BaseScene {
 		y += 50
 		new Button(this, x, y, 'Next', this.goNext).setOrigin(1, 0.5)
 
-
 		super.create()
 	}
 
