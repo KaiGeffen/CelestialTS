@@ -111,7 +111,7 @@
   },
   {"name": "Sarcophagus", "id": 100,
     "cost": 6,
-    "text": "6:X, put the highest cost card from your discard pile on top of your deck, X is its cost."
+    "text": "6:0, put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost."
   },
 
   {"name": "Anubis", "id": 101,

@@ -1,6 +1,6 @@
 import "phaser"
 import { collectibleCards, starterCards,  Card } from "../catalog/catalog"
-import { CardImage, addCardInfoToScene, cardInfo } from "../lib/cardImage"
+import { CardImage, cardInfo } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import Button from "../lib/button"
