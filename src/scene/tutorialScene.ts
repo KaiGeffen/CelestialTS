@@ -59,6 +59,7 @@ class TutorialScene extends GameScene {
 		return true
 	}
 
+	// NOTE This is called by btnCancel in GameScene
 	exitScene(): void {
   		this.net.closeSocket()
   		this.scene.start("BuilderScene", {isTutorial: true})
@@ -113,25 +114,25 @@ export class TutorialScene1 extends TutorialScene {
 	// Display what the user sees when they win or lose
 	displayWinLose(state: ClientState): void {
 		if (state.winner === 0) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.exitScene).setOrigin(0, 0.5)
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.onWin).setOrigin(0, 0.5)
 			btnResult.setStyle(StyleSettings.announcement)
 			
 			this.storyContainer.add(btnResult)
 		}
 		else if (state.winner === 1) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to retry...", this.retryTutorial).setOrigin(0, 0.5)
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to retry...", this.onRetry).setOrigin(0, 0.5)
 			btnResult.setStyle(StyleSettings.announcement)
 
 			this.storyContainer.add(btnResult)
 		}
 	}
 
-	exitScene(): void {
+	onWin(): void {
   		this.net.closeSocket()
   		this.scene.start("BuilderScene", {isTutorial: true})
   	}
 
-  	retryTutorial(): void {
+  	private onRetry(): void {
   		this.net.closeSocket()
     	this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
   	}
@@ -150,6 +151,32 @@ export class TutorialScene2 extends TutorialScene {
 		params['explanations'] = explanations2
 		super.init(params)
 	}
+
+	// Display what the user sees when they win or lose
+	displayWinLose(state: ClientState): void {
+		if (state.winner === 0) {
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.onWin).setOrigin(0, 0.5)
+			btnResult.setStyle(StyleSettings.announcement)
+			
+			this.storyContainer.add(btnResult)
+		}
+		else if (state.winner === 1) {
+			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to retry...", this.onRetry).setOrigin(0, 0.5)
+			btnResult.setStyle(StyleSettings.announcement)
+
+			this.storyContainer.add(btnResult)
+		}
+	}
+
+	private onWin(): void {
+  		this.net.closeSocket()
+  		this.scene.start("WelcomeScene", {tutorialComplete: true})
+  	}
+
+  	private onRetry(): void {
+  		this.net.closeSocket()
+  		this.scene.start("BuilderScene", {isTutorial: true})
+  	}
 }
 
 

@@ -14,10 +14,10 @@ Stars costs no mana and gives you no points, but on the next round
 you will have 1 extra mana.
 
 The line at the bottom describes what the Inspire mechanic does
-in general. For this card, X is always 1.
+in general. For Stars, X is always 1.
 
 It's best if you have a plan for how to spend that mana next turn,
-otherwise you might just waste this card.
+otherwise it could go to waste.
 `,
 	'Crossed Bones':
 `
