@@ -88,9 +88,6 @@ export class TutorialScene1 extends TutorialScene {
 		this.stackContainer.setVisible(false)
 
 		this.btnRecap.setVisible(false)
-
-		// Simplify all of the card text
-		setSimplifyCardInfo(true)
 	}
 
 	displayState(state: ClientState, recap: Boolean = false): boolean {
@@ -251,6 +248,9 @@ let exPlay: Explanation = new Explanation(
 
 		// Make it so that user can't pass yet
 		scene.btnPass.setVisible(false)
+
+		// Simplify all of the card text
+		setSimplifyCardInfo(true)
 	}
 	)
 let exPass: Explanation = new Explanation(

@@ -65,10 +65,10 @@ care about having large discard piles, such as Tumulus or Anubis.
 Tumulus costs 5 mana for 4 points, but is instead worth 6 points
 if you have at least 8 cards in your discard pile.
 
-Assuming you can play 2 cards each round for this first 4 rounds,
+Assuming you can play 2 cards each round for the first 4 rounds,
 this should be easy to accomplish.
 
-However, after you have shuffled your discard pile, Tumulus might
+However, after you've shuffled your discard pile, Tumulus might
 only be worth 4 points.
 `,
 	'Sarcophagus':
