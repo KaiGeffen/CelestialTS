@@ -2,7 +2,7 @@ import data from "./catalog.json"
 import tokenData from "./tokens.json"
 
 
-export const collectibleCards: Card[] = data
+export const collectibleCards: Card[] = data//.sort(sortByCost)
 export const tokenCards: Card[] = tokenData
 export const allCards: Card[] = collectibleCards.concat(tokenCards)
 export const cardback: Card = tokenCards[0]
@@ -15,6 +15,21 @@ collectibleCards.forEach( (card) => {
 		starterCards.push(card)
 	}
 })
+
+function sortByCost(card1: Card, card2): number {
+	if (card1.cost < card2.cost)
+  {
+    return -1
+  }
+  else if (card1.cost > card2.cost)
+  {
+    return 1
+  }
+  else
+  {
+    return 0
+  }
+}
 
 export interface Card {
   name: string;

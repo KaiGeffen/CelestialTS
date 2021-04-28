@@ -122,9 +122,9 @@ export default class WelcomeScene extends BaseScene {
     // Set that user has seen the tutorial
     localStorage.setItem(tutorialItem, JSON.stringify(true))
 
-    this.scene.start("CatalogScene")
+    // this.scene.start("CatalogScene")
 
-    // this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
+    this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
 
     // this.scene.start("BuilderScene", {isTutorial: true})
   }
