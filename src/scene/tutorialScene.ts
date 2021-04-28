@@ -129,7 +129,7 @@ export class TutorialScene1 extends TutorialScene {
 
 	onWin(): void {
   		this.net.closeSocket()
-  		this.scene.start("BuilderScene", {isTutorial: true})
+  		this.scene.start("CatalogScene")  		
   	}
 
   	private onRetry(): void {
@@ -170,8 +170,7 @@ export class TutorialScene2 extends TutorialScene {
 
 	private onWin(): void {
   		this.net.closeSocket()
-  		// this.scene.start("WelcomeScene", {tutorialComplete: true})
-  		this.scene.start("CatalogScene")
+  		this.scene.start("WelcomeScene", {tutorialComplete: true})
   	}
 
   	private onRetry(): void {
