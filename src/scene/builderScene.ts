@@ -683,7 +683,7 @@ class MenuRegion {
       border: 3,
       borderColor: '#000',
       backgroundColor: '#444',
-      maxLength: 15 * 3
+      maxLength: 15 * 4 - 1
     })
     .setOrigin(0)
     .on('textchange', function (inputText) {

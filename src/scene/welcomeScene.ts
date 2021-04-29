@@ -64,7 +64,7 @@ export default class WelcomeScene extends BaseScene {
     this.sound.volume = UserSettings._get('volume')
   }
 
-  create(): void {
+  create(params?: any): void {
     // Display text and button
     this.add.text(Space.windowWidth/2, 200, "Celestial",
       StyleSettings.title).setOrigin(0.5)
@@ -77,6 +77,11 @@ export default class WelcomeScene extends BaseScene {
 
     // Credits button
     let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
+
+    // If the player just completed the tutorial and is returning to this scene
+    if (params['tutorialComplete']) {
+      console.log('wooot')
+    }
 
     super.create()
   }
