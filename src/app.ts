@@ -1,4 +1,5 @@
 import "phaser"
+import PreloadScene from "./scene/preloadScene"
 import WelcomeScene from "./scene/welcomeScene"
 import GameScene from "./scene/gameScene"
 import BuilderScene from "./scene/builderScene"
@@ -20,7 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
   dom: {
     createContainer: true
   },
-  scene: [WelcomeScene, CreditsScene, CatalogScene, GameScene, BuilderScene, TutorialScene1, TutorialScene2],
+  scene: [PreloadScene, WelcomeScene, CreditsScene, CatalogScene, GameScene, BuilderScene, TutorialScene1, TutorialScene2],
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },

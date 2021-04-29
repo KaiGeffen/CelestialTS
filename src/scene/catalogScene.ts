@@ -186,8 +186,6 @@ export default class CatalogScene extends BaseScene {
 	      that.highlight.setVisible(true)
 
 	      that.txtDescription.setText(descriptions[card.name])
-
-	      console.log(card.text)
 	    }
   	}
 
