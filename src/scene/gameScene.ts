@@ -612,6 +612,16 @@ export default class GameScene extends BaseScene {
 		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('') }, 1000)
 	}
 
+	// Alert user that their opponent left
+	signalDC(): void {
+		let txt = 'Your opponent disconnected, you win!'
+		let btn = new Button(this, Space.windowWidth/2, Space.windowHeight/2, txt, this.exitScene)
+			.setOrigin(0.5)
+			.setStyle(StyleSettings.announcement)
+
+		this.storyContainer.add(btn)
+	}
+
 	// Called by the BaseScene button which returns to main menu, must alert server that we are exiting
 	beforeExit(): void {
 		this.net.closeSocket()

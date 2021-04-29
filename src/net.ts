@@ -72,6 +72,11 @@ export class Network {
 				case 'signal_error':
 					scene.signalError()
 					break
+
+				// Tell user that their opponent disconnected
+				case 'dc':
+					scene.signalDC()
+					break
 			}
 		})
 	}
