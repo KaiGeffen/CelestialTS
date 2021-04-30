@@ -95,7 +95,7 @@ class CatalogRegion {
   create(isTutorial): void {
     let width = Space.cardSize*8 + Space.pad*10 + 10
     let height = Space.cardSize*4 + Space.pad*5
-    let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 10, ColorSettings.menuBackground, 0.7).setOrigin(0)
+    let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
     this.scene.children.sendToBack(background)
 
     this.panel = this.scene['rexUI'].add.scrollablePanel({
@@ -112,9 +112,9 @@ class CatalogRegion {
                 child: this.scene['rexUI'].add.fixWidthSizer({
                     space: {
                         left: Space.pad,
-                        right: Space.pad,
-                        top: Space.pad,
-                        bottom: Space.pad,
+                        right: Space.pad - 10,
+                        top: Space.pad - 10,
+                        bottom: Space.pad - 10,
                         item: Space.pad,
                         line: Space.pad,
                     }
@@ -122,8 +122,9 @@ class CatalogRegion {
             },
 
             slider: {
+              input: 'click',
                 track: this.scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-                thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, ColorSettings.background),
+                thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
             },
 
             space: {
@@ -132,7 +133,17 @@ class CatalogRegion {
                 bottom: 10,
             }
         }).setOrigin(0)
-            .layout()
+            .layout().setInteractive()
+
+    // Panel updates when scroll wheel is used on it
+    let that = this
+    this.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event){
+      that.panel.childOY -= dy
+
+      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+      that.panel.t = Math.max(0, that.panel.t)
+      that.panel.t = Math.min(1, that.panel.t)
+    })
 
     // The layout manager for the panel
     let sizer = this.panel.getElement('panel')
@@ -146,42 +157,7 @@ class CatalogRegion {
     }
 
     this.panel.layout()
-
-    // let that = this
-    // panel.on('scroll', function() {that.filter()})
-
-
-
-    // TODO Remove once scrollbar is present
-    // if (catalog.length > Space.cardsPerPage) {
-    //   let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad/2
-    //   let y = 2 * (Space.cardSize + Space.pad) + Space.pad/2
-
-    //   let btnNext = new Button(this.scene, x, y, '→', this.goNextPage(), false).setOrigin(0, 0)
-    //   this.container.add(btnNext)
-
-    //   let btnPrev = new Button(this.scene, x, y, '←', this.goPrevPage(), false).setOrigin(0, 1)
-    //   this.container.add(btnPrev)
-    // }
-
-
-
-    
-
-    // this.updatePanel(panel)
   }
-
-  // private updatePanel(panel: any): void {
-  //   let sizer = panel.getElement('panel')
-  //   var scene = panel.scene
-
-  //   sizer.clear(true)
-  //   for (var i = 0; i < this.cardImages.length; i++) {
-  //     sizer.add(this.cardImages[i].image)
-  //   }
-
-  //   panel.layout()
-  // }
 
   // Filter which cards are visible
   // Only cards for which filterFunction is true are visible
@@ -189,11 +165,14 @@ class CatalogRegion {
     let sizer = this.panel.getElement('panel')
     sizer.clear()
 
+    let cardCount = 0
     for (var i = 0; i < this.cardImages.length; i++) {
       let cardImage = this.cardImages[i]
 
       // This card is present
       if (filterFunction(cardImage.card)) {
+        cardCount++
+
         cardImage.image.setVisible(true)
         sizer.add(cardImage.image)
       }
@@ -203,6 +182,9 @@ class CatalogRegion {
         cardImage.image.setVisible(false)
       }
     }
+
+    // Hide the slider if all cards fit in panel
+    this.panel.getElement('slider').setVisible(cardCount > 8*4)
 
     this.panel.layout()
   }
