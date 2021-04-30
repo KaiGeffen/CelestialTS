@@ -30,7 +30,7 @@ export default class BaseScene extends Phaser.Scene {
 		addCardInfoToScene(this).setDepth(15)
 
 		// Mute button
-		let s = music.isPlaying ? '♪' : '-'
+		let s = music.isPlaying ? '♫' : '♪'
 		let btnMute = new Button(this, Space.windowWidth - Space.pad/2, 0, s).setOrigin(1, 0)
 		btnMute.setOnClick(this.doMute(btnMute))
 
@@ -121,13 +121,13 @@ export default class BaseScene extends Phaser.Scene {
 			if (music.isPlaying) {
 				music.pause()
 
-				btn.setText('-')
+				btn.setText('♪')
 				UserSettings._set('music', false)
 			}
 			else {
 				music.resume()
 
-				btn.setText('♪')
+				btn.setText('♫')
 				UserSettings._set('music', true)
 			}
 		}	

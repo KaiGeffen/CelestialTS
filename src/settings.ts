@@ -26,8 +26,8 @@ export function ensureUserSettings(): void {
     vsAi: true,
     explainKeywords: true,
     mmCode: '',
-    volume: 0.4,
-    music: true,
+    volume: 0.3,
+    music: false,
     useExpansion: false,
     tutorialKnown: false
   }
