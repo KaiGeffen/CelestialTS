@@ -6,8 +6,6 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 
 
-const tutorialItem = 'tutorialKnown'
-
 export default class WelcomeScene extends BaseScene {
   
   constructor() {
@@ -42,10 +40,9 @@ export default class WelcomeScene extends BaseScene {
     let promptContainer = this.add.container(0, 0).setDepth(25)
     let exitPrompt = function() {
       // Set that user has been prompted to try the tutorial
-      localStorage.setItem(tutorialItem, JSON.stringify(true))
+      UserSettings._set('tutorialKnown', true)
 
-      this.scene.start("BuilderScene", {isTutorial: false})
-      // promptContainer.setVisible(false)
+      promptContainer.setVisible(false)
     }
 
     // Exit confirmation container
@@ -67,7 +64,7 @@ export default class WelcomeScene extends BaseScene {
     this.sound.play('click')
 
     // Guide user to Tutorial if this is their first time here
-    if (localStorage.getItem(tutorialItem) === null) {
+    if (!UserSettings._get('tutorialKnown')) {
       this.createTutorialPrompt()
     }
     else {
@@ -77,7 +74,7 @@ export default class WelcomeScene extends BaseScene {
 
   private doTutorial(): void {
     // Set that user has seen the tutorial
-    localStorage.setItem(tutorialItem, JSON.stringify(true))
+    UserSettings._set('tutorialKnown', true)
 
     // this.scene.start("CatalogScene")
 

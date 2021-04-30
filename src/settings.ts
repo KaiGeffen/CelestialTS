@@ -28,7 +28,8 @@ export function ensureUserSettings(): void {
     mmCode: '',
     volume: 0.4,
     music: true,
-    useExpansion: false
+    useExpansion: false,
+    tutorialKnown: false
   }
 
   for (var key in defaultSettings) {
