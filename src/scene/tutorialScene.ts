@@ -276,7 +276,7 @@ let exPass: Explanation = new Explanation(
 
 let exRoundStart: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 1},
-	"At the start of each round, both players draw 2 cards and gain 1 mana."
+	"At the start of each round, each player draws 2 cards, their maximum mana goes up by 1, and their mana refills."
 	)
 
 

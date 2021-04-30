@@ -14,9 +14,9 @@ Stars costs no mana and gives you no points, but on the next round
 you will have 1 extra mana.
 
 The line at the bottom describes what the Inspire mechanic does
-in general. For Stars, X is always 1.
+in general.
 
-It's best if you have a plan for how to spend that mana next turn,
+It's best if you have a plan for how to spend that mana next round,
 otherwise it could go to waste.
 `,
 	'Crossed Bones':
@@ -65,11 +65,11 @@ care about having large discard piles, such as Tumulus or Anubis.
 Tumulus costs 5 mana for 4 points, but is instead worth 6 points
 if you have at least 8 cards in your discard pile.
 
-Assuming you can play 2 cards each round for the first 4 rounds,
-this should be easy to accomplish.
+To have 8 cards by round 5, you would have to play 2 cards each
+round for the first 4 rounds, which is hard to pull off.
 
-However, after you've shuffled your discard pile, Tumulus might
-only be worth 4 points.
+Also, after you've shuffled your discard pile, it will take some
+time before you can get the full 6 points out of Tumulus.
 `,
 	'Sarcophagus':
 `
@@ -80,7 +80,7 @@ This means you'll draw that card next round, which is great for
 ensuring you don't run out of things to spend your mana on.
 
 Putting a card on top of your deck also delays you shuffling your
-discard pile, which means cards like Broken Bones hurt less.
+discard pile, which is sometimes to your advantage.
 `,
 	'Anubis':
 `
