@@ -78,6 +78,9 @@ class CatalogRegion {
   cardImages: CardImage[] = []
   currentPage: number = 0
 
+  // The scrollable panel which the cards are on
+  panel: any
+
   constructor(scene: Phaser.Scene, deckRegion) {
     this.init(scene, deckRegion)
   }
@@ -90,59 +93,118 @@ class CatalogRegion {
   }
 
   create(isTutorial): void {
+    let width = Space.cardSize*8 + Space.pad*10 + 10
+    let height = Space.cardSize*4 + Space.pad*5
+    let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 10, ColorSettings.menuBackground, 0.7).setOrigin(0)
+    this.scene.children.sendToBack(background)
+
+    this.panel = this.scene['rexUI'].add.scrollablePanel({
+            x: 0,
+            y: 0,
+            width: width,
+            height: height,
+
+            scrollMode: 0,
+
+            background: background,
+
+            panel: {
+                child: this.scene['rexUI'].add.fixWidthSizer({
+                    space: {
+                        left: Space.pad,
+                        right: Space.pad,
+                        top: Space.pad,
+                        bottom: Space.pad,
+                        item: Space.pad,
+                        line: Space.pad,
+                    }
+                })
+            },
+
+            slider: {
+                track: this.scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
+                thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, ColorSettings.background),
+            },
+
+            space: {
+                right: 10,
+                top: 10,
+                bottom: 10,
+            }
+        }).setOrigin(0)
+            .layout()
+
+    // The layout manager for the panel
+    let sizer = this.panel.getElement('panel')
+
     // Determine which set of cards to show
     let catalog = isTutorial ? starterCards : collectibleCards
 
-    for (var i = catalog.length - 1; i >= 0; i--) {
-      this.addCard(catalog[i], i)
+    // Add each of the cards
+    for (var i = 0; i < catalog.length; i++) {
+      sizer.add(this.addCard(catalog[i], i).image)
     }
-    if (catalog.length > Space.cardsPerPage) {
-      let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad/2
-      let y = 2 * (Space.cardSize + Space.pad) + Space.pad/2
 
-      let btnNext = new Button(this.scene, x, y, '→', this.goNextPage(), false).setOrigin(0, 0)
-      this.container.add(btnNext)
+    this.panel.layout()
 
-      let btnPrev = new Button(this.scene, x, y, '←', this.goPrevPage(), false).setOrigin(0, 1)
-      this.container.add(btnPrev)
-    }
+    // let that = this
+    // panel.on('scroll', function() {that.filter()})
+
+
+
+    // TODO Remove once scrollbar is present
+    // if (catalog.length > Space.cardsPerPage) {
+    //   let x = Space.cardsPerRow * (Space.cardSize + Space.pad) + Space.pad/2
+    //   let y = 2 * (Space.cardSize + Space.pad) + Space.pad/2
+
+    //   let btnNext = new Button(this.scene, x, y, '→', this.goNextPage(), false).setOrigin(0, 0)
+    //   this.container.add(btnNext)
+
+    //   let btnPrev = new Button(this.scene, x, y, '←', this.goPrevPage(), false).setOrigin(0, 1)
+    //   this.container.add(btnPrev)
+    // }
+
+
+
+    
+
+    // this.updatePanel(panel)
   }
+
+  // private updatePanel(panel: any): void {
+  //   let sizer = panel.getElement('panel')
+  //   var scene = panel.scene
+
+  //   sizer.clear(true)
+  //   for (var i = 0; i < this.cardImages.length; i++) {
+  //     sizer.add(this.cardImages[i].image)
+  //   }
+
+  //   panel.layout()
+  // }
 
   // Filter which cards are visible
   // Only cards for which filterFunction is true are visible
   filter(filterFunction: (card: Card) => boolean): void {
-    let cardsRemoved = false
-    let visibleIndex = 0
+    let sizer = this.panel.getElement('panel')
+    sizer.clear()
 
-    // TODO Explain this
-    for (var i = this.cardImages.length - 1; i >= 0; i--) {
+    for (var i = 0; i < this.cardImages.length; i++) {
       let cardImage = this.cardImages[i]
 
       // This card is present
       if (filterFunction(cardImage.card)) {
         cardImage.image.setVisible(true)
-
-        // If cards are being removed, shift into position, otherwise snap
-        let newPosition = this.getCardPosition(visibleIndex)
-        if (cardsRemoved) {
-          // TODO move over time (moveTo)
-          cardImage.image.setPosition(...newPosition)
-        } else {
-          cardImage.image.setPosition(...newPosition)
-        }
-
-        visibleIndex++
+        sizer.add(cardImage.image)
       }
       else
       {
-        // If this card was visible but now isn't, this filter is removing more cards
-        if (cardImage.image.visible) cardsRemoved = true
-
-          cardImage.image.setVisible(false)
+        // sizer.remove(cardImage.image)
+        cardImage.image.setVisible(false)
       }
     }
 
-    this.goToPage(0)
+    this.panel.layout()
   }
 
   private onClick(card: Card): () => void {
@@ -160,7 +222,7 @@ class CatalogRegion {
     }
   }
 
-  private addCard(card: Card, index: number): void {
+  private addCard(card: Card, index: number): CardImage {
     var image: Phaser.GameObjects.Image
     var [x, y] = this.getCardPosition(index)
     
@@ -172,7 +234,10 @@ class CatalogRegion {
 
     this.cardContainer.add(image)
 
-    this.cardImages.push(new CardImage(card, image))
+    let cardImage = new CardImage(card, image)
+    this.cardImages.push(cardImage)
+
+    return cardImage
   }
 
   private getCardPosition(index: number): [number, number] {
