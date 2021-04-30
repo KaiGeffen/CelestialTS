@@ -1,5 +1,5 @@
 import "phaser"
-import { collectibleCards, starterCards,  Card } from "../catalog/catalog"
+import { collectibleCards, starterCards, baseCards,  Card } from "../catalog/catalog"
 import { CardImage, cardInfo } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
@@ -55,8 +55,11 @@ export default class BuilderScene extends BaseScene {
     }
     else {
       this.filterRegion.create()
-      this.menuRegion.create()
+      this.menuRegion.create(this.filterRegion)
     }
+
+    // Filter to ensure that cards are visible/not based on user settings (Expansion hidden, etc)
+    this.filterRegion.filter()
 
     super.create()
   }
@@ -87,7 +90,9 @@ class CatalogRegion {
   }
 
   create(isTutorial): void {
+    // Determine which set of cards to show
     let catalog = isTutorial ? starterCards : collectibleCards
+
     for (var i = catalog.length - 1; i >= 0; i--) {
       this.addCard(catalog[i], i)
     }
@@ -105,7 +110,7 @@ class CatalogRegion {
 
   // Filter which cards are visible
   // Only cards for which filterFunction is true are visible
-  filter(filterFunction): void {
+  filter(filterFunction: (card: Card) => boolean): void {
     let cardsRemoved = false
     let visibleIndex = 0
 
@@ -514,6 +519,36 @@ class FilterRegion {
     this.container.add(btnClear)
   }
 
+  // Filter the visible cards, based on if expansion is used, and the cost settings of this region
+  filter(): void {
+    let that = this
+
+    let costFilter = function(card: Card): boolean {
+      // If no number are selected, all cards are fine
+      if (!that.filterCostAry.includes(true)) {
+        return true
+      }
+      else {
+        return that.filterCostAry[card.cost]
+      }
+    }
+
+    let expansionFilter = function(card: Card): boolean {
+      if (UserSettings._get('useExpansion')) {
+        return true
+      }
+      else {
+        return baseCards.includes(card)
+      }
+    }
+
+    let andFilter = function(card: Card): boolean {
+      return costFilter(card) && expansionFilter(card)
+    }
+
+    that.catalogRegion.filter(andFilter)
+  }
+
   private onClick(i: number, btn): () => void {
     let that = this
 
@@ -532,19 +567,7 @@ class FilterRegion {
       // Toggle filtering the chosen number
       that.filterCostAry[i] = !that.filterCostAry[i]
 
-      // If nothing is filtered, all cards are shown
-      let filterFunction
-      if (that.filterCostAry.every(v => v === false)) {
-        filterFunction = function (card: Card) {return true}
-      }
-      else
-      {
-        filterFunction = function (card: Card) {
-          return that.filterCostAry[card.cost]
-        }
-      }
-
-      that.catalogRegion.filter(filterFunction)
+      that.filter()
     }
   }
 
@@ -559,9 +582,7 @@ class FilterRegion {
         that.filterCostAry[i] = false
       }
 
-      that.catalogRegion.filter(
-        function (card: Card) {return true}
-        )
+      that.filter()
     }
   }
 }
@@ -590,8 +611,11 @@ class MenuRegion {
     this.container.setDepth(20)
   }
 
-  create(): void {
+  create(filterRegion: any): void {
     let that = this
+
+    // Set the callback for deckRegion menu button
+    this.deckRegion.setShowMenu(this.onOpenMenu())
 
     // Visible and invisible background rectangles, stops other containers from being clicked
     let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0xffffff, 0)
@@ -603,16 +627,9 @@ class MenuRegion {
     })
     this.container.add(invisBackground)
 
-
-
-    // Set the callback for deckRegion menu button
-    this.deckRegion.setShowMenu(this.onOpenMenu())
-
-
-
     // Visible background, which does nothing when clicked
     let width = Space.cardSize * 5 + Space.pad * 4
-    let height = Space.cardSize * 4 + Space.pad * 3
+    let height = Space.cardSize * 5 + Space.pad * 3
 
     let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
     visibleBackground.setInteractive()
@@ -622,23 +639,47 @@ class MenuRegion {
 
     // Vs ai toggleable button
     let y = Space.pad/2
-    let txtVsAi = this.scene.add.text(Space.pad, y, 'Play vs Computer:', StyleSettings.announcement).setOrigin(0)
+    let txtVsAi = this.scene.add.text(Space.pad, y, 'Play vs computer:', StyleSettings.announcement).setOrigin(0)
     this.container.add(txtVsAi)
 
-    let radio = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    let radioAi = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
     if (UserSettings._get('vsAi')) {
-      radio.setFillStyle(ColorSettings.cardHighlight)
+      radioAi.setFillStyle(ColorSettings.cardHighlight)
     }
 
-    radio.setInteractive()
-    radio.on('pointerdown', function() {
+    radioAi.setInteractive()
+    radioAi.on('pointerdown', function() {
       that.scene.sound.play('click')
 
       UserSettings._set('vsAi', !UserSettings._get('vsAi'))
 
-      radio.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.cardHighlight : undefined)
+      radioAi.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.cardHighlight : undefined)
     })
-    this.container.add(radio)
+    this.container.add(radioAi)
+
+
+
+    // Use expansion toggleable button
+    y += Space.cardSize
+    let txtUseExpansion = this.scene.add.text(Space.pad, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
+    this.container.add(txtUseExpansion)
+
+    let radioExpansion = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    if (UserSettings._get('useExpansion')) {
+      radioExpansion.setFillStyle(ColorSettings.cardHighlight)
+    }
+
+    radioExpansion.setInteractive()
+    radioExpansion.on('pointerdown', function() {
+      that.scene.sound.play('click')
+
+      UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
+
+      radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
+
+      filterRegion.filter()
+    })
+    this.container.add(radioExpansion)
 
 
 
@@ -665,7 +706,7 @@ class MenuRegion {
       UserSettings._set('mmCode', inputText.text)
     })
     this.container.add(textBoxMM)
-    
+
 
 
     // Text field for the deck-code

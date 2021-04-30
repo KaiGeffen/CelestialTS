@@ -27,7 +27,8 @@ export function ensureUserSettings(): void {
     explainKeywords: true,
     mmCode: '',
     volume: 0.4,
-    music: true
+    music: true,
+    useExpansion: false
   }
 
   for (var key in defaultSettings) {

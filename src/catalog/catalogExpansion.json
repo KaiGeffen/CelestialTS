@@ -1,0 +1,105 @@
+[
+  {"name": "Bee", "id": 126,
+    "cost": 0,
+    "text": "0:1, Visible."
+  },
+  {"name": "Nectar", "id": 128,
+    "cost": 1,
+    "text": "1:0, Nourish 1."
+  },
+  {"name": "Bandit", "id": 69,
+    "cost": 1,
+    "text": "1:2, create a ${146} in your opponent's hand."
+  },
+  {"name": "Spy", "id": 1,
+    "cost": 1, "points": 2,
+    "text": "1:0, create a ${143} in your opponent's hand."
+  },
+  {"name": "Night Vision", "id": 70,
+    "cost": 1,
+    "text": "1:0, Tutor 2.\nWhen played, gain Sight 3."
+  },
+  {"name": "Disintegrate", "id": 66,
+    "cost": 1,
+    "text": "1:1, transform the next 1-cost card in the story into a ${144}."
+  },
+  {"name": "Juggle", "id": 136,
+    "cost": 1, "points": 1,
+    "text": "1:1.\nWhen played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)"
+  },
+
+  {"name": "Sine", "id": 3,
+    "cost": 2, "points": 2,
+    "text": "2:4, Starve 4."
+  },
+  {"name": "Fishing Boat", "id": 68,
+    "cost": 2,
+    "text": "2:0, Tutor 1, Tutor 1, Tutor 1."
+  },
+  {"name": "Raise Dead", "id": 95,
+    "cost": 2,
+    "text": "2:2, put the top card of your discard pile on top of your deck."
+  },
+  {"name": "Bastet", "id": 116,
+    "cost": 2,
+    "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
+  },
+  {"name": "Imprison", "id": 53,
+    "cost": 2,
+    "text": "2:0, set both players points to 0, then give your opponent 1 point for each card in their hand."
+  },
+  {"name": "Crypt", "id": 119,
+    "cost": 2,
+    "text": "2:2, your last card in the story transforms into the top card in your discard pile with the same cost as it."
+  },
+
+  {"name": "Stable", "id": 125,
+    "cost": 3,
+    "text": "3:3, remove from the game and note the top card of your discard pile. This card's effect becomes to add a copy of the noted card to your hand."
+  },
+  {"name": "Boar", "id": 72,
+    "cost": 3,
+    "text": "3:4, discard your X leftmost cards, where X is the number of cards later in the story."
+  },
+  {"name": "Paranoia", "id": 21,
+    "cost": 3,
+    "text": "3:3.\nWhen played, gain Sight X, where X is the number of cards before this in the story."
+  },
+
+  {"name": "Pelican", "id": 25,
+    "cost": 4,
+    "text": "4:4, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed."
+  },
+
+  {"name": "Beekeep", "id": 133,
+    "cost": 5,
+    "text": "5:5, remove from the game and note all 0-cost cards in your discard pile. This card's effect becomes to add to your discard pile a copy of each of the noted cards."
+  },
+  {"name": "Lotus", "id": 46,
+    "cost": 5,
+    "text": "5:0, Inspire 2. If this is your last card in the story, set both players points to 0."
+  },
+
+  {"name": "Eagle", "id": 71,
+    "cost": 6,
+    "text": "6:6, Nourish 2.\nWhen played, gain Sight 4 and transform each card in your hand into a ${19}."
+  },
+
+  {"name": "Ecology", "id": 65,
+    "cost": 7,
+    "text": "7:2.\nWhen played, gain 10 mana this round."
+  },
+  {"name": "Horus", "id": 67,
+    "cost": 7,
+    "text": "7:7, costs 0 if you can see at least 3 of your opponent's cards in the story."
+  },
+  {"name": "Icarus", "id": 27,
+    "cost": 7,
+    "text": "7:7, costs 0 if you have 5 cards in the story"
+  },
+
+  {"name": "Enrage", "id": 6,
+    "cost": 8,
+    "text": "8:2, give each card later in the story -X, where X is its cost.\nWhen played, give each card ealier in the story -X."
+  }
+]

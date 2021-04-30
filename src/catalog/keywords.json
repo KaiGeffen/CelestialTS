@@ -20,7 +20,7 @@
 		"text": "Starve X - The next card you resolve is worth -X."
 	},
 	{"key": "Build",
-		"text": "Build X - If you have a robot in hand, give it +X. Otherwise create a 0/X Fleeting Robot in hand."
+		"text": "Build X - If you have a robot in hand, give it +X. Otherwise create a 0:X Fleeting Robot in hand."
 	},
 	{"key": "Tutor",
 		"text": "Tutor X - Draw an X-cost card. Priority for the card drawn is deck top to bottom, then discard pile top to bottom."

@@ -1,8 +1,11 @@
 import data from "./catalog.json"
+import expansionData from "./catalogExpansion.json"
 import tokenData from "./tokens.json"
 
 
-export const collectibleCards: Card[] = data//.sort(sortByCost)
+export const baseCards: Card[] = data
+export const collectibleCards: Card[] = data.concat(expansionData)
+
 export const tokenCards: Card[] = tokenData
 export const allCards: Card[] = collectibleCards.concat(tokenCards)
 export const cardback: Card = tokenCards[0]
