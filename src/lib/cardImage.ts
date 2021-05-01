@@ -89,6 +89,15 @@ export class CardImage {
     })
   }
 
+  // Remove the tint of this card being highlighted, and if you do, hide cardInfo
+  removeHighlight(): void {
+    if (!this.unplayable && this.image.isTinted) {
+      this.image.clearTint()
+
+      cardInfo.setVisible(false)
+    }
+  }
+
   private getCardText(card): string {
     if (card === cardback) {
       return '?'
@@ -224,6 +233,10 @@ export class CardImage {
   }
 
   private onHoverExit(): () => void {
+    return this.removeHighlight
+  }
+
+  private onScroll(): () => void {
     return function() {
       if (!this.unplayable) {
         this.image.clearTint()

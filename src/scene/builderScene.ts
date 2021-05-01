@@ -93,6 +93,8 @@ class CatalogRegion {
   }
 
   create(isTutorial): void {
+    let that = this
+    
     let width = Space.cardSize*8 + Space.pad*10 + 10
     let height = Space.cardSize*4 + Space.pad*5
     let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
@@ -133,11 +135,17 @@ class CatalogRegion {
                 bottom: 10,
             }
         }).setOrigin(0)
-            .layout().setInteractive()
+            .layout()
+            .setInteractive()
+            .on('scroll', function() {
+              for (var i = 0; i < that.cardImages.length; i++) {
+                that.cardImages[i].removeHighlight()
+              }
+            })
 
     // Panel updates when scroll wheel is used on it
-    let that = this
     this.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event){
+      // Scroll panel down by amount wheel moved
       that.panel.childOY -= dy
 
       // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
@@ -153,7 +161,9 @@ class CatalogRegion {
 
     // Add each of the cards
     for (var i = 0; i < catalog.length; i++) {
-      sizer.add(this.addCard(catalog[i], i).image)
+      let cardImage = this.addCard(catalog[i], i)
+
+      sizer.add(cardImage.image)
     }
 
     this.panel.layout()
