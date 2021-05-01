@@ -25,7 +25,9 @@ const SOUNDS = [
 'nourish',
 
 'meow',
-'yell'
+'yell',
+'bone_snap',
+'bird'
 ]
 
 
