@@ -94,7 +94,7 @@ class CatalogRegion {
 
   create(isTutorial): void {
     let that = this
-    
+
     let width = Space.cardSize*8 + Space.pad*10 + 10
     let height = Space.cardSize*4 + Space.pad*5
     let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
@@ -137,9 +137,11 @@ class CatalogRegion {
         }).setOrigin(0)
             .layout()
             .setInteractive()
-            .on('scroll', function() {
-              for (var i = 0; i < that.cardImages.length; i++) {
-                that.cardImages[i].removeHighlight()
+            .on('scroll', function(panel) {
+              if (0 < panel.t && panel.t < 1) {
+                for (var i = 0; i < that.cardImages.length; i++) {
+                  that.cardImages[i].removeHighlight()
+                }
               }
             })
 
