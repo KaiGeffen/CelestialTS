@@ -1,5 +1,5 @@
-import { Card } from "../catalog/catalog";
 import { decodeDeck, decodeStory, decodeStatuses, decodeRecap } from "./codec"
+import Card from "./card"
 import Story from "./story"
 import Recap from "./recap"
 

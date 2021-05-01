@@ -1,7 +1,8 @@
 import 'phaser'
 import BaseScene from "./baseScene"
 
-import { starterCards,  Card } from "../catalog/catalog"
+import { starterCards } from "../catalog/catalog"
+import Card from "../lib/card"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { CardImage } from "../lib/cardImage"
 import Button from "../lib/button"

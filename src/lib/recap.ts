@@ -1,6 +1,6 @@
 import Story from './story'
 import ClientState from './clientState'
-import { Card } from '../catalog/catalog'
+import Card from './card'
 
 
 export default class Recap {

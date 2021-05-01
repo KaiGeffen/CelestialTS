@@ -2,7 +2,7 @@ import "phaser"
 import GameScene from "./gameScene"
 import { StyleSettings, ColorSettings, Space } from "../settings"
 import ClientState from "../lib/clientState"
-import { setSimplifyCardInfo } from "../lib/cardImage"
+import { setSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
 
 

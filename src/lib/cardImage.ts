@@ -1,15 +1,8 @@
 import "phaser"
-import { Card, cardback } from "../catalog/catalog"
-import { decodeCard } from "./codec"
+import { cardback } from "../catalog/catalog"
 import { ColorSettings, StyleSettings, UserSettings } from "../settings"
-import { keywords, Keyword } from "../catalog/keywords"
+import Card from './card'
 
-
-// For the tutorial, the card info shown will only be the mana/points
-var simplifyCardInfo: Boolean = false
-export function setSimplifyCardInfo(simplify: Boolean): void {
-  simplifyCardInfo = simplify
-}
 
 export var cardInfo: Phaser.GameObjects.Text
 
@@ -93,9 +86,9 @@ export class CardImage {
   removeHighlight(): void {
     if (!this.unplayable && this.image.isTinted) {
       this.image.clearTint()
-
-      cardInfo.setVisible(false)
     }
+    
+    cardInfo.setVisible(false)
   }
 
   private onHover(): () => void {

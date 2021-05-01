@@ -1,4 +1,4 @@
-import { Card } from "../catalog/catalog"
+import Card from "../lib/card"
 
 
 export default class Story {

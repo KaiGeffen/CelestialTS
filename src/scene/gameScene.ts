@@ -1,5 +1,6 @@
 import "phaser";
-import { collectibleCards, Card, cardback } from "../catalog/catalog"
+import { collectibleCards, cardback } from "../catalog/catalog"
+import Card from "../lib/card"
 
 import { Network } from "../net"
 import ClientState from "../lib/clientState"

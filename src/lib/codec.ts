@@ -1,4 +1,5 @@
-import { Card, allCards } from "../catalog/catalog"
+import { allCards } from "../catalog/catalog"
+import Card from './card'
 import Story from './story'
 import Recap from './recap'
 import ClientState from './clientState'
@@ -15,9 +16,9 @@ function decodeCard(s: string): Card {
 	let sections = s.split(delims[2])
 
 	let cardId = parseInt(sections[0])
-	let baseCard = allCards.find(card => card.id === cardId)
+	let card = allCards.find(card => card.id === cardId)
 
-	// if (baseCard === undefined) {
+	// if (card === undefined) {
 	// 	throw {
 	// 		name:	"Codec Error",
 	// 		message: `String ${s} does not decode to a valid card.`,
@@ -26,14 +27,13 @@ function decodeCard(s: string): Card {
 	// }
 
 	if (sections.length == 1) {
-		return baseCard
+		return card
 	} else {
 		let dynamicText = sections[1]
 
-		let dynamicCard = JSON.parse(JSON.stringify(baseCard))
-		dynamicCard.dynamicText = dynamicText
+		card.dynamicText = dynamicText
 
-		return dynamicCard
+		return card
 	}
 }
 
