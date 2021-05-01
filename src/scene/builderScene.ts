@@ -601,7 +601,7 @@ class FilterRegion {
     // Add search functionality
     let that = this
 
-    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0xffffff, 0)
+    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
     invisBackground.setInteractive().setVisible(false)
 
     invisBackground.on('pointerdown', function() {
