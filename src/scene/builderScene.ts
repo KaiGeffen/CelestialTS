@@ -543,6 +543,7 @@ class FilterRegion {
   container: Phaser.GameObjects.Container
   catalogRegion
   filterCostAry: boolean[] = []
+  searchText: string
 
   constructor(scene: Phaser.Scene, catalogRegion) {
     this.init(scene, catalogRegion)
@@ -576,6 +577,66 @@ class FilterRegion {
     btnClear.setInteractive()
     btnClear.on('pointerdown', this.onClear(btnNumbers))
     this.container.add(btnClear)
+
+    // Add search functionality
+    let that = this
+
+    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0xffffff, 0)
+    invisBackground.setInteractive().setVisible(false)
+
+    invisBackground.on('pointerdown', function() {
+      textboxSearch.setVisible(false)
+      invisBackground.setVisible(false)
+    })
+
+    // Text input for the search
+    let textboxSearch = this.scene.add['rexInputText'](
+      Space.windowWidth/2 - 2, Space.windowHeight/2, 580, Space.cardSize, {
+      type: 'textarea',
+      text: '',
+      font: 'Arial',
+      fontSize: '80px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#444',
+      maxLength: 24,
+      selectAll: true,
+      id: 'search-field'
+    })
+    .setOrigin(0.5)
+    .setVisible(false)
+    .on('blur', function () {
+      this.setVisible(false)
+      invisBackground.setVisible(false)
+    })
+    .on('textchange', function (inputText) {
+      let hasNewline = inputText.text.includes('\n')
+      inputText.text = inputText.text.replace('\n', '')
+      
+      if (hasNewline) {
+        this.setVisible(false)
+        invisBackground.setVisible(false)
+      }
+
+      // Filter the visible cards based on the text
+      that.searchText = inputText.text
+      that.filter()
+    })
+
+    let btnSearch = new Button(this.scene, 100, 100, '🔍', function() {
+      textboxSearch.setVisible(true)
+      invisBackground.setVisible(true)
+
+      // setTimeout(function() {
+      document.getElementById('search-field').focus()
+      textboxSearch.selectAll()
+          // }, 10)
+      
+    }).setOrigin(1, 0)
+    this.container.add(btnSearch)
+
+    this.searchText = textboxSearch.text
   }
 
   // Filter the visible cards, based on if expansion is used, and the cost settings of this region
@@ -601,11 +662,20 @@ class FilterRegion {
       }
     }
 
+    let searchTextFilter = function(card: Card): boolean {
+      // TODO Get full card text, since things like substitution don't work
+      return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
+    }
+
     let andFilter = function(card: Card): boolean {
-      return costFilter(card) && expansionFilter(card)
+      return costFilter(card) && expansionFilter(card) && searchTextFilter(card)
     }
 
     that.catalogRegion.filter(andFilter)
+  }
+
+  private openSearchField(): void {
+
   }
 
   private onClick(i: number, btn): () => void {
