@@ -544,7 +544,7 @@ class FilterRegion {
   container: Phaser.GameObjects.Container
   catalogRegion
   filterCostAry: boolean[] = []
-  searchText: string
+  searchText: string = ""
 
   constructor(scene: Phaser.Scene, catalogRegion) {
     this.init(scene, catalogRegion)
@@ -592,19 +592,19 @@ class FilterRegion {
 
     // Text input for the search
     let textboxSearch = this.scene.add['rexInputText'](
-      Space.windowWidth/2 - 2, Space.windowHeight/2, 580, Space.cardSize, {
-      type: 'textarea',
-      text: '',
-      font: 'Arial',
-      fontSize: '80px',
-      color: ColorSettings.button,
-      border: 3,
-      borderColor: '#000',
-      backgroundColor: '#444',
-      maxLength: 24,
-      selectAll: true,
-      id: 'search-field'
-    })
+      Space.windowWidth/2 - 2, Space.windowHeight/2, 620, Space.cardSize, {
+        type: 'textarea',
+        text: '',
+        font: 'Arial',
+        fontSize: '80px',
+        color: ColorSettings.button,
+        border: 3,
+        borderColor: '#000',
+        backgroundColor: '#444',
+        maxLength: 12,
+        selectAll: true,
+        id: 'search-field'
+      })
     .setOrigin(0.5)
     .setVisible(false)
     .on('blur', function () {
@@ -625,19 +625,22 @@ class FilterRegion {
       that.filter()
     })
 
-    let btnSearch = new Button(this.scene, 100, 100, '🔍', function() {
+    // Button to open the search field, just below the base scene buttons
+    let btnSearch = new Button(this.scene, 100, 100, '"i"', function() {
       textboxSearch.setVisible(true)
       invisBackground.setVisible(true)
 
-      // setTimeout(function() {
       document.getElementById('search-field').focus()
       textboxSearch.selectAll()
-          // }, 10)
-      
-    }).setOrigin(1, 0)
+      }).setOrigin(1, 0)
     this.container.add(btnSearch)
 
-    this.searchText = textboxSearch.text
+    // Listen for esc key, and close search field if seen
+    let esc = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+    esc.on('down', function () {
+      textboxSearch.setVisible(false)
+      invisBackground.setVisible(false)
+    })
   }
 
   // Filter the visible cards, based on if expansion is used, and the cost settings of this region
