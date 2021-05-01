@@ -29,8 +29,8 @@ export default class WelcomeScene extends BaseScene {
     let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
 
     // If the player just completed the tutorial and is returning to this scene
-    if (params['tutorialComplete']) {
-      console.log('wooot')
+    if (!params['tutorialComplete']) {
+      this.createTutorialCompleteMessage()
     }
 
     super.create()
@@ -46,10 +46,10 @@ export default class WelcomeScene extends BaseScene {
     }
 
     // Exit confirmation container
-    let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0xffffff, 0).setOrigin(0, 0)
+    let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
     invisibleBackground.setInteractive().on('pointerdown', exitPrompt, this)
 
-    let visibleBackground = this.add.rectangle(Space.windowWidth/2, Space.windowHeight/2, 800, 200, ColorSettings.menuBackground, 0.95)
+    let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 800, 200, 30, ColorSettings.menuBackground).setAlpha(0.95)
     visibleBackground.setInteractive()
 
     let txtHint = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 40, 'Would you like to try the tutorial?', StyleSettings.announcement).setOrigin(0.5, 0.5)
@@ -59,6 +59,30 @@ export default class WelcomeScene extends BaseScene {
 
     promptContainer.add([invisibleBackground, visibleBackground, txtHint, btnYes, btnNo])
   }
+
+  private createTutorialCompleteMessage(): void {
+    let promptContainer = this.add.container(0, 0).setDepth(25)
+    let exitPrompt = function() {
+      promptContainer.setVisible(false)
+    }
+
+    // Exit confirmation container
+    let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
+    invisibleBackground.setInteractive().on('pointerdown', exitPrompt, this)
+
+    let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 800, 300, 30, ColorSettings.menuBackground).setAlpha(0.95)
+    visibleBackground.setInteractive()
+
+    let txtTitle = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 110, 'Congratulations!', StyleSettings.announcement).setOrigin(0.5)
+    let txtMessage = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 50,
+`You completed the tutorial. All of the cards in the
+base set are now available to you! Try building a
+deck to use against the computer, or play against a
+real live opponent.`, StyleSettings.basic).setOrigin(0.5, 0)
+    
+    promptContainer.add([invisibleBackground, visibleBackground, txtTitle, txtMessage])
+  }
+
 
   private doStart(): void {
     this.sound.play('click')

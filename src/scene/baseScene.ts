@@ -44,7 +44,7 @@ export default class BaseScene extends Phaser.Scene {
 		let that = this
 
 		// Invisible background, which closes menu when clicked
-		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0xffffff, 0).setOrigin(0, 0)
+		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
 		invisibleBackground.setInteractive().on('pointerdown', this.exitConfirmation, this)
 
 		// Visible background, which does nothing when clicked

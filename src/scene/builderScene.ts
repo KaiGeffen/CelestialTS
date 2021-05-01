@@ -770,7 +770,7 @@ class MenuRegion {
     this.deckRegion.setShowMenu(this.onOpenMenu())
 
     // Visible and invisible background rectangles, stops other containers from being clicked
-    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0xffffff, 0)
+    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
     invisBackground.setInteractive()
 
     invisBackground.on('pointerdown', function() {
