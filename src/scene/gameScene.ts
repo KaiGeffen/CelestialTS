@@ -432,7 +432,7 @@ export default class GameScene extends BaseScene {
 				let card = completedAct[0]
 				let owner = completedAct[1]
 
-				this.addCard(card, i, this.storyContainer, owner).setTransparent()
+				this.addCard(card, i, this.storyContainer, owner).setTransparent(true)
 			}
 		}
 		for (var i = 0; i < state.story.acts.length; i++) {

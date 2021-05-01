@@ -51,8 +51,13 @@ export class CardImage {
     }
   }
 
-  setTransparent(): void {
-    this.image.setAlpha(0.2)
+  setTransparent(value: Boolean): void {
+    if (value) {
+      this.image.setAlpha(0.2)
+    }
+    else {
+      this.image.setAlpha(1) 
+    }
   }
 
   // Animate the card 'Camera' when it should be given attention

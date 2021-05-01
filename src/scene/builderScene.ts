@@ -405,6 +405,9 @@ class DeckRegion {
       // Add the new deck
       deck.forEach( (card) => this.addCard(card))
 
+      // Show whether each card is legal in this format
+      this.showCardsLegality()
+
       return true
     }
   }
@@ -425,17 +428,17 @@ class DeckRegion {
   }
 
   // Grey out cards in the deck that aren't legal in this format, remove grey from legal cards
-  showCardsLegality(useExpansion: Boolean): void {
+  showCardsLegality(): void {
     for (var i = 0; i < this.deck.length; i++) {
 
       // If using the expansion, all cards are legal
-      if (useExpansion) {
-        this.deck[i].setPlayable(true)
+      if (UserSettings._get('useExpansion')) {
+        this.deck[i].setTransparent(false)
       }
       else {
         let isInBase = baseCards.includes(this.deck[i].card)
 
-        this.deck[i].setPlayable(isInBase)
+        this.deck[i].setTransparent(!isInBase)
       }
     }
   }
@@ -832,7 +835,7 @@ class MenuRegion {
       filterRegion.filter()
 
       // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
-      deckRegion.showCardsLegality(UserSettings._get('useExpansion'))
+      deckRegion.showCardsLegality()
     })
     this.container.add(radioExpansion)
 
