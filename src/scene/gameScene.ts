@@ -639,7 +639,7 @@ export default class GameScene extends BaseScene {
 			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
 
 			if (!state.cardsPlayable[i]) {
-				cardImage.setUnplayable()
+				cardImage.setPlayable(false)
 			}
 
 			// Play the card if it's clicked on (Even if unplayable, will signal error)

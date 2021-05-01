@@ -39,10 +39,16 @@ export class CardImage {
     this.image.destroy();
   }
 
-  // Set this card image to be unplayable
-  setUnplayable(): void {
-    this.image.setTint(ColorSettings.cardUnplayable)
-    this.unplayable = true
+  // Set whether this card is playable
+  setPlayable(isPlayable: Boolean): void {
+    this.unplayable = !isPlayable
+
+    if (isPlayable) {
+      this.image.clearTint()
+    }
+    else {
+      this.image.setTint(ColorSettings.cardUnplayable)
+    }
   }
 
   setTransparent(): void {

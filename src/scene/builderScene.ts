@@ -56,7 +56,7 @@ export default class BuilderScene extends BaseScene {
     }
     else {
       this.filterRegion.create()
-      this.menuRegion.create(this.filterRegion)
+      this.menuRegion.create(this.filterRegion, this.deckRegion)
     }
 
     // Filter to ensure that cards are visible/not based on user settings (Expansion hidden, etc)
@@ -424,6 +424,22 @@ class DeckRegion {
     }
   }
 
+  // Grey out cards in the deck that aren't legal in this format, remove grey from legal cards
+  showCardsLegality(useExpansion: Boolean): void {
+    for (var i = 0; i < this.deck.length; i++) {
+
+      // If using the expansion, all cards are legal
+      if (useExpansion) {
+        this.deck[i].setPlayable(true)
+      }
+      else {
+        let isInBase = baseCards.includes(this.deck[i].card)
+
+        this.deck[i].setPlayable(isInBase)
+      }
+    }
+  }
+
   private onStart(): () => void {
     let that = this
 
@@ -744,7 +760,7 @@ class MenuRegion {
     this.container.setDepth(20)
   }
 
-  create(filterRegion: any): void {
+  create(filterRegion: any, deckRegion: any): void {
     let that = this
 
     // Set the callback for deckRegion menu button
@@ -806,11 +822,17 @@ class MenuRegion {
     radioExpansion.on('pointerdown', function() {
       that.scene.sound.play('click')
 
+      // Toggle useExpansion setting
       UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
 
+      // Reflect the current value of useExpansion setting
       radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
 
+      // Filter the cards available in catalog
       filterRegion.filter()
+
+      // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
+      deckRegion.showCardsLegality(UserSettings._get('useExpansion'))
     })
     this.container.add(radioExpansion)
 
