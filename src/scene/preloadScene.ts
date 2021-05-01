@@ -27,7 +27,12 @@ const SOUNDS = [
 'meow',
 'yell',
 'bone_snap',
-'bird'
+'bird',
+'drown',
+'fire',
+'reset',
+'crowd',
+'sarcophagus'
 ]
 
 
