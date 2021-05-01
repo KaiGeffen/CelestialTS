@@ -460,7 +460,7 @@ class DeckRegion {
     let xPad = Space.pad
     let x = index * (Space.cardSize - Space.stackOverlap) + xPad + Space.cardSize/2
 
-    let y = Space.pad + Space.cardSize/2 + (index%2) * Space.stackOffset
+    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
 
     return [-x, -y]
   }
