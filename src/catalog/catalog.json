@@ -68,9 +68,9 @@
     "text": "4:4, remove from the game the top 4 cards of your discard pile."
   },
 
-  {"name": "Force", "id": 16,
+  {"name": "Chimney", "id": 64,
     "cost": 5,
-    "text": "5:6, Flare."
+    "text": "5:2, your opponent puts the leftmost card in their hand on top of their deck."
   },
   {"name": "Tumulus", "id": 99,
     "cost": 5,
