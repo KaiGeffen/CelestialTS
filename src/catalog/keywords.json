@@ -1,32 +1,41 @@
 [
 	{"key": "Fleeting",
-		"text": "Fleeting - After resolving, this card is removed from the game."
+		"text": "Fleeting - After resolving, this card is removed from the game.",
+		"x": false
 	},
 	{"key": "Visible",
-		"text": "Visible - This card is visible to your opponent while in the story."
+		"text": "Visible - This card is visible to your opponent while in the story.",
+		"x": false
 	},
 	{"key": "Sight",
-		"text": "Sight X - The first X cards in the story are visible to you this round."
+		"text": "Sight X - The first X cards in the story are visible to you this round.",
+		"x": true
 	},
 
 
 	{"key": "Inspire",
-		"text": "Inspire X - Next round you have X extra mana."
+		"text": "Inspire X - Next round you have X extra mana.",
+		"x": true
 	},
 	{"key": "Nourish",
-		"text": "Nourish X - The next card you resolve is worth +X."
+		"text": "Nourish X - The next card you resolve is worth +X.",
+		"x": true
 	},
 	{"key": "Starve",
-		"text": "Starve X - The next card you resolve is worth -X."
+		"text": "Starve X - The next card you resolve is worth -X.",
+		"x": true
 	},
 	{"key": "Build",
-		"text": "Build X - If you have a robot in hand, give it +X. Otherwise create a 0:X Fleeting Robot in hand."
+		"text": "Build X - If you have a robot in hand, give it +X. Otherwise create a 0:X Fleeting Robot in hand.",
+		"x": true
 	},
 	{"key": "Tutor",
-		"text": "Tutor X - Draw an X-cost card. Priority for the card drawn is deck top to bottom, then discard pile top to bottom."
+		"text": "Tutor X - Draw a X-cost card. Priority for the card drawn is deck top to bottom, then discard pile top to bottom.",
+		"x": true
 	},
 
 	{"key": "Flare",
-		"text": "Flare - This card is worth 1 less point for every card before it in the story."
+		"text": "Flare - This card is worth 1 less point for every card before it in the story.",
+		"x": false
 	}
 ]

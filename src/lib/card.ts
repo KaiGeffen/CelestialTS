@@ -106,14 +106,21 @@ export default class Card {
   // Add an explanation of each existing keyword in cardText to the end of the text
   private explainKeywords(cardText: string): string {
 
-    // Find which keywords are present
-    let presentKeywords: Keyword[] = []
+    // The keywords that are present in this card's text, as well as what value each has (Number, X, or undefined)
+    let presentKeywords: [Keyword, string][] = []
     for (const keyword of keywords) {
 
-      let regex = new RegExp(/\b/.source + keyword.key + /\b/.source, "i")
-      
-      if (regex.test(cardText)) {
-        presentKeywords.push(keyword)
+      let regex: RegExp
+      if (!keyword.x) {
+        regex = new RegExp(/\b/.source + keyword.key + /\b/.source, "i")
+      }
+      else {
+        regex = new RegExp(/\b/.source + keyword.key + ' ' + /(X|[0-9]*)\b/.source, "i")
+      }
+
+      let match = cardText.match(regex)
+      if (match !== null) {
+        presentKeywords.push([keyword, match[1]])
       }
     }
 
@@ -121,8 +128,15 @@ export default class Card {
     if (presentKeywords.length > 0) {
       cardText += '\n'
     }
-    for (const keyword of presentKeywords) {
-      cardText += `\n${keyword.text}`
+    for (const [keyword, x] of presentKeywords) {
+      let txt = `\n${keyword.text}`
+
+      if (x) {
+        // NOTE This is replaceAll, but supported on all architectures
+        txt = txt.split(/\bX\b/).join(x)
+      }
+
+      cardText += txt
     }
 
     return cardText
