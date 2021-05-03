@@ -620,8 +620,9 @@ class FilterRegion {
     // Text input for the search
     let textboxSearch = this.scene.add['rexInputText'](
       Space.windowWidth/2 - 2, Space.windowHeight/2, 620, Space.cardSize, {
-        type: 'textarea',
+        type: 'text',
         text: '',
+        placeholder: 'Search',
         font: 'Arial',
         fontSize: '80px',
         color: ColorSettings.button,
@@ -657,8 +658,10 @@ class FilterRegion {
       textboxSearch.setVisible(true)
       invisBackground.setVisible(true)
 
-      document.getElementById('search-field').focus()
-      textboxSearch.selectAll()
+      setTimeout(function() {
+        textboxSearch.setFocus()
+        textboxSearch.selectAll()
+        }, 50)
       }).setOrigin(1, 0)
     this.container.add(btnSearch)
 
