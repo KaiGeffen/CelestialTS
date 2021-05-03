@@ -1,105 +1,105 @@
 [
-  {"name": "Stars", "id": 39,
+  {"name": "Stars", "id": 0,
     "cost": 0, "points": 0,
     "text": "0:0, Inspire 1."
   },
-  {"name": "Bone Knife", "id": 50,
+  {"name": "Bone Knife", "id": 1,
     "cost": 0, "points": 0,
     "text": "0:0, your opponent discards their leftmost card."
   },
-  {"name": "Cog", "id": 73,
+  {"name": "Cog", "id": 2,
     "cost": 0, "points": 0,
     "text": "0:0, Build 1."
   },
 
-  {"name": "Crossed Bones", "id": 0,
+  {"name": "Crossed Bones", "id": 3,
     "cost": 1, "points": 2,
-    "text": "1:2, Fleeting, create 2 ${144}s in your discard pile."
+    "text": "1:2, Fleeting, create 2 ${50}s in your discard pile."
   },
-  {"name": "Dove", "id": 19,
+  {"name": "Dove", "id": 4,
     "cost": 1,
     "text": "1:1, Visible, Fleeting."
   },
-  {"name": "Drown", "id": 94,
+  {"name": "Drown", "id": 5,
     "cost": 1, "points": 1,
     "text": "1:1, discard the top 3 cards of your deck."
   },
 
-  {"name": "Dash", "id": 10,
+  {"name": "Dash", "id": 6,
     "cost": 2,
     "text": "2:3, Flare."
   },
-  {"name": "Swift", "id": 2,
+  {"name": "Swift", "id": 7,
     "cost": 2, "points": 2,
     "text": "2:2, Visible, if the next card costs 1, +1."
   },
-  {"name": "Gears", "id": 75,
+  {"name": "Gears", "id": 8,
     "cost": 2, "points": 0,
     "text": "2:0, Build 2."
   },
-  {"name": "Cosmos", "id": 40,
+  {"name": "Cosmos", "id": 9,
     "cost": 2,
     "text": "2:0, Inspire 1 + 1 for each card you play later this round."
   },
 
-  {"name": "Factory", "id": 76,
+  {"name": "Factory", "id": 10,
     "cost": 3,
     "text": "3:0, Build X, where X is the number of cards later in the story."
   },
-  {"name": "Fruiting", "id": 4,
+  {"name": "Fruiting", "id": 11,
     "cost": 3, "points": 2,
     "text": "3:0, Nourish 3."
   },
-  {"name": "Gift", "id": 5,
+  {"name": "Gift", "id": 12,
     "cost": 3, "points": 2,
     "text": "3:3, both players draw 1."
   },
 
-  {"name": "Hurricane", "id": 7,
+  {"name": "Hurricane", "id": 13,
     "cost": 4, "points": 2,
     "text": "4:0, set both players points to 0."
   },
-  {"name": "Dinosaur Bones", "id": 86,
+  {"name": "Dinosaur Bones", "id": 14,
     "cost": 4,
-    "text": "4:5, Fleeting, create 3 ${144}s in your discard pile."
+    "text": "4:5, Fleeting, create 3 ${50}s in your discard pile."
   },
-  {"name": "Mine", "id": 85,
+  {"name": "Mine", "id": 15,
     "cost": 4,
     "text": "4:4, remove from the game the top 4 cards of your discard pile."
   },
 
-  {"name": "Chimney", "id": 64,
+  {"name": "Chimney", "id": 16,
     "cost": 5,
     "text": "5:2, your opponent puts the leftmost card in their hand on top of their deck."
   },
-  {"name": "Tumulus", "id": 99,
+  {"name": "Tumulus", "id": 17,
     "cost": 5,
     "text": "5:4, +2 if your discard pile has at least 8 cards in it."
   },
 
-  {"name": "Uprising", "id": 134,
+  {"name": "Uprising", "id": 18,
     "cost": 6,
     "text": "6:3, +1 for each card before this in the story."
   },
-  {"name": "Stalker", "id": 55,
+  {"name": "Stalker", "id": 19,
     "cost": 6,
     "text": "X:4, where X is the number of cards in your opponent's hand.\n(This card's base cost is 6)"
   },
-  {"name": "Sarcophagus", "id": 100,
+  {"name": "Sarcophagus", "id": 20,
     "cost": 6,
     "text": "6:0, put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost."
   },
 
-  {"name": "Anubis", "id": 101,
+  {"name": "Anubis", "id": 21,
     "cost": 7,
     "text": "7:7, costs 0 if you have at least 12 cards in your discard pile."
   },
 
-  {"name": "AI", "id": 79,
+  {"name": "AI", "id": 22,
     "cost": 8,
     "text": "8:4, draw 1. Costs X less, where X is the total point value of all robots in your hand."
   },
-  {"name": "Oak", "id": 49,
+  {"name": "Oak", "id": 23,
     "cost": 8,
     "text": "8:8, if you win this round, convert to Nourish any excess points that you won by.\n(For example, if you win 8 to 5 you get 2 points Nourish)"
   }
