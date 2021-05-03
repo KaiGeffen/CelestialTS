@@ -13,7 +13,7 @@
   },
   {"name": "Spy", "id": 27,
     "cost": 1, "points": 2,
-    "text": "1:0, create a ${50} in your opponent's hand."
+    "text": "1:0, create a ${49} in your opponent's hand."
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1,
@@ -50,7 +50,7 @@
   },
   {"name": "Crypt", "id": 36,
     "cost": 2,
-    "text": "2:2, your last card in the story transforms into the top card in your discard pile with the same cost as it."
+    "text": "2:2, your last card in the story transforms into the top card in your discard pile with the same cost as it.\n(For example, if your last card in the story costs 3, that card transforms into whichever 3-cost card is closest to the top of your discard pile. If there are no 3-cost cards in your discard pile, nothing happens)"
   },
 
   {"name": "Stable", "id": 37,
