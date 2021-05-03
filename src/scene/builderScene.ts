@@ -170,6 +170,13 @@ class CatalogRegion {
     }
 
     this.panel.layout()
+
+    // Must add an invisible region below the scroller or else partially visible cards will be clickable on
+    // their bottom parts, which cannot be seen and are below the scroller
+    let invisBackground = this.scene.add
+      .rectangle(0, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+      .setOrigin(0)
+      .setInteractive()
   }
 
   // Filter which cards are visible
@@ -306,7 +313,8 @@ class DeckRegion {
 
   init(scene): void {
     this.scene = scene
-    this.container = this.scene.add.container(988, 650)
+    // NOTE Must set depth to 1 so that this is above the catalog, which blocks its cards so that they don't appear below the panel
+    this.container = this.scene.add.container(988, 650).setDepth(1)
   }
 
   create(isTutorial: boolean): void {
