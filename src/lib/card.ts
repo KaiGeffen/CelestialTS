@@ -51,6 +51,7 @@ export default class Card {
       result += this.text
     }
 
+    // All reference/reminder text is grey
     result += `[color=${ColorSettings.reminderText}]`
 
     result = this.replaceReferences(result)
@@ -101,7 +102,7 @@ export default class Card {
       cardText += '\n'
     }
     for (const card of referencedCards) {
-      cardText += `\n${card.name} - ${card.text}`
+      cardText += `\n[img=${card.name}] ${card.name} - ${card.text}`
     }
 
     return cardText

@@ -2,12 +2,23 @@ import "phaser"
 import { cardback } from "../catalog/catalog"
 import { ColorSettings, StyleSettings, UserSettings, BBConfig } from "../settings"
 import Card from './card'
+import { allCards } from "../catalog/catalog"
 
 
 export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBConfig)
+
+  // Add image render information
+  allCards.forEach( (card) => {
+    cardInfo.addImage(card.name, {
+      key: card.name,
+      width: 50,
+      height: 50,
+      y: -17 // Bottom of card is on line with the text
+    })
+  }
 
   cardInfo.setVisible(false)
 
