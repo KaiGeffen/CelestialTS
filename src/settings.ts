@@ -69,7 +69,10 @@ export const ColorSettings: Record<string, any> = {
   stack: '#e9b',
   textHighlight: '#ff0',
 
-  cardText: '#d00',
+  cardText: '#c93a3a',
+  reminderText: '#c93a3a',
+
+  // Not used, but used values are relative to this TODO change
   cardTextBackground: '#88a',
 
   cardHighlight: 0xa0a034,
@@ -169,13 +172,21 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
 export const BBConfig = {
   fontFamily: 'Cambria',
   fontSize: '36px',
-  color: ColorSettings.cardText,
-  backgroundColor: ColorSettings.cardTextBackground,
+  color: ColorSettings.cardText,//'#808029',//ColorSettings.cardHighlight,//ColorSettings.cardText,
+  backgroundColor: "#aace", //ColorSettings.cardTextBackground,
+  backgroundColor2: "#669e",
+  backgroundCornerRadius: 5,
+  backgroundHorizontalGradient: false,
   padding: { 
     left: 10,
     right: 10,
     top: 5,
     bottom: 5
+  },
+  underline: {
+    color: ColorSettings.cardText,
+    thickness: 2,
+    offset: 8
   },
   wrap: {
     mode: 'word',

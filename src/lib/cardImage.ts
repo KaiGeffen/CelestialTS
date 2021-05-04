@@ -9,7 +9,6 @@ export var cardInfo: any // BBCodeText
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBConfig)
 
-  cardInfo.alpha = 0.88
   cardInfo.setVisible(false)
 
   return cardInfo

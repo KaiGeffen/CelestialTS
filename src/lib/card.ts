@@ -40,7 +40,7 @@ export default class Card {
     }
     
     // Set the hover text
-    let result = this.name + '\n'
+    let result = `[u]${this.name}[/u]\n`
 
     if (this.dynamicText !== '')
     {
@@ -51,7 +51,7 @@ export default class Card {
       result += this.text
     }
 
-    result += '[color=blue]'
+    result += '[color=black]'
 
     result = this.replaceReferences(result)
     if (UserSettings._get('explainKeywords')) {
