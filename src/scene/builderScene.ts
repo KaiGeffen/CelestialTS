@@ -12,7 +12,7 @@ import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
 const DECK_PARAM = 'deck'
 
-const defaultTutorialDeck: string = "101:100:100:86:86:86:86:0:0:0:0:0:39:39:39"
+const defaultTutorialDeck: string = "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"
 
 // The last deck of cards the player had, which get repopulated each time they enter the deck builder
 var tutorialDeck: Card[] | string = defaultTutorialDeck
