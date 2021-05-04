@@ -58,7 +58,7 @@ export default class WelcomeScene extends BaseScene {
     let txtHint = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 40, 'Would you like to try the tutorial?', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
     let btnYes = new Button(this, Space.windowWidth/2 - 50, Space.windowHeight/2 + 40, 'Yes', this.doTutorial).setOrigin(1, 0.5)
-    let btnNo = new Button(this, Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', exitPrompt).setOrigin(0, 0.5)
+    let btnNo = new Button(this, Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', this.doDeckbuilder).setOrigin(0, 0.5)
 
     promptContainer.add([invisibleBackground, visibleBackground, txtHint, btnYes, btnNo])
   }
@@ -95,8 +95,12 @@ Click start to check them out.`, StyleSettings.basic).setOrigin(0.5, 0)
       this.createTutorialPrompt()
     }
     else {
-      this.scene.start("BuilderScene", {isTutorial: false})
+      this.doDeckbuilder()
     }
+  }
+
+  private doDeckbuilder(): void {
+    this.scene.start("BuilderScene", {isTutorial: false})
   }
 
   private doTutorial(): void {
