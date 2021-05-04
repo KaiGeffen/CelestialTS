@@ -26,11 +26,12 @@ export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text
 }
 
 // Make card info reflect whatever card it is currently hovering
-export function refreshCardInfo(scene: Phaser.Scene, container: Phaser.GameObjects.Container) {
-  // Card info should be invisible, and only become visible is something is hovered over below
-  cardInfo.setVisible(false)
+export function refreshCardInfo() {
+  let scene: Phaser.Scene = cardInfo.scene
 
-  let allContainers = scene.children.getAll().filter(e => e.type === 'Container')
+  let allContainers = scene.children.getAll().filter(e => e.type === 'Container' && e['visible'])
+
+  let showText = false
 
   allContainers.forEach(function (container: Phaser.GameObjects.Container) {
     container.list.forEach(function (obj) {
@@ -40,10 +41,18 @@ export function refreshCardInfo(scene: Phaser.Scene, container: Phaser.GameObjec
         
         if (sprite.getBounds().contains(pointer.x, pointer.y)) {
           sprite.emit('pointerover')
+
+          showText = true
+        }
+        else {
+          sprite.emit('pointerout')
         }
       }
     })
   })
+
+  // Card info should only become visible is something is hovered over
+  cardInfo.setVisible(showText)
 }
 
 export class CardImage {
@@ -130,7 +139,7 @@ export class CardImage {
     if (!this.unplayable && this.image.isTinted) {
       this.image.clearTint()
     }
-    
+
     cardInfo.setVisible(false)
   }
 

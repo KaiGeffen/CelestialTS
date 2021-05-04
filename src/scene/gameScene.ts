@@ -578,7 +578,7 @@ export default class GameScene extends BaseScene {
 		}
 
 		// Refresh card info to describe what it is currently hovering over
-		refreshCardInfo(this, this.handContainer)
+		refreshCardInfo()
 
 		// Remember what version of the game state this is, for use when communicating with server
 		this.net.setVersionNumber(state.versionNumber)
