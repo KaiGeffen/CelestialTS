@@ -34,7 +34,9 @@ export default class Card {
     this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText
   }
 
-  getCardText(): string {
+  // Get the text for this card, including formatting
+  // If explainKeywords is true, ignore the user setting explainKeywords
+  getCardText(explainKeywords: Boolean = false): string {
     if (this === cardback) {
       return '?'
     }
@@ -55,7 +57,7 @@ export default class Card {
     result += `[color=${ColorSettings.reminderText}]`
 
     result = this.replaceReferences(result)
-    if (UserSettings._get('explainKeywords')) {
+    if (UserSettings._get('explainKeywords') || explainKeywords) {
       result = this.explainKeywords(result)
     }
 

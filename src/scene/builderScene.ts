@@ -697,8 +697,7 @@ class FilterRegion {
     }
 
     let searchTextFilter = function(card: Card): boolean {
-      // TODO Get full card text, since things like substitution don't work
-      return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
+      return (card.getCardText(true)).toLowerCase().includes(that.searchText.toLowerCase())
     }
 
     let andFilter = function(card: Card): boolean {
