@@ -653,6 +653,7 @@ export default class GameScene extends BaseScene {
 			let juggleModifier = 0
 			if (state.story.acts.length > 0) {
 				if (state.story.acts[state.story.acts.length - 1].card.name === 'Juggle' &&
+					state.story.acts[state.story.acts.length - 1].owner === 0 &&
 					!recap &&
 					state.passes === 0
 					) {
