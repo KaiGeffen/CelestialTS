@@ -41,7 +41,7 @@ export function refreshCardInfo(scene: Phaser.Scene, container: Phaser.GameObjec
         if (sprite.getBounds().contains(pointer.x, pointer.y)) {
           sprite.emit('pointerover')
         }
-    }
+      }
     })
   })
 }
