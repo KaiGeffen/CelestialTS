@@ -164,3 +164,21 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     strokeThickness: 1
   }
 }
+
+// Config for the BBCode text objects, used in cardInfo
+export const BBConfig = {
+  fontFamily: 'Cambria',
+  fontSize: '36px',
+  color: ColorSettings.cardText,
+  backgroundColor: ColorSettings.cardTextBackground,
+  padding: { 
+    left: 10,
+    right: 10,
+    top: 5,
+    bottom: 5
+  },
+  wrap: {
+    mode: 'word',
+    width: 500
+  }
+}

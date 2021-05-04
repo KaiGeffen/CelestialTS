@@ -1,13 +1,14 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { ColorSettings, StyleSettings, UserSettings } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings, BBConfig } from "../settings"
 import Card from './card'
 
 
-export var cardInfo: Phaser.GameObjects.Text
+export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add.text(0, 0, '', StyleSettings.cardText)
+  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBConfig)
+
   cardInfo.alpha = 0.88
   cardInfo.setVisible(false)
 

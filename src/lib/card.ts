@@ -51,6 +51,8 @@ export default class Card {
       result += this.text
     }
 
+    result += '[color=blue]'
+
     result = this.replaceReferences(result)
     if (UserSettings._get('explainKeywords')) {
       result = this.explainKeywords(result)
@@ -66,6 +68,8 @@ export default class Card {
         result += " points"
       }
     }
+
+    result += '[/color]'
 
     return result
   }
