@@ -31,7 +31,7 @@
   },
   {"name": "Swift", "id": 7,
     "cost": 2, "points": 2,
-    "text": "2:2, Visible, if the next card costs 1, +1."
+    "text": "2:2, Visible, +1 if the next card costs 1."
   },
   {"name": "Gears", "id": 8,
     "cost": 2, "points": 0,
@@ -39,12 +39,12 @@
   },
   {"name": "Cosmos", "id": 9,
     "cost": 2,
-    "text": "2:0, Inspire X, where X is 1 + the number of your cards later in the story."
+    "text": "2:0, Inspire 1, Inspire 1 for each of your cards later in the story."
   },
 
   {"name": "Factory", "id": 10,
     "cost": 3,
-    "text": "3:0, Build X, where X is the number of cards later in the story."
+    "text": "3:0, Build 1 for each card later in the story."
   },
   {"name": "Fruiting", "id": 11,
     "cost": 3, "points": 2,
@@ -70,7 +70,7 @@
 
   {"name": "Chimney", "id": 16,
     "cost": 5,
-    "text": "5:2, your opponent puts the leftmost card in their hand on top of their deck."
+    "text": "5:2, your opponent puts the leftmost card of their hand on top of their deck."
   },
   {"name": "Tumulus", "id": 17,
     "cost": 5,
@@ -83,7 +83,7 @@
   },
   {"name": "Stalker", "id": 19,
     "cost": 6,
-    "text": "X:4, where X is the number of cards in your opponent's hand.\n(This card's base cost is 6)"
+    "text": "6:4.\nCosts X, where X is the number of cards in your opponent's hand."
   },
   {"name": "Sarcophagus", "id": 20,
     "cost": 6,
@@ -92,12 +92,12 @@
 
   {"name": "Anubis", "id": 21,
     "cost": 7,
-    "text": "7:7, costs 0 if you have at least 12 cards in your discard pile."
+    "text": "7:7.\nCosts 0 if you have at least 12 cards in your discard pile."
   },
 
   {"name": "AI", "id": 22,
     "cost": 8,
-    "text": "8:4, draw 1. Costs X less, where X is the total point value of all robots in your hand."
+    "text": "8:4, draw 1.\nCosts X less, where X is the total point value of all robots in your hand."
   },
   {"name": "Oak", "id": 23,
     "cost": 8,
