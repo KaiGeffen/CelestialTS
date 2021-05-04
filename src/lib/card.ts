@@ -1,5 +1,5 @@
 import { cardback,  } from "../catalog/catalog"
-import { UserSettings } from "../settings"
+import { UserSettings, ColorSettings } from "../settings"
 import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
 
@@ -51,7 +51,7 @@ export default class Card {
       result += this.text
     }
 
-    result += '[color=black]'
+    result += `[color=${ColorSettings.reminderText}]`
 
     result = this.replaceReferences(result)
     if (UserSettings._get('explainKeywords')) {

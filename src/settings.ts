@@ -69,8 +69,8 @@ export const ColorSettings: Record<string, any> = {
   stack: '#e9b',
   textHighlight: '#ff0',
 
-  cardText: '#c93a3a',
-  reminderText: '#c93a3a',
+  cardText: '#cc1f19',
+  reminderText: '#333',
 
   // Not used, but used values are relative to this TODO change
   cardTextBackground: '#88a',
@@ -174,7 +174,9 @@ export const BBConfig = {
   fontSize: '36px',
   color: ColorSettings.cardText,//'#808029',//ColorSettings.cardHighlight,//ColorSettings.cardText,
   backgroundColor: "#aace", //ColorSettings.cardTextBackground,
-  backgroundColor2: "#669e",
+  // backgroundColor2: "#669e",
+  backgroundStrokeColor: "#0005",
+  backgroundStrokeLineWidth: 2,
   backgroundCornerRadius: 5,
   backgroundHorizontalGradient: false,
   padding: { 
