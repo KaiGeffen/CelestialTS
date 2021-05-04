@@ -403,11 +403,6 @@ export default class GameScene extends BaseScene {
 			}
 		}
 
-		// Refresh card info to describe what it is currently hovering over
-		// 
-		// console.log(this.input.emit('pointerdown'))
-		refreshCardInfo(this, this.handContainer)
-
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
 			this.sound.play(state.soundEffect)
@@ -581,6 +576,9 @@ export default class GameScene extends BaseScene {
 			this.txtPass.setVisible(true)
 			this.txtOpponentPass.setVisible(false)
 		}
+
+		// Refresh card info to describe what it is currently hovering over
+		refreshCardInfo(this, this.handContainer)
 
 		// Remember what version of the game state this is, for use when communicating with server
 		this.net.setVersionNumber(state.versionNumber)

@@ -31,7 +31,6 @@ export function refreshCardInfo(scene: Phaser.Scene, container: Phaser.GameObjec
   cardInfo.setVisible(false)
 
   let allContainers = scene.children.getAll().filter(e => e.type === 'Container')
-  console.log(allContainers)
 
   allContainers.forEach(function (container: Phaser.GameObjects.Container) {
     container.list.forEach(function (obj) {
