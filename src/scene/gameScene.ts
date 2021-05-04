@@ -5,7 +5,7 @@ import Card from "../lib/card"
 import { Network } from "../net"
 import ClientState from "../lib/clientState"
 import BaseScene from "./baseScene"
-import { CardImage, addCardInfoToScene, cardInfo } from "../lib/cardImage"
+import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib/cardImage"
 // Import Settings itself 
 import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
 import Recap from '../lib/recap'
@@ -370,7 +370,7 @@ export default class GameScene extends BaseScene {
 		{
 			// TODO Sometimes this should happen even in a recap, such is if a card is discarded
 			// Reset the hover text in case the hovered card moved with object replacement
-			cardInfo.setVisible(false)
+			// cardInfo.refresh() TODO remove
 
 			this.cameras.main.setBackgroundColor(ColorSettings.background)
 			this.txtScores.setText('')
@@ -402,6 +402,11 @@ export default class GameScene extends BaseScene {
 				return false
 			}
 		}
+
+		// Refresh card info to describe what it is currently hovering over
+		// 
+		// console.log(this.input.emit('pointerdown'))
+		refreshCardInfo(this, this.handContainer)
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
