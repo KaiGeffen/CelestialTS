@@ -39,7 +39,7 @@
   },
   {"name": "Cosmos", "id": 9,
     "cost": 2,
-    "text": "2:0, Inspire 1 + 1 for each card you play later this round."
+    "text": "2:0, Inspire X, where X is 1 + the number of your cards later in the story."
   },
 
   {"name": "Factory", "id": 10,

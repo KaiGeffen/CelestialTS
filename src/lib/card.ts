@@ -9,6 +9,7 @@ interface CardData {
   id: number
   cost: number
   text: string
+  dynamicText: string
 }
 
 // For the tutorial, the card info shown will only be the mana/points
@@ -25,13 +26,12 @@ export default class Card {
   dynamicText: string
 
   constructor(data: CardData) {
-    // name, id, cost, text, dynamicText='') {
     this.name = data.name
     this.id = data.id
     this.cost = data.cost
     this.text = data.text
 
-    this.dynamicText = '' //dynamicText
+    this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText
   }
 
   getCardText(): string {
@@ -42,9 +42,9 @@ export default class Card {
     // Set the hover text
     let result = this.name + '\n'
 
-    if (this['dynamicText'] !== '')
+    if (this.dynamicText !== '')
     {
-      result += this['dynamicText']
+      result += this.dynamicText
     }
     else
     {

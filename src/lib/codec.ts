@@ -16,7 +16,7 @@ function decodeCard(s: string): Card {
 	let sections = s.split(delims[2])
 
 	let cardId = parseInt(sections[0])
-	let card = allCards.find(card => card.id === cardId)
+	let baseCard = allCards.find(card => card.id === cardId)
 
 	// if (card === undefined) {
 	// 	throw {
@@ -27,13 +27,20 @@ function decodeCard(s: string): Card {
 	// }
 
 	if (sections.length == 1) {
-		return card
+		return baseCard
 	} else {
 		let dynamicText = sections[1]
 
-		card.dynamicText = dynamicText
+		// NOTE A new copy of the card is created so that all instances (of Bastet, for example) won't have the same dynamic text
+		let data = {
+			name: baseCard.name,
+			id: baseCard.id,
+			cost: baseCard.cost,
+			text: baseCard.text,
+			dynamicText: dynamicText
+		}
 
-		return card
+		return new Card(data)
 	}
 }
 

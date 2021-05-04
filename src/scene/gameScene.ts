@@ -394,6 +394,8 @@ export default class GameScene extends BaseScene {
 				setTimeout(function() {
 					that.recapPlaying = false
 
+					// TODO Change how Recap button works to show the full animation
+					// this.lastRecapStateList = state.recap.stateList
 					state.recap.stateList = []
 					that.displayState(state)
 				}, numberStates * RECAP_TIME)
