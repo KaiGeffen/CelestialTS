@@ -18,7 +18,7 @@ export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text
       height: 50,
       y: -17 // Bottom of card is on line with the text
     })
-  }
+  })
 
   cardInfo.setVisible(false)
 
