@@ -14,8 +14,7 @@ const descriptions = {
 Stars costs no mana and gives you no points, but on the next round
 you will have 1 extra mana.
 
-The line at the bottom describes what the Inspire mechanic does
-in general.
+The line at the bottom describes what the Inspire keyword means.
 
 It's best if you have a plan for how to spend that mana next round,
 otherwise it could go to waste.
