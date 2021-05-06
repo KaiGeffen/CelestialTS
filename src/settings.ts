@@ -88,42 +88,43 @@ export const ColorSettings: Record<string, any> = {
   tutorialBackground: "#704820"
 }
 
-const FontSettings: Record<string, string> = {
-  standard: '36px Arial Bold',
-  small: '14px Arial Italic',
-  large: '44px Arial Bold',
-  huge: '54px Calibri Bold',
-  stack: '85px Arial Bold',
-  title: '128px Calibri Bold',
-  credits: '19px Arial Bold'
+// const FontSettings: Record<string, [string, string]
+export const FontSettings: Record<string, Record<string, string>> = {
+  standard: {size: '36px', font: 'Arial', full: '36px Arial Bold'},
+  small: {size: '14px', font: 'Arial', full: '14px Arial Italic'},
+  large: {size: '44px', font: 'Arial', full: '44px Arial Bold'},
+  huge: {size: '54px', font: 'Calibri', full: '54px Calibri Bold'},
+  stack: {size: '85px', font: 'Arial', full: '85px Arial Bold'},
+  title: {size: '128px', font: 'Calibri', full: '128px Calibri Bold'},
+  credits: {size: '19px', font: 'Arial', full: '19px Arial Bold'}
 }
 
 export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   basic: {
-    font: FontSettings.standard,
+    font: FontSettings.standard.full,
     color: '#fff',
     stroke: '#000',
     strokeThickness: 2
   },
   button: {
-    font: FontSettings.large,
+    font: FontSettings.large.full,
     color: ColorSettings.button,
     stroke: '#000',
     strokeThickness: 3
   },
   small: {
-    font: FontSettings.small,
+    font: FontSettings.small.full,
     color: '#000',
     wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: false }
   },
   announcement: {
-    font: FontSettings.huge,
+    font: FontSettings.huge.full,
     color: '#fff',
     stroke: '#000',
     strokeThickness: 4
   },
   tutorial: {
-    font: FontSettings.large,
+    font: FontSettings.large.full,
     color: '#fff',
     backgroundColor: ColorSettings.cardTextBackground,
     wordWrap: { width: Space.windowWidth - 200 },
@@ -133,7 +134,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     strokeThickness: 3
   },
   cardText: {
-    font: FontSettings.standard,
+    font: FontSettings.standard.full,
     color: ColorSettings.cardText,
     backgroundColor: ColorSettings.cardTextBackground,
     wordWrap: { width: 500, useAdvancedWrap: false },
@@ -142,23 +143,23 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     strokeThickness: 0
   },
   stack: {
-    font: FontSettings.stack,
+    font: FontSettings.stack.full,
     color: ColorSettings.stack,
     fixedWidth: Space.cardSize,
     fixedHeight: Space.cardSize,
     align: 'center'
   },
   filter: {
-    font: FontSettings.standard,
+    font: FontSettings.standard.full,
   },
   title: {
-    font: FontSettings.title,
+    font: FontSettings.title.full,
     color: '#fff',
     stroke: '#000',
     strokeThickness: 6
   },
   credits: {
-    font: FontSettings.credits,
+    font: FontSettings.credits.full,
     color: "#fff",
     wordWrap: { width: 1000, useAdvancedWrap: false },
     stroke: '#000',
@@ -169,7 +170,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
 // Config for the BBCode text objects, used in cardInfo
 export const BBConfig = {
   fontFamily: 'Cambria',
-  fontSize: '36px',
+  fontSize: FontSettings.standard.size,
   color: ColorSettings.cardText,
   backgroundColor: ColorSettings.cardTextBackground,
   backgroundStrokeColor: "#0005",

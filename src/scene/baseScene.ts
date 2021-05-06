@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
+import { StyleSettings, FontSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
 
@@ -48,12 +48,12 @@ export default class BaseScene extends Phaser.Scene {
 		invisibleBackground.setInteractive().on('pointerdown', this.exitConfirmation, this)
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 400, 30, ColorSettings.menuBackground).setAlpha(0.95)
+		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 510, 30, ColorSettings.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
 
 		// Radio button for whether keywords should be explained
 		let x = Space.windowWidth/2 - 210
-		let y = Space.windowHeight/2 - 140
+		let y = Space.windowHeight/2 - 140 - 55
 		let txtKeywordHint = this.add.text(x, y, 'Keyword text:', StyleSettings.announcement).setOrigin(0, 0.5)
 
 		let radio = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, ColorSettings.background)
@@ -94,6 +94,13 @@ export default class BaseScene extends Phaser.Scene {
         }).setOrigin(0, 0.5)
         this.sliderVolume.layout()
 
+        // Link to rulebook
+        let rulebook = this.createRulebook()
+        y += 110
+        let btnRulebook = new Button(this, x, y, "Read Rulebook", function() {rulebook.setVisible(true)})
+        	.setStyle(StyleSettings.announcement)
+        	.setOrigin(0, 0.5)
+
 		// Prompt asking users if they want to exit
 		y += 110
 		let txtExitHint = this.add.text(x, y, 'Exit to main menu?', StyleSettings.announcement).setOrigin(0, 0.5)
@@ -111,8 +118,69 @@ export default class BaseScene extends Phaser.Scene {
 		this.confirmationContainer.add([invisibleBackground, visibleBackground,
 			txtKeywordHint, radio,
 			txtVolumeHint,
+			btnRulebook,
 			txtExitHint, btnYes, btnNo
 			])
+	}
+
+	private createRulebook(): any {
+		let text = 
+`
+x: 0,
+y: 0,
+width: undefined,
+height: undefined,
+
+type: 'text',    // 'text'|'password'|'textarea'|'number'|'color'|...
+
+// Element properties
+id: undefined,
+text: undefined,
+maxLength: undefined,
+minLength: undefined,    
+placeholder: undefined,
+tooltip: undefined,
+readOnly: false,
+spellCheck: false,
+autoComplete: 'off',
+
+// Style properties
+align: undefined,
+paddingLeft: undefined,
+paddingRight: undefined,
+paddingTop: undefined,
+paddingBottom: undefined,
+fontFamily: undefined,
+fontSize: undefined,
+color: '#ffffff',
+border: 0,
+backgroundColor: 'transparent',
+borderColor: 'transparent',
+outline: 'none',
+
+selectAll: false
+}
+
+    x, y : Position
+`
+		let rulebook = this.add['rexInputText'](
+	      Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
+	        type: 'textarea',
+	        text: text,
+	        fontFamily: 'Cambria',//FontSettings.standard.font,
+	        fontSize: FontSettings.standard.size,
+	        color: ColorSettings.standard,
+	        border: 3,
+	        borderColor: '#000',
+	        backgroundColor: '#444',
+	        id: 'rulebook',
+	        readonly: true
+	      })
+	    .setOrigin(0.5)
+	    .setVisible(false)
+	    .setDepth(10)
+
+	    return rulebook
 	}
 
 	private doMute(btn: Button): () => void {
