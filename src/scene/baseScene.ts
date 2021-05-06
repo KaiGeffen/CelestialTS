@@ -95,9 +95,12 @@ export default class BaseScene extends Phaser.Scene {
         this.sliderVolume.layout()
 
         // Link to rulebook
-        let rulebook = this.createRulebook()
+        let rulebookContainer = this.createRulebook()
         y += 110
-        let btnRulebook = new Button(this, x, y, "Read Rulebook", function() {rulebook.setVisible(true)})
+        let btnRulebook = new Button(this, x, y, "Read Rulebook", function() {
+        	rulebookContainer.setVisible(true)
+	    	this.sound.play('open')
+        })
         	.setStyle(StyleSettings.announcement)
         	.setOrigin(0, 0.5)
 
@@ -124,63 +127,33 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	private createRulebook(): any {
+		let container = this.add.container(0, 0).setVisible(false).setDepth(30)
+
+	    let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.0)
+	    .setOrigin(0)
+	    invisibleBackground.setInteractive().on('pointerdown', function() {
+	    	container.setVisible(false)
+	    	this.sound.play('close')
+	    }, this)
+
 		let text = 
-`
-x: 0,
-y: 0,
-width: undefined,
-height: undefined,
-
-type: 'text',    // 'text'|'password'|'textarea'|'number'|'color'|...
-
-// Element properties
-id: undefined,
-text: undefined,
-maxLength: undefined,
-minLength: undefined,    
-placeholder: undefined,
-tooltip: undefined,
-readOnly: false,
-spellCheck: false,
-autoComplete: 'off',
-
-// Style properties
-align: undefined,
-paddingLeft: undefined,
-paddingRight: undefined,
-paddingTop: undefined,
-paddingBottom: undefined,
-fontFamily: undefined,
-fontSize: undefined,
-color: '#ffffff',
-border: 0,
-backgroundColor: 'transparent',
-borderColor: 'transparent',
-outline: 'none',
-
-selectAll: false
-}
-
-    x, y : Position
-`
-		let rulebook = this.add['rexInputText'](
-	      Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
-	        type: 'textarea',
-	        text: text,
-	        fontFamily: 'Cambria',//FontSettings.standard.font,
-	        fontSize: FontSettings.standard.size,
-	        color: ColorSettings.standard,
-	        border: 3,
-	        borderColor: '#000',
-	        backgroundColor: '#444',
-	        id: 'rulebook',
-	        readonly: true
-	      })
+`TODO: Populate with the rules`
+	    let rulebook = this.add['rexInputText'](
+	    	Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
+	    		type: 'textarea',
+	    		text: text,
+	    		fontFamily: 'Cambria',//FontSettings.standard.font,
+	    		fontSize: FontSettings.standard.size,
+	    		color: ColorSettings.standard,
+	    		border: 3,
+	    		borderColor: '#000',
+	    		backgroundColor: ColorSettings.rulebookBackground,
+	    		id: 'rulebook',
+	    		readonly: true
+	    	})
 	    .setOrigin(0.5)
-	    .setVisible(false)
-	    .setDepth(10)
 
-	    return rulebook
+	    return container.add([rulebook, invisibleBackground])
 	}
 
 	private doMute(btn: Button): () => void {

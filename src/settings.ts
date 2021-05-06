@@ -85,7 +85,9 @@ export const ColorSettings: Record<string, any> = {
   sliderButton: 0x703420,
   slider: 0x3bc9c7,
 
-  tutorialBackground: "#704820"
+  tutorialBackground: "#704820",
+
+  rulebookBackground: "#aac"
 }
 
 // const FontSettings: Record<string, [string, string]
