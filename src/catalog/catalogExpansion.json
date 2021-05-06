@@ -87,7 +87,7 @@
 
   {"name": "Ecology", "id": 44,
     "cost": 7,
-    "text": "7:2.\nWhen played, gain 10 mana this round."
+    "text": "7:0.\nWhen played, gain 10 mana this round."
   },
   {"name": "Horus", "id": 45,
     "cost": 7,
