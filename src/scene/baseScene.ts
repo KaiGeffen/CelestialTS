@@ -137,7 +137,51 @@ export default class BaseScene extends Phaser.Scene {
 	    }, this)
 
 		let text = 
-`TODO: Populate with the rules`
+`>>> Start of Match
+At the start of a match, each player has a shuffled deck of 15 collectible cards that they have chosen.
+Priority (The player who acts first) is determined at random at this time, and is known to both players.
+Each player draws 3 cards and is prompted to mulligan, both players do this at the same time, and know when their opponent is done mulliganing.
+
+To mulligan, a player selects any number of the 3 cards from their starting hand. They then draw that many cards from their deck, and shuffle away the cards that they selected.
+Once both players have mulliganed, the first round begins.
+
+Each round has the following structure: start phase, action phase, end phase.
+
+>>> Start Phase
+In the start phase, the following things occur in the following order:
+* If one player has won more rounds than the other, that player receives priority. Otherwise, priority is determined at random.
+* Each player's maximum mana increases by 1 if it is less than 10.
+* Each player's current mana is set to their maximum mana.
+* Each player draws 2 cards.
+* Any 'start of round' effects trigger (ex: Camera).
+
+>>> Action Phase
+During the action phase, the player with priority can either pass, or play a card from their hand (Assuming they have sufficient mana to pay for it).
+If they pass, their opponent is given priority.
+If they play a card, they pay mana from their current mana equal to that card's cost.
+The card then moves onto the story as the rightmost addition.
+At this time, any 'when played' effects of the card activate (ex: Night Vision).
+Their opponent is then given priority.
+The action phase ends when both players pass in a row.
+During this phase, each player cannot see the cards their opponent has played.
+
+>>> End Phase
+During the end phase, cards in the story resolve from left to right.
+When a card resolves, it adds its points to its owner's score for the round, then its effect occurs, then it moves to its owner's discard pile.
+Once all cards in the story have resolved, if a player has a positive score that is greater than their opponent's, they are awarded a round win.
+
+>>> Winning the game
+Once a player has won at least 5 rounds, and has won at least 2 more rounds than their opponent, that player wins the match.
+
+>>> Drawing
+When a player 'draws a card' they do the following:
+* If their hand has 6 cards in it, do nothing.
+* If their deck is empty, their discard pile is shuffled and becomes their deck.
+* They then take the top card of their deck and add it to their hand as the rightmost card.
+
+>>> FAQ
+Is my deck in the order that I see when hovering over it?
+No, the true order of your deck is hidden from you. The order you see is sorted by cost.`
 	    let rulebook = this.add['rexInputText'](
 	    	Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
 	    		type: 'textarea',
