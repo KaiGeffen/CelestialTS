@@ -195,7 +195,7 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 	    		borderColor: '#000',
 	    		backgroundColor: ColorSettings.rulebookBackground,
 	    		id: 'rulebook',
-	    		readonly: true
+	    		readOnly: true
 	    	})
 	    .setOrigin(0.5)
 
