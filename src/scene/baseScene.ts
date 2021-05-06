@@ -171,7 +171,9 @@ When a card resolves, it adds its points to its owner's score for the round, the
 Once all cards in the story have resolved, if a player has a positive score that is greater than their opponent's, they are awarded a round win.
 
 >>> Winning the game
-Once a player has won at least 5 rounds, and has won at least 2 more rounds than their opponent, that player wins the match.
+Once a player has done either of the following, that player wins the match.
+* Win at least 5 rounds, and have won at least 2 more rounds than their opponent.
+* Win 10 rounds.
 
 >>> Drawing
 When a player 'draws a card' they do the following:
