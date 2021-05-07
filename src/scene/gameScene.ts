@@ -120,7 +120,6 @@ export default class GameScene extends BaseScene {
 		this.input.on('pointerdown', this.clickAnywhere(), this)
 
 		// Defined these arguments here, so that they don't carry over between instances of Game Scene
-		this.lastHandSizes = [0, 0]
 		this.recapPlaying = false
 		this.queuedStates = {}
 	}
