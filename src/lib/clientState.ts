@@ -2,6 +2,7 @@ import { decodeDeck, decodeStory, decodeStatuses, decodeRecap } from "./codec"
 import Card from "./card"
 import Story from "./story"
 import Recap from "./recap"
+import { Animation, decodeAnimationList } from "./animation"
 
 
 export default class ClientState {
@@ -32,6 +33,9 @@ export default class ClientState {
 	// The new thing that happened in this state. For instance a card was played
 	soundEffect: string
 
+	// For each player, the animations that should be played for this state
+	animations: [Animation[], Animation[]]
+
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
 		this.opponentHandSize = state.opp_hand
@@ -55,5 +59,6 @@ export default class ClientState {
 		this.winner = state.winner
 		this.score = state.score
 		this.soundEffect = state.sound_effect
+		this.animations = state.animations.map(l => decodeAnimationList(l))
 	}
 }
