@@ -635,41 +635,53 @@ export default class GameScene extends BaseScene {
 
 			myHand.push(cardImage)
 		}
-		// Go through the animation list backwards, setting longest delay on rightmost drawn cards
-		for (i = state.animations[0].length - 1; i >= 0; i--) {
-			let card
-			let delay = i * 500
-
-			switch (state.animations[0][i]) {
-				case Animation.Draw:
-				case Animation.TutorDeck:
-					card = myHand.pop()
-
-					this.animateDraw(card.image, delay)
-					break
-				case Animation.TutorDiscard:
-					card = myHand.pop()					
-
-					this.animateDraw(card.image, delay, true)
-					break
-			}
-		}
 
 		// Add each card in opponent's hand
 		let theirHand: CardImage[] = []
 		for (var i = 0; i < state.opponentHandSize; i++) {
 			theirHand.push(this.addCard(cardback, i, this.opponentHandContainer))
 		}
-		for (i = state.animations[1].length - 1; i >= 0; i--) {
-			switch (state.animations[1][i]) {
-				case Animation.Draw:
-				let card = theirHand.pop()
+
+		let that = this
+		function animateHand(cards: CardImage[], player: number) {
+			// Go through the animation list backwards, setting longest delay on rightmost drawn cards
+			for (i = state.animations[player].length - 1; i >= 0; i--) {
+				let card: CardImage
 				let delay = i * 500
 
-				this.animateDraw(card.image, delay)
-				break
+				switch (state.animations[player][i]) {
+					case Animation.Draw:
+					case Animation.TutorDeck:
+						card = cards.pop()
+
+						that.animateDraw(card.image, delay)
+						break
+					case Animation.TutorDiscard:
+						card = cards.pop()					
+
+						that.animateDraw(card.image, delay, true)
+						break
+					case Animation.Create:
+						card = cards.pop()
+
+						card.image.setScale(0)
+						that.tweens.add({
+							targets: card.image,
+							scale: 1,
+							delay: delay,
+							duration: 400,
+							onStart: function (tween, targets, _)
+							{
+								card.image.setVisible(true)
+							}
+						})
+						break
+				}
 			}
 		}
+		
+		animateHand(myHand, 0)
+		animateHand(theirHand, 1)
 	}
 
 	// Display each player's stacks (deck, discard pile)
