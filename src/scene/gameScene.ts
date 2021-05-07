@@ -473,77 +473,7 @@ export default class GameScene extends BaseScene {
 		}
 
 		// Stacks
-		let deck = this.addCard(cardback, 0, this.stackContainer, 0).image
-		this.txtDeckSize.setText(state.deck.length.toString())
-		for (i = 0; i <= state.animations[0].length; i++) {
-			switch (state.animations[0][i]) {
-				case Animation.Shuffle:
-					this.tweens.add({
-			  			targets: deck,
-			  			y: deck.y - Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-		  			})
-
-		  			let halfDeck = this.add.sprite(deck.x, deck.y, deck.texture)
-		  			deck.parentContainer.add(halfDeck)
-		  			this.tweens.add({
-			  			targets: halfDeck,
-			  			y: halfDeck.y + Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-			  			onComplete: function () { halfDeck.destroy() }
-		  			})
-					break
-			}
-		}
-
-		let opponentDeck = this.addCard(cardback, 0, this.stackContainer, 1).image
-		this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
-		for (i = 0; i <= state.animations[1].length; i++) {
-			switch (state.animations[1][i]) {
-				case Animation.Shuffle:
-					this.tweens.add({
-			  			targets: opponentDeck,
-			  			y: opponentDeck.y - Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-		  			})
-
-		  			let halfDeck = this.add.sprite(opponentDeck.x, opponentDeck.y, opponentDeck.texture)
-		  			opponentDeck.parentContainer.add(halfDeck)
-		  			this.tweens.add({
-			  			targets: halfDeck,
-			  			y: halfDeck.y + Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-			  			onComplete: function () { halfDeck.destroy() }
-		  			})
-					break
-			}
-		}
-
-		if (state.discard[0].length > 0) {
-			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
-
-			this.txtDiscardSize.setVisible(true)
-			this.txtDiscardSize.setText(state.discard[0].length.toString())
-		} else this.txtDiscardSize.setVisible(false)
-		
-		if (state.discard[1].length > 0) {
-			this.addCard(state.discard[1].slice(-1)[0], 1, this.stackContainer, 1)
-
-			this.txtOpponentDiscardSize.setVisible(true)
-			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
-		} else this.txtOpponentDiscardSize.setVisible(false)
+		this.displayStacks(state)
 
 		// TODO Hacky, use depth instead, don't do every time state is shown
 		this.stackContainer.bringToTop(this.txtDeckSize)
@@ -593,7 +523,6 @@ export default class GameScene extends BaseScene {
 		this.txtOpponentStatus.setText(state.opponentStatus)
 
 		// Score
-		// TODO rename to txtScoreText
 		this.txtWins.setText(`Wins: ${state.wins[0]}`)
 		this.txtOpponentWins.setText(`Wins: ${state.wins[1]}`)
 		if (state.soundEffect === 'win') {
@@ -708,12 +637,20 @@ export default class GameScene extends BaseScene {
 		}
 		// Go through the animation list backwards, setting longest delay on rightmost drawn cards
 		for (i = state.animations[0].length - 1; i >= 0; i--) {
+			let card
+			let delay = i * 500
+
 			switch (state.animations[0][i]) {
 				case Animation.Draw:
-					let card = myHand.pop()
-					let delay = i * 500
+				case Animation.TutorDeck:
+					card = myHand.pop()
 
 					this.animateDraw(card.image, delay)
+					break
+				case Animation.TutorDiscard:
+					card = myHand.pop()					
+
+					this.animateDraw(card.image, delay, true)
 					break
 			}
 		}
@@ -735,6 +672,81 @@ export default class GameScene extends BaseScene {
 		}
 	}
 
+	// Display each player's stacks (deck, discard pile)
+	private displayStacks(state: ClientState): void {
+		let deck = this.addCard(cardback, 0, this.stackContainer, 0).image
+		this.txtDeckSize.setText(state.deck.length.toString())
+		for (var i = 0; i <= state.animations[0].length; i++) {
+			switch (state.animations[0][i]) {
+				case Animation.Shuffle:
+					this.tweens.add({
+			  			targets: deck,
+			  			y: deck.y - Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+		  			})
+
+		  			let halfDeck = this.add.sprite(deck.x, deck.y, deck.texture)
+		  			deck.parentContainer.add(halfDeck)
+		  			this.tweens.add({
+			  			targets: halfDeck,
+			  			y: halfDeck.y + Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+			  			onComplete: function () { halfDeck.destroy() }
+		  			})
+					break
+			}
+		}
+
+		let opponentDeck = this.addCard(cardback, 0, this.stackContainer, 1).image
+		this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
+		for (var i = 0; i <= state.animations[1].length; i++) {
+			switch (state.animations[1][i]) {
+				case Animation.Shuffle:
+					this.tweens.add({
+			  			targets: opponentDeck,
+			  			y: opponentDeck.y - Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+		  			})
+
+		  			let halfDeck = this.add.sprite(opponentDeck.x, opponentDeck.y, opponentDeck.texture)
+		  			opponentDeck.parentContainer.add(halfDeck)
+		  			this.tweens.add({
+			  			targets: halfDeck,
+			  			y: halfDeck.y + Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+			  			onComplete: function () { halfDeck.destroy() }
+		  			})
+					break
+			}
+		}
+
+		if (state.discard[0].length > 0) {
+			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
+
+			this.txtDiscardSize.setVisible(true)
+			this.txtDiscardSize.setText(state.discard[0].length.toString())
+		} else this.txtDiscardSize.setVisible(false)
+		
+		if (state.discard[1].length > 0) {
+			this.addCard(state.discard[1].slice(-1)[0], 1, this.stackContainer, 1)
+
+			this.txtOpponentDiscardSize.setVisible(true)
+			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
+		} else this.txtOpponentDiscardSize.setVisible(false)
+	}
+
 	// Tell player that they won or lost, public so that Tutorial can overwrite
 	displayWinLose(state: ClientState): void {
 		if (state.winner === 0) {
@@ -752,9 +764,13 @@ export default class GameScene extends BaseScene {
 	}
 	
 	// Tween the image to move to its position from the deck after delay. Return the new delay
-	private animateDraw(image: Phaser.GameObjects.Image, delay: number): void {
+	private animateDraw(image: Phaser.GameObjects.Image, delay: number, fromDiscard: Boolean = false): void {
 		let x = image.x
-		image.setX(Space.stackX)
+		if (!fromDiscard) {
+			image.setX(Space.stackX)
+		} else {
+			image.setX(Space.stackX + Space.cardSize + Space.pad)
+		}
 
 		image.setVisible(false)
 
@@ -768,6 +784,17 @@ export default class GameScene extends BaseScene {
 				image.setVisible(true)
 			}
 		})
+
+		if (fromDiscard) {
+			let y = (image.y < Space.windowHeight/2) ? image.y + Space.cardSize*2 : image.y - Space.cardSize*2
+			this.tweens.add({
+				targets: image,
+				y: y,
+				delay: delay,
+				duration: 200,
+				yoyo: true
+			})
+		}
 	}
 
 	private animateOpponentPlay(card: Phaser.GameObjects.Image): void {
