@@ -369,10 +369,6 @@ export default class GameScene extends BaseScene {
 		// Display this non-recap state, with normal background and no scores displayed
 		else
 		{
-			// TODO Sometimes this should happen even in a recap, such is if a card is discarded
-			// Reset the hover text in case the hovered card moved with object replacement
-			// cardInfo.refresh() TODO remove
-
 			this.cameras.main.setBackgroundColor(ColorSettings.background)
 			this.txtScores.setText('')
 
@@ -477,11 +473,63 @@ export default class GameScene extends BaseScene {
 		}
 
 		// Stacks
-		this.addCard(cardback, 0, this.stackContainer, 0)
+		let deck = this.addCard(cardback, 0, this.stackContainer, 0).image
 		this.txtDeckSize.setText(state.deck.length.toString())
+		for (i = 0; i <= state.animations[0].length; i++) {
+			switch (state.animations[0][i]) {
+				case Animation.Shuffle:
+					this.tweens.add({
+			  			targets: deck,
+			  			y: deck.y - Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+		  			})
 
+		  			let halfDeck = this.add.sprite(deck.x, deck.y, deck.texture)
+		  			deck.parentContainer.add(halfDeck)
+		  			this.tweens.add({
+			  			targets: halfDeck,
+			  			y: halfDeck.y + Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+			  			onComplete: function () { halfDeck.destroy() }
+		  			})
+					break
+			}
+		}
+
+		let opponentDeck = this.addCard(cardback, 0, this.stackContainer, 1).image
 		this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
-		this.addCard(cardback, 0, this.stackContainer, 1)	
+		for (i = 0; i <= state.animations[1].length; i++) {
+			switch (state.animations[1][i]) {
+				case Animation.Shuffle:
+					this.tweens.add({
+			  			targets: opponentDeck,
+			  			y: opponentDeck.y - Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+		  			})
+
+		  			let halfDeck = this.add.sprite(opponentDeck.x, opponentDeck.y, opponentDeck.texture)
+		  			opponentDeck.parentContainer.add(halfDeck)
+		  			this.tweens.add({
+			  			targets: halfDeck,
+			  			y: halfDeck.y + Space.cardSize/2,
+			  			delay: i * 500,
+			  			duration: 250,
+			  			ease: "Sine.easeInOut",
+			  			yoyo: true,
+			  			onComplete: function () { halfDeck.destroy() }
+		  			})
+					break
+			}
+		}
 
 		if (state.discard[0].length > 0) {
 			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
