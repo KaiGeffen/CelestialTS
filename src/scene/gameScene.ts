@@ -10,6 +10,7 @@ import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib
 import { ColorSettings, StyleSettings, UserSettings, Space } from "../settings"
 import Recap from '../lib/recap'
 import Button from '../lib/button'
+import { Animation } from '../lib/animation'
 
 
 const RECAP_TIME = 1000
@@ -635,11 +636,8 @@ export default class GameScene extends BaseScene {
 
 	// Display cards in each player's hand
 	private displayHands(state: ClientState, recap: Boolean, isRoundStart: Boolean): void {
-
-		// Delay before starting the current tween, updated so that cards aren't drawn at the same time
-		let delay: number = 0
-
 		// Create each card in client's hand. New cards should be animated to show that they were drawn
+		let myHand: CardImage[] = []
 		for (var i = 0; i < state.hand.length; i++) {
 			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
 
@@ -652,45 +650,41 @@ export default class GameScene extends BaseScene {
 				this.clickCard(i, cardImage, state),
 				this)
 
-			// If Juggle was just played, up to 3 cards might have just been drawn
-			let juggleModifier = 0
-			if (state.story.acts.length > 0) {
-				if (state.story.acts[state.story.acts.length - 1].card.name === 'Juggle' &&
-					state.story.acts[state.story.acts.length - 1].owner === 0 &&
-					!recap &&
-					state.passes === 0
-					) {
-					juggleModifier = 3 + 1 // The 1 is juggle moving from hand to table
-				}
-			}
-
-			// If the card is new, animate it being drawn
-			if (i > this.lastHandSizes[0] - 1 - juggleModifier) {
-				delay = this.animateDraw(cardImage.image, delay)
-			}
-
+			// TODO Add an animation for the camera on server side
 			// If the card is a Camera and this is the start of a round, animate it
 			if (isRoundStart && !recap && cardImage.card.name === 'Camera') {
-				cardImage.animateCamera(delay)
+				cardImage.animateCamera(0)
+			}
+
+			myHand.push(cardImage)
+		}
+		// Go through the animation list backwards, setting longest delay on rightmost drawn cards
+		for (i = state.animations[0].length - 1; i >= 0; i--) {
+			switch (state.animations[0][i]) {
+				case Animation.Draw:
+					let card = myHand.pop()
+					let delay = i * 500
+
+					this.animateDraw(card.image, delay)
+					break
 			}
 		}
-
-		// Opponent can draw cards at the same time as us
-		delay = 0
 
 		// Add each card in opponent's hand
+		let theirHand: CardImage[] = []
 		for (var i = 0; i < state.opponentHandSize; i++) {
-			let image = this.addCard(cardback, i, this.opponentHandContainer).image
+			theirHand.push(this.addCard(cardback, i, this.opponentHandContainer))
+		}
+		for (i = state.animations[1].length - 1; i >= 0; i--) {
+			switch (state.animations[1][i]) {
+				case Animation.Draw:
+				let card = theirHand.pop()
+				let delay = i * 500
 
-			// If the card is new, animate it being drawn
-			if (i > this.lastHandSizes[1] - 1) {
-				delay = this.animateDraw(image, delay)
+				this.animateDraw(card.image, delay)
+				break
 			}
 		}
-
-		// Remember the size of these hands
-		this.lastHandSizes[0] = state.hand.length
-		this.lastHandSizes[1] = state.opponentHandSize
 	}
 
 	// Tell player that they won or lost, public so that Tutorial can overwrite
@@ -710,8 +704,7 @@ export default class GameScene extends BaseScene {
 	}
 	
 	// Tween the image to move to its position from the deck after delay. Return the new delay
-	lastHandSizes: [number, number]
-	private animateDraw(image: Phaser.GameObjects.Image, delay: number): number {
+	private animateDraw(image: Phaser.GameObjects.Image, delay: number): void {
 		let x = image.x
 		image.setX(Space.stackX)
 
@@ -727,8 +720,6 @@ export default class GameScene extends BaseScene {
 				image.setVisible(true)
 			}
 		})
-
-		return delay + 500
 	}
 
 	private animateOpponentPlay(card: Phaser.GameObjects.Image): void {
