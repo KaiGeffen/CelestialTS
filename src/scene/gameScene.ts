@@ -686,64 +686,65 @@ export default class GameScene extends BaseScene {
 
 	// Display each player's stacks (deck, discard pile)
 	private displayStacks(state: ClientState): void {
-		let deck = this.addCard(cardback, 0, this.stackContainer, 0).image
-		this.txtDeckSize.setText(state.deck.length.toString())
-		for (var i = 0; i <= state.animations[0].length; i++) {
-			switch (state.animations[0][i]) {
-				case Animation.Shuffle:
-					this.tweens.add({
-			  			targets: deck,
-			  			y: deck.y - Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-		  			})
+		// Do all animations for the given deck
+		let that = this
+		function animateDeck(deck: Phaser.GameObjects.Image, player: number): void {
+			// Go through all animations and apply any that relate to stacks
+			for (var i = 0; i <= state.animations[player].length; i++) {
+				let delay = i * 500
 
-		  			let halfDeck = this.add.sprite(deck.x, deck.y, deck.texture)
-		  			deck.parentContainer.add(halfDeck)
-		  			this.tweens.add({
-			  			targets: halfDeck,
-			  			y: halfDeck.y + Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-			  			onComplete: function () { halfDeck.destroy() }
-		  			})
-					break
+				switch (state.animations[player][i]) {
+					case Animation.Shuffle:
+						that.tweens.add({
+				  			targets: deck,
+				  			y: deck.y - Space.cardSize/2,
+				  			delay: delay,
+				  			duration: 250,
+				  			ease: "Sine.easeInOut",
+				  			yoyo: true,
+			  			})
+
+						// Animate another cardback yoyoing in the opposite direction
+			  			let halfDeck = that.add.sprite(deck.x, deck.y, deck.texture)
+			  			deck.parentContainer.add(halfDeck)
+			  			
+			  			that.tweens.add({
+				  			targets: halfDeck,
+				  			y: halfDeck.y + Space.cardSize/2,
+				  			delay: delay,
+				  			duration: 250,
+				  			ease: "Sine.easeInOut",
+				  			yoyo: true,
+				  			onComplete: function () { halfDeck.destroy() }
+			  			})
+						break
+					// Move a cardback from discard pile to top of deck
+					case Animation.Top:
+						let card = that.add.sprite(deck.x + Space.cardSize, deck.y, deck.texture)
+			  			deck.parentContainer.add(card)
+			  			
+			  			that.tweens.add({
+				  			targets: card,
+				  			x: deck.x,
+				  			delay: delay,
+				  			duration: 400,
+				  			ease: "Sine.easeInOut",
+				  			onComplete: function () { card.destroy() }
+			  			})
+						break
+				}
 			}
 		}
+
+		let deck = this.addCard(cardback, 0, this.stackContainer, 0).image
+		this.txtDeckSize.setText(state.deck.length.toString())
+		animateDeck(deck, 0)
 
 		let opponentDeck = this.addCard(cardback, 0, this.stackContainer, 1).image
 		this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
-		for (var i = 0; i <= state.animations[1].length; i++) {
-			switch (state.animations[1][i]) {
-				case Animation.Shuffle:
-					this.tweens.add({
-			  			targets: opponentDeck,
-			  			y: opponentDeck.y - Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-		  			})
+		animateDeck(opponentDeck, 1)
 
-		  			let halfDeck = this.add.sprite(opponentDeck.x, opponentDeck.y, opponentDeck.texture)
-		  			opponentDeck.parentContainer.add(halfDeck)
-		  			this.tweens.add({
-			  			targets: halfDeck,
-			  			y: halfDeck.y + Space.cardSize/2,
-			  			delay: i * 500,
-			  			duration: 250,
-			  			ease: "Sine.easeInOut",
-			  			yoyo: true,
-			  			onComplete: function () { halfDeck.destroy() }
-		  			})
-					break
-			}
-		}
-
+		// Show discard piles, if they have cards in them
 		if (state.discard[0].length > 0) {
 			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
 

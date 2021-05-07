@@ -5,7 +5,8 @@ export enum Animation {
 	TutorDiscard,
 	Create,
 	Shuffle,
-	Mill
+	Mill,
+	Top
 }
 
 function decodeAnimation(s: string): Animation {
@@ -16,7 +17,8 @@ function decodeAnimation(s: string): Animation {
 		'tutor_discard': Animation.TutorDiscard,
 		'create': Animation.Create,
 		'shuffle': Animation.Shuffle,
-		'mill': Animation.Mill
+		'mill': Animation.Mill,
+		'top': Animation.Top
 	}
 
 	return dict[s]
