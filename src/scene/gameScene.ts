@@ -689,6 +689,9 @@ export default class GameScene extends BaseScene {
 		// Do all animations for the given deck
 		let that = this
 		function animateDeck(deck: Phaser.GameObjects.Image, player: number): void {
+			// The y which card will bounce up/down to before returning to stack
+			let innerY = (deck.y < Space.windowHeight/2) ? deck.y + Space.cardSize*2 : deck.y - Space.cardSize*2
+
 			// Go through all animations and apply any that relate to stacks
 			for (var i = 0; i <= state.animations[player].length; i++) {
 				let delay = i * 500
@@ -720,16 +723,47 @@ export default class GameScene extends BaseScene {
 						break
 					// Move a cardback from discard pile to top of deck
 					case Animation.Top:
-						let card = that.add.sprite(deck.x + Space.cardSize, deck.y, deck.texture)
-			  			deck.parentContainer.add(card)
+						let newTop = that.add.sprite(deck.x + Space.cardSize, deck.y, deck.texture).setVisible(false)
+			  			deck.parentContainer.add(newTop)
 			  			
 			  			that.tweens.add({
-				  			targets: card,
+				  			targets: newTop,
 				  			x: deck.x,
 				  			delay: delay,
 				  			duration: 400,
 				  			ease: "Sine.easeInOut",
-				  			onComplete: function () { card.destroy() }
+				  			onStart: function () { newTop.setVisible(true) },
+				  			onComplete: function () { newTop.destroy() }
+			  			})
+			  			that.tweens.add({
+			  				targets: newTop,
+			  				y: innerY,
+			  				delay: delay,
+			  				duration: 200,
+			  				ease: "Sine.easeInOut",
+			  				yoyo: true
+			  			})
+						break
+					case Animation.Mill:
+						let milledCard = that.add.sprite(deck.x + Space.pad, deck.y, deck.texture).setVisible(false)
+			  			deck.parentContainer.add(milledCard)
+			  			
+			  			that.tweens.add({
+				  			targets: milledCard,
+				  			x: milledCard.x + Space.cardSize,
+				  			delay: delay,
+				  			duration: 400,
+				  			ease: "Sine.easeInOut",
+				  			onStart: function () { milledCard.setVisible(true) },
+				  			onComplete: function () { milledCard.destroy() }
+			  			})
+			  			that.tweens.add({
+			  				targets: milledCard,
+			  				y: innerY,
+			  				delay: delay,
+			  				duration: 200,
+			  				ease: "Sine.easeInOut",
+			  				yoyo: true
 			  			})
 						break
 				}
