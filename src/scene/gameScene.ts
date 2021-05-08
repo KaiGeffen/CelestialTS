@@ -492,7 +492,10 @@ export default class GameScene extends BaseScene {
 			this.txtTheirTurn.setVisible(true)
 		}
 		else {
-			this.priorityRectangle.setY(650 - 140).setVisible(true)
+			// NOTE Animated here and not above because the animation happens before the server responds (On press card/pass)
+			this.priorityRectangle.setVisible(true)
+			this.animatePriorityPass(1)
+			
 			this.txtYourTurn.setVisible(true)
 			this.txtTheirTurn.setVisible(false)
 		}
@@ -573,6 +576,12 @@ export default class GameScene extends BaseScene {
 		return function() {
 	    	if (!that.recapPlaying) {
 	    		that.net.passTurn()
+
+	    		// Animate the turn being passed, so that user has immediate feedback before server returns state
+	    		that.animatePriorityPass(0)
+
+				this.txtPass.setVisible(true)
+				this.txtYourTurn.setVisible(false)
 	    	}
 	    }
 	}
@@ -855,6 +864,17 @@ export default class GameScene extends BaseScene {
   					})
 	}
 
+	// Animate the priority rectangle passing from the given player to their opponent
+	private animatePriorityPass(player: number): void {
+		let y = (player === 0) ? 0 : Space.windowHeight - this.priorityRectangle.height
+		
+		this.tweens.add({
+			targets: this.priorityRectangle,
+			y: y,
+			duration: 400,
+			ease: "Sine.easeInOut"
+		})
+	}
 
 	private addCard(card: Card,
 					index: number,
@@ -1003,6 +1023,9 @@ export default class GameScene extends BaseScene {
   				that.signalError('Not enough mana')
   			}
   			else {
+  				// Animate the priority shifting to opponent
+  				that.animatePriorityPass(0)
+
   				// Send a this card to its place in the story
   				let end = that.getCardPosition(state.story.acts.length, that.storyContainer, 0)
 
