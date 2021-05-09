@@ -170,6 +170,12 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
   }
 }
 
+export const TimeSettings: Record<string, number> = {
+  recapStateMinimum: 1000,
+  recapTween: 500,
+  recapTweenWithPause: 400,
+}
+
 // Config for the BBCode text objects, used in cardInfo
 export const BBConfig = {
   fontFamily: 'Cambria',
