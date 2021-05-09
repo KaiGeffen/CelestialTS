@@ -77,6 +77,10 @@ export default class GameScene extends BaseScene {
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates: { [key: number]: ClientState}
 
+	// The last recap, each state that the game passes through in resolving the story
+	queuedRecap: ClientState[]
+
+
 	constructor(args = {key: "GameScene"}) {
 		super(args)
 	}
@@ -122,6 +126,7 @@ export default class GameScene extends BaseScene {
 		// Defined these arguments here, so that they don't carry over between instances of Game Scene
 		this.recapPlaying = false
 		this.queuedStates = {}
+		this.queuedRecap = []
 	}
 
 	create(): void {
@@ -300,6 +305,20 @@ export default class GameScene extends BaseScene {
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
 	update(time, delta): void {
+		// Prioritize showing the recap, if there is one
+		if (this.queuedRecap.length > 0) {
+			let wasShown = this.displayState(this.queuedRecap[0], true)
+
+			if (wasShown) {
+				this.queuedRecap.shift()
+				console.log(this.queuedRecap)
+				if (this.queuedRecap.length === 0) {
+					this.recapPlaying = false
+				}
+			}
+		}
+
+		// Otherwise, show a non-recap state, as determined by its version number
 		let nextVersionNumber = this.net.versionNumber + 1
 
 		if (nextVersionNumber in this.queuedStates) {
@@ -335,6 +354,11 @@ export default class GameScene extends BaseScene {
 		}
 	}
 
+	// Queue up the given recap, which is each state seen as the story resolves
+	private queueRecap(stateList: ClientState[]): void {
+		this.queuedRecap = stateList
+	}
+
 	// If a recap of states is playing, wait to show the new state until after it has finished
 	recapPlaying: Boolean
 	// Display the given game state, returns false if the state isn't shown immediately
@@ -346,8 +370,12 @@ export default class GameScene extends BaseScene {
 		// let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 100})
 		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
 
+		// If any tweens are not almost done, queue and wait for them to finish
+		if (anyTweenPlaying) {
+			return false
+		}
 		// If currently watching a recap, change the colors and display scores
-		if (recap)
+		else if (recap)
 		{
 			this.cameras.main.setBackgroundColor(ColorSettings.recapBackground)
 
@@ -361,10 +389,6 @@ export default class GameScene extends BaseScene {
 		{
 			return false
 		}
-		// If any tweens are not almost done, queue and wait for them to finish
-		else if (anyTweenPlaying) {
-			return false
-		}
 		// Display this non-recap state, with normal background and no scores displayed
 		else
 		{
@@ -374,27 +398,19 @@ export default class GameScene extends BaseScene {
 			// If a round just ended, recap each state that the game was in throughout the story
 			let numberStates = state.recap.stateList.length
 			if (isRoundStart && numberStates > 0) {
-				this.recapPlaying = true
 				
-				// Display each recapped state
-				for (var i = 0; i < numberStates; i++) {
-					let delayBeforeDisplay = i * RECAP_TIME
-					let recapState = state.recap.stateList[i]
+				this.recapPlaying = true
 
-					setTimeout(function() {
-						that.displayState(recapState, recap=true)
-					}, delayBeforeDisplay)
-				}
+				// Start the recap playing
+				this.queueRecap(state.recap.stateList)
 
-				// Display this state without any recapped states
-				setTimeout(function() {
-					that.recapPlaying = false
+				// Remove the playlist from this state
+				state.recap.stateList = []
 
-					// TODO Change how Recap button works to show the full animation
-					// this.lastRecapStateList = state.recap.stateList
-					state.recap.stateList = []
-					that.displayState(state)
-				}, numberStates * RECAP_TIME)
+				// Add this state to the queue
+				this.queueState(state)
+
+				// return
 				return false
 			}
 		}
