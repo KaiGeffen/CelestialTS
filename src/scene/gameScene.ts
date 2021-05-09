@@ -311,10 +311,12 @@ export default class GameScene extends BaseScene {
 
 			if (wasShown) {
 				this.queuedRecap.shift()
-				console.log(this.queuedRecap)
+
 				if (this.queuedRecap.length === 0) {
 					this.recapPlaying = false
 				}
+
+				return
 			}
 		}
 
@@ -356,6 +358,7 @@ export default class GameScene extends BaseScene {
 
 	// Queue up the given recap, which is each state seen as the story resolves
 	private queueRecap(stateList: ClientState[]): void {
+		this.recapPlaying = true
 		this.queuedRecap = stateList
 	}
 
@@ -383,6 +386,13 @@ export default class GameScene extends BaseScene {
 
 			let s = `${state.score[1]}\n\n${state.score[0]}`
 			this.txtScores.setText(s)
+
+			// Causes minimum wait for each recap state
+			this.tweens.add({
+				targets: this.txtScores,
+				alpha: 1,
+				duration: 1000
+			})
 		}
 		// Queue this for after recap finishes
 		else if (this.recapPlaying)
@@ -399,8 +409,6 @@ export default class GameScene extends BaseScene {
 			let numberStates = state.recap.stateList.length
 			if (isRoundStart && numberStates > 0) {
 				
-				this.recapPlaying = true
-
 				// Start the recap playing
 				this.queueRecap(state.recap.stateList)
 
@@ -410,7 +418,7 @@ export default class GameScene extends BaseScene {
 				// Add this state to the queue
 				this.queueState(state)
 
-				// return
+				// Return false: that this state was not shown at this time
 				return false
 			}
 		}
@@ -441,6 +449,7 @@ export default class GameScene extends BaseScene {
 		if (recap) {
 			numActsCompleted = state.recap.playList.length
 
+			// Show all of the acts that have already resolved
 			for (var i = 0; i < numActsCompleted; i++) {
 				let completedAct: [Card, number, string] = state.recap.playList[i]
 				let card = completedAct[0]
