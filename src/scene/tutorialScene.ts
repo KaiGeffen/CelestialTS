@@ -90,17 +90,6 @@ export class TutorialScene1 extends TutorialScene {
 		this.btnRecap.setVisible(false)
 	}
 
-	displayState(state: ClientState, recap: Boolean = false): boolean {
-		let result = super.displayState(state, recap)
-
-		// If the state isn't displayed or this is a recap, don't change the simplifications
-		if (!result || recap) {
-			return false
-		}
-
-		return true
-	}
-
 	// Method called before exiting this scene
 	beforeExit(): void {
 		// Make sure that card text isn't the simplified version elsewhere
