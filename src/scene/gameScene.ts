@@ -138,7 +138,7 @@ export default class GameScene extends BaseScene {
 
 		// Priority highlight
 		let height = Space.cardSize + 2 * Space.pad
-		this.priorityRectangle = this.add.rectangle(0, -500, 1100, height, 0xffffff, 0.1).setOrigin(0, 0)
+		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, 1100, height, 0xffffff, 0.1).setOrigin(0, 0)
 		this.txtYourTurn = this.add.text(Space.announceOffset, 650 - 200, 'Your turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 		this.txtTheirTurn = this.add.text(Space.announceOffset, 200, 'Their turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 
