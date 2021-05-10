@@ -118,7 +118,7 @@ export default class GameScene extends BaseScene {
 
 		this.storyContainer = this.add.container(0, 0)
 		this.recapContainer = this.add.container(0, 0).setVisible(false)
-		this.stackContainer = this.add.container(Space.stackX, 0)
+		this.stackContainer = this.add.container(0, 0)
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
 
 		this.input.on('pointerdown', this.clickAnywhere(), this)
@@ -184,7 +184,7 @@ export default class GameScene extends BaseScene {
 	    // Alternate views presented when hovering over/clicking any stacks
 	    // TODO Make a method that replaces each of these sections, since they are all nearly identical
 	    this.txtDeckSize = this.add.text(
-	    	Space.cardSize/2,
+	    	Space.stackX + Space.cardSize/2,
 	    	650 - Space.pad - Space.cardSize/2,
 	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
 	    this.txtDeckSize.setInteractive()
@@ -195,7 +195,7 @@ export default class GameScene extends BaseScene {
 	    this.txtDeckSize.on('pointerdown', this.clickAlternateView(), this)
 	    
 	    this.txtDiscardSize = this.add.text(
-	    	Space.cardSize*3/2 + Space.pad,
+	    	Space.stackX + Space.cardSize*3/2 + Space.pad,
 	    	650 - Space.pad - Space.cardSize/2,
 	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
 	    this.txtDiscardSize.setInteractive()
@@ -206,7 +206,7 @@ export default class GameScene extends BaseScene {
 	    this.txtDiscardSize.on('pointerdown', this.clickAlternateView(), this)
 
 	    this.txtOpponentDeckSize = this.add.text(
-	    	Space.cardSize/2,
+	    	Space.stackX + Space.cardSize/2,
 	    	Space.pad + Space.cardSize/2,
 	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
 	    this.txtOpponentDeckSize.setInteractive()
@@ -217,7 +217,7 @@ export default class GameScene extends BaseScene {
 	    this.txtOpponentDeckSize.on('pointerdown', this.clickAlternateView(), this)
 
 	    this.txtOpponentDiscardSize = this.add.text(
-	    	Space.cardSize*3/2 + Space.pad,
+	    	Space.stackX + Space.cardSize*3/2 + Space.pad,
 	    	Space.pad + Space.cardSize/2,
 	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
 	    this.txtOpponentDiscardSize.setInteractive()
@@ -997,8 +997,8 @@ export default class GameScene extends BaseScene {
 
 			case this.stackContainer:
 				// Deck is 0, discard is 1
-				if (index === 0) x = Space.cardSize/2
-				else x = Space.cardSize * 1.5 + Space.pad
+				if (index === 0) x = Space.stackX + Space.cardSize/2
+				else x = Space.stackX + Space.cardSize*3/2 + Space.pad
 
 				// My pile is 0, opponent's is 1
 				if (owner === 0) y = 650 - Space.cardSize/2 - Space.pad
