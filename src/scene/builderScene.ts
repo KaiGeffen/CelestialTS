@@ -392,6 +392,10 @@ class DeckRegion {
       let cardCodes: string[] = deckCode.split(':')
 
       deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
+
+      if (deckCode === '') {
+        deck = []
+      }
     }
     else {
       deck = deckCode
@@ -625,6 +629,7 @@ class FilterRegion {
         type: 'text',
         text: '',
         placeholder: 'Search',
+        tooltip: 'Search for cards by text.',
         font: 'Arial',
         fontSize: '80px',
         color: ColorSettings.button,
@@ -866,6 +871,7 @@ class MenuRegion {
     let textBoxMM = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
       type: 'textarea',
       text: UserSettings._get('mmCode'),
+      tooltip: 'Enter any matchmaking code to only match with players with that same code.',
       font: 'Arial',
       fontSize: '36px',
       color: ColorSettings.button,
@@ -892,6 +898,7 @@ class MenuRegion {
     this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize, {
       type: 'textarea',
       text: '',
+      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
       font: 'Arial',
       fontSize: '36px',
       color: ColorSettings.button,
