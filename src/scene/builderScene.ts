@@ -610,9 +610,11 @@ class FilterRegion {
     let that = this
 
     let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
-    invisBackground.setInteractive().setVisible(false)
+    invisBackground.setInteractive().setVisible(false).setDepth(30)
 
     invisBackground.on('pointerdown', function() {
+      that.scene.sound.play('close')
+
       textboxSearch.setVisible(false)
       invisBackground.setVisible(false)
     })
@@ -655,6 +657,8 @@ class FilterRegion {
 
     // Button to open the search field, just below the base scene buttons
     let btnSearch = new Button(this.scene, 100, 100, '"i"', function() {
+      that.scene.sound.play('open')
+
       textboxSearch.setVisible(true)
       invisBackground.setVisible(true)
 
@@ -668,6 +672,8 @@ class FilterRegion {
     // Listen for esc key, and close search field if seen
     let esc = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
     esc.on('down', function () {
+      that.scene.sound.play('close')
+
       textboxSearch.setVisible(false)
       invisBackground.setVisible(false)
     })
