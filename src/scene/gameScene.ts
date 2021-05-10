@@ -952,7 +952,9 @@ export default class GameScene extends BaseScene {
 
 		container.add(image)
 
-		let cardImage = new CardImage(card, image)
+		// Cards in the stacks should not be interactive
+		let interactive = container !== this.stackContainer
+		let cardImage = new CardImage(card, image, interactive)
 		this.temporaryObjs.push(cardImage)
 		return cardImage
 	}

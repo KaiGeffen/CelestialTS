@@ -40,9 +40,10 @@ export function refreshCardInfo() {
         let pointer = scene.game.input.activePointer
         
         if (sprite.getBounds().contains(pointer.x, pointer.y)) {
-          sprite.emit('pointerover')
-
-          showText = true
+          // Show text only if the sprite has a pointerover listener
+          if (sprite.emit('pointerover')) {
+            showText = true
+          }
         }
         else {
           sprite.emit('pointerout')
@@ -60,20 +61,22 @@ export class CardImage {
   image: Phaser.GameObjects.Image
   unplayable: boolean = false
 
-  constructor(card: Card, image: Phaser.GameObjects.Image) {
-    this.init(card, image);
+  constructor(card: Card, image: Phaser.GameObjects.Image, interactive: Boolean = true) {
+    this.init(card, image, interactive);
   }
 
-  init(card: Card, image: Phaser.GameObjects.Image) {
+  init(card: Card, image: Phaser.GameObjects.Image, interactive: Boolean) {
     this.card = card;
     this.image = image;
 
-    image.setInteractive();
-    image.on('pointerover', this.onHover(), this);
-    image.on('pointerout', this.onHoverExit(), this);
+    if (interactive) {
+      image.setInteractive();
+      image.on('pointerover', this.onHover(), this);
+      image.on('pointerout', this.onHoverExit(), this);
 
-    // If the mouse moves outside of the game, exit the hover also
-    image.scene.input.on('gameout', this.onHoverExit(), this)
+      // If the mouse moves outside of the game, exit the hover also
+      image.scene.input.on('gameout', this.onHoverExit(), this)
+    }
   }
 
   destroy(): void {
