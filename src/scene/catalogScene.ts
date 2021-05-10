@@ -119,15 +119,8 @@ export default class CatalogScene extends BaseScene {
 
 		// Highlight for selected card
 		let size = Space.cardSize + Space.pad
-		this.highlight = this.add.rectangle(0, 0, size, size, ColorSettings.mulliganHighlight, 1).setVisible(false)
+		this.highlight = this.add.rectangle(0, 0, size, size, ColorSettings.mulliganHighlight, 1)
 		this.container.add(this.highlight)
-
-		// Cards
-		let catalog = starterCards
-
-		for (var i = 0; i < catalog.length; i++) {
-			this.addCard(catalog[i], i)
-		}
 
 		// Description of the selected card
 		this.txtDescription = this.add.text(Space.pad, 250, '', StyleSettings.basic)
@@ -138,6 +131,18 @@ export default class CatalogScene extends BaseScene {
 		y += 50
 		new Button(this, x, y, 'Next', this.goNext).setOrigin(1, 0.5)
 
+		// Cards
+		let catalog = starterCards
+
+		for (var i = 0; i < catalog.length; i++) {
+			let card = this.addCard(catalog[i], i)
+
+			if (i === 0) {
+				this.highlight.copyPosition(card.image)
+				this.txtDescription.setText(descriptions[card.card.name])
+			}
+		}
+
 		super.create()
 	}
 
@@ -145,7 +150,7 @@ export default class CatalogScene extends BaseScene {
 		// TODO Remember current location?
 	}
 
-	private addCard(card: Card, index: number): void {
+	private addCard(card: Card, index: number): CardImage {
 		var image: Phaser.GameObjects.Image
 		var [x, y] = this.getCardPosition(index)
 
@@ -157,7 +162,7 @@ export default class CatalogScene extends BaseScene {
 
 		this.container.add(image)
 
-		new CardImage(card, image)
+		return new CardImage(card, image)
 	}
 
 	private getCardPosition(index: number): [number, number] {
