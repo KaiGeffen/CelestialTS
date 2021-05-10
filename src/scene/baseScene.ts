@@ -188,7 +188,7 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 	    	Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
 	    		type: 'textarea',
 	    		text: text,
-	    		fontFamily: 'Cambria',//FontSettings.standard.font,
+	    		fontFamily: 'Cambria',//FontSettings.standard.font, TODO Use a settings const
 	    		fontSize: FontSettings.standard.size,
 	    		color: ColorSettings.standard,
 	    		border: 3,

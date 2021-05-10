@@ -102,32 +102,40 @@ export const FontSettings: Record<string, Record<string, string>> = {
   credits: {size: '19px', font: 'Arial', full: '19px Arial Bold'}
 }
 
+const fontFamily = 'Cambria'//'Playfair Display'//'EB Garamond'//'Georgia'//'Garamond'//'Cambria'
+
 export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   basic: {
-    font: FontSettings.standard.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size,
+    // fontStyle: "Bold",
     color: '#fff',
     stroke: '#000',
     strokeThickness: 2
   },
   button: {
-    font: FontSettings.large.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.large.size,
     color: ColorSettings.button,
     stroke: '#000',
     strokeThickness: 3
   },
   small: {
-    font: FontSettings.small.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.small.size,
     color: '#000',
     wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: false }
   },
   announcement: {
-    font: FontSettings.huge.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.huge.size,
     color: '#fff',
     stroke: '#000',
     strokeThickness: 4
   },
   tutorial: {
-    font: FontSettings.large.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.large.size,
     color: '#fff',
     backgroundColor: ColorSettings.cardTextBackground,
     wordWrap: { width: Space.windowWidth - 200 },
@@ -137,7 +145,8 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     strokeThickness: 3
   },
   cardText: {
-    font: FontSettings.standard.full,
+    fontFamily: 'EB Garamond',
+    fontSize: FontSettings.standard.size,
     color: ColorSettings.cardText,
     backgroundColor: ColorSettings.cardTextBackground,
     wordWrap: { width: 500, useAdvancedWrap: false },
@@ -146,23 +155,27 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     strokeThickness: 0
   },
   stack: {
-    font: FontSettings.stack.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.stack.size,
     color: ColorSettings.stack,
     fixedWidth: Space.cardSize,
     fixedHeight: Space.cardSize,
     align: 'center'
   },
   filter: {
-    font: FontSettings.standard.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size
   },
   title: {
-    font: FontSettings.title.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.title.size,
     color: '#fff',
     stroke: '#000',
     strokeThickness: 6
   },
   credits: {
-    font: FontSettings.credits.full,
+    fontFamily: fontFamily,
+    fontSize: FontSettings.credits.size,
     color: "#fff",
     wordWrap: { width: 1000, useAdvancedWrap: false },
     stroke: '#000',
@@ -178,7 +191,7 @@ export const TimeSettings: Record<string, number> = {
 
 // Config for the BBCode text objects, used in cardInfo
 export const BBConfig = {
-  fontFamily: 'Cambria',
+  fontFamily: fontFamily,
   fontSize: FontSettings.standard.size,
   color: ColorSettings.cardText,
   backgroundColor: ColorSettings.cardTextBackground,
