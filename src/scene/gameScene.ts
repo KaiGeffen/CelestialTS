@@ -812,18 +812,57 @@ export default class GameScene extends BaseScene {
 		animateDeck(opponentDeck, 1)
 
 		// Show discard piles, if they have cards in them
+		function animateDiscard(discard: Phaser.GameObjects.Image, player: number) {
+			// The y which card will bounce up/down to before returning to stack
+			let innerY = (discard.y < Space.windowHeight/2) ? discard.y + Space.cardSize*2 : discard.y - Space.cardSize*2
+
+			// Go through all animations and apply any that relate to stacks
+			for (var i = 0; i <= state.animations[player].length; i++) {
+				let delay = i * TimeSettings.recapTween
+
+				switch (state.animations[player][i]) {
+					case Animation.Discard:
+						let discardedCard = that.add.sprite(Space.cardSize + Space.pad, discard.y, discard.texture).setVisible(false)
+			  			discard.parentContainer.add(discardedCard)
+			  			
+			  			that.tweens.add({
+				  			targets: discardedCard,
+				  			x: discard.x,
+				  			delay: delay,
+				  			duration: TimeSettings.recapTweenWithPause,
+				  			ease: "Sine.easeInOut",
+				  			onStart: function () { discardedCard.setVisible(true) },
+				  			onComplete: function () { discardedCard.destroy() }
+			  			})
+			  			that.tweens.add({
+			  				targets: discardedCard,
+			  				y: innerY,
+			  				delay: delay,
+			  				duration: TimeSettings.recapTweenWithPause/2,
+			  				ease: "Sine.easeInOut",
+			  				yoyo: true
+			  			})
+						break
+				}
+			}
+		}
+
 		if (state.discard[0].length > 0) {
-			this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
+			let card = this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
 
 			this.txtDiscardSize.setVisible(true)
 			this.txtDiscardSize.setText(state.discard[0].length.toString())
+
+			animateDiscard(card.image, 0)
 		} else this.txtDiscardSize.setVisible(false)
 		
 		if (state.discard[1].length > 0) {
-			this.addCard(state.discard[1].slice(-1)[0], 1, this.stackContainer, 1)
+			let card = this.addCard(state.discard[1].slice(-1)[0], 1, this.stackContainer, 1)
 
 			this.txtOpponentDiscardSize.setVisible(true)
 			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
+
+			animateDiscard(card.image, 1)
 		} else this.txtOpponentDiscardSize.setVisible(false)
 	}
 
