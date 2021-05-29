@@ -53,6 +53,9 @@ export default class PreloadClass extends Phaser.Scene {
 			this.load.image(card.name, `images/${card.name}.png`)
 		})
 
+		// Load the icon images
+		this.loadIcons()
+
 		// Load all audio
 		SOUNDS.forEach( (sound) => {
 			this.load.audio(sound, `sfx/${sound}.wav`)
@@ -69,6 +72,15 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Add event listeners
 		this.createProgressGraphics()
+	}
+
+	// Loads all images that are used as icons in ux
+	private loadIcons(): void {
+		let iconNames = ['ai', 'password', 'pvp']
+
+		iconNames.forEach( (s) => {
+			this.load.image(`icon-${s}`, `icons/${s}.png`)
+		})
 	}
 
 	// Create the graphics which show user how much has loaded

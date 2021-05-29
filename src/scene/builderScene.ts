@@ -27,6 +27,7 @@ export default class BuilderScene extends BaseScene {
   filterRegion
   menuRegion
   tutorialRegion
+  modeRegion
 
   constructor() {
     super({
@@ -44,7 +45,10 @@ export default class BuilderScene extends BaseScene {
     this.deckRegion = new DeckRegion(this)
     this.catalogRegion = new CatalogRegion(this, this.deckRegion)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
+
+    // Regions that must aren't opened by default
     this.menuRegion = new MenuRegion(this, this.deckRegion)
+    this.modeRegion = new ModeRegion(this)
   }
 
   create(): void {
@@ -57,6 +61,7 @@ export default class BuilderScene extends BaseScene {
     else {
       this.filterRegion.create()
       this.menuRegion.create(this.filterRegion, this.deckRegion)
+      this.modeRegion.create(this.deckRegion)
     }
 
     // Filter to ensure that cards are visible/not based on user settings (Expansion hidden, etc)
@@ -429,6 +434,11 @@ class DeckRegion {
     this.btnMenu.setOnClick(callback)
   }
 
+  // Set the callback for showing the mode menu
+  setModeMenu(callback: () => void): void {
+    this.btnStart.setOnClick(callback)
+  }
+
   // Before exiting, remember the deck player has
   beforeExit(): void {
     if (this.isTutorial) {
@@ -459,15 +469,17 @@ class DeckRegion {
     let that = this
 
     return function () {
-      that.beforeExit()
+      
+      // TODO Rename this method, set this callback conditional on it being the tutorial, otherwise the mode menu handles this
       
       // Start the right scene / deck pair
       if (that.isTutorial) {
+        that.beforeExit()
         that.scene.scene.start("TutorialScene2", {isTutorial: true, tutorialNumber: 2, deck: tutorialDeck})
       }
-      else {
-        that.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
-      }
+      // else {
+      //   that.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
+      // }
     }
   }
 
@@ -956,6 +968,176 @@ class MenuRegion {
   }
 }
 
+
+class ModeRegion {
+  scene: Phaser.Scene
+  container: Phaser.GameObjects.Container
+
+  constructor(scene: Phaser.Scene) {
+    this.init(scene)
+  }
+
+  init(scene: Phaser.Scene): void {
+    this.scene = scene
+    
+    this.container = this.scene.add.container(
+      Space.cardSize * 2 + Space.pad * 3,
+      Space.cardSize * 1 + Space.pad * 2)
+    this.container.setVisible(false)
+    // Menu will be above button to open the other menu
+    this.container.setDepth(20)
+  }
+
+  create(deckRegion: any): void {
+    let that = this
+
+    // Set the callback for deckRegion start button
+    deckRegion.setModeMenu(this.onOpenMenu())
+
+    // Visible and invisible background rectangles, stops other containers from being clicked
+    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
+    invisBackground.setInteractive()
+
+    invisBackground.on('pointerdown', function() {
+      that.scene.sound.play('close')
+      that.container.setVisible(false)
+    })
+    this.container.add(invisBackground)
+
+    // Visible background, which does nothing when clicked
+    let width = Space.cardSize * 5 + Space.pad * 4
+    let height = Space.cardSize * 3 + Space.pad * 2
+
+    let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
+    visibleBackground.setInteractive()
+    this.container.add(visibleBackground)
+
+
+
+    // Vs ai button
+    let y = Space.pad/2
+    let btnAi = this.scene.add.image(Space.windowWidth/2, y, 'icon-ai')
+    this.container.add(btnAi)
+
+    // // Vs ai toggleable button
+    // let y = Space.pad/2
+    // let txtVsAi = this.scene.add.text(Space.pad, y, 'Play vs computer:', StyleSettings.announcement).setOrigin(0)
+    // this.container.add(txtVsAi)
+
+    // let radioAi = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    // if (UserSettings._get('vsAi')) {
+    //   radioAi.setFillStyle(ColorSettings.cardHighlight)
+    // }
+
+    // radioAi.setInteractive()
+    // radioAi.on('pointerdown', function() {
+    //   that.scene.sound.play('click')
+
+    //   UserSettings._set('vsAi', !UserSettings._get('vsAi'))
+
+    //   radioAi.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.cardHighlight : undefined)
+    // })
+    // this.container.add(radioAi)
+
+
+
+    // // Use expansion toggleable button
+    // y += Space.cardSize
+    // let txtUseExpansion = this.scene.add.text(Space.pad, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
+    // this.container.add(txtUseExpansion)
+
+    // let radioExpansion = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    // if (UserSettings._get('useExpansion')) {
+    //   radioExpansion.setFillStyle(ColorSettings.cardHighlight)
+    // }
+
+    // radioExpansion.setInteractive()
+    // radioExpansion.on('pointerdown', function() {
+    //   that.scene.sound.play('click')
+
+    //   // Toggle useExpansion setting
+    //   UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
+
+    //   // Reflect the current value of useExpansion setting
+    //   radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
+
+    //   // Filter the cards available in catalog
+    //   filterRegion.filter()
+
+    //   // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
+    //   deckRegion.showCardsLegality()
+    // })
+    // this.container.add(radioExpansion)
+
+
+
+    // // Prompt for matchmaking code
+    // y += Space.cardSize
+    // let txtMatchmaking = this.scene.add.text(Space.pad, y, 'Matchmaking code:', StyleSettings.announcement).setOrigin(0)
+    // this.container.add(txtMatchmaking)
+
+    // y += Space.pad + Space.cardSize/2
+    // let textBoxMM = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
+    //   type: 'textarea',
+    //   text: UserSettings._get('mmCode'),
+    //   tooltip: 'Enter any matchmaking code to only match with players with that same code.',
+    //   font: 'Arial',
+    //   fontSize: '36px',
+    //   color: ColorSettings.button,
+    //   border: 3,
+    //   borderColor: '#000',
+    //   backgroundColor: '#444',
+    //   maxLength: 24
+    // })
+    // .setOrigin(0)
+    // .on('textchange', function (inputText) {
+    //   inputText.text = inputText.text.replace('\n', '')
+    //   UserSettings._set('mmCode', inputText.text)
+    // })
+    // this.container.add(textBoxMM)
+
+
+
+    // // Text field for the deck-code
+    // y += Space.cardSize*3/4
+    // let txtDeckCode = this.scene.add.text(Space.pad, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
+    // this.container.add(txtDeckCode)
+
+    // y += Space.pad + Space.cardSize/2
+    // this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize, {
+    //   type: 'textarea',
+    //   text: '',
+    //   tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
+    //   font: 'Arial',
+    //   fontSize: '36px',
+    //   color: ColorSettings.button,
+    //   border: 3,
+    //   borderColor: '#000',
+    //   backgroundColor: '#444',
+    //   maxLength: 15 * 4 - 1
+    // })
+    // .setOrigin(0)
+    // .on('textchange', function (inputText) {
+    //   inputText.text = inputText.text.replace('\n', '')
+      
+    //   that.deckRegion.setDeck(inputText.text)
+    // })
+    // .on('blur', function (inputText) {
+    //   that.textBoxDeckCode.text = that.getDeckCode()
+    // })
+    // this.container.add(this.textBoxDeckCode)
+  }
+
+  private onOpenMenu(): () => void {
+    let that = this
+    return function() {
+      that.scene.sound.play('open')
+      that.container.setVisible(true)
+    }
+  }
+
+
+}
 
 class TutorialRegion {
   scene: Phaser.Scene
