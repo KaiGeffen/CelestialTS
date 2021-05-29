@@ -334,8 +334,11 @@ class DeckRegion {
     // Sort button
     let btnSort = new Button(this.scene, 0, -100, 'Sort', function() {that.sort()})
 
-    // Start button
-    this.btnStart = new Button(this.scene, 0, -50, '', this.onStart())
+    // Start button, the callback is set by the mode region during its init
+    this.btnStart = new Button(this.scene, 0, -50, '')
+    if (isTutorial) {
+      this.btnStart.on('pointerdown', this.startGame, this)
+    }
 
     // Menu button, the callback is set by menu region during its init
     this.btnMenu = new Button(this.scene, 0, -150, 'Menu')
@@ -465,21 +468,16 @@ class DeckRegion {
     }
   }
 
-  private onStart(): () => void {
-    let that = this
+  // Start the game scene
+  startGame(): () => void {
+    this.beforeExit()
 
-    return function () {
-      
-      // TODO Rename this method, set this callback conditional on it being the tutorial, otherwise the mode menu handles this
-      
-      // Start the right scene / deck pair
-      if (that.isTutorial) {
-        that.beforeExit()
-        that.scene.scene.start("TutorialScene2", {isTutorial: true, tutorialNumber: 2, deck: tutorialDeck})
-      }
-      // else {
-      //   that.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
-      // }
+    // Start the right scene / deck pair
+    if (this.isTutorial) {  
+      this.scene.scene.start("TutorialScene2", {isTutorial: true, tutorialNumber: 2, deck: tutorialDeck})
+    }
+    else {
+      this.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
     }
   }
 
@@ -1012,122 +1010,75 @@ class ModeRegion {
     visibleBackground.setInteractive()
     this.container.add(visibleBackground)
 
+    // Ai button + reminder
+    let xDelta = (Space.cardSize + Space.pad) * 3/2
+    let x = Space.cardSize + Space.pad/2
+    let y = Space.cardSize * 3/2 + Space.pad
 
+    let lblAi = this.scene.add.text(x, Space.pad, 'AI', StyleSettings.announcement).setOrigin(0.5, 0)
 
-    // Vs ai button
-    let y = Space.pad/2
-    let btnAi = this.scene.add.image(Space.windowWidth/2, y, 'icon-ai')
-    this.container.add(btnAi)
+    let btnAi = this.scene.add.image(x, y, 'icon-ai')
+    this.setIconHover(btnAi)
+    btnAi.on('pointerdown', function() {
+      console.log('ffff')
+      UserSettings._set('vsAi', true)
+      deckRegion.onStart()
+    })
 
-    // // Vs ai toggleable button
-    // let y = Space.pad/2
-    // let txtVsAi = this.scene.add.text(Space.pad, y, 'Play vs computer:', StyleSettings.announcement).setOrigin(0)
-    // this.container.add(txtVsAi)
+    // Pvp button
+    x += xDelta
 
-    // let radioAi = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
-    // if (UserSettings._get('vsAi')) {
-    //   radioAi.setFillStyle(ColorSettings.cardHighlight)
-    // }
+    let lblPvp = this.scene.add.text(x, Space.pad, 'PVP', StyleSettings.announcement).setOrigin(0.5, 0)
 
-    // radioAi.setInteractive()
-    // radioAi.on('pointerdown', function() {
-    //   that.scene.sound.play('click')
+    let btnPvp = this.scene.add.image(x, y, 'icon-pvp')
+    this.setIconHover(btnPvp)
+    btnPvp.on('pointerdown', function() {
+      UserSettings._set('vsAi', false)
+      UserSettings._set('mmCode', '')
+      deckRegion.onStart()
+    })
 
-    //   UserSettings._set('vsAi', !UserSettings._get('vsAi'))
+    // Password button
+    x += xDelta
 
-    //   radioAi.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.cardHighlight : undefined)
-    // })
-    // this.container.add(radioAi)
+    let lblPassword = this.scene.add.text(x, Space.pad, 'PWD', StyleSettings.announcement).setOrigin(0.5, 0)
 
+    let btnPassword = this.scene.add.image(x, y, 'icon-password')
+    this.setIconHover(btnPassword)
+    btnPassword.on('pointerdown', function() {
+      UserSettings._set('vsAi', false)
+      deckRegion.onStart()
+    })
 
+    // Matchmaking text region
+    y += Space.cardSize/2 + Space.pad
+    let textBoxMM = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
+      type: 'textarea',
+      text: UserSettings._get('mmCode'),
+      placeholder: 'Matchmaking code',
+      tooltip: 'Enter any matchmaking code to only match with players with that same code.',
+      font: 'Arial',
+      fontSize: '36px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#444',
+      maxLength: 24
+    })
+    .setOrigin(0)
+    .on('textchange', function (inputText) {
+      inputText.text = inputText.text.replace('\n', '')
+      UserSettings._set('mmCode', inputText.text)
+    })
 
-    // // Use expansion toggleable button
-    // y += Space.cardSize
-    // let txtUseExpansion = this.scene.add.text(Space.pad, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
-    // this.container.add(txtUseExpansion)
-
-    // let radioExpansion = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
-    // if (UserSettings._get('useExpansion')) {
-    //   radioExpansion.setFillStyle(ColorSettings.cardHighlight)
-    // }
-
-    // radioExpansion.setInteractive()
-    // radioExpansion.on('pointerdown', function() {
-    //   that.scene.sound.play('click')
-
-    //   // Toggle useExpansion setting
-    //   UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
-
-    //   // Reflect the current value of useExpansion setting
-    //   radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
-
-    //   // Filter the cards available in catalog
-    //   filterRegion.filter()
-
-    //   // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
-    //   deckRegion.showCardsLegality()
-    // })
-    // this.container.add(radioExpansion)
-
-
-
-    // // Prompt for matchmaking code
-    // y += Space.cardSize
-    // let txtMatchmaking = this.scene.add.text(Space.pad, y, 'Matchmaking code:', StyleSettings.announcement).setOrigin(0)
-    // this.container.add(txtMatchmaking)
-
-    // y += Space.pad + Space.cardSize/2
-    // let textBoxMM = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
-    //   type: 'textarea',
-    //   text: UserSettings._get('mmCode'),
-    //   tooltip: 'Enter any matchmaking code to only match with players with that same code.',
-    //   font: 'Arial',
-    //   fontSize: '36px',
-    //   color: ColorSettings.button,
-    //   border: 3,
-    //   borderColor: '#000',
-    //   backgroundColor: '#444',
-    //   maxLength: 24
-    // })
-    // .setOrigin(0)
-    // .on('textchange', function (inputText) {
-    //   inputText.text = inputText.text.replace('\n', '')
-    //   UserSettings._set('mmCode', inputText.text)
-    // })
-    // this.container.add(textBoxMM)
-
-
-
-    // // Text field for the deck-code
-    // y += Space.cardSize*3/4
-    // let txtDeckCode = this.scene.add.text(Space.pad, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
-    // this.container.add(txtDeckCode)
-
-    // y += Space.pad + Space.cardSize/2
-    // this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize, {
-    //   type: 'textarea',
-    //   text: '',
-    //   tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
-    //   font: 'Arial',
-    //   fontSize: '36px',
-    //   color: ColorSettings.button,
-    //   border: 3,
-    //   borderColor: '#000',
-    //   backgroundColor: '#444',
-    //   maxLength: 15 * 4 - 1
-    // })
-    // .setOrigin(0)
-    // .on('textchange', function (inputText) {
-    //   inputText.text = inputText.text.replace('\n', '')
-      
-    //   that.deckRegion.setDeck(inputText.text)
-    // })
-    // .on('blur', function (inputText) {
-    //   that.textBoxDeckCode.text = that.getDeckCode()
-    // })
-    // this.container.add(this.textBoxDeckCode)
+    // Add everything to this container
+    this.container.add([
+      btnAi, btnPvp, btnPassword,
+      lblAi, lblPvp, lblPassword,
+      textBoxMM])
   }
 
+  // Set the callback that happens when this menu is opened
   private onOpenMenu(): () => void {
     let that = this
     return function() {
@@ -1136,7 +1087,16 @@ class ModeRegion {
     }
   }
 
-
+  // Set the coloring that happens when the icon is hovered/not
+  private setIconHover(btn: Phaser.GameObjects.Image): void {
+    btn.setInteractive()
+    btn.on('pointerover', function() {
+      btn.setTint(ColorSettings.cardHighlight)
+    })
+    btn.on('pointerout', function() {
+      btn.clearTint()
+    })
+  }
 }
 
 class TutorialRegion {
