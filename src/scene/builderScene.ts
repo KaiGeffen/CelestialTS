@@ -1014,40 +1014,43 @@ class ModeRegion {
     let xDelta = (Space.cardSize + Space.pad) * 3/2
     let x = Space.cardSize + Space.pad/2
     let y = Space.cardSize * 3/2 + Space.pad
+    let yLbl = y - Space.cardSize - Space.pad
 
-    let lblAi = this.scene.add.text(x, Space.pad, 'AI', StyleSettings.announcement).setOrigin(0.5, 0)
+    let lblAi = this.scene.add.text(x, yLbl, 'AI', StyleSettings.announcement).setOrigin(0.5, 0)
 
     let btnAi = this.scene.add.image(x, y, 'icon-ai')
     this.setIconHover(btnAi)
     btnAi.on('pointerdown', function() {
-      console.log('ffff')
+      that.scene.sound.play('click')
       UserSettings._set('vsAi', true)
-      deckRegion.onStart()
+      deckRegion.startGame()
     })
 
     // Pvp button
     x += xDelta
 
-    let lblPvp = this.scene.add.text(x, Space.pad, 'PVP', StyleSettings.announcement).setOrigin(0.5, 0)
+    let lblPvp = this.scene.add.text(x, yLbl, 'PVP', StyleSettings.announcement).setOrigin(0.5, 0)
 
     let btnPvp = this.scene.add.image(x, y, 'icon-pvp')
     this.setIconHover(btnPvp)
     btnPvp.on('pointerdown', function() {
+      that.scene.sound.play('click')
       UserSettings._set('vsAi', false)
       UserSettings._set('mmCode', '')
-      deckRegion.onStart()
+      deckRegion.startGame()
     })
 
     // Password button
     x += xDelta
 
-    let lblPassword = this.scene.add.text(x, Space.pad, 'PWD', StyleSettings.announcement).setOrigin(0.5, 0)
+    let lblPassword = this.scene.add.text(x, yLbl, 'PWD', StyleSettings.announcement).setOrigin(0.5, 0)
 
     let btnPassword = this.scene.add.image(x, y, 'icon-password')
     this.setIconHover(btnPassword)
     btnPassword.on('pointerdown', function() {
+      that.scene.sound.play('click')
       UserSettings._set('vsAi', false)
-      deckRegion.onStart()
+      deckRegion.startGame()
     })
 
     // Matchmaking text region
