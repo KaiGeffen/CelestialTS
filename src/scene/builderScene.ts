@@ -469,7 +469,7 @@ class DeckRegion {
   }
 
   // Start the game scene
-  startGame(): () => void {
+  startGame(): void {
     this.beforeExit()
 
     // Start the right scene / deck pair
@@ -788,7 +788,7 @@ class MenuRegion {
     this.scene = scene
     this.deckRegion = deckRegion
     
-    this.container = this.scene.add.container(Space.cardSize * 2 + Space.pad * 3, Space.pad)
+    this.container = this.scene.add.container(Space.cardSize * 2 + Space.pad * 3, Space.cardSize + Space.pad * 2)
     this.container.setVisible(false)
     // Menu will be above button to open the other menu
     this.container.setDepth(20)
@@ -812,38 +812,15 @@ class MenuRegion {
 
     // Visible background, which does nothing when clicked
     let width = Space.cardSize * 5 + Space.pad * 4
-    let height = Space.cardSize * 5 + Space.pad * 3
+    let height = Space.cardSize * 3 + Space.pad * 2
 
     let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
     visibleBackground.setInteractive()
     this.container.add(visibleBackground)
 
 
-
-    // Vs ai toggleable button
-    let y = Space.pad/2
-    let txtVsAi = this.scene.add.text(Space.pad, y, 'Play vs computer:', StyleSettings.announcement).setOrigin(0)
-    this.container.add(txtVsAi)
-
-    let radioAi = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
-    if (UserSettings._get('vsAi')) {
-      radioAi.setFillStyle(ColorSettings.cardHighlight)
-    }
-
-    radioAi.setInteractive()
-    radioAi.on('pointerdown', function() {
-      that.scene.sound.play('click')
-
-      UserSettings._set('vsAi', !UserSettings._get('vsAi'))
-
-      radioAi.setFillStyle((UserSettings._get('vsAi')) ? ColorSettings.cardHighlight : undefined)
-    })
-    this.container.add(radioAi)
-
-
-
     // Use expansion toggleable button
-    y += Space.cardSize
+    let y = Space.pad/2
     let txtUseExpansion = this.scene.add.text(Space.pad, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
     this.container.add(txtUseExpansion)
 
@@ -869,34 +846,6 @@ class MenuRegion {
       deckRegion.showCardsLegality()
     })
     this.container.add(radioExpansion)
-
-
-
-    // Prompt for matchmaking code
-    y += Space.cardSize
-    let txtMatchmaking = this.scene.add.text(Space.pad, y, 'Matchmaking code:', StyleSettings.announcement).setOrigin(0)
-    this.container.add(txtMatchmaking)
-
-    y += Space.pad + Space.cardSize/2
-    let textBoxMM = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
-      type: 'textarea',
-      text: UserSettings._get('mmCode'),
-      tooltip: 'Enter any matchmaking code to only match with players with that same code.',
-      font: 'Arial',
-      fontSize: '36px',
-      color: ColorSettings.button,
-      border: 3,
-      borderColor: '#000',
-      backgroundColor: '#444',
-      maxLength: 24
-    })
-    .setOrigin(0)
-    .on('textchange', function (inputText) {
-      inputText.text = inputText.text.replace('\n', '')
-      UserSettings._set('mmCode', inputText.text)
-    })
-    this.container.add(textBoxMM)
-
 
 
     // Text field for the deck-code
@@ -947,22 +896,6 @@ class MenuRegion {
     txt = txt.slice(0, -1)
 
     return txt
-  }
-
-  private onToggleUserSetting(btn: Button, property: string): () => void {
-    let that = this
-    return function() {
-      UserSettings._set(property, !UserSettings._get(property))
-
-      that.setCheckOrX(btn, UserSettings._get(property))
-    }
-  }
-
-  // Set the btn to end with a check or an X based on the conditional
-  private setCheckOrX(btn: Button, conditional: Boolean): void {
-    let finalChar = conditional ? "✓":"X"
-    let newText = btn.text.slice(0, -1) + finalChar
-    btn.setText(newText)
   }
 }
 
@@ -1101,6 +1034,7 @@ class ModeRegion {
     })
   }
 }
+
 
 class TutorialRegion {
   scene: Phaser.Scene
