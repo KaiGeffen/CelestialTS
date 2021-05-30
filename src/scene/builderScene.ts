@@ -341,7 +341,7 @@ class DeckRegion {
     }
 
     // Menu button, the callback is set by menu region during its init
-    this.btnMenu = new Button(this.scene, 0, -150, 'Menu')
+    this.btnMenu = new Button(this.scene, 0, -150, 'Deck')
 
     // Remove the Menu button, add a Reset button
     if (isTutorial) {
