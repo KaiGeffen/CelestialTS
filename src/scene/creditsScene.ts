@@ -4,7 +4,7 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 
 
-export default class CreditsScene extends BaseScene {
+export default class CreditsScene extends Phaser.Scene {
   
   constructor() {
     super({
@@ -18,8 +18,6 @@ export default class CreditsScene extends BaseScene {
     this.add.text(Space.windowWidth/2, 80, "Credits", StyleSettings.title).setOrigin(0.5)
 
     let btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight - 40, "Exit", this.doWelcome).setOrigin(0.5)
-
-    super.create()
   }
 
   private createCreditsTextbox(): void {
