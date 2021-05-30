@@ -22,11 +22,14 @@ export default class WelcomeScene extends BaseScene {
     // Start Button
     new Button(this, Space.windowWidth/2, 350, "Click to Start", this.doStart).setOrigin(0.5).setStyle(StyleSettings.announcement)
 
-    // Tutorial Button
-    let btnTutorial = new Button(this, Space.windowWidth/2, Space.windowHeight - 125, "Tutorial", this.doTutorial).setOrigin(0.5)
+    // Tutorial button
+    let btnTutorial = new Button(this, Space.windowWidth/2 - 200, Space.windowHeight - 50, "Tutorial", this.doTutorial).setOrigin(0.5)
 
     // Credits button
     let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
+
+    // Discord button
+    let btnDiscord = new Button(this, Space.windowWidth/2 + 200, Space.windowHeight - 50, "Discord", this.doDiscord).setOrigin(0.5)
 
     // If the player just completed the tutorial and is returning to this scene
     if (params['tutorialComplete']) {
@@ -116,5 +119,9 @@ Click start to check them out.`, StyleSettings.basic).setOrigin(0.5, 0)
 
   private doCredits(): void {
     this.scene.start("CreditsScene")
+  }
+  
+  private doDiscord(): void {
+    window.open("https://discord.gg/wCSs7j7y")
   }
 }
