@@ -122,6 +122,6 @@ Click start to check them out.`, StyleSettings.basic).setOrigin(0.5, 0)
   }
   
   private doDiscord(): void {
-    window.open("https://discord.gg/wCSs7j7y")
+    window.open("https://discord.gg/UXWswspB8S")
   }
 }
