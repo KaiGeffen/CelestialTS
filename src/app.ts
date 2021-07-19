@@ -18,7 +18,8 @@ const config: Phaser.Types.Core.GameConfig = {
   title: "Celestial",
   width: Space.windowWidth,
   height: Space.windowHeight,
-  parent: "divId",
+  parent: "game",
+  transparent: true,
   dom: {
     createContainer: true
   },
