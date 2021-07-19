@@ -331,9 +331,6 @@ class DeckRegion {
     this.txtHint = this.scene.add.text(-500, -120, "Click a card to add it to your deck",
       StyleSettings.announcement).setOrigin(0.5, 0)
 
-    // Sort button
-    let btnSort = new Button(this.scene, 0, -100, 'Sort', function() {that.sort()})
-
     // Start button, the callback is set by the mode region during its init
     this.btnStart = new Button(this.scene, 0, -50, '')
     if (isTutorial) {
@@ -341,17 +338,17 @@ class DeckRegion {
     }
 
     // Menu button, the callback is set by menu region during its init
-    this.btnMenu = new Button(this.scene, 0, -150, 'Deck')
+    this.btnMenu = new Button(this.scene, 0, -100, 'Deck')
 
     // Remove the Menu button, add a Reset button
     if (isTutorial) {
       this.btnMenu.setVisible(false)
 
       // Instead, include a button to reset to the default tutorial deck
-      let btnReset = new Button(this.scene, 0, -150, 'Reset', this.onReset())
+      let btnReset = new Button(this.scene, 0, -100, 'Reset', this.onReset())
 
       // Also include a button to return to the catalog scene
-      let btnBack = new Button(this.scene, 0, -200, 'Back', this.onBack())
+      let btnBack = new Button(this.scene, 0, -150, 'Back', this.onBack())
 
       this.container.add(btnReset)
       this.container.add(btnBack)
@@ -365,7 +362,7 @@ class DeckRegion {
     }
 
     // Add all of these objects to this container
-    this.container.add([this.txtHint, btnSort, this.btnStart, this.btnMenu])
+    this.container.add([this.txtHint, this.btnStart, this.btnMenu])
   }
 
   addCard(card: Card): boolean {
@@ -387,6 +384,9 @@ class DeckRegion {
 
     // Update start button to reflect new amount of cards in deck
     this.updateText()
+
+    // Sort the deck, now done automatically after each card added
+    this.sort()
 
     // Card was added successfully
     return true
