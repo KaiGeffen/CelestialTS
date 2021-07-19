@@ -138,7 +138,7 @@ export default class GameScene extends BaseScene {
 
 		// Priority highlight
 		let height = Space.cardSize + 2 * Space.pad
-		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, 1100, height, 0xffffff, 0.1).setOrigin(0, 0)
+		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, 1100, height, ColorSettings.priorityRectangle, 0.5).setOrigin(0, 0).setDepth(-1)
 		this.txtYourTurn = this.add.text(Space.announceOffset, 650 - 200, 'Your turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 		this.txtTheirTurn = this.add.text(Space.announceOffset, 200, 'Their turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 
@@ -380,8 +380,6 @@ export default class GameScene extends BaseScene {
 		// If currently watching a recap, change the colors and display scores
 		else if (recap)
 		{
-			this.cameras.main.setBackgroundColor(ColorSettings.recapBackground)
-
 			this.animatePointGain(state)
 
 			let s = `${state.score[1]}\n\n${state.score[0]}`
@@ -402,7 +400,6 @@ export default class GameScene extends BaseScene {
 		// Display this non-recap state, with normal background and no scores displayed
 		else
 		{
-			this.cameras.main.setBackgroundColor(ColorSettings.background)
 			this.txtScores.setText('')
 
 			// If a round just ended, recap each state that the game was in throughout the story
