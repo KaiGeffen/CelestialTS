@@ -51,7 +51,7 @@ class TutorialScene extends GameScene {
 				ex.alterScene(this)
 
 				let s = ex.explain()
-				this.txtTutorial.start('[stroke]' + s + '[/stroke]', 30)
+				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', 30)
 				this.txtTutorial.setVisible(true)
 			}
 		})

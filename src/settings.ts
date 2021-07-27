@@ -225,7 +225,7 @@ export const TutorialBBConfig = {
   stroke: '#000',
   strokeThickness: 3,
   backgroundColor: ColorSettings.cardTextBackground,
-  backgroundStrokeColor: '#000',
+  backgroundStrokeColor: '#070',
   backgroundStrokeLineWidth: 3,
   backgroundCornerRadius: 5,
   backgroundHorizontalGradient: false,
