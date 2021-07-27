@@ -217,3 +217,30 @@ export const BBConfig = {
     width: 500
   }
 }
+
+export const TutorialBBConfig = {
+  fontFamily: fontFamily,
+  fontSize: FontSettings.large.size,
+  color: '#fff',
+  stroke: '#000',
+  strokeThickness: 3,
+  backgroundColor: ColorSettings.cardTextBackground,
+  backgroundStrokeColor: '#000',
+  backgroundStrokeLineWidth: 3,
+  backgroundCornerRadius: 5,
+  backgroundHorizontalGradient: false,
+  padding: { 
+    left: 10,
+    right: 10,
+    top: 5,
+    bottom: 5
+  },
+  wrap: {
+    mode: 'word',
+    width: 1000
+  }
+}
+
+
+
+

@@ -1,13 +1,13 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { StyleSettings, ColorSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, Space, TutorialBBConfig } from "../settings"
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
 
 
 class TutorialScene extends GameScene {
-	txtTutorial: Phaser.GameObjects.Text
+	txtTutorial:  any //Phaser.GameObjects.Text Is a rexUI TextBox
 	explanations: Explanation[]
 
 	init(params: any): void {
@@ -22,13 +22,13 @@ class TutorialScene extends GameScene {
 		this.explanations.forEach(ex => ex.seen = false)
 
 		// Add the tutorial text
-		let y = Space.pad*2 // Space.pad*3 + Space.cardSize
-		this.txtTutorial = this.add.text(Space.pad, y, '', StyleSettings.tutorial)
-		this.txtTutorial.setVisible(false)
-		this.txtTutorial.setInteractive()
-		this.txtTutorial.on('pointerdown', function() {
-			this.txtTutorial.setVisible(false)
-		}, this)
+		this.txtTutorial = this['rexUI'].add['textBox']({
+			x: Space.pad,
+			y: Space.pad * 2,
+			text: this.add['rexBBCodeText'](0, 0, '', TutorialBBConfig)
+		}).setOrigin(0)
+		
+			// Space.windowWidth/2, Space.windowHeight/2, 800, 200, 30, ColorSettings.menuBackground).setAlpha(0.95)
 	}
 
 	displayState(state: ClientState, recap: Boolean = false): boolean {
@@ -51,7 +51,7 @@ class TutorialScene extends GameScene {
 				ex.alterScene(this)
 
 				let s = ex.explain()
-				this.txtTutorial.setText(s)
+				this.txtTutorial.start('[stroke]' + s + '[/stroke]', 30)
 				this.txtTutorial.setVisible(true)
 			}
 		})
