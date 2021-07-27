@@ -37,8 +37,6 @@ class TutorialScene extends GameScene {
 		// If this state isn't displayed, do nothing
 		if (!isDisplayed) return false
 
-		this.txtTutorial.setVisible(false)
-
 		// If it's a recap, don't show an explanation
 		if (recap) return true
 
@@ -51,8 +49,7 @@ class TutorialScene extends GameScene {
 				ex.alterScene(this)
 
 				let s = ex.explain()
-				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', 30)
-				this.txtTutorial.setVisible(true)
+				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', 15)
 			}
 		})
 
