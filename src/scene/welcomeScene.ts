@@ -6,6 +6,13 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 
 
+const TUTORIAL_COMPLETE_MSG =
+`You completed the tutorial. All of the cards in the
+base set are now available to you!
+
+Click start to check them out.`
+
+
 export default class WelcomeScene extends BaseScene {
   
   constructor() {
@@ -80,11 +87,7 @@ export default class WelcomeScene extends BaseScene {
     visibleBackground.setInteractive()
 
     let txtTitle = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 110, 'Congratulations!', StyleSettings.announcement).setOrigin(0.5)
-    let txtMessage = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 50,
-`You completed the tutorial. All of the cards in the
-base set are now available to you!
-
-Click start to check them out.`, StyleSettings.basic).setOrigin(0.5, 0)
+    let txtMessage = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 50, TUTORIAL_COMPLETE_MSG, StyleSettings.basic).setOrigin(0.5, 0)
     
     promptContainer.add([invisibleBackground, visibleBackground, txtTitle, txtMessage])
   }
