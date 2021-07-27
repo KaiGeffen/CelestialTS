@@ -25,14 +25,15 @@ export default class CreditsScene extends Phaser.Scene {
     let creditText: string = "All icons are from game-icons.net under CC BY 3.0"
 
     let creditsDelapouite = "Delapouite: https://delapouite.com/\nStars, Spy, Swift, Crypt, Fishing Boat, Factory, Mine, Chimney, Uprising, Sarcophagus, Anubis, Horus, Enrage, Camera, Butterfly, Bandit, Wanted Poster, Night Vision, Bastet, Stable, Pelican, Beehive, Eagle, Icarus, Ecology, PVP icon"
-    let creditsLorc = "Lorc: https://lorcblog.blogspot.com/\nBone Knife, Cog, Crossed Bones, Dove, Juggle, Drown, Gears, Dash, Cosmos, Fruiting, Gift, Paranoia, Hurricane, Dinosaur Bones, Lotus, Oak, Cardback, Broken Bone, Robot, Bee, Disintegrate, Imprison"
+    let creditsLorc = "Lorc: https://lorcblog.blogspot.com/\nBone Knife, Cog, Crossed Bones, Dove, Juggle, Drown, Gears, Dash, Cosmos, Fruiting, Gift, Paranoia, Hurricane, Dinosaur Bones, Lotus, Oak, Cardback, Broken Bone, Robot, Bee, Disintegrate, Imprison, Basics icon"
     let creditsBerandas = "Lord Berandas: https://www.deviantart.com/berandas\nSine, AI"
     let creditsDarkZaitzev = "Dark Zaitzev: https://www.deviantart.com/darkzaitzev\nStalker"
+    let creditsFaithtoken = "Faithtoken: http://www.faithtoken.com/\nCards icon, Decks icon"
     let creditsCathelineau = "Cathelineau: Tumulus"
     let creditsSkoll = "Skoll: Raise Dead, Password icon"
     let creditsCaroAsercion = "Caro Asercion: Boar"
     
-    let authors = [creditsDelapouite, creditsLorc, creditsBerandas, creditsDarkZaitzev, creditsCathelineau, creditsSkoll, creditsCaroAsercion]
+    let authors = [creditsDelapouite, creditsLorc, creditsBerandas, creditsDarkZaitzev, creditsFaithtoken, creditsCathelineau, creditsSkoll, creditsCaroAsercion]
     for (var i = 0; i < authors.length; i++) {
       creditText += '\n\n' + authors[i]
     }

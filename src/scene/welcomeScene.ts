@@ -177,17 +177,15 @@ class TutorialRegion {
     visibleBackground.setInteractive()
     this.container.add(visibleBackground)
 
-    
+    // Basics button + reminder
     let xDelta = (Space.cardSize + Space.pad) * 3/2
     let x = Space.cardSize + Space.pad/2
-    let y = Space.cardSize * 3/2 + Space.pad
+    let y = Space.cardSize * 3/2 + Space.pad * 2
     let yLbl = y - Space.cardSize - Space.pad
 
-
-    // Basics button + reminder
     let lblBasics = this.scene.add.text(x, yLbl, 'Basics', StyleSettings.announcement).setOrigin(0.5, 0)
 
-    let btnBasics = this.scene.add.image(x, y, 'icon-ai')
+    let btnBasics = this.scene.add.image(x, y, 'icon-basics')
     this.setIconHover(btnBasics)
     btnBasics.on('pointerdown', function() {
       that.scene.sound.play('click')
@@ -201,7 +199,7 @@ class TutorialRegion {
 
     let lblCards = this.scene.add.text(x, yLbl, 'Cards', StyleSettings.announcement).setOrigin(0.5, 0)
 
-    let btnCards = this.scene.add.image(x, y, 'icon-pvp')
+    let btnCards = this.scene.add.image(x, y, 'icon-cards')
     this.setIconHover(btnCards)
     btnCards.on('pointerdown', function() {
       that.scene.sound.play('click')
@@ -215,7 +213,7 @@ class TutorialRegion {
 
     let lblDecks = this.scene.add.text(x, yLbl, 'Decks', StyleSettings.announcement).setOrigin(0.5, 0)
 
-    let btnDecks = this.scene.add.image(x, y, 'icon-password')
+    let btnDecks = this.scene.add.image(x, y, 'icon-decks')
     this.setIconHover(btnDecks)
     btnDecks.on('pointerdown', function() {
       that.scene.sound.play('click')
