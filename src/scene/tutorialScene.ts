@@ -112,7 +112,8 @@ export class TutorialScene1 extends TutorialScene {
 
 	onWin(): void {
   		this.net.closeSocket()
-  		this.scene.start("CatalogScene")  		
+  		// TODO Make dynamic
+  		this.scene.start("AnubisCatalogScene")  		
   	}
 
   	private onRetry(): void {

@@ -8,7 +8,7 @@ import { CardImage } from "../lib/cardImage"
 import Button from "../lib/button"
 
 
-const descriptions = {
+const anubisDescriptions = {
 	'Stars': 
 `
 Stars costs no mana and gives you no points, but on the next round
@@ -97,22 +97,24 @@ a round 2 to 0 is just as good as winning 9 to 0.
 }
 
 
-export default class CatalogScene extends BaseScene {
+
+class CatalogScene extends BaseScene {
 	container: Phaser.GameObjects.Container
 	highlight: Phaser.GameObjects.Rectangle
 	txtDescription: Phaser.GameObjects.Text
 
-	constructor() {
-		super({
-			key: "CatalogScene"
-		})
-	}
+	// Defined in subclasses
+	pool: Card[]
+	descriptions: Record<string, string>
 
 	init(params: any): void {
+		console.log('initing')
 		this.container = this.add.container(0, 140)
 	}
 
+	// Create the scene using the given catalog of card names:descriptions
 	create(): void {
+		console.log('here')
 		// Instructional text
 		let txt = "Below are just a few of the cards that you can use in Celestial.\nClick on them to see explanations and advice.\nClick 'Next' to move on to the deck-builder."
 		this.add.text(Space.pad, Space.pad, txt, StyleSettings.basic)
@@ -132,14 +134,12 @@ export default class CatalogScene extends BaseScene {
 		new Button(this, x, y, 'Next', this.goNext).setOrigin(1, 0.5)
 
 		// Cards
-		let catalog = starterCards
-
-		for (var i = 0; i < catalog.length; i++) {
-			let card = this.addCard(catalog[i], i)
+		for (var i = 0; i < this.pool.length; i++) {
+			let card = this.addCard(this.pool[i], i)
 
 			if (i === 0) {
 				this.highlight.copyPosition(card.image)
-				this.txtDescription.setText(descriptions[card.card.name])
+				this.txtDescription.setText(this.descriptions[card.card.name])
 			}
 		}
 
@@ -190,11 +190,23 @@ export default class CatalogScene extends BaseScene {
 	      that.highlight.setPosition(image.x, image.y)
 	      that.highlight.setVisible(true)
 
-	      that.txtDescription.setText(descriptions[card.name])
+	      that.txtDescription.setText(that.descriptions[card.name])
 	    }
   	}
 
   	private goNext(): void {
   		this.scene.start("BuilderScene", {isTutorial: true})
   	}
+}
+
+
+export class AnubisCatalogScene extends CatalogScene {
+	pool: Card[] = starterCards
+	descriptions: Record<string, string> = anubisDescriptions
+
+	constructor() {
+		super({
+			key: "AnubisCatalogScene"
+		})
+	}
 }

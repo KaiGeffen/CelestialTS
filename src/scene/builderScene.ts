@@ -488,7 +488,8 @@ class DeckRegion {
 
   private onBack(): () => void {
     let that = this
-    return function() {that.scene.scene.start("CatalogScene")}
+    // TODO Make dynamic
+    return function() {that.scene.scene.start("AnubisCatalogScene")}
   }
 
   private updateText(): void {
