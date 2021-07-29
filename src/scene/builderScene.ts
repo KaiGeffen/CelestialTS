@@ -1,5 +1,5 @@
 import "phaser"
-import { collectibleCards, starterCards, baseCards } from "../catalog/catalog"
+import { collectibleCards, baseCards } from "../catalog/catalog"
 import { CardImage, cardInfo } from "../lib/cardImage"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
@@ -12,10 +12,8 @@ import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
 const DECK_PARAM = 'deck'
 
-const defaultTutorialDeck: string = "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"
-
 // The last deck of cards the player had, which get repopulated each time they enter the deck builder
-var tutorialDeck: Card[] | string = defaultTutorialDeck
+var tutorialDeck: Card[] | string = []
 var standardDeck: Card[] = []
 
 
@@ -38,15 +36,26 @@ export default class BuilderScene extends BaseScene {
   init(params: any): void {
     this.isTutorial = params['isTutorial']
 
+    // What the cardpool available is
+    let cardpool = collectibleCards
+    // What the default deck for this mode is
+    let defaultDeck = ""
+    // The last scene, which back button should return user to
+    let lastScene = ""
+
     if (this.isTutorial) {
       this.tutorialRegion = new TutorialRegion(this)
+
+      cardpool = params['cardpool']
+      defaultDeck = params['defaultDeck']
+      lastScene = params['lastScene']
     }
 
-    this.deckRegion = new DeckRegion(this)
-    this.catalogRegion = new CatalogRegion(this, this.deckRegion)
+    this.deckRegion = new DeckRegion(this, defaultDeck, lastScene)
+    this.catalogRegion = new CatalogRegion(this, this.deckRegion, cardpool)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
 
-    // Regions that must aren't opened by default
+    // Regions that aren't opened by default
     this.menuRegion = new MenuRegion(this, this.deckRegion)
     this.modeRegion = new ModeRegion(this)
   }
@@ -81,21 +90,23 @@ class CatalogRegion {
   container: Phaser.GameObjects.Container
   cardContainer: Phaser.GameObjects.Container
   deckRegion
+  cardpool: Card[]
   cardImages: CardImage[] = []
   currentPage: number = 0
 
   // The scrollable panel which the cards are on
   panel: any
 
-  constructor(scene: Phaser.Scene, deckRegion) {
-    this.init(scene, deckRegion)
+  constructor(scene: Phaser.Scene, deckRegion, cardpool: Card[]) {
+    this.init(scene, deckRegion, cardpool)
   }
 
-  init(scene, deckRegion): void {
+  init(scene, deckRegion, cardpool: Card[]): void {
     this.scene = scene
     this.container = this.scene.add.container(0, 0)
     this.cardContainer = this.scene.add.container(0, 0)
     this.deckRegion = deckRegion
+    this.cardpool = cardpool
   }
 
   create(isTutorial): void {
@@ -164,12 +175,9 @@ class CatalogRegion {
     // The layout manager for the panel
     let sizer = this.panel.getElement('panel')
 
-    // Determine which set of cards to show
-    let catalog = isTutorial ? starterCards : collectibleCards
-
     // Add each of the cards
-    for (var i = 0; i < catalog.length; i++) {
-      let cardImage = this.addCard(catalog[i], i)
+    for (var i = 0; i < this.cardpool.length; i++) {
+      let cardImage = this.addCard(this.cardpool[i], i)
 
       sizer.add(cardImage.image)
     }
@@ -301,6 +309,12 @@ class CatalogRegion {
 class DeckRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
+
+  // The previous scene, which the back button should return user to
+  lastScene: string
+
+  // The default deck for this mode
+  defaultDeck: string
   deck: CardImage[] = []
   isTutorial: Boolean
 
@@ -308,14 +322,17 @@ class DeckRegion {
   btnStart: Button
   btnMenu: Button
 
-  constructor(scene: Phaser.Scene) {
-    this.init(scene)
+  constructor(scene: Phaser.Scene, defaultDeck: string, lastScene: string) {
+    this.init(scene, defaultDeck, lastScene)
   }
 
-  init(scene): void {
+  init(scene: Phaser.Scene, defaultDeck: string, lastScene: string): void {
     this.scene = scene
     // NOTE Must set depth to 1 so that this is above the catalog, which blocks its cards so that they don't appear below the panel
     this.container = this.scene.add.container(988, 650).setDepth(1)
+
+    this.defaultDeck = defaultDeck
+    this.lastScene = lastScene
   }
 
   create(isTutorial: boolean): void {
@@ -352,7 +369,7 @@ class DeckRegion {
 
     // If this is the tutorial, use that deck, otherwise use the other deck
     if (isTutorial) {
-      this.setDeck(tutorialDeck)
+      this.setDeck(this.defaultDeck)
     } else {
       this.setDeck(standardDeck)
     }
@@ -480,13 +497,14 @@ class DeckRegion {
 
   private onReset(): () => void {
     let that = this
-    return function() {that.setDeck(defaultTutorialDeck)}
+    return function() {that.setDeck(that.defaultDeck)}
   }
 
   private onBack(): () => void {
     let that = this
-    // TODO Make dynamic
-    return function() {that.scene.scene.start("AnubisCatalogScene")}
+    return function() {
+      that.scene.scene.start(that.lastScene)
+    }
   }
 
   private updateText(): void {

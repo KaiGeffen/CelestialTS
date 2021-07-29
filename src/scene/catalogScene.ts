@@ -15,6 +15,8 @@ class CatalogScene extends BaseScene {
 
 	// Defined in subclasses
 	pool: Card[]
+	defaultDeck: string
+	sceneKey: string
 
 	init(params: any): void {
 		this.container = this.add.container(0, 140)
@@ -99,13 +101,21 @@ class CatalogScene extends BaseScene {
   	}
 
   	private goNext(): void {
-  		this.scene.start("BuilderScene", {isTutorial: true})
+  		this.scene.start("BuilderScene",
+  			{isTutorial: true,
+  				cardpool: this.pool,
+  				defaultDeck: this.defaultDeck,
+  				lastScene: this.sceneKey
+  			}
+  			)
   	}
 }
 
 
 export class AnubisCatalogScene extends CatalogScene {
-	pool: Card[] = starterRobot//starterAnubis
+	pool: Card[] = starterAnubis
+	defaultDeck: string = "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"
+	sceneKey: string = "AnubisCatalogScene"
 
 	constructor() {
 		super({
@@ -116,6 +126,8 @@ export class AnubisCatalogScene extends CatalogScene {
 
 export class RobotCatalogScene extends CatalogScene {
 	pool: Card[] = starterRobot
+	defaultDeck: string = "22:22:15:10:12:12:8:8:3:3:2:2:2:2:0"
+	sceneKey: string = "RobotCatalogScene"
 
 	constructor() {
 		super({
