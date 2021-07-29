@@ -6,7 +6,8 @@
   },
   {"name": "Bone Knife", "id": 1,
     "cost": 0, "points": 0,
-    "text": "0:0, your opponent discards their leftmost card."
+    "text": "0:0, your opponent discards their leftmost card.",
+    "catalogText": "Bone Knife costs no mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard."
   },
   {"name": "Cog", "id": 2,
     "cost": 0, "points": 0,
@@ -54,7 +55,8 @@
   },
   {"name": "Fruiting", "id": 11,
     "cost": 3, "points": 2,
-    "text": "3:0, Nourish 3."
+    "text": "3:0, Nourish 3.",
+    "catalogText": "Fruiting costs 3 mana and gives no points, but the next card you resolve will give an extra 3 points.\n\nThat means if you have a card later in the story, that card will be boosted by 3. Otherwise you'll get to spend the boost on a future round.\n\nIf you think you're going to lose a round, you might as well end with some Nourish for the next round."
   },
   {"name": "Gift", "id": 12,
     "cost": 3, "points": 2,
@@ -64,7 +66,8 @@
 
   {"name": "Hurricane", "id": 13,
     "cost": 4, "points": 2,
-    "text": "4:0, set both players points to 0."
+    "text": "4:0, set both players points to 0.",
+    "catalogText": "Hurricane costs 4 mana, gives no points, and resets both player's point totals to 0.\n\nThis means as long as it's the last card in the story, you can't lose. And if you play any card worth points after it, you'll win the round.\n\nNote that any boosts from things like Nourish will happen before the points are reset, essentially nullifying those effects."
   },
   {"name": "Dinosaur Bones", "id": 14,
     "cost": 4,
@@ -79,7 +82,8 @@
 
   {"name": "Chimney", "id": 16,
     "cost": 5,
-    "text": "5:2, your opponent puts the leftmost card of their hand on top of their deck."
+    "text": "5:2, your opponent puts the leftmost card of their hand on top of their deck.",
+    "catalogText": "Chimney costs 5 mana for just 2 points, but it also forces your opponent to put the leftmost card of their hand on top of their deck.\n\nThis is even better than Bone Knife for only 5 extra mana.\n\nIf the 2 points are enough to win you a round, this can get you card advantage. Maybe."
   },
   {"name": "Tumulus", "id": 17,
     "cost": 5,
@@ -93,7 +97,8 @@
   },
   {"name": "Stalker", "id": 19,
     "cost": 6,
-    "text": "6:4.\nCosts X, where X is the number of cards in your opponent's hand."
+    "text": "6:4.\nCosts X, where X is the number of cards in your opponent's hand.",
+    "catalogText": "Stalker's cost is equal to the number of cards in your opponent's hand, and it's worth 4 points.\n\nIf you can force your opponent to discard some of their hand, Stalker could come out as early as round 2, beating just about anything.\n\nUnfortunately, your opponent can play around this by passing more frequently."
   },
   {"name": "Sarcophagus", "id": 20,
     "cost": 6,
@@ -116,6 +121,5 @@
     "cost": 8,
     "text": "8:8, if you win this round, convert to Nourish any excess points that you won by.\n(For example, if you win 8 to 5 you get 2 points Nourish)",
     "catalogText": "Oak costs 8 mana for 8 points, and any extra points that you win by turn into Nourish, which boosts the next card you play next round.\n\nFor example, if you are 5 points ahead of your opponent, you'll get 4 points of Nourish that carry over into the next round.\n\nIf you can have carryover on the round that you play Oak, through Inspire, Nourish, or powerful robots, then it becomes extra potent."
-
   }
 ]

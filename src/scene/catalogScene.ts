@@ -135,3 +135,15 @@ export class RobotCatalogScene extends CatalogScene {
 		})
 	}
 }
+
+export class StalkerCatalogScene extends CatalogScene {
+	pool: Card[] = decodeDeck("1™12™11™13™16™19™20™23")
+	defaultDeck: string = "23:20:19:19:19:19:13:11:12:1:1:1:1:1:1"
+	sceneKey: string = "StalkerCatalogScene"
+
+	constructor() {
+		super({
+			key: "StalkerCatalogScene"
+		})
+	}
+}
