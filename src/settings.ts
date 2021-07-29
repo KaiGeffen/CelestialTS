@@ -190,7 +190,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     color: '#fff',
     stroke: '#000',
     strokeThickness: 2,
-    wordWrap: { width: 1000, useAdvancedWrap: false },
+    wordWrap: { width: 1030, useAdvancedWrap: false },
   }
 }
 
