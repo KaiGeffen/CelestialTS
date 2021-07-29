@@ -59,7 +59,6 @@ export function refreshCardInfo() {
 export class CardImage {
   card: Card
   image: Phaser.GameObjects.Image
-  txtCost: Phaser.GameObjects.Text
   unplayable: boolean = false
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
@@ -81,16 +80,11 @@ export class CardImage {
       this.image.scene.input.on('gameout', this.onHoverExit(), this)
     }
 
-    // Add cost
-    this.txtCost = scene.add.text(0, 0, '', StyleSettings.stack)
-
-    container.add(this.image, this.txtCost)
-    // this.image.addChild(txtCost)
+    container.add(this.image)
   }
 
   destroy(): void {
     this.image.destroy()
-    this.txtCost.destroy()
   }
 
   // Set whether this card is playable
