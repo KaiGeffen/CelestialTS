@@ -151,18 +151,16 @@ class CatalogScene extends BaseScene {
 	}
 
 	private addCard(card: Card, index: number): CardImage {
-		var image: Phaser.GameObjects.Image
-		var [x, y] = this.getCardPosition(index)
+		let cardImage = new CardImage(card, this.container)
 
-		image = this.add.image(x, y, card.name)
-		image.setDisplaySize(Space.cardSize, Space.cardSize)
+		cardImage.setPosition(this.getCardPosition(index))
+
+		let image = cardImage.image
 
 		image.setInteractive()
 		image.on('pointerdown', this.onClick(card, image))
 
-		this.container.add(image)
-
-		return new CardImage(card, image)
+		return cardImage
 	}
 
 	private getCardPosition(index: number): [number, number] {

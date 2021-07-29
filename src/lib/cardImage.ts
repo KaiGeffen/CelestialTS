@@ -59,28 +59,38 @@ export function refreshCardInfo() {
 export class CardImage {
   card: Card
   image: Phaser.GameObjects.Image
+  txtCost: Phaser.GameObjects.Text
   unplayable: boolean = false
 
-  constructor(card: Card, image: Phaser.GameObjects.Image, interactive: Boolean = true) {
-    this.init(card, image, interactive);
+  constructor(card: Card, container: any, interactive: Boolean = true) {
+    this.init(card, container, interactive);
   }
 
-  init(card: Card, image: Phaser.GameObjects.Image, interactive: Boolean) {
-    this.card = card;
-    this.image = image;
+  init(card: Card, container: any, interactive: Boolean) {
+    this.card = card
+
+    let scene = container.scene
+    this.image = scene.add.image(0, 0, card.name)
 
     if (interactive) {
-      image.setInteractive();
-      image.on('pointerover', this.onHover(), this);
-      image.on('pointerout', this.onHoverExit(), this);
+      this.image.setInteractive();
+      this.image.on('pointerover', this.onHover(), this);
+      this.image.on('pointerout', this.onHoverExit(), this);
 
       // If the mouse moves outside of the game, exit the hover also
-      image.scene.input.on('gameout', this.onHoverExit(), this)
+      this.image.scene.input.on('gameout', this.onHoverExit(), this)
     }
+
+    // Add cost
+    this.txtCost = scene.add.text(0, 0, '', StyleSettings.stack)
+
+    container.add(this.image, this.txtCost)
+    // this.image.addChild(txtCost)
   }
 
   destroy(): void {
-    this.image.destroy();
+    this.image.destroy()
+    this.txtCost.destroy()
   }
 
   // Set whether this card is playable
@@ -102,6 +112,10 @@ export class CardImage {
     else {
       this.image.setAlpha(1) 
     }
+  }
+
+  setPosition(position: [number, number]): void {
+    this.image.setPosition(position[0], position[1])
   }
 
   // Animate the card 'Camera' when it should be given attention

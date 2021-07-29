@@ -230,19 +230,12 @@ class CatalogRegion {
   }
 
   private addCard(card: Card, index: number): CardImage {
-    var image: Phaser.GameObjects.Image
-    var [x, y] = this.getCardPosition(index)
-    
-    image = this.scene.add.image(x, y, card.name)
-    image.setDisplaySize(Space.cardSize, Space.cardSize)
+    let cardImage = new CardImage(card, this.cardContainer)
+    cardImage.setPosition(this.getCardPosition(index))
 
+    let image = cardImage.image
     image.setInteractive()
     image.on('pointerdown', this.onClick(card), this)
-
-    this.cardContainer.add(image)
-
-    let cardImage = new CardImage(card, image)
-    this.cardImages.push(cardImage)
 
     return cardImage
   }
@@ -371,16 +364,17 @@ class DeckRegion {
     }
 
     let index = this.deck.length
-    let [x, y] = this.getCardPosition(index)
-    let image: Phaser.GameObjects.Image = this.scene.add.image(x, y, card.name)
-    image.setDisplaySize(100, 100)
 
+    let cardImage = new CardImage(card, this.container)
+    cardImage.setPosition(this.getCardPosition(index))
+
+    // TODO Pass in a callback to an exposed function instead of deeply involving in the impl of cardImage
+    let image = cardImage.image
     image.setInteractive()
     image.on('pointerdown', this.removeCard(index), this)
 
-    this.container.add(image)
-
-    this.deck.push(new CardImage(card, image))
+    // Add this to the deck
+    this.deck.push(cardImage)
 
     // Update start button to reflect new amount of cards in deck
     this.updateText()

@@ -941,17 +941,16 @@ export default class GameScene extends BaseScene {
 					index: number,
 					container: Phaser.GameObjects.Container,
 					owner: number = 0): CardImage {
-		let image: Phaser.GameObjects.Image
-		let [x, y] = this.getCardPosition(index, container, owner)
-
-		image = this.add.image(x, y, card.name)
-		image.setDisplaySize(100, 100)
-
-		container.add(image)
 
 		// Cards in the stacks should not be interactive
 		let interactive = container !== this.stackContainer
-		let cardImage = new CardImage(card, image, interactive)
+
+		// Make the card image
+		let cardImage = new CardImage(card, container, interactive)
+
+		// Reposition the card
+		cardImage.setPosition(this.getCardPosition(index, container, owner))
+
 		this.temporaryObjs.push(cardImage)
 		return cardImage
 	}
