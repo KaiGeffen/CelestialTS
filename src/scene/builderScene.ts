@@ -237,6 +237,9 @@ class CatalogRegion {
     image.setInteractive()
     image.on('pointerdown', this.onClick(card), this)
 
+    // Add this cardImage to the maintained list of cardImages
+    this.cardImages.push(cardImage)
+
     return cardImage
   }
 
