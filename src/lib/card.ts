@@ -10,6 +10,7 @@ interface CardData {
   cost: number
   text: string
   dynamicText: string
+  catalogText: string
 }
 
 // For the tutorial, the card info shown will only be the mana/points
@@ -24,6 +25,7 @@ export default class Card {
   cost: number
   text: string
   dynamicText: string
+  catalogText: string
 
   constructor(data: CardData) {
     this.name = data.name
@@ -32,6 +34,9 @@ export default class Card {
     this.text = data.text
 
     this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText
+
+    // TODO Take out the check once all cards have catalog text
+    this.catalogText = (data.catalogText === undefined) ? '' : data.catalogText
   }
 
   // Get the text for this card, including formatting

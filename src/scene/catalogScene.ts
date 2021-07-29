@@ -107,6 +107,10 @@ The line at the bottom describes what the Inspire keyword means.
 It's best if you have a plan for how to spend that mana next round,
 otherwise it could go to waste.
 `,
+	'Cog': 
+`
+Cog blah blah
+`,
 	'Crossed Bones':
 `
 Crossed Bones costs 1 mana for 2 points, which is very good value.
@@ -117,16 +121,9 @@ into your discard pile, which you may end up drawing later on.
 This downside can be used to your advantage if you play cards that
 care about having large discard piles, such as Tumulus or Anubis.
 `,
-	'Dash':
+	'Gears':
 `
-Dash costs 2 mana for 3 points, which means it beats most other 2
-mana cards.
-
-However, because of Flare, it will be worth 1 less point for every
-card that was played before it in a round.
-
-If you have more wins than your opponent, you will start the round
-with priority, and can play Dash as your first card for maximum points.
+Make robot plz
 `,
 	'Gift':
 `
@@ -193,16 +190,12 @@ class CatalogScene extends BaseScene {
 
 	// Defined in subclasses
 	pool: Card[]
-	descriptions: Record<string, string>
 
 	init(params: any): void {
-		console.log('initing')
 		this.container = this.add.container(0, 140)
 	}
 
-	// Create the scene using the given catalog of card names:descriptions
 	create(): void {
-		console.log('here')
 		// Instructional text
 		let txt = "Below are just a few of the cards that you can use in Celestial.\nClick on them to see explanations and advice.\nClick 'Next' to move on to the deck-builder."
 		this.add.text(Space.pad, Space.pad, txt, StyleSettings.basic)
@@ -213,7 +206,7 @@ class CatalogScene extends BaseScene {
 		this.container.add(this.highlight)
 
 		// Description of the selected card
-		this.txtDescription = this.add.text(Space.pad, 250, '', StyleSettings.basic)
+		this.txtDescription = this.add.text(Space.pad, 280, '', StyleSettings.catalog)
 
 		// Next button
 		let [x, y] = this.getCardPosition(6)
@@ -227,7 +220,7 @@ class CatalogScene extends BaseScene {
 
 			if (i === 0) {
 				this.highlight.copyPosition(card.image)
-				this.txtDescription.setText(this.descriptions[card.card.name])
+				this.txtDescription.setText(card.card.catalogText)
 			}
 		}
 
@@ -276,7 +269,7 @@ class CatalogScene extends BaseScene {
 	      that.highlight.setPosition(image.x, image.y)
 	      that.highlight.setVisible(true)
 
-	      that.txtDescription.setText(that.descriptions[card.name])
+	      that.txtDescription.setText(card.catalogText)
 	    }
   	}
 

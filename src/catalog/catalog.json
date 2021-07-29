@@ -1,7 +1,8 @@
 [
   {"name": "Stars", "id": 0,
     "cost": 0, "points": 0,
-    "text": "0:0, Inspire 1."
+    "text": "0:0, Inspire 1.",
+    "catalogText": "Stars costs no mana and gives you no points, but on the next round\nyou will have 1 extra mana.\n\nThe line at the bottom describes what the Inspire keyword means.\n\nIt's best if you have a plan for how to spend that mana next round, otherwise it could go to waste."
   },
   {"name": "Bone Knife", "id": 1,
     "cost": 0, "points": 0,
@@ -14,7 +15,8 @@
 
   {"name": "Crossed Bones", "id": 3,
     "cost": 1, "points": 2,
-    "text": "1:2, Fleeting, create 2 ${50}s in your discard pile."
+    "text": "1:2, Fleeting, create 2 ${50}s in your discard pile.",
+    "catalogText": "Stars costs no mana and gives you no points, but on the next round\nyou will have 1 extra mana.\n\nThe line at the bottom describes what the Inspire keyword means.\n\nIt's best if you have a plan for how to spend that mana next round, otherwise it could go to waste."
   },
   {"name": "Dove", "id": 4,
     "cost": 1,

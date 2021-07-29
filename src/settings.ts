@@ -182,6 +182,15 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     wordWrap: { width: 1000, useAdvancedWrap: false },
     stroke: '#000',
     strokeThickness: 1
+  },
+  catalog: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size,
+    // fontStyle: "Bold",
+    color: '#fff',
+    stroke: '#000',
+    strokeThickness: 2,
+    wordWrap: { width: 1000, useAdvancedWrap: false },
   }
 }
 
