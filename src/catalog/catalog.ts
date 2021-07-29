@@ -19,11 +19,19 @@ export const tokenCards: Card[] = dataToCards(tokenData)
 export const allCards: Card[] = collectibleCards.concat(tokenCards)
 export const cardback: Card = tokenCards[0]
 
-export const starterCards: Card[] = []
-let maybes = ['Dove', 'Swift', 'Mine', 'Force']
-let starterList = ['Stars', 'Crossed Bones', 'Dash', 'Gift', 'Dinosaur Bones', 'Tumulus', 'Sarcophagus', 'Anubis']
-collectibleCards.forEach( (card) => {
-	if (starterList.includes(card.name)) {
-		starterCards.push(card)
-	}
-})
+// Add each of the starter lists
+function populateStarterList(cardList: Card[], cardNames: string[]): void {
+	collectibleCards.forEach( (card) => {
+		if (cardNames.includes(card.name)) {
+			cardList.push(card)
+		}
+	})
+}
+
+export const starterAnubis: Card[] = []
+let anubisCardNames = ['Stars', 'Crossed Bones', 'Dash', 'Gift', 'Dinosaur Bones', 'Tumulus', 'Sarcophagus', 'Anubis']
+populateStarterList(starterAnubis, anubisCardNames)
+
+export const starterRobot: Card[] = []
+let robotCardNames = ['Stars', 'Cog', 'Crossed Bones', 'Gears', 'Gift', 'Factory', 'Mine', 'AI']
+populateStarterList(starterRobot, robotCardNames)
