@@ -203,7 +203,7 @@ class TutorialRegion {
     this.setIconHover(btnCards)
     btnCards.on('pointerdown', function() {
       that.scene.sound.play('click')
-      that.scene.scene.start("AnubisCatalogScene")
+      that.scene.scene.start("RobotCatalogScene")
     })
 
 
@@ -218,6 +218,7 @@ class TutorialRegion {
     btnDecks.on('pointerdown', function() {
       that.scene.sound.play('click')
       that.scene.scene.start("BuilderScene", {isTutorial: true})
+      // TODO Broken
     })
 
 

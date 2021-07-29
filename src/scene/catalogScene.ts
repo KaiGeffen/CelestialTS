@@ -1,10 +1,10 @@
 import 'phaser'
 import BaseScene from "./baseScene"
 
-import { starterAnubis, starterRobot } from "../catalog/catalog"
 import Card from "../lib/card"
 import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { CardImage } from "../lib/cardImage"
+import { decodeDeck } from "../lib/codec"
 import Button from "../lib/button"
 
 
@@ -113,7 +113,7 @@ class CatalogScene extends BaseScene {
 
 
 export class AnubisCatalogScene extends CatalogScene {
-	pool: Card[] = starterAnubis
+	pool: Card[] = decodeDeck("0™3™6™12™14™17™20™21")
 	defaultDeck: string = "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"
 	sceneKey: string = "AnubisCatalogScene"
 
@@ -125,7 +125,7 @@ export class AnubisCatalogScene extends CatalogScene {
 }
 
 export class RobotCatalogScene extends CatalogScene {
-	pool: Card[] = starterRobot
+	pool: Card[] = decodeDeck("0™2™3™8™12™10™15™22")
 	defaultDeck: string = "22:22:15:10:12:12:8:8:3:3:2:2:2:2:0"
 	sceneKey: string = "RobotCatalogScene"
 
