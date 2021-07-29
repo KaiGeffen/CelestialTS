@@ -664,6 +664,12 @@ export default class GameScene extends BaseScene {
 			}
 
 			myHand.push(cardImage)
+
+			// Add the cost for this card
+			// let [x, y] = this.getCardPosition(i, this.handContainer, 0)
+			// let txtCost = this.add.text(x, y, '3', StyleSettings.stack).setOrigin(0.5)
+			// txtCost.setDepth(this.handContainer.depth)
+			// this.temporaryObjs.push(txtCost)
 		}
 
 		// Add each card in opponent's hand
