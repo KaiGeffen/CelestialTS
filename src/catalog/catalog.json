@@ -10,7 +10,8 @@
   },
   {"name": "Cog", "id": 2,
     "cost": 0, "points": 0,
-    "text": "0:0, Build 1."
+    "text": "0:0, Build 1.",
+    "catalogText": "Cog costs no mana and will either add 1 point to the leftmost robot in your hand, or create a new 0:1 robot if you don't have one already.\n\nYou can use Cog to bluff, or utilize its low cost to keep your hand from being overfull, which can be a problem when playing robots.\n\nAdditionally, Cog can synergize with cards like Factory to make a very large robot all at once."
   },
 
   {"name": "Crossed Bones", "id": 3,
@@ -39,7 +40,7 @@
   {"name": "Gears", "id": 8,
     "cost": 2, "points": 0,
     "text": "2:0, Build 2.",
-    "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
+    "catalogText": "Gears costs 2 mana and will either add 2 points to the leftmost robot in your hand, or create a new 0:2 robot if you don't have one already.\n\nWhile you probably lose the round you play Gears on, the robot it creates effectively gives you carryover that you can play for free at a later time.\n\nGears can also accelerate you towards playing AI for cheap."
   },
   {"name": "Cosmos", "id": 9,
     "cost": 2,
@@ -49,7 +50,7 @@
   {"name": "Factory", "id": 10,
     "cost": 3,
     "text": "3:0, Build 1 for each card later in the story.",
-    "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
+    "catalogText": "Factory costs 3 mana, and will increase the point-value of the leftmost robot in your hand by the number of cards later in the story. If you don't have a robot in hand, it creates a 0:0 robot first.\n\nWhile it can be tempting to play Factory as soon as possible, it ends up being much stronger in later rounds when you can follow it up with multiple other cards for maximum value."
   },
   {"name": "Fruiting", "id": 11,
     "cost": 3, "points": 2,
@@ -73,7 +74,7 @@
   {"name": "Mine", "id": 15,
     "cost": 4,
     "text": "4:4, remove from the game the top 4 cards of your discard pile.",
-    "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
+    "catalogText": "Mine costs 4 mana for 4 points, and will remove from the game the top 4 cards of your discard pile when it resolves.\n\nBe careful of what order you play cards in to get the most value from removing bad cards.\n\nIf you thin away everything except your strongest cards, you can have consistently powerful rounds in the late game."
   },
 
   {"name": "Chimney", "id": 16,
@@ -109,7 +110,7 @@
   {"name": "AI", "id": 22,
     "cost": 8,
     "text": "8:4, draw 1.\nCosts X less, where X is the total point value of all robots in your hand.",
-    "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
+    "catalogText": "AI costs 8 mana for 4 points and also draws you a card, but its cost is reduced by the total point value of all robots in your hand. So if you have a 0:3 robot and a 0:1 robot, AI ends up costing 8 - 3 - 1 = 4 mana.\n\nTry to build a big robot so that you can play multiple copies of AI in a single round for very little mana.\n\nOnly play the robot once you can replace it with a new one."
   },
   {"name": "Oak", "id": 23,
     "cost": 8,

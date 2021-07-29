@@ -105,7 +105,7 @@ class CatalogScene extends BaseScene {
 
 
 export class AnubisCatalogScene extends CatalogScene {
-	pool: Card[] = starterAnubis
+	pool: Card[] = starterRobot//starterAnubis
 
 	constructor() {
 		super({

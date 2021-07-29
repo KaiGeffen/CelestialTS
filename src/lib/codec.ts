@@ -37,7 +37,8 @@ function decodeCard(s: string): Card {
 			id: baseCard.id,
 			cost: baseCard.cost,
 			text: baseCard.text,
-			dynamicText: dynamicText
+			dynamicText: dynamicText,
+			catalogText: ''
 		}
 
 		return new Card(data)
