@@ -52,6 +52,9 @@ export default class WelcomeScene extends BaseScene {
     // If the player just completed the tutorial and is returning to this scene
     if (params['tutorialComplete']) {
       this.createTutorialCompleteMessage()
+
+      // NOTE This needs to happen before new options are indicated below, because it can set those settings
+      UserSettings._set('newTutorial', true)
     }
 
     // Indicate which buttons have new options in them

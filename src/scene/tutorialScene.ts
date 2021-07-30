@@ -162,10 +162,13 @@ export class TutorialScene2 extends TutorialScene {
 	private onWin(): void {
   		this.net.closeSocket()
 
+  		// Only show tutorial complete message the first time player beats Anubis
+  		let showTutorialCompleteMsg = this.tutorialName === 'Anubis' && !UserSettings._get('completedTutorials').includes('Anubis')
+
   		// Add this tutorial to the list of completed tutorials
   		UserSettings._push('completedTutorials', this.tutorialName)
 
-  		let showTutorialCompleteMsg = this.tutorialName === 'Anubis'
+  		
   		this.scene.start("WelcomeScene", {tutorialComplete: showTutorialCompleteMsg})
   	}
 
