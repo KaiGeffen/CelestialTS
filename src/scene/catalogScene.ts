@@ -184,9 +184,9 @@ export class BastetCatalogScene extends CatalogScene {
 	defaultDeck: string = "11:11:11:11:34:34:34:33:33:33:3:3:28:28:0"
 	name = "Bastet"
 	deckDescription: string = 
-`TODO
-
-`
+`survives the early game, trading rounds
+by spending Nourish and empowering Bastets. It seeks to replay
+the strongest Bastet often using Raise Dead and the shuffle.`
 
 	constructor() {
 		super({

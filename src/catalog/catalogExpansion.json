@@ -5,7 +5,8 @@
   },
   {"name": "Nectar", "id": 25,
     "cost": 1,
-    "text": "1:0, Nourish 1."
+    "text": "1:0, Nourish 1.",
+    "catalogText": "Nectar costs 1 mana and provides you with 1 Nourish.\n\nThis can be flexibly used for carryover, to dodge resets, or to permanently boost Bastet.\n\nA good use of this card is to play it, then if the opponent passes, play another utility card to gain the boost and win the round."
   },
   {"name": "Bandit", "id": 26,
     "cost": 1,
@@ -13,11 +14,13 @@
   },
   {"name": "Spy", "id": 27,
     "cost": 1, "points": 2,
-    "text": "1:0, create a ${49} in your opponent's hand."
+    "text": "1:0, create a ${49} in your opponent's hand.",
+    "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for."
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1,
-    "text": "1:0, Tutor 2.\nWhen played, gain Sight 3."
+    "text": "1:0, Tutor 2.\nWhen played, gain Sight 3.",
+    "catalogText": "Night Vision costs 1 mana, provides you with 3 Sight immediately when play, and tutors any 2-cost card out of your deck or discard pile.\n\nThe 3 Sight makes the first 3 cards of the story visible to you, and accumulates with other Sight gain. This could let you see what your opponent is up to before committing to a round.\n\nTutor prioritizes deck, then discard pile, and not cards in the story."
   },
   {"name": "Disintegrate", "id": 29,
     "cost": 1,
@@ -38,11 +41,13 @@
   },
   {"name": "Raise Dead", "id": 33,
     "cost": 2,
-    "text": "2:2, put the top card of your discard pile on top of your deck."
+    "text": "2:2, put the top card of your discard pile on top of your deck.",
+    "catalogText": "Raise Dead costs 2 mana for 2 points, and puts the top card of your discard pile on top of your deck.\n\nBe aware that any cards which resolve before Raise Dead in the story will be in the discard pile by the time it happens.\n\nUse this to get back powerful cards like Oak or Bastet, or keep Bandits out of your discard pile to deny your opponent points."
   },
   {"name": "Bastet", "id": 34,
     "cost": 2,
-    "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)"
+    "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)",
+    "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for."
   },
   {"name": "Imprison", "id": 35,
     "cost": 2,
