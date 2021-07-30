@@ -6,7 +6,7 @@ export class UserSettings {
   'vsAi',
   'explainKeywords',
   'mmCode',
-  'volume']
+  'volume',]
 
   static _get(s: string) {
     // if (!this.values.includes(s)) {
@@ -19,6 +19,14 @@ export class UserSettings {
   static _set(key: string, value: any) {
     localStorage.setItem(key, JSON.stringify(value))
   }
+
+  static _push(key: string, value: any) {
+    let ary = this._get(key)
+    
+    ary.push(value)
+
+    this._set(key, ary)
+  }
 }
 
 export function ensureUserSettings(): void {
@@ -29,7 +37,8 @@ export function ensureUserSettings(): void {
     volume: 0.3,
     music: false,
     useExpansion: false,
-    tutorialKnown: false
+    tutorialKnown: false,
+    completedTutorials: []
   }
 
   for (var key in defaultSettings) {

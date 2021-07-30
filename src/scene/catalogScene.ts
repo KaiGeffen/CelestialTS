@@ -16,7 +16,7 @@ class CatalogScene extends BaseScene {
 	// Defined in subclasses
 	pool: Card[]
 	defaultDeck: string
-	sceneKey: string
+	name: string
 	deckDescription: string
 
 	init(params: any): void {
@@ -106,8 +106,9 @@ class CatalogScene extends BaseScene {
   			{isTutorial: true,
   				cardpool: this.pool,
   				defaultDeck: this.defaultDeck,
-  				lastScene: this.sceneKey,
-  				deckDescription: this.deckDescription
+  				lastScene: this.name + "CatalogScene",
+  				deckDescription: this.deckDescription,
+  				tutorialName: this.name
   			}
   			)
   	}
@@ -117,7 +118,7 @@ class CatalogScene extends BaseScene {
 export class AnubisCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™3™6™12™14™17™20™21")
 	defaultDeck: string = "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"
-	sceneKey: string = "AnubisCatalogScene"
+	name = "Anubis"
 	deckDescription: string = 
 `wins early rounds with Crossed Bones,
 plays Anubis for free in later rounds, then uses Sarcophagus
@@ -130,10 +131,10 @@ to put him back on top of the deck to wrap up the match.`
 	}
 }
 
-export class RobotCatalogScene extends CatalogScene {
+export class RobotsCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™2™3™8™12™10™15™22")
 	defaultDeck: string = "22:22:15:10:12:12:8:8:3:3:2:2:2:2:0"
-	sceneKey: string = "RobotCatalogScene"
+	name = "Robots"
 	deckDescription: string = 
 `spends early rounds building large robots.
 It seeks to use Mine to remove weaker cards, then settle into
@@ -141,7 +142,7 @@ a powerful final state of playing cheap AI for points and card draw.`
 
 	constructor() {
 		super({
-			key: "RobotCatalogScene"
+			key: "RobotsCatalogScene"
 		})
 	}
 }
@@ -149,7 +150,7 @@ a powerful final state of playing cheap AI for points and card draw.`
 export class StalkerCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("1™12™11™13™16™19™20™23")
 	defaultDeck: string = "23:20:19:19:19:19:13:11:12:1:1:1:1:1:1"
-	sceneKey: string = "StalkerCatalogScene"
+	name = "Stalker"
 	deckDescription: string = 
 `attacks the opponent's hand with multiple
 copies of Bone Knife, then steals rounds with cheap Stalkers.

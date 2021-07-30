@@ -42,6 +42,7 @@ export default class BuilderScene extends BaseScene {
     let defaultDeck = ""
     // The last scene, which back button should return user to
     let lastScene = ""
+    let tutorialName = ""
 
     if (this.isTutorial) {
       this.tutorialRegion = new TutorialRegion(this, params['deckDescription'])
@@ -49,9 +50,10 @@ export default class BuilderScene extends BaseScene {
       cardpool = params['cardpool']
       defaultDeck = params['defaultDeck']
       lastScene = params['lastScene']
+      tutorialName = params['tutorialName']
     }
 
-    this.deckRegion = new DeckRegion(this, defaultDeck, lastScene)
+    this.deckRegion = new DeckRegion(this, defaultDeck, lastScene, tutorialName)
     this.catalogRegion = new CatalogRegion(this, this.deckRegion, cardpool)
     this.filterRegion = new FilterRegion(this, this.catalogRegion)
 
@@ -317,22 +319,25 @@ class DeckRegion {
   defaultDeck: string
   deck: CardImage[] = []
   isTutorial: Boolean
+  // The name of this tutorial (Basics, Anubis, etc)
+  tutorialName: string
 
   txtHint: Phaser.GameObjects.Text
   btnStart: Button
   btnMenu: Button
 
-  constructor(scene: Phaser.Scene, defaultDeck: string, lastScene: string) {
-    this.init(scene, defaultDeck, lastScene)
+  constructor(scene: Phaser.Scene, defaultDeck: string, lastScene: string, tutorialName: string) {
+    this.init(scene, defaultDeck, lastScene, tutorialName)
   }
 
-  init(scene: Phaser.Scene, defaultDeck: string, lastScene: string): void {
+  init(scene: Phaser.Scene, defaultDeck: string, lastScene: string, tutorialName: string): void {
     this.scene = scene
     // NOTE Must set depth to 1 so that this is above the catalog, which blocks its cards so that they don't appear below the panel
     this.container = this.scene.add.container(988, 650).setDepth(1)
 
     this.defaultDeck = defaultDeck
     this.lastScene = lastScene
+    this.tutorialName = tutorialName
   }
 
   create(isTutorial: boolean): void {
@@ -488,7 +493,7 @@ class DeckRegion {
 
     // Start the right scene / deck pair
     if (this.isTutorial) {  
-      this.scene.scene.start("TutorialScene2", {isTutorial: true, tutorialNumber: 2, deck: tutorialDeck})
+      this.scene.scene.start("TutorialScene2", {isTutorial: true, tutorialNumber: 2, deck: tutorialDeck, tutorialName: this.tutorialName})
     }
     else {
       this.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})

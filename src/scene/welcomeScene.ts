@@ -198,7 +198,6 @@ class TutorialRegion {
 
     // Anubis tutorial
     let lblAnubis = this.scene.add.text(-xDelta, -yLbl, 'Anubis', StyleSettings.announcement).setOrigin(0.5, 1)
-    let chkAnubis = this.scene.add.text(-xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1)
 
     let btnAnubis = this.scene.add.image(-xDelta, 0, 'icon-anubis')
     this.setIconHover(btnAnubis)
@@ -215,7 +214,7 @@ class TutorialRegion {
     this.setIconHover(btnRobots)
     btnRobots.on('pointerdown', function() {
       that.scene.sound.play('click')
-      that.scene.scene.start("RobotCatalogScene")
+      that.scene.scene.start("RobotsCatalogScene")
     })
 
     // Stalker tutorial
@@ -262,13 +261,16 @@ class TutorialRegion {
     // Add everything to this container
     this.container.add([
       btnBasics, lblBasics,
-      lblAnubis, btnAnubis, chkAnubis,
+      lblAnubis, btnAnubis,
       lblRobots, btnRobots,
       lblStalker, btnStalker,
       lblPelican, btnPelican,
       lblBastet, btnBastet,
       lblHorus, btnHorus,
       ])
+
+    // Add check marks over each completed tutorial
+    this.createCheckMarks(xDelta, yDelta)
   }
 
   onOpenMenu(): () => void {
@@ -276,6 +278,39 @@ class TutorialRegion {
     return function() {
       that.scene.sound.play('open')
       that.container.setVisible(true)
+    }
+  }
+
+  // Create a check mark over each tutorial that user has completed
+  private createCheckMarks(xDelta: number, yDelta: number): void {
+    if (UserSettings._get('completedTutorials').includes('Basics')) {
+      this.container.add(this.scene.add.text(0, -yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+    }
+
+    // Core set decks
+    if (UserSettings._get('completedTutorials').includes('Anubis')) {
+      this.container.add(this.scene.add.text(-xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+    }
+
+    if (UserSettings._get('completedTutorials').includes('Robots')) {
+      this.container.add(this.scene.add.text(0, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+    }
+
+    if (UserSettings._get('completedTutorials').includes('Stalker')) {
+      this.container.add(this.scene.add.text(xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+    }
+
+    // Expansion decks
+    if (UserSettings._get('completedTutorials').includes('Pelican')) {
+      this.container.add(this.scene.add.text(-xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+    }
+
+    if (UserSettings._get('completedTutorials').includes('Bastet')) {
+      this.container.add(this.scene.add.text(0, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+    }
+
+    if (UserSettings._get('completedTutorials').includes('Horus')) {
+      this.container.add(this.scene.add.text(xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
   }
 

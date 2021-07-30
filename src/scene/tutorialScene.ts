@@ -1,6 +1,6 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { StyleSettings, ColorSettings, Space, TutorialBBConfig } from "../settings"
+import { StyleSettings, ColorSettings, Space, UserSettings, TutorialBBConfig } from "../settings"
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
@@ -55,12 +55,6 @@ class TutorialScene extends GameScene {
 
 		return true
 	}
-
-	// NOTE This is called by btnCancel in GameScene
-	exitScene(): void {
-  		this.net.closeSocket()
-  		this.scene.start("BuilderScene", {isTutorial: true})
-  	}
 }
 
 
@@ -112,7 +106,10 @@ export class TutorialScene1 extends TutorialScene {
 
 	onWin(): void {
   		this.net.closeSocket()
-  		// TODO Make dynamic
+  		
+  		// Add this tutorial (Basics) to the list of completed tutorials
+  		UserSettings._push('completedTutorials', 'Basics')
+
   		this.scene.start("AnubisCatalogScene")  		
   	}
 
@@ -120,11 +117,19 @@ export class TutorialScene1 extends TutorialScene {
   		this.net.closeSocket()
     	this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
   	}
+
+  	// NOTE This is called by btnCancel in GameScene
+	exitScene(): void {
+  		this.net.closeSocket()
+  		this.scene.start("WelcomeScene")
+  	}
 }
 
 
-// The second tutorial is a standard match against ai, with additional explanations
+// These tutorials are matchs against ai, with additional explanations
 export class TutorialScene2 extends TutorialScene {
+	tutorialName: string
+
 	constructor() {
 		super({
 			key: "TutorialScene2"
@@ -132,7 +137,9 @@ export class TutorialScene2 extends TutorialScene {
 	}
 
 	init(params: any): void {
+		console.log(params)
 		params['explanations'] = explanations2
+		this.tutorialName = params['tutorialName']
 		super.init(params)
 	}
 
@@ -154,7 +161,12 @@ export class TutorialScene2 extends TutorialScene {
 
 	private onWin(): void {
   		this.net.closeSocket()
-  		this.scene.start("WelcomeScene", {tutorialComplete: true})
+
+  		// Add this tutorial to the list of completed tutorials
+  		UserSettings._push('completedTutorials', this.tutorialName)
+
+  		let showTutorialCompleteMsg = this.tutorialName === 'Anubis'
+  		this.scene.start("WelcomeScene", {tutorialComplete: showTutorialCompleteMsg})
   	}
 
   	private onRetry(): void {
