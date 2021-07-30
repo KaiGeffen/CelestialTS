@@ -209,7 +209,7 @@ class TutorialRegion {
     this.container.add(visibleBackground)
     
     // Basics button + reminder
-    let lblBasics = this.scene.add.text(0, 0 - yDelta - yLbl, 'Basics', StyleSettings.announcement).setOrigin(0.5, 1)
+    let txtBasics = this.scene.add.text(0, 0 - yDelta - yLbl, 'Basics', StyleSettings.announcement).setOrigin(0.5, 1)
 
     let btnBasics = this.scene.add.image(0, 0 - yDelta, 'icon-basics')
     this.setIconHover(btnBasics)
@@ -219,7 +219,7 @@ class TutorialRegion {
     })
 
     // Anubis tutorial
-    let lblAnubis = this.scene.add.text(-xDelta, -yLbl, 'Anubis', StyleSettings.announcement).setOrigin(0.5, 1)
+    let txtAnubis = this.scene.add.text(-xDelta, -yLbl, 'Anubis', StyleSettings.announcement).setOrigin(0.5, 1)
 
     let btnAnubis = this.scene.add.image(-xDelta, 0, 'icon-anubis')
     this.setIconHover(btnAnubis)
@@ -228,9 +228,8 @@ class TutorialRegion {
       that.scene.scene.start("AnubisCatalogScene")
     })
 
-
     // Robots tutorial
-    let lblRobots = this.scene.add.text(0, -yLbl, 'Robots', StyleSettings.announcement).setOrigin(0.5, 1)
+    let txtRobots = this.scene.add.text(0, -yLbl, 'Robots', StyleSettings.announcement).setOrigin(0.5, 1)
 
     let btnRobots = this.scene.add.image(0, 0, 'icon-robots')
     this.setIconHover(btnRobots)
@@ -240,7 +239,7 @@ class TutorialRegion {
     })
 
     // Stalker tutorial
-    let lblStalker = this.scene.add.text(xDelta, -yLbl, 'Stalker', StyleSettings.announcement).setOrigin(0.5, 1)
+    let txtStalker = this.scene.add.text(xDelta, -yLbl, 'Stalker', StyleSettings.announcement).setOrigin(0.5, 1)
 
     let btnStalker = this.scene.add.image(xDelta, 0, 'icon-stalker')
     this.setIconHover(btnStalker)
@@ -250,45 +249,60 @@ class TutorialRegion {
     })
 
     // Expansion
-    // Anubis tutorial
-    let lblPelican = this.scene.add.text(-xDelta, yDelta - yLbl, '???', StyleSettings.announcement).setOrigin(0.5, 1).setAlpha(0.3)
+    // Crypt tutorial
+    let txtCrypt = this.scene.add.text(-xDelta, yDelta - yLbl, 'Crypt', StyleSettings.announcement).setOrigin(0.5, 1)
+    let btnCrypt = this.scene.add.image(-xDelta, yDelta, 'icon-pelican')
 
-    let btnPelican = this.scene.add.image(-xDelta, yDelta, 'icon-pelican').setAlpha(0.3)
-    // this.setIconHover(btnPelican)
-    // btnPelican.on('pointerdown', function() {
-    //   that.scene.sound.play('click')
-    //   that.scene.scene.start("PelicanCatalogScene")
-    // })
+    // Bastet tutorial
+    let txtBastet = this.scene.add.text(0, yDelta - yLbl, 'Bastet', StyleSettings.announcement).setOrigin(0.5, 1)
+    let btnBastet = this.scene.add.image(0, yDelta, 'icon-bastet')
 
-    // Robots tutorial
-    let lblBastet = this.scene.add.text(0, yDelta - yLbl, '???', StyleSettings.announcement).setOrigin(0.5, 1).setAlpha(0.3)
+    // Horus tutorial
+    let txtHorus = this.scene.add.text(xDelta, yDelta - yLbl, 'Horus', StyleSettings.announcement).setOrigin(0.5, 1)
+    let btnHorus = this.scene.add.image(xDelta, yDelta, 'icon-horus')
 
-    let btnBastet = this.scene.add.image(0, yDelta, 'icon-bastet').setAlpha(0.3)
-    // this.setIconHover(btnBastet)
-    // btnRobots.on('pointerdown', function() {
-    //   that.scene.sound.play('click')
-    //   that.scene.scene.start("BastetCatalogScene")
-    // })
+    // Unlock the lowest row of challenges if previous row is complete
+    let completed = UserSettings._get('completedTutorials')
+    if (completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')) {
+      this.setIconHover(btnCrypt)
+      btnCrypt.on('pointerdown', function() {
+        that.scene.sound.play('click')
+        that.scene.scene.start("CryptCatalogScene")
+      })
 
-    // Stalker tutorial
-    let lblHorus = this.scene.add.text(xDelta, yDelta - yLbl, '???', StyleSettings.announcement).setOrigin(0.5, 1).setAlpha(0.3)
+      this.setIconHover(btnBastet)
+      btnBastet.on('pointerdown', function() {
+        that.scene.sound.play('click')
+        that.scene.scene.start("BastetCatalogScene")
+      })
 
-    let btnHorus = this.scene.add.image(xDelta, yDelta, 'icon-horus').setAlpha(0.3)
-    // this.setIconHover(btnHorus)
-    // btnHorus.on('pointerdown', function() {
-    //   that.scene.sound.play('click')
-    //   that.scene.scene.start("HorusCatalogScene")
-    // })
+      this.setIconHover(btnHorus)
+      btnHorus.on('pointerdown', function() {
+        that.scene.sound.play('click')
+        that.scene.scene.start("HorusCatalogScene")
+      })
+    }
+    else
+    {
+      txtCrypt.setText('???').setAlpha(0.3)
+      btnCrypt.setAlpha(0.3)
+
+      txtBastet.setText('???').setAlpha(0.3)
+      btnBastet.setAlpha(0.3)
+
+      txtHorus.setText('???').setAlpha(0.3)
+      btnHorus.setAlpha(0.3)
+    }
 
     // Add everything to this container
     this.container.add([
-      btnBasics, lblBasics,
-      lblAnubis, btnAnubis,
-      lblRobots, btnRobots,
-      lblStalker, btnStalker,
-      lblPelican, btnPelican,
-      lblBastet, btnBastet,
-      lblHorus, btnHorus,
+      btnBasics, txtBasics,
+      txtAnubis, btnAnubis,
+      txtRobots, btnRobots,
+      txtStalker, btnStalker,
+      txtCrypt, btnCrypt,
+      txtBastet, btnBastet,
+      txtHorus, btnHorus,
       ])
 
     // Add check marks over each completed tutorial
@@ -339,7 +353,6 @@ class TutorialRegion {
       this.container.add(this.scene.add.text(xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
   }
-
 
   // Set the coloring that happens when the icon is hovered/not
   private setIconHover(btn: Phaser.GameObjects.Image): void {
