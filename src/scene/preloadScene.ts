@@ -78,7 +78,8 @@ export default class PreloadClass extends Phaser.Scene {
 	private loadIcons(): void {
 		let iconNames = [
 			'ai', 'password', 'pvp',
-			'basics', 'cards', 'decks'
+			'basics', 'cards', 'decks',
+			'anubis', 'robots', 'stalker'
 		]
 
 		iconNames.forEach( (s) => {

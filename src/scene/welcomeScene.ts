@@ -148,8 +148,8 @@ class TutorialRegion {
     this.scene = scene
     
     this.container = this.scene.add.container(
-      Space.cardSize * 2 + Space.pad * 3,
-      Space.cardSize * 1 + Space.pad * 2)
+      Space.windowWidth / 2,
+      Space.windowHeight / 2)
     this.container.setVisible(false)
     
     // Menu must be above all other menus, including the tutorial prompt that shows if you haven't yet been prompted
@@ -160,7 +160,7 @@ class TutorialRegion {
     let that = this
 
     // Visible and invisible background rectangles, stops other containers from being clicked
-    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
+    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0.5)
     invisBackground.setInteractive()
 
     invisBackground.on('pointerdown', function() {
@@ -169,64 +169,69 @@ class TutorialRegion {
     })
     this.container.add(invisBackground)
 
-    // Visible background, which does nothing when clicked
-    let width = Space.cardSize * 5 + Space.pad * 4
-    let height = Space.cardSize * 3 + Space.pad * 2
+    // Dimensions
+    // Height of the label
+    let yLbl = Space.cardSize / 2
 
-    let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
-    visibleBackground.setInteractive()
-    this.container.add(visibleBackground)
-
-    // Basics button + reminder
     let xDelta = (Space.cardSize + Space.pad) * 3/2
+    let yDelta = Space.cardSize + Space.pad + yLbl
     let x = Space.cardSize + Space.pad/2
     let y = Space.cardSize * 3/2 + Space.pad * 2
-    let yLbl = y - Space.cardSize - Space.pad
 
-    let lblBasics = this.scene.add.text(x, yLbl, 'Basics', StyleSettings.announcement).setOrigin(0.5, 0)
+    let width = xDelta * 3 //Space.cardSize * 5 + Space.pad * 2
+    let height = yDelta * 3 + yLbl //Space.cardSize * 3 + Space.pad * 4 * 2
+    
+    // Visible background, which does nothing when clicked
+    let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0.5)
+    visibleBackground.setInteractive()
+    this.container.add(visibleBackground)
+    
+    // Basics button + reminder
+    let lblBasics = this.scene.add.text(0, 0 - yDelta - yLbl, 'Basics', StyleSettings.announcement).setOrigin(0.5, 1)
 
-    let btnBasics = this.scene.add.image(x, y, 'icon-basics')
+    let btnBasics = this.scene.add.image(0, 0 - yDelta, 'icon-basics')
     this.setIconHover(btnBasics)
     btnBasics.on('pointerdown', function() {
       that.scene.sound.play('click')
       that.scene.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
     })
 
+    // Anubis tutorial
+    let lblAnubis = this.scene.add.text(-xDelta, -yLbl, 'Anubis', StyleSettings.announcement).setOrigin(0.5, 1)
 
+    let btnAnubis = this.scene.add.image(-xDelta, 0, 'icon-anubis')
+    this.setIconHover(btnAnubis)
+    btnAnubis.on('pointerdown', function() {
+      that.scene.sound.play('click')
+      that.scene.scene.start("AnubisCatalogScene")
+    })
 
-    // Card explanations button
-    x += xDelta
+    // Robots tutorial
+    let lblRobots = this.scene.add.text(0, -yLbl, 'Robots', StyleSettings.announcement).setOrigin(0.5, 1)
 
-    let lblCards = this.scene.add.text(x, yLbl, 'Cards', StyleSettings.announcement).setOrigin(0.5, 0)
+    let btnRobots = this.scene.add.image(0, 0, 'icon-robots')
+    this.setIconHover(btnRobots)
+    btnRobots.on('pointerdown', function() {
+      that.scene.sound.play('click')
+      that.scene.scene.start("RobotCatalogScene")
+    })
 
-    let btnCards = this.scene.add.image(x, y, 'icon-cards')
-    this.setIconHover(btnCards)
-    btnCards.on('pointerdown', function() {
+    // Stalker tutorial
+    let lblStalker = this.scene.add.text(xDelta, -yLbl, 'Stalker', StyleSettings.announcement).setOrigin(0.5, 1)
+
+    let btnStalker = this.scene.add.image(xDelta, 0, 'icon-stalker')
+    this.setIconHover(btnStalker)
+    btnStalker.on('pointerdown', function() {
       that.scene.sound.play('click')
       that.scene.scene.start("StalkerCatalogScene")
     })
 
-
-
-    // Deck button
-    x += xDelta
-
-    let lblDecks = this.scene.add.text(x, yLbl, 'Decks', StyleSettings.announcement).setOrigin(0.5, 0)
-
-    let btnDecks = this.scene.add.image(x, y, 'icon-decks')
-    this.setIconHover(btnDecks)
-    btnDecks.on('pointerdown', function() {
-      that.scene.sound.play('click')
-      that.scene.scene.start("BuilderScene", {isTutorial: true})
-      // TODO Broken
-    })
-
-
-
     // Add everything to this container
     this.container.add([
-      btnBasics, btnCards, btnDecks,
-      lblBasics, lblCards, lblDecks
+      btnBasics, lblBasics,
+      lblAnubis, btnAnubis,
+      lblRobots, btnRobots,
+      lblStalker, btnStalker
       ])
   }
 
