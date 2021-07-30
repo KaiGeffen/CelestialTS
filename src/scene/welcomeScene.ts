@@ -341,7 +341,7 @@ class TutorialRegion {
     }
 
     // Expansion decks
-    if (UserSettings._get('completedTutorials').includes('Pelican')) {
+    if (UserSettings._get('completedTutorials').includes('Crypt')) {
       this.container.add(this.scene.add.text(-xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
 
