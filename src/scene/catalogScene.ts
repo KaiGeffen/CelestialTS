@@ -168,9 +168,9 @@ export class CryptCatalogScene extends CatalogScene {
 	defaultDeck: string = "20:19:19:19:15:12:12:36:36:36:35:1:1:1:0"
 	name = "Crypt"
 	deckDescription: string = 
-`attacks the opponent's hand with multiple
-copies of Bone Knife, then steals rounds with cheap Crypts.
-It ends with strong and consistent high-cost cards like Oak.`
+`attacks your opponent's hand in the early
+game, then transforms Stalker into Sarcophagus and Crypt into
+Imprison in the late game to control and overwhelm your opponent.`
 
 	constructor() {
 		super({

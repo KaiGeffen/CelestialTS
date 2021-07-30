@@ -46,11 +46,13 @@
   },
   {"name": "Imprison", "id": 35,
     "cost": 2,
-    "text": "2:0, set both players points to 0, then give your opponent 1 point for each card in their hand."
+    "text": "2:0, set both players points to 0, then give your opponent 1 point for each card in their hand.",
+    "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for."
   },
   {"name": "Crypt", "id": 36,
     "cost": 2,
-    "text": "2:2, your last card in the story transforms into the top card of your discard pile with the same cost as it.\n(For example, if your last card in the story costs 3, that card transforms into whichever 3-cost card is closest to the top of your discard pile. If there are no 3-cost cards in your discard pile, nothing happens)"
+    "text": "2:2, your last card in the story transforms into the top card of your discard pile with the same cost as it.\n(For example, if your last card in the story costs 3, that card transforms into whichever 3-cost card is closest to the top of your discard pile. If there are no 3-cost cards in your discard pile, nothing happens)",
+    "catalogText": "Crypt costs 2 mana for 2 points, and transforms your last card in the story (Not itself) PERMANENTLY into a copy of another card.\n\nThe card it chooses is based on that card's original cost. It chooses the topmost equally costed card from your discard pile.\n\nUse this to change cards in your deck to the best choices for the matchup, or play cards with reduced cost that become stronger."
   },
 
   {"name": "Stable", "id": 37,
