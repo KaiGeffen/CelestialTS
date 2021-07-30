@@ -191,7 +191,14 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     stroke: '#000',
     strokeThickness: 2,
     wordWrap: { width: 1030, useAdvancedWrap: false },
-  }
+  },
+  checkMark: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.huge.size,
+    color: '#0f0',
+    stroke: '#000',
+    strokeThickness: 4
+  },
 }
 
 export const TimeSettings: Record<string, number> = {

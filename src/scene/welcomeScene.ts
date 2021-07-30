@@ -198,6 +198,7 @@ class TutorialRegion {
 
     // Anubis tutorial
     let lblAnubis = this.scene.add.text(-xDelta, -yLbl, 'Anubis', StyleSettings.announcement).setOrigin(0.5, 1)
+    let chkAnubis = this.scene.add.text(-xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1)
 
     let btnAnubis = this.scene.add.image(-xDelta, 0, 'icon-anubis')
     this.setIconHover(btnAnubis)
@@ -205,6 +206,7 @@ class TutorialRegion {
       that.scene.sound.play('click')
       that.scene.scene.start("AnubisCatalogScene")
     })
+
 
     // Robots tutorial
     let lblRobots = this.scene.add.text(0, -yLbl, 'Robots', StyleSettings.announcement).setOrigin(0.5, 1)
@@ -260,7 +262,7 @@ class TutorialRegion {
     // Add everything to this container
     this.container.add([
       btnBasics, lblBasics,
-      lblAnubis, btnAnubis,
+      lblAnubis, btnAnubis, chkAnubis,
       lblRobots, btnRobots,
       lblStalker, btnStalker,
       lblPelican, btnPelican,
