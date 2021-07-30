@@ -38,7 +38,9 @@ export function ensureUserSettings(): void {
     music: false,
     useExpansion: false,
     tutorialKnown: false,
-    completedTutorials: []
+    completedTutorials: [],
+    newDiscord: true, // Discord has a new indicator until clicked
+    newTutorial: true, // Tutorial has new indicator when new tutorials are unlocked
   }
 
   for (var key in defaultSettings) {
@@ -207,6 +209,14 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     color: '#0f0',
     stroke: '#000',
     strokeThickness: 4
+  },
+  new: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size,
+    // fontStyle: "Bold",
+    color: '#ff0',
+    stroke: '#000',
+    strokeThickness: 2
   },
 }
 

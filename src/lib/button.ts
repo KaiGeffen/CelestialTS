@@ -6,10 +6,10 @@ import { StyleSettings, ColorSettings } from '../settings'
 
 export default class Button extends Phaser.GameObjects.Text {
 	constructor(scene: Phaser.Scene, x: number, y: number, text: string,
-		f: () => void = function () {},
+		f: () => void = function() { },
 		playSound: boolean = true) {
 		super(scene, x, y, text, StyleSettings.button)
-		
+
 		this.setInteractive()
 
 		// Call the function, either with a sound or not
@@ -20,8 +20,8 @@ export default class Button extends Phaser.GameObjects.Text {
 		}
 
 		this.on('pointerover', this.onHover, this)
-    	this.on('pointerout', this.onHoverExit, this)
-    	this.scene.input.on('gameout', this.onHoverExit, this)
+		this.on('pointerout', this.onHoverExit, this)
+		this.scene.input.on('gameout', this.onHoverExit, this)
 
 		this.scene.add.existing(this)
 	}
@@ -32,14 +32,42 @@ export default class Button extends Phaser.GameObjects.Text {
 		this.on('pointerdown', f)
 	}
 
+	// Causes the button to glow until stopped
+	glowTask: any
+	glow(): void {
+		var postFxPlugin = this.scene.plugins.get('rexGlowFilterPipeline')
+
+		var pipeline = postFxPlugin['add'](this)
+
+		this.glowTask = this.scene.tweens.add({
+			targets: pipeline,
+			intensity: 0.04,
+			ease: 'Linear',
+			duration: 800,
+			repeat: -1,
+			yoyo: true
+		})
+	}
+
+	// Stop the button from glowing, if it is glowing
+	stopGlow(): void {
+		if (this.glowTask !== null) {
+			var postFxPlugin = this.scene.plugins.get('rexGlowFilterPipeline')
+			postFxPlugin['remove'](this)
+
+			this.glowTask.stop()
+			this.glowTask = null
+		}
+	}
+
 	private sfxThenDo(f: () => void): () => void {
 		let scene = this.scene
 
-		return function () {
-    		scene.sound.play('click')
+		return function() {
+			scene.sound.play('click')
 
-    		// Call the function with this scene as the context
-    		f.call(scene)
+			// Call the function with this scene as the context
+			f.call(scene)
 		}
 	}
 

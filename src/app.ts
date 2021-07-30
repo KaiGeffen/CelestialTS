@@ -12,6 +12,7 @@ import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js'
 import InputTextPlugin from 'phaser3-rex-plugins/plugins/inputtext-plugin.js'
 import BBCodeTextPlugin from 'phaser3-rex-plugins/plugins/bbcodetext-plugin.js'
+import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js'
 // import UIComponent from 'phaser3-rex-plugins/templates/ui/ui-components.js'
 
 
@@ -49,7 +50,12 @@ const config: Phaser.Types.Core.GameConfig = {
       key: 'rexBBCodeTextPlugin',
       plugin: BBCodeTextPlugin,
       start: true
-    }
+    },
+    {
+      key: 'rexGlowFilterPipeline',
+      plugin: GlowFilterPipelinePlugin,
+      start: true
+    },
     ]
   }
 }

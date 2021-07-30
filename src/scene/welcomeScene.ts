@@ -38,20 +38,24 @@ export default class WelcomeScene extends BaseScene {
     new Button(this, Space.windowWidth/2, 350, "Click to Start", this.doStart).setOrigin(0.5).setStyle(StyleSettings.announcement)
 
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
-    let callback = UserSettings._get('tutorialKnown') ? this.tutorialRegion.onOpenMenu() : this.doFirstTutorial()
-    let btnTutorial = new Button(this, Space.windowWidth/2 - 200, Space.windowHeight - 50, "Tutorial", callback).setOrigin(0.5)
+    let btnTutorial = new Button(this, Space.windowWidth/2 - 200, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
+    let callback = UserSettings._get('tutorialKnown') ? this.tutorialRegion.onOpenMenu(btnTutorial) : this.doFirstTutorial()
+    btnTutorial.setOnClick(callback)
 
     // Credits button
     let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
 
     // Discord button
-    let btnDiscord = new Button(this, Space.windowWidth/2 + 200, Space.windowHeight - 50, "Discord", this.doDiscord).setOrigin(0.5)
+    let btnDiscord = new Button(this, Space.windowWidth/2 + 200, Space.windowHeight - 50, "Discord").setOrigin(0.5)
+    btnDiscord.setOnClick(this.doDiscord(btnDiscord))
 
     // If the player just completed the tutorial and is returning to this scene
     if (params['tutorialComplete']) {
       this.createTutorialCompleteMessage()
     }
 
+    // Indicate which buttons have new options in them
+    this.indicateNewOptions(btnTutorial, btnDiscord)
     
     super.create()
 
@@ -102,6 +106,16 @@ export default class WelcomeScene extends BaseScene {
     promptContainer.add([invisibleBackground, visibleBackground, txtTitle, txtMessage])
   }
 
+  private indicateNewOptions(btnTutorial: Button, btnDiscord: Button): void {
+    if (UserSettings._get('newDiscord')) {
+      btnDiscord.glow()
+    }
+
+    if (UserSettings._get('newTutorial')) {
+      btnTutorial.glow()
+    }
+  }
+
   private doStart(): void {
     this.sound.play('click')
 
@@ -129,8 +143,13 @@ export default class WelcomeScene extends BaseScene {
     this.scene.start("CreditsScene")
   }
   
-  private doDiscord(): void {
-    window.open("https://discord.gg/UXWswspB8S")
+  private doDiscord(btnDiscord: Button): () => void {
+    return function() {
+      btnDiscord.stopGlow()
+      UserSettings._set('newDiscord', false)
+    
+      window.open("https://discord.gg/UXWswspB8S")
+    }
   }
 }
 
@@ -273,10 +292,14 @@ class TutorialRegion {
     this.createCheckMarks(xDelta, yDelta)
   }
 
-  onOpenMenu(): () => void {
+  onOpenMenu(btnTutorial: Button): () => void {
     let that = this
     return function() {
+      btnTutorial.stopGlow()
+      UserSettings._set('newTutorial', false)
+
       that.scene.sound.play('open')
+      
       that.container.setVisible(true)
     }
   }
