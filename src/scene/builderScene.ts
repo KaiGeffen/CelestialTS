@@ -44,7 +44,7 @@ export default class BuilderScene extends BaseScene {
     let lastScene = ""
 
     if (this.isTutorial) {
-      this.tutorialRegion = new TutorialRegion(this)
+      this.tutorialRegion = new TutorialRegion(this, params['deckDescription'])
 
       cardpool = params['cardpool']
       defaultDeck = params['defaultDeck']
@@ -1055,28 +1055,24 @@ class ModeRegion {
 class TutorialRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
+  deckDescription: string
 
-  constructor(scene: Phaser.Scene) {
-    this.init(scene)
+  constructor(scene: Phaser.Scene, deckDescription: string) {
+    this.init(scene, deckDescription)
   }
 
-  init(scene): void {
+  init(scene, deckDescription: string): void {
     this.scene = scene
     this.container = this.scene.add.container(0, 0)
+    this.deckDescription = deckDescription
   }
 
   create(): void {
-    
-    let s = 
-`Now try winning a full match against a computer opponent.
+    let s = "Now try winning a full match against a computer opponent.\n\nThe deck provided below "
+    s += this.deckDescription + "\n\n"
+    s += `If you want to make changes, click any of the cards in the
+deck to remove them, then add cards from the choices above.`
 
-The deck provided below wins early rounds with Crossed Bones,
-plays Anubis for free in later rounds, then uses Sarcophagus
-to put him back on top of the deck to wrap up the match.
-
-If you want to make changes, click any of the cards in the
-deck to remove them, then add cards from the choices above.
-`
     let txt = this.scene.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
 
     this.container.add(txt)

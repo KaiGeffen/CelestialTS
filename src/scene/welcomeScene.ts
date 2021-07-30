@@ -226,12 +226,46 @@ class TutorialRegion {
       that.scene.scene.start("StalkerCatalogScene")
     })
 
+    // Expansion
+    // Anubis tutorial
+    let lblPelican = this.scene.add.text(-xDelta, yDelta - yLbl, 'Pelican', StyleSettings.announcement).setOrigin(0.5, 1)
+
+    let btnPelican = this.scene.add.image(-xDelta, yDelta, 'icon-pelican')
+    this.setIconHover(btnPelican)
+    btnPelican.on('pointerdown', function() {
+      that.scene.sound.play('click')
+      that.scene.scene.start("PelicanCatalogScene")
+    })
+
+    // Robots tutorial
+    let lblBastet = this.scene.add.text(0, yDelta - yLbl, 'Bastet', StyleSettings.announcement).setOrigin(0.5, 1)
+
+    let btnBastet = this.scene.add.image(0, yDelta, 'icon-bastet')
+    this.setIconHover(btnBastet)
+    btnRobots.on('pointerdown', function() {
+      that.scene.sound.play('click')
+      that.scene.scene.start("BastetCatalogScene")
+    })
+
+    // Stalker tutorial
+    let lblHorus = this.scene.add.text(xDelta, yDelta - yLbl, 'Horus', StyleSettings.announcement).setOrigin(0.5, 1)
+
+    let btnHorus = this.scene.add.image(xDelta, yDelta, 'icon-horus')
+    this.setIconHover(btnHorus)
+    btnHorus.on('pointerdown', function() {
+      that.scene.sound.play('click')
+      that.scene.scene.start("HorusCatalogScene")
+    })
+
     // Add everything to this container
     this.container.add([
       btnBasics, lblBasics,
       lblAnubis, btnAnubis,
       lblRobots, btnRobots,
-      lblStalker, btnStalker
+      lblStalker, btnStalker,
+      lblPelican, btnPelican,
+      lblBastet, btnBastet,
+      lblHorus, btnHorus,
       ])
   }
 

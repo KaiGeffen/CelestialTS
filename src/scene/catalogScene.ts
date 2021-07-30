@@ -17,6 +17,7 @@ class CatalogScene extends BaseScene {
 	pool: Card[]
 	defaultDeck: string
 	sceneKey: string
+	deckDescription: string
 
 	init(params: any): void {
 		this.container = this.add.container(0, 140)
@@ -105,7 +106,8 @@ class CatalogScene extends BaseScene {
   			{isTutorial: true,
   				cardpool: this.pool,
   				defaultDeck: this.defaultDeck,
-  				lastScene: this.sceneKey
+  				lastScene: this.sceneKey,
+  				deckDescription: this.deckDescription
   			}
   			)
   	}
@@ -116,6 +118,10 @@ export class AnubisCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™3™6™12™14™17™20™21")
 	defaultDeck: string = "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"
 	sceneKey: string = "AnubisCatalogScene"
+	deckDescription: string = 
+`wins early rounds with Crossed Bones,
+plays Anubis for free in later rounds, then uses Sarcophagus
+to put him back on top of the deck to wrap up the match.`
 
 	constructor() {
 		super({
@@ -128,6 +134,10 @@ export class RobotCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™2™3™8™12™10™15™22")
 	defaultDeck: string = "22:22:15:10:12:12:8:8:3:3:2:2:2:2:0"
 	sceneKey: string = "RobotCatalogScene"
+	deckDescription: string = 
+`spends early rounds building large robots.
+It seeks to use Mine to remove weaker cards, then settle into
+a powerful final state of playing cheap AI for points and card draw.`
 
 	constructor() {
 		super({
@@ -140,6 +150,10 @@ export class StalkerCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("1™12™11™13™16™19™20™23")
 	defaultDeck: string = "23:20:19:19:19:19:13:11:12:1:1:1:1:1:1"
 	sceneKey: string = "StalkerCatalogScene"
+	deckDescription: string = 
+`attacks the opponent's hand with multiple
+copies of Bone Knife, then steals rounds with cheap Stalkers.
+It ends with strong and consistent high-cost cards like Oak.`
 
 	constructor() {
 		super({
