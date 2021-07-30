@@ -51,12 +51,12 @@ export default class Button extends Phaser.GameObjects.Text {
 
 	// Stop the button from glowing, if it is glowing
 	stopGlow(): void {
-		if (this.glowTask !== null) {
+		if (this.glowTask !== undefined) {
 			var postFxPlugin = this.scene.plugins.get('rexGlowFilterPipeline')
 			postFxPlugin['remove'](this)
 
 			this.glowTask.stop()
-			this.glowTask = null
+			this.glowTask = undefined
 		}
 	}
 
