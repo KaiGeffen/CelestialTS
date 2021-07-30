@@ -186,7 +186,7 @@ export class TutorialScene2 extends TutorialScene {
 
   	private onRetry(): void {
   		this.net.closeSocket()
-  		this.scene.start("BuilderScene", {isTutorial: true})
+  		this.scene.start("BuilderScene")
   	}
 }
 
