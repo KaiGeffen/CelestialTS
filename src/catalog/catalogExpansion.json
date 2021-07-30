@@ -15,7 +15,7 @@
   {"name": "Spy", "id": 27,
     "cost": 1, "points": 2,
     "text": "1:0, create a ${49} in your opponent's hand.",
-    "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for."
+    "catalogText": "Spy costs 1 mana, and creates a Camera in the opponent's hand.\n\nAt the start of each round, the Camera provides you with 4 Sight if it's still in the opponent's hand, allowing you to see the first 4 cards played in the story. \n\nUse this to overfill their hand and tax their mana, while also gaining information about the cards they play."
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1,
@@ -33,11 +33,13 @@
 
   {"name": "Sine", "id": 31,
     "cost": 2, "points": 2,
-    "text": "2:4, Starve 4."
+    "text": "2:4, Starve 4.",
+    "catalogText": "Sine costs 2 mana for 4 points, but causes the next card you resolve to be worth 4 less points.\n\nIf you play a card after Sine in the same round, it won't net you any points.\n\nBut it can be effective at trading rounds, taking a final win, or setting up resets."
   },
   {"name": "Fishing Boat", "id": 32,
     "cost": 2,
-    "text": "2:0, Tutor 1, Tutor 1, Tutor 1."
+    "text": "2:0, Tutor 1, Tutor 1, Tutor 1.",
+    "catalogText": "Fishing Boat costs 2, and tutors for a 1-cost card 3 times.\n\nTutor will draw any card meeting the condition (Costing 1) from either your deck or your discard pile, prioritizing first cards in your deck, then cards from the top of your discard pile to the bottom.\n\nUse this to surge ahead on card advantage, and be able to stall for a huge reset."
   },
   {"name": "Raise Dead", "id": 33,
     "cost": 2,
@@ -70,7 +72,8 @@
   },
   {"name": "Paranoia", "id": 39,
     "cost": 3,
-    "text": "3:3.\nWhen played, gain Sight X, where X is the number of cards before this in the story."
+    "text": "3:3.\nWhen played, gain Sight X, where X is the number of cards before this in the story.",
+    "catalogText": "Paranoia costs 3 for 3 points, and grants you Sight X, where X is the number of cards before it in the story.\n\nMost of the time, this means that everything up to Paranoia will be visible to you, and if you have additional Sight, you can see future cards as well.\n\nTry to stall long enough for your opponent to play 3 cards, then drop this and be able to play Horus for free."
   },
 
   {"name": "Pelican", "id": 40,
@@ -98,7 +101,8 @@
   },
   {"name": "Horus", "id": 45,
     "cost": 7,
-    "text": "7:7.\nCosts 0 if you can see at least 3 of your opponent's cards in the story."
+    "text": "7:7.\nCosts 0 if you can see at least 3 of your opponent's cards in the story.",
+    "catalogText": "Horus costs 7 mana for 7 points, but can be played for free if at least 3 of the opponent's cards in the story are visible to you.\n\nIt can be tricky to pull off, because your opponent needs to play at least 3 cards, and you need enough Sight to reveal them all.\n\nHowever, you can force them into a situation where either they aren't playing enough points, or they risk you getting a free Horus."
   },
   {"name": "Icarus", "id": 46,
     "cost": 7,

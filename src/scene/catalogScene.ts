@@ -200,9 +200,9 @@ export class HorusCatalogScene extends CatalogScene {
 	defaultDeck: string = "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"
 	name = "Horus"
 	deckDescription: string = 
-`
-
-TODO`
+`only occasionally wins rounds in the early
+game with Sine, opting instead to fill up the opponent's hand with
+Cameras, ensuring knowledge it uses to reset or play free Horus's.`
 
 	constructor() {
 		super({
