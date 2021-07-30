@@ -165,9 +165,21 @@ export class TutorialScene2 extends TutorialScene {
   		// Only show tutorial complete message the first time player beats Anubis
   		let showTutorialCompleteMsg = this.tutorialName === 'Anubis' && !UserSettings._get('completedTutorials').includes('Anubis')
 
+  		// Check if the user has already unlocked the expansion tutorials
+		let completed = UserSettings._get('completedTutorials')
+		let expansionWasUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
+
   		// Add this tutorial to the list of completed tutorials
   		UserSettings._push('completedTutorials', this.tutorialName)
 
+  		// Check if the user has now unlocked the expansion tutorials
+  		let completedNow = UserSettings._get('completedTutorials')
+  		let expansionIsNowUnlocked = completedNow.includes('Anubis') && completedNow.includes('Robots') && completedNow.includes('Stalker')
+
+  		// If the expansion just got unlocked, tutorial should show 'new' glow
+  		if (!expansionWasUnlocked && expansionIsNowUnlocked) {
+  			UserSettings._set('newTutorial', true)
+  		}
   		
   		this.scene.start("WelcomeScene", {tutorialComplete: showTutorialCompleteMsg})
   	}
