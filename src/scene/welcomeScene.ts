@@ -251,7 +251,7 @@ class TutorialRegion {
     // Expansion
     // Crypt tutorial
     let txtCrypt = this.scene.add.text(-xDelta, yDelta - yLbl, 'Crypt', StyleSettings.announcement).setOrigin(0.5, 1)
-    let btnCrypt = this.scene.add.image(-xDelta, yDelta, 'icon-pelican')
+    let btnCrypt = this.scene.add.image(-xDelta, yDelta, 'icon-crypt')
 
     // Bastet tutorial
     let txtBastet = this.scene.add.text(0, yDelta - yLbl, 'Bastet', StyleSettings.announcement).setOrigin(0.5, 1)

@@ -80,7 +80,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'ai', 'password', 'pvp',
 			'basics', 'cards', 'decks',
 			'anubis', 'robots', 'stalker',
-			'pelican', 'bastet', 'horus'
+			'crypt', 'bastet', 'horus'
 		]
 
 		iconNames.forEach( (s) => {

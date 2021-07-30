@@ -164,7 +164,7 @@ It ends with strong and consistent high-cost cards like Oak.`
 }
 
 export class CryptCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("1™12™11™13™16™19™20™23")
+	pool: Card[] = decodeDeck("0™1™35™36™12™15™19™20")
 	defaultDeck: string = "20:19:19:19:15:12:12:36:36:36:35:1:1:1:0"
 	name = "Crypt"
 	deckDescription: string = 
@@ -180,7 +180,7 @@ It ends with strong and consistent high-cost cards like Oak.`
 }
 
 export class BastetCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("1™12™11™13™16™19™20™23")
+	pool: Card[] = decodeDeck("0™28™25™3™33™34™11™23")
 	defaultDeck: string = "11:11:11:11:34:34:34:33:33:33:3:3:28:28:0"
 	name = "Bastet"
 	deckDescription: string = 
@@ -196,7 +196,7 @@ export class BastetCatalogScene extends CatalogScene {
 }
 
 export class HorusCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("1™12™11™13™16™19™20™23")
+	pool: Card[] = decodeDeck("27™28™31™32™39™11™13™45")
 	defaultDeck: string = "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"
 	name = "Horus"
 	deckDescription: string = 
