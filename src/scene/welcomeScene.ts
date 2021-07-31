@@ -244,7 +244,6 @@ class TutorialRegion {
     let btnHorus = this.scene.add.image(xDelta, yDelta, 'icon-horus')
 
     // Unlock (Make clickable and legible) any tutorials which user now has access to
-    // Unlock the lowest row of challenges if previous row is complete
     let completed = UserSettings._get('completedTutorials')
     if (completed.includes('Basics')) {
       this.setIconHover(btnAnubis)
@@ -275,6 +274,7 @@ class TutorialRegion {
       txtStalker.setText('???').setAlpha(0.3)
       btnStalker.setAlpha(0.3)
     }
+    // Unlock the lowest row of challenges if the previous row is complete
     if (completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')) {
       this.setIconHover(btnCrypt)
       btnCrypt.on('pointerdown', function() {
