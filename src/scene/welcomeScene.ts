@@ -89,22 +89,19 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private createTutorialCompleteMessage(): void {
-    let promptContainer = this.add.container(0, 0).setDepth(25)
-    let exitPrompt = function() {
-      promptContainer.setVisible(false)
-    }
+    let menu = new Menu(
+      this,
+      Space.windowWidth/2,
+      Space.windowHeight/2,
+      800,
+      300,
+      true,
+      25)
 
-    // Exit confirmation container
-    let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
-    invisibleBackground.setInteractive().on('pointerdown', exitPrompt, this)
-
-    let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 800, 300, 30, ColorSettings.menuBackground).setAlpha(0.95)
-    visibleBackground.setInteractive()
-
-    let txtTitle = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 110, 'Congratulations!', StyleSettings.announcement).setOrigin(0.5)
-    let txtMessage = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 50, TUTORIAL_COMPLETE_MSG, StyleSettings.basic).setOrigin(0.5, 0)
+    let txtTitle = this.add.text(0, -110, 'Congratulations!', StyleSettings.announcement).setOrigin(0.5)
+    let txtMessage = this.add.text(0, -50, TUTORIAL_COMPLETE_MSG, StyleSettings.basic).setOrigin(0.5, 0)
     
-    promptContainer.add([invisibleBackground, visibleBackground, txtTitle, txtMessage])
+    menu.add([txtTitle, txtMessage])
   }
 
   private indicateNewOptions(btnTutorial: Button, btnDiscord: Button): void {
