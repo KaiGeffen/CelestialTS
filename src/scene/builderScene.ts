@@ -5,6 +5,7 @@ import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 import Button from "../lib/button"
+import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
@@ -795,7 +796,6 @@ class FilterRegion {
 class MenuRegion {
   scene: Phaser.Scene
   deckRegion
-  container: Phaser.GameObjects.Container
   deck: Card[] = []
 
   // The textbox which contains the deck code for player's current deck
@@ -808,44 +808,28 @@ class MenuRegion {
   init(scene: Phaser.Scene, deckRegion): void {
     this.scene = scene
     this.deckRegion = deckRegion
-    
-    this.container = this.scene.add.container(Space.cardSize * 2 + Space.pad * 3, Space.cardSize + Space.pad * 2)
-    this.container.setVisible(false)
-    // Menu will be above button to open the other menu
-    this.container.setDepth(20)
   }
 
   create(filterRegion: any, deckRegion: any): void {
     let that = this
 
-    // Set the callback for deckRegion menu button
-    this.deckRegion.setShowMenu(this.onOpenMenu())
-
-    // Visible and invisible background rectangles, stops other containers from being clicked
-    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
-    invisBackground.setInteractive()
-
-    invisBackground.on('pointerdown', function() {
-      that.scene.sound.play('close')
-      that.container.setVisible(false)
-    })
-    this.container.add(invisBackground)
-
-    // Visible background, which does nothing when clicked
     let width = Space.cardSize * 5 + Space.pad * 4
     let height = Space.cardSize * 3 + Space.pad * 2
 
-    let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
-    visibleBackground.setInteractive()
-    this.container.add(visibleBackground)
-
+    let menu = new Menu(
+      this.scene,
+      Space.windowWidth/2,//Space.cardSize * 2 + Space.pad * 3,
+      Space.windowHeight/2,//Space.cardSize + Space.pad * 2,
+      width,
+      height,
+      false,
+      20)
 
     // Use expansion toggleable button
-    let y = Space.pad/2
-    let txtUseExpansion = this.scene.add.text(Space.pad, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
-    this.container.add(txtUseExpansion)
+    let y = Space.pad/2 - height/2
+    let txtUseExpansion = this.scene.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
 
-    let radioExpansion = this.scene.add.circle(width - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    let radioExpansion = this.scene.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
     if (UserSettings._get('useExpansion')) {
       radioExpansion.setFillStyle(ColorSettings.cardHighlight)
     }
@@ -866,16 +850,13 @@ class MenuRegion {
       // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
       deckRegion.showCardsLegality()
     })
-    this.container.add(radioExpansion)
-
 
     // Text field for the deck-code
     y += Space.cardSize*3/4
-    let txtDeckCode = this.scene.add.text(Space.pad, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
-    this.container.add(txtDeckCode)
+    let txtDeckCode = this.scene.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
 
     y += Space.pad + Space.cardSize/2
-    this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize, {
+    this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
       type: 'textarea',
       text: '',
       tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
@@ -896,14 +877,22 @@ class MenuRegion {
     .on('blur', function (inputText) {
       that.textBoxDeckCode.text = that.getDeckCode()
     })
-    this.container.add(this.textBoxDeckCode)
+    
+    menu.add([
+      txtUseExpansion,
+      radioExpansion,
+      txtDeckCode,
+      this.textBoxDeckCode
+      ])
+
+    // Set the callback for deckRegion menu button
+    this.deckRegion.setShowMenu(this.onOpenMenu(menu))
   }
 
-  private onOpenMenu(): () => void {
+  private onOpenMenu(menu: Menu): () => void {
     let that = this
     return function() {
-      that.scene.sound.play('open')
-      that.container.setVisible(true)
+      menu.open()
 
       // Set the deck-code textbox to have current deck described
       that.textBoxDeckCode.text = that.getDeckCode()
