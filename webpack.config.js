@@ -28,7 +28,7 @@ module.exports = {
         }
     },
     output: {
-        filename: 'app' + hashCode(Date.now.toString()) + '.js',
+        filename: 'app.js',//' + hashCode(Date.now.toString()) + '
         path: path.resolve(__dirname, 'dist')
     },
     mode: 'development'

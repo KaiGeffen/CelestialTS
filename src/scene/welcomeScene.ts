@@ -69,9 +69,6 @@ export default class WelcomeScene extends BaseScene {
   private createTutorialPrompt(): void {
     let promptContainer = this.add.container(0, 0).setDepth(25)
     let exitPrompt = function() {
-      // Set that user has been prompted to try the tutorial
-      UserSettings._set('tutorialKnown', true)
-
       promptContainer.setVisible(false)
     }
 
@@ -124,6 +121,9 @@ export default class WelcomeScene extends BaseScene {
 
     // Guide user to Tutorial if this is their first time here
     if (!UserSettings._get('tutorialKnown')) {
+      // Set that user has been prompted to try the tutorial
+      UserSettings._set('tutorialKnown', true)
+      
       this.createTutorialPrompt()
     }
     else {
@@ -138,6 +138,8 @@ export default class WelcomeScene extends BaseScene {
   private doFirstTutorial(): () => void {
     let that = this
     return function() {
+      UserSettings._set('tutorialKnown', true)
+
       that.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
     }
   }
