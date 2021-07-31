@@ -35,6 +35,9 @@ export default class Button extends Phaser.GameObjects.Text {
 	// Causes the button to glow until stopped
 	glowTask: any
 	glow(): void {
+		// First stop any glow that's already happening to not amplify
+		this.stopGlow()
+		
 		var postFxPlugin = this.scene.plugins.get('rexGlowFilterPipeline')
 
 		var pipeline = postFxPlugin['add'](this)

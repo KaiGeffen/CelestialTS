@@ -693,6 +693,13 @@ class FilterRegion {
       // Filter the visible cards based on the text
       that.searchText = inputText.text
       that.filter()
+
+      // If there is any text, set the search button to glow
+      if (inputText.text !== "") {
+        btnSearch.glow()
+      } else {
+        btnSearch.stopGlow()
+      }
     })
 
     // Button to open the search field, just below the base scene buttons
