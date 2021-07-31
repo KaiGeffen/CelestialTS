@@ -5,6 +5,7 @@ import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 import Button from "../lib/button"
+import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
 
@@ -910,6 +911,7 @@ class MenuRegion {
 }
 
 
+// TODO Use Menu class
 class ModeRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
@@ -951,47 +953,28 @@ class ModeRegion {
 
     let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
     visibleBackground.setInteractive()
+    visibleBackground.setStrokeStyle(10, ColorSettings.background, 1)
     this.container.add(visibleBackground)
 
     // Ai button + reminder
     let xDelta = (Space.cardSize + Space.pad) * 3/2
     let x = Space.cardSize + Space.pad/2
     let y = Space.cardSize * 3/2 + Space.pad
-    let yLbl = y - Space.cardSize - Space.pad
+    let yLbl = 3
 
-    let lblAi = this.scene.add.text(x, yLbl, 'AI', StyleSettings.announcement).setOrigin(0.5, 0)
-
-    let btnAi = this.scene.add.image(x, y, 'icon-ai')
-    this.setIconHover(btnAi)
-    btnAi.on('pointerdown', function() {
-      that.scene.sound.play('click')
+    let iconAI = new Icon(this.scene, this.container, x, y, 'AI', function() {
       UserSettings._set('vsAi', true)
       deckRegion.startGame()
     })
-
-    // Pvp button
     x += xDelta
-
-    let lblPvp = this.scene.add.text(x, yLbl, 'PVP', StyleSettings.announcement).setOrigin(0.5, 0)
-
-    let btnPvp = this.scene.add.image(x, y, 'icon-pvp')
-    this.setIconHover(btnPvp)
-    btnPvp.on('pointerdown', function() {
-      that.scene.sound.play('click')
+    let iconPVP = new Icon(this.scene, this.container, x, y, 'PVP', function() {
       UserSettings._set('vsAi', false)
+      // Don't use a matchmaking code
       UserSettings._set('mmCode', '')
       deckRegion.startGame()
     })
-
-    // Password button
     x += xDelta
-
-    let lblPassword = this.scene.add.text(x, yLbl, 'PWD', StyleSettings.announcement).setOrigin(0.5, 0)
-
-    let btnPassword = this.scene.add.image(x, y, 'icon-password')
-    this.setIconHover(btnPassword)
-    btnPassword.on('pointerdown', function() {
-      that.scene.sound.play('click')
+    let iconPWD = new Icon(this.scene, this.container, x, y, 'PWD', function() {
       UserSettings._set('vsAi', false)
       deckRegion.startGame()
     })
@@ -1016,12 +999,7 @@ class ModeRegion {
       inputText.text = inputText.text.replace('\n', '')
       UserSettings._set('mmCode', inputText.text)
     })
-
-    // Add everything to this container
-    this.container.add([
-      btnAi, btnPvp, btnPassword,
-      lblAi, lblPvp, lblPassword,
-      textBoxMM])
+    this.container.add(textBoxMM)
   }
 
   // Set the callback that happens when this menu is opened
@@ -1031,17 +1009,6 @@ class ModeRegion {
       that.scene.sound.play('open')
       that.container.setVisible(true)
     }
-  }
-
-  // Set the coloring that happens when the icon is hovered/not
-  private setIconHover(btn: Phaser.GameObjects.Image): void {
-    btn.setInteractive()
-    btn.on('pointerover', function() {
-      btn.setTint(ColorSettings.cardHighlight)
-    })
-    btn.on('pointerout', function() {
-      btn.clearTint()
-    })
   }
 }
 
