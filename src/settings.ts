@@ -101,7 +101,7 @@ export const ColorSettings: Record<string, any> = {
   tutorialBackground: "#704820",
 
   rulebookBackground: "#aac",
-  creditsBackground: "#43438a"
+  creditsBackground: "#aac"
 }
 
 // const FontSettings: Record<string, [string, string]
