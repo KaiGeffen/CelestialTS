@@ -4,6 +4,7 @@ import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings }
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
+import Menu from "../lib/menu"
 
 
 const TUTORIAL_COMPLETE_MSG =
@@ -157,10 +158,10 @@ export default class WelcomeScene extends BaseScene {
 }
 
 
-// TODO If multi-selection like this is used in more places than just here and mode select, abstract out to make dry
 class TutorialRegion {
   scene: Phaser.Scene
   container: Phaser.GameObjects.Container
+  menu: Menu
 
   constructor(scene: Phaser.Scene) {
     this.init(scene)
@@ -168,28 +169,10 @@ class TutorialRegion {
 
   init(scene: Phaser.Scene): void {
     this.scene = scene
-    
-    this.container = this.scene.add.container(
-      Space.windowWidth / 2,
-      Space.windowHeight / 2)
-    this.container.setVisible(false)
-    
-    // Menu must be above all other menus, including the tutorial prompt that shows if you haven't yet been prompted
-    this.container.setDepth(30)
   }
 
   create(): void {
     let that = this
-
-    // Visible and invisible background rectangles, stops other containers from being clicked
-    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0.5)
-    invisBackground.setInteractive()
-
-    invisBackground.on('pointerdown', function() {
-      that.scene.sound.play('close')
-      that.container.setVisible(false)
-    })
-    this.container.add(invisBackground)
 
     // Dimensions
     // Height of the label
@@ -203,11 +186,18 @@ class TutorialRegion {
     let width = xDelta * 3 //Space.cardSize * 5 + Space.pad * 2
     let height = yDelta * 3 + yLbl //Space.cardSize * 3 + Space.pad * 4 * 2
     
-    // Visible background, which does nothing when clicked
-    let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0.5)
-    visibleBackground.setInteractive()
-    this.container.add(visibleBackground)
-    
+    // Make this menu which all the objects go in
+    this.menu = new Menu(
+      this.scene, 
+      Space.windowWidth / 2,
+      Space.windowHeight / 2,
+      width,
+      height,
+      false,
+      30)
+
+
+
     // Basics button + reminder
     let txtBasics = this.scene.add.text(0, 0 - yDelta - yLbl, 'Basics', StyleSettings.announcement).setOrigin(0.5, 1)
 
@@ -306,8 +296,8 @@ class TutorialRegion {
       btnHorus.setAlpha(0.3)
     }
 
-    // Add everything to this container
-    this.container.add([
+    // Add everything to this menu
+    this.menu.add([
       btnBasics, txtBasics,
       txtAnubis, btnAnubis,
       txtRobots, btnRobots,
@@ -328,42 +318,40 @@ class TutorialRegion {
       UserSettings._set('tutorialKnown', true)
       UserSettings._set('newTutorial', false)
 
-      that.scene.sound.play('open')
-      
-      that.container.setVisible(true)
+      that.menu.open()
     }
   }
 
   // Create a check mark over each tutorial that user has completed
   private createCheckMarks(xDelta: number, yDelta: number): void {
     if (UserSettings._get('completedTutorials').includes('Basics')) {
-      this.container.add(this.scene.add.text(0, -yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(0, -yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     // Core set decks
     if (UserSettings._get('completedTutorials').includes('Anubis')) {
-      this.container.add(this.scene.add.text(-xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(-xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Robots')) {
-      this.container.add(this.scene.add.text(0, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(0, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Stalker')) {
-      this.container.add(this.scene.add.text(xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     // Expansion decks
     if (UserSettings._get('completedTutorials').includes('Crypt')) {
-      this.container.add(this.scene.add.text(-xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(-xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Bastet')) {
-      this.container.add(this.scene.add.text(0, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(0, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Horus')) {
-      this.container.add(this.scene.add.text(xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
     }
   }
 
