@@ -518,10 +518,12 @@ class DeckRegion {
     if (this.deck.length === 15) {
       this.btnStart.text = 'Start'
       this.btnStart.input.enabled = true
+      this.btnStart.glow()
     }
     else
     {
       this.btnStart.text = `${this.deck.length}/15`
+      this.btnStart.stopGlow()
 
       // TODO Grey out the button, have a disable method for button class
       // For debugging, allow sub-15 card decks locally
