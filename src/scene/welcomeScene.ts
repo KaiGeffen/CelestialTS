@@ -34,13 +34,9 @@ export default class WelcomeScene extends BaseScene {
     this.add.text(Space.windowWidth/2, 200, "Celestial",
       StyleSettings.title).setOrigin(0.5)
 
-    // Start Button
-    new Button(this, Space.windowWidth/2, 350, "Click to Start", this.doStart).setOrigin(0.5).setStyle(StyleSettings.announcement)
-
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
     let btnTutorial = new Button(this, Space.windowWidth/2 - 200, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
-    let callback = UserSettings._get('tutorialKnown') ? this.tutorialRegion.onOpenMenu(btnTutorial) : this.doFirstTutorial()
-    btnTutorial.setOnClick(callback)
+    btnTutorial.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
 
     // Credits button
     let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
@@ -48,6 +44,11 @@ export default class WelcomeScene extends BaseScene {
     // Discord button
     let btnDiscord = new Button(this, Space.windowWidth/2 + 200, Space.windowHeight - 50, "Discord").setOrigin(0.5)
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
+
+    // Start Button
+    new Button(this, Space.windowWidth/2, 350, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(StyleSettings.announcement)
+
+
 
     // If the player just completed the tutorial and is returning to this scene
     if (params['tutorialComplete']) {
@@ -66,7 +67,7 @@ export default class WelcomeScene extends BaseScene {
     params.tutorialComplete = false
   }
 
-  private createTutorialPrompt(): void {
+  private createTutorialPrompt(btnTutorial: Button): void {
     let promptContainer = this.add.container(0, 0).setDepth(25)
     let exitPrompt = function() {
       promptContainer.setVisible(false)
@@ -81,7 +82,9 @@ export default class WelcomeScene extends BaseScene {
 
     let txtHint = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 40, 'Would you like to try the tutorial?', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
-    let btnYes = new Button(this, Space.windowWidth/2 - 50, Space.windowHeight/2 + 40, 'Yes', this.doFirstTutorial()).setOrigin(1, 0.5)
+    // Yes button exits this menu and opens the tutorial menu
+    let btnYes = new Button(this, Space.windowWidth/2 - 50, Space.windowHeight/2 + 40, 'Yes', exitPrompt).setOrigin(1, 0.5)
+    btnYes.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
     let btnNo = new Button(this, Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', this.doDeckbuilder).setOrigin(0, 0.5)
 
     promptContainer.add([invisibleBackground, visibleBackground, txtHint, btnYes, btnNo])
@@ -116,32 +119,27 @@ export default class WelcomeScene extends BaseScene {
     }
   }
 
-  private doStart(): void {
-    this.sound.play('click')
+  // Do everything that occurs when the start button is pressed - either start, or prompt tutorial
+  private doStart(btnTutorial: Button): () => void {
+    let that = this
+    return function() {
+      that.sound.play('click')
 
-    // Guide user to Tutorial if this is their first time here
-    if (!UserSettings._get('tutorialKnown')) {
-      // Set that user has been prompted to try the tutorial
-      UserSettings._set('tutorialKnown', true)
-      
-      this.createTutorialPrompt()
-    }
-    else {
-      this.doDeckbuilder()
+      // Guide user to Tutorial if this is their first time here
+      if (!UserSettings._get('tutorialKnown')) {
+        // Set that user has been prompted to try the tutorial
+        UserSettings._set('tutorialKnown', true)
+
+        that.createTutorialPrompt(btnTutorial)
+      }
+      else {
+        that.doDeckbuilder()
+      }
     }
   }
 
   private doDeckbuilder(): void {
     this.scene.start("BuilderScene", {isTutorial: false})
-  }
-
-  private doFirstTutorial(): () => void {
-    let that = this
-    return function() {
-      UserSettings._set('tutorialKnown', true)
-
-      that.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
-    }
   }
 
   private doCredits(): void {
@@ -315,6 +313,7 @@ class TutorialRegion {
     let that = this
     return function() {
       btnTutorial.stopGlow()
+      UserSettings._set('tutorialKnown', true)
       UserSettings._set('newTutorial', false)
 
       that.scene.sound.play('open')
