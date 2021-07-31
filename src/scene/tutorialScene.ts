@@ -107,6 +107,11 @@ export class TutorialScene1 extends TutorialScene {
 	onWin(): void {
   		this.net.closeSocket()
   		
+  		// If user just completed the Basics tutorial for the first time, signal that more tutorial content is now available
+  		if (!UserSettings._get('completedTutorials').includes('Basics')) {
+  			UserSettings._set('newTutorial', true)
+  		}
+
   		// Add this tutorial (Basics) to the list of completed tutorials
   		UserSettings._push('completedTutorials', 'Basics')
 
