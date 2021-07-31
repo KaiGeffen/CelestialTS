@@ -220,33 +220,15 @@ class TutorialRegion {
 
     // Anubis tutorial
     let txtAnubis = this.scene.add.text(-xDelta, -yLbl, 'Anubis', StyleSettings.announcement).setOrigin(0.5, 1)
-
     let btnAnubis = this.scene.add.image(-xDelta, 0, 'icon-anubis')
-    this.setIconHover(btnAnubis)
-    btnAnubis.on('pointerdown', function() {
-      that.scene.sound.play('click')
-      that.scene.scene.start("AnubisCatalogScene")
-    })
 
     // Robots tutorial
     let txtRobots = this.scene.add.text(0, -yLbl, 'Robots', StyleSettings.announcement).setOrigin(0.5, 1)
-
     let btnRobots = this.scene.add.image(0, 0, 'icon-robots')
-    this.setIconHover(btnRobots)
-    btnRobots.on('pointerdown', function() {
-      that.scene.sound.play('click')
-      that.scene.scene.start("RobotsCatalogScene")
-    })
 
     // Stalker tutorial
     let txtStalker = this.scene.add.text(xDelta, -yLbl, 'Stalker', StyleSettings.announcement).setOrigin(0.5, 1)
-
     let btnStalker = this.scene.add.image(xDelta, 0, 'icon-stalker')
-    this.setIconHover(btnStalker)
-    btnStalker.on('pointerdown', function() {
-      that.scene.sound.play('click')
-      that.scene.scene.start("StalkerCatalogScene")
-    })
 
     // Expansion
     // Crypt tutorial
@@ -261,8 +243,38 @@ class TutorialRegion {
     let txtHorus = this.scene.add.text(xDelta, yDelta - yLbl, 'Horus', StyleSettings.announcement).setOrigin(0.5, 1)
     let btnHorus = this.scene.add.image(xDelta, yDelta, 'icon-horus')
 
+    // Unlock (Make clickable and legible) any tutorials which user now has access to
     // Unlock the lowest row of challenges if previous row is complete
     let completed = UserSettings._get('completedTutorials')
+    if (completed.includes('Basics')) {
+      this.setIconHover(btnAnubis)
+      btnAnubis.on('pointerdown', function() {
+        that.scene.sound.play('click')
+        that.scene.scene.start("AnubisCatalogScene")
+      })
+
+      this.setIconHover(btnRobots)
+      btnRobots.on('pointerdown', function() {
+        that.scene.sound.play('click')
+        that.scene.scene.start("RobotsCatalogScene")
+      })
+
+      this.setIconHover(btnStalker)
+      btnStalker.on('pointerdown', function() {
+        that.scene.sound.play('click')
+        that.scene.scene.start("StalkerCatalogScene")
+      })
+    }
+    else {
+      txtAnubis.setText('???').setAlpha(0.3)
+      btnAnubis.setAlpha(0.3)
+
+      txtRobots.setText('???').setAlpha(0.3)
+      btnRobots.setAlpha(0.3)
+
+      txtStalker.setText('???').setAlpha(0.3)
+      btnStalker.setAlpha(0.3)
+    }
     if (completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')) {
       this.setIconHover(btnCrypt)
       btnCrypt.on('pointerdown', function() {
