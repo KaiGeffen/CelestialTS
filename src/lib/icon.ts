@@ -1,32 +1,39 @@
 import "phaser"
 import { StyleSettings, ColorSettings, Space } from '../settings'
+import Menu from "../lib/menu"
 
-
-// TODO There is a better way to do this where the object is defined within the Phaser Game Factor and can be added from that
 
 export default class Icon {
-	constructor(scene: Phaser.Scene, container: Phaser.GameObjects.Container, x: number, y: number, text: string, f: () => void) {
-		let btn = scene.add.image(x, y, 'icon-' + text)
+	btn: Phaser.GameObjects.Image
+	txt: Phaser.GameObjects.Text
 
-		btn.setInteractive()
+	constructor(scene: Phaser.Scene, menu: Menu, x: number, y: number, text: string, f: () => void) {
+		this.btn = scene.add.image(x, y, 'icon-' + text)
 
-		btn.on('pointerdown', () => {
+		this.btn.setInteractive()
+		.on('pointerdown', () => {
 			scene.sound.play('click')
 			f()
 		})
-		btn.on('pointerover', () => {
-			btn.setTint(ColorSettings.cardHighlight)
+		.on('pointerover', () => {
+			this.btn.setTint(ColorSettings.cardHighlight)
 		})
-		btn.on('pointerout', () => {
-			btn.clearTint()
+		.on('pointerout', () => {
+			this.btn.clearTint()
 		})
 
 		// Add a label above the icon
 		let yDelta = Space.cardSize - Space.pad
-    	let lbl = scene.add.text(x, y - yDelta, text, StyleSettings.announcement).setOrigin(0.5)
+    	this.txt = scene.add.text(x, y - yDelta, text, StyleSettings.announcement).setOrigin(0.5)
 
     	// Add both to the container
-    	container.add([btn, lbl])
+    	menu.add([this.btn, this.txt])
 	}
 
+	// Set this icon as 'locked'
+	lock(): void {
+		this.txt.setText('???').setAlpha(0.3)
+
+		this.btn.setAlpha(0.3).removeInteractive()
+	}
 }

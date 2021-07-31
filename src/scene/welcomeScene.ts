@@ -4,6 +4,7 @@ import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings }
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
+import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 
 
@@ -154,7 +155,6 @@ export default class WelcomeScene extends BaseScene {
 
 class TutorialRegion {
   scene: Phaser.Scene
-  container: Phaser.GameObjects.Container
   menu: Menu
 
   constructor(scene: Phaser.Scene) {
@@ -191,115 +191,45 @@ class TutorialRegion {
       30)
 
 
-
-    // Basics button + reminder
-    let txtBasics = this.scene.add.text(0, 0 - yDelta - yLbl, 'Basics', StyleSettings.announcement).setOrigin(0.5, 1)
-
-    let btnBasics = this.scene.add.image(0, 0 - yDelta, 'icon-basics')
-    this.setIconHover(btnBasics)
-    btnBasics.on('pointerdown', function() {
-      that.scene.sound.play('click')
+    // Add icons
+    let iconBasics = new Icon(this.scene, this.menu, 0, -yDelta, 'Basics', function() {
       that.scene.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
     })
 
-    // Anubis tutorial
-    let txtAnubis = this.scene.add.text(-xDelta, -yLbl, 'Anubis', StyleSettings.announcement).setOrigin(0.5, 1)
-    let btnAnubis = this.scene.add.image(-xDelta, 0, 'icon-anubis')
+    // Core icons
+    let iconAnubis = new Icon(this.scene, this.menu, -xDelta, 0, 'Anubis', function() {
+      that.scene.scene.start("AnubisCatalogScene")
+    })
+    let iconRobots = new Icon(this.scene, this.menu, 0, 0, 'Robots', function() {
+      that.scene.scene.start("RobotsCatalogScene")
+    })
+    let iconStalker = new Icon(this.scene, this.menu, xDelta, 0, 'Stalker', function() {
+      that.scene.scene.start("StalkerCatalogScene")
+    })
 
-    // Robots tutorial
-    let txtRobots = this.scene.add.text(0, -yLbl, 'Robots', StyleSettings.announcement).setOrigin(0.5, 1)
-    let btnRobots = this.scene.add.image(0, 0, 'icon-robots')
-
-    // Stalker tutorial
-    let txtStalker = this.scene.add.text(xDelta, -yLbl, 'Stalker', StyleSettings.announcement).setOrigin(0.5, 1)
-    let btnStalker = this.scene.add.image(xDelta, 0, 'icon-stalker')
-
-    // Expansion
-    // Crypt tutorial
-    let txtCrypt = this.scene.add.text(-xDelta, yDelta - yLbl, 'Crypt', StyleSettings.announcement).setOrigin(0.5, 1)
-    let btnCrypt = this.scene.add.image(-xDelta, yDelta, 'icon-crypt')
-
-    // Bastet tutorial
-    let txtBastet = this.scene.add.text(0, yDelta - yLbl, 'Bastet', StyleSettings.announcement).setOrigin(0.5, 1)
-    let btnBastet = this.scene.add.image(0, yDelta, 'icon-bastet')
-
-    // Horus tutorial
-    let txtHorus = this.scene.add.text(xDelta, yDelta - yLbl, 'Horus', StyleSettings.announcement).setOrigin(0.5, 1)
-    let btnHorus = this.scene.add.image(xDelta, yDelta, 'icon-horus')
+    // Expansion icons
+    let iconCrypt = new Icon(this.scene, this.menu, -xDelta, yDelta, 'Crypt', function() {
+      that.scene.scene.start("CryptCatalogScene")
+    })
+    let iconBastet = new Icon(this.scene, this.menu, 0, yDelta, 'Bastet', function() {
+      that.scene.scene.start("BastetCatalogScene")
+    })
+    let iconHorus = new Icon(this.scene, this.menu, xDelta, yDelta, 'Horus', function() {
+      that.scene.scene.start("HorusCatalogScene")
+    })
 
     // Unlock (Make clickable and legible) any tutorials which user now has access to
     let completed = UserSettings._get('completedTutorials')
-    if (completed.includes('Basics')) {
-      this.setIconHover(btnAnubis)
-      btnAnubis.on('pointerdown', function() {
-        that.scene.sound.play('click')
-        that.scene.scene.start("AnubisCatalogScene")
-      })
-
-      this.setIconHover(btnRobots)
-      btnRobots.on('pointerdown', function() {
-        that.scene.sound.play('click')
-        that.scene.scene.start("RobotsCatalogScene")
-      })
-
-      this.setIconHover(btnStalker)
-      btnStalker.on('pointerdown', function() {
-        that.scene.sound.play('click')
-        that.scene.scene.start("StalkerCatalogScene")
-      })
+    if (!completed.includes('Basics')) {
+      iconAnubis.lock()
+      iconRobots.lock()
+      iconStalker.lock()
     }
-    else {
-      txtAnubis.setText('???').setAlpha(0.3)
-      btnAnubis.setAlpha(0.3)
-
-      txtRobots.setText('???').setAlpha(0.3)
-      btnRobots.setAlpha(0.3)
-
-      txtStalker.setText('???').setAlpha(0.3)
-      btnStalker.setAlpha(0.3)
+    if (!(completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker'))) {
+      iconCrypt.lock()
+      iconBastet.lock()
+      iconHorus.lock()
     }
-    // Unlock the lowest row of challenges if the previous row is complete
-    if (completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')) {
-      this.setIconHover(btnCrypt)
-      btnCrypt.on('pointerdown', function() {
-        that.scene.sound.play('click')
-        that.scene.scene.start("CryptCatalogScene")
-      })
-
-      this.setIconHover(btnBastet)
-      btnBastet.on('pointerdown', function() {
-        that.scene.sound.play('click')
-        that.scene.scene.start("BastetCatalogScene")
-      })
-
-      this.setIconHover(btnHorus)
-      btnHorus.on('pointerdown', function() {
-        that.scene.sound.play('click')
-        that.scene.scene.start("HorusCatalogScene")
-      })
-    }
-    else
-    {
-      txtCrypt.setText('???').setAlpha(0.3)
-      btnCrypt.setAlpha(0.3)
-
-      txtBastet.setText('???').setAlpha(0.3)
-      btnBastet.setAlpha(0.3)
-
-      txtHorus.setText('???').setAlpha(0.3)
-      btnHorus.setAlpha(0.3)
-    }
-
-    // Add everything to this menu
-    this.menu.add([
-      btnBasics, txtBasics,
-      txtAnubis, btnAnubis,
-      txtRobots, btnRobots,
-      txtStalker, btnStalker,
-      txtCrypt, btnCrypt,
-      txtBastet, btnBastet,
-      txtHorus, btnHorus,
-      ])
 
     // Add check marks over each completed tutorial
     this.createCheckMarks(xDelta, yDelta)

@@ -937,6 +937,14 @@ class ModeRegion {
     // Set the callback for deckRegion start button
     deckRegion.setModeMenu(this.onOpenMenu())
 
+    let menu = new Menu(
+          this.scene,
+          Space.windowWidth/2,
+          Space.windowHeight/2,
+          800,
+          200,
+          true,
+          25)
     // Visible and invisible background rectangles, stops other containers from being clicked
     let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
     invisBackground.setInteractive()
@@ -962,19 +970,19 @@ class ModeRegion {
     let y = Space.cardSize * 3/2 + Space.pad
     let yLbl = 3
 
-    let iconAI = new Icon(this.scene, this.container, x, y, 'AI', function() {
+    let iconAI = new Icon(this.scene, menu, x, y, 'AI', function() {
       UserSettings._set('vsAi', true)
       deckRegion.startGame()
     })
     x += xDelta
-    let iconPVP = new Icon(this.scene, this.container, x, y, 'PVP', function() {
+    let iconPVP = new Icon(this.scene, menu, x, y, 'PVP', function() {
       UserSettings._set('vsAi', false)
       // Don't use a matchmaking code
       UserSettings._set('mmCode', '')
       deckRegion.startGame()
     })
     x += xDelta
-    let iconPWD = new Icon(this.scene, this.container, x, y, 'PWD', function() {
+    let iconPWD = new Icon(this.scene, menu, x, y, 'PWD', function() {
       UserSettings._set('vsAi', false)
       deckRegion.startGame()
     })
