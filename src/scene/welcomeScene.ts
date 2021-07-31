@@ -69,26 +69,23 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private createTutorialPrompt(btnTutorial: Button): void {
-    let promptContainer = this.add.container(0, 0).setDepth(25)
-    let exitPrompt = function() {
-      promptContainer.setVisible(false)
-    }
+    let menu = new Menu(
+      this,
+      Space.windowWidth/2,
+      Space.windowHeight/2,
+      800,
+      200,
+      true,
+      25)
 
-    // Exit confirmation container
-    let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
-    invisibleBackground.setInteractive().on('pointerdown', exitPrompt, this)
-
-    let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 800, 200, 30, ColorSettings.menuBackground).setAlpha(0.95)
-    visibleBackground.setInteractive()
-
-    let txtHint = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 40, 'Would you like to try the tutorial?', StyleSettings.announcement).setOrigin(0.5, 0.5)
+    let txtHint = this.add.text(0, -40, 'Would you like to try the tutorial?', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
     // Yes button exits this menu and opens the tutorial menu
-    let btnYes = new Button(this, Space.windowWidth/2 - 50, Space.windowHeight/2 + 40, 'Yes', exitPrompt).setOrigin(1, 0.5)
+    let btnYes = new Button(this, -50, 40, 'Yes', () => menu.close()).setOrigin(1, 0.5)
     btnYes.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
-    let btnNo = new Button(this, Space.windowWidth/2 + 50, Space.windowHeight/2 + 40, 'No', this.doDeckbuilder).setOrigin(0, 0.5)
+    let btnNo = new Button(this, 50, 40, 'No', this.doDeckbuilder).setOrigin(0, 0.5)
 
-    promptContainer.add([invisibleBackground, visibleBackground, txtHint, btnYes, btnNo])
+    menu.add([txtHint, btnYes, btnNo])
   }
 
   private createTutorialCompleteMessage(): void {
