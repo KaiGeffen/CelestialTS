@@ -50,6 +50,7 @@ export default class BaseScene extends Phaser.Scene {
 		// Visible background, which does nothing when clicked
 		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 510, 30, ColorSettings.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
+		visibleBackground.setStrokeStyle(10, ColorSettings.background, 1)
 
 		// Radio button for whether keywords should be explained
 		let x = Space.windowWidth/2 - 210
