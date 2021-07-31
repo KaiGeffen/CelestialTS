@@ -911,10 +911,8 @@ class MenuRegion {
 }
 
 
-// TODO Use Menu class
 class ModeRegion {
   scene: Phaser.Scene
-  container: Phaser.GameObjects.Container
 
   constructor(scene: Phaser.Scene) {
     this.init(scene)
@@ -922,74 +920,47 @@ class ModeRegion {
 
   init(scene: Phaser.Scene): void {
     this.scene = scene
-    
-    this.container = this.scene.add.container(
-      Space.cardSize * 2 + Space.pad * 3,
-      Space.cardSize * 1 + Space.pad * 2)
-    this.container.setVisible(false)
-    // Menu will be above button to open the other menu
-    this.container.setDepth(20)
   }
 
   create(deckRegion: any): void {
     let that = this
 
-    // Set the callback for deckRegion start button
-    deckRegion.setModeMenu(this.onOpenMenu())
+    // Visible background, which does nothing when clicked
+    let width = Space.cardSize * 5 + Space.pad * 4
+    let height = Space.cardSize * 3 + Space.pad * 2
 
     let menu = new Menu(
           this.scene,
           Space.windowWidth/2,
           Space.windowHeight/2,
-          800,
-          200,
-          true,
-          25)
-    // Visible and invisible background rectangles, stops other containers from being clicked
-    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
-    invisBackground.setInteractive()
-
-    invisBackground.on('pointerdown', function() {
-      that.scene.sound.play('close')
-      that.container.setVisible(false)
-    })
-    this.container.add(invisBackground)
-
-    // Visible background, which does nothing when clicked
-    let width = Space.cardSize * 5 + Space.pad * 4
-    let height = Space.cardSize * 3 + Space.pad * 2
-
-    let visibleBackground = this.scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground).setAlpha(0.95).setOrigin(0)
-    visibleBackground.setInteractive()
-    visibleBackground.setStrokeStyle(10, ColorSettings.background, 1)
-    this.container.add(visibleBackground)
+          width,
+          height,
+          false,
+          20)
 
     // Ai button + reminder
     let xDelta = (Space.cardSize + Space.pad) * 3/2
     let x = Space.cardSize + Space.pad/2
-    let y = Space.cardSize * 3/2 + Space.pad
-    let yLbl = 3
+    let y = -20
 
-    let iconAI = new Icon(this.scene, menu, x, y, 'AI', function() {
+    let iconAI = new Icon(this.scene, menu, -xDelta, y, 'AI', function() {
       UserSettings._set('vsAi', true)
       deckRegion.startGame()
     })
-    x += xDelta
-    let iconPVP = new Icon(this.scene, menu, x, y, 'PVP', function() {
+    let iconPVP = new Icon(this.scene, menu, 0, y, 'PVP', function() {
       UserSettings._set('vsAi', false)
       // Don't use a matchmaking code
       UserSettings._set('mmCode', '')
       deckRegion.startGame()
     })
-    x += xDelta
-    let iconPWD = new Icon(this.scene, menu, x, y, 'PWD', function() {
+    let iconPWD = new Icon(this.scene, menu, xDelta, y, 'PWD', function() {
       UserSettings._set('vsAi', false)
       deckRegion.startGame()
     })
 
     // Matchmaking text region
     y += Space.cardSize/2 + Space.pad
-    let textBoxMM = this.scene.add['rexInputText'](Space.pad, y, width - Space.pad*2, Space.cardSize/2, {
+    let textBoxMM = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize/2, {
       type: 'textarea',
       text: UserSettings._get('mmCode'),
       placeholder: 'Matchmaking code',
@@ -1007,16 +978,10 @@ class ModeRegion {
       inputText.text = inputText.text.replace('\n', '')
       UserSettings._set('mmCode', inputText.text)
     })
-    this.container.add(textBoxMM)
-  }
+    menu.add(textBoxMM)
 
-  // Set the callback that happens when this menu is opened
-  private onOpenMenu(): () => void {
-    let that = this
-    return function() {
-      that.scene.sound.play('open')
-      that.container.setVisible(true)
-    }
+    // Set the callback for deckRegion start button
+    deckRegion.setModeMenu(() => menu.open())
   }
 }
 
