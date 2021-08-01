@@ -70,6 +70,7 @@ export class CardImage {
 
     let scene = container.scene
     this.image = scene.add.image(0, 0, card.name)
+    this.image.setDisplaySize(100, 100)
 
     if (interactive) {
       this.image.setInteractive();
