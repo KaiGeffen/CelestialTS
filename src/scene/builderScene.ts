@@ -20,7 +20,7 @@ var standardDeck: Card[] = []
 
 
 export default class BuilderScene extends BaseScene {
-  isTutorial: Boolean
+  isTutorial: boolean
 
   catalogRegion
   deckRegion
@@ -575,11 +575,11 @@ class FilterRegion {
   filterCostAry: boolean[] = []
   searchText: string = ""
 
-  constructor(scene: Phaser.Scene, catalogRegion) {
+  constructor(scene: Phaser.Scene, catalogRegion,) {
     this.init(scene, catalogRegion)
   }
 
-  init(scene, catalogRegion): void {
+  init(scene: Phaser.Scene, catalogRegion): void {
     this.scene = scene
     this.catalogRegion = catalogRegion
     this.container = this.scene.add.container(1000, 0)
