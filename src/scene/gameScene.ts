@@ -37,7 +37,6 @@ export default class GameScene extends BaseScene {
 
 	storyContainer: Phaser.GameObjects.Container
 	stackContainer: Phaser.GameObjects.Container
-	recapContainer: Phaser.GameObjects.Container
 	passContainer: Phaser.GameObjects.Container
 
 	priorityRectangle: Phaser.GameObjects.Rectangle
@@ -58,14 +57,12 @@ export default class GameScene extends BaseScene {
 	txtPass: Phaser.GameObjects.Text
 	txtOpponentPass: Phaser.GameObjects.Text
 
-	txtRecapTotals: Phaser.GameObjects.Text
-
 	txtDeckSize: Phaser.GameObjects.Text
 	txtOpponentDeckSize: Phaser.GameObjects.Text
 	txtDiscardSize: Phaser.GameObjects.Text
 	txtOpponentDiscardSize: Phaser.GameObjects.Text
 	
-	btnRecap: Phaser.GameObjects.Text
+	btnRecap: Button
 	btnSkip: Button
 
 	// Information about the recap that is playing
@@ -123,7 +120,6 @@ export default class GameScene extends BaseScene {
 		this.mulliganContainer = this.add.container(0, 0).setVisible(true)
 
 		this.storyContainer = this.add.container(0, 0)
-		this.recapContainer = this.add.container(0, 0).setVisible(false)
 		this.stackContainer = this.add.container(0, 0)
 		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
 
@@ -249,29 +245,12 @@ export default class GameScene extends BaseScene {
 	    	'', StyleSettings.announcement).setOrigin(0.5, 0.5)
 	    this.storyContainer.add(this.txtScores)
 
-	    // Recap text and hidden text
-	    this.txtRecapTotals = this.add.text(
-	    	Space.scoresOffset, Space.windowHeight/2,
-	    	'', StyleSettings.announcement).setOrigin(0.5, 0.5)
-	    this.recapContainer.add(this.txtRecapTotals)
-
 	    // Recap button - click to watch the last recap
 	    this.btnRecap = new Button(this, 0, 0, 'Recap', this.doLastRecap()).setOrigin(1, 0.5)
 	    this.passContainer.add(this.btnRecap)
 
-	    let btnRecap = this.add.text(0, 0, 'Recap', StyleSettings.button).setOrigin(1, 0.5).setAlpha(0)
-
-	    this.passContainer.add(btnRecap)
-	    btnRecap.setInteractive()
-	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer, btnRecap), this)
-	    hoverExit = this.hoverAlternateViewExit(this.recapContainer, btnRecap)
-	    btnRecap.on('pointerout', hoverExit, this)
-	    this.input.on('gameout', hoverExit, this)
-	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
-	    this.btnRecap = btnRecap
-
 	    // Skip button - skip the recap once it is playing
-	    this.btnSkip = new Button(this, 0, 0, 'Skip', this.doSkip()).setOrigin(1, 0.5).setAlpha(0)
+	    this.btnSkip = new Button(this, 0, 0, 'Skip', this.doSkip()).setOrigin(1, 0.5)
 	    this.passContainer.add(this.btnSkip)
 
 	    // Error text, for when the user does something wrong they get an explanation
@@ -389,7 +368,7 @@ export default class GameScene extends BaseScene {
 	// If a recap of states is playing, wait to show the new state until after it has finished
 	recapPlaying: Boolean
 	// Display the given game state, returns false if the state isn't shown immediately
-	displayState(state: ClientState, recap: Boolean = false, skipTweens: Boolean = false): boolean {
+	displayState(state: ClientState, isRecap: boolean = false, skipTweens: Boolean = false): boolean {
 		let that = this
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 
@@ -402,7 +381,7 @@ export default class GameScene extends BaseScene {
 			return false
 		}
 		// If currently watching a recap, change the colors and display scores
-		else if (recap)
+		else if (isRecap)
 		{
 			this.animatePointGain(state)
 
@@ -450,7 +429,7 @@ export default class GameScene extends BaseScene {
 		}
 
 		// Display victory / defeat
-		if (!recap) {
+		if (!isRecap) {
 			this.displayWinLose(state)
 		}
 
@@ -463,11 +442,11 @@ export default class GameScene extends BaseScene {
 		this.passContainer.setVisible(!state.mulligansComplete.includes(false))
 
 		// Hands
-		this.displayHands(state, recap, isRoundStart)
+		this.displayHands(state, isRecap, isRoundStart)
 
 		// Story
 		let numActsCompleted = 0
-		if (recap) {
+		if (isRecap) {
 			numActsCompleted = state.recap.playList.length
 
 			// Show all of the acts that have already resolved
@@ -486,22 +465,14 @@ export default class GameScene extends BaseScene {
 			let card = this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
 
 			// If opponent just played this card, animate it being played
-			if (!recap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
+			if (!isRecap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
 				this.animateOpponentPlay(card.image)
 			}
 		}
 
 		// Recap
-		let playList = state.recap.playList
-		let x = 0
-		for (var i = 0; i < playList.length; i++) {
-			let owner = playList[i][1]
-
-			this.addCard(playList[i][0], i, this.recapContainer, owner)
-			x = this.addCardRecap(playList[i][2], i, owner).x + Space.cardSize
-		}
-		let s = this.getRecapTotalText(state.recap)
-		this.txtRecapTotals.setText(s)
+		this.btnRecap.setVisible(!isRecap && this.lastRecap.length > 0)
+		this.btnSkip.setVisible(isRecap)
 
 		// Deck, discard piles
 		for (var i = 0; i < state.deck.length; i++) {
@@ -527,7 +498,7 @@ export default class GameScene extends BaseScene {
 		this.stackContainer.bringToTop(this.txtOpponentDiscardSize)
 
 		// Priority (Not shown during recap or once game is over, theirs hidden during their mulligan)
-		if (recap || state.winner !== null) {
+		if (isRecap || state.winner !== null) {
 			this.priorityRectangle.setVisible(false)
 			this.txtYourTurn.setVisible(false)
 			this.txtTheirTurn.setVisible(false)
@@ -610,7 +581,7 @@ export default class GameScene extends BaseScene {
 		this.net.setVersionNumber(state.versionNumber)
 
 		// Autopass
-		if (!recap && state.hand.length === 0 && state.priority === 0) this.net.passTurn()
+		if (!isRecap && state.hand.length === 0 && state.priority === 0) this.net.passTurn()
 
 		// State was displayed
 		return true
@@ -1021,7 +992,6 @@ export default class GameScene extends BaseScene {
 				}
 				break
 
-			case this.recapContainer:
 			case this.storyContainer:
 				let filledSpace = index * (Space.cardSize - Space.stackOverlap)
 				x = Space.pad + Space.cardSize/2 + filledSpace
@@ -1057,48 +1027,6 @@ export default class GameScene extends BaseScene {
 		}
 
 	    return [x, y]
-  	}
-
-  	private addCardRecap(s: string, index: number, owner: number): Phaser.GameObjects.Text {
-  		let [x, y] = this.getCardPosition(index, this.recapContainer, owner)
-  		x -= Space.cardSize/2
-  		
-  		if (owner === 0) y += Space.cardSize/2 + Space.pad
-  		else y -= Space.cardSize/2 + Space.pad
-
-  		let txt = this.add.text(x, y, s, StyleSettings.small)
-  		if (owner === 0) txt.setOrigin(0, 0)
-  		else txt.setOrigin(0, 1)
-
-  		this.recapContainer.add(txt)
-
-  		this.temporaryObjs.push(txt)
-
-  		return txt
-  	}
-
-  	private getRecapTotalText(recap: Recap): string {
-  		let result = ''
-
-  		let p1Done = false;
-  		[1, 0].forEach( function(player) {
-  			result += `${recap.sums[player]}`
-
-  			if (recap.safety[player] > 0) {
-  				result += `[${recap.safety[player]}]`
-  			}
-
-  			for (var i = 0; i < recap.wins[player]; i++) {
-  				result += '*'
-  			}
-
-  			if (!p1Done) {
-  				result += '\n\n'
-  				p1Done = true
-  			}
-  		})
-
-  		return result
   	}
 
   	private clickCard(index: number, card: CardImage, state: ClientState): () => void  {
@@ -1168,15 +1096,13 @@ export default class GameScene extends BaseScene {
 		  		that.deckContainer,
 		  		that.discardContainer,
 		  		that.opponentDeckContainer,
-		  		that.opponentDiscardContainer,
-		  		that.recapContainer]
+		  		that.opponentDiscardContainer]
 
 	  		let highlightedObjects = [
 		  		that.txtDeckSize,
 		  		that.txtDiscardSize,
 		  		that.txtOpponentDeckSize,
-		  		that.txtOpponentDiscardSize,
-		  		that.btnRecap]
+		  		that.txtOpponentDiscardSize]
 
   			if (storyHiddenLock) {
       			that.sound.play('close')

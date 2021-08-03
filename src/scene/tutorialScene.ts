@@ -78,7 +78,8 @@ export class TutorialScene1 extends TutorialScene {
 		this.mulliganContainer.setVisible(false)
 		this.stackContainer.setVisible(false)
 
-		this.btnRecap.setVisible(false)
+		this.btnRecap.setAlpha(0)
+		this.btnSkip.setAlpha(0)
 	}
 
 	// Method called before exiting this scene
