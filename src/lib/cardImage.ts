@@ -146,11 +146,10 @@ export class CardImage {
     })
   }
 
-  // Remove the tint of this card being highlighted, and if you do, hide cardInfo
+  // Remove the highlight from this card
   removeHighlight(): void {
-    if (!this.unplayable && this.image.isTinted) {
-      this.image.clearTint()
-    }
+    var postFxPlugin = this.image.scene.plugins.get('rexOutlinePipeline')
+    postFxPlugin['remove'](this.image)
 
     cardInfo.setVisible(false)
   }
@@ -158,11 +157,20 @@ export class CardImage {
   private onHover(): () => void {
     let that = this
 
+    function doHighlight() {
+      var postFxPlugin = that.image.scene.plugins.get('rexOutlinePipeline')
+
+      postFxPlugin['remove'](that.image)
+      postFxPlugin['add'](that.image,
+        {thickness: Space.highlightWidth,
+          outlineColor: ColorSettings.cardHighlight})
+    }
+
     return function() {
       cardInfo.setVisible(true)
 
-      if (!that.unplayable && that.card !== cardback) {
-        that.image.setTint(ColorSettings.cardHighlight)
+      if (!that.unplayable) {
+        doHighlight()
       }
 
       cardInfo.text = that.card.getCardText()
@@ -170,7 +178,7 @@ export class CardImage {
       // Copy the position of the card in its local space
       let container = that.image.parentContainer;
       let x = that.image.x + container.x;
-      let y = that.image.y + container.y - Space.cardSize/2;
+      let y = that.image.y + container.y - Space.cardSize/2 - Space.highlightWidth * 2
 
       // Change alignment of text based on horizontal position on screen
       if (x <= cardInfo.width / 2) // Left
@@ -190,7 +198,7 @@ export class CardImage {
       if (y - cardInfo.height < 0)
       {
         // If it can fit below the card, put it there
-        let yIfBelow = y + Space.cardSize + cardInfo.height
+        let yIfBelow = y + Space.cardSize + cardInfo.height + Space.highlightWidth * 4
         if (yIfBelow < Space.windowHeight) {
           y = yIfBelow
         }
@@ -212,10 +220,6 @@ export class CardImage {
 
   private onScroll(): () => void {
     return function() {
-      if (!this.unplayable) {
-        this.image.clearTint()
-      }
-
       cardInfo.setVisible(false)
     }
   }

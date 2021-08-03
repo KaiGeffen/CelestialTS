@@ -13,6 +13,7 @@ import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plu
 import InputTextPlugin from 'phaser3-rex-plugins/plugins/inputtext-plugin.js'
 import BBCodeTextPlugin from 'phaser3-rex-plugins/plugins/bbcodetext-plugin.js'
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js'
+import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js'
 // import UIComponent from 'phaser3-rex-plugins/templates/ui/ui-components.js'
 
 
@@ -56,6 +57,11 @@ const config: Phaser.Types.Core.GameConfig = {
     {
       key: 'rexGlowFilterPipeline',
       plugin: GlowFilterPipelinePlugin,
+      start: true
+    },
+    {
+      key: 'rexOutlinePipeline',
+      plugin: OutlinePipelinePlugin,
       start: true
     },
     ]
