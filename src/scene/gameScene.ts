@@ -591,7 +591,7 @@ export default class GameScene extends BaseScene {
 	private onPass(): () => void {
 		let that = this
 		return function() {
-	    	if (!that.recapPlaying) {
+			if (that.testCanPlay(10, that.currentState)) {
 	    		that.net.passTurn()
 
 	    		// Animate the turn being passed, so that user has immediate feedback before server returns state
@@ -608,6 +608,7 @@ export default class GameScene extends BaseScene {
 		let that = this
 
 		return function() {
+			that.recapPlaying = true
 			that.queuedRecap = [...that.lastRecap]
 			that.queueState(that.currentState)
 		}
@@ -1030,39 +1031,18 @@ export default class GameScene extends BaseScene {
   	}
 
   	private clickCard(index: number, card: CardImage, state: ClientState): () => void  {
-
   		let that = this
+
   		return function() {
   			// Mulligan functionality
-  			// Toggle mulligan for the card
-  			if (!state.mulligansComplete[0]) {
-      			this.sound.play('click')
+			// Toggle mulligan for the card
+			if (!state.mulligansComplete[0]) {
+				this.sound.play('click')
 
-  				let highlight = that.mulliganHighlights[index]
-  				highlight.setVisible(!highlight.visible)
-  				return
-  			}
-
-  			// Non-mulligan, which can be in error for a variety of reasons
-  			// Game is over
-  			if (state.winner !== null) {
-  				that.signalError('The game is over')
-  			}
-  			// Opponent still mulliganing
-  			else if (!state.mulligansComplete[1]) {
-  				that.signalError('Opponent is still mulliganing')
-  			}
-  			else if (that.recapPlaying) {
-  				that.signalError('Recap is playing')
-  			}
-  			// Opponent's turn
-  			else if (state.priority === 1) {
-  				that.signalError("It's not your turn")
-  			}
-  			else if (card.unplayable) {
-  				that.signalError('Not enough mana')
-  			}
-  			else {
+				let highlight = that.mulliganHighlights[index]
+				highlight.setVisible(!highlight.visible)
+			}
+  			else if (that.testCanPlay(index, state, card)) {
   				// Animate the priority shifting to opponent
   				that.animatePriorityPass(0)
 
@@ -1086,6 +1066,33 @@ export default class GameScene extends BaseScene {
   				card.setDescribable(false)
   			}
   		}
+  	}
+
+  	// Test if the given play is valid in the given state, and display error if not
+  	private testCanPlay(index: number, state: ClientState, card?: CardImage): boolean {
+		// Game is over
+		if (state.winner !== null) {
+			this.signalError('The game is over')
+		}
+		// Opponent still mulliganing
+		else if (!state.mulligansComplete[1]) {
+			this.signalError('Opponent is still mulliganing')
+		}
+		else if (this.recapPlaying) {
+			this.signalError('Recap is playing')
+		}
+		// Opponent's turn
+		else if (state.priority === 1) {
+			this.signalError("It's not your turn")
+		}
+		else if (card !== undefined && card.unplayable) {
+			this.signalError('Not enough mana')
+		}
+		else {
+			return true
+		}
+
+		return false
   	}
 
   	// Disables the story hidden lock seen below

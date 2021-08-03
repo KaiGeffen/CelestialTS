@@ -160,9 +160,11 @@ class CatalogRegion {
             .setInteractive()
             .on('scroll', function(panel) {
               if (0 < panel.t && panel.t < 1) {
+                // TODO This isn't working, fix
                 for (var i = 0; i < that.cardImages.length; i++) {
                   that.cardImages[i].removeHighlight()
                 }
+                cardInfo.setVisible(false)
               }
             })
 
