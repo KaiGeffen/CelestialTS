@@ -31,7 +31,7 @@ class TutorialScene extends GameScene {
 			// Space.windowWidth/2, Space.windowHeight/2, 800, 200, 30, ColorSettings.menuBackground).setAlpha(0.95)
 	}
 
-	displayState(state: ClientState, recap: Boolean = false): boolean {
+	displayState(state: ClientState, recap: boolean = false): boolean {
 		let isDisplayed = super.displayState(state, recap)
 
 		// If this state isn't displayed, do nothing
@@ -69,7 +69,7 @@ export class TutorialScene1 extends TutorialScene {
 	init(params: any): void {
 		params['explanations'] = explanations1
 		super.init(params)
-	}
+	}f
 
 	create(): void {
 		super.create()
