@@ -668,11 +668,6 @@ export default class GameScene extends BaseScene {
 				cardImage.setPlayable(false)
 			}
 
-			// Play the card if it's clicked on (Even if unplayable, will signal error)
-			cardImage.image.on('pointerdown',
-				this.clickCard(i, cardImage, state),
-				this)
-
 			// TODO Add an animation for the camera on server side
 			// If the card is a Camera and this is the start of a round, animate it
 			if (isRoundStart && !recap && cardImage.card.name === 'Camera') {
@@ -680,12 +675,13 @@ export default class GameScene extends BaseScene {
 			}
 
 			myHand.push(cardImage)
-
-			// Add the cost for this card
-			// let [x, y] = this.getCardPosition(i, this.handContainer, 0)
-			// let txtCost = this.add.text(x, y, '3', StyleSettings.stack).setOrigin(0.5)
-			// txtCost.setDepth(this.handContainer.depth)
-			// this.temporaryObjs.push(txtCost)
+		}
+		// Add the callbacks for clicking each card, which animate later cards
+		for (var i = 0; i < state.hand.length; i++) {
+			// Play the card if it's clicked on (Even if unplayable, will signal error)
+			myHand[i].image.on('pointerdown',
+				this.clickCard(i, myHand[i], state, [...myHand]),
+				this)
 		}
 
 		// Add each card in opponent's hand
@@ -1030,7 +1026,7 @@ export default class GameScene extends BaseScene {
 	    return [x, y]
   	}
 
-  	private clickCard(index: number, card: CardImage, state: ClientState): () => void  {
+  	private clickCard(index: number, card: CardImage, state: ClientState, hand: CardImage[]): () => void  {
   		let that = this
 
   		return function() {
@@ -1055,16 +1051,38 @@ export default class GameScene extends BaseScene {
   					y: end[1],
   					duration: TimeSettings.recapTween,
   					ease: "Sine.easeInOut",
+  					// After brief delay, tell network, hide info, shift cards to fill its spot
   					onStart: function () {setTimeout(function() {
   						that.net.playCard(index)
+
   						cardInfo.setVisible(false)
+
+		  				// Fill in the hole where the card was
+		  				that.animateCardsFillHole(index, hand)
   					}, 10)}
   					})
 
   				// Make cardInfo invisible above (After brief delay) and remove description
   				// So that it won't linger after card has left
   				card.setDescribable(false)
+
   			}
+  		}
+  	}
+
+  	private animateCardsFillHole(index: number, hand: CardImage[]): void {
+  		let scene = hand[0].image.scene
+
+  		for (var i = index + 1; i < hand.length; i++) {
+  			console.log(hand)
+  			let cardImage = hand[i].image
+
+  			scene.tweens.add({
+  				targets: cardImage,
+  				x: cardImage.x - Space.cardSize - Space.pad,
+  				duration: TimeSettings.recapTween - 10,
+  				ease: "Sine.easeInOut"
+  			})
   		}
   	}
 
