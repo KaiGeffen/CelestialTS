@@ -1103,10 +1103,15 @@ export default class GameScene extends BaseScene {
   					y: end[1],
   					duration: TimeSettings.recapTween,
   					ease: "Sine.easeInOut",
-  					onStart: function () {setTimeout(function() { that.net.playCard(index) }, 10)}
+  					onStart: function () {setTimeout(function() {
+  						that.net.playCard(index)
+  						cardInfo.setVisible(false)
+  					}, 10)}
   					})
 
-  				// Card played onStart for tween
+  				// Make cardInfo invisible above (After brief delay) and remove description
+  				// So that it won't linger after card has left
+  				cardInfo.setDescribable(false)
   			}
   		}
   	}

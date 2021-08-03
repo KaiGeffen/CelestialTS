@@ -100,6 +100,17 @@ export class CardImage {
     }
   }
 
+  // Set whether this card is described or not
+  setDescribable(isDescribable: Boolean): void {
+    if (!isDescribable) {
+      this.image.removeInteractive()
+    }
+    else{
+      // TODO Enable if isDescribable is true
+      throw 'setDescribable(true) is not implemented for cardImage'
+    }
+  }
+
   setTransparent(value: Boolean): void {
     if (value) {
       this.image.setAlpha(0.2)
