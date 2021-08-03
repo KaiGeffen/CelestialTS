@@ -77,8 +77,12 @@ export default class GameScene extends BaseScene {
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates: { [key: number]: ClientState}
 
+	// State currently displayed, used to return to after replaying a recap
+	currentState: ClientState
+
 	// The recap that will be played, each state that the game passes through in resolving the story
 	queuedRecap: ClientState[]
+
 	// The last recap that was shown
 	lastRecap: ClientState[]
 
@@ -128,6 +132,7 @@ export default class GameScene extends BaseScene {
 		// Defined these arguments here, so that they don't carry over between instances of Game Scene
 		this.recapPlaying = false
 		this.queuedStates = {}
+		this.currentState = undefined
 		this.queuedRecap = []
 		this.lastRecap = []
 	}
@@ -319,11 +324,6 @@ export default class GameScene extends BaseScene {
 	update(time, delta): void {
 		// Prioritize showing the recap, if there is one
 		if (this.queuedRecap.length > 0) {
-			// Save this recap, all the way from its beginning
-			if (!this.recapPlaying) {
-				this.lastRecap = this.queuedRecap
-			}
-
 			let wasShown = this.displayState(this.queuedRecap[0], true)
 
 			if (wasShown) {
@@ -340,11 +340,17 @@ export default class GameScene extends BaseScene {
 		// Otherwise, show a non-recap state, as determined by its version number
 		let nextVersionNumber = this.net.versionNumber + 1
 
+		// When a recap replay finishes, return to the current state
+		if (this.currentState !== undefined) {
+			nextVersionNumber = Math.max(this.currentState.versionNumber, nextVersionNumber)
+		}
+
 		if (nextVersionNumber in this.queuedStates) {
 			let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber])
 
 			// If the state was just shown, delete it
 			if (isDisplayed) {
+				this.currentState = this.queuedStates[nextVersionNumber]
 				delete this.queuedStates[nextVersionNumber]
 			}
 		}
@@ -377,6 +383,7 @@ export default class GameScene extends BaseScene {
 	private queueRecap(stateList: ClientState[]): void {
 		this.recapPlaying = true
 		this.queuedRecap = stateList
+		this.lastRecap = [...stateList]
 	}
 
 	// If a recap of states is playing, wait to show the new state until after it has finished
@@ -630,7 +637,8 @@ export default class GameScene extends BaseScene {
 		let that = this
 
 		return function() {
-			that.queuedRecap = that.lastRecap
+			that.queuedRecap = [...that.lastRecap]
+			that.queueState(that.currentState)
 		}
 	}
 
