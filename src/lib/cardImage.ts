@@ -1,6 +1,6 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { ColorSettings, StyleSettings, UserSettings, BBConfig } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings, BBConfig, Space } from "../settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 
@@ -8,7 +8,7 @@ import { allCards } from "../catalog/catalog"
 export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBConfig)
+  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBConfig).setOrigin(0, 1)
 
   // Add image render information
   allCards.forEach( (card) => {
@@ -170,7 +170,7 @@ export class CardImage {
       // Copy the position of the card in its local space
       let container = that.image.parentContainer;
       let x = that.image.x + container.x;
-      let y = that.image.y + container.y;
+      let y = that.image.y + container.y - Space.cardSize/2;
 
       // Change alignment of text based on horizontal position on screen
       if (x <= cardInfo.width / 2) // Left
@@ -186,8 +186,19 @@ export class CardImage {
         x = x - cardInfo.width / 2;
       }
 
-      if (y + cardInfo.height > 650) {
-        y = 650 - cardInfo.height;
+      // Going over the top
+      if (y - cardInfo.height < 0)
+      {
+        // If it can fit below the card, put it there
+        let yIfBelow = y + Space.cardSize + cardInfo.height
+        if (yIfBelow < Space.windowHeight) {
+          y = yIfBelow
+        }
+        // Keep it within the top of the window
+        else
+        {
+          y = cardInfo.height
+        }
       }
       
       cardInfo.setX(x);
