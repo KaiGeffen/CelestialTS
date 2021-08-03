@@ -77,8 +77,10 @@ export default class GameScene extends BaseScene {
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates: { [key: number]: ClientState}
 
-	// The last recap, each state that the game passes through in resolving the story
+	// The recap that will be played, each state that the game passes through in resolving the story
 	queuedRecap: ClientState[]
+	// The last recap that was shown
+	lastRecap: ClientState[]
 
 
 	constructor(args = {key: "GameScene"}) {
@@ -127,6 +129,7 @@ export default class GameScene extends BaseScene {
 		this.recapPlaying = false
 		this.queuedStates = {}
 		this.queuedRecap = []
+		this.lastRecap = []
 	}
 
 	create(): void {
@@ -247,6 +250,10 @@ export default class GameScene extends BaseScene {
 	    	'', StyleSettings.announcement).setOrigin(0.5, 0.5)
 	    this.recapContainer.add(this.txtRecapTotals)
 
+	    // Recap button - click to watch the last recap
+	    this.btnRecap = new Button(this, 0, 0, 'Recap', this.doLastRecap()).setOrigin(1, 0.5)
+	    this.passContainer.add(this.btnRecap)
+
 	    let btnRecap = this.add.text(0, 0, 'Recap', StyleSettings.button).setOrigin(1, 0.5).setAlpha(0)
 
 	    this.passContainer.add(btnRecap)
@@ -259,7 +266,7 @@ export default class GameScene extends BaseScene {
 	    this.btnRecap = btnRecap
 
 	    // Skip button - skip the recap once it is playing
-	    this.btnSkip = new Button(this, 0, 0, 'Skip', this.doSkip()).setOrigin(1, 0.5)
+	    this.btnSkip = new Button(this, 0, 0, 'Skip', this.doSkip()).setOrigin(1, 0.5).setAlpha(0)
 	    this.passContainer.add(this.btnSkip)
 
 	    // Error text, for when the user does something wrong they get an explanation
@@ -312,6 +319,11 @@ export default class GameScene extends BaseScene {
 	update(time, delta): void {
 		// Prioritize showing the recap, if there is one
 		if (this.queuedRecap.length > 0) {
+			// Save this recap, all the way from its beginning
+			if (!this.recapPlaying) {
+				this.lastRecap = this.queuedRecap
+			}
+
 			let wasShown = this.displayState(this.queuedRecap[0], true)
 
 			if (wasShown) {
@@ -611,6 +623,15 @@ export default class GameScene extends BaseScene {
 				this.txtYourTurn.setVisible(false)
 	    	}
 	    }
+	}
+
+	// Watch the last recap
+	private doLastRecap(): () => void {
+		let that = this
+
+		return function() {
+			that.queuedRecap = that.lastRecap
+		}
 	}
 
 	// TODO Make more method names use 'do' instead of 'on'
@@ -1126,7 +1147,7 @@ export default class GameScene extends BaseScene {
 
   				// Make cardInfo invisible above (After brief delay) and remove description
   				// So that it won't linger after card has left
-  				cardInfo.setDescribable(false)
+  				card.setDescribable(false)
   			}
   		}
   	}
