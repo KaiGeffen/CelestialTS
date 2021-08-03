@@ -4,6 +4,8 @@ import { StyleSettings, ColorSettings, Space, UserSettings, TutorialBBConfig } f
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
+import Icon from "../lib/icon"
+import Menu from "../lib/menu"
 
 
 class TutorialScene extends GameScene {
@@ -55,6 +57,36 @@ class TutorialScene extends GameScene {
 
 		return true
 	}
+
+	// Display what the user sees when they win or lose
+	displayWinLose(state: ClientState): void {
+		if (state.winner === 0) {
+			let menu = new Menu(
+		      this,
+		      Space.windowWidth/2,
+		      Space.windowHeight/2,
+		      300,
+		      300,
+		      true,
+		      25)
+			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.onWin())
+		}
+		else if (state.winner === 1) {
+			let menu = new Menu(
+		      this,
+		      Space.windowWidth/2,
+		      Space.windowHeight/2,
+		      300,
+		      300,
+		      true,
+		      25)
+			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.onRetry())
+		}
+	}
+
+	// Implemented in specific tutorials below
+	onWin(): () => void {return function() {}}
+	onRetry(): () => void {return function() {}}
 }
 
 
@@ -69,7 +101,7 @@ export class TutorialScene1 extends TutorialScene {
 	init(params: any): void {
 		params['explanations'] = explanations1
 		super.init(params)
-	}f
+	}
 
 	create(): void {
 		super.create()
@@ -89,45 +121,40 @@ export class TutorialScene1 extends TutorialScene {
 		super.beforeExit()
 	}
 
-	// Display what the user sees when they win or lose
-	displayWinLose(state: ClientState): void {
-		if (state.winner === 0) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.onWin).setOrigin(0, 0.5)
-			btnResult.setStyle(StyleSettings.announcement)
-			
-			this.storyContainer.add(btnResult)
+	onWin(): () => void {
+		let that = this
+		return function() {
+			that.net.closeSocket()
+	  		
+	  		// If user just completed the Basics tutorial for the first time, signal that more tutorial content is now available
+	  		if (!UserSettings._get('completedTutorials').includes('Basics')) {
+	  			UserSettings._set('newTutorial', true)
+	  		}
+
+	  		// Add this tutorial (Basics) to the list of completed tutorials
+	  		UserSettings._push('completedTutorials', 'Basics')
+
+	  		that.scene.start("AnubisCatalogScene") 
 		}
-		else if (state.winner === 1) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to retry...", this.onRetry).setOrigin(0, 0.5)
-			btnResult.setStyle(StyleSettings.announcement)
-
-			this.storyContainer.add(btnResult)
-		}
-	}
-
-	onWin(): void {
-  		this.net.closeSocket()
-  		
-  		// If user just completed the Basics tutorial for the first time, signal that more tutorial content is now available
-  		if (!UserSettings._get('completedTutorials').includes('Basics')) {
-  			UserSettings._set('newTutorial', true)
-  		}
-
-  		// Add this tutorial (Basics) to the list of completed tutorials
-  		UserSettings._push('completedTutorials', 'Basics')
-
-  		this.scene.start("AnubisCatalogScene")  		
   	}
 
-  	private onRetry(): void {
-  		this.net.closeSocket()
-    	this.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
+  	onRetry(): () => void {
+  		let that = this
+
+  		return function() {
+  			that.net.closeSocket()
+    		that.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
+  		}
   	}
 
   	// NOTE This is called by btnCancel in GameScene
-	exitScene(): void {
-  		this.net.closeSocket()
-  		this.scene.start("WelcomeScene")
+	exitScene(): () => void {
+		let that = this
+
+		return function() {
+			that.net.closeSocket()
+  			that.scene.start("WelcomeScene")
+		}
   	}
 }
 
@@ -149,50 +176,40 @@ export class TutorialScene2 extends TutorialScene {
 		super.init(params)
 	}
 
-	// Display what the user sees when they win or lose
-	displayWinLose(state: ClientState): void {
-		if (state.winner === 0) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.onWin).setOrigin(0, 0.5)
-			btnResult.setStyle(StyleSettings.announcement)
-			
-			this.storyContainer.add(btnResult)
+	onWin(): () => void {
+		let that = this
+		return function() {
+			that.net.closeSocket()
+
+	  		// Only show tutorial complete message the first time player beats Anubis
+	  		let showTutorialCompleteMsg = that.tutorialName === 'Anubis' && !UserSettings._get('completedTutorials').includes('Anubis')
+
+	  		// Check if the user has already unlocked the expansion tutorials
+			let completed = UserSettings._get('completedTutorials')
+			let expansionWasUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
+
+	  		// Add this tutorial to the list of completed tutorials
+	  		UserSettings._push('completedTutorials', that.tutorialName)
+
+	  		// Check if the user has now unlocked the expansion tutorials
+	  		let completedNow = UserSettings._get('completedTutorials')
+	  		let expansionIsNowUnlocked = completedNow.includes('Anubis') && completedNow.includes('Robots') && completedNow.includes('Stalker')
+
+	  		// If the expansion just got unlocked, tutorial should show 'new' glow
+	  		if (!expansionWasUnlocked && expansionIsNowUnlocked) {
+	  			UserSettings._set('newTutorial', true)
+	  		}
+	  		
+	  		that.scene.start("WelcomeScene", {tutorialComplete: showTutorialCompleteMsg})
 		}
-		else if (state.winner === 1) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to retry...", this.onRetry).setOrigin(0, 0.5)
-			btnResult.setStyle(StyleSettings.announcement)
-
-			this.storyContainer.add(btnResult)
-		}
-	}
-
-	private onWin(): void {
-  		this.net.closeSocket()
-
-  		// Only show tutorial complete message the first time player beats Anubis
-  		let showTutorialCompleteMsg = this.tutorialName === 'Anubis' && !UserSettings._get('completedTutorials').includes('Anubis')
-
-  		// Check if the user has already unlocked the expansion tutorials
-		let completed = UserSettings._get('completedTutorials')
-		let expansionWasUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
-
-  		// Add this tutorial to the list of completed tutorials
-  		UserSettings._push('completedTutorials', this.tutorialName)
-
-  		// Check if the user has now unlocked the expansion tutorials
-  		let completedNow = UserSettings._get('completedTutorials')
-  		let expansionIsNowUnlocked = completedNow.includes('Anubis') && completedNow.includes('Robots') && completedNow.includes('Stalker')
-
-  		// If the expansion just got unlocked, tutorial should show 'new' glow
-  		if (!expansionWasUnlocked && expansionIsNowUnlocked) {
-  			UserSettings._set('newTutorial', true)
-  		}
-  		
-  		this.scene.start("WelcomeScene", {tutorialComplete: showTutorialCompleteMsg})
   	}
 
-  	private onRetry(): void {
-  		this.net.closeSocket()
-  		this.scene.start("BuilderScene")
+  	onRetry(): () => void {
+  		let that = this
+  		return function() {
+  			that.net.closeSocket()
+  			that.scene.start("BuilderScene")
+  		}
   	}
 }
 

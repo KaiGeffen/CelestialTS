@@ -10,6 +10,8 @@ import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib
 import { ColorSettings, StyleSettings, UserSettings, TimeSettings, Space } from "../settings"
 import Recap from '../lib/recap'
 import Button from '../lib/button'
+import Icon from '../lib/icon'
+import Menu from '../lib/menu'
 import { Animation } from '../lib/animation'
 
 
@@ -341,7 +343,7 @@ export default class GameScene extends BaseScene {
 			let searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.background).setOrigin(0, 0)
 			let txtSearching = this.add.text(1100/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
-			let btnExit = new Button(this, Space.windowWidth/2, 400, "Cancel", this.exitScene).setOrigin(0.5, 0.5)
+			let btnExit = new Button(this, Space.windowWidth/2, 400, "Cancel", this.exitScene()).setOrigin(0.5, 0.5)
 
 			this.temporaryObjs.push(searchingBackground, txtSearching, btnExit)
 		}
@@ -645,7 +647,7 @@ export default class GameScene extends BaseScene {
 	// Alert user that their opponent left
 	signalDC(): void {
 		let txt = 'Your opponent disconnected, you win!'
-		let btn = new Button(this, Space.windowWidth/2, Space.windowHeight/2, txt, this.exitScene)
+		let btn = new Button(this, Space.windowWidth/2, Space.windowHeight/2, txt, this.exitScene())
 			.setOrigin(0.5)
 			.setStyle(StyleSettings.announcement)
 
@@ -884,16 +886,26 @@ export default class GameScene extends BaseScene {
 	// Tell player that they won or lost, public so that Tutorial can overwrite
 	displayWinLose(state: ClientState): void {
 		if (state.winner === 0) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You won!\n\nClick here to continue...", this.exitScene).setOrigin(0, 0.5)
-			btnResult.setStyle(StyleSettings.announcement)
-			
-			this.storyContainer.add(btnResult)
+			let menu = new Menu(
+		      this,
+		      Space.windowWidth/2,
+		      Space.windowHeight/2,
+		      300,
+		      300,
+		      true,
+		      25)
+			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.exitScene())
 		}
 		else if (state.winner === 1) {
-			let btnResult = new Button(this, Space.pad, Space.windowHeight/2, "You lost!\n\nClick here to continue...", this.exitScene).setOrigin(0, 0.5)
-			btnResult.setStyle(StyleSettings.announcement)
-
-			this.storyContainer.add(btnResult)
+			let menu = new Menu(
+		      this,
+		      Space.windowWidth/2,
+		      Space.windowHeight/2,
+		      300,
+		      300,
+		      true,
+		      25)
+			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.exitScene())
 		}
 	}
 	
@@ -1234,8 +1246,11 @@ export default class GameScene extends BaseScene {
   	}
 
   	// NOTE Overwritten by Tutorial Scene
-  	exitScene(): void {
-  		this.net.closeSocket()
-  		this.scene.start("BuilderScene")
+  	exitScene(): () => void {
+  		let that = this
+  		return function() {
+  			that.net.closeSocket()
+  			that.scene.start("BuilderScene")
+  		}
   	}
 }
