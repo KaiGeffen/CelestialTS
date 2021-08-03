@@ -13,8 +13,6 @@ import Button from '../lib/button'
 import { Animation } from '../lib/animation'
 
 
-const RECAP_TIME = 1000
-
 var storyHiddenLock: boolean = false
 
 export default class GameScene extends BaseScene {
@@ -66,7 +64,9 @@ export default class GameScene extends BaseScene {
 	txtOpponentDeckSize: Phaser.GameObjects.Text
 	txtDiscardSize: Phaser.GameObjects.Text
 	txtOpponentDiscardSize: Phaser.GameObjects.Text
+	
 	btnRecap: Phaser.GameObjects.Text
+	btnSkip: Button
 
 	// Information about the recap that is playing
 	txtScores: Phaser.GameObjects.Text
@@ -247,7 +247,8 @@ export default class GameScene extends BaseScene {
 	    	'', StyleSettings.announcement).setOrigin(0.5, 0.5)
 	    this.recapContainer.add(this.txtRecapTotals)
 
-	    let btnRecap = this.add.text(0, 0, 'Recap', StyleSettings.button).setOrigin(1, 0.5)
+	    let btnRecap = this.add.text(0, 0, 'Recap', StyleSettings.button).setOrigin(1, 0.5).setAlpha(0)
+
 	    this.passContainer.add(btnRecap)
 	    btnRecap.setInteractive()
 	    btnRecap.on('pointerover', this.hoverAlternateView(this.recapContainer, btnRecap), this)
@@ -256,6 +257,10 @@ export default class GameScene extends BaseScene {
 	    this.input.on('gameout', hoverExit, this)
 	    btnRecap.on('pointerdown', this.clickAlternateView(), this)
 	    this.btnRecap = btnRecap
+
+	    // Skip button - skip the recap once it is playing
+	    this.btnSkip = new Button(this, 0, 0, 'Skip', this.doSkip()).setOrigin(1, 0.5)
+	    this.passContainer.add(this.btnSkip)
 
 	    // Error text, for when the user does something wrong they get an explanation
 		this.txtError = this.add.text(500, 650/2, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
@@ -606,6 +611,16 @@ export default class GameScene extends BaseScene {
 				this.txtYourTurn.setVisible(false)
 	    	}
 	    }
+	}
+
+	// TODO Make more method names use 'do' instead of 'on'
+	private doSkip(): () => void {
+		let that = this
+
+		return function() {
+			that.queuedRecap = []
+			that.recapPlaying = false
+		}
 	}
 
 	// Alert the user that they have taken an illegal or impossible action
