@@ -270,43 +270,6 @@ class CatalogRegion {
 
     return [x, y]
   }
-
-  private goNextPage(): () => void {
-    let that = this
-    return function() {
-      let numVisibleCards = that.cardImages.filter(function(cardImage) {
-        return cardImage.image.visible
-      }).length
-
-      if (numVisibleCards > (that.currentPage + 1) * Space.cardsPerPage) {
-        that.scene.sound.play('click')
-
-        that.goToPage(that.currentPage + 1)
-      }
-      else {
-        that.scene.sound.play('failure')
-      }
-    }
-  }
-
-  private goPrevPage(): () => void {
-    let that = this
-    return function() {
-      if (that.currentPage > 0) {
-        that.scene.sound.play('click')
-
-        that.goToPage(that.currentPage - 1)
-      }
-      else {
-        that.scene.sound.play('failure')
-      }
-    }
-  }
-
-  private goToPage(pageNum: number): void {
-    this.cardContainer.x = -(pageNum * Space.pageOffset)
-    this.currentPage = pageNum
-  }
 }
 
 
