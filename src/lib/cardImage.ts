@@ -147,11 +147,16 @@ export class CardImage {
   }
 
   // Remove the highlight from this card
-  removeHighlight(): void {
+  removeHighlight(): () => void {
+    let that = this
     var postFxPlugin = this.image.scene.plugins.get('rexOutlinePipeline')
-    postFxPlugin['remove'](this.image)
 
-    cardInfo.setVisible(false)
+    return function() {
+      postFxPlugin['remove'](that.image)
+
+      cardInfo.setVisible(false)
+    }
+    
   }
 
   private onHover(): () => void {
@@ -215,7 +220,7 @@ export class CardImage {
   }
 
   private onHoverExit(): () => void {
-    return this.removeHighlight
+    return this.removeHighlight()
   }
 
   private onScroll(): () => void {
