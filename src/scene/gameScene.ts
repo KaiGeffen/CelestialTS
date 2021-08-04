@@ -376,10 +376,8 @@ export default class GameScene extends BaseScene {
 	// Display the given game state, returns false if the state isn't shown immediately
 	displayState(state: ClientState, isRecap: boolean = false, skipTweens: Boolean = false): boolean {
 		let that = this
+		
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
-
-		// NOTE The reason to round (~10) here is because onFinish will call this when animations very nearly complete
-		// let anyTweenPlaying = !this.tweens.getAllTweens().every(function (tween) {return tween.totalDuration - tween.totalElapsed <= 100})
 		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
 
 		// If any tweens are not almost done, queue and wait for them to finish

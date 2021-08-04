@@ -73,7 +73,7 @@ class TutorialScene extends GameScene {
 
 			// Replace the pass button with an exit button
 			this.btnPass.setVisible(false)
-			this.btnExit.setVisible(true).glow()
+			this.btnExit.setVisible(true)
 			// Remove the ordinary exit events
 			this.btnExit.removeAllListeners('pointerdown')
 		}
