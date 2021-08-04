@@ -60,8 +60,9 @@ class TutorialScene extends GameScene {
 
 	// Display what the user sees when they win or lose
 	displayWinLose(state: ClientState): void {
-		if (state.winner === 0) {
-			let menu = new Menu(
+		let menu
+		if (state.winner !== null) {
+			menu = new Menu(
 		      this,
 		      Space.windowWidth/2,
 		      Space.windowHeight/2,
@@ -69,18 +70,21 @@ class TutorialScene extends GameScene {
 		      300,
 		      true,
 		      25)
+
+			// Replace the pass button with an exit button
+			this.btnPass.setVisible(false)
+			this.btnExit.setVisible(true).glow()
+			// Remove the ordinary exit events
+			this.btnExit.removeAllListeners('pointerdown')
+		}
+		if (state.winner === 0) {
 			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.onWin())
+			this.btnExit.setOnClick(this.onWin())
 		}
 		else if (state.winner === 1) {
-			let menu = new Menu(
-		      this,
-		      Space.windowWidth/2,
-		      Space.windowHeight/2,
-		      300,
-		      300,
-		      true,
-		      25)
 			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.onRetry())
+			this.btnExit.text = 'Retry'
+			this.btnExit.setOnClick(this.onRetry())
 		}
 	}
 
@@ -170,7 +174,6 @@ export class TutorialScene2 extends TutorialScene {
 	}
 
 	init(params: any): void {
-		console.log(params)
 		params['explanations'] = explanations2
 		this.tutorialName = params['tutorialName']
 		super.init(params)

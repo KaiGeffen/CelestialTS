@@ -27,6 +27,8 @@ export default class GameScene extends BaseScene {
 	txtOpponentMulligan: Phaser.GameObjects.Text
 
 	btnPass: Button
+	// Replaces the pass button after the game has ended
+	btnExit: Button
 	
 	handContainer: Phaser.GameObjects.Container
 	opponentHandContainer: Phaser.GameObjects.Container
@@ -160,6 +162,8 @@ export default class GameScene extends BaseScene {
 		// Pass button
     	this.btnPass = new Button(this, 0, 80, 'Pass', this.onPass()).setOrigin(1, 0.5)
     	this.passContainer.add(this.btnPass)
+    	this.btnExit = new Button(this, 0, 80, 'Exit', this.exitScene()).setOrigin(1, 0.5).setVisible(false)
+    	this.passContainer.add(this.btnExit)
 
 	    // Mana text
 	    this.txtMana = this.add.text(1100 - Space.pad,
@@ -646,6 +650,7 @@ export default class GameScene extends BaseScene {
 
 	// Alert user that their opponent left
 	signalDC(): void {
+		// TODO Replace this with menu impl
 		let txt = 'Your opponent disconnected, you win!'
 		let btn = new Button(this, Space.windowWidth/2, Space.windowHeight/2, txt, this.exitScene())
 			.setOrigin(0.5)
@@ -885,8 +890,9 @@ export default class GameScene extends BaseScene {
 
 	// Tell player that they won or lost, public so that Tutorial can overwrite
 	displayWinLose(state: ClientState): void {
-		if (state.winner === 0) {
-			let menu = new Menu(
+		let menu
+		if (state.winner !== null) {
+			menu = new Menu(
 		      this,
 		      Space.windowWidth/2,
 		      Space.windowHeight/2,
@@ -894,17 +900,16 @@ export default class GameScene extends BaseScene {
 		      300,
 		      true,
 		      25)
+
+			// Replace the pass button with an exit button
+			this.btnPass.setVisible(false)
+			this.btnExit.setVisible(true)
+		}
+		if (state.winner === 0) {
 			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.exitScene())
+
 		}
 		else if (state.winner === 1) {
-			let menu = new Menu(
-		      this,
-		      Space.windowWidth/2,
-		      Space.windowHeight/2,
-		      300,
-		      300,
-		      true,
-		      25)
 			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.exitScene())
 		}
 	}
@@ -1086,7 +1091,6 @@ export default class GameScene extends BaseScene {
   		let scene = hand[0].image.scene
 
   		for (var i = index + 1; i < hand.length; i++) {
-  			console.log(hand)
   			let cardImage = hand[i].image
 
   			scene.tweens.add({
