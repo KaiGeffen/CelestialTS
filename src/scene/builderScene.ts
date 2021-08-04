@@ -8,6 +8,7 @@ import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
+import PrebuiltDeck from "../catalog/prebuiltDecks"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
@@ -788,8 +789,8 @@ class MenuRegion {
   create(filterRegion: any, deckRegion: any): void {
     let that = this
 
-    let width = Space.cardSize * 5 + Space.pad * 4
-    let height = Space.cardSize * 3 + Space.pad * 2
+    let width = Space.iconSeparation * 3
+    let height = 640
 
     let menu = new Menu(
       this.scene,
@@ -800,8 +801,33 @@ class MenuRegion {
       false,
       20)
 
-    // Use expansion toggleable button
+    // Prebuilt decks
     let y = Space.pad/2 - height/2
+    y += Space.iconSeparation/2 + Space.pad
+
+    let x = -width/2 + Space.iconSeparation/2
+    let i = 0
+    for (const name in PrebuiltDeck.getAll()) {
+      // Create the icon
+      new Icon(this.scene, menu, x, y, name, function() {
+        // Set the built deck to this prebuilt deck
+        that.deckRegion.setDeck(PrebuiltDeck.get(name))
+
+        // Update the textbox
+        that.textBoxDeckCode.text = that.getDeckCode()
+      })
+
+      // Move to the next row after 3 icons
+      x += Space.iconSeparation
+      if (++i >= 3) {
+        i = 0
+        x = -width/2 + Space.iconSeparation/2
+        y += Space.iconSeparation
+      }
+    }
+
+    // Use expansion toggleable button
+    y -= Space.iconSeparation - Space.cardSize/2 - Space.pad
     let txtUseExpansion = this.scene.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
 
     let radioExpansion = this.scene.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
@@ -826,8 +852,9 @@ class MenuRegion {
       deckRegion.showCardsLegality()
     })
 
+
     // Text field for the deck-code
-    y += Space.cardSize*3/4
+    y += Space.cardSize * 3/4
     let txtDeckCode = this.scene.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
 
     y += Space.pad + Space.cardSize/2

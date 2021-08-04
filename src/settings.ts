@@ -67,7 +67,8 @@ export const Space = {
   scoresOffset: 800 + 50,
   pageOffset: 1200,
   stackX: 800,
-  highlightWidth: 5
+  highlightWidth: 5,
+  iconSeparation: 180
 }
 
 export const ColorSettings: Record<string, any> = {

@@ -165,7 +165,7 @@ class TutorialRegion {
     // Height of the label
     let yLbl = Space.cardSize / 2
 
-    let xDelta = (Space.cardSize + Space.pad) * 3/2
+    let xDelta = Space.iconSeparation
     let yDelta = Space.cardSize + Space.pad + yLbl
     let x = Space.cardSize + Space.pad/2
     let y = Space.cardSize * 3/2 + Space.pad * 2

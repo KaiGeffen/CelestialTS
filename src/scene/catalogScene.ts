@@ -6,6 +6,7 @@ import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
 import { CardImage } from "../lib/cardImage"
 import { decodeDeck } from "../lib/codec"
 import Button from "../lib/button"
+import prebuiltDecks from "../catalog/prebuiltDecks"
 
 
 class CatalogScene extends BaseScene {
@@ -117,7 +118,7 @@ class CatalogScene extends BaseScene {
 
 export class AnubisCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™3™6™12™14™17™20™21")
-	defaultDeck: string = "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"
+	defaultDeck: string = prebuiltDecks.get('Anubis')
 	name = "Anubis"
 	deckDescription: string = 
 `wins early rounds with Crossed Bones,
@@ -133,7 +134,7 @@ to put him back on top of the deck to wrap up the match.`
 
 export class RobotsCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™2™3™8™12™10™15™22")
-	defaultDeck: string = "22:22:15:10:12:12:8:8:3:3:2:2:2:2:0"
+	defaultDeck: string = prebuiltDecks.get('Robots')
 	name = "Robots"
 	deckDescription: string = 
 `spends early rounds building large robots.
@@ -149,7 +150,7 @@ a powerful final state of playing cheap AI for points and card draw.`
 
 export class StalkerCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("1™12™11™13™16™19™20™23")
-	defaultDeck: string = "23:20:19:19:19:19:13:11:12:1:1:1:1:1:1"
+	defaultDeck: string = prebuiltDecks.get('Stalker')
 	name = "Stalker"
 	deckDescription: string = 
 `attacks the opponent's hand with multiple
@@ -165,7 +166,7 @@ It ends with strong and consistent high-cost cards like Oak.`
 
 export class CryptCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™1™35™36™12™15™19™20")
-	defaultDeck: string = "20:19:19:19:15:12:12:36:36:36:35:1:1:1:0"
+	defaultDeck: string = prebuiltDecks.get('Robots')
 	name = "Crypt"
 	deckDescription: string = 
 `attacks your opponent's hand in the early
@@ -181,7 +182,7 @@ Imprison in the late game to control and overwhelm your opponent.`
 
 export class BastetCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™28™25™3™33™34™11™23")
-	defaultDeck: string = "11:11:11:11:34:34:34:33:33:33:3:3:28:28:0"
+	defaultDeck: string = prebuiltDecks.get('Bastet')
 	name = "Bastet"
 	deckDescription: string = 
 `survives the early game, trading rounds
@@ -197,7 +198,7 @@ the strongest Bastet often using Raise Dead and the shuffle.`
 
 export class HorusCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("27™28™31™32™39™11™13™45")
-	defaultDeck: string = "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"
+	defaultDeck: string = prebuiltDecks.get('Horus')
 	name = "Horus"
 	deckDescription: string = 
 `only occasionally wins rounds in the early
