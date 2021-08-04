@@ -5,6 +5,7 @@ import Button from "../lib/button"
 
 
 var music: Phaser.Sound.BaseSound
+// var escClosesMenu: boolean
 
 export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
@@ -12,6 +13,13 @@ export default class BaseScene extends Phaser.Scene {
 
 	constructor(args) {
 		super(args)
+	}
+
+	// Called at the beginning of children's create methods
+	precreate(): void {
+		// Remove any lingering esc event listeners for menus
+		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+		esc.removeListener('down')
 	}
 
 	create(): void {
@@ -34,9 +42,13 @@ export default class BaseScene extends Phaser.Scene {
 		let btnMute = new Button(this, Space.windowWidth - Space.pad/2, 0, s).setOrigin(1, 0)
 		btnMute.setOnClick(this.doMute(btnMute))
 
-		// Exit button
-		let btnExit = new Button(this, Space.windowWidth - Space.pad/2, 50, '⚙', this.confirmExit).setOrigin(1, 0)
+		// Menu button
+		let btnExit = new Button(this, Space.windowWidth - Space.pad/2, 50, '⚙', this.openMenu).setOrigin(1, 0)
 
+		// When esc key if pressed, toggle the menu open/closed
+		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+		esc.on('down', this.toggleMenu, this)
+		
 		this.createMenu()
 	}
 
@@ -223,14 +235,30 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 
 	// Overwritten by the scenes that extend this
 	beforeExit(): void {
-		return
+		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+		esc.removeAllListeners()
 	}
 
-	private confirmExit(): void {
+	private toggleMenu(): void {
+		if (this.confirmationContainer.visible) {
+			this.closeMenu()
+		} else {
+			this.openMenu()
+		}
+	}
+
+	private openMenu(): void {
       	this.sound.play('open')
 
 		this.confirmationContainer.setVisible(true)
 		this.sliderVolume.setVisible(true)
+	}
+
+	private closeMenu(): void {
+		this.sound.play('close')
+
+		this.confirmationContainer.setVisible(false)
+		this.sliderVolume.setVisible(false)
 	}
 
 	private doExit(): void {

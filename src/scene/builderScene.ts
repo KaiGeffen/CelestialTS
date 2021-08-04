@@ -66,6 +66,8 @@ export default class BuilderScene extends BaseScene {
   }
 
   create(): void {
+    super.precreate()
+    
     this.catalogRegion.create(this.isTutorial)
     this.deckRegion.create(this.isTutorial)
 
@@ -683,13 +685,14 @@ class FilterRegion {
     this.container.add(btnSearch)
 
     // Listen for esc key, and close search field if seen
-    let esc = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-    esc.on('down', function () {
-      that.scene.sound.play('close')
+    // TODO Add an exit condition for the search
+    // let esc = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+    // esc.on('down', function () {
+    //   that.scene.sound.play('close')
 
-      textboxSearch.setVisible(false)
-      invisBackground.setVisible(false)
-    })
+    //   textboxSearch.setVisible(false)
+    //   invisBackground.setVisible(false)
+    // })
   }
 
   // Filter the visible cards, based on if expansion is used, and the cost settings of this region

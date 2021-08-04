@@ -23,6 +23,8 @@ export default class WelcomeScene extends BaseScene {
   }
 
   create(): void {
+    super.precreate()
+    
     // Region for tutorial options
     this.tutorialRegion.create()
 

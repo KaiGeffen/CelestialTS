@@ -138,6 +138,8 @@ export default class GameScene extends BaseScene {
 	}
 
 	create(): void {
+		super.precreate()
+    
 		let that = this
 
 		// Middle line, below everything

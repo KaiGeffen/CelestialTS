@@ -6,6 +6,10 @@ export default class Menu {
 	container: Phaser.GameObjects.Container
 
 	constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, visible: boolean = true, depth: number = 0) {
+		// Esc key closes all menus
+		let esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+		esc.on('down', () => this.container.setVisible(false))
+
 		// Create a container for this menu
 		this.container = scene.add.container(x, y).setVisible(visible).setDepth(depth)
 
