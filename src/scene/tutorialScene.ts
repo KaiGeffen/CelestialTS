@@ -192,16 +192,15 @@ export class TutorialScene2 extends TutorialScene {
 
 		MessageManager.addUnreadMessage('tutorialComplete')
 
-  		// Check if the user has already unlocked the expansion tutorials
-		let completed = UserSettings._get('completedTutorials')
-		let expansionWasUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
-
   		// Add this tutorial to the list of completed tutorials
   		UserSettings._push('completedTutorials', this.tutorialName)
 
-  		// Check if the user has now unlocked the expansion tutorials
-  		let completedNow = UserSettings._get('completedTutorials')
-  		let expansionIsNowUnlocked = completedNow.includes('Anubis') && completedNow.includes('Robots') && completedNow.includes('Stalker')
+  		// If all the core challenges have been completed, expansion is unlocked
+		let completed = UserSettings._get('completedTutorials')
+		let expansionUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
+		if (expansionUnlocked) {
+			MessageManager.addUnreadMessage('coreChallengesComplete')
+		}
   	}
 
   	onWinExit(): () => void {

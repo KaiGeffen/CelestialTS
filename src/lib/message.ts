@@ -54,5 +54,10 @@ const allMsgs = {
 `You completed the tutorial. All of the cards in the
 base set are now available to you!
 
-Click start to check them out.`
+Click start to check them out.`,
+	coreChallengesComplete:
+`You completed all the core set challenges. More
+advanced challenges are now available!
+
+The expansion can be enabled from the deck menu.`
 }
