@@ -6,6 +6,7 @@ import { setSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
+import MessageManager from "../lib/message"
 
 
 class TutorialScene extends GameScene {
@@ -78,8 +79,12 @@ class TutorialScene extends GameScene {
 			this.btnExit.removeAllListeners('pointerdown')
 		}
 		if (state.winner === 0) {
-			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.onWin())
-			this.btnExit.setOnClick(this.onWin())
+			// Do everything that happens when you complete this tutorial
+			this.onWin()
+
+			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.onWinExit())
+
+			this.btnExit.setOnClick(this.onWinExit())
 		}
 		else if (state.winner === 1) {
 			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.onRetry())
@@ -89,7 +94,8 @@ class TutorialScene extends GameScene {
 	}
 
 	// Implemented in specific tutorials below
-	onWin(): () => void {return function() {}}
+	onWin(): void {}
+	onWinExit(): () => void {return function() {}}
 	onRetry(): () => void {return function() {}}
 }
 
@@ -125,21 +131,23 @@ export class TutorialScene1 extends TutorialScene {
 		super.beforeExit()
 	}
 
-	onWin(): () => void {
-		let that = this
-		return function() {
-			that.net.closeSocket()
-	  		
-	  		// If user just completed the Basics tutorial for the first time, signal that more tutorial content is now available
-	  		if (!UserSettings._get('completedTutorials').includes('Basics')) {
-	  			UserSettings._set('newTutorial', true)
-	  		}
+	onWin(): void {
+		this.net.closeSocket()
+  		
+  		// If user just completed the Basics tutorial for the first time, signal that more tutorial content is now available
+  		if (!UserSettings._get('completedTutorials').includes('Basics')) {
+  			UserSettings._set('newTutorial', true)
+  		}
 
-	  		// Add this tutorial (Basics) to the list of completed tutorials
-	  		UserSettings._push('completedTutorials', 'Basics')
+  		// Add this tutorial (Basics) to the list of completed tutorials
+  		UserSettings._push('completedTutorials', 'Basics')
+  	}
 
+  	onWinExit(): () => void {
+  		let that = this
+  		return function() {
 	  		that.scene.start("AnubisCatalogScene") 
-		}
+  		}
   	}
 
   	onRetry(): () => void {
@@ -179,32 +187,28 @@ export class TutorialScene2 extends TutorialScene {
 		super.init(params)
 	}
 
-	onWin(): () => void {
-		let that = this
-		return function() {
-			that.net.closeSocket()
+  	onWin(): void {
+  		this.net.closeSocket()
 
-	  		// Only show tutorial complete message the first time player beats Anubis
-	  		let showTutorialCompleteMsg = that.tutorialName === 'Anubis' && !UserSettings._get('completedTutorials').includes('Anubis')
+		MessageManager.addUnreadMessage('tutorialComplete')
 
-	  		// Check if the user has already unlocked the expansion tutorials
-			let completed = UserSettings._get('completedTutorials')
-			let expansionWasUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
+  		// Check if the user has already unlocked the expansion tutorials
+		let completed = UserSettings._get('completedTutorials')
+		let expansionWasUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
 
-	  		// Add this tutorial to the list of completed tutorials
-	  		UserSettings._push('completedTutorials', that.tutorialName)
+  		// Add this tutorial to the list of completed tutorials
+  		UserSettings._push('completedTutorials', this.tutorialName)
 
-	  		// Check if the user has now unlocked the expansion tutorials
-	  		let completedNow = UserSettings._get('completedTutorials')
-	  		let expansionIsNowUnlocked = completedNow.includes('Anubis') && completedNow.includes('Robots') && completedNow.includes('Stalker')
+  		// Check if the user has now unlocked the expansion tutorials
+  		let completedNow = UserSettings._get('completedTutorials')
+  		let expansionIsNowUnlocked = completedNow.includes('Anubis') && completedNow.includes('Robots') && completedNow.includes('Stalker')
+  	}
 
-	  		// If the expansion just got unlocked, tutorial should show 'new' glow
-	  		if (!expansionWasUnlocked && expansionIsNowUnlocked) {
-	  			UserSettings._set('newTutorial', true)
-	  		}
-	  		
-	  		that.scene.start("WelcomeScene", {tutorialComplete: showTutorialCompleteMsg})
-		}
+  	onWinExit(): () => void {
+  		let that = this
+  		return function() {
+	  		that.scene.start("WelcomeScene")
+  		}
   	}
 
   	onRetry(): () => void {

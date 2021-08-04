@@ -12,7 +12,6 @@ export class UserSettings {
     // if (!this.values.includes(s)) {
     //   new Error()
     // }
-
     return JSON.parse(localStorage.getItem(s))
   }
 
@@ -41,6 +40,7 @@ export function ensureUserSettings(): void {
     completedTutorials: [],
     newDiscord: true, // Discord has a new indicator until clicked
     newTutorial: true, // Tutorial has new indicator when new tutorials are unlocked
+    messages: [], // A list of the Messages that user has which are read/unread
   }
 
   for (var key in defaultSettings) {

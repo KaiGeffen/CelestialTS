@@ -6,13 +6,7 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
-
-
-const TUTORIAL_COMPLETE_MSG =
-`You completed the tutorial. All of the cards in the
-base set are now available to you!
-
-Click start to check them out.`
+import MessageManager from "../lib/message"
 
 
 export default class WelcomeScene extends BaseScene {
@@ -24,11 +18,11 @@ export default class WelcomeScene extends BaseScene {
     })
   }
 
-  init(params: any): void {
+  init(): void {
     this.tutorialRegion = new TutorialRegion(this)
   }
 
-  create(params?: any): void {
+  create(): void {
     // Region for tutorial options
     this.tutorialRegion.create()
 
@@ -52,10 +46,11 @@ export default class WelcomeScene extends BaseScene {
 
 
 
-    // If the player just completed the tutorial and is returning to this scene
-    if (params['tutorialComplete']) {
-      this.createTutorialCompleteMessage()
+    let msgText = MessageManager.readFirstUnreadMessage()
+    if (msgText !== undefined) {
+      this.displayMessage(msgText)
 
+      // TODO Shouldn't do this in all cases, adjust if messages are more than just tutorials
       // NOTE This needs to happen before new options are indicated below, because it can set those settings
       UserSettings._set('newTutorial', true)
     }
@@ -64,9 +59,6 @@ export default class WelcomeScene extends BaseScene {
     this.indicateNewOptions(btnTutorial, btnDiscord)
     
     super.create()
-
-    // Ensure that the param doesn't keep the same value next time it's started
-    params.tutorialComplete = false
   }
 
   private createTutorialPrompt(btnTutorial: Button): void {
@@ -89,7 +81,7 @@ export default class WelcomeScene extends BaseScene {
     menu.add([txtHint, btnYes, btnNo])
   }
 
-  private createTutorialCompleteMessage(): void {
+  private displayMessage(message: string): void {
     let menu = new Menu(
       this,
       Space.windowWidth/2,
@@ -99,8 +91,9 @@ export default class WelcomeScene extends BaseScene {
       true,
       25)
 
+    // TODO Don't always say Congratulations, make the first line of message the title?
     let txtTitle = this.add.text(0, -110, 'Congratulations!', StyleSettings.announcement).setOrigin(0.5)
-    let txtMessage = this.add.text(0, -50, TUTORIAL_COMPLETE_MSG, StyleSettings.basic).setOrigin(0.5, 0)
+    let txtMessage = this.add.text(0, -50, message, StyleSettings.basic).setOrigin(0.5, 0)
     
     menu.add([txtTitle, txtMessage])
   }
