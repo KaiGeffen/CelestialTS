@@ -1,6 +1,6 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { ColorSettings, StyleSettings, UserSettings, BBConfig, Space } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings, BBConfig, CardStatsConfig, Space } from "../settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 
@@ -59,18 +59,35 @@ export function refreshCardInfo() {
 export class CardImage {
   card: Card
   image: Phaser.GameObjects.Image
+  txtStats: Phaser.GameObjects.Text
+
   unplayable: boolean = false
+  // A container just for this cardImage / objects related to it
+  container: Phaser.GameObjects.Container
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
     this.init(card, container, interactive);
   }
 
-  init(card: Card, container: any, interactive: Boolean) {
+  init(card: Card, outerContainer: any, interactive: Boolean) {
     this.card = card
 
-    let scene = container.scene
+    let scene: Phaser.Scene = outerContainer.scene
+    // Card image
     this.image = scene.add.image(0, 0, card.name)
     this.image.setDisplaySize(100, 100)
+
+    // Stat text
+    let s = `${card.cost}:${3}`
+    if (card === cardback) {
+      s = ''
+    }
+    this.txtStats = scene.add['rexBBCodeText'](-Space.cardSize/2, -Space.cardSize/2, s, CardStatsConfig).setOrigin(0)
+
+    // This container
+    this.container = scene.add.container(0, 0)
+    this.container.add([this.image, this.txtStats])
+    outerContainer.add(this.container)
 
     if (interactive) {
       this.image.setInteractive();
@@ -80,12 +97,20 @@ export class CardImage {
       // If the mouse moves outside of the game, exit the hover also
       this.image.scene.input.on('gameout', this.onHoverExit(), this)
     }
-
-    container.add(this.image)
   }
 
   destroy(): void {
     this.image.destroy()
+    this.txtStats.destroy()
+    this.container.destroy()
+  }
+
+  show(): void {
+    this.container.setVisible(true)
+  }
+
+  hide(): void {
+    this.container.setVisible(false)
   }
 
   // Set whether this card is playable
@@ -121,7 +146,7 @@ export class CardImage {
   }
 
   setPosition(position: [number, number]): void {
-    this.image.setPosition(position[0], position[1])
+    this.container.setPosition(position[0], position[1])
   }
 
   // Animate the card 'Camera' when it should be given attention
@@ -191,6 +216,7 @@ export class CardImage {
 
       cardInfo.text = that.card.getCardText()
 
+      // TODO Adjust for extra container
       // Copy the position of the card in its local space
       let container = that.image.parentContainer;
       let x = that.image.x + container.x;

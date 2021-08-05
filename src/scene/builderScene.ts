@@ -188,7 +188,9 @@ class CatalogRegion {
     for (var i = 0; i < this.cardpool.length; i++) {
       let cardImage = this.addCard(this.cardpool[i], i)
 
+      // NOTE Must use GO with sizer, can't add Containers
       sizer.add(cardImage.image)
+      sizer.add(cardImage.txtStats)
     }
 
     this.panel.layout()
@@ -215,13 +217,14 @@ class CatalogRegion {
       if (filterFunction(cardImage.card)) {
         cardCount++
 
-        cardImage.image.setVisible(true)
+        cardImage.show()
         sizer.add(cardImage.image)
+        sizer.add(cardImage.txtStats)
       }
       else
       {
         // sizer.remove(cardImage.image)
-        cardImage.image.setVisible(false)
+        cardImage.hide()
       }
     }
 
@@ -540,15 +543,15 @@ class DeckRegion {
   // Set each card in deck to have the right position and onClick events for its index
   private correctDeckIndices(): void {
     for (var i = 0; i < this.deck.length; i++) {
-      let image = this.deck[i].image
+      let cardImage = this.deck[i]
 
-      image.setPosition(...this.getCardPosition(i))
+      cardImage.setPosition(this.getCardPosition(i))
 
-      this.container.bringToTop(image)
+      this.container.sendToBack(cardImage.container)
 
       // Remove the previous onclick event and add one with the updated index
-      image.removeAllListeners('pointerdown')
-      image.on('pointerdown', this.removeCard(i), this)
+      cardImage.image.removeAllListeners('pointerdown')
+      cardImage.image.on('pointerdown', this.removeCard(i), this)
     }
   }
 

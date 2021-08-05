@@ -229,6 +229,7 @@ export const TimeSettings: Record<string, number> = {
 }
 
 // Config for the BBCode text objects, used in cardInfo
+// TODO Group these all into one export
 export const BBConfig = {
   fontFamily: fontFamily,
   fontSize: FontSettings.standard.size,
@@ -278,6 +279,22 @@ export const TutorialBBConfig = {
   }
 }
 
-
+// Cost / Points shown above each card
+export const CardStatsConfig = {
+  fontFamily: fontFamily,
+  fontSize: '20px',
+  color: ColorSettings.cardText,
+  backgroundColor: ColorSettings.cardTextBackground,
+  backgroundStrokeColor: "#0005",
+  backgroundStrokeLineWidth: 2,
+  backgroundCornerRadius: 5,
+  backgroundHorizontalGradient: false,
+  padding: { 
+    left: 5,
+    right: 5,
+    top: 5,
+    bottom: 5
+  }
+}
 
 
