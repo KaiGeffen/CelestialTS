@@ -11,6 +11,7 @@ var music: Phaser.Sound.BaseSound
 
 export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
+	rulebookContainer: Phaser.GameObjects.Container
 	sliderVolume: any
 	btnMenu: Button
 
@@ -114,10 +115,10 @@ export default class BaseScene extends Phaser.Scene {
         this.sliderVolume.layout()
 
         // Link to rulebook
-        let rulebookContainer = this.createRulebook()
+        this.rulebookContainer = this.createRulebook()
         y += 110
         let btnRulebook = new Button(this, x, y, "Read Rulebook", function() {
-        	rulebookContainer.setVisible(true)
+        	this.rulebookContainer.setVisible(true)
 	    	this.sound.play('open')
         })
         	.setStyle(StyleSettings.announcement)
@@ -272,6 +273,7 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 		this.btnMenu.stopGlow()
 
 		this.confirmationContainer.setVisible(false)
+		this.rulebookContainer.setVisible(false)
 		this.sliderVolume.setVisible(false)
 	}
 
