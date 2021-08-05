@@ -680,7 +680,7 @@ class FilterRegion {
       setTimeout(function() {
         textboxSearch.setFocus()
         textboxSearch.selectAll()
-        }, 10)
+        }, 20)
       }).setOrigin(1, 0)
     this.container.add(btnSearch)
 
@@ -909,7 +909,7 @@ class MenuRegion {
       setTimeout(function() {
         that.textboxDeckCode.setFocus()
         that.textboxDeckCode.selectAll()
-        }, 10)
+        }, 20)
     }
   }
 
