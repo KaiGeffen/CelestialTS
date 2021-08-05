@@ -188,9 +188,7 @@ class CatalogRegion {
     for (var i = 0; i < this.cardpool.length; i++) {
       let cardImage = this.addCard(this.cardpool[i], i)
 
-      // NOTE Must use GO with sizer, can't add Containers
       sizer.add(cardImage.image)
-      sizer.add(cardImage.txtStats)
     }
 
     this.panel.layout()
@@ -217,14 +215,13 @@ class CatalogRegion {
       if (filterFunction(cardImage.card)) {
         cardCount++
 
-        cardImage.show()
+        cardImage.image.setVisible(true)
         sizer.add(cardImage.image)
-        sizer.add(cardImage.txtStats)
       }
       else
       {
         // sizer.remove(cardImage.image)
-        cardImage.hide()
+        cardImage.image.setVisible(false)
       }
     }
 
@@ -251,7 +248,7 @@ class CatalogRegion {
 
   private addCard(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.cardContainer)
-    cardImage.setPosition(this.getCardPosition(index))
+    cardImage.image.setPosition(...this.getCardPosition(index))
 
     let image = cardImage.image
     image.setInteractive()
