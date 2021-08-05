@@ -32,10 +32,5 @@
 	{"key": "Tutor",
 		"text": "Tutor X - Draw a X-cost card. Priority for the card drawn is deck top to bottom, then discard pile top to bottom.",
 		"x": true
-	},
-
-	{"key": "Flare",
-		"text": "Flare - This card is worth 1 less point for every card before it in the story.",
-		"x": false
 	}
 ]

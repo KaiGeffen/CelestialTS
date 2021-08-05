@@ -31,8 +31,8 @@
 
   {"name": "Dash", "id": 6,
     "cost": 2,
-    "text": "2:3, Flare.",
-    "catalogText": "Dash costs 2 mana for 3 points, which means it beats most other 2 mana cards.\n\nHowever, because of Flare, it will be worth 1 less point for every card that was played before it in a round.\n\nIf you have more wins than your opponent, you will start the round with priority, and can play Dash as your first card for maximum points."
+    "text": "2:3, -1 for each card before this in the story.",
+    "catalogText": "Dash costs 2 mana for 3 points, which means it beats most other 2 mana cards.\n\nHowever, because of its ability, it will be worth 1 less point for every card that was played before it in a round.\n\nIf you have more wins than your opponent, you will start the round with priority, and can play Dash as your first card for maximum points."
   },
   {"name": "Swift", "id": 7,
     "cost": 2, "points": 2,
