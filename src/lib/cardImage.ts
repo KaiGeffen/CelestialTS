@@ -197,15 +197,16 @@ export class CardImage {
 
   // Scroll the stats text to copy image
   // Height is how tall the containing sizer is, for manually setting visiblity of txt
-  scrollStats(height: number): void {
+  scrollStats(height: number, padding: number): void {
     // Set the position of txt to upper left corner of image
     this.txtStats.copyPosition(this.image)
     this.txtStats.x -= Space.cardSize/2
     this.txtStats.y -= Space.cardSize/2
 
     // If txt is high enough, make visible
-    let belowSizer = height <= this.txtStats.y + this.txtStats.height
-    this.txtStats.setVisible(!belowSizer)
+    let abovePadding = this.txtStats.y <= padding
+    let belowSizer = height <= this.txtStats.y + this.txtStats.height + padding
+    this.txtStats.setVisible(!abovePadding && !belowSizer)
   }
 
   private onHover(): () => void {

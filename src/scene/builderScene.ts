@@ -119,72 +119,73 @@ class CatalogRegion {
   create(isTutorial): void {
     let that = this
 
-    let width = Space.cardSize*8 + Space.pad*10 + 10
-    let height = Space.cardSize*4 + Space.pad*5
+    let width = Space.cardSize * 8 + Space.pad * 10 + 10
+    let height = Space.cardSize * 4 + Space.pad * 5
     let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
     this.scene.children.sendToBack(background)
 
     this.panel = this.scene['rexUI'].add.scrollablePanel({
-            x: 0,
-            y: 0,
-            width: width,
-            height: height,
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
 
-            scrollMode: 0,
+      scrollMode: 0,
 
-            background: background,
+      background: background,
 
-            panel: {
-                child: this.scene['rexUI'].add.fixWidthSizer({
-                    space: {
-                        left: Space.pad,
-                        right: Space.pad - 10,
-                        top: Space.pad - 10,
-                        bottom: Space.pad - 10,
-                        item: Space.pad,
-                        line: Space.pad,
-                    }
-                })
-            },
+      panel: {
+        child: this.scene['rexUI'].add.fixWidthSizer({
+          space: {
+            left: Space.pad,
+            right: Space.pad - 10,
+            top: Space.pad - 10,
+            bottom: Space.pad - 10,
+            item: Space.pad,
+            line: Space.pad,
+          }
+        })
+      },
 
-            slider: {
-              input: 'click',
-                track: this.scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-                thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
-            },
+      slider: {
+        input: 'click',
+        track: this.scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
+        thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+      },
 
-            space: {
-                right: 10,
-                top: 10,
-                bottom: 10,
-            }
-        }).setOrigin(0)
-            .layout()
-            .setInteractive()
-            .on('scroll', function(panel) {
-              if (0 < panel.t && panel.t < 1) {
-                for (var i = 0; i < that.cardImages.length; i++) {
-                  // Add 10 for top/bottom padding
-                  that.cardImages[i].scrollStats(height - 10)
-  
-                  // TODO This isn't working, fix
-                  // that.cardImages[i].removeHighlight()
-                }
-                cardInfo.setVisible(false)
-              }
-            })
-            .on('scrollComplete', function(panel) {
-              console.log('hewoo')
-            })
+      space: {
+        right: 10,
+        top: 10,
+        bottom: 10,
+      }
+    }).setOrigin(0)
+      .layout()
+      .setInteractive()
+      .on('scroll', function(panel) {
+        if (0 < panel.t && panel.t < 1) {
+          for (var i = 0; i < that.cardImages.length; i++) {
+            // Add 10 for top/bottom padding
+            that.cardImages[i].scrollStats(height, 10)
+
+            // TODO This isn't working, fix
+            // that.cardImages[i].removeHighlight()
+          }
+          cardInfo.setVisible(false)
+        }
+      })
 
     // Panel updates when scroll wheel is used on it
-    this.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event){
+    this.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
       // Scroll panel down by amount wheel moved
       that.panel.childOY -= dy
 
       // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
       that.panel.t = Math.max(0, that.panel.t)
       that.panel.t = Math.min(1, that.panel.t)
+
+      that.cardImages.forEach((cardImage: CardImage) => {
+        cardImage.scrollStats(height, 10)
+      })
     })
 
     // The layout manager for the panel
@@ -195,9 +196,13 @@ class CatalogRegion {
       let cardImage = this.addCard(this.cardpool[i], i)
 
       sizer.add(cardImage.image)
+      // sizer2.add(cardImage.txtStats)
     }
 
     this.panel.layout()
+    this.cardImages.forEach((cardImage: CardImage) => {
+      cardImage.scrollStats(height, 10)
+    })
 
     // Must add an invisible region below the scroller or else partially visible cards will be clickable on
     // their bottom parts, which cannot be seen and are below the scroller
