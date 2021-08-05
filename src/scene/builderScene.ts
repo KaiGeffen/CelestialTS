@@ -163,12 +163,18 @@ class CatalogRegion {
             .setInteractive()
             .on('scroll', function(panel) {
               if (0 < panel.t && panel.t < 1) {
-                // TODO This isn't working, fix
                 for (var i = 0; i < that.cardImages.length; i++) {
-                  that.cardImages[i].removeHighlight()
+                  // Add 10 for top/bottom padding
+                  that.cardImages[i].scrollStats(height - 10)
+  
+                  // TODO This isn't working, fix
+                  // that.cardImages[i].removeHighlight()
                 }
                 cardInfo.setVisible(false)
               }
+            })
+            .on('scrollComplete', function(panel) {
+              console.log('hewoo')
             })
 
     // Panel updates when scroll wheel is used on it
