@@ -680,7 +680,7 @@ class FilterRegion {
       setTimeout(function() {
         textboxSearch.setFocus()
         textboxSearch.selectAll()
-        }, 50)
+        }, 10)
       }).setOrigin(1, 0)
     this.container.add(btnSearch)
 
@@ -781,7 +781,7 @@ class MenuRegion {
   deck: Card[] = []
 
   // The textbox which contains the deck code for player's current deck
-  textBoxDeckCode: any
+  textboxDeckCode: any
   
   constructor(scene: Phaser.Scene, deckRegion) {
     this.init(scene, deckRegion)
@@ -820,7 +820,7 @@ class MenuRegion {
         that.deckRegion.setDeck(PrebuiltDeck.get(name))
 
         // Update the textbox
-        that.textBoxDeckCode.text = that.getDeckCode()
+        that.textboxDeckCode.text = that.getDeckCode()
       })
 
       // Move to the next row after 3 icons
@@ -864,7 +864,7 @@ class MenuRegion {
     let txtDeckCode = this.scene.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
 
     y += Space.pad + Space.cardSize/2
-    this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
+    this.textboxDeckCode = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
       type: 'textarea',
       text: '',
       tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
@@ -883,14 +883,14 @@ class MenuRegion {
       that.deckRegion.setDeck(inputText.text)
     })
     .on('blur', function (inputText) {
-      that.textBoxDeckCode.text = that.getDeckCode()
+      that.textboxDeckCode.text = that.getDeckCode()
     })
     
     menu.add([
       txtUseExpansion,
       radioExpansion,
       txtDeckCode,
-      this.textBoxDeckCode
+      this.textboxDeckCode
       ])
 
     // Set the callback for deckRegion menu button
@@ -903,7 +903,13 @@ class MenuRegion {
       menu.open()
 
       // Set the deck-code textbox to have current deck described
-      that.textBoxDeckCode.text = that.getDeckCode()
+      that.textboxDeckCode.text = that.getDeckCode()
+
+      // Wait long enough for the menu to be open, then select the textbox
+      setTimeout(function() {
+        that.textboxDeckCode.setFocus()
+        that.textboxDeckCode.selectAll()
+        }, 10)
     }
   }
 
