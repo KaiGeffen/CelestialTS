@@ -149,6 +149,13 @@ export class CardImage {
     this.container.setPosition(position[0], position[1])
   }
 
+  // Set the displayed cost of this card, don't change the cost if cost is null
+  setCost(cost: number): void {
+    if (cost !== null) {
+      this.txtStats.setText(`${cost}:${this.card.points}`)
+    }
+  }
+
   // Animate the card 'Camera' when it should be given attention
   animateCamera(delay: number): void {
     let that = this

@@ -675,6 +675,9 @@ export default class GameScene extends BaseScene {
 		for (var i = 0; i < state.hand.length; i++) {
 			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
 
+			// Set the cost of the card, which might differ from its default value
+			cardImage.setCost(state.costs[i])
+
 			if (!state.cardsPlayable[i]) {
 				cardImage.setPlayable(false)
 			}
