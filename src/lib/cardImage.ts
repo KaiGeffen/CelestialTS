@@ -78,7 +78,7 @@ export class CardImage {
     this.image.setDisplaySize(100, 100)
 
     // Stat text
-    let s = `${card.cost}:${3}`
+    let s = `${card.cost}:${card.points}`
     if (card === cardback) {
       s = ''
     }
