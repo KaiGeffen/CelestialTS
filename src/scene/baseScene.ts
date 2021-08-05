@@ -12,6 +12,7 @@ var music: Phaser.Sound.BaseSound
 export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
 	sliderVolume: any
+	btnMenu: Button
 
 	// A menu is closing currently, so the main menu should not open with this esc event
 	static menuClosing: boolean = false
@@ -48,7 +49,7 @@ export default class BaseScene extends Phaser.Scene {
 		btnMute.setOnClick(this.doMute(btnMute))
 
 		// Menu button
-		let btnExit = new Button(this, Space.windowWidth - Space.pad/2, 50, '⚙', this.openMenu).setOrigin(1, 0)
+		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 50, '⚙', this.openMenu).setOrigin(1, 0)
 
 		// When esc key if pressed, toggle the menu open/closed
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
@@ -62,7 +63,7 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Invisible background, which closes menu when clicked
 		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
-		invisibleBackground.setInteractive().on('pointerdown', this.exitConfirmation, this)
+		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
 
 		// Visible background, which does nothing when clicked
 		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 510, 30, ColorSettings.menuBackground).setAlpha(0.95)
@@ -129,7 +130,7 @@ export default class BaseScene extends Phaser.Scene {
 		// Yes/No buttons
 		y += 80
 		let btnYes = new Button(this, Space.windowWidth/2 - 50, y, 'Yes', this.doExit).setOrigin(1, 0.5)
-		let btnNo = new Button(this, Space.windowWidth/2 + 50, y, 'No', this.exitConfirmation).setOrigin(0, 0.5)
+		let btnNo = new Button(this, Space.windowWidth/2 + 50, y, 'No', this.closeMenu, false).setOrigin(0, 0.5)
 
 		// Custom rexUI sliders don't work in containers
 		this.sliderVolume.setDepth(21).setVisible(false)
@@ -240,8 +241,6 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 
 	// Overwritten by the scenes that extend this
 	beforeExit(): void {
-		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-		esc.removeAllListeners()
 	}
 
 	private toggleMenu(): void {
@@ -261,12 +260,16 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 	private openMenu(): void {
       	this.sound.play('open')
 
+      	this.btnMenu.glow()
+
 		this.confirmationContainer.setVisible(true)
 		this.sliderVolume.setVisible(true)
 	}
 
 	private closeMenu(): void {
 		this.sound.play('close')
+
+		this.btnMenu.stopGlow()
 
 		this.confirmationContainer.setVisible(false)
 		this.sliderVolume.setVisible(false)
@@ -275,12 +278,5 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 	private doExit(): void {
 		this.beforeExit()
 		this.scene.start("WelcomeScene")
-	}
-
-	private exitConfirmation(): void {
-		this.sound.play('close')
-
-		this.confirmationContainer.setVisible(false)
-		this.sliderVolume.setVisible(false)
 	}
 }

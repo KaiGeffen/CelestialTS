@@ -16,7 +16,7 @@ export default class Button extends Phaser.GameObjects.Text {
 		if (playSound) {
 			this.on('pointerdown', this.sfxThenDo(f))
 		} else {
-			this.on('pointerdown', f)
+			this.on('pointerdown', f, scene)
 		}
 
 		this.on('pointerover', this.onHover, this)
