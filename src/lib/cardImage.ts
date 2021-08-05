@@ -238,9 +238,9 @@ export class CardImage {
 
       // TODO Adjust for extra container
       // Copy the position of the card in its local space
-      let container = that.image.parentContainer;
-      let x = that.image.x + container.x;
-      let y = that.image.y + container.y - Space.cardSize/2 - Space.highlightWidth * 2
+      let outerContainer = that.container.parentContainer
+      let x = that.image.x + that.container.x + outerContainer.x 
+      let y = that.image.y + that.container.y + outerContainer.y - Space.cardSize/2 - Space.highlightWidth * 2
 
       // Change alignment of text based on horizontal position on screen
       if (x <= cardInfo.width / 2) // Left
