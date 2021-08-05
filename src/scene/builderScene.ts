@@ -116,11 +116,13 @@ class CatalogRegion {
     this.cardpool = cardpool
   }
 
+  HEIGHT = Space.cardSize * 4 + Space.pad * 5
+
   create(isTutorial): void {
     let that = this
 
     let width = Space.cardSize * 8 + Space.pad * 10 + 10
-    let height = Space.cardSize * 4 + Space.pad * 5
+    let height = this.HEIGHT
     let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
     this.scene.children.sendToBack(background)
 
@@ -196,7 +198,6 @@ class CatalogRegion {
       let cardImage = this.addCard(this.cardpool[i], i)
 
       sizer.add(cardImage.image)
-      // sizer2.add(cardImage.txtStats)
     }
 
     this.panel.layout()
@@ -240,6 +241,10 @@ class CatalogRegion {
     this.panel.getElement('slider').setVisible(cardCount > 8*4)
 
     this.panel.layout()
+
+    setTimeout(() => {this.cardImages.forEach((cardImage) => {
+      cardImage.scrollStats(this.HEIGHT, 10)
+    })}, 3)
   }
 
   private onClick(card: Card): () => void {

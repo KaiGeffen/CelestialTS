@@ -203,6 +203,12 @@ export class CardImage {
     this.txtStats.x -= Space.cardSize/2
     this.txtStats.y -= Space.cardSize/2
 
+    let imageIsInvisible = !this.image.visible
+    if (imageIsInvisible) {
+      this.txtStats.setVisible(false)
+      return
+    }
+
     // If txt is high enough, make visible
     let abovePadding = this.txtStats.y <= padding
     let belowSizer = height <= this.txtStats.y + this.txtStats.height + padding
