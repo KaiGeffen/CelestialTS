@@ -50,7 +50,7 @@ class CatalogScene extends BaseScene {
 			let card = this.addCard(this.pool[i], i)
 
 			if (i === 0) {
-				this.highlight.copyPosition(card.image)
+				this.highlight.copyPosition(card.container)
 				this.txtDescription.setText(card.card.catalogText)
 			}
 		}
@@ -70,7 +70,7 @@ class CatalogScene extends BaseScene {
 		let image = cardImage.image
 
 		image.setInteractive()
-		image.on('pointerdown', this.onClick(card, image))
+		image.on('pointerdown', this.onClick(card, cardImage.container))
 
 		return cardImage
 	}
@@ -91,13 +91,13 @@ class CatalogScene extends BaseScene {
 		return [x, y]
 	}
 
-	private onClick(card: Card, image: Phaser.GameObjects.Image): () => void {
+	private onClick(card: Card, container: Phaser.GameObjects.Container): () => void {
 	    let that = this
 	    return function() {
 	      that.sound.play('click')
 
 	      // Move the highlight to behind card
-	      that.highlight.setPosition(image.x, image.y)
+	      that.highlight.setPosition(container.x, container.y)
 	      that.highlight.setVisible(true)
 
 	      that.txtDescription.setText(card.catalogText)

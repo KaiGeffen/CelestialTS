@@ -79,10 +79,10 @@ export class CardImage {
 
     // Stat text
     let s = `${card.cost}:${card.points}`
-    if (card === cardback) {
-      s = ''
-    }
     this.txtStats = scene.add['rexBBCodeText'](-Space.cardSize/2, -Space.cardSize/2, s, CardStatsConfig).setOrigin(0)
+    if (card === cardback) {
+      this.txtStats.setAlpha(0)
+    }
 
     // This container
     this.container = scene.add.container(0, 0)

@@ -713,25 +713,25 @@ export default class GameScene extends BaseScene {
 					case Animation.TutorDeck:
 						card = cards.pop()
 
-						that.animateDraw(card.image, delay)
+						that.animateDraw(card, delay)
 						break
 					case Animation.TutorDiscard:
 						card = cards.pop()					
 
-						that.animateDraw(card.image, delay, true)
+						that.animateDraw(card, delay, true)
 						break
 					case Animation.Create:
 						card = cards.pop()
 
 						card.image.setScale(0)
 						that.tweens.add({
-							targets: card.image,
+							targets: card.container,
 							scale: 1,
 							delay: delay,
 							duration: TimeSettings.recapTweenWithPause,
 							onStart: function (tween, targets, _)
 							{
-								card.image.setVisible(true)
+								card.container.setVisible(true)
 							}
 						})
 						break
@@ -919,31 +919,31 @@ export default class GameScene extends BaseScene {
 	}
 	
 	// Tween the image to move to its position from the deck after delay. Return the new delay
-	private animateDraw(image: Phaser.GameObjects.Image, delay: number, fromDiscard: Boolean = false): void {
-		let x = image.x
+	private animateDraw(cardImage: CardImage, delay: number, fromDiscard: Boolean = false): void {
+		let x = cardImage.container.x
 		if (!fromDiscard) {
-			image.setX(Space.stackX)
+			cardImage.setPosition([Space.stackX, cardImage.container.y])
 		} else {
-			image.setX(Space.stackX + Space.cardSize + Space.pad)
+			cardImage.setPosition([Space.stackX + Space.cardSize + Space.pad, cardImage.container.y])
 		}
 
-		image.setVisible(false)
+		cardImage.container.setVisible(false)
 
 		this.tweens.add({
-			targets: image,
+			targets: cardImage.container,
 			x: x,
 			delay: delay,
 			duration: TimeSettings.recapTweenWithPause,
 			onStart: function (tween, targets, _)
 			{
-				image.setVisible(true)
+				cardImage.container.setVisible(true)
 			}
 		})
 
 		if (fromDiscard) {
-			let y = (image.y < Space.windowHeight/2) ? image.y + Space.cardSize*2 : image.y - Space.cardSize*2
+			let y = (cardImage.container.y < Space.windowHeight/2) ? cardImage.container.y + Space.cardSize*2 : cardImage.container.y - Space.cardSize*2
 			this.tweens.add({
-				targets: image,
+				targets: cardImage.container,
 				y: y,
 				delay: delay,
 				duration: TimeSettings.recapTweenWithPause/2,
@@ -1067,7 +1067,7 @@ export default class GameScene extends BaseScene {
   				let end = that.getCardPosition(state.story.acts.length, that.storyContainer, 0)
 
   				that.tweens.add({
-  					targets: card.image,
+  					targets: card.container,
   					x: end[0],
   					y: end[1],
   					duration: TimeSettings.recapTween,
@@ -1095,11 +1095,11 @@ export default class GameScene extends BaseScene {
   		let scene = hand[0].image.scene
 
   		for (var i = index + 1; i < hand.length; i++) {
-  			let cardImage = hand[i].image
+  			let card = hand[i].container
 
   			scene.tweens.add({
-  				targets: cardImage,
-  				x: cardImage.x - Space.cardSize - Space.pad,
+  				targets: card,
+  				x: card.x - Space.cardSize - Space.pad,
   				duration: TimeSettings.recapTween - 10,
   				ease: "Sine.easeInOut"
   			})
