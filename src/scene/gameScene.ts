@@ -625,6 +625,10 @@ export default class GameScene extends BaseScene {
 		let that = this
 
 		return function() {
+			that.tweens.getAllTweens().forEach((tween) => {
+				tween.complete()
+			})
+
 			that.queuedRecap = []
 			that.recapPlaying = false
 		}
