@@ -1,5 +1,6 @@
 import "phaser"
 import { Space, ColorSettings } from '../settings'
+import BaseScene from '../scene/baseScene'
 
 
 export default class Menu {
@@ -8,7 +9,15 @@ export default class Menu {
 	constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, visible: boolean = true, depth: number = 0) {
 		// Esc key closes all menus
 		let esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-		esc.on('down', () => this.container.setVisible(false))
+		esc.on('down', function() {
+			if (this.container.visible) {
+				this.container.setVisible(false)
+
+				scene.sound.play('close')
+
+				BaseScene.menuClosing = true
+			}
+		}, this)
 
 		// Create a container for this menu
 		this.container = scene.add.container(x, y).setVisible(visible).setDepth(depth)

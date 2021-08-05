@@ -7,9 +7,14 @@ import Button from "../lib/button"
 var music: Phaser.Sound.BaseSound
 // var escClosesMenu: boolean
 
+
+
 export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
 	sliderVolume: any
+
+	// A menu is closing currently, so the main menu should not open with this esc event
+	static menuClosing: boolean = false
 
 	constructor(args) {
 		super(args)
@@ -240,10 +245,16 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 	}
 
 	private toggleMenu(): void {
-		if (this.confirmationContainer.visible) {
-			this.closeMenu()
-		} else {
-			this.openMenu()
+		// Don't open if a menu is currently closing
+		if (BaseScene.menuClosing) {
+			BaseScene.menuClosing = false
+		}
+		else {
+			if (this.confirmationContainer.visible) {
+				this.closeMenu()
+			} else {
+				this.openMenu()
+			}
 		}
 	}
 
