@@ -30,8 +30,8 @@ class TutorialScene extends GameScene {
 			y: Space.pad * 2,
 			text: this.add['rexBBCodeText'](0, 0, '', TutorialBBConfig)
 		}).setOrigin(0)
-		
-			// Space.windowWidth/2, Space.windowHeight/2, 800, 200, 30, ColorSettings.menuBackground).setAlpha(0.95)
+		this.txtTutorial.setInteractive()
+		this.txtTutorial.on('pointerdown', this.doClickTutorialText, this)		
 	}
 
 	displayState(state: ClientState, recap: boolean = false): boolean {
@@ -53,6 +53,7 @@ class TutorialScene extends GameScene {
 
 				let s = ex.explain()
 				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', 15)
+				this.txtTutorial.setVisible(true)
 			}
 		})
 
@@ -97,6 +98,18 @@ class TutorialScene extends GameScene {
 	onWin(): void {}
 	onWinExit(): () => void {return function() {}}
 	onRetry(): () => void {return function() {}}
+
+	// Called when the tutorial text is clicked on
+	// Skips it to the end if it's animating, or makes it invisible if not
+	private doClickTutorialText(): void {
+		let txt = this.txtTutorial
+
+		if (txt.isTyping) {
+			txt.stop(true)
+		} else {
+			txt.setVisible(false)
+		}
+	}
 }
 
 

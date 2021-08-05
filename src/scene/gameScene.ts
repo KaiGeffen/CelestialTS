@@ -472,7 +472,7 @@ export default class GameScene extends BaseScene {
 
 			// If opponent just played this card, animate it being played
 			if (!isRecap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
-				this.animateOpponentPlay(card.image)
+				this.animateOpponentPlay(card)
 			}
 		}
 
@@ -625,6 +625,10 @@ export default class GameScene extends BaseScene {
 		let that = this
 
 		return function() {
+			that.tweens.getAllTweens().forEach((tween) => {
+				tween.complete()
+			})
+
 			that.queuedRecap = []
 			that.recapPlaying = false
 		}
@@ -671,6 +675,9 @@ export default class GameScene extends BaseScene {
 		for (var i = 0; i < state.hand.length; i++) {
 			let cardImage = this.addCard(state.hand[i], i, this.handContainer)
 
+			// Set the cost of the card, which might differ from its default value
+			cardImage.setCost(state.costs[i])
+
 			if (!state.cardsPlayable[i]) {
 				cardImage.setPlayable(false)
 			}
@@ -709,25 +716,26 @@ export default class GameScene extends BaseScene {
 					case Animation.TutorDeck:
 						card = cards.pop()
 
-						that.animateDraw(card.image, delay)
+						that.animateDraw(card, delay)
 						break
 					case Animation.TutorDiscard:
 						card = cards.pop()					
 
-						that.animateDraw(card.image, delay, true)
+						that.animateDraw(card, delay, true)
 						break
 					case Animation.Create:
 						card = cards.pop()
 
-						card.image.setScale(0)
+						card.container.setScale(0)
 						that.tweens.add({
-							targets: card.image,
+							targets: card.container,
 							scale: 1,
 							delay: delay,
 							duration: TimeSettings.recapTweenWithPause,
 							onStart: function (tween, targets, _)
 							{
-								card.image.setVisible(true)
+								card.show()
+								// card.container.setVisible(true)
 							}
 						})
 						break
@@ -743,9 +751,9 @@ export default class GameScene extends BaseScene {
 	private displayStacks(state: ClientState): void {
 		// Do all animations for the given deck
 		let that = this
-		function animateDeck(deck: Phaser.GameObjects.Image, player: number): void {
+		function animateDeck(deck: CardImage, player: number): void {
 			// The y which card will bounce up/down to before returning to stack
-			let innerY = (deck.y < Space.windowHeight/2) ? deck.y + Space.cardSize*2 : deck.y - Space.cardSize*2
+			let innerY = (deck.container.y < Space.windowHeight/2) ? deck.container.y + Space.cardSize*2 : deck.container.y - Space.cardSize*2
 
 			// Go through all animations and apply any that relate to stacks
 			for (var i = 0; i <= state.animations[player].length; i++) {
@@ -754,8 +762,8 @@ export default class GameScene extends BaseScene {
 				switch (state.animations[player][i]) {
 					case Animation.Shuffle:
 						that.tweens.add({
-				  			targets: deck,
-				  			y: deck.y - Space.cardSize/2,
+				  			targets: deck.container,
+				  			y: deck.container.y - Space.cardSize/2,
 				  			delay: delay,
 				  			duration: TimeSettings.recapTween/2,
 				  			ease: "Sine.easeInOut",
@@ -763,8 +771,8 @@ export default class GameScene extends BaseScene {
 			  			})
 
 						// Animate another cardback yoyoing in the opposite direction
-			  			let halfDeck = that.add.sprite(deck.x, deck.y, deck.texture)
-			  			deck.parentContainer.add(halfDeck)
+			  			let halfDeck = that.add.sprite(deck.container.x, deck.container.y, deck.image.texture)
+			  			deck.container.parentContainer.add(halfDeck)
 			  			
 			  			that.tweens.add({
 				  			targets: halfDeck,
@@ -778,12 +786,12 @@ export default class GameScene extends BaseScene {
 						break
 					// Move a cardback from discard pile to top of deck
 					case Animation.Top:
-						let newTop = that.add.sprite(deck.x + Space.cardSize, deck.y, deck.texture).setVisible(false)
-			  			deck.parentContainer.add(newTop)
+						let newTop = that.add.sprite(deck.container.x + Space.cardSize, deck.container.y, deck.image.texture).setVisible(false)
+			  			deck.container.parentContainer.add(newTop)
 			  			
 			  			that.tweens.add({
 				  			targets: newTop,
-				  			x: deck.x,
+				  			x: deck.container.x,
 				  			delay: delay,
 				  			duration: TimeSettings.recapTweenWithPause,
 				  			ease: "Sine.easeInOut",
@@ -800,8 +808,8 @@ export default class GameScene extends BaseScene {
 			  			})
 						break
 					case Animation.Mill:
-						let milledCard = that.add.sprite(deck.x + Space.pad, deck.y, deck.texture).setVisible(false)
-			  			deck.parentContainer.add(milledCard)
+						let milledCard = that.add.sprite(deck.container.x + Space.pad, deck.container.y, deck.image.texture).setVisible(false)
+			  			deck.container.parentContainer.add(milledCard)
 			  			
 			  			that.tweens.add({
 				  			targets: milledCard,
@@ -825,18 +833,18 @@ export default class GameScene extends BaseScene {
 			}
 		}
 
-		let deck = this.addCard(cardback, 0, this.stackContainer, 0).image
+		let deck = this.addCard(cardback, 0, this.stackContainer, 0)
 		this.txtDeckSize.setText(state.deck.length.toString())
 		animateDeck(deck, 0)
 
-		let opponentDeck = this.addCard(cardback, 0, this.stackContainer, 1).image
+		let opponentDeck = this.addCard(cardback, 0, this.stackContainer, 1)
 		this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
 		animateDeck(opponentDeck, 1)
 
 		// Show discard piles, if they have cards in them
-		function animateDiscard(discard: Phaser.GameObjects.Image, player: number) {
+		function animateDiscard(discard: CardImage, player: number) {
 			// The y which card will bounce up/down to before returning to stack
-			let innerY = (discard.y < Space.windowHeight/2) ? discard.y + Space.cardSize*2 : discard.y - Space.cardSize*2
+			let innerY = (discard.container.y < Space.windowHeight/2) ? discard.container.y + Space.cardSize*2 : discard.container.y - Space.cardSize*2
 
 			// Go through all animations and apply any that relate to stacks
 			for (var i = 0; i <= state.animations[player].length; i++) {
@@ -844,12 +852,12 @@ export default class GameScene extends BaseScene {
 
 				switch (state.animations[player][i]) {
 					case Animation.Discard:
-						let discardedCard = that.add.sprite(Space.cardSize + Space.pad, discard.y, discard.texture).setVisible(false)
-			  			discard.parentContainer.add(discardedCard)
+						let discardedCard = that.add.sprite(Space.cardSize + Space.pad, discard.container.y, discard.image.texture).setVisible(false)
+			  			discard.container.parentContainer.add(discardedCard)
 			  			
 			  			that.tweens.add({
 				  			targets: discardedCard,
-				  			x: discard.x,
+				  			x: discard.container.x,
 				  			delay: delay,
 				  			duration: TimeSettings.recapTweenWithPause,
 				  			ease: "Sine.easeInOut",
@@ -875,7 +883,7 @@ export default class GameScene extends BaseScene {
 			this.txtDiscardSize.setVisible(true)
 			this.txtDiscardSize.setText(state.discard[0].length.toString())
 
-			animateDiscard(card.image, 0)
+			animateDiscard(card, 0)
 		} else this.txtDiscardSize.setVisible(false)
 		
 		if (state.discard[1].length > 0) {
@@ -884,7 +892,7 @@ export default class GameScene extends BaseScene {
 			this.txtOpponentDiscardSize.setVisible(true)
 			this.txtOpponentDiscardSize.setText(state.discard[1].length.toString())
 
-			animateDiscard(card.image, 1)
+			animateDiscard(card, 1)
 		} else this.txtOpponentDiscardSize.setVisible(false)
 	}
 
@@ -915,31 +923,31 @@ export default class GameScene extends BaseScene {
 	}
 	
 	// Tween the image to move to its position from the deck after delay. Return the new delay
-	private animateDraw(image: Phaser.GameObjects.Image, delay: number, fromDiscard: Boolean = false): void {
-		let x = image.x
+	private animateDraw(cardImage: CardImage, delay: number, fromDiscard: Boolean = false): void {
+		let x = cardImage.container.x
 		if (!fromDiscard) {
-			image.setX(Space.stackX)
+			cardImage.setPosition([Space.stackX, cardImage.container.y])
 		} else {
-			image.setX(Space.stackX + Space.cardSize + Space.pad)
+			cardImage.setPosition([Space.stackX + Space.cardSize + Space.pad, cardImage.container.y])
 		}
 
-		image.setVisible(false)
+		cardImage.container.setVisible(false)
 
 		this.tweens.add({
-			targets: image,
+			targets: cardImage.container,
 			x: x,
 			delay: delay,
 			duration: TimeSettings.recapTweenWithPause,
 			onStart: function (tween, targets, _)
 			{
-				image.setVisible(true)
+				cardImage.container.setVisible(true)
 			}
 		})
 
 		if (fromDiscard) {
-			let y = (image.y < Space.windowHeight/2) ? image.y + Space.cardSize*2 : image.y - Space.cardSize*2
+			let y = (cardImage.container.y < Space.windowHeight/2) ? cardImage.container.y + Space.cardSize*2 : cardImage.container.y - Space.cardSize*2
 			this.tweens.add({
-				targets: image,
+				targets: cardImage.container,
 				y: y,
 				delay: delay,
 				duration: TimeSettings.recapTweenWithPause/2,
@@ -948,12 +956,12 @@ export default class GameScene extends BaseScene {
 		}
 	}
 
-	private animateOpponentPlay(card: Phaser.GameObjects.Image): void {
-		let y = card.y
-		card.setY(y - 200)
+	private animateOpponentPlay(card: CardImage): void {
+		let y = card.container.y
+		card.container.setY(y - 200)
 
 		this.tweens.add({
-  					targets: card,
+  					targets: card.container,
   					y: y,
   					duration: TimeSettings.recapTween,
   					ease: "Sine.easeInOut"
@@ -1063,7 +1071,7 @@ export default class GameScene extends BaseScene {
   				let end = that.getCardPosition(state.story.acts.length, that.storyContainer, 0)
 
   				that.tweens.add({
-  					targets: card.image,
+  					targets: card.container,
   					x: end[0],
   					y: end[1],
   					duration: TimeSettings.recapTween,
@@ -1091,11 +1099,11 @@ export default class GameScene extends BaseScene {
   		let scene = hand[0].image.scene
 
   		for (var i = index + 1; i < hand.length; i++) {
-  			let cardImage = hand[i].image
+  			let card = hand[i].container
 
   			scene.tweens.add({
-  				targets: cardImage,
-  				x: cardImage.x - Space.cardSize - Space.pad,
+  				targets: card,
+  				x: card.x - Space.cardSize - Space.pad,
   				duration: TimeSettings.recapTween - 10,
   				ease: "Sine.easeInOut"
   			})

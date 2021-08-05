@@ -31,11 +31,14 @@ function decodeCard(s: string): Card {
 	} else {
 		let dynamicText = sections[1]
 
+		let points = parseInt(dynamicText.split(':')[1].split(',')[0])
+
 		// NOTE A new copy of the card is created so that all instances (of Bastet, for example) won't have the same dynamic text
 		let data = {
 			name: baseCard.name,
 			id: baseCard.id,
 			cost: baseCard.cost,
+			points: points,
 			text: baseCard.text,
 			dynamicText: dynamicText,
 			catalogText: ''

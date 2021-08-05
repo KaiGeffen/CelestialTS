@@ -8,6 +8,7 @@ interface CardData {
   name: string
   id: number
   cost: number
+  points: number
   text: string
   dynamicText: string
   catalogText: string
@@ -23,6 +24,7 @@ export default class Card {
   name: string
   id: number
   cost: number
+  points: number
   text: string
   dynamicText: string
   catalogText: string
@@ -31,6 +33,7 @@ export default class Card {
     this.name = data.name
     this.id = data.id
     this.cost = data.cost
+    this.points = data.points
     this.text = data.text
 
     this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText

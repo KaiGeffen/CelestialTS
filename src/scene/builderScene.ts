@@ -116,69 +116,78 @@ class CatalogRegion {
     this.cardpool = cardpool
   }
 
+  HEIGHT = Space.cardSize * 4 + Space.pad * 5
+
   create(isTutorial): void {
     let that = this
 
-    let width = Space.cardSize*8 + Space.pad*10 + 10
-    let height = Space.cardSize*4 + Space.pad*5
+    let width = Space.cardSize * 8 + Space.pad * 10 + 10
+    let height = this.HEIGHT
     let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
     this.scene.children.sendToBack(background)
 
     this.panel = this.scene['rexUI'].add.scrollablePanel({
-            x: 0,
-            y: 0,
-            width: width,
-            height: height,
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
 
-            scrollMode: 0,
+      scrollMode: 0,
 
-            background: background,
+      background: background,
 
-            panel: {
-                child: this.scene['rexUI'].add.fixWidthSizer({
-                    space: {
-                        left: Space.pad,
-                        right: Space.pad - 10,
-                        top: Space.pad - 10,
-                        bottom: Space.pad - 10,
-                        item: Space.pad,
-                        line: Space.pad,
-                    }
-                })
-            },
+      panel: {
+        child: this.scene['rexUI'].add.fixWidthSizer({
+          space: {
+            left: Space.pad,
+            right: Space.pad - 10,
+            top: Space.pad - 10,
+            bottom: Space.pad - 10,
+            item: Space.pad,
+            line: Space.pad,
+          }
+        })
+      },
 
-            slider: {
-              input: 'click',
-                track: this.scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-                thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
-            },
+      slider: {
+        input: 'click',
+        track: this.scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
+        thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+      },
 
-            space: {
-                right: 10,
-                top: 10,
-                bottom: 10,
-            }
-        }).setOrigin(0)
-            .layout()
-            .setInteractive()
-            .on('scroll', function(panel) {
-              if (0 < panel.t && panel.t < 1) {
-                // TODO This isn't working, fix
-                for (var i = 0; i < that.cardImages.length; i++) {
-                  that.cardImages[i].removeHighlight()
-                }
-                cardInfo.setVisible(false)
-              }
-            })
+      space: {
+        right: 10,
+        top: 10,
+        bottom: 10,
+      }
+    }).setOrigin(0)
+      .layout()
+      .setInteractive()
+      .on('scroll', function(panel) {
+        if (0 < panel.t && panel.t < 1) {
+          for (var i = 0; i < that.cardImages.length; i++) {
+            // Add 10 for top/bottom padding
+            that.cardImages[i].scrollStats(height, 10)
+
+            // TODO This isn't working, fix
+            // that.cardImages[i].removeHighlight()
+          }
+          cardInfo.setVisible(false)
+        }
+      })
 
     // Panel updates when scroll wheel is used on it
-    this.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event){
+    this.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
       // Scroll panel down by amount wheel moved
       that.panel.childOY -= dy
 
       // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
       that.panel.t = Math.max(0, that.panel.t)
       that.panel.t = Math.min(1, that.panel.t)
+
+      that.cardImages.forEach((cardImage: CardImage) => {
+        cardImage.scrollStats(height, 10)
+      })
     })
 
     // The layout manager for the panel
@@ -192,6 +201,9 @@ class CatalogRegion {
     }
 
     this.panel.layout()
+    this.cardImages.forEach((cardImage: CardImage) => {
+      cardImage.scrollStats(height, 10)
+    })
 
     // Must add an invisible region below the scroller or else partially visible cards will be clickable on
     // their bottom parts, which cannot be seen and are below the scroller
@@ -229,6 +241,10 @@ class CatalogRegion {
     this.panel.getElement('slider').setVisible(cardCount > 8*4)
 
     this.panel.layout()
+
+    setTimeout(() => {this.cardImages.forEach((cardImage) => {
+      cardImage.scrollStats(this.HEIGHT, 10)
+    })}, 3)
   }
 
   private onClick(card: Card): () => void {
@@ -248,7 +264,7 @@ class CatalogRegion {
 
   private addCard(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.cardContainer)
-    cardImage.setPosition(this.getCardPosition(index))
+    cardImage.image.setPosition(...this.getCardPosition(index))
 
     let image = cardImage.image
     image.setInteractive()
@@ -540,15 +556,15 @@ class DeckRegion {
   // Set each card in deck to have the right position and onClick events for its index
   private correctDeckIndices(): void {
     for (var i = 0; i < this.deck.length; i++) {
-      let image = this.deck[i].image
+      let cardImage = this.deck[i]
 
-      image.setPosition(...this.getCardPosition(i))
+      cardImage.setPosition(this.getCardPosition(i))
 
-      this.container.bringToTop(image)
+      this.container.sendToBack(cardImage.container)
 
       // Remove the previous onclick event and add one with the updated index
-      image.removeAllListeners('pointerdown')
-      image.on('pointerdown', this.removeCard(i), this)
+      cardImage.image.removeAllListeners('pointerdown')
+      cardImage.image.on('pointerdown', this.removeCard(i), this)
     }
   }
 
@@ -680,7 +696,7 @@ class FilterRegion {
       setTimeout(function() {
         textboxSearch.setFocus()
         textboxSearch.selectAll()
-        }, 50)
+        }, 20)
       }).setOrigin(1, 0)
     this.container.add(btnSearch)
 
@@ -781,7 +797,7 @@ class MenuRegion {
   deck: Card[] = []
 
   // The textbox which contains the deck code for player's current deck
-  textBoxDeckCode: any
+  textboxDeckCode: any
   
   constructor(scene: Phaser.Scene, deckRegion) {
     this.init(scene, deckRegion)
@@ -820,7 +836,7 @@ class MenuRegion {
         that.deckRegion.setDeck(PrebuiltDeck.get(name))
 
         // Update the textbox
-        that.textBoxDeckCode.text = that.getDeckCode()
+        that.textboxDeckCode.text = that.getDeckCode()
       })
 
       // Move to the next row after 3 icons
@@ -864,7 +880,7 @@ class MenuRegion {
     let txtDeckCode = this.scene.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
 
     y += Space.pad + Space.cardSize/2
-    this.textBoxDeckCode = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
+    this.textboxDeckCode = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
       type: 'textarea',
       text: '',
       tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
@@ -883,14 +899,14 @@ class MenuRegion {
       that.deckRegion.setDeck(inputText.text)
     })
     .on('blur', function (inputText) {
-      that.textBoxDeckCode.text = that.getDeckCode()
+      that.textboxDeckCode.text = that.getDeckCode()
     })
     
     menu.add([
       txtUseExpansion,
       radioExpansion,
       txtDeckCode,
-      this.textBoxDeckCode
+      this.textboxDeckCode
       ])
 
     // Set the callback for deckRegion menu button
@@ -903,7 +919,13 @@ class MenuRegion {
       menu.open()
 
       // Set the deck-code textbox to have current deck described
-      that.textBoxDeckCode.text = that.getDeckCode()
+      that.textboxDeckCode.text = that.getDeckCode()
+
+      // Wait long enough for the menu to be open, then select the textbox
+      setTimeout(function() {
+        that.textboxDeckCode.setFocus()
+        that.textboxDeckCode.selectAll()
+        }, 20)
     }
   }
 

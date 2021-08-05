@@ -27,6 +27,7 @@ export default class ClientState {
 	vision: number
 	winner: number
 
+
 	// Score is only for viewing the recap of states between each act in story
 	score: [number, number]
 
@@ -35,6 +36,9 @@ export default class ClientState {
 
 	// For each player, the animations that should be played for this state
 	animations: [Animation[], Animation[]]
+
+	// Costs for each card in your hand
+	costs: number[]
 
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
@@ -60,5 +64,6 @@ export default class ClientState {
 		this.score = state.score
 		this.soundEffect = state.sound_effect
 		this.animations = state.animations.map(l => decodeAnimationList(l))
+		this.costs = state.costs
 	}
 }

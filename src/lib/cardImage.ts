@@ -1,6 +1,6 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { ColorSettings, StyleSettings, UserSettings, BBConfig, Space } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings, BBConfig, CardStatsConfig, Space } from "../settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 
@@ -25,6 +25,7 @@ export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text
   return cardInfo
 }
 
+// TODO Bad smell, it's reccomended not to use containers so much
 // Make card info reflect whatever card it is currently hovering
 export function refreshCardInfo() {
   let scene: Phaser.Scene = cardInfo.scene
@@ -33,21 +34,28 @@ export function refreshCardInfo() {
 
   let showText = false
 
+  let pointer = scene.game.input.activePointer
+
   allContainers.forEach(function (container: Phaser.GameObjects.Container) {
     container.list.forEach(function (obj) {
-      if (obj.type === 'Image') {
-        let sprite = obj as Phaser.GameObjects.Image
-        let pointer = scene.game.input.activePointer
-        
-        if (sprite.getBounds().contains(pointer.x, pointer.y)) {
-          // Show text only if the sprite has a pointerover listener
-          if (sprite.emit('pointerover')) {
-            showText = true
+      if (obj.type === 'Container') {
+        let cont2 = obj as Phaser.GameObjects.Container
+        cont2.list.forEach(function (obj2) {
+          if (obj2.type === 'Image') {
+            let sprite = obj2 as Phaser.GameObjects.Image
+            
+            if (sprite.getBounds().contains(pointer.x, pointer.y)) {
+              // Show text only if the sprite has a pointerover listener
+              if (sprite.emit('pointerover')) {
+                showText = true
+              }
+            }
+            else {
+              sprite.emit('pointerout')
+            }
           }
-        }
-        else {
-          sprite.emit('pointerout')
-        }
+        })
+        
       }
     })
   })
@@ -59,18 +67,35 @@ export function refreshCardInfo() {
 export class CardImage {
   card: Card
   image: Phaser.GameObjects.Image
+  txtStats: Phaser.GameObjects.Text
+
   unplayable: boolean = false
+  // A container just for this cardImage / objects related to it
+  container: Phaser.GameObjects.Container
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
     this.init(card, container, interactive);
   }
 
-  init(card: Card, container: any, interactive: Boolean) {
+  init(card: Card, outerContainer: any, interactive: Boolean) {
     this.card = card
 
-    let scene = container.scene
+    let scene: Phaser.Scene = outerContainer.scene
+    // Card image
     this.image = scene.add.image(0, 0, card.name)
     this.image.setDisplaySize(100, 100)
+
+    // Stat text
+    let s = `${card.cost}:${card.points}`
+    this.txtStats = scene.add['rexBBCodeText'](-Space.cardSize/2, -Space.cardSize/2, s, CardStatsConfig).setOrigin(0)
+    if (card === cardback) {
+      this.txtStats.setAlpha(0)
+    }
+
+    // This container
+    this.container = scene.add.container(0, 0)
+    this.container.add([this.image, this.txtStats])
+    outerContainer.add(this.container)
 
     if (interactive) {
       this.image.setInteractive();
@@ -80,12 +105,20 @@ export class CardImage {
       // If the mouse moves outside of the game, exit the hover also
       this.image.scene.input.on('gameout', this.onHoverExit(), this)
     }
-
-    container.add(this.image)
   }
 
   destroy(): void {
     this.image.destroy()
+    this.txtStats.destroy()
+    this.container.destroy()
+  }
+
+  show(): void {
+    this.container.setVisible(true)
+  }
+
+  hide(): void {
+    this.container.setVisible(false)
   }
 
   // Set whether this card is playable
@@ -121,7 +154,14 @@ export class CardImage {
   }
 
   setPosition(position: [number, number]): void {
-    this.image.setPosition(position[0], position[1])
+    this.container.setPosition(position[0], position[1])
+  }
+
+  // Set the displayed cost of this card, don't change the cost if cost is null
+  setCost(cost: number): void {
+    if (cost !== null) {
+      this.txtStats.setText(`${cost}:${this.card.points}`)
+    }
   }
 
   // Animate the card 'Camera' when it should be given attention
@@ -170,6 +210,26 @@ export class CardImage {
     
   }
 
+  // Scroll the stats text to copy image
+  // Height is how tall the containing sizer is, for manually setting visiblity of txt
+  scrollStats(height: number, padding: number): void {
+    // Set the position of txt to upper left corner of image
+    this.txtStats.copyPosition(this.image)
+    this.txtStats.x -= Space.cardSize/2
+    this.txtStats.y -= Space.cardSize/2
+
+    let imageIsInvisible = !this.image.visible
+    if (imageIsInvisible) {
+      this.txtStats.setVisible(false)
+      return
+    }
+
+    // If txt is high enough, make visible
+    let abovePadding = this.txtStats.y <= padding
+    let belowSizer = height <= this.txtStats.y + this.txtStats.height + padding
+    this.txtStats.setVisible(!abovePadding && !belowSizer)
+  }
+
   private onHover(): () => void {
     let that = this
 
@@ -191,10 +251,11 @@ export class CardImage {
 
       cardInfo.text = that.card.getCardText()
 
+      // TODO Adjust for extra container
       // Copy the position of the card in its local space
-      let container = that.image.parentContainer;
-      let x = that.image.x + container.x;
-      let y = that.image.y + container.y - Space.cardSize/2 - Space.highlightWidth * 2
+      let outerContainer = that.container.parentContainer
+      let x = that.image.x + that.container.x + outerContainer.x 
+      let y = that.image.y + that.container.y + outerContainer.y - Space.cardSize/2 - Space.highlightWidth * 2
 
       // Change alignment of text based on horizontal position on screen
       if (x <= cardInfo.width / 2) // Left
