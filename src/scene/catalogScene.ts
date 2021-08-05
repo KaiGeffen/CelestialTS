@@ -168,7 +168,7 @@ It ends with strong and consistent high-cost cards like Oak.`
 
 export class CryptCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™1™35™36™12™15™19™20")
-	defaultDeck: string = prebuiltDecks.get('Robots')
+	defaultDeck: string = prebuiltDecks.get('Crypt')
 	name = "Crypt"
 	deckDescription: string = 
 `attacks your opponent's hand in the early
