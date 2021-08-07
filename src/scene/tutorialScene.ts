@@ -379,7 +379,7 @@ let exWin: Explanation = new Explanation(
 	"If you score more points than your opponent in a round, you win that round."
 	)
 let exWinCondition: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.wins[0] > 0},
+	function (state) {return state.priority === 0 && state.wins[0] > 0 && state.story.acts.length >= 2},
 	"Once you've won 5 rounds, you win the match. However, you must also be at least 2 wins ahead of your opponent."
 	)
 	
@@ -401,7 +401,7 @@ let exRoundEnd: Explanation = new Explanation(
 	"Once both players have passed in a row, the round ends and points are tallied."
 	)
 let exOpponentHidden: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.story.acts.length >= 1},
+	function (state) {return state.priority === 0 && state.story.acts.length >= 1 && state.story.acts.length >= 2},
 	"Cards your opponent plays are hidden until the round is over."
 	)
 
@@ -410,7 +410,7 @@ let exMaxHand: Explanation = new Explanation(
 	"If you have 6 cards in hand, you can't draw any more."
 	)
 let exGift: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.wins[0] >= 3},
+	function (state) {return state.priority === 0 && state.wins[0] >= 3 && state.story.acts.length >= 2},
 	"Try not to play cards like Gift when your hand is nearly full."
 	)
 
@@ -440,7 +440,7 @@ played before it in the story.`
 	}
 	)
 let exDash: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.wins[0] >= 2},
+	function (state) {return state.priority === 0 && state.wins[0] >= 2 && state.story.acts.length >= 2},
 	"It's better to play a card like Dash early in a round, so that it's worth the most points."
 	)
 
@@ -451,7 +451,7 @@ let exStacks: Explanation = new Explanation(
 	)
 
 let exDiscardShuffle: Explanation = new Explanation(
-	function (state) {return state.priority === 0 && state.wins[0] >= 4},
+	function (state) {return state.priority === 0 && state.wins[0] >= 4 && state.story.acts.length >= 2},
 	"If you would draw from an empty deck, your discard pile is shuffled into your deck."
 	)
 
