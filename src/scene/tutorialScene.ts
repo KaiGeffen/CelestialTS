@@ -347,7 +347,29 @@ let exPass: Explanation = new Explanation(
 
 let exRoundStart: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.maxMana[0] > 1},
-	"At the start of each round, each player draws 2 cards, their maximum mana goes up by 1, and their mana refills."
+	"At the start of each round, each player draws 2 cards, their maximum mana goes up by 1, and their mana refills.",
+	function(scene) {
+		// Make the Recap/Skip button visible
+		scene.btnRecap.setAlpha(1)
+		scene.btnSkip.setAlpha(1)
+
+		let width = 800
+		let height = 450
+		let menu = new Menu(scene, Space.windowWidth/2, Space.windowHeight/2, width, height, true, 10)
+
+		let s = 
+`When a round ends, the story resolves
+from left to right. Each player gains
+points from the cards they played.
+
+That round was tied at 1 point each,
+so neither player earned a win.
+
+To see what happened again, click the
+Recap button above Pass.`
+		let txt = scene.add.text(0, 0, s, StyleSettings.basic).setOrigin(0.5)
+		menu.add(txt)
+	}
 	)
 
 
@@ -397,11 +419,29 @@ let exGift: Explanation = new Explanation(
 let exCardEffects: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2},
 	"Each card has an effect listed after its point value. Any keywords are explained below that.",
-	function(scene) {setSimplifyCardInfo(false)}
+	function(scene) {
+		setSimplifyCardInfo(false)
+
+		let width = 800
+		let height = 400
+		let menu = new Menu(scene, Space.windowWidth/2, Space.windowHeight/2, width, height, true, 10)
+
+		let s = 
+`Wait! In addition to a cost and point value,
+each card has an additional effect.
+
+Doves are visible to your opponent while
+in the story, and disappear once played.
+
+Dash is worth 1 point less for every card
+played before it in the story.`
+		let txt = scene.add.text(0, 0, s, StyleSettings.basic).setOrigin(0.5)
+		menu.add(txt)
+	}
 	)
 let exDash: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2},
-	"It's better to play a card like Dash early in a round, so it's worth the most points."
+	"It's better to play a card like Dash early in a round, so that it's worth the most points."
 	)
 
 let exStacks: Explanation = new Explanation(
