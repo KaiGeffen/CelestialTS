@@ -210,9 +210,15 @@ export class CardImage {
     
   }
 
+  // Set this cardImage as scrollable, effectively causing it to update the stats
+  // position on a low interval
+  setScrollable(height: number, padding: number): void {
+    setInterval(() => this.scrollStats(height, padding), 1)
+  } 
+
   // Scroll the stats text to copy image
   // Height is how tall the containing sizer is, for manually setting visiblity of txt
-  scrollStats(height: number, padding: number): void {
+  private scrollStats(height: number, padding: number): void {
     // Set the position of txt to upper left corner of image
     this.txtStats.copyPosition(this.image)
     this.txtStats.x -= Space.cardSize/2

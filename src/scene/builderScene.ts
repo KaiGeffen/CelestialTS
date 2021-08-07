@@ -165,13 +165,6 @@ class CatalogRegion {
       .setInteractive()
       .on('scroll', function(panel) {
         if (0 < panel.t && panel.t < 1) {
-          for (var i = 0; i < that.cardImages.length; i++) {
-            // Add 10 for top/bottom padding
-            that.cardImages[i].scrollStats(height, 10)
-
-            // TODO This isn't working, fix
-            // that.cardImages[i].removeHighlight()
-          }
           cardInfo.setVisible(false)
         }
       })
@@ -184,10 +177,6 @@ class CatalogRegion {
       // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
       that.panel.t = Math.max(0, that.panel.t)
       that.panel.t = Math.min(1, that.panel.t)
-
-      that.cardImages.forEach((cardImage: CardImage) => {
-        cardImage.scrollStats(height, 10)
-      })
     })
 
     // The layout manager for the panel
@@ -196,14 +185,12 @@ class CatalogRegion {
     // Add each of the cards
     for (var i = 0; i < this.cardpool.length; i++) {
       let cardImage = this.addCard(this.cardpool[i], i)
+      cardImage.setScrollable(height, 10)
 
       sizer.add(cardImage.image)
     }
 
     this.panel.layout()
-    this.cardImages.forEach((cardImage: CardImage) => {
-      cardImage.scrollStats(height, 10)
-    })
 
     // Must add an invisible region below the scroller or else partially visible cards will be clickable on
     // their bottom parts, which cannot be seen and are below the scroller
@@ -241,10 +228,6 @@ class CatalogRegion {
     this.panel.getElement('slider').setVisible(cardCount > 8*4)
 
     this.panel.layout()
-
-    setTimeout(() => {this.cardImages.forEach((cardImage) => {
-      cardImage.scrollStats(this.HEIGHT, 10)
-    })}, 3)
   }
 
   private onClick(card: Card): () => void {
