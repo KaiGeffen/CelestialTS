@@ -15,9 +15,12 @@ interface CardData {
 }
 
 // For the tutorial, the card info shown will only be the mana/points
-var simplifyCardInfo: Boolean = false
-export function setSimplifyCardInfo(simplify: Boolean): void {
+var simplifyCardInfo: boolean = false
+export function setSimplifyCardInfo(simplify: boolean): void {
   simplifyCardInfo = simplify
+}
+export function getSimplifyCardInfo(): boolean {
+  return simplifyCardInfo
 }
 
 export default class Card {

@@ -2,11 +2,12 @@ import "phaser"
 import GameScene from "./gameScene"
 import { StyleSettings, ColorSettings, Space, UserSettings, TutorialBBConfig } from "../settings"
 import ClientState from "../lib/clientState"
-import { setSimplifyCardInfo } from "../lib/card"
+import { setSimplifyCardInfo, getSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import MessageManager from "../lib/message"
+import { cardback } from "../catalog/catalog"
 
 
 class TutorialScene extends GameScene {
@@ -124,6 +125,20 @@ export class TutorialScene1 extends TutorialScene {
 	init(params: any): void {
 		params['explanations'] = explanations1
 		super.init(params)
+	}
+
+	queueState(state: ClientState): void {
+		// While cards are simplified, don't display any visible cards the opponent plays to story
+		if (getSimplifyCardInfo()) {
+			state.story.acts.forEach((act) => {
+				if (act.owner === 1) {
+					act.card = cardback
+				}
+			})
+		}
+
+
+		super.queueState(state)
 	}
 
 	create(): void {
