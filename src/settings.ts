@@ -80,7 +80,7 @@ export const ColorSettings: Record<string, any> = {
 
   priorityRectangle: 0xf0f0f0,
 
-  button: '#292',
+  button: '#209020',
   buttonHighlight: 0xaaaaaa,
 
   announcement: '#703420',
@@ -298,5 +298,4 @@ export const CardStatsConfig = {
     bottom: 5
   }
 }
-
 

@@ -299,7 +299,7 @@ class Explanation {
 
 let exMulligan: Explanation = new Explanation(
 	function (state) {return !state.mulligansComplete[0]},
-	"Click on each card you don't want in your starting hand, then click 'Mulligan' to replace those cards with new ones."
+	`Click on each card you don't want in your starting hand, then click [color=${ColorSettings.button}]Mulligan[/color] to replace those cards with new ones.`
 	)
 
 // TODO This is kinda hacky, don't keep long-term
@@ -311,7 +311,7 @@ let exMulliganOver: Explanation = new Explanation(
 
 let exPlayOrPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
-	"Click on a card in your hand to play it, or click 'Pass'."
+	`Click on a card in your hand to play it, or click [color=${ColorSettings.button}]Pass[/color].`
 	)
 
 
@@ -335,8 +335,8 @@ let exPlay: Explanation = new Explanation(
 	)
 let exPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
-	"Click 'Pass' once you're done playing cards.\
-	Once both players have passed in a row, the round ends and points are tallied.",
+`Click [color=${ColorSettings.button}]Pass[/color] once you're done playing cards.
+Once both players have passed in a row, the round ends and points are tallied.`,
 	function (scene) {
 		// Mana text moves to its normal position
 		scene.tweens.add({
@@ -375,8 +375,8 @@ That round was tied at 1 point each,
 so neither player earned a win.
 
 To see what happened again, click the
-Recap button above Pass.`
-		let txt = scene.add.text(0, 0, s, StyleSettings.basic).setOrigin(0.5)
+[color=${ColorSettings.button}]Recap[/color] button above [color=${ColorSettings.button}]Pass[/color].`
+		let txt = scene.add['rexBBCodeText'](0, 0, s, StyleSettings.basic).setOrigin(0.5)
 		menu.add(txt)
 	}
 	)
@@ -420,7 +420,7 @@ let exMaxHand: Explanation = new Explanation(
 	)
 let exGift: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 3 && state.story.acts.length >= 2},
-	"Try not to play cards like Gift when your hand is nearly full."
+	`Try not to play cards like [color=${ColorSettings.cardText}]Gift[/color] when your hand is nearly full.`
 	)
 
 
@@ -439,18 +439,18 @@ let exCardEffects: Explanation = new Explanation(
 `Wait! In addition to a cost and point value,
 each card has an additional effect.
 
-Doves are visible to your opponent while
+[color=${ColorSettings.cardText}]Doves[/color] are visible to your opponent while
 in the story, and disappear once played.
 
-Dash is worth 1 point less for every card
+[color=${ColorSettings.cardText}]Dash[/color] is worth 1 point less for every card
 played before it in the story.`
-		let txt = scene.add.text(0, 0, s, StyleSettings.basic).setOrigin(0.5)
+		let txt = scene.add['rexBBCodeText'](0, 0, s, StyleSettings.basic).setOrigin(0.5)
 		menu.add(txt)
 	}
 	)
 let exDash: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2 && state.story.acts.length >= 2},
-	"It's better to play a card like Dash early in a round, so that it's worth the most points."
+	`It's better to play a card like [color=${ColorSettings.cardText}]Dash[/color] early in a round, so that it's worth the most points.`
 	)
 
 let exStacks: Explanation = new Explanation(
