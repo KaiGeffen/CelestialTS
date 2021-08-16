@@ -142,6 +142,9 @@ export default class GameScene extends BaseScene {
     
 		let that = this
 
+		// Set the background appearance
+		this.createBackground()
+
 		// Middle line, below everything
 		let midline = this.add.rectangle(0, 650/2, 1100, 20, ColorSettings.middleLine, 1).setOrigin(0, 0.5).setAlpha(0)
 		this.children.sendToBack(midline)
@@ -267,6 +270,22 @@ export default class GameScene extends BaseScene {
 	    this.displaySearchingStatus(true)
 
 	    super.create()
+	}
+
+	// Create the background image/color
+	private createBackground(): void {
+		document.body.style.background = '#080808'
+		
+		document.getElementById('v-menu').setAttribute('hidden', 'true')
+		document.getElementById('v-match').removeAttribute('hidden')
+	}
+
+	// Return to the default background
+	private dismantleBackground(): void {
+		document.body.style.background = '#101035'
+
+		document.getElementById('v-match').setAttribute('hidden', 'true')
+		document.getElementById('v-menu').removeAttribute('hidden')
 	}
 
 	// Create all objects relating to the mulligan phase
@@ -666,6 +685,8 @@ export default class GameScene extends BaseScene {
 	// Called by the BaseScene button which returns to main menu, must alert server that we are exiting
 	beforeExit(): void {
 		this.net.closeSocket()
+
+		this.dismantleBackground()
 	}
 
 	// Display cards in each player's hand
@@ -1261,7 +1282,8 @@ export default class GameScene extends BaseScene {
   	exitScene(): () => void {
   		let that = this
   		return function() {
-  			that.net.closeSocket()
+  			that.beforeExit()
+
   			that.scene.start("BuilderScene")
   		}
   	}

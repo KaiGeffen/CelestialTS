@@ -174,6 +174,7 @@ export class TutorialScene1 extends TutorialScene {
   	onWinExit(): () => void {
   		let that = this
   		return function() {
+  			that.beforeExit()
 	  		that.scene.start("AnubisCatalogScene") 
   		}
   	}
@@ -192,7 +193,7 @@ export class TutorialScene1 extends TutorialScene {
 		let that = this
 
 		return function() {
-			that.net.closeSocket()
+			that.beforeExit()
   			that.scene.start("WelcomeScene")
 		}
   	}
@@ -234,6 +235,7 @@ export class TutorialScene2 extends TutorialScene {
   	onWinExit(): () => void {
   		let that = this
   		return function() {
+  			that.beforeExit()
 	  		that.scene.start("WelcomeScene")
   		}
   	}
@@ -241,7 +243,7 @@ export class TutorialScene2 extends TutorialScene {
   	onRetry(): () => void {
   		let that = this
   		return function() {
-  			that.net.closeSocket()
+  			that.beforeExit()
   			that.scene.start("BuilderScene")
   		}
   	}
