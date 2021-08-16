@@ -72,6 +72,9 @@ export const Space = {
 }
 
 export const ColorSettings: Record<string, any> = {
+  white: '#ffffff',
+  black: '#000000',
+
   background: 0x202070,
   recapBackground: 0x707070,
 
@@ -285,10 +288,10 @@ export const CardStatsConfig = {
   fontSize: '20px',
   color: ColorSettings.cardText,
   backgroundColor: ColorSettings.cardTextBackground,
-  backgroundStrokeColor: "#0005",
-  backgroundStrokeLineWidth: 2,
-  backgroundCornerRadius: 5,
-  backgroundHorizontalGradient: false,
+  // backgroundStrokeColor: "#0005",
+  // backgroundStrokeLineWidth: 2,
+  // backgroundCornerRadius: 5,
+  // backgroundHorizontalGradient: false,
   padding: { 
     left: 5,
     right: 5,
