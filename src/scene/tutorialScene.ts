@@ -302,6 +302,13 @@ let exMulligan: Explanation = new Explanation(
 	"Click on each card you don't want in your starting hand, then click 'Mulligan' to replace those cards with new ones."
 	)
 
+// TODO This is kinda hacky, don't keep long-term
+let exMulliganOver: Explanation = new Explanation(
+	function (state) {return state.mulligansComplete[0]},
+	"",
+	function (scene: TutorialScene) {scene.txtTutorial.setAlpha(0)}
+	)
+
 let exPlayOrPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
 	"Click on a card in your hand to play it, or click 'Pass'."
@@ -487,19 +494,20 @@ let explanations1: Explanation[] = [
 
 let explanations2: Explanation[] = [
 	exMulligan,
+	exMulliganOver
 
-	exPlayOrPass,
-	exRoundEnd,
+	// exPlayOrPass,
+	// exRoundEnd,
 
-	exRoundStart,
-	exOpponentHidden,
+	// exRoundStart,
+	// exOpponentHidden,
 
-	exRoundPriority,
-	exWinCondition,
+	// exRoundPriority,
+	// exWinCondition,
 
-	exMaxHand,
+	// exMaxHand,
 
-	exDiscardShuffle
+	// exDiscardShuffle
 ]
 
 // 	[
