@@ -94,7 +94,6 @@ export const ColorSettings: Record<string, any> = {
   cardHighlight: 0xa0a034,
   cardUnplayable: 0x888888,
 
-  middleLine: 0x702020,
   particle: 0x3030a0,
   mulliganHighlight: 0xffaaaa,
 

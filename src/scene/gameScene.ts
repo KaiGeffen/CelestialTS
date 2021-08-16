@@ -145,10 +145,6 @@ export default class GameScene extends BaseScene {
 		// Set the background appearance
 		this.createBackground()
 
-		// Middle line, below everything
-		let midline = this.add.rectangle(0, 650/2, 1100, 20, ColorSettings.middleLine, 1).setOrigin(0, 0.5).setAlpha(0)
-		this.children.sendToBack(midline)
-
 		// Priority highlight
 		let height = Space.cardSize + 2 * Space.pad
 		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, 1100, height, ColorSettings.priorityRectangle, 0.5).setOrigin(0, 0).setDepth(-1)
@@ -275,7 +271,7 @@ export default class GameScene extends BaseScene {
 	// Create the background image/color
 	private createBackground(): void {
 		document.body.style.background = '#080808'
-		
+
 		document.getElementById('v-menu').setAttribute('hidden', 'true')
 		document.getElementById('v-match').removeAttribute('hidden')
 	}
