@@ -142,9 +142,6 @@ export default class GameScene extends BaseScene {
     
 		let that = this
 
-		// Set the background appearance
-		this.createBackground()
-
 		// Priority highlight
 		let height = Space.cardSize + 2 * Space.pad
 		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, 1100, height, ColorSettings.priorityRectangle, 0.5).setOrigin(0, 0).setDepth(-1)
@@ -268,20 +265,22 @@ export default class GameScene extends BaseScene {
 	    super.create()
 	}
 
-	// Create the background image/color
-	private createBackground(): void {
-		document.body.style.background = '#080808'
+	// Set the background to recap animation / not
+	private setBackground(isRecap: boolean): void {
+		let vMain = document.getElementById('v-main')
+		let vRecap = document.getElementById('v-recap')
 
-		document.getElementById('v-menu').setAttribute('hidden', 'true')
-		document.getElementById('v-match').removeAttribute('hidden')
-	}
+		if (isRecap) {
+			document.body.style.background = '#080808'
 
-	// Return to the default background
-	private dismantleBackground(): void {
-		document.body.style.background = '#101035'
+			vMain.setAttribute('hidden', 'true')
+			vRecap.removeAttribute('hidden')
+		} else {
+			document.body.style.background = '#101035'
 
-		document.getElementById('v-match').setAttribute('hidden', 'true')
-		document.getElementById('v-menu').removeAttribute('hidden')
+			vRecap.setAttribute('hidden', 'true')
+			vMain.removeAttribute('hidden')
+		}
 	}
 
 	// Create all objects relating to the mulligan phase
@@ -443,6 +442,9 @@ export default class GameScene extends BaseScene {
 				return false
 			}
 		}
+
+		// Set the background appropriately
+		this.setBackground(isRecap)
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
@@ -682,7 +684,7 @@ export default class GameScene extends BaseScene {
 	beforeExit(): void {
 		this.net.closeSocket()
 
-		this.dismantleBackground()
+		this.setBackground(false)
 	}
 
 	// Display cards in each player's hand
