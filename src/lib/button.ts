@@ -52,6 +52,11 @@ export default class Button extends Phaser.GameObjects.Text {
 		})
 	}
 
+	glowUntilClicked(): void {
+		this.glow()
+		this.setOnClick(() => this.stopGlow())
+	}
+
 	// Stop the button from glowing, if it is glowing
 	stopGlow(): void {
 		if (this.glowTask !== undefined) {

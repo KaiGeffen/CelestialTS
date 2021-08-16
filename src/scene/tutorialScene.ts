@@ -11,7 +11,7 @@ import { cardback } from "../catalog/catalog"
 
 
 class TutorialScene extends GameScene {
-	txtTutorial:  any //Phaser.GameObjects.Text Is a rexUI TextBox
+	txtTutorial:  any // Is a rexUI TextBox
 	explanations: Explanation[]
 
 	init(params: any): void {
@@ -32,7 +32,7 @@ class TutorialScene extends GameScene {
 			text: this.add['rexBBCodeText'](0, 0, '', TutorialBBConfig)
 		}).setOrigin(0)
 		this.txtTutorial.setInteractive()
-		this.txtTutorial.on('pointerdown', this.doClickTutorialText, this)		
+		this.txtTutorial.on('pointerdown', this.doClickTutorialText, this)
 	}
 
 	displayState(state: ClientState, recap: boolean = false): boolean {
@@ -107,6 +107,8 @@ class TutorialScene extends GameScene {
 
 		if (txt.isTyping) {
 			txt.stop(true)
+			txt.setDepth(20)
+
 		} else {
 			txt.setVisible(false)
 		}
@@ -342,11 +344,17 @@ Once both players have passed in a row, the round ends and points are tallied.`,
 		scene.tweens.add({
 			targets: scene.txtMana,
           	x: Space.windowWidth - Space.pad,
-          	duration: 2000,
-          ease: "Sine.easeInOut",
+          	duration: 1200,
+          	ease: "Sine.easeInOut",
+          	onComplete: function () {
+          		let btn = scene.btnPass
+
+          		btn.setVisible(true)
+          		btn.glowUntilClicked()
+          	}
         })
 
-        scene.btnPass.setVisible(true)
+        // scene.btnPass.setVisible(true)
         // state.btnPass.setX((Space.pad + Space.cardSize) * 3)
 	}
 	)
