@@ -177,7 +177,7 @@ export class TutorialScene1 extends TutorialScene {
   		let that = this
   		return function() {
   			that.beforeExit()
-	  		that.scene.start("AnubisCatalogScene") 
+	  		that.scene.start('ChoiceScene')
   		}
   	}
 

@@ -4,6 +4,7 @@ import WelcomeScene from "./scene/welcomeScene"
 import GameScene from "./scene/gameScene"
 import BuilderScene from "./scene/builderScene"
 import CreditsScene from "./scene/creditsScene"
+import ChoiceScene from "./scene/choiceScene"
 import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, CryptCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
 import { ColorSettings, Space } from "./settings"
@@ -27,6 +28,7 @@ const config: Phaser.Types.Core.GameConfig = {
     createContainer: true
   },
   scene: [PreloadScene, WelcomeScene, CreditsScene,
+  ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, CryptCatalogScene, BastetCatalogScene, HorusCatalogScene,
   GameScene, BuilderScene, TutorialScene1, TutorialScene2],
   scale: {

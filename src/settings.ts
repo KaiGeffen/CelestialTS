@@ -228,6 +228,7 @@ export const TimeSettings: Record<string, number> = {
   recapStateMinimum: 1000,
   recapTween: 500,
   recapTweenWithPause: 400,
+  textSpeed: 15
 }
 
 // Config for the BBCode text objects, used in cardInfo
