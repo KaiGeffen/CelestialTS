@@ -143,7 +143,7 @@ export default class GameScene extends BaseScene {
 		let that = this
 
 		// Middle line, below everything
-		let midline = this.add.rectangle(0, 650/2, 1100, 20, ColorSettings.middleLine, 1).setOrigin(0, 0.5)
+		let midline = this.add.rectangle(0, 650/2, 1100, 20, ColorSettings.middleLine, 1).setOrigin(0, 0.5).setAlpha(0)
 		this.children.sendToBack(midline)
 
 		// Priority highlight
