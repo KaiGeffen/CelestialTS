@@ -288,10 +288,10 @@ export const CardStatsConfig = {
   fontSize: '20px',
   color: ColorSettings.cardText,
   backgroundColor: ColorSettings.cardTextBackground,
-  // backgroundStrokeColor: "#0005",
-  // backgroundStrokeLineWidth: 2,
+  backgroundStrokeColor: "#0005",
+  backgroundStrokeLineWidth: 2,
   // backgroundCornerRadius: 5,
-  // backgroundHorizontalGradient: false,
+  backgroundHorizontalGradient: false,
   padding: { 
     left: 5,
     right: 5,

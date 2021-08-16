@@ -147,9 +147,11 @@ export class CardImage {
   setTransparent(value: Boolean): void {
     if (value) {
       this.image.setAlpha(0.2)
+      this.txtStats.setAlpha(0.2)
     }
     else {
-      this.image.setAlpha(1) 
+      this.image.setAlpha(1)
+      this.txtStats.setAlpha(1)
     }
   }
 
