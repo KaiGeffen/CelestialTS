@@ -446,6 +446,11 @@ class DeckRegion {
       // Add the new deck
       deck.forEach( (card) => this.addCard(card))
 
+      // Make the deck button glow if there are no cards in deck
+      if (deck.length === 0) {
+        this.btnMenu.glowUntilClicked()
+      }
+
       // Show whether each card is legal in this format
       this.showCardsLegality()
 
@@ -514,6 +519,7 @@ class DeckRegion {
     }
   }
 
+  // Update the card count and deck button texts
   private updateText(): void {
     if (this.deck.length === 15) {
       this.btnStart.text = 'Start'
@@ -530,6 +536,11 @@ class DeckRegion {
       if (location.port !== '4949') {
         this.btnStart.input.enabled = false
       }
+    }
+
+    // Deck button stops glowing if there are any cards in it
+    if (this.deck.length > 0) {
+      this.btnMenu.stopGlow()
     }
 
     this.txtHint.setVisible(this.deck.length === 0)
