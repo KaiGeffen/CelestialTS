@@ -139,11 +139,11 @@ class CatalogRegion {
       panel: {
         child: this.scene['rexUI'].add.fixWidthSizer({
           space: {
-            left: Space.pad,
+            // left: Space.pad,
             right: Space.pad - 10,
             top: Space.pad - 10,
             bottom: Space.pad - 10,
-            item: Space.pad,
+            // item: Space.pad,
             line: Space.pad,
           }
         })
@@ -209,26 +209,44 @@ class CatalogRegion {
 
     let cardCount = 0
     for (var i = 0; i < this.cardImages.length; i++) {
+
+      // The first card on each line should have padding from the left side
+      // This is done here instead of in padding options so that stats text doesn't overflow 
+      let leftPadding = 0
+      if (cardCount % Space.cardsPerRow === 0) {
+        leftPadding = Space.pad
+      }
+
       let cardImage = this.cardImages[i]
 
-      // This card is present
+      // Check if this card is present
       if (filterFunction(cardImage.card)) {
         cardCount++
 
         cardImage.image.setVisible(true)
         cardImage.txtStats.setVisible(true)
 
-        sizer.add(cardImage.image)
-        // cardImage.image['rexContainer'].parent.add(cardImage.txtStats)
-        // sizer.add(cardImage.txtStats)
+        // Add the stats text first, size down to overlap with image, resize later
+        sizer.add(cardImage.txtStats, {
+          padding: {
+            left: leftPadding
+          }
+        })
+        cardImage.txtStats.setSize(0, 0)
+
+        // Add the image next, with padding between it and the next card
+        sizer.add(cardImage.image, {
+          padding: {
+            right: Space.pad - 2
+          }
+        })
+       
       }
       else
       {
-        // sizer.remove(cardImage.image)
         cardImage.image.setVisible(false)
         cardImage.txtStats.setVisible(false)
       }
-      console.log(cardImage)
     }
 
     // Hide the slider if all cards fit in panel
@@ -236,12 +254,13 @@ class CatalogRegion {
 
     this.panel.layout()
 
-    // Add the stats text for all visible cards, must be done after layout is called
-    // sizer.add(this.cardImages[0].txtStats, {
-    //   index: 0
-    // })
-    // this.cardImages[0].image['rexContainer'].parent.add(this.cardImages[0].txtStats)
+    // Resize each stats text back to original size
+    this.cardImages.forEach((cardImage) => {
+      cardImage.txtStats.setSize(100, 100)
 
+      // Move up to be atop image
+      cardImage.txtStats.setDepth(1)
+    })
   }
 
   private onClick(card: Card): () => void {
