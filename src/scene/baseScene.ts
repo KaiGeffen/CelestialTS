@@ -157,17 +157,27 @@ export default class BaseScene extends Phaser.Scene {
 	    }, this)
 
 		let text = 
-`>>> Start of Match
-At the start of a match, each player has a shuffled deck of 15 collectible cards that they have chosen.
+`>>> SECTIONS
+Start of match
+Start phase
+Action phase
+End phase
+Winning the match
+Drawing cards
+Precedence
+FAQ
+
+>>> START OF MATCH
+Each player shuffles their 15 card deck.
 Priority (The player who acts first) is determined at random at this time, and is known to both players.
-Each player draws 3 cards and is prompted to mulligan, both players do this at the same time, and know when their opponent is done mulliganing.
+Each player draws 3 cards and is prompted to mulligan, both players do this at the same time, and know when their opponent's mulligan is complete.
 
-To mulligan, a player selects any number of the 3 cards from their starting hand. They then draw that many cards from their deck, and shuffle away the cards that they selected.
+To mulligan, a player selects any number of the 3 cards from their starting hand. They then draw that many cards from their deck, and shuffle away the cards that they selected. Neither player knows which or how many cards their opponent chooses to mulligan.
+
 Once both players have mulliganed, the first round begins.
-
 Each round has the following structure: start phase, action phase, end phase.
 
->>> Start Phase
+>>> START PHASE
 In the start phase, the following things occur in the following order:
 * If one player has won more rounds than the other, that player receives priority. Otherwise, priority is determined at random.
 * Each player's maximum mana increases by 1 if it is less than 10.
@@ -175,7 +185,7 @@ In the start phase, the following things occur in the following order:
 * Each player draws 2 cards.
 * Any 'start of round' effects trigger (ex: Camera).
 
->>> Action Phase
+>>> ACTION PHASE
 During the action phase, the player with priority can either pass, or play a card from their hand (Assuming they have sufficient mana to pay for it).
 If they pass, their opponent is given priority.
 If they play a card, they pay mana from their current mana equal to that card's cost.
@@ -185,25 +195,40 @@ Their opponent is then given priority.
 The action phase ends when both players pass in a row.
 During this phase, each player cannot see the cards their opponent has played.
 
->>> End Phase
+>>> END PHASE
 During the end phase, cards in the story resolve from left to right.
 When a card resolves, it adds its points to its owner's score for the round, then its effect occurs, then it moves to its owner's discard pile.
 Once all cards in the story have resolved, if a player has a positive score that is greater than their opponent's, they are awarded a round win.
 
->>> Winning the game
+>>> WINNING THE MATCH
 Once a player has done either of the following, that player wins the match.
 * Win at least 5 rounds, and have won at least 2 more rounds than their opponent.
 * Win 10 rounds.
 
->>> Drawing
+>>> DRAWING CARDS
 When a player 'draws a card' they do the following:
 * If their hand has 6 cards in it, do nothing.
 * If their deck is empty, their discard pile is shuffled and becomes their deck.
 * They then take the top card of their deck and add it to their hand as the rightmost card.
 
+>>> PRECEDENCE
+Whenever a card would be selected from any zone (ex: Sarcophagus taking a card from your discard pile, or tutor drawing a card) the following system determines which card gets selected:
+* First the deck is traversed from top to bottom, and any card meeting the conditions is picked.
+* Then the discard pile is traversed from top to bottom, and any card meeting the conditions is picked.
+* If no cards are picked this way, the effect does nothing.
+
 >>> FAQ
 Is my deck in the order that I see when hovering over it?
-No, the true order of your deck is hidden from you. The order you see is sorted by cost.`
+No, the true order of your deck is hidden from you. The order you see is sorted by cost.
+
+Can cards that reset (ex: Hurricane) be worth points if they are Nourished?
+No, the card contibutes points first, then its effect resets your points to 0.
+
+How is the Inspire trait different than Inspired?
+Cards give you Inspire the round that they resolve, which in the Start Phase changes to that much Inspired and reflects the extra mana you have gained for that round.
+
+Do Nourish and Starve cancel each other out?
+They do not; you can have both Nourish and Starve at the same time.`
 	    let rulebook = this.add['rexInputText'](
 	    	Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
 	    		type: 'textarea',

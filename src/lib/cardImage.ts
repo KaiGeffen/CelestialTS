@@ -215,7 +215,11 @@ export class CardImage {
   // Set this cardImage as scrollable, effectively causing it to update the stats
   // position on a low interval
   setScrollable(height: number, padding: number): void {
-    setInterval(() => this.scrollStats(height, padding), 1)
+    // NOTE Objects in Rex's scrollable containers must not be within Phaser containers, or they won't be clickable
+    this.container.remove([this.image, this.txtStats])
+    // this.image['rexContainer'].parent.add(this.txtStats)
+
+    // setInterval(() => this.scrollStats(height, padding), 1)
   } 
 
   // Scroll the stats text to copy image

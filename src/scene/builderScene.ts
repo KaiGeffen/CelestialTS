@@ -185,9 +185,10 @@ class CatalogRegion {
     // Add each of the cards
     for (var i = 0; i < this.cardpool.length; i++) {
       let cardImage = this.addCard(this.cardpool[i], i)
-      cardImage.setScrollable(height, 10)
 
       sizer.add(cardImage.image)
+
+      cardImage.setScrollable(height, 10)
     }
 
     this.panel.layout()
@@ -215,19 +216,32 @@ class CatalogRegion {
         cardCount++
 
         cardImage.image.setVisible(true)
+        cardImage.txtStats.setVisible(true)
+
         sizer.add(cardImage.image)
+        // cardImage.image['rexContainer'].parent.add(cardImage.txtStats)
+        // sizer.add(cardImage.txtStats)
       }
       else
       {
         // sizer.remove(cardImage.image)
         cardImage.image.setVisible(false)
+        cardImage.txtStats.setVisible(false)
       }
+      console.log(cardImage)
     }
 
     // Hide the slider if all cards fit in panel
     this.panel.getElement('slider').setVisible(cardCount > 8*4)
 
     this.panel.layout()
+
+    // Add the stats text for all visible cards, must be done after layout is called
+    // sizer.add(this.cardImages[0].txtStats, {
+    //   index: 0
+    // })
+    // this.cardImages[0].image['rexContainer'].parent.add(this.cardImages[0].txtStats)
+
   }
 
   private onClick(card: Card): () => void {
