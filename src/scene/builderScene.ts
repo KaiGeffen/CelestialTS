@@ -890,6 +890,8 @@ export class TutorialBuilderScene extends BuilderScene {
     // Remove the Deck button
     this.btnDeckMenu.setVisible(false)
 
+    this.createDescriptionText()
+
     // Add a Back button
     new Button(this,
       988,
@@ -912,6 +914,15 @@ export class TutorialBuilderScene extends BuilderScene {
     else {
       this.setDeck(this.defaultDeck)
     }
+  }
+
+  private createDescriptionText(): void {
+    let s = "Now try winning a full match against a computer opponent.\n\nThe deck provided below "
+    s += this.deckDescription + "\n\n"
+    s += `If you want to make changes, click any of the cards in the
+deck to remove them, then add cards from the choices above.`
+
+    let txt = this.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
   }
 
   private onBack(): () => void {
