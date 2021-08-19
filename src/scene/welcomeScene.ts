@@ -130,7 +130,7 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doDeckbuilder(): void {
-    this.scene.start("DraftBuilderScene", {isTutorial: false})
+    this.scene.start("BuilderScene", {isTutorial: false})
   }
 
   private doCredits(): void {
@@ -190,6 +190,9 @@ class TutorialRegion {
     let iconBasics = new Icon(this.scene, this.menu, 0, -yDelta, 'Basics', function() {
       that.scene.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
     })
+    let iconDraft = new Icon(this.scene, this.menu, -xDelta, -yDelta, 'Draft', function() {
+      that.scene.scene.start("DraftBuilderScene")
+    })
 
     // Core icons
     let iconAnubis = new Icon(this.scene, this.menu, -xDelta, 0, 'Anubis', function() {
@@ -219,6 +222,7 @@ class TutorialRegion {
     // Unlock (Make clickable and legible) any tutorials which user now has access to
     let completed = UserSettings._get('completedTutorials')
     if (!completed.includes('Basics')) {
+      iconDraft.lock()
       iconAnubis.lock()
       iconRobots.lock()
       iconStalker.lock()
