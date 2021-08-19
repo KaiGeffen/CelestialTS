@@ -983,6 +983,9 @@ export class DraftBuilderScene extends BuilderScene {
   // Button to reset the current draft run
   btnReset: Button
 
+  // Text describing user's current win/loss record
+  txtRecord: Phaser.GameObjects.Text
+
   // The last filter which gives random cards
   lastFilter: (card: Card) => boolean
 
@@ -993,6 +996,14 @@ export class DraftBuilderScene extends BuilderScene {
   }
 
   create(): void {
+    // Show the user their draft results
+    let record = UserSettings._get('draftRecord')
+    let s = `Wins: ${record[0]} | Losses: ${record[1]}`
+    this.txtRecord = this.add.text(500, 300, s, StyleSettings.announcement)
+      .setOrigin(0.5)
+      .setVisible(false)
+      .setDepth(1) // Above catalog background
+
     super.create()
 
     // Set the user's deck to their saved deck
@@ -1020,11 +1031,6 @@ export class DraftBuilderScene extends BuilderScene {
         that.giveRandomChoices()
       })
     })
-
-    // Show the user their draft results
-    let record = UserSettings._get('draftRecord')
-    let s = `Wins: ${record[0]} | Losses: ${record[1]}`
-    this.add.text(500, 300, s, StyleSettings.announcement).setOrigin(0.5)
   }
 
   // Randomly pick 4 cards for user to choose from
@@ -1090,6 +1096,11 @@ export class DraftBuilderScene extends BuilderScene {
 
     // Update the user's currently saved deck code
     UserSettings._set('draftDeckCode', this.getDeckCode())
+
+    // Make the match results visible if deck is now full
+    if (this.deck.length === 15) {
+      this.txtRecord.setVisible(true)
+    }
 
     return result
   }
