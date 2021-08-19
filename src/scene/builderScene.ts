@@ -464,6 +464,7 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   // Create all of the objects used by the filtering system
+  filterObjects: Phaser.GameObjects.GameObject[]
   private createFilters(): void {
     // Add each of the number buttons
     let btnNumbers: Phaser.GameObjects.Text[] = []
@@ -565,6 +566,13 @@ export class BuilderScene extends BuilderSceneShell {
         BaseScene.menuClosing = true
       }
     }, this)
+
+    this.filterObjects = [...btnNumbers, btnClear, btnSearch]
+  }
+
+  // Remove all of the filter objects, used by children of this class
+  removeFilterObjects(): void {
+    this.filterObjects.forEach(function(obj) {obj.destroy()})
   }
 
   private onClickFilterNumber(i: number, btn): () => void {
@@ -892,7 +900,9 @@ export class TutorialBuilderScene extends BuilderScene {
 
     // Change the start button to start a match vs ai
     let that = this
-    this.btnStart.setOnClick(function() {that.startGame()}, true)
+    this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
+
+    this.removeFilterObjects()
 
     this.createDescriptionText()
 
@@ -921,7 +931,7 @@ export class TutorialBuilderScene extends BuilderScene {
   }
 
   // Start the game, exit from this scene and move to gameScene
-  private startGame(): void {
+  private startTutorialMatch(): void {
     this.beforeExit()
 
     let deck = this.deck.map(function(cardImage, index, array) {
@@ -979,6 +989,9 @@ export class DraftBuilderScene extends BuilderScene {
     // Remove the Deck button
     this.btnDeckMenu.setVisible(false)
 
+    this.removeFilterObjects()
+
+    // Give the user a choice of cards to draft
     this.giveRandomChoices()
   }
 
