@@ -18,6 +18,7 @@ export default class DraftMatchScene extends GameScene {
 	}
 
 	// Display what the user sees when they win or lose
+	isWin
 	displayWinLose(state: ClientState): void {
 		let menu
 		if (state.winner !== null) {
@@ -36,13 +37,19 @@ export default class DraftMatchScene extends GameScene {
 			// Remove the ordinary exit events
 			this.btnExit.removeAllListeners('pointerdown')
 		}
+
+		let currentRecord = UserSettings._get('draftRecord')
 		if (state.winner === 0) {
 			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.exitScene())
+
+			this.isWin = true
 
 			this.btnExit.setOnClick(this.exitScene())
 		}
 		else if (state.winner === 1) {
 			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.exitScene())
+
+			this.isWin = false
 
 			this.btnExit.setOnClick(this.exitScene())
 		}
@@ -53,7 +60,7 @@ export default class DraftMatchScene extends GameScene {
   		return function() {
   			that.beforeExit()
 
-  			that.scene.start("DraftBuilderScene")
+  			that.scene.start("DraftBuilderScene", {isWin: that.isWin})
   		}
   	}
 }

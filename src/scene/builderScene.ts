@@ -977,10 +977,21 @@ deck to remove them, then add cards from the choices above.`
 }
 
 export class DraftBuilderScene extends BuilderScene {
-  constructor(params) {
+  // Users win / loss record with their current draft deck
+  matchRecord: [number, number] = [0, 0]
+
+  constructor() {
     super({
       key: "DraftBuilderScene"
     })
+  }
+
+  init(params) {
+    if (params.isWin === true) {
+      this.matchRecord[0] += 1
+      // NOTE This is to erase a supposed loss added below
+      this.matchRecord[1] -= 1
+    }
   }
 
   create(): void {
@@ -997,6 +1008,10 @@ export class DraftBuilderScene extends BuilderScene {
 
     // Give the user a choice of cards to draft
     this.giveRandomChoices()
+
+    // Show the user their draft results
+    let s = `Wins: ${this.matchRecord[0]} | Losses: ${this.matchRecord[1]}`
+    this.add.text(500, 300, s, StyleSettings.announcement).setOrigin(0.5)
   }
 
   // Randomly pick 4 cards for user to choose from
@@ -1035,6 +1050,9 @@ export class DraftBuilderScene extends BuilderScene {
     let deck = this.deck.map(function(cardImage, index, array) {
       return cardImage.card
     })
+
+    // Add a loss now, that gets erased if they win, to handle exiting the match
+    this.matchRecord[1] += 1
 
     this.scene.start("draftMatchScene", {deck: deck})
   }
