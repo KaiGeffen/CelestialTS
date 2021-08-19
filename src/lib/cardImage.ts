@@ -121,6 +121,11 @@ export class CardImage {
     this.container.setVisible(false)
   }
 
+  // Set the callback to fire when this card's image is clicked
+  setOnClick(f: () => void): void {
+    this.image.on('pointerdown', f)
+  }
+
   // Set whether this card is playable
   setPlayable(isPlayable: Boolean): void {
     this.unplayable = !isPlayable

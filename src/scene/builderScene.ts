@@ -17,7 +17,7 @@ class BuilderSceneShell extends BaseScene {
   // Hint telling users how to add cards
   txtHint: Phaser.GameObjects.Text
 
-  // Button allowing user to Start, or showing how many cards are in deck TODO
+  // Button allowing user to Start, or showing the count of cards in their deck
   btnStart: Button
 
   // Deck of cards in user's current deck
@@ -61,11 +61,7 @@ class BuilderSceneShell extends BaseScene {
 
     let cardImage = new CardImage(card, this.deckContainer)
     cardImage.setPosition(this.getDeckCardPosition(index))
-
-    // TODO Pass in a callback to an exposed function instead of deeply involving in the impl of cardImage
-    let image = cardImage.image
-    image.setInteractive()
-    image.on('pointerdown', this.removeCardFromDeck(index), this)
+    cardImage.setOnClick(this.removeCardFromDeck(index))
 
     // Add this to the deck
     this.deck.push(cardImage)
@@ -175,7 +171,6 @@ class BuilderSceneShell extends BaseScene {
 
     let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
 
-    // TODO 988?
     return [-x, -y]
   }
 
@@ -206,14 +201,12 @@ class BuilderSceneShell extends BaseScene {
 
       cardImage.setPosition(this.getDeckCardPosition(i))
 
-      // TODO
-      cardImage.container.setDepth(0)
-      // this.sendToBack(cardImage.container)
+      // Ensure that each card is above all cards to its left
+      cardImage.container.parentContainer.sendToBack(cardImage.container)
 
       // Remove the previous onclick event and add one with the updated index
-      // TODO CardImage should have this as a method
       cardImage.image.removeAllListeners('pointerdown')
-      cardImage.image.on('pointerdown', this.removeCardFromDeck(i), this)
+      cardImage.setOnClick(this.removeCardFromDeck(i))
     }
   }
 }
@@ -233,6 +226,10 @@ export default class BuilderScene extends BuilderSceneShell {
 
   // Button that opens up the deck menu
   btnDeckMenu: Button
+
+  // The costs and string that cards in the catalog are filtered for
+  filterCostAry: boolean[] = []
+  searchText: string = ""
 
   constructor() {
     super({
@@ -355,7 +352,6 @@ export default class BuilderScene extends BuilderSceneShell {
     let width = Space.cardSize * 8 + Space.pad * 10 + 10
     let height = Space.cardSize * 4 + Space.pad * 5
     let background = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
-    this.children.sendToBack(background) // TODO needed?
 
     this.panel = this['rexUI'].add.scrollablePanel({
       x: 0,
@@ -426,11 +422,7 @@ export default class BuilderScene extends BuilderSceneShell {
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.catalogContainer)
     cardImage.image.setPosition(...this.getCatalogCardPosition(index))
-
-    // TODO cardImage should have this as an exposed method
-    let image = cardImage.image
-    image.setInteractive()
-    image.on('pointerdown', this.onClickCatalogCard(card), this)
+    cardImage.setOnClick(this.onClickCatalogCard(card))
 
     // Add this cardImage to the maintained list of cardImages in the catalog
     this.cardCatalog.push(cardImage)
@@ -468,11 +460,6 @@ export default class BuilderScene extends BuilderSceneShell {
       
     }
   }
-
-
-  // TODO explain
-  filterCostAry: boolean[] = []
-  searchText: string = ""
 
   // Create all of the objects used by the filtering system
   private createFilters(): void {
