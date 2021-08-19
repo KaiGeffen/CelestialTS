@@ -980,6 +980,9 @@ export class DraftBuilderScene extends BuilderScene {
   // Users win / loss record with their current draft deck
   matchRecord: [number, number] = [0, 0]
 
+  // Button to reset the current draft run
+  btnReset: Button
+
   // The last filter which gives random cards
   lastFilter: (card: Card) => boolean
 
@@ -989,23 +992,20 @@ export class DraftBuilderScene extends BuilderScene {
     })
   }
 
-  init(params) {
-    if (params.isWin === true) {
-      this.matchRecord[0] += 1
-      // NOTE This is to erase a supposed loss added below
-      this.matchRecord[1] -= 1
-    }
-
-    params.isWin = false
-  }
-
   create(): void {
     super.create()
 
+    // Set the user's deck to their saved deck
+    this.setDeck(UserSettings._get('draftDeckCode'))
+    
     // Remove the Deck button
     this.btnDeckMenu.setVisible(false)
 
+    // Remove all of the objects relating to filtering
     this.removeFilterObjects()
+
+    // Add a button to quit the current run
+    this.btnReset = new Button(this, 988, Space.windowHeight - 100, 'Reset', this.onReset)
 
     // Change the start button to start a match vs a draft opponent
     let that = this
@@ -1022,7 +1022,8 @@ export class DraftBuilderScene extends BuilderScene {
     })
 
     // Show the user their draft results
-    let s = `Wins: ${this.matchRecord[0]} | Losses: ${this.matchRecord[1]}`
+    let record = UserSettings._get('draftRecord')
+    let s = `Wins: ${record[0]} | Losses: ${record[1]}`
     this.add.text(500, 300, s, StyleSettings.announcement).setOrigin(0.5)
   }
 
@@ -1067,17 +1068,25 @@ export class DraftBuilderScene extends BuilderScene {
       return cardImage.card
     })
 
-    // Add a loss now, that gets erased if they win, to handle exiting the match
-    this.matchRecord[1] += 1
-
     this.scene.start("draftMatchScene", {deck: deck})
+  }
+
+  private onReset(): void {
+    UserSettings._set('draftDeckCode', '')
+    UserSettings._set('draftRecord', [0, 0])
+
+    this.scene.restart()
   }
 
   // Remove ability to remove cards from deck by clicking on them
   addCardToDeck(card: Card): boolean {
     let result = super.addCardToDeck(card)
 
+    // Remove any on click events
     this.deck.forEach(function(cardImage, index, array) {cardImage.image.removeAllListeners('pointerdown')})
+
+    // Update the user's currently saved deck code
+    UserSettings._set('draftDeckCode', this.getDeckCode())
 
     return result
   }

@@ -41,6 +41,8 @@ export function ensureUserSettings(): void {
     newDiscord: true, // Discord has a new indicator until clicked
     newTutorial: true, // Tutorial has new indicator when new tutorials are unlocked
     messages: [], // A list of the Messages that user has which are read/unread
+    draftDeckCode: '', // The user's current drafted deck
+    draftRecord: [0, 0], // The win/loss record with current deck
   }
 
   for (var key in defaultSettings) {

@@ -1,6 +1,6 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { StyleSettings, ColorSettings, Space, UserSettings, TutorialBBConfig } from "../settings"
+import { StyleSettings, ColorSettings, Space, UserSettings } from "../settings"
 import ClientState from "../lib/clientState"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
@@ -15,6 +15,11 @@ export default class DraftMatchScene extends GameScene {
 
 	create(): void {
 		super.create()
+
+	    // Add a loss, remove one if they win so that user can't escape the loss with quitting
+	    let newRecord = UserSettings._get('draftRecord')
+	    newRecord[1] += 1
+	    UserSettings._set('draftRecord', newRecord)
 	}
 
 	// Display what the user sees when they win or lose
@@ -60,7 +65,16 @@ export default class DraftMatchScene extends GameScene {
   		return function() {
   			that.beforeExit()
 
-  			that.scene.start("DraftBuilderScene", {isWin: that.isWin})
+  			// Add a win and remove a loss, since a loss was preemptively added
+  			if (that.isWin) {
+  				let newRecord = UserSettings._get('draftRecord')
+  				newRecord[0] += 1
+  				newRecord[1] -= 1
+
+  				UserSettings._set('draftRecord', newRecord)
+  			}
+
+  			that.scene.start("DraftBuilderScene")
   		}
   	}
 }
