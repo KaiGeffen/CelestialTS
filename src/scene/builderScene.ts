@@ -552,7 +552,7 @@ export class BuilderScene extends BuilderSceneShell {
     // Listen for esc or return key, and close search field if seen
     let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
     esc.on('down', function () {
-      if (invisBackground.visible) {
+      if (invisBackground && invisBackground.visible) {
         textboxSearch.setVisible(false)
         invisBackground.setVisible(false)
 
@@ -565,6 +565,7 @@ export class BuilderScene extends BuilderSceneShell {
     // If enter is pressed, toggle search open/closed
     let enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     enter.on('down', function () {
+
       if (invisBackground.visible) {
         textboxSearch.setVisible(false)
         invisBackground.setVisible(false)
@@ -576,12 +577,15 @@ export class BuilderScene extends BuilderSceneShell {
       }
     }, this)
 
-    this.filterObjects = [...btnNumbers, btnClear, btnSearch]
+    this.filterObjects = [...btnNumbers, btnClear, btnSearch, textboxSearch, invisBackground]
   }
 
   // Remove all of the filter objects, used by children of this class
   removeFilterObjects(): void {
     this.filterObjects.forEach(function(obj) {obj.destroy()})
+
+    // Remove the enter event that opens up search
+    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
   }
 
   private onClickFilterNumber(i: number, btn): () => void {
