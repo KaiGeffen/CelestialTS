@@ -13,7 +13,7 @@ export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
 	rulebookContainer: Phaser.GameObjects.Container
 	sliderVolume: any
-	btnMenu: Button
+	private btnMenu: Button
 
 	// A menu is closing currently, so the main menu should not open with this esc event
 	static menuClosing: boolean = false

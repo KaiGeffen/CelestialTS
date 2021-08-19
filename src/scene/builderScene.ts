@@ -13,17 +13,6 @@ import PrebuiltDeck from "../catalog/prebuiltDecks"
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
 
-const DECK_PARAM = 'deck'
-
-// The last deck of cards the player had, which get repopulated each time they enter the deck builder
-var tutorialDeck: Card[] | string = []
-var standardDeck: Card[] = []
-
-
-
-
-// this.container = this.add.container(988, 650).setDepth(1)
-
 class BuilderSceneShell extends BaseScene {
   // Hint telling users how to add cards
   txtHint: Phaser.GameObjects.Text
@@ -37,8 +26,7 @@ class BuilderSceneShell extends BaseScene {
   // Container containing all cards in the deck
   deckContainer: Phaser.GameObjects.Container
 
-  create(): void {
-    // TODO This may need to be done in subclasses
+  precreate(): void {
     super.precreate()
 
     // Hint text - Tell user to click cards to add
@@ -57,7 +45,9 @@ class BuilderSceneShell extends BaseScene {
 
     // Deck container
     this.deckContainer = this.add.container(988, Space.windowHeight)
+  }
 
+  postcreate(): void {
     super.create()
   }
 
@@ -123,9 +113,9 @@ class BuilderSceneShell extends BaseScene {
       deck.forEach( (card) => this.addCardToDeck(card))
 
       // Make the deck button glow if there are no cards in deck
-      if (deck.length === 0) {
-        this.btnMenu.glowUntilClicked()
-      }
+      // if (deck.length === 0) {
+      //   this.btnD.glowUntilClicked()
+      // }
 
       // Show whether each card is legal in this format
       // TODO
@@ -181,9 +171,9 @@ class BuilderSceneShell extends BaseScene {
     }
 
     // Deck button stops glowing if there are any cards in it
-    if (this.deck.length > 0) {
-      this.btnMenu.stopGlow()
-    }
+    // if (this.deck.length > 0) {
+    //   this.btnD.stopGlow()
+    // }
 
     this.txtHint.setVisible(this.deck.length === 0)
   }
@@ -257,7 +247,7 @@ export default class BuilderScene extends BuilderSceneShell {
   }
 
   create(): void {
-    super.create()
+    super.precreate()
 
     this.cardCatalog = []
     this.catalogContainer = this.add.container(0, 0)
@@ -285,6 +275,8 @@ export default class BuilderScene extends BuilderSceneShell {
 
     // Set the user's deck to this deck
     this.setDeck(this.standardDeckCode)
+
+    super.postcreate()
   }
 
   beforeExit(): void {
