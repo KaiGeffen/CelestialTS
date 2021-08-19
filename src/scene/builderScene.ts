@@ -1075,6 +1075,9 @@ export class DraftBuilderScene extends BuilderScene {
     UserSettings._set('draftDeckCode', '')
     UserSettings._set('draftRecord', [0, 0])
 
+    // Reset the choice of 4 cards used
+    this.lastFilter = undefined
+
     this.scene.restart()
   }
 
