@@ -520,15 +520,6 @@ export class BuilderScene extends BuilderSceneShell {
       invisBackground.setVisible(false)
     })
     .on('textchange', function (inputText) {
-      // TODO fix
-      let hasNewline = inputText.text.includes('\n')
-      inputText.text = inputText.text.replace('\n', '')
-      
-      if (hasNewline) {
-        this.setVisible(false)
-        invisBackground.setVisible(false)
-      }
-
       // Filter the visible cards based on the text
       this.searchText = inputText.text
       this.filter()
@@ -542,19 +533,23 @@ export class BuilderScene extends BuilderSceneShell {
     }, this)
 
     // Search button - Opens the search field, just below the base scene buttons
-    let btnSearch = new Button(this, Space.windowWidth, 100, '"i"', function() {
-      this.sound.play('open')
+    let that = this
+    let openSearch = function() {
+      that.sound.play('open')
 
       textboxSearch.setVisible(true)
       invisBackground.setVisible(true)
+
+      cardInfo.setVisible(false)
 
       setTimeout(function() {
         textboxSearch.setFocus()
         textboxSearch.selectAll()
         }, 20)
-      }).setOrigin(1, 0)
+      }
+    let btnSearch = new Button(this, Space.windowWidth, 100, '"i"', openSearch).setOrigin(1, 0)
 
-    // Listen for esc key, and close search field if seen
+    // Listen for esc or return key, and close search field if seen
     let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
     esc.on('down', function () {
       if (invisBackground.visible) {
@@ -564,6 +559,20 @@ export class BuilderScene extends BuilderSceneShell {
         this.sound.play('close')
 
         BaseScene.menuClosing = true
+      }
+    }, this)
+
+    // If enter is pressed, toggle search open/closed
+    let enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
+    enter.on('down', function () {
+      if (invisBackground.visible) {
+        textboxSearch.setVisible(false)
+        invisBackground.setVisible(false)
+
+        this.sound.play('close')
+      }
+      else {
+        openSearch()
       }
     }, this)
 
