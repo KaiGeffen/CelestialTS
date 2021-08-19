@@ -12,393 +12,57 @@ import PrebuiltDeck from "../catalog/prebuiltDecks"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
+// TODO 988
 
-const DECK_PARAM = 'deck'
+class BuilderSceneShell extends BaseScene {
+  // Hint telling users how to add cards
+  txtHint: Phaser.GameObjects.Text
 
-// The last deck of cards the player had, which get repopulated each time they enter the deck builder
-var tutorialDeck: Card[] | string = []
-var standardDeck: Card[] = []
+  // Button allowing user to Start, or showing the count of cards in their deck
+  btnStart: Button
 
+  // Deck of cards in user's current deck
+  deck: CardImage[] = []
 
-export default class BuilderScene extends BaseScene {
-  isTutorial: boolean
+  // Container containing all cards in the deck
+  deckContainer: Phaser.GameObjects.Container
 
-  catalogRegion
-  deckRegion
-  filterRegion
-  menuRegion
-  tutorialRegion
-  modeRegion
-
-  constructor() {
-    super({
-      key: "BuilderScene"
-    })
-  }
-  
-  init(params: any): void {
-    this.isTutorial = params['isTutorial']
-
-    // What the cardpool available is
-    let cardpool = collectibleCards
-    // What the default deck for this mode is
-    let defaultDeck = ""
-    // The last scene, which back button should return user to
-    let lastScene = ""
-    let tutorialName = ""
-
-    if (this.isTutorial) {
-      this.tutorialRegion = new TutorialRegion(this, params['deckDescription'])
-
-      cardpool = params['cardpool']
-      defaultDeck = params['defaultDeck']
-      lastScene = params['lastScene']
-      tutorialName = params['tutorialName']
-    }
-
-    this.deckRegion = new DeckRegion(this, defaultDeck, lastScene, tutorialName)
-    this.catalogRegion = new CatalogRegion(this, this.deckRegion, cardpool)
-    this.filterRegion = new FilterRegion(this, this.catalogRegion)
-
-    // Regions that aren't opened by default
-    this.menuRegion = new MenuRegion(this, this.deckRegion)
-    this.modeRegion = new ModeRegion(this)
-  }
-
-  create(): void {
+  precreate(): void {
     super.precreate()
-    
-    this.catalogRegion.create(this.isTutorial)
-    this.deckRegion.create(this.isTutorial)
 
-    if (this.isTutorial) {
-      this.tutorialRegion.create()
-    }
-    else {
-      this.filterRegion.create()
-      this.menuRegion.create(this.filterRegion, this.deckRegion)
-      this.modeRegion.create(this.deckRegion)
-    }
+    // Hint text - Tell user to click cards to add
+    this.txtHint = this.add.text(
+      988 - 500,
+      Space.windowHeight - 120,
+      'Click a card to add it to your deck',
+      StyleSettings.announcement)
+    .setOrigin(0.5, 0)
 
-    // Filter to ensure that cards are visible/not based on user settings (Expansion hidden, etc)
-    this.filterRegion.filter()
+    // Start button - Show how many cards are in deck, and enable user to start if deck is full
+    this.btnStart = new Button(this,
+      988,
+      Space.windowHeight - 50,
+      'pog')
 
+    // Deck container
+    this.deckContainer = this.add.container(988, Space.windowHeight)
+  }
+
+  postcreate(): void {
     super.create()
   }
 
-  beforeExit(): void {
-    this.deckRegion.beforeExit()
-  }
-}
-
-
-class CatalogRegion {
-  scene: Phaser.Scene
-  container: Phaser.GameObjects.Container
-  cardContainer: Phaser.GameObjects.Container
-  deckRegion
-  cardpool: Card[]
-  cardImages: CardImage[] = []
-  currentPage: number = 0
-
-  // The scrollable panel which the cards are on
-  panel: any
-
-  constructor(scene: Phaser.Scene, deckRegion, cardpool: Card[]) {
-    this.init(scene, deckRegion, cardpool)
-  }
-
-  init(scene, deckRegion, cardpool: Card[]): void {
-    this.scene = scene
-    this.container = this.scene.add.container(0, 0)
-    this.cardContainer = this.scene.add.container(0, 0)
-    this.deckRegion = deckRegion
-    this.cardpool = cardpool
-  }
-
-  HEIGHT = Space.cardSize * 4 + Space.pad * 5
-
-  create(isTutorial): void {
-    let that = this
-
-    let width = Space.cardSize * 8 + Space.pad * 10 + 10
-    let height = this.HEIGHT
-    let background = this.scene['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
-    this.scene.children.sendToBack(background)
-
-    this.panel = this.scene['rexUI'].add.scrollablePanel({
-      x: 0,
-      y: 0,
-      width: width,
-      height: height,
-
-      scrollMode: 0,
-
-      background: background,
-
-      panel: {
-        child: this.scene['rexUI'].add.fixWidthSizer({
-          space: {
-            // left: Space.pad,
-            right: Space.pad - 10,
-            top: Space.pad - 10,
-            bottom: Space.pad - 10,
-            // item: Space.pad,
-            line: Space.pad,
-          }
-        })
-      },
-
-      slider: {
-        input: 'click',
-        track: this.scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-        thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
-      },
-
-      space: {
-        right: 10,
-        top: 10,
-        bottom: 10,
-      }
-    }).setOrigin(0)
-      .layout()
-      .setInteractive()
-      .on('scroll', function(panel) {
-        if (0 < panel.t && panel.t < 1) {
-          cardInfo.setVisible(false)
-        }
-      })
-
-    // Panel updates when scroll wheel is used on it
-    this.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
-      // Scroll panel down by amount wheel moved
-      that.panel.childOY -= dy
-
-      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-      that.panel.t = Math.max(0, that.panel.t)
-      that.panel.t = Math.min(1, that.panel.t)
-    })
-
-    // The layout manager for the panel
-    let sizer = this.panel.getElement('panel')
-
-    // Add each of the cards
-    for (var i = 0; i < this.cardpool.length; i++) {
-      let cardImage = this.addCard(this.cardpool[i], i)
-
-      sizer.add(cardImage.image)
-
-      cardImage.setScrollable(height, 10)
-    }
-
-    this.panel.layout()
-
-    // Must add an invisible region below the scroller or else partially visible cards will be clickable on
-    // their bottom parts, which cannot be seen and are below the scroller
-    let invisBackground = this.scene.add
-      .rectangle(0, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
-      .setOrigin(0)
-      .setInteractive()
-  }
-
-  // Filter which cards are visible
-  // Only cards for which filterFunction is true are visible
-  filter(filterFunction: (card: Card) => boolean): void {
-    let sizer = this.panel.getElement('panel')
-    sizer.clear()
-
-    let cardCount = 0
-    for (var i = 0; i < this.cardImages.length; i++) {
-
-      // The first card on each line should have padding from the left side
-      // This is done here instead of in padding options so that stats text doesn't overflow 
-      let leftPadding = 0
-      if (cardCount % Space.cardsPerRow === 0) {
-        leftPadding = Space.pad
-      }
-
-      let cardImage = this.cardImages[i]
-
-      // Check if this card is present
-      if (filterFunction(cardImage.card)) {
-        cardCount++
-
-        cardImage.image.setVisible(true)
-        cardImage.txtStats.setVisible(true)
-
-        // Add the stats text first, size down to overlap with image, resize later
-        sizer.add(cardImage.txtStats, {
-          padding: {
-            left: leftPadding
-          }
-        })
-        cardImage.txtStats.setSize(0, 0)
-
-        // Add the image next, with padding between it and the next card
-        sizer.add(cardImage.image, {
-          padding: {
-            right: Space.pad - 2
-          }
-        })
-       
-      }
-      else
-      {
-        cardImage.image.setVisible(false)
-        cardImage.txtStats.setVisible(false)
-      }
-    }
-
-    // Hide the slider if all cards fit in panel
-    this.panel.getElement('slider').setVisible(cardCount > 8*4)
-
-    this.panel.layout()
-
-    // Resize each stats text back to original size
-    this.cardImages.forEach((cardImage) => {
-      cardImage.txtStats.setSize(100, 100)
-
-      // Move up to be atop image
-      cardImage.txtStats.setDepth(1)
-    })
-  }
-
-  private onClick(card: Card): () => void {
-    let that = this
-    return function() {
-      if (that.deckRegion.addCard(card)) {
-        that.scene.sound.play('click')
-      }
-      else {
-        that.scene.sound.play('failure') 
-
-        that.scene.cameras.main.flash(300, 0, 0, 0.1)
-      }
-      
-    }
-  }
-
-  private addCard(card: Card, index: number): CardImage {
-    let cardImage = new CardImage(card, this.cardContainer)
-    cardImage.image.setPosition(...this.getCardPosition(index))
-
-    let image = cardImage.image
-    image.setInteractive()
-    image.on('pointerdown', this.onClick(card), this)
-
-    // Add this cardImage to the maintained list of cardImages
-    this.cardImages.push(cardImage)
-
-    return cardImage
-  }
-
-  private getCardPosition(index: number): [number, number] {
-    let pageNumber = Math.floor(index / Space.cardsPerPage)
-    index = index % Space.cardsPerPage
-
-    let col = index % Space.cardsPerRow
-    let xPad = (1 + col) * Space.pad
-    let x = col * Space.cardSize + xPad + Space.cardSize / 2
-    x += pageNumber * Space.pageOffset
-
-    let row = Math.floor(index / Space.cardsPerRow)
-    let yPad = (1 + row) * Space.pad
-    let y = row * Space.cardSize + yPad + Space.cardSize / 2
-
-    return [x, y]
-  }
-}
-
-
-class DeckRegion {
-  scene: Phaser.Scene
-  container: Phaser.GameObjects.Container
-
-  // The previous scene, which the back button should return user to
-  lastScene: string
-
-  // The default deck for this mode
-  defaultDeck: string
-  deck: CardImage[] = []
-  isTutorial: Boolean
-  // The name of this tutorial (Basics, Anubis, etc)
-  tutorialName: string
-
-  txtHint: Phaser.GameObjects.Text
-  btnStart: Button
-  btnMenu: Button
-
-  constructor(scene: Phaser.Scene, defaultDeck: string, lastScene: string, tutorialName: string) {
-    this.init(scene, defaultDeck, lastScene, tutorialName)
-  }
-
-  init(scene: Phaser.Scene, defaultDeck: string, lastScene: string, tutorialName: string): void {
-    this.scene = scene
-    // NOTE Must set depth to 1 so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-    this.container = this.scene.add.container(988, 650).setDepth(1)
-
-    this.defaultDeck = defaultDeck
-    this.lastScene = lastScene
-    this.tutorialName = tutorialName
-  }
-
-  create(isTutorial: boolean): void {
-    let that = this
-
-    this.isTutorial = isTutorial
-
-    // Hint text - tell user to click cards to add
-    this.txtHint = this.scene.add.text(-500, -120, "Click a card to add it to your deck",
-      StyleSettings.announcement).setOrigin(0.5, 0)
-
-    // Start button, the callback is set by the mode region during its init
-    this.btnStart = new Button(this.scene, 0, -50, '')
-    if (isTutorial) {
-      this.btnStart.on('pointerdown', this.startGame, this)
-    }
-
-    // Menu button, the callback is set by menu region during its init
-    this.btnMenu = new Button(this.scene, 0, -100, 'Deck')
-
-    // Remove the Menu button, add a Reset button
-    if (isTutorial) {
-      this.btnMenu.setVisible(false)
-
-      // Instead, include a button to reset to the default tutorial deck
-      let btnReset = new Button(this.scene, 0, -100, 'Reset', this.onReset())
-
-      // Also include a button to return to the catalog scene
-      let btnBack = new Button(this.scene, 0, -150, 'Back', this.onBack())
-
-      this.container.add(btnReset)
-      this.container.add(btnBack)
-    }
-
-    // If this is the tutorial, use that deck, otherwise use the other deck
-    if (isTutorial) {
-      this.setDeck(this.defaultDeck)
-    } else {
-      this.setDeck(standardDeck)
-    }
-
-    // Add all of these objects to this container
-    this.container.add([this.txtHint, this.btnStart, this.btnMenu])
-  }
-
-  addCard(card: Card): boolean {
+  // Add card to the existing deck
+  addCardToDeck(card: Card): boolean {
     if (this.deck.length >= 15) {
       return false
     }
 
     let index = this.deck.length
 
-    let cardImage = new CardImage(card, this.container)
-    cardImage.setPosition(this.getCardPosition(index))
-
-    // TODO Pass in a callback to an exposed function instead of deeply involving in the impl of cardImage
-    let image = cardImage.image
-    image.setInteractive()
-    image.on('pointerdown', this.removeCard(index), this)
+    let cardImage = new CardImage(card, this.deckContainer)
+    cardImage.setPosition(this.getDeckCardPosition(index))
+    cardImage.setOnClick(this.removeCardFromDeck(index))
 
     // Add this to the deck
     this.deck.push(cardImage)
@@ -409,7 +73,6 @@ class DeckRegion {
     // Sort the deck, now done automatically after each card added
     this.sort()
 
-    // Card was added successfully
     return true
   }
 
@@ -444,111 +107,18 @@ class DeckRegion {
       this.updateText()
       
       // Add the new deck
-      deck.forEach( (card) => this.addCard(card))
-
-      // Show whether each card is legal in this format
-      this.showCardsLegality()
+      deck.forEach( (card) => this.addCardToDeck(card))
 
       return true
     }
   }
 
-  // Set the callback for showing the menu
-  setShowMenu(callback: () => void): void {
-    this.btnMenu.setOnClick(callback)
-  }
-
-  // Set the callback for showing the mode menu
-  setModeMenu(callback: () => void): void {
-    this.btnStart.setOnClick(callback)
-  }
-
-  // Before exiting, remember the deck player has
-  beforeExit(): void {
-    if (this.isTutorial) {
-      tutorialDeck = this.deck.map( (cardImage) => cardImage.card)
-    }
-    else {
-      standardDeck = this.deck.map( (cardImage) => cardImage.card)
-    }
-  }
-
-  // Grey out cards in the deck that aren't legal in this format, remove grey from legal cards
-  showCardsLegality(): void {
-    for (var i = 0; i < this.deck.length; i++) {
-
-      // If using the expansion, all cards are legal
-      if (UserSettings._get('useExpansion')) {
-        this.deck[i].setTransparent(false)
-      }
-      else {
-        let isInBase = baseCards.includes(this.deck[i].card)
-
-        this.deck[i].setTransparent(!isInBase)
-      }
-    }
-  }
-
-  // Start the game scene
-  startGame(): void {
-    this.beforeExit()
-
-    // Start the right scene / deck pair
-    if (this.isTutorial) {  
-      this.scene.scene.start("TutorialScene2", {isTutorial: true, tutorialNumber: 2, deck: tutorialDeck, tutorialName: this.tutorialName})
-    }
-    else {
-      this.scene.scene.start("GameScene", {isTutorial: false, deck: standardDeck})
-    }
-  }
-
-  private onReset(): () => void {
-    let that = this
-    return function() {that.setDeck(that.defaultDeck)}
-  }
-
-  private onBack(): () => void {
-    let that = this
-    return function() {
-      that.scene.scene.start(that.lastScene)
-    }
-  }
-
-  private updateText(): void {
-    if (this.deck.length === 15) {
-      this.btnStart.text = 'Start'
-      this.btnStart.input.enabled = true
-      this.btnStart.glow()
-    }
-    else
-    {
-      this.btnStart.text = `${this.deck.length}/15`
-      this.btnStart.stopGlow()
-
-      // TODO Grey out the button, have a disable method for button class
-      // For debugging, allow sub-15 card decks locally
-      if (location.port !== '4949') {
-        this.btnStart.input.enabled = false
-      }
-    }
-
-    this.txtHint.setVisible(this.deck.length === 0)
-  }
-
-  private getCardPosition(index: number): [number, number] {
-    let xPad = Space.pad
-    let x = index * (Space.cardSize - Space.stackOverlap) + xPad + Space.cardSize/2
-
-    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
-
-    return [-x, -y]
-  }
-
-  private removeCard(index: number): () => void {
+  // Remove the card from deck which has given index
+  private removeCardFromDeck(index: number): () => void {
     let that = this
     return function() {
       // Play a sound
-      that.scene.sound.play('click')
+      that.sound.play('click')
 
       // The text for the removed card would otherwise linger
       cardInfo.setVisible(false)
@@ -569,21 +139,43 @@ class DeckRegion {
     }
   }
 
-  // Set each card in deck to have the right position and onClick events for its index
-  private correctDeckIndices(): void {
-    for (var i = 0; i < this.deck.length; i++) {
-      let cardImage = this.deck[i]
-
-      cardImage.setPosition(this.getCardPosition(i))
-
-      this.container.sendToBack(cardImage.container)
-
-      // Remove the previous onclick event and add one with the updated index
-      cardImage.image.removeAllListeners('pointerdown')
-      cardImage.image.on('pointerdown', this.removeCard(i), this)
+  // Update the card count and deck button texts
+  private updateText(): void {
+    if (this.deck.length === 15) {
+      this.btnStart.text = 'Start'
+      this.btnStart.input.enabled = true
+      this.btnStart.glow()
     }
+    else
+    {
+      this.btnStart.text = `${this.deck.length}/15`
+      this.btnStart.stopGlow()
+
+      // TODO Grey out the button, have a disable method for button class
+      // For debugging, allow sub-15 card decks locally
+      if (location.port !== '4949') {
+        this.btnStart.input.enabled = false
+      }
+    }
+
+    // Deck button stops glowing if there are any cards in it
+    // if (this.deck.length > 0) {
+    //   this.btnD.stopGlow()
+    // }
+
+    this.txtHint.setVisible(this.deck.length === 0)
   }
 
+  private getDeckCardPosition(index: number): [number, number] {
+    let xPad = Space.pad
+    let x = index * (Space.cardSize - Space.stackOverlap) + xPad + Space.cardSize/2
+
+    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
+
+    return [-x, -y]
+  }
+
+  // Sort by cost all cards in the deck
   private sort(): void {
     this.deck.sort(function (card1, card2): number {
       if (card1.card.cost < card2.card.cost)
@@ -602,64 +194,310 @@ class DeckRegion {
 
     this.correctDeckIndices()
   }
+
+  // Set each card in deck to have the right position and onClick events for its index
+  private correctDeckIndices(): void {
+    for (var i = 0; i < this.deck.length; i++) {
+      let cardImage = this.deck[i]
+
+      cardImage.setPosition(this.getDeckCardPosition(i))
+
+      // Ensure that each card is above all cards to its left
+      cardImage.container.parentContainer.sendToBack(cardImage.container)
+
+      // Remove the previous onclick event and add one with the updated index
+      cardImage.setOnClick(this.removeCardFromDeck(i), true)
+    }
+  }
 }
 
+export class BuilderScene extends BuilderSceneShell {
+  // Full list of all cards in the catalog (Even those invisible)
+  cardCatalog: CardImage[]
 
-class FilterRegion {
-  scene: Phaser.Scene
-  container: Phaser.GameObjects.Container
-  catalogRegion
+  // Container containing all cards in the catalog
+  catalogContainer: Phaser.GameObjects.Container
+
+  // The scrollable panel which the cards are on
+  panel: any
+
+  // The deck code for this builder that is retained throughout user's session
+  standardDeckCode: string = ''
+
+  // Button that opens up the deck menu
+  btnDeckMenu: Button
+
+  // The costs and string that cards in the catalog are filtered for
   filterCostAry: boolean[] = []
   searchText: string = ""
 
-  constructor(scene: Phaser.Scene, catalogRegion,) {
-    this.init(scene, catalogRegion)
-  }
+  // List of cards available in this builder, overwritten by children
+  cardpool: Card[] = collectibleCards
 
-  init(scene: Phaser.Scene, catalogRegion): void {
-    this.scene = scene
-    this.catalogRegion = catalogRegion
-    this.container = this.scene.add.container(1000, 0)
+  constructor(params = {key: "BuilderScene"}) {
+    super(params)
   }
 
   create(): void {
+    super.precreate()
+
+    this.cardCatalog = []
+    this.catalogContainer = this.add.container(0, 0)
+
+    // Add the catalog
+    this.createCatalog()
+
+    // Add filters
+    this.createFilters()
+    this.filter()
+
+    // Add mode menu
+    let modeMenu: Menu = this.createModeMenu()
+    this.btnStart.setOnClick(() => modeMenu.open())
+
+    // Add deck menu
+    let deckMenuCallback: () => void = this.createDeckMenu()
+
+    // Make a deck menu button with the given callback
+    this.btnDeckMenu = new Button(this,
+      988,
+      Space.windowHeight - 100,
+      'Deck',
+      deckMenuCallback)
+
+    // Set the user's deck to this deck
+    this.setDeck(this.standardDeckCode)
+
+    super.postcreate()
+  }
+
+  beforeExit(): void {
+    this.standardDeckCode = this.getDeckCode()
+  }
+
+  // Filter which cards can be selected in the catalog based on current filtering parameters
+  // Contains an optional function to check, which is passed by children of this class
+  filter(f = function(card: Card) {return true}): void {
+    let filterFunction: (card: Card) => boolean = this.getFilterFunction()
+    let sizer = this.panel.getElement('panel')
+    sizer.clear()
+
+    let cardCount = 0
+    for (var i = 0; i < this.cardCatalog.length; i++) {
+
+      // The first card on each line should have padding from the left side
+      // This is done here instead of in padding options so that stats text doesn't overflow 
+      let leftPadding = 0
+      if (cardCount % Space.cardsPerRow === 0) {
+        leftPadding = Space.pad
+      }
+
+      let cardImage = this.cardCatalog[i]
+
+      // Check if this card is present
+      if (filterFunction(cardImage.card) && f(cardImage.card)) {
+        cardCount++
+
+        cardImage.image.setVisible(true)
+        cardImage.txtStats.setVisible(true)
+
+        // Add the stats text first, size down to overlap with image, resize later
+        sizer.add(cardImage.txtStats, {
+          padding: {
+            left: leftPadding
+          }
+        })
+        cardImage.txtStats.setSize(0, 0)
+
+        // Add the image next, with padding between it and the next card
+        sizer.add(cardImage.image, {
+          padding: {
+            right: Space.pad - 2
+          }
+        })
+       
+      }
+      else
+      {
+        cardImage.image.setVisible(false)
+        cardImage.txtStats.setVisible(false)
+      }
+    }
+
+    // Hide the slider if all cards fit in panel
+    this.panel.getElement('slider').setVisible(cardCount > 8*4)
+
+    this.panel.layout()
+
+    // Resize each stats text back to original size
+    this.cardCatalog.forEach((cardImage) => {
+      cardImage.txtStats.setSize(100, 100)
+
+      // Move up to be atop image
+      cardImage.txtStats.setDepth(1)
+    })
+  }
+
+  // Start the game, exit from this scene and move to gameScene
+  private startGame(): void {
+    this.beforeExit()
+
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+    this.scene.start("GameScene", {isTutorial: false, deck: deck})
+  }
+
+  private createCatalog(): void {
+    let that = this
+
+    let width = Space.cardSize * 8 + Space.pad * 10 + 10
+    let height = Space.cardSize * 4 + Space.pad * 5
+    let background = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
+
+    this.panel = this['rexUI'].add.scrollablePanel({
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+
+      scrollMode: 0,
+
+      background: background,
+
+      panel: {
+        child: this['rexUI'].add.fixWidthSizer({
+          space: {
+            // left: Space.pad,
+            right: Space.pad - 10,
+            top: Space.pad - 10,
+            bottom: Space.pad - 10,
+            // item: Space.pad,
+            line: Space.pad,
+          }
+        })
+      },
+
+      slider: {
+        input: 'click',
+        track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
+        thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+      },
+
+      space: {
+        right: 10,
+        top: 10,
+        bottom: 10,
+      }
+    }).setOrigin(0)
+    .layout()
+    .setInteractive()
+    .on('scroll', function(panel) {
+      if (0 < panel.t && panel.t < 1) {
+        cardInfo.setVisible(false)
+      }
+    })
+
+    // Update panel when mousewheel scrolls
+    this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
+      // Scroll panel down by amount wheel moved
+      that.panel.childOY -= dy
+
+      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+      that.panel.t = Math.max(0, that.panel.t)
+      that.panel.t = Math.min(1, that.panel.t)
+    })
+
+    // Add each of the cards to the catalog
+    let pool = this.cardpool
+    for (var i = 0; i < pool.length; i++) {
+      let cardImage = this.addCardToCatalog(pool[i], i)
+
+      this.panel.getElement('panel').add(cardImage.image)
+
+      cardImage.setScrollable(height, 10)
+    }
+
+    this.panel.layout()
+  }
+
+  private addCardToCatalog(card: Card, index: number): CardImage {
+    let cardImage = new CardImage(card, this.catalogContainer)
+    cardImage.image.setPosition(...this.getCatalogCardPosition(index))
+    cardImage.setOnClick(this.onClickCatalogCard(card))
+
+    // Add this cardImage to the maintained list of cardImages in the catalog
+    this.cardCatalog.push(cardImage)
+
+    return cardImage
+  }
+
+  private getCatalogCardPosition(index: number): [number, number] {
+    let pageNumber = Math.floor(index / Space.cardsPerPage)
+    index = index % Space.cardsPerPage
+
+    let col = index % Space.cardsPerRow
+    let xPad = (1 + col) * Space.pad
+    let x = col * Space.cardSize + xPad + Space.cardSize / 2
+    x += pageNumber * Space.pageOffset
+
+    let row = Math.floor(index / Space.cardsPerRow)
+    let yPad = (1 + row) * Space.pad
+    let y = row * Space.cardSize + yPad + Space.cardSize / 2
+
+    return [x, y]
+  }
+
+  private onClickCatalogCard(card: Card): () => void {
+    let that = this
+    return function() {
+      if (that.addCardToDeck(card)) {
+        that.sound.play('click')
+      }
+      else {
+        that.sound.play('failure') 
+
+        that.cameras.main.flash(300, 0, 0, 0.1)
+      }
+      
+    }
+  }
+
+  // Create all of the objects used by the filtering system
+  filterObjects: Phaser.GameObjects.GameObject[]
+  private createFilters(): void {
     // Add each of the number buttons
     let btnNumbers: Phaser.GameObjects.Text[] = []
     for (var i = 0; i <= 8; i++) {
       this.filterCostAry[i] = false
 
       let y = 50 * (i + 1)
-      let btn = this.scene.add.text(30, y, i.toString(), StyleSettings.basic)
+      let btn = this.add.text(Space.windowWidth - 70, y, i.toString(), StyleSettings.basic)
       
       btn.setInteractive()
-      btn.on('pointerdown', this.onClick(i, btn))
-
-      this.container.add(btn)
+      btn.on('pointerdown', this.onClickFilterNumber(i, btn))
 
       btnNumbers.push(btn)
     }
 
     // Add the X (Clear) button
-    let btnClear = this.scene.add.text(30, 0, 'x', StyleSettings.basic)
+    let btnClear = this.add.text(Space.windowWidth - 70, 0, 'x', StyleSettings.basic)
     btnClear.setInteractive()
-    btnClear.on('pointerdown', this.onClear(btnNumbers))
-    this.container.add(btnClear)
+    btnClear.on('pointerdown', this.onClearFilterNumbers(btnNumbers))
 
-    // Add search functionality
-    let that = this
-
-    let invisBackground = this.scene.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
+    // Add text search menu
+    let invisBackground = this.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
     invisBackground.setInteractive().setVisible(false).setDepth(30)
 
     invisBackground.on('pointerdown', function() {
-      that.scene.sound.play('close')
+      this.sound.play('close')
 
       textboxSearch.setVisible(false)
       invisBackground.setVisible(false)
-    })
+    }, this)
 
     // Text input for the search
-    let textboxSearch = this.scene.add['rexInputText'](
+    let textboxSearch = this.add['rexInputText'](
       Space.windowWidth/2 - 2, Space.windowHeight/2, 620, Space.cardSize, {
         type: 'text',
         text: '',
@@ -682,6 +520,7 @@ class FilterRegion {
       invisBackground.setVisible(false)
     })
     .on('textchange', function (inputText) {
+      // TODO fix
       let hasNewline = inputText.text.includes('\n')
       inputText.text = inputText.text.replace('\n', '')
       
@@ -691,8 +530,8 @@ class FilterRegion {
       }
 
       // Filter the visible cards based on the text
-      that.searchText = inputText.text
-      that.filter()
+      this.searchText = inputText.text
+      this.filter()
 
       // If there is any text, set the search button to glow
       if (inputText.text !== "") {
@@ -700,11 +539,11 @@ class FilterRegion {
       } else {
         btnSearch.stopGlow()
       }
-    })
+    }, this)
 
-    // Button to open the search field, just below the base scene buttons
-    let btnSearch = new Button(this.scene, 100, 100, '"i"', function() {
-      that.scene.sound.play('open')
+    // Search button - Opens the search field, just below the base scene buttons
+    let btnSearch = new Button(this, Space.windowWidth, 100, '"i"', function() {
+      this.sound.play('open')
 
       textboxSearch.setVisible(true)
       invisBackground.setVisible(true)
@@ -714,65 +553,33 @@ class FilterRegion {
         textboxSearch.selectAll()
         }, 20)
       }).setOrigin(1, 0)
-    this.container.add(btnSearch)
 
     // Listen for esc key, and close search field if seen
-    let esc = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+    let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
     esc.on('down', function () {
       if (invisBackground.visible) {
         textboxSearch.setVisible(false)
         invisBackground.setVisible(false)
 
-        this.scene.sound.play('close')
+        this.sound.play('close')
 
         BaseScene.menuClosing = true
       }
     }, this)
+
+    this.filterObjects = [...btnNumbers, btnClear, btnSearch]
   }
 
-  // Filter the visible cards, based on if expansion is used, and the cost settings of this region
-  filter(): void {
-    let that = this
-
-    let costFilter = function(card: Card): boolean {
-      // If no number are selected, all cards are fine
-      if (!that.filterCostAry.includes(true)) {
-        return true
-      }
-      else {
-        return that.filterCostAry[card.cost]
-      }
-    }
-
-    let expansionFilter = function(card: Card): boolean {
-      if (UserSettings._get('useExpansion')) {
-        return true
-      }
-      else {
-        return baseCards.includes(card)
-      }
-    }
-
-    let searchTextFilter = function(card: Card): boolean {
-      return (card.getCardText(true)).toLowerCase().includes(that.searchText.toLowerCase())
-    }
-
-    let andFilter = function(card: Card): boolean {
-      return costFilter(card) && expansionFilter(card) && searchTextFilter(card)
-    }
-
-    that.catalogRegion.filter(andFilter)
+  // Remove all of the filter objects, used by children of this class
+  removeFilterObjects(): void {
+    this.filterObjects.forEach(function(obj) {obj.destroy()})
   }
 
-  private openSearchField(): void {
-
-  }
-
-  private onClick(i: number, btn): () => void {
+  private onClickFilterNumber(i: number, btn): () => void {
     let that = this
 
     return function() {
-      that.scene.sound.play('click')
+      that.sound.play('click')
 
       // Highlight the button, or remove its highlight
       if (btn.isTinted) {
@@ -790,10 +597,10 @@ class FilterRegion {
     }
   }
 
-  private onClear(btns: Phaser.GameObjects.Text[]): () => void {
+  private onClearFilterNumbers(btns: Phaser.GameObjects.Text[]): () => void {
     let that = this
     return function() {
-      that.scene.sound.play('click')
+      that.sound.play('click')
 
       btns.forEach( (btn) => btn.clearTint())
 
@@ -804,178 +611,53 @@ class FilterRegion {
       that.filter()
     }
   }
-}
 
-
-class MenuRegion {
-  scene: Phaser.Scene
-  deckRegion
-  deck: Card[] = []
-
-  // The textbox which contains the deck code for player's current deck
-  textboxDeckCode: any
-  
-  constructor(scene: Phaser.Scene, deckRegion) {
-    this.init(scene, deckRegion)
-  }
-
-  init(scene: Phaser.Scene, deckRegion): void {
-    this.scene = scene
-    this.deckRegion = deckRegion
-  }
-
-  create(filterRegion: any, deckRegion: any): void {
+  // Returns a function which filters cards to see which are selectable
+  private getFilterFunction(): (card: Card) => boolean {
     let that = this
 
-    let width = Space.iconSeparation * 3
-    let height = 640
-
-    let menu = new Menu(
-      this.scene,
-      Space.windowWidth/2,//Space.cardSize * 2 + Space.pad * 3,
-      Space.windowHeight/2,//Space.cardSize + Space.pad * 2,
-      width,
-      height,
-      false,
-      20)
-
-    // Prebuilt decks
-    let y = Space.pad/2 - height/2
-    y += Space.iconSeparation/2 + Space.pad
-
-    let x = -width/2 + Space.iconSeparation/2
-    let i = 0
-    for (const name in PrebuiltDeck.getAll()) {
-      // Create the icon
-      new Icon(this.scene, menu, x, y, name, function() {
-        // Set the built deck to this prebuilt deck
-        that.deckRegion.setDeck(PrebuiltDeck.get(name))
-
-        // Update the textbox
-        that.textboxDeckCode.text = that.getDeckCode()
-      })
-
-      // Move to the next row after 3 icons
-      x += Space.iconSeparation
-      if (++i >= 3) {
-        i = 0
-        x = -width/2 + Space.iconSeparation/2
-        y += Space.iconSeparation
+    // Filter cards based on their cost
+    let costFilter = function(card: Card): boolean {
+      // If no number are selected, all cards are fine
+      if (!that.filterCostAry.includes(true)) {
+        return true
+      }
+      else {
+        return that.filterCostAry[card.cost]
       }
     }
 
-    // Use expansion toggleable button
-    y -= Space.iconSeparation - Space.cardSize/2 - Space.pad
-    let txtUseExpansion = this.scene.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
-
-    let radioExpansion = this.scene.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
-    if (UserSettings._get('useExpansion')) {
-      radioExpansion.setFillStyle(ColorSettings.cardHighlight)
+    // Filter cards based on which expansions are enabled
+    let expansionFilter = function(card: Card): boolean {
+      if (UserSettings._get('useExpansion')) {
+        return true
+      }
+      else {
+        return baseCards.includes(card)
+      }
     }
 
-    radioExpansion.setInteractive()
-    radioExpansion.on('pointerdown', function() {
-      that.scene.sound.play('click')
-
-      // Toggle useExpansion setting
-      UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
-
-      // Reflect the current value of useExpansion setting
-      radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
-
-      // Filter the cards available in catalog
-      filterRegion.filter()
-
-      // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
-      deckRegion.showCardsLegality()
-    })
-
-
-    // Text field for the deck-code
-    y += Space.cardSize * 3/4
-    let txtDeckCode = this.scene.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
-
-    y += Space.pad + Space.cardSize/2
-    this.textboxDeckCode = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
-      type: 'textarea',
-      text: '',
-      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
-      font: 'Arial',
-      fontSize: '36px',
-      color: ColorSettings.button,
-      border: 3,
-      borderColor: '#000',
-      backgroundColor: '#444',
-      maxLength: 15 * 4 - 1
-    })
-    .setOrigin(0)
-    .on('textchange', function (inputText) {
-      inputText.text = inputText.text.replace('\n', '')
-      
-      that.deckRegion.setDeck(inputText.text)
-    })
-    .on('blur', function (inputText) {
-      that.textboxDeckCode.text = that.getDeckCode()
-    })
-    
-    menu.add([
-      txtUseExpansion,
-      radioExpansion,
-      txtDeckCode,
-      this.textboxDeckCode
-      ])
-
-    // Set the callback for deckRegion menu button
-    this.deckRegion.setShowMenu(this.onOpenMenu(menu))
-  }
-
-  private onOpenMenu(menu: Menu): () => void {
-    let that = this
-    return function() {
-      menu.open()
-
-      // Set the deck-code textbox to have current deck described
-      that.textboxDeckCode.text = that.getDeckCode()
-
-      // Wait long enough for the menu to be open, then select the textbox
-      setTimeout(function() {
-        that.textboxDeckCode.setFocus()
-        that.textboxDeckCode.selectAll()
-        }, 20)
+    // Filter cards based on if they contain the string being searched
+    let searchTextFilter = function(card: Card): boolean {
+      return (card.getCardText(true)).toLowerCase().includes(that.searchText.toLowerCase())
     }
+
+    // Filter based on the overlap of all above filters
+    let andFilter = function(card: Card): boolean {
+      return costFilter(card) && expansionFilter(card) && searchTextFilter(card)
+    }
+
+    return andFilter
   }
 
-  // Get the deck code for player's current deck
-  private getDeckCode(): string {
-    let txt = ''
-    this.deckRegion.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
-    txt = txt.slice(0, -1)
-
-    return txt
-  }
-}
-
-
-class ModeRegion {
-  scene: Phaser.Scene
-
-  constructor(scene: Phaser.Scene) {
-    this.init(scene)
-  }
-
-  init(scene: Phaser.Scene): void {
-    this.scene = scene
-  }
-
-  create(deckRegion: any): void {
-    let that = this
-
+  // Create the menu for user to select which mode to play in
+  private createModeMenu(): Menu {
     // Visible background, which does nothing when clicked
     let width = Space.cardSize * 5 + Space.pad * 4
     let height = Space.cardSize * 3 + Space.pad * 2
 
     let menu = new Menu(
-          this.scene,
+          this,
           Space.windowWidth/2,
           Space.windowHeight/2,
           width,
@@ -987,25 +669,26 @@ class ModeRegion {
     let xDelta = (Space.cardSize + Space.pad) * 3/2
     let x = Space.cardSize + Space.pad/2
     let y = -20
+    let that = this
 
-    let iconAI = new Icon(this.scene, menu, -xDelta, y, 'AI', function() {
+    let iconAI = new Icon(this, menu, -xDelta, y, 'AI', function() {
       UserSettings._set('vsAi', true)
-      deckRegion.startGame()
+      that.startGame()
     })
-    let iconPVP = new Icon(this.scene, menu, 0, y, 'PVP', function() {
+    let iconPVP = new Icon(this, menu, 0, y, 'PVP', function() {
       UserSettings._set('vsAi', false)
       // Don't use a matchmaking code
       UserSettings._set('mmCode', '')
-      deckRegion.startGame()
+      that.startGame()
     })
-    let iconPWD = new Icon(this.scene, menu, xDelta, y, 'PWD', function() {
+    let iconPWD = new Icon(this, menu, xDelta, y, 'PWD', function() {
       UserSettings._set('vsAi', false)
-      deckRegion.startGame()
+      that.startGame()
     })
 
     // Matchmaking text region
     y += Space.cardSize/2 + Space.pad
-    let textBoxMM = this.scene.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize/2, {
+    let textBoxMM = this.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize/2, {
       type: 'textarea',
       text: UserSettings._get('mmCode'),
       placeholder: 'Matchmaking code',
@@ -1025,39 +708,362 @@ class ModeRegion {
     })
     menu.add(textBoxMM)
 
-    // Set the callback for deckRegion start button
-    deckRegion.setModeMenu(() => menu.open())
+    return menu
+  }
+
+  // Create the menu for user to select a deck or enter a deck code
+  private createDeckMenu(): () => void {
+    let that = this
+
+    let width = Space.iconSeparation * 3
+    let height = 640
+
+    let menu = new Menu(
+      this,
+      Space.windowWidth/2,//Space.cardSize * 2 + Space.pad * 3,
+      Space.windowHeight/2,//Space.cardSize + Space.pad * 2,
+      width,
+      height,
+      false,
+      20)
+
+    // Prebuilt decks
+    let y = Space.pad/2 - height/2
+    y += Space.iconSeparation/2 + Space.pad
+
+    let x = -width/2 + Space.iconSeparation/2
+    let i = 0
+    for (const name in PrebuiltDeck.getAll()) {
+      // Create the icon
+      new Icon(this, menu, x, y, name, function() {
+        let deckCode = PrebuiltDeck.get(name)
+
+        // Set the built deck to this prebuilt deck
+        that.setDeck(deckCode)
+
+        // Update the textbox
+        textboxDeckCode.text = deckCode
+      })
+
+      // Move to the next row after 3 icons
+      x += Space.iconSeparation
+      if (++i >= 3) {
+        i = 0
+        x = -width/2 + Space.iconSeparation/2
+        y += Space.iconSeparation
+      }
+    }
+
+    // Use expansion toggleable button
+    y -= Space.iconSeparation - Space.cardSize/2 - Space.pad
+    let txtUseExpansion = this.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
+
+    let radioExpansion = this.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    if (UserSettings._get('useExpansion')) {
+      radioExpansion.setFillStyle(ColorSettings.cardHighlight)
+    }
+
+    radioExpansion.setInteractive()
+    radioExpansion.on('pointerdown', function() {
+      that.sound.play('click')
+
+      // Toggle useExpansion setting
+      UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
+
+      // Reflect the current value of useExpansion setting
+      radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
+
+      // Filter the cards available in catalog
+      that.filter()
+
+      // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
+      // TODO
+      // deckRegion.showCardsLegality()
+    })
+
+
+    // Text field for the deck-code
+    y += Space.cardSize * 3/4
+    let txtDeckCode = this.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
+
+    y += Space.pad + Space.cardSize/2
+    let textboxDeckCode = this.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
+      type: 'textarea',
+      text: '',
+      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
+      font: 'Arial',
+      fontSize: '36px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#444',
+      maxLength: 15 * 4 - 1
+    })
+    .setOrigin(0)
+    .on('textchange', function (inputText) {
+      inputText.text = inputText.text.replace('\n', '')
+      
+      that.setDeck(inputText.text)
+    })
+    .on('blur', function (inputText) {
+      textboxDeckCode.text = that.getDeckCode()
+    })
+    
+    menu.add([
+      txtUseExpansion,
+      radioExpansion,
+      txtDeckCode,
+      textboxDeckCode
+      ])
+
+    // Return the callback that happens when this menu is opened
+    return function() {
+      menu.open()
+
+      // Set the deck-code textbox to have current deck described
+      textboxDeckCode.text = that.getDeckCode()
+
+      // Wait long enough for the menu to be open, then select the textbox
+      setTimeout(function() {
+        textboxDeckCode.setFocus()
+        textboxDeckCode.selectAll()
+      }, 20)
+    }
+  }
+
+  // TODO Should this be in shell? If used elsewhere move it up there
+  // Get the deck code for player's current deck
+  getDeckCode(): string {
+    let txt = ''
+    this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+    txt = txt.slice(0, -1)
+
+    return txt
+  }
+
+  // TODO
+  private showCardLegality() {
+
+  }
+
+  // Overwrite just to modify the deck button:
+  setDeck(deckCode: string | Card[]): boolean {
+    // Make the deck button glow if there are no cards in deck
+    if (this.deck.length === 0) {
+      this.btnDeckMenu.glowUntilClicked()
+    }
+
+    return super.setDeck(deckCode)
+  }
+
+  // Add card to the existing deck
+  addCardToDeck(card: Card): boolean {
+    this.btnDeckMenu.stopGlow()
+
+    return super.addCardToDeck(card)
   }
 }
 
+export class TutorialBuilderScene extends BuilderScene {
+  // Dictionary from tutorial name to the code for the deck the user used for that tutorial
+  tutorialDeckCodes: Record<string, string> = {}
 
-class TutorialRegion {
-  scene: Phaser.Scene
-  container: Phaser.GameObjects.Container
+  cardpool: Card[]
+  defaultDeck: string
+  lastScene: string
   deckDescription: string
+  tutorialName: string
 
-  constructor(scene: Phaser.Scene, deckDescription: string) {
-    this.init(scene, deckDescription)
+  constructor(params) {
+    super({
+      key: "TutorialBuilderScene"
+    })
+
+    if (params !== undefined) {
+      this.init(params)
+    }
   }
 
-  init(scene, deckDescription: string): void {
-    this.scene = scene
-    this.container = this.scene.add.container(0, 0)
-    this.deckDescription = deckDescription
+  init(params): void {
+    this.cardpool = params.cardpool
+    this.defaultDeck = params.defaultDeck
+    this.lastScene = params.lastScene
+    this.deckDescription = params.deckDescription
+    this.tutorialName = params.tutorialName
   }
 
   create(): void {
+    super.create()
+
+    // Remove the Deck button
+    this.btnDeckMenu.setVisible(false)
+
+    // Change the start button to start a match vs ai
+    let that = this
+    this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
+
+    this.removeFilterObjects()
+
+    this.createDescriptionText()
+
+    // Add a Back button
+    new Button(this,
+      988,
+      Space.windowHeight - 150,
+      'Back',
+      this.onBack())
+
+    // Add a Reset button
+    new Button(this,
+      988,
+      Space.windowHeight - 100,
+      'Reset',
+      this.onReset())
+
+    // If the user has made a deck for this tutorial, use it
+    let usersCustomDeck = this.tutorialDeckCodes[this.tutorialName]
+    if (usersCustomDeck !== undefined) {
+      this.setDeck(usersCustomDeck)
+    }
+    else {
+      this.setDeck(this.defaultDeck)
+    }
+  }
+
+  // Start the game, exit from this scene and move to gameScene
+  private startTutorialMatch(): void {
+    this.beforeExit()
+
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+
+    this.scene.start("TutorialScene2", {
+      isTutorial: true,
+      tutorialNumber: 2,
+      deck: deck,
+      tutorialName: this.tutorialName
+    })
+  }
+
+  private createDescriptionText(): void {
     let s = "Now try winning a full match against a computer opponent.\n\nThe deck provided below "
     s += this.deckDescription + "\n\n"
     s += `If you want to make changes, click any of the cards in the
 deck to remove them, then add cards from the choices above.`
 
-    let txt = this.scene.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
+    let txt = this.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
+  }
 
-    this.container.add(txt)
+  private onBack(): () => void {
+    let that = this
+    return function() {
+      that.beforeExit()
+      that.scene.start(that.lastScene)
+    }
+  }
+
+  private onReset(): () => void {
+    let that = this
+    return function() {
+      that.setDeck(that.defaultDeck)
+    }
+  }
+
+  beforeExit(): void {
+    // Save user's current deck to this tutorials custom deck
+    this.tutorialDeckCodes[this.tutorialName] = this.getDeckCode()
   }
 }
 
+export class DraftBuilderScene extends BuilderScene {
+  // Users win / loss record with their current draft deck
+  matchRecord: [number, number] = [0, 0]
 
+  constructor() {
+    super({
+      key: "DraftBuilderScene"
+    })
+  }
 
+  init(params) {
+    if (params.isWin === true) {
+      this.matchRecord[0] += 1
+      // NOTE This is to erase a supposed loss added below
+      this.matchRecord[1] -= 1
+    }
+  }
 
+  create(): void {
+    super.create()
+
+    // Remove the Deck button
+    this.btnDeckMenu.setVisible(false)
+
+    this.removeFilterObjects()
+
+    // Change the start button to start a match vs a draft opponent
+    let that = this
+    this.btnStart.setOnClick(function() {that.startDraftMatch()}, true)
+
+    // Give the user a choice of cards to draft
+    this.giveRandomChoices()
+
+    // Show the user their draft results
+    let s = `Wins: ${this.matchRecord[0]} | Losses: ${this.matchRecord[1]}`
+    this.add.text(500, 300, s, StyleSettings.announcement).setOrigin(0.5)
+  }
+
+  // Randomly pick 4 cards for user to choose from
+  private giveRandomChoices(): void {
+    let newPool = []
+    while (newPool.length < 4) {
+
+      // Randomly select a card from all cards
+      let card = collectibleCards[Math.floor(Math.random() * collectibleCards.length)]
+
+      // Only add the card if it isn't in the pool yet
+      if (!newPool.includes(card)) {
+        newPool.push(card)
+      }
+    }
+
+    // Filter based on if the card is in the pool
+    
+    if (this.deck.length < 15) {
+      this.filter(function(card: Card) {
+        return newPool.includes(card)
+      })
+    }
+    // If user has a full deck, filter away all cards
+    else {
+      this.filter(function(card: Card) {
+        return false
+      })
+    }
+  }
+
+  // Start a match against a draft opponent
+  private startDraftMatch(): void {
+    this.beforeExit()
+
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+
+    // Add a loss now, that gets erased if they win, to handle exiting the match
+    this.matchRecord[1] += 1
+
+    this.scene.start("draftMatchScene", {deck: deck})
+  }
+
+  addCardToDeck(card: Card): boolean {
+    let result = super.addCardToDeck(card)
+
+    this.giveRandomChoices()
+
+    this.deck.forEach(function(cardImage, index, array) {cardImage.image.removeAllListeners('pointerdown')})
+
+    return result
+  }
+}

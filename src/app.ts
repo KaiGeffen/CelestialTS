@@ -2,11 +2,14 @@ import "phaser"
 import PreloadScene from "./scene/preloadScene"
 import WelcomeScene from "./scene/welcomeScene"
 import GameScene from "./scene/gameScene"
-import BuilderScene from "./scene/builderScene"
+import { BuilderScene, TutorialBuilderScene, DraftBuilderScene } from "./scene/builderScene"
+
 import CreditsScene from "./scene/creditsScene"
 import ChoiceScene from "./scene/choiceScene"
 import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, CryptCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
+import DraftMatchScene from "./scene/draftMatchScene"
+
 import { ColorSettings, Space } from "./settings"
 
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
@@ -30,7 +33,9 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [PreloadScene, WelcomeScene, CreditsScene,
   ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, CryptCatalogScene, BastetCatalogScene, HorusCatalogScene,
-  GameScene, BuilderScene, TutorialScene1, TutorialScene2],
+  GameScene, DraftMatchScene,
+  BuilderScene, TutorialBuilderScene, DraftBuilderScene,
+  TutorialScene1, TutorialScene2],
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },

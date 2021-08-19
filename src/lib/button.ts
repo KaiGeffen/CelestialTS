@@ -27,8 +27,11 @@ export default class Button extends Phaser.GameObjects.Text {
 	}
 
 	// Set the on click function for this button, removing any previous functions
-	setOnClick(f: () => void): void {
-		// this.removeAllListeners('pointerdown')
+	setOnClick(f: () => void, removeListeners = false): void {
+		if (removeListeners) {
+      		this.removeAllListeners('pointerdown')
+      	}
+
 		this.on('pointerdown', f)
 	}
 

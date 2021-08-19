@@ -105,13 +105,12 @@ class CatalogScene extends BaseScene {
   	}
 
   	private goNext(): void {
-  		this.scene.start("BuilderScene",
-  			{isTutorial: true,
-  				cardpool: this.pool,
-  				defaultDeck: this.defaultDeck,
-  				lastScene: this.name + "CatalogScene",
-  				deckDescription: this.deckDescription,
-  				tutorialName: this.name
+  		this.scene.start("TutorialBuilderScene",
+  			{cardpool: this.pool,
+  			defaultDeck: this.defaultDeck,
+  			lastScene: this.name + "CatalogScene",
+  			deckDescription: this.deckDescription,
+  			tutorialName: this.name
   			}
   			)
   	}
