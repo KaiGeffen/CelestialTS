@@ -198,6 +198,9 @@ export default class BuilderScene extends BuilderSceneShell {
   // Container containing all cards in the catalog
   catalogContainer: Phaser.GameObjects.Container
 
+  // The scrollable panel which the cards are on
+  panel: any
+
   constructor() {
     super({
       key: "BuilderScene"
@@ -213,15 +216,114 @@ export default class BuilderScene extends BuilderSceneShell {
     this.createCatalog()
 
     // Add filters
+    this.createFilters()
 
     // Add mode menu
 
     // Add deck menu
   }
 
+  // Filter which cards can be selected in the catalog based on current filtering parameters
+  private filter(): void {
+    let filterFunction: (card: Card) => boolean = this.getFilterFunction()
+    let sizer = this.panel.getElement('panel')
+    sizer.clear()
+
+    let cardCount = 0
+    for (var i = 0; i < this.cardCatalog.length; i++) {
+
+      // The first card on each line should have padding from the left side
+      // This is done here instead of in padding options so that stats text doesn't overflow 
+      let leftPadding = 0
+      if (cardCount % Space.cardsPerRow === 0) {
+        leftPadding = Space.pad
+      }
+
+      let cardImage = this.cardCatalog[i]
+
+      // Check if this card is present
+      if (filterFunction(cardImage.card)) {
+        cardCount++
+
+        cardImage.image.setVisible(true)
+        cardImage.txtStats.setVisible(true)
+
+        // Add the stats text first, size down to overlap with image, resize later
+        sizer.add(cardImage.txtStats, {
+          padding: {
+            left: leftPadding
+          }
+        })
+        cardImage.txtStats.setSize(0, 0)
+
+        // Add the image next, with padding between it and the next card
+        sizer.add(cardImage.image, {
+          padding: {
+            right: Space.pad - 2
+          }
+        })
+       
+      }
+      else
+      {
+        cardImage.image.setVisible(false)
+        cardImage.txtStats.setVisible(false)
+      }
+    }
+
+    // Hide the slider if all cards fit in panel
+    this.panel.getElement('slider').setVisible(cardCount > 8*4)
+
+    this.panel.layout()
+
+    // Resize each stats text back to original size
+    this.cardCatalog.forEach((cardImage) => {
+      cardImage.txtStats.setSize(100, 100)
+
+      // Move up to be atop image
+      cardImage.txtStats.setDepth(1)
+    })
+  }
+
+  private getFilterFunction(): (card: Card) => boolean {
+    let that = this
+
+    // Filter cards based on their cost
+    let costFilter = function(card: Card): boolean {
+      // If no number are selected, all cards are fine
+      if (!that.filterCostAry.includes(true)) {
+        return true
+      }
+      else {
+        return that.filterCostAry[card.cost]
+      }
+    }
+
+    // Filter cards based on which expansions are enabled
+    let expansionFilter = function(card: Card): boolean {
+      if (UserSettings._get('useExpansion')) {
+        return true
+      }
+      else {
+        return baseCards.includes(card)
+      }
+    }
+
+    // Filter cards based on if they contain the string being searched
+    let searchTextFilter = function(card: Card): boolean {
+      return (card.getCardText(true)).toLowerCase().includes(that.searchText.toLowerCase())
+    }
+
+    // Filter based on the overlap of all above filters
+    let andFilter = function(card: Card): boolean {
+      return costFilter(card) && expansionFilter(card) && searchTextFilter(card)
+    }
+
+    return andFilter
+  }
+
+
   // TODO Put these somewhere
-  // The scrollable panel which the cards are on
-  panel: any
   HEIGHT = Space.cardSize * 4 + Space.pad * 5
   private createCatalog(): void {
     let that = this
@@ -340,6 +442,152 @@ export default class BuilderScene extends BuilderSceneShell {
         that.cameras.main.flash(300, 0, 0, 0.1)
       }
       
+    }
+  }
+
+
+  // TODO explain
+  filterCostAry: boolean[] = []
+  searchText: string = ""
+
+  // Create all of the objects used by the filtering system
+  private createFilters(): void {
+    // Add each of the number buttons
+    let btnNumbers: Phaser.GameObjects.Text[] = []
+    for (var i = 0; i <= 8; i++) {
+      this.filterCostAry[i] = false
+
+      let y = 50 * (i + 1)
+      let btn = this.add.text(Space.windowWidth - 70, y, i.toString(), StyleSettings.basic)
+      
+      btn.setInteractive()
+      btn.on('pointerdown', this.onClickFilterNumber(i, btn))
+
+      btnNumbers.push(btn)
+    }
+
+    // Add the X (Clear) button
+    let btnClear = this.add.text(Space.windowWidth - 70, 0, 'x', StyleSettings.basic)
+    btnClear.setInteractive()
+    btnClear.on('pointerdown', this.onClearFilterNumbers(btnNumbers))
+
+    // Add text search menu
+    let invisBackground = this.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
+    invisBackground.setInteractive().setVisible(false).setDepth(30)
+
+    invisBackground.on('pointerdown', function() {
+      this.sound.play('close')
+
+      textboxSearch.setVisible(false)
+      invisBackground.setVisible(false)
+    }, this)
+
+    // Text input for the search
+    let textboxSearch = this.add['rexInputText'](
+      Space.windowWidth/2 - 2, Space.windowHeight/2, 620, Space.cardSize, {
+        type: 'text',
+        text: '',
+        placeholder: 'Search',
+        tooltip: 'Search for cards by text.',
+        font: 'Arial',
+        fontSize: '80px',
+        color: ColorSettings.button,
+        border: 3,
+        borderColor: '#000',
+        backgroundColor: '#444',
+        maxLength: 12,
+        selectAll: true,
+        id: 'search-field'
+      })
+    .setOrigin(0.5)
+    .setVisible(false)
+    .on('blur', function () {
+      this.setVisible(false)
+      invisBackground.setVisible(false)
+    })
+    .on('textchange', function (inputText) {
+      // TODO fix
+      let hasNewline = inputText.text.includes('\n')
+      inputText.text = inputText.text.replace('\n', '')
+      
+      if (hasNewline) {
+        this.setVisible(false)
+        invisBackground.setVisible(false)
+      }
+
+      // Filter the visible cards based on the text
+      this.searchText = inputText.text
+      this.filter()
+
+      // If there is any text, set the search button to glow
+      if (inputText.text !== "") {
+        btnSearch.glow()
+      } else {
+        btnSearch.stopGlow()
+      }
+    }, this)
+
+    // Search button - Opens the search field, just below the base scene buttons
+    let btnSearch = new Button(this, 100, 100, '"i"', function() {
+      this.sound.play('open')
+
+      textboxSearch.setVisible(true)
+      invisBackground.setVisible(true)
+
+      setTimeout(function() {
+        textboxSearch.setFocus()
+        textboxSearch.selectAll()
+        }, 20)
+      }).setOrigin(1, 0)
+
+    // Listen for esc key, and close search field if seen
+    let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+    esc.on('down', function () {
+      if (invisBackground.visible) {
+        textboxSearch.setVisible(false)
+        invisBackground.setVisible(false)
+
+        this.sound.play('close')
+
+        BaseScene.menuClosing = true
+      }
+    }, this)
+  }
+
+  private onClickFilterNumber(i: number, btn): () => void {
+    let that = this
+
+    return function() {
+      that.sound.play('click')
+
+      // Highlight the button, or remove its highlight
+      if (btn.isTinted) {
+        btn.clearTint()
+      }
+      else
+      {
+        btn.setTint(ColorSettings.filterSelected)
+      }
+
+      // Toggle filtering the chosen number
+      that.filterCostAry[i] = !that.filterCostAry[i]
+
+      that.filter()
+    }
+  }
+
+  private onClearFilterNumbers(btns: Phaser.GameObjects.Text[]): () => void {
+    let that = this
+    return function() {
+      that.sound.play('click')
+
+      btns.forEach( (btn) => btn.clearTint())
+
+      for (var i = 0; i < that.filterCostAry.length; i++) {
+        that.filterCostAry[i] = false
+      }
+
+      that.filter()
     }
   }
 
