@@ -597,6 +597,9 @@ export default class GameScene extends BaseScene {
 			this.txtOpponentPass.setVisible(false)
 		}
 
+		// Play all of the remaining animations
+		this.displayNonHandAnimations(state.animations)
+
 		// Refresh card info to describe what it is currently hovering over
 		refreshCardInfo()
 
@@ -610,39 +613,90 @@ export default class GameScene extends BaseScene {
 		return true
 	}
 
-	// Display all animations associated with this state ABCD
-	// private displayAnimations(animations: [Animation[], Animation[]]): void {
-	// 	let that = this
+	private displayNonHandAnimations(animations: [Animation[], Animation[]]): void {
+		let that = this
 
-	// 	let myAnimations = animations[0]
-	// 	let oppAnimations = animations[1]
+		let myAnimations = animations[0]
+		let oppAnimations = animations[1]
 
-	// 	let delay = 0
-	// 	myAnimations.forEach(function(animation: Animation) {
-	// 		// TODO Everything not going to hand
-	// 		// if (animation.from === Zone.Deck && animation.to === Zone.Hand) {
-	// 		// 	let cardImage = that.addCard(animation.card, 0, that.deckContainer, 0)
+		let delay = 0
+		myAnimations.forEach(function(animation: Animation) {
+			if (animation.to !== Zone.Hand) {
+				// TODO Y yoyo animation if discard pile is involved
+				let card: CardImage
 
-	// 		// 	let x = that.getCardPosition(4, that.handContainer, 0)[0]
+				console.log(animation)
+				switch(animation.from) {
+					case Zone.Hand:
+					card = that.addCard(animation.card, 0, that.handContainer, 0)
+					break
 
-	// 		// 	that.tweens.add({
-	// 		// 		targets: cardImage.container,
-	// 		// 		x: x,
-	// 		// 		delay: delay,
-	// 		// 		duration: TimeSettings.recapTweenWithPause,
-	// 		// 		onStart: function (tween, targets, _)
-	// 		// 		{
-	// 		// 			cardImage.container.setVisible(true)
-	// 		// 		}
-	// 		// 	})
-	// 		// 	console.log(delay)
+					case Zone.Deck:
+					card = that.addCard(animation.card, 0, that.stackContainer, 0)
+					break
 
-	// 		// 	delay += TimeSettings.recapTween
-	// 		}
+					case Zone.Discard:
+					card = that.addCard(animation.card, 1, that.stackContainer, 0)
+					break
 
-			
-	// 	}
-	// }
+					// case Zone.Story:
+					// 	card = that.addCard(animation.card, 0, that.stackContainer, 0)
+					// 	break
+
+					// case Zone.Create: TODO
+					// 	card = that.addCard(animation.card, 0, that.stackContainer, 0)
+					// 	break
+
+					case Zone.Shuffle: // TODO
+					card = that.addCard(cardback, 0, that.stackContainer, 0)
+					break
+				}
+
+				let x, y
+				switch(animation.to) {
+					// case Zone.Deck:
+					case Zone.Deck:
+					[x, y] = that.getCardPosition(0, that.stackContainer, 0)
+					break
+
+					case Zone.Discard:
+					[x, y] = that.getCardPosition(1, that.stackContainer, 0)
+					break
+					// case Zone.Story:
+				}
+
+				that.tweens.add({
+					targets: card.container,
+					x: x,
+					y: y,
+					delay: delay,
+					duration: TimeSettings.recapTweenWithPause,
+					onStart: function (tween, targets, _)
+					{
+						card.show()
+					}
+				})
+
+				// If discard pile is involved, yo-yo in towards the center of board
+				if (animation.to === Zone.Discard || animation.from === Zone.Discard) {
+					// Towards center by 2 card sizes
+					let y = (card.container.y < Space.windowHeight/2) ? card.container.y + Space.cardSize*2 : card.container.y - Space.cardSize*2
+					
+					that.tweens.add({
+						targets: card.container,
+						y: y,
+						delay: delay,
+						duration: TimeSettings.recapTweenWithPause/2,
+						yoyo: true
+					})
+				}
+			}
+
+			// TODO Shuffle hits this
+			delay += TimeSettings.recapTween
+		}
+	}
+
 
 	// Callback for pressing the Pass button
 	private onPass(): () => void {
@@ -799,6 +853,7 @@ export default class GameScene extends BaseScene {
 								}
 							})
 							break
+						// case Zone.Create: TODO
 					}
 				}
 			}
