@@ -1009,14 +1009,28 @@ export class DraftBuilderScene extends BuilderScene {
       }
     }
 
-    this.filter(function(card: Card) {
-      return newPool.includes(card)
-    })
+    // Filter based on if the card is in the pool
+    
+    if (this.deck.length < 15) {
+      this.filter(function(card: Card) {
+        return newPool.includes(card)
+      })
+    }
+    // If user has a full deck, filter away all cards
+    else {
+      this.filter(function(card: Card) {
+        return false
+      })
+    }
   }
 
   addCardToDeck(card: Card): boolean {
+    let result = super.addCardToDeck(card)
+
     this.giveRandomChoices()
 
-    return super.addCardToDeck(card)
+    this.deck.forEach(function(cardImage, index, array) {cardImage.image.removeAllListeners('pointerdown')})
+
+    return result
   }
 }
