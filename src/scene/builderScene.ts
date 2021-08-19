@@ -112,15 +112,6 @@ class BuilderSceneShell extends BaseScene {
       // Add the new deck
       deck.forEach( (card) => this.addCardToDeck(card))
 
-      // Make the deck button glow if there are no cards in deck
-      // if (deck.length === 0) {
-      //   this.btnD.glowUntilClicked()
-      // }
-
-      // Show whether each card is legal in this format
-      // TODO
-      // this.showCardsLegality()
-
       return true
     }
   }
@@ -240,6 +231,9 @@ export default class BuilderScene extends BuilderSceneShell {
   // The deck code for this builder that is retained throughout user's session
   standardDeckCode: string = ''
 
+  // Button that opens up the deck menu
+  btnDeckMenu: Button
+
   constructor() {
     super({
       key: "BuilderScene"
@@ -267,7 +261,7 @@ export default class BuilderScene extends BuilderSceneShell {
     let deckMenuCallback: () => void = this.createDeckMenu()
 
     // Make a deck menu button with the given callback
-    new Button(this,
+    this.btnDeckMenu = new Button(this,
       988,
       Space.windowHeight - 100,
       'Deck',
@@ -854,14 +848,23 @@ export default class BuilderScene extends BuilderSceneShell {
   private showCardLegality() {
 
   }
+
+  // Overwrite just to modify the deck button:
+  setDeck(deckCode: string | Card[]): boolean {
+    // Make the deck button glow if there are no cards in deck
+    if (this.deck.length === 0) {
+      this.btnDeckMenu.glowUntilClicked()
+    }
+
+    return super.setDeck(deckCode)
+  }
+
+  // Add card to the existing deck
+  addCardToDeck(card: Card): boolean {
+    this.btnDeckMenu.stopGlow()
+
+    return super.addCardToDeck(card)
+  }
+
 }
-
-
-
-
-
-
-
-
-
 
