@@ -8,6 +8,8 @@ import CreditsScene from "./scene/creditsScene"
 import ChoiceScene from "./scene/choiceScene"
 import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, CryptCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
+import DraftMatchScene from "./scene/draftMatchScene"
+
 import { ColorSettings, Space } from "./settings"
 
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
@@ -31,7 +33,7 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [PreloadScene, WelcomeScene, CreditsScene,
   ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, CryptCatalogScene, BastetCatalogScene, HorusCatalogScene,
-  GameScene,
+  GameScene, DraftMatchScene,
   BuilderScene, TutorialBuilderScene, DraftBuilderScene,
   TutorialScene1, TutorialScene2],
   scale: {

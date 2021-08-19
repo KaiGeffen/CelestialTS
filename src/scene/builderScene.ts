@@ -991,6 +991,10 @@ export class DraftBuilderScene extends BuilderScene {
 
     this.removeFilterObjects()
 
+    // Change the start button to start a match vs a draft opponent
+    let that = this
+    this.btnStart.setOnClick(function() {that.startDraftMatch()}, true)
+
     // Give the user a choice of cards to draft
     this.giveRandomChoices()
   }
@@ -1022,6 +1026,17 @@ export class DraftBuilderScene extends BuilderScene {
         return false
       })
     }
+  }
+
+  // Start a match against a draft opponent
+  private startDraftMatch(): void {
+    this.beforeExit()
+
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+
+    this.scene.start("draftMatchScene", {deck: deck})
   }
 
   addCardToDeck(card: Card): boolean {
