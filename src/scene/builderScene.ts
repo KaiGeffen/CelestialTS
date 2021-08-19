@@ -89,6 +89,52 @@ class BuilderSceneShell extends BaseScene {
     return true
   }
 
+  // Set the current deck, returns true if deck was valid
+  setDeck(deckCode: string | Card[]): boolean {
+    let deck: Card[]
+    if (typeof deckCode === "string") {
+      // Get the deck from this code
+      let cardCodes: string[] = deckCode.split(':')
+
+      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
+
+      if (deckCode === '') {
+        deck = []
+      }
+    }
+    else {
+      deck = deckCode
+    }
+
+    // Check if the deck is valid, then create it if so
+    if (deck.includes(undefined))
+    {
+      return false
+    }
+    else
+    {
+      // Remove the current deck
+      this.deck.forEach( (cardImage) => cardImage.destroy())
+      this.deck = []
+      cardInfo.setVisible(false)
+      this.updateText()
+      
+      // Add the new deck
+      deck.forEach( (card) => this.addCardToDeck(card))
+
+      // Make the deck button glow if there are no cards in deck
+      if (deck.length === 0) {
+        this.btnMenu.glowUntilClicked()
+      }
+
+      // Show whether each card is legal in this format
+      // TODO
+      // this.showCardsLegality()
+
+      return true
+    }
+  }
+
   // Remove the card from deck which has given index
   private removeCardFromDeck(index: number): () => void {
     let that = this
@@ -193,13 +239,16 @@ class BuilderSceneShell extends BaseScene {
 
 export default class BuilderScene extends BuilderSceneShell {
   // Full list of all cards in the catalog (Even those invisible)
-  cardCatalog: CardImage[] = []
+  cardCatalog: CardImage[]
 
   // Container containing all cards in the catalog
   catalogContainer: Phaser.GameObjects.Container
 
   // The scrollable panel which the cards are on
   panel: any
+
+  // The deck code for this builder that is retained throughout user's session
+  standardDeckCode: string = ''
 
   constructor() {
     super({
@@ -210,6 +259,7 @@ export default class BuilderScene extends BuilderSceneShell {
   create(): void {
     super.create()
 
+    this.cardCatalog = []
     this.catalogContainer = this.add.container(0, 0)
 
     // Add the catalog
@@ -224,6 +274,21 @@ export default class BuilderScene extends BuilderSceneShell {
     this.btnStart.setOnClick(() => modeMenu.open())
 
     // Add deck menu
+    let deckMenuCallback: () => void = this.createDeckMenu()
+
+    // Make a deck menu button with the given callback
+    new Button(this,
+      988,
+      Space.windowHeight - 100,
+      'Deck',
+      deckMenuCallback)
+
+    // Set the user's deck to this deck
+    this.setDeck(this.standardDeckCode)
+  }
+
+  beforeExit(): void {
+    this.standardDeckCode = this.getDeckCode()
   }
 
   // Filter which cards can be selected in the catalog based on current filtering parameters
@@ -298,51 +363,11 @@ export default class BuilderScene extends BuilderSceneShell {
     this.scene.start("GameScene", {isTutorial: false, deck: deck})
   }
 
-  private getFilterFunction(): (card: Card) => boolean {
-    let that = this
-
-    // Filter cards based on their cost
-    let costFilter = function(card: Card): boolean {
-      // If no number are selected, all cards are fine
-      if (!that.filterCostAry.includes(true)) {
-        return true
-      }
-      else {
-        return that.filterCostAry[card.cost]
-      }
-    }
-
-    // Filter cards based on which expansions are enabled
-    let expansionFilter = function(card: Card): boolean {
-      if (UserSettings._get('useExpansion')) {
-        return true
-      }
-      else {
-        return baseCards.includes(card)
-      }
-    }
-
-    // Filter cards based on if they contain the string being searched
-    let searchTextFilter = function(card: Card): boolean {
-      return (card.getCardText(true)).toLowerCase().includes(that.searchText.toLowerCase())
-    }
-
-    // Filter based on the overlap of all above filters
-    let andFilter = function(card: Card): boolean {
-      return costFilter(card) && expansionFilter(card) && searchTextFilter(card)
-    }
-
-    return andFilter
-  }
-
-
-  // TODO Put these somewhere
-  HEIGHT = Space.cardSize * 4 + Space.pad * 5
   private createCatalog(): void {
     let that = this
 
     let width = Space.cardSize * 8 + Space.pad * 10 + 10
-    let height = this.HEIGHT
+    let height = Space.cardSize * 4 + Space.pad * 5
     let background = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
     this.children.sendToBack(background) // TODO needed?
 
@@ -604,6 +629,44 @@ export default class BuilderScene extends BuilderSceneShell {
     }
   }
 
+  // Returns a function which filters cards to see which are selectable
+  private getFilterFunction(): (card: Card) => boolean {
+    let that = this
+
+    // Filter cards based on their cost
+    let costFilter = function(card: Card): boolean {
+      // If no number are selected, all cards are fine
+      if (!that.filterCostAry.includes(true)) {
+        return true
+      }
+      else {
+        return that.filterCostAry[card.cost]
+      }
+    }
+
+    // Filter cards based on which expansions are enabled
+    let expansionFilter = function(card: Card): boolean {
+      if (UserSettings._get('useExpansion')) {
+        return true
+      }
+      else {
+        return baseCards.includes(card)
+      }
+    }
+
+    // Filter cards based on if they contain the string being searched
+    let searchTextFilter = function(card: Card): boolean {
+      return (card.getCardText(true)).toLowerCase().includes(that.searchText.toLowerCase())
+    }
+
+    // Filter based on the overlap of all above filters
+    let andFilter = function(card: Card): boolean {
+      return costFilter(card) && expansionFilter(card) && searchTextFilter(card)
+    }
+
+    return andFilter
+  }
+
   // Create the menu for user to select which mode to play in
   private createModeMenu(): Menu {
     // Visible background, which does nothing when clicked
@@ -663,6 +726,141 @@ export default class BuilderScene extends BuilderSceneShell {
     menu.add(textBoxMM)
 
     return menu
+  }
+
+  // Create the menu for user to select a deck or enter a deck code
+  private createDeckMenu(): () => void {
+    let that = this
+
+    let width = Space.iconSeparation * 3
+    let height = 640
+
+    let menu = new Menu(
+      this,
+      Space.windowWidth/2,//Space.cardSize * 2 + Space.pad * 3,
+      Space.windowHeight/2,//Space.cardSize + Space.pad * 2,
+      width,
+      height,
+      false,
+      20)
+
+    // Prebuilt decks
+    let y = Space.pad/2 - height/2
+    y += Space.iconSeparation/2 + Space.pad
+
+    let x = -width/2 + Space.iconSeparation/2
+    let i = 0
+    for (const name in PrebuiltDeck.getAll()) {
+      // Create the icon
+      new Icon(this, menu, x, y, name, function() {
+        let deckCode = PrebuiltDeck.get(name)
+
+        // Set the built deck to this prebuilt deck
+        that.setDeck(deckCode)
+
+        // Update the textbox
+        textboxDeckCode.text = deckCode
+      })
+
+      // Move to the next row after 3 icons
+      x += Space.iconSeparation
+      if (++i >= 3) {
+        i = 0
+        x = -width/2 + Space.iconSeparation/2
+        y += Space.iconSeparation
+      }
+    }
+
+    // Use expansion toggleable button
+    y -= Space.iconSeparation - Space.cardSize/2 - Space.pad
+    let txtUseExpansion = this.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
+
+    let radioExpansion = this.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    if (UserSettings._get('useExpansion')) {
+      radioExpansion.setFillStyle(ColorSettings.cardHighlight)
+    }
+
+    radioExpansion.setInteractive()
+    radioExpansion.on('pointerdown', function() {
+      that.sound.play('click')
+
+      // Toggle useExpansion setting
+      UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
+
+      // Reflect the current value of useExpansion setting
+      radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
+
+      // Filter the cards available in catalog
+      that.filter()
+
+      // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
+      // TODO
+      // deckRegion.showCardsLegality()
+    })
+
+
+    // Text field for the deck-code
+    y += Space.cardSize * 3/4
+    let txtDeckCode = this.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
+
+    y += Space.pad + Space.cardSize/2
+    let textboxDeckCode = this.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
+      type: 'textarea',
+      text: '',
+      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
+      font: 'Arial',
+      fontSize: '36px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#444',
+      maxLength: 15 * 4 - 1
+    })
+    .setOrigin(0)
+    .on('textchange', function (inputText) {
+      inputText.text = inputText.text.replace('\n', '')
+      
+      that.setDeck(inputText.text)
+    })
+    .on('blur', function (inputText) {
+      textboxDeckCode.text = that.getDeckCode()
+    })
+    
+    menu.add([
+      txtUseExpansion,
+      radioExpansion,
+      txtDeckCode,
+      textboxDeckCode
+      ])
+
+    // Return the callback that happens when this menu is opened
+    return function() {
+      menu.open()
+
+      // Set the deck-code textbox to have current deck described
+      textboxDeckCode.text = that.getDeckCode()
+
+      // Wait long enough for the menu to be open, then select the textbox
+      setTimeout(function() {
+        textboxDeckCode.setFocus()
+        textboxDeckCode.selectAll()
+      }, 20)
+    }
+  }
+
+  // TODO Should this be in shell? If used elsewhere move it up there
+  // Get the deck code for player's current deck
+  private getDeckCode(): string {
+    let txt = ''
+    this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+    txt = txt.slice(0, -1)
+
+    return txt
+  }
+
+  // TODO
+  private showCardLegality() {
+
   }
 }
 
