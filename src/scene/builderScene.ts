@@ -12,6 +12,7 @@ import PrebuiltDeck from "../catalog/prebuiltDecks"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
+// TODO 988
 
 class BuilderSceneShell extends BaseScene {
   // Hint telling users how to add cards
@@ -211,7 +212,7 @@ class BuilderSceneShell extends BaseScene {
   }
 }
 
-export default class BuilderScene extends BuilderSceneShell {
+export class BuilderScene extends BuilderSceneShell {
   // Full list of all cards in the catalog (Even those invisible)
   cardCatalog: CardImage[]
 
@@ -231,10 +232,11 @@ export default class BuilderScene extends BuilderSceneShell {
   filterCostAry: boolean[] = []
   searchText: string = ""
 
-  constructor() {
-    super({
-      key: "BuilderScene"
-    })
+  // List of cards available in this builder, overwritten by children
+  cardpool: Card[] = collectibleCards
+
+  constructor(params = {key: "BuilderScene"}) {
+    super(params)
   }
 
   create(): void {
@@ -407,9 +409,9 @@ export default class BuilderScene extends BuilderSceneShell {
     })
 
     // Add each of the cards to the catalog
-    let pool = collectibleCards
-    for (var i = 0; i < collectibleCards.length; i++) {
-      let cardImage = this.addCardToCatalog(collectibleCards[i], i)
+    let pool = this.cardpool
+    for (var i = 0; i < pool.length; i++) {
+      let cardImage = this.addCardToCatalog(pool[i], i)
 
       this.panel.getElement('panel').add(cardImage.image)
 
@@ -823,7 +825,7 @@ export default class BuilderScene extends BuilderSceneShell {
 
   // TODO Should this be in shell? If used elsewhere move it up there
   // Get the deck code for player's current deck
-  private getDeckCode(): string {
+  getDeckCode(): string {
     let txt = ''
     this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
     txt = txt.slice(0, -1)
@@ -852,6 +854,84 @@ export default class BuilderScene extends BuilderSceneShell {
 
     return super.addCardToDeck(card)
   }
+}
 
+export class TutorialBuilderScene extends BuilderScene {
+  // Dictionary from tutorial name to the code for the deck the user used for that tutorial
+  tutorialDeckCodes: Record<string, string> = {}
+
+  cardpool: Card[]
+  defaultDeck: string
+  lastScene: string
+  deckDescription: string
+  tutorialName: string
+
+  constructor(params) {
+    super({
+      key: "TutorialBuilderScene"
+    })
+
+    if (params !== undefined) {
+      this.init(params)
+    }
+  }
+
+  init(params): void {
+    this.cardpool = params.cardpool
+    this.defaultDeck = params.defaultDeck
+    this.lastScene = params.lastScene
+    this.deckDescription = params.deckDescription
+    this.tutorialName = params.tutorialName
+  }
+
+  create(): void {
+    super.create()
+
+    // Remove the Deck button
+    this.btnDeckMenu.setVisible(false)
+
+    // Add a Back button
+    new Button(this,
+      988,
+      Space.windowHeight - 150,
+      'Back',
+      this.onBack())
+
+    // Add a Reset button
+    new Button(this,
+      988,
+      Space.windowHeight - 100,
+      'Reset',
+      this.onReset())
+
+    // If the user has made a deck for this tutorial, use it
+    let usersCustomDeck = this.tutorialDeckCodes[this.tutorialName]
+    if (usersCustomDeck !== undefined) {
+      this.setDeck(usersCustomDeck)
+    }
+    else {
+      this.setDeck(this.defaultDeck)
+    }
+  }
+
+  private onBack(): () => void {
+    let that = this
+    return function() {
+      that.beforeExit()
+      that.scene.start(that.lastScene)
+    }
+  }
+
+  private onReset(): () => void {
+    let that = this
+    return function() {
+      that.setDeck(that.defaultDeck)
+    }
+  }
+
+  beforeExit(): void {
+    // Save user's current deck to this tutorials custom deck
+    this.tutorialDeckCodes[this.tutorialName] = this.getDeckCode()
+  }
 }
 
