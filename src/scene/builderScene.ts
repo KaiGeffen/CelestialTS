@@ -1083,8 +1083,13 @@ export class DraftBuilderScene extends BuilderScene {
 
     // Reset the choice of 4 cards used
     this.lastFilter = undefined
+    console.log(this)
 
     this.scene.restart()
+  }
+
+  // Overwrite to prevent writing to standard's saved deck
+  beforeExit(): void {
   }
 
   // Remove ability to remove cards from deck by clicking on them
