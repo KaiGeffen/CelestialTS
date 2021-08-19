@@ -217,8 +217,11 @@ export default class BuilderScene extends BuilderSceneShell {
 
     // Add filters
     this.createFilters()
+    this.filter()
 
     // Add mode menu
+    let modeMenu: Menu = this.createModeMenu()
+    this.btnStart.setOnClick(() => modeMenu.open())
 
     // Add deck menu
   }
@@ -283,6 +286,16 @@ export default class BuilderScene extends BuilderSceneShell {
       // Move up to be atop image
       cardImage.txtStats.setDepth(1)
     })
+  }
+
+  // Start the game, exit from this scene and move to gameScene
+  private startGame(): void {
+    this.beforeExit()
+
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+    this.scene.start("GameScene", {isTutorial: false, deck: deck})
   }
 
   private getFilterFunction(): (card: Card) => boolean {
@@ -528,7 +541,7 @@ export default class BuilderScene extends BuilderSceneShell {
     }, this)
 
     // Search button - Opens the search field, just below the base scene buttons
-    let btnSearch = new Button(this, 100, 100, '"i"', function() {
+    let btnSearch = new Button(this, Space.windowWidth, 100, '"i"', function() {
       this.sound.play('open')
 
       textboxSearch.setVisible(true)
@@ -591,7 +604,66 @@ export default class BuilderScene extends BuilderSceneShell {
     }
   }
 
+  // Create the menu for user to select which mode to play in
+  private createModeMenu(): Menu {
+    // Visible background, which does nothing when clicked
+    let width = Space.cardSize * 5 + Space.pad * 4
+    let height = Space.cardSize * 3 + Space.pad * 2
 
+    let menu = new Menu(
+          this,
+          Space.windowWidth/2,
+          Space.windowHeight/2,
+          width,
+          height,
+          false,
+          20)
+
+    // Ai button + reminder
+    let xDelta = (Space.cardSize + Space.pad) * 3/2
+    let x = Space.cardSize + Space.pad/2
+    let y = -20
+    let that = this
+
+    let iconAI = new Icon(this, menu, -xDelta, y, 'AI', function() {
+      UserSettings._set('vsAi', true)
+      that.startGame()
+    })
+    let iconPVP = new Icon(this, menu, 0, y, 'PVP', function() {
+      UserSettings._set('vsAi', false)
+      // Don't use a matchmaking code
+      UserSettings._set('mmCode', '')
+      that.startGame()
+    })
+    let iconPWD = new Icon(this, menu, xDelta, y, 'PWD', function() {
+      UserSettings._set('vsAi', false)
+      that.startGame()
+    })
+
+    // Matchmaking text region
+    y += Space.cardSize/2 + Space.pad
+    let textBoxMM = this.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize/2, {
+      type: 'textarea',
+      text: UserSettings._get('mmCode'),
+      placeholder: 'Matchmaking code',
+      tooltip: 'Enter any matchmaking code to only match with players with that same code.',
+      font: 'Arial',
+      fontSize: '36px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#444',
+      maxLength: 24
+    })
+    .setOrigin(0)
+    .on('textchange', function (inputText) {
+      inputText.text = inputText.text.replace('\n', '')
+      UserSettings._set('mmCode', inputText.text)
+    })
+    menu.add(textBoxMM)
+
+    return menu
+  }
 }
 
 
