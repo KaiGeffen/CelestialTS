@@ -122,7 +122,11 @@ export class CardImage {
   }
 
   // Set the callback to fire when this card's image is clicked
-  setOnClick(f: () => void): void {
+  setOnClick(f: () => void, removeListeners = false): void {
+    if (removeListeners) {
+      this.image.removeAllListeners('pointerdown')
+    }
+
     this.image.on('pointerdown', f)
   }
 

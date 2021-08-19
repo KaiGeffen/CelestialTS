@@ -130,7 +130,7 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doDeckbuilder(): void {
-    this.scene.start("BuilderScene", {isTutorial: false})
+    this.scene.start("DraftBuilderScene", {isTutorial: false})
   }
 
   private doCredits(): void {

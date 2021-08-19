@@ -206,8 +206,7 @@ class BuilderSceneShell extends BaseScene {
       cardImage.container.parentContainer.sendToBack(cardImage.container)
 
       // Remove the previous onclick event and add one with the updated index
-      cardImage.image.removeAllListeners('pointerdown')
-      cardImage.setOnClick(this.removeCardFromDeck(i))
+      cardImage.setOnClick(this.removeCardFromDeck(i), true)
     }
   }
 }
@@ -277,7 +276,8 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   // Filter which cards can be selected in the catalog based on current filtering parameters
-  private filter(): void {
+  // Contains an optional function to check, which is passed by children of this class
+  filter(f = function(card: Card) {return true}): void {
     let filterFunction: (card: Card) => boolean = this.getFilterFunction()
     let sizer = this.panel.getElement('panel')
     sizer.clear()
@@ -295,7 +295,7 @@ export class BuilderScene extends BuilderSceneShell {
       let cardImage = this.cardCatalog[i]
 
       // Check if this card is present
-      if (filterFunction(cardImage.card)) {
+      if (filterFunction(cardImage.card) && f(cardImage.card)) {
         cardCount++
 
         cardImage.image.setVisible(true)
@@ -890,6 +890,10 @@ export class TutorialBuilderScene extends BuilderScene {
     // Remove the Deck button
     this.btnDeckMenu.setVisible(false)
 
+    // Change the start button to start a match vs ai
+    let that = this
+    this.btnStart.setOnClick(function() {that.startGame()}, true)
+
     this.createDescriptionText()
 
     // Add a Back button
@@ -914,6 +918,22 @@ export class TutorialBuilderScene extends BuilderScene {
     else {
       this.setDeck(this.defaultDeck)
     }
+  }
+
+  // Start the game, exit from this scene and move to gameScene
+  private startGame(): void {
+    this.beforeExit()
+
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+
+    this.scene.start("TutorialScene2", {
+      isTutorial: true,
+      tutorialNumber: 2,
+      deck: deck,
+      tutorialName: this.tutorialName
+    })
   }
 
   private createDescriptionText(): void {
@@ -946,3 +966,44 @@ deck to remove them, then add cards from the choices above.`
   }
 }
 
+export class DraftBuilderScene extends BuilderScene {
+  constructor(params) {
+    super({
+      key: "DraftBuilderScene"
+    })
+  }
+
+  create(): void {
+    super.create()
+
+    // Remove the Deck button
+    this.btnDeckMenu.setVisible(false)
+
+    this.giveRandomChoices()
+  }
+
+  // Randomly pick 4 cards for user to choose from
+  private giveRandomChoices(): void {
+    let newPool = []
+    while (newPool.length < 4) {
+
+      // Randomly select a card from all cards
+      let card = collectibleCards[Math.floor(Math.random() * collectibleCards.length)]
+
+      // Only add the card if it isn't in the pool yet
+      if (!newPool.includes(card)) {
+        newPool.push(card)
+      }
+    }
+
+    this.filter(function(card: Card) {
+      return newPool.includes(card)
+    })
+  }
+
+  addCardToDeck(card: Card): boolean {
+    this.giveRandomChoices()
+
+    return super.addCardToDeck(card)
+  }
+}

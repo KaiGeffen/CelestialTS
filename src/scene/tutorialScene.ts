@@ -246,7 +246,7 @@ export class TutorialScene2 extends TutorialScene {
   		let that = this
   		return function() {
   			that.beforeExit()
-  			that.scene.start("BuilderScene")
+  			that.scene.start("TutorialBuilderScene")
   		}
   	}
 }
