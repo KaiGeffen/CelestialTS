@@ -980,6 +980,9 @@ export class DraftBuilderScene extends BuilderScene {
   // Users win / loss record with their current draft deck
   matchRecord: [number, number] = [0, 0]
 
+  // The last filter which gives random cards
+  lastFilter: (card: Card) => boolean
+
   constructor() {
     super({
       key: "DraftBuilderScene"
@@ -992,6 +995,8 @@ export class DraftBuilderScene extends BuilderScene {
       // NOTE This is to erase a supposed loss added below
       this.matchRecord[1] -= 1
     }
+
+    params.isWin = false
   }
 
   create(): void {
@@ -1007,7 +1012,14 @@ export class DraftBuilderScene extends BuilderScene {
     this.btnStart.setOnClick(function() {that.startDraftMatch()}, true)
 
     // Give the user a choice of cards to draft
-    this.giveRandomChoices()
+    this.giveRandomChoices(true)
+
+    // Each card in catalog will also reroll the drafting options when clicked
+    this.cardCatalog.forEach(function(cardImage, index, ary) {
+      cardImage.setOnClick(function() {
+        that.giveRandomChoices()
+      })
+    })
 
     // Show the user their draft results
     let s = `Wins: ${this.matchRecord[0]} | Losses: ${this.matchRecord[1]}`
@@ -1015,7 +1027,7 @@ export class DraftBuilderScene extends BuilderScene {
   }
 
   // Randomly pick 4 cards for user to choose from
-  private giveRandomChoices(): void {
+  private giveRandomChoices(useLastSeed: boolean = false): void {
     let newPool = []
     while (newPool.length < 4) {
 
@@ -1029,18 +1041,22 @@ export class DraftBuilderScene extends BuilderScene {
     }
 
     // Filter based on if the card is in the pool
-    
-    if (this.deck.length < 15) {
-      this.filter(function(card: Card) {
+    if (useLastSeed && this.lastFilter !== undefined) {
+      // Don't change lastFilter
+    }
+    else if (this.deck.length < 15) {
+      this.lastFilter = function(card: Card) {
         return newPool.includes(card)
-      })
+      }
     }
     // If user has a full deck, filter away all cards
     else {
-      this.filter(function(card: Card) {
+      this.lastFilter = function(card: Card) {
         return false
-      })
+      }
     }
+
+    this.filter(this.lastFilter)
   }
 
   // Start a match against a draft opponent
@@ -1057,10 +1073,9 @@ export class DraftBuilderScene extends BuilderScene {
     this.scene.start("draftMatchScene", {deck: deck})
   }
 
+  // Remove ability to remove cards from deck by clicking on them
   addCardToDeck(card: Card): boolean {
     let result = super.addCardToDeck(card)
-
-    this.giveRandomChoices()
 
     this.deck.forEach(function(cardImage, index, array) {cardImage.image.removeAllListeners('pointerdown')})
 
