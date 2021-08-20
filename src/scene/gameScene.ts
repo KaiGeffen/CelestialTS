@@ -613,6 +613,7 @@ export default class GameScene extends BaseScene {
 		return true
 	}
 
+	// Play all animations besides those which end in the hand, which are applied elsewhere
 	private displayNonHandAnimations(animations: [Animation[], Animation[]]): void {
 		let that = this
 
@@ -861,7 +862,6 @@ export default class GameScene extends BaseScene {
 				cardImage.setPlayable(false)
 			}
 
-			// TODO Add an animation for the camera on server side
 			// If the card is a Camera and this is the start of a round, animate it
 			if (isRoundStart && !recap && cardImage.card.name === 'Camera') {
 				cardImage.animateCamera(0)
@@ -970,13 +970,7 @@ export default class GameScene extends BaseScene {
 							delay: delay,
 							duration: TimeSettings.recapTweenWithPause
 						})
-
-
-
 						break
-
-
-
 					}
 				}
 			}
@@ -988,133 +982,11 @@ export default class GameScene extends BaseScene {
 
 	// Display each player's stacks (deck, discard pile)
 	private displayStacks(state: ClientState): void {
-		// Do all animations for the given deck
-		// let that = this
-		// function animateDeck(deck: CardImage, player: number): void {
-		// 	// The y which card will bounce up/down to before returning to stack
-		// 	let innerY = (deck.container.y < Space.windowHeight/2) ? deck.container.y + Space.cardSize*2 : deck.container.y - Space.cardSize*2
-
-		// 	// Go through all animations and apply any that relate to stacks
-		// 	for (var i = 0; i <= state.animations[player].length; i++) {
-		// 		let delay = i * TimeSettings.recapTween
-
-		// 		switch (state.animations[player][i]) {
-		// 			case Animation.Shuffle:
-		// 				that.tweens.add({
-		// 		  			targets: deck.container,
-		// 		  			y: deck.container.y - Space.cardSize/2,
-		// 		  			delay: delay,
-		// 		  			duration: TimeSettings.recapTween/2,
-		// 		  			ease: "Sine.easeInOut",
-		// 		  			yoyo: true,
-		// 	  			})
-
-		// 				// Animate another cardback yoyoing in the opposite direction
-		// 	  			let halfDeck = that.add.sprite(deck.container.x, deck.container.y, deck.image.texture)
-		// 	  			deck.container.parentContainer.add(halfDeck)
-			  			
-		// 	  			that.tweens.add({
-		// 		  			targets: halfDeck,
-		// 		  			y: halfDeck.y + Space.cardSize/2,
-		// 		  			delay: delay,
-		// 		  			duration: TimeSettings.recapTween/2,
-		// 		  			ease: "Sine.easeInOut",
-		// 		  			yoyo: true,
-		// 		  			onComplete: function () { halfDeck.destroy() }
-		// 	  			})
-		// 				break
-		// 			// Move a cardback from discard pile to top of deck
-		// 			case Animation.Top:
-		// 				let newTop = that.add.sprite(deck.container.x + Space.cardSize, deck.container.y, deck.image.texture).setVisible(false)
-		// 	  			deck.container.parentContainer.add(newTop)
-			  			
-		// 	  			that.tweens.add({
-		// 		  			targets: newTop,
-		// 		  			x: deck.container.x,
-		// 		  			delay: delay,
-		// 		  			duration: TimeSettings.recapTweenWithPause,
-		// 		  			ease: "Sine.easeInOut",
-		// 		  			onStart: function () { newTop.setVisible(true) },
-		// 		  			onComplete: function () { newTop.destroy() }
-		// 	  			})
-		// 	  			that.tweens.add({
-		// 	  				targets: newTop,
-		// 	  				y: innerY,
-		// 	  				delay: delay,
-		// 	  				duration: TimeSettings.recapTweenWithPause/2,
-		// 	  				ease: "Sine.easeInOut",
-		// 	  				yoyo: true
-		// 	  			})
-		// 				break
-		// 			case Animation.Mill:
-		// 				let milledCard = that.add.sprite(deck.container.x + Space.pad, deck.container.y, deck.image.texture).setVisible(false)
-		// 	  			deck.container.parentContainer.add(milledCard)
-			  			
-		// 	  			that.tweens.add({
-		// 		  			targets: milledCard,
-		// 		  			x: milledCard.x + Space.cardSize,
-		// 		  			delay: delay,
-		// 		  			duration: TimeSettings.recapTweenWithPause,
-		// 		  			ease: "Sine.easeInOut",
-		// 		  			onStart: function () { milledCard.setVisible(true) },
-		// 		  			onComplete: function () { milledCard.destroy() }
-		// 	  			})
-		// 	  			that.tweens.add({
-		// 	  				targets: milledCard,
-		// 	  				y: innerY,
-		// 	  				delay: delay,
-		// 	  				duration: TimeSettings.recapTweenWithPause/2,
-		// 	  				ease: "Sine.easeInOut",
-		// 	  				yoyo: true
-		// 	  			})
-		// 				break
-		// 		}
-		// 	}
-		// }
-
 		let deck = this.addCard(cardback, 0, this.stackContainer, 0)
 		this.txtDeckSize.setText(state.deck.length.toString())
-		// animateDeck(deck, 0)
 
 		let opponentDeck = this.addCard(cardback, 0, this.stackContainer, 1)
 		this.txtOpponentDeckSize.setText(state.opponentDeckSize.toString())
-		// animateDeck(opponentDeck, 1)
-
-		// Show discard piles, if they have cards in them
-		// function animateDiscard(discard: CardImage, player: number) {
-		// 	// The y which card will bounce up/down to before returning to stack
-		// 	let innerY = (discard.container.y < Space.windowHeight/2) ? discard.container.y + Space.cardSize*2 : discard.container.y - Space.cardSize*2
-
-		// 	// Go through all animations and apply any that relate to stacks
-		// 	for (var i = 0; i <= state.animations[player].length; i++) {
-		// 		let delay = i * TimeSettings.recapTween
-
-		// 		switch (state.animations[player][i]) {
-		// 			case Animation.Discard:
-		// 				let discardedCard = that.add.sprite(Space.cardSize + Space.pad, discard.container.y, discard.image.texture).setVisible(false)
-		// 	  			discard.container.parentContainer.add(discardedCard)
-			  			
-		// 	  			that.tweens.add({
-		// 		  			targets: discardedCard,
-		// 		  			x: discard.container.x,
-		// 		  			delay: delay,
-		// 		  			duration: TimeSettings.recapTweenWithPause,
-		// 		  			ease: "Sine.easeInOut",
-		// 		  			onStart: function () { discardedCard.setVisible(true) },
-		// 		  			onComplete: function () { discardedCard.destroy() }
-		// 	  			})
-		// 	  			that.tweens.add({
-		// 	  				targets: discardedCard,
-		// 	  				y: innerY,
-		// 	  				delay: delay,
-		// 	  				duration: TimeSettings.recapTweenWithPause/2,
-		// 	  				ease: "Sine.easeInOut",
-		// 	  				yoyo: true
-		// 	  			})
-		// 				break
-		// 		}
-		// 	}
-		// }
 
 		if (state.discard[0].length > 0) {
 			let card = this.addCard(state.discard[0].slice(-1)[0], 1, this.stackContainer, 0)
@@ -1158,41 +1030,6 @@ export default class GameScene extends BaseScene {
 		}
 		else if (state.winner === 1) {
 			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.exitScene())
-		}
-	}
-	
-	// TODO USE and delete
-	// Tween the image to move to its position from the deck after delay. Return the new delay
-	private animateDraw(cardImage: CardImage, delay: number, fromDiscard: Boolean = false): void {
-		let x = cardImage.container.x
-		if (!fromDiscard) {
-			cardImage.setPosition([Space.stackX, cardImage.container.y])
-		} else {
-			cardImage.setPosition([Space.stackX + Space.cardSize + Space.pad, cardImage.container.y])
-		}
-
-		cardImage.container.setVisible(false)
-
-		this.tweens.add({
-			targets: cardImage.container,
-			x: x,
-			delay: delay,
-			duration: TimeSettings.recapTweenWithPause,
-			onStart: function (tween, targets, _)
-			{
-				cardImage.container.setVisible(true)
-			}
-		})
-
-		if (fromDiscard) {
-			let y = (cardImage.container.y < Space.windowHeight/2) ? cardImage.container.y + Space.cardSize*2 : cardImage.container.y - Space.cardSize*2
-			this.tweens.add({
-				targets: cardImage.container,
-				y: y,
-				delay: delay,
-				duration: TimeSettings.recapTweenWithPause/2,
-				yoyo: true
-			})
 		}
 	}
 
