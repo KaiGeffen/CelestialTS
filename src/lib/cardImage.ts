@@ -1,6 +1,6 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { ColorSettings, StyleSettings, UserSettings, BBConfig, CardStatsConfig, Space } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings, BBConfig, CardStatsConfig, TimeSettings, Space } from "../settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 
@@ -121,6 +121,35 @@ export class CardImage {
     this.container.setVisible(false)
   }
 
+  dissolve(): void {
+    let scene = this.image.scene
+
+    let copyImage = scene.add.image(0, 0, this.image.texture)
+    this.container.add(copyImage)
+    this.container.sendToBack(copyImage)
+
+    // Add pipeline for dissolve effect
+    let postFxPlugin = scene.plugins.get('rexDissolvePipeline')
+    let dissolvePipeline = postFxPlugin['add'](copyImage, {
+      resizeMode: 2,
+      fromEdgeStart: 0.0001,
+      fromEdgeWidth: 0.0005,
+      toEdgeStart: 0.0001,
+      toEdgeWidth: 0.0005,
+    })
+
+    // this.dissolvePipeline.setProgress(1)
+    scene.tweens.add({
+      targets: dissolvePipeline,
+        progress: 1,
+        ease: 'Quad',
+        duration: TimeSettings.recapStateMinimum,
+        onComplete: function(tween, targets, params) {
+          copyImage.destroy()
+        }
+    })
+  }
+
   // Set the callback to fire when this card's image is clicked
   setOnClick(f: () => void, removeListeners = false): void {
     if (removeListeners) {
@@ -153,7 +182,7 @@ export class CardImage {
     }
   }
 
-  setTransparent(value: Boolean): void {
+  setTransparent(value: Boolean): CardImage {
     if (value) {
       this.image.setAlpha(0.2)
       this.txtStats.setAlpha(0.2)
@@ -162,6 +191,8 @@ export class CardImage {
       this.image.setAlpha(1)
       this.txtStats.setAlpha(1)
     }
+
+    return this
   }
 
   setPosition(position: [number, number]): void {

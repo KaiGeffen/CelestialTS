@@ -395,6 +395,8 @@ export default class GameScene extends BaseScene {
 		
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
+		// This is the final state shown as the recap plays
+		let isRoundEnd = ['win', 'lose', 'tie'].includes(state.soundEffect)
 
 		// If any tweens are not almost done, queue and wait for them to finish
 		if (anyTweenPlaying) {
@@ -473,12 +475,18 @@ export default class GameScene extends BaseScene {
 			numActsCompleted = state.recap.playList.length
 
 			// Show all of the acts that have already resolved
+			let lastAct: CardImage = undefined
 			for (var i = 0; i < numActsCompleted; i++) {
 				let completedAct: [Card, number, string] = state.recap.playList[i]
 				let card = completedAct[0]
 				let owner = completedAct[1]
 
-				this.addCard(card, i, this.storyContainer, owner).setTransparent(true)
+				lastAct = this.addCard(card, i, this.storyContainer, owner).setTransparent(true)
+			}
+
+			// Make the last act dissolve, but not the very last state, where wins are shown
+			if (lastAct !== undefined && lastAct.card.fleeting && !isRoundEnd) {
+				lastAct.dissolve()
 			}
 		}
 		for (var i = 0; i < state.story.acts.length; i++) {
