@@ -55,7 +55,6 @@ function decodeAnimation(from: string, to: string, target: string): Animation {
 		'Story': Zone.Story,
 		'Gone': Zone.Gone,
 
-		'Create': Zone.Create,
 		'Shuffle': Zone.Shuffle,
 	}
 

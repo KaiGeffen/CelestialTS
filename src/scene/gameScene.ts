@@ -620,7 +620,34 @@ export default class GameScene extends BaseScene {
 		let delay = 0
 		let doAnimation = function(player: number): (animation: Animation) => void {
 			return function(animation: Animation): void {
-				if (animation.to !== Zone.Hand) {
+				if (animation.from === Zone.Shuffle) {
+					let x = Space.stackX
+					let yOffset = Space.pad + Space.cardSize/2
+					let y = player === 0 ? Space.windowHeight - yOffset : yOffset
+
+					let bottomHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
+					let topHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
+
+					that.tweens.add({
+						targets: topHalf,
+						y: topHalf.y - Space.cardSize/2,
+						delay: delay,
+						duration: TimeSettings.recapTween/2,
+						ease: "Sine.easeInOut",
+						yoyo: true,
+						onComplete: function () { topHalf.destroy() }
+					})
+					that.tweens.add({
+						targets: bottomHalf,
+						y: bottomHalf.y + Space.cardSize/2,
+						delay: delay,
+						duration: TimeSettings.recapTween/2,
+						ease: "Sine.easeInOut",
+						yoyo: true,
+						onComplete: function () { bottomHalf.destroy() }
+					})
+				}
+				else if (animation.to !== Zone.Hand) {
 					let card: CardImage
 
 					switch(animation.from) {
@@ -644,14 +671,9 @@ export default class GameScene extends BaseScene {
 						// 	card = that.addCard(animation.card, 0, that.stackContainer, player)
 						// 	break
 
-						// TODO Create in hand This is Create also, remove Cret
-						case Zone.Create:
-							card = that.addCard(animation.card, 0, that.storyContainer, player)
-							card.setPosition([Space.windowWidth/2, Space.windowHeight/2])
-							break
-
-						case Zone.Shuffle: // TODO
-						card = that.addCard(cardback, 0, that.stackContainer, player)
+						case Zone.Gone:
+						card = that.addCard(animation.card, 0, that.storyContainer, player)
+						// NOTE This gets changed below
 						break
 					}
 
@@ -671,6 +693,11 @@ export default class GameScene extends BaseScene {
 						y = Space.windowHeight/2
 						break
 						// case Zone.Story:
+					}
+
+					// Gone start at midline, and drops vertically to wherever it's going
+					if (animation.from === Zone.Gone) {
+						card.setPosition([x, Space.windowHeight/2])
 					}
 
 					// Hide card until animation starts
@@ -712,7 +739,19 @@ export default class GameScene extends BaseScene {
 						that.tweens.add({
 							targets: card.container,
 							alpha: 0,
-							delay: delay + TimeSettings.recapTweenWithPause/2,
+							delay: delay,
+							duration: TimeSettings.recapTweenWithPause
+						})
+					}
+
+					// If card is being created, fade it in
+					if (animation.from === Zone.Gone) {
+						card.container.setAlpha(0)
+
+						that.tweens.add({
+							targets: card.container,
+							alpha: 1,
+							delay: delay,
 							duration: TimeSettings.recapTweenWithPause
 						})
 					}
@@ -855,10 +894,11 @@ export default class GameScene extends BaseScene {
 				if (animation.to === Zone.Hand) {
 					let card = cards[animation.index]
 
+					let x, y
 					switch(animation.from) {
 						case Zone.Discard:
 							// Move in towards center of board
-							let y = (player === 0) ? card.container.y - Space.cardSize*2 : card.container.y + Space.cardSize*2
+							y = (player === 0) ? card.container.y - Space.cardSize*2 : card.container.y + Space.cardSize*2
 							that.tweens.add({
 								targets: card.container,
 								y: y,
@@ -866,11 +906,9 @@ export default class GameScene extends BaseScene {
 								duration: TimeSettings.recapTweenWithPause/2,
 								yoyo: true
 							})
-							// Also do the below x transformation
-							
-						case Zone.Deck:
+
 							// Remember where to end, then move to starting position
-							let x = card.container.x
+							x = card.container.x
 							card.setPosition([Space.stackX + Space.cardSize + Space.pad, card.container.y])
 							card.hide()
 
@@ -886,7 +924,59 @@ export default class GameScene extends BaseScene {
 								}
 							})
 							break
-						// case Zone.Create: TODO
+							
+						case Zone.Deck:
+							// Remember where to end, then move to starting position
+							x = card.container.x
+							card.setPosition([Space.stackX, card.container.y])
+							card.hide()
+
+							// Animate moving x direction, appearing at start
+							that.tweens.add({
+								targets: card.container,
+								x: x,
+								delay: delay,
+								duration: TimeSettings.recapTweenWithPause,
+								onStart: function (tween, targets, _)
+								{
+									card.show()
+								}
+							})
+							break
+						
+						case Zone.Gone:
+						// Animate moving y direciton
+						y = card.container.y
+						card.setPosition([card.container.x, Space.windowHeight/2])
+						card.hide()
+
+						// Animate moving x direction, appearing at start
+						that.tweens.add({
+							targets: card.container,
+							y: y,
+							delay: delay,
+							duration: TimeSettings.recapTweenWithPause,
+							onStart: function (tween, targets, _)
+							{
+								card.show()
+							}
+						})
+						
+						// If card is being created, fade it in
+						card.container.setAlpha(0)
+						that.tweens.add({
+							targets: card.container,
+							alpha: 1,
+							delay: delay,
+							duration: TimeSettings.recapTweenWithPause
+						})
+
+
+
+						break
+
+
+
 					}
 				}
 			}
