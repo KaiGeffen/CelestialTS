@@ -649,15 +649,8 @@ export class BuilderScene extends BuilderSceneShell {
       }
     }
 
-    // Filter cards based on which expansions are enabled
-    let expansionFilter = function(card: Card): boolean {
-      if (UserSettings._get('useExpansion')) {
-        return true
-      }
-      else {
-        return baseCards.includes(card)
-      }
-    }
+    // Get filter for expansion vs no-expansion
+    let expansionFilter = this.getExpansionFilter
 
     // Filter cards based on if they contain the string being searched
     let searchTextFilter = function(card: Card): boolean {
@@ -670,6 +663,17 @@ export class BuilderScene extends BuilderSceneShell {
     }
 
     return andFilter
+  }
+
+  // Filter cards based on whether expansion is enabled
+  // Overwritten by children
+  getExpansionFilter(card: Card): boolean {
+    if (UserSettings._get('useExpansion')) {
+      return true
+    }
+    else {
+      return baseCards.includes(card)
+    }
   }
 
   // Create the menu for user to select which mode to play in
@@ -952,6 +956,11 @@ export class TutorialBuilderScene extends BuilderScene {
     }
   }
 
+  // Prevents filtering out cards based from the expansion
+  getExpansionFilter(card: Card): boolean {
+    return true
+  }
+
   // Start the game, exit from this scene and move to gameScene
   private startTutorialMatch(): void {
     this.beforeExit()
@@ -1130,5 +1139,10 @@ export class DraftBuilderScene extends BuilderScene {
     }
 
     return result
+  }
+
+  // Prevents filtering out cards based from the expansion
+  getExpansionFilter(card: Card): boolean {
+    return true
   }
 }
