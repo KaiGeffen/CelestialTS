@@ -45,7 +45,9 @@ class BuilderSceneShell extends BaseScene {
       'pog')
 
     // Deck container
-    this.deckContainer = this.add.container(988, Space.windowHeight)
+    // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
+    this.deckContainer = this.add.container(988, Space.windowHeight).setDepth(2)
+
   }
 
   postcreate(): void {
@@ -419,6 +421,13 @@ export class BuilderScene extends BuilderSceneShell {
     }
 
     this.panel.layout()
+
+    // Must add an invisible region below the scroller or else partially visible cards will be clickable on
+    // their bottom parts, which cannot be seen and are below the scroller
+    let invisBackground = this.add
+      .rectangle(0, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+      .setOrigin(0)
+      .setInteractive()
   }
 
   private addCardToCatalog(card: Card, index: number): CardImage {
