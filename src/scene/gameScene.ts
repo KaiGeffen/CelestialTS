@@ -621,7 +621,6 @@ export default class GameScene extends BaseScene {
 		let doAnimation = function(player: number): (animation: Animation) => void {
 			return function(animation: Animation): void {
 				if (animation.to !== Zone.Hand) {
-					// TODO Y yoyo animation if discard pile is involved
 					let card: CardImage
 
 					switch(animation.from) {
@@ -645,9 +644,11 @@ export default class GameScene extends BaseScene {
 						// 	card = that.addCard(animation.card, 0, that.stackContainer, player)
 						// 	break
 
-						// case Zone.Create: TODO
-						// 	card = that.addCard(animation.card, 0, that.stackContainer, player)
-						// 	break
+						// TODO Create in hand This is Create also, remove Cret
+						case Zone.Create:
+							card = that.addCard(animation.card, 0, that.storyContainer, player)
+							card.setPosition([Space.windowWidth/2, Space.windowHeight/2])
+							break
 
 						case Zone.Shuffle: // TODO
 						card = that.addCard(cardback, 0, that.stackContainer, player)
@@ -664,11 +665,17 @@ export default class GameScene extends BaseScene {
 						case Zone.Discard:
 						[x, y] = that.getCardPosition(1, that.stackContainer, player)
 						break
+
+						case Zone.Gone:
+						x = card.container.x
+						y = Space.windowHeight/2
+						break
 						// case Zone.Story:
 					}
 
 					// Hide card until animation starts
 					card.hide()
+					card.container.setDepth(1)
 
 					that.tweens.add({
 						targets: card.container,
@@ -682,8 +689,12 @@ export default class GameScene extends BaseScene {
 						}
 					})
 
-					// If discard pile is involved, yo-yo in towards the center of board
-					if (animation.to === Zone.Discard || animation.from === Zone.Discard) {
+					// If discard pile plus a zone on line with it, yo-yo in towards the center of board
+					let lateralZones = [Zone.Hand, Zone.Deck]
+					if (
+						(animation.to === Zone.Discard && lateralZones.includes(animation.from)) || 
+						(animation.from === Zone.Discard && lateralZones.includes(animation.to))) 
+					{
 						// Towards center by 2 card sizes
 						let y = (card.container.y < Space.windowHeight/2) ? card.container.y + Space.cardSize*2 : card.container.y - Space.cardSize*2
 						
@@ -693,6 +704,16 @@ export default class GameScene extends BaseScene {
 							delay: delay,
 							duration: TimeSettings.recapTweenWithPause/2,
 							yoyo: true
+						})
+					}
+
+					// If card is being removed from the game, fade it out
+					if (animation.to === Zone.Gone) {
+						that.tweens.add({
+							targets: card.container,
+							alpha: 0,
+							delay: delay + TimeSettings.recapTweenWithPause/2,
+							duration: TimeSettings.recapTweenWithPause
 						})
 					}
 				}

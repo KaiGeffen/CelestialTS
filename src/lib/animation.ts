@@ -17,6 +17,7 @@ export enum Zone {
 	Deck,
 	Discard,
 	Story,
+	Gone,
 
 	Create,
 	Shuffle,
@@ -52,6 +53,7 @@ function decodeAnimation(from: string, to: string, target: string): Animation {
 		'Deck': Zone.Deck,
 		'Discard': Zone.Discard,
 		'Story': Zone.Story,
+		'Gone': Zone.Gone,
 
 		'Create': Zone.Create,
 		'Shuffle': Zone.Shuffle,
