@@ -627,6 +627,7 @@ export default class GameScene extends BaseScene {
 
 					let bottomHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
 					let topHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
+					that.stackContainer.add([bottomHalf, topHalf])
 
 					that.tweens.add({
 						targets: topHalf,
