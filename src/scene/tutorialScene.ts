@@ -28,7 +28,7 @@ class TutorialScene extends GameScene {
 		// Add the tutorial text
 		this.txtTutorial = this['rexUI'].add['textBox']({
 			x: Space.pad,
-			y: Space.pad * 2,
+			y: Space.pad,
 			text: this.add['rexBBCodeText'](0, 0, '', TutorialBBConfig)
 		}).setOrigin(0)
 		this.txtTutorial.setInteractive()
