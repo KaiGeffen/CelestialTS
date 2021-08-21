@@ -115,8 +115,6 @@ export default class WelcomeScene extends BaseScene {
   private doStart(btnTutorial: Button): () => void {
     let that = this
     return function() {
-      that.sound.play('click')
-
       // Guide user to Tutorial if this is their first time here
       if (!UserSettings._get('tutorialKnown')) {
         // Set that user has been prompted to try the tutorial
