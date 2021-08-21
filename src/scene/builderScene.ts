@@ -863,7 +863,7 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   // Manage any messages that may need to be displayed for the user
-  private manageMessages(): void {
+  manageMessages(): void {
     let msgText = MessageManager.readFirstUnreadMessage(Screen.Builder)
     if (msgText !== undefined) {
       // Make the deck button glow to catch attention
@@ -1161,5 +1161,27 @@ export class DraftBuilderScene extends BuilderScene {
   // Prevents filtering out cards based from the expansion
   getExpansionFilter(card: Card): boolean {
     return true
+  }
+
+  // Manage any messages that may need to be displayed for the user
+  manageMessages(): void {
+    let msgText = MessageManager.readFirstUnreadMessage(Screen.Draft)
+    if (msgText !== undefined) {
+
+      // Open a window informing user of information
+      let menu = new Menu(
+        this,
+        Space.windowWidth/2,
+        Space.windowHeight/2,
+        800,
+        400,
+        true,
+        25)
+
+      let txtTitle = this.add.text(0, -160, 'Onward!', StyleSettings.announcement).setOrigin(0.5)
+      let txtMessage = this.add.text(0, -100, msgText, StyleSettings.basic).setOrigin(0.5, 0)
+      
+      menu.add([txtTitle, txtMessage])
+    }
   }
 }

@@ -193,6 +193,7 @@ class TutorialRegion {
       that.scene.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
     })
     let iconDraft = new Icon(this.scene, this.menu, -xDelta, -yDelta, 'Draft', function() {
+      MessageManager.addUnreadMessage('draftNotice')
       that.scene.scene.start("DraftBuilderScene")
     })
 
