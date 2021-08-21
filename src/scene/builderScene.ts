@@ -1029,6 +1029,13 @@ deck to remove them, then add cards from the choices above.`
     }
   }
 
+  // Overwrite to undo the background shifting
+  filter(f = function(card: Card) {return true}): void {
+    super.filter(f)
+
+    this.catalogBackground.setX(0)
+  }
+
   beforeExit(): void {
     // Save user's current deck to this tutorials custom deck
     this.tutorialDeckCodes[this.tutorialName] = this.getDeckCode()
