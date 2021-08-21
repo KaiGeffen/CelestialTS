@@ -332,10 +332,19 @@ export class BuilderScene extends BuilderSceneShell {
       }
     }
 
-    // Hide the slider if all cards fit in panel
-    this.panel.getElement('slider').setVisible(cardCount > 8*4)
-
     this.panel.layout()
+
+    // Hide the slider if all cards fit in panel
+    let slider = this.panel.getElement('slider')
+    if (cardCount <= Space.cardsPerRow * Space.rowsPerPage) {
+      slider.setVisible(false)
+
+      this.catalogBackground.setX(-slider.width - 20)
+    } else {
+      slider.setVisible(true)
+      
+      this.catalogBackground.setX(0)
+    }
 
     // Resize each stats text back to original size
     this.cardCatalog.forEach((cardImage) => {
@@ -356,12 +365,14 @@ export class BuilderScene extends BuilderSceneShell {
     this.scene.start("GameScene", {isTutorial: false, deck: deck})
   }
 
+  // TODO put somewhere
+  catalogBackground: any
   private createCatalog(): void {
     let that = this
 
     let width = Space.cardSize * 8 + Space.pad * 10 + 10
     let height = Space.cardSize * 4 + Space.pad * 5
-    let background = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
+    this.catalogBackground = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
 
     this.panel = this['rexUI'].add.scrollablePanel({
       x: 0,
@@ -371,7 +382,7 @@ export class BuilderScene extends BuilderSceneShell {
 
       scrollMode: 0,
 
-      background: background,
+      background: this.catalogBackground,
 
       panel: {
         child: this['rexUI'].add.fixWidthSizer({
@@ -486,7 +497,7 @@ export class BuilderScene extends BuilderSceneShell {
       this.filterCostAry[i] = false
 
       let y = 50 * (i + 1)
-      let btn = this.add.text(Space.windowWidth - 70, y, i.toString(), StyleSettings.basic)
+      let btn = this.add.text(Space.windowWidth - 80, y, i.toString(), StyleSettings.basic)
       
       btn.setInteractive()
       btn.on('pointerdown', this.onClickFilterNumber(i, btn))
@@ -495,7 +506,7 @@ export class BuilderScene extends BuilderSceneShell {
     }
 
     // Add the X (Clear) button
-    let btnClear = this.add.text(Space.windowWidth - 70, 0, 'x', StyleSettings.basic)
+    let btnClear = this.add.text(Space.windowWidth - 80, 0, 'x', StyleSettings.basic)
     btnClear.setInteractive()
     btnClear.on('pointerdown', this.onClearFilterNumbers(btnNumbers))
 
