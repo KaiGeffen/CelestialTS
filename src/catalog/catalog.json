@@ -113,9 +113,9 @@
   },
 
   {"name": "AI", "id": 22,
-    "cost": 8, "points": 4,
-    "text": "8:4, draw 1.\nCosts X less, where X is the total point value of all robots in your hand.",
-    "catalogText": "AI costs 8 mana for 4 points and also draws you a card, but its cost is reduced by the total point value of all robots in your hand. So if you have a 0:3 robot and a 0:1 robot, AI ends up costing 8 - 3 - 1 = 4 mana.\n\nTry to build a big robot so that you can play multiple copies of AI in a single round for very little mana.\n\nOnly play the robot once you can replace it with a new one."
+    "cost": 8, "points": 5,
+    "text": "8:5, draw 1.\nCosts X less, where X is the total point value of all robots in your hand.",
+    "catalogText": "AI costs 8 mana for 5 points and also draws you a card, but its cost is reduced by the total point value of all robots in your hand. So if you have a 0:3 robot and a 0:1 robot, AI ends up costing 8 - 3 - 1 = 4 mana.\n\nTry to build a big robot so that you can play multiple copies of AI in a single round for very little mana.\n\nOnly play the robot once you can replace it with a new one."
   },
   {"name": "Oak", "id": 23,
     "cost": 8, "points": 8,
