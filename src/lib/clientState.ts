@@ -3,6 +3,7 @@ import Card from "./card"
 import Story from "./story"
 import Recap from "./recap"
 import { Animation, decodeAnimationList } from "./animation"
+import { Status } from "./status"
 
 
 export default class ClientState {
@@ -15,8 +16,8 @@ export default class ClientState {
 	wins: number[]
 	maxMana: number[]
 	mana: number
-	status: string
-	opponentStatus: string
+	status: Status[]
+	opponentStatus: Status[]
 	story: Story
 	priority: number
 	passes: number

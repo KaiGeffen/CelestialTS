@@ -3,6 +3,7 @@ import Card from './card'
 import Story from './story'
 import Recap from './recap'
 import ClientState from './clientState'
+import { Status } from './status'
 
 
 const delims = ['¡', '™', '£']
@@ -85,25 +86,38 @@ function decodeStory(s: string): Story {
 // TODO Make a more robust status module once the desired functionality is known
 const allStatuses = ['Inspired', 'Inspire', 'Nourish', 'Starve', 'Restricted']
 
-function decodeStatuses(s: string): string {
-	if (s === '') return ''
+function decodeStatuses(s: string): Status[] {
+	let result: Status[] = []
+	
+	// Split the string into substrings
+	s.split(delims[0]).forEach(function(ss) {
 
-	let statuses = s.split(delims[0])
-
-	let result = ''
-	allStatuses.forEach(function(statusType) {
-
-		let count = 0
-		statuses.forEach(function(status) {
-			if (status === statusType) {
-				count++
-			}
-		})
-
-		if (count > 0) result += `${statusType} ${count}, `
+		// If any of those are statuses, add them to the list
+		if (Status[ss] !== undefined) {
+			result.push(Status[ss])
+		}
 	})
 
-	return result.slice(0, -2)
+	return result
+
+	// if (s === '') return []
+
+	// let statuses = s.split(delims[0])
+
+	// let result = ''
+	// allStatuses.forEach(function(statusType) {
+
+	// 	let count = 0
+	// 	statuses.forEach(function(status) {
+	// 		if (status === statusType) {
+	// 			count++
+	// 		}
+	// 	})
+
+	// 	if (count > 0) result += `${statusType} ${count}, `
+	// })
+
+	// return result.slice(0, -2)
 }
 
 function decodeRecap(s: string): Recap {

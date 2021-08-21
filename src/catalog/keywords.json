@@ -17,6 +17,10 @@
 		"text": "Inspire X - Next round you have X extra mana.",
 		"x": true
 	},
+	{"key": "Inspired",
+		"text": "Inspired X - This round you have X extra mana.",
+		"x": true
+	},
 	{"key": "Nourish",
 		"text": "Nourish X - The next card you resolve is worth +X.",
 		"x": true

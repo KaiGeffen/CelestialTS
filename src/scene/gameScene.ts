@@ -6,6 +6,8 @@ import { Network } from "../net"
 import ClientState from "../lib/clientState"
 import BaseScene from "./baseScene"
 import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib/cardImage"
+import { StatusBar } from "../lib/status"
+
 // Import Settings itself 
 import { ColorSettings, StyleSettings, UserSettings, TimeSettings, Space } from "../settings"
 import Recap from '../lib/recap'
@@ -55,8 +57,8 @@ export default class GameScene extends BaseScene {
 	txtWins: Phaser.GameObjects.Text
 	txtOpponentWins: Phaser.GameObjects.Text
 
-	txtStatus: Phaser.GameObjects.Text
-	txtOpponentStatus: Phaser.GameObjects.Text
+	txtStatus: StatusBar
+	txtOpponentStatus: StatusBar
 
 	txtPass: Phaser.GameObjects.Text
 	txtOpponentPass: Phaser.GameObjects.Text
@@ -179,13 +181,10 @@ export default class GameScene extends BaseScene {
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
 
 	    // Status text
-	    this.txtStatus = this.add.text(Space.pad,
-	    	650 - Space.cardSize - Space.pad * 2,
-	    	'', StyleSettings.basic).setOrigin(0, 1)
-	    this.txtOpponentStatus = this.add.text(Space.pad,
-	    	Space.cardSize + Space.pad * 2,
-	    	'', StyleSettings.basic).setOrigin(0, 0)
+	    this.txtStatus = new StatusBar(this, Space.windowHeight - Space.cardSize - Space.pad * 2)
+	    this.txtOpponentStatus = new StatusBar(this, Space.cardSize + Space.pad * 2)
 
+	    // Passing text
 	    this.txtPass = this.add.text(Space.announceOffset, 650 - 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 	    this.txtOpponentPass = this.add.text(Space.announceOffset, 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 
@@ -561,8 +560,8 @@ export default class GameScene extends BaseScene {
 		this.txtOpponentMana.setText('')//`Mana: ?/${state.maxMana[1]}`)
 
 		// Status
-		this.txtStatus.setText(state.status)
-		this.txtOpponentStatus.setText(state.opponentStatus)
+		this.txtStatus.setStatuses(state.status)
+		this.txtOpponentStatus.setStatuses(state.opponentStatus)
 
 		// Score
 		this.txtWins.setText(`Wins: ${state.wins[0]}`)
