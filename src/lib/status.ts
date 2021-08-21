@@ -66,7 +66,7 @@ export class StatusBar {
 
   	}
 
-  	private onHover(statusIndex: number, amt: number, obj: Phaser.GameObjects.GameObject): () => void {
+  	private onHover(statusIndex: number, amt: number, obj: Phaser.GameObjects.Text): () => void {
   		let that = this
 
   		return function() {
@@ -89,7 +89,18 @@ export class StatusBar {
   			})
 
 		    cardInfo.text = s
-		    cardInfo.copyPosition(obj)
+
+		    // Position cardInfo so that it doesn't hide this text
+		    let x = obj.x
+		    // If it's you, it's above, them it's below
+		    let y
+		    if (that.isYou) {
+		    	y = obj.y - obj.height/2 - Space.pad
+		    } else {
+		    	y = obj.y + obj.height/2 + Space.pad + cardInfo.height
+		    }
+
+		    cardInfo.setPosition(x, y)
 		  }
   	}
 
