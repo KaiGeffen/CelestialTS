@@ -381,7 +381,7 @@ export class BuilderScene extends BuilderSceneShell {
       },
 
       slider: {
-        input: 'click',
+        input: 'drag',
         track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
         thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
       },
@@ -393,7 +393,6 @@ export class BuilderScene extends BuilderSceneShell {
       }
     }).setOrigin(0)
     .layout()
-    .setInteractive()
     .on('scroll', function(panel) {
       if (0 < panel.t && panel.t < 1) {
         cardInfo.setVisible(false)
