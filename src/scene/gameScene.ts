@@ -635,6 +635,7 @@ export default class GameScene extends BaseScene {
 						duration: TimeSettings.recapTween/2,
 						ease: "Sine.easeInOut",
 						yoyo: true,
+						onStart: function() { that.sound.play('shuffle') },
 						onComplete: function () { topHalf.destroy() }
 					})
 					that.tweens.add({
@@ -730,7 +731,8 @@ export default class GameScene extends BaseScene {
 							y: y,
 							delay: delay,
 							duration: TimeSettings.recapTweenWithPause/2,
-							yoyo: true
+							yoyo: true,
+							onStart: function() { that.sound.play('discard') }
 						})
 					}
 
@@ -920,6 +922,7 @@ export default class GameScene extends BaseScene {
 								onStart: function (tween, targets, _)
 								{
 									card.show()
+									that.sound.play('draw')
 								}
 							})
 							break
@@ -939,6 +942,7 @@ export default class GameScene extends BaseScene {
 								onStart: function (tween, targets, _)
 								{
 									card.show()
+									that.sound.play('draw')
 								}
 							})
 							break
