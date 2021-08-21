@@ -10,6 +10,9 @@ import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
 import PrebuiltDeck from "../catalog/prebuiltDecks"
 
+import MessageManager from "../lib/message"
+import { Screen } from "../lib/message"
+
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
 // TODO 988
@@ -269,6 +272,9 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Set the user's deck to this deck
     this.setDeck(this.standardDeckCode)
+
+    // Manage any messages that are displayed
+    this.manageMessages()
 
     super.postcreate()
   }
@@ -853,6 +859,27 @@ export class BuilderScene extends BuilderSceneShell {
         textboxDeckCode.setFocus()
         textboxDeckCode.selectAll()
       }, 20)
+    }
+  }
+
+  // Manage any messages that may need to be displayed for the user
+  private manageMessages(): void {
+    let msgText = MessageManager.readFirstUnreadMessage(Screen.Builder)
+    if (msgText !== undefined) {
+      
+      let menu = new Menu(
+        this,
+        Space.windowWidth/2,
+        Space.windowHeight/2,
+        800,
+        300,
+        true,
+        25)
+
+      let txtTitle = this.add.text(0, -110, 'Welcome!', StyleSettings.announcement).setOrigin(0.5)
+      let txtMessage = this.add.text(0, -50, msgText, StyleSettings.basic).setOrigin(0.5, 0)
+      
+      menu.add([txtTitle, txtMessage])
     }
   }
 

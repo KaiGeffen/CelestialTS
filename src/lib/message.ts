@@ -1,4 +1,4 @@
-import { UserSettings } from '../settings'
+import { UserSettings, ColorSettings } from '../settings'
 
 
 // Maintain a list of Messages, which appear when visiting the main menu
@@ -9,16 +9,24 @@ import { UserSettings } from '../settings'
 interface Message {
 	name: string,
 	text: string,
-	seen: boolean
+	seen: boolean,
+	screen: Screen,
+}
+
+export enum Screen {
+	Main,
+	Builder,
+	Draft,
 }
 
 export default class MessageManager {
 	// Get and return the first unread message, mark that message as read
-	static readFirstUnreadMessage(): string {
+	static readFirstUnreadMessage(screen: Screen): string {
 		let messages: Message[] = UserSettings._get('messages')
 
 		for(var i = 0; i < messages.length; i++) {
-			if (!messages[i].seen) {
+			// Read the given message if it hasn't been seen yet and we're on the right screen
+			if (!messages[i].seen && messages[i].screen === screen) {
 				
 				// Mark the message as read
 				messages[i].seen = true
@@ -39,8 +47,9 @@ export default class MessageManager {
 		if (!msgPreexists) {
 			let msg: Message = {
 				name: name,
-				text: allMsgs[name],
-				seen: false
+				text: allMsgs[name][0],
+				seen: false,
+				screen: allMsgs[name][1]
 			}
 
 			UserSettings._push('messages', msg)
@@ -51,13 +60,17 @@ export default class MessageManager {
 // All of the message names/text
 const allMsgs = {
 	tutorialComplete: 
-`You completed the tutorial. All of the cards in the
+[`You completed the tutorial. All of the cards in the
 base set are now available to you!
 
-Click start to check them out.`,
+Click start to check them out.`, Screen.Main],
 	coreChallengesComplete:
-`You completed all the core set challenges. More
+[`You completed all the core set challenges. More
 advanced challenges are now available!
 
-The expansion can be enabled from the deck menu.`
+The expansion can be enabled from the deck menu.`, Screen.Main],
+	deckMenuNotice: 
+[`Click the Deck button in the bottom right
+to select a premade deck, or make your own
+from scratch!`, Screen.Builder],
 }

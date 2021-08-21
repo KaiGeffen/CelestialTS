@@ -1,12 +1,13 @@
 import "phaser"
 // TODO Remove unused
-import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings } from "../settings"
+import { StyleSettings, ColorSettings, Space, UserSettings } from "../settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import MessageManager from "../lib/message"
+import { Screen } from "../lib/message"
 
 
 export default class WelcomeScene extends BaseScene {
@@ -48,7 +49,7 @@ export default class WelcomeScene extends BaseScene {
 
 
 
-    let msgText = MessageManager.readFirstUnreadMessage()
+    let msgText = MessageManager.readFirstUnreadMessage(Screen.Main)
     if (msgText !== undefined) {
       this.displayMessage(msgText)
 
@@ -130,6 +131,7 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doDeckbuilder(): void {
+    MessageManager.addUnreadMessage('deckMenuNotice')
     this.scene.start("BuilderScene", {isTutorial: false})
   }
 
