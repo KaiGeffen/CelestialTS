@@ -46,8 +46,7 @@ export default class Card {
   }
 
   // Get the text for this card, including formatting
-  // If explainKeywords is true, ignore the user setting explainKeywords
-  getCardText(explainKeywords: Boolean = false): string {
+  getCardText(): string {
     if (this === cardback) {
       return '?'
     }
@@ -68,9 +67,7 @@ export default class Card {
     result += `[color=${ColorSettings.reminderText}]`
 
     result = this.replaceReferences(result)
-    if (UserSettings._get('explainKeywords') || explainKeywords) {
-      result = this.explainKeywords(result)
-    }
+    result = this.explainKeywords(result)
 
     if (simplifyCardInfo) {
       result = result.split(',')[0]

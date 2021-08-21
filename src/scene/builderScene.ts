@@ -561,7 +561,7 @@ export class BuilderScene extends BuilderSceneShell {
         textboxSearch.selectAll()
         }, 20)
       }
-    let btnSearch = new Button(this, Space.windowWidth, 100, '"i"', openSearch).setOrigin(1, 0)
+    let btnSearch = new Button(this, Space.windowWidth, 50, '"i"', openSearch).setOrigin(1, 0)
 
     // Listen for esc or return key, and close search field if seen
     let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
@@ -659,7 +659,7 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Filter cards based on if they contain the string being searched
     let searchTextFilter = function(card: Card): boolean {
-      return (card.getCardText(true)).toLowerCase().includes(that.searchText.toLowerCase())
+      return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
     }
 
     // Filter based on the overlap of all above filters
