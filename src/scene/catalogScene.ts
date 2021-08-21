@@ -134,7 +134,7 @@ to put him back on top of the deck to wrap up the match.`
 }
 
 export class RobotsCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("0™2™3™8™12™10™15™22")
+	pool: Card[] = decodeDeck("2™4™8™11™10™15™18™22")
 	defaultDeck: string = prebuiltDecks.get('Robots')
 	name = "Robots"
 	deckDescription: string = 

@@ -22,7 +22,8 @@
   },
   {"name": "Dove", "id": 4,
     "cost": 1, "points": 1,
-    "text": "1:1, Visible, Fleeting."
+    "text": "1:1, Visible, Fleeting.",
+    "catalogText": "Dove costs 1 mana for 1 point, and it is both Fleeting and Visible. \n\nCards with Fleeting are removed from the game permanently after they resolve, which means you won't end up drawing it again after you've shuffled your deck.\n\nCards with Visible can be seen by your opponent while in the story, so you won't be able to bluff with them."
   },
   {"name": "Drown", "id": 5,
     "cost": 1, "points": 1,
@@ -93,7 +94,8 @@
 
   {"name": "Uprising", "id": 18,
     "cost": 6, "points": 3,
-    "text": "6:3, +1 for each card before this in the story."
+    "text": "6:3, +1 for each card before this in the story.",
+    "catalogText": "Uprising costs 6 mana for 3 points, but is also worth an extra point for each card before it in the story.\n\nTry to pass at strategic times, like when your opponent thinks they need to play more to catch up to you, so that this card can be played as late in the round as possible.\n\nResolving Uprising at the end of a round is hard to beat."
   },
   {"name": "Stalker", "id": 19,
     "cost": 6, "points": 4,
