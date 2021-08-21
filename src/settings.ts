@@ -34,7 +34,7 @@ export function ensureUserSettings(): void {
     explainKeywords: true,
     mmCode: '',
     volume: 0.3,
-    music: false,
+    musicVolume: 0.0,
     useExpansion: false,
     tutorialKnown: false,
     completedTutorials: [],

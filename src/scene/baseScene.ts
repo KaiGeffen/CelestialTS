@@ -5,7 +5,6 @@ import Button from "../lib/button"
 
 
 var music: Phaser.Sound.BaseSound
-// var escClosesMenu: boolean
 
 
 
@@ -13,6 +12,7 @@ export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
 	rulebookContainer: Phaser.GameObjects.Container
 	sliderVolume: any
+	sliderMusic: any
 	private btnMenu: Button
 
 	// A menu is closing currently, so the main menu should not open with this esc event
@@ -32,25 +32,16 @@ export default class BaseScene extends Phaser.Scene {
 	create(): void {
 		// Add music if it doesn't exist
 		if (music === undefined) {
-			music = this.sound.add('background', {volume: 0.5, loop: true})
+			// todo
+			music = this.sound.add('background', {volume: UserSettings._get('musicVolume'), loop: true})
 			music.play()
-
-			// If user prefers no music, pause it
-			if (!UserSettings._get('music')) {
-				music.pause()
-			}
 		}
 
 		// Make sure that cardInfo is above everything else
 		addCardInfoToScene(this).setDepth(15)
 
-		// Mute button
-		let s = music.isPlaying ? '♫' : '♪'
-		let btnMute = new Button(this, Space.windowWidth - Space.pad/2, 0, s).setOrigin(1, 0)
-		btnMute.setOnClick(this.doMute(btnMute))
-
 		// Menu button
-		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 50, '⚙', this.openMenu).setOrigin(1, 0)
+		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 0, '⚙', this.openMenu).setOrigin(1, 0)
 
 		// When esc key if pressed, toggle the menu open/closed
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
@@ -71,27 +62,10 @@ export default class BaseScene extends Phaser.Scene {
 		visibleBackground.setInteractive()
 		visibleBackground.setStrokeStyle(10, ColorSettings.background, 1)
 
-		// Radio button for whether keywords should be explained
+		// Slider for Volume
 		let x = Space.windowWidth/2 - 210
 		let y = Space.windowHeight/2 - 140 - 55
-		let txtKeywordHint = this.add.text(x, y, 'Keyword text:', StyleSettings.announcement).setOrigin(0, 0.5)
 
-		let radio = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, ColorSettings.background)
-		if (UserSettings._get('explainKeywords')) {
-			radio.setFillStyle(ColorSettings.cardHighlight)
-		}
-
-		radio.setInteractive()
-		radio.on('pointerdown', function() {
-			that.sound.play('click')
-
-			UserSettings._set('explainKeywords', !UserSettings._get('explainKeywords'))
-
-			radio.setFillStyle((UserSettings._get('explainKeywords')) ? ColorSettings.cardHighlight : undefined)
-		})
-
-		// Slider for music
-		y += 110
 		let txtVolumeHint = this.add.text(x, y, 'Volume:', StyleSettings.announcement).setOrigin(0, 0.5)
 
 		this.sliderVolume = this['rexUI'].add.slider({
@@ -111,9 +85,42 @@ export default class BaseScene extends Phaser.Scene {
                 bottom: 4
             },
             input: 'drag',
-        }).setOrigin(0, 0.5)
-        this.sliderVolume.layout()
+        })
+        .setOrigin(0, 0.5)
+        .layout()
+        
+        // Slider for Music
+        y += 110
+        let txtMusicHint = this.add.text(x, y, 'Music:', StyleSettings.announcement).setOrigin(0, 0.5)
 
+		this.sliderMusic = this['rexUI'].add.slider({
+			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
+			value: UserSettings._get('musicVolume'),
+
+            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.background),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+
+            valuechangeCallback: function (value) {
+            	UserSettings._set('musicVolume', value)
+
+            	music.play({
+            		volume: value,
+            		// delay: 0.03,
+            		seek: music['seek'],
+            		loop: true,
+            	})
+            	music.resume()
+            },
+            space: {
+                top: 4,
+                bottom: 4
+            },
+            input: 'drag',
+        })
+        .setOrigin(0, 0.5)
+        .layout()
+        
         // Link to rulebook
         this.rulebookContainer = this.createRulebook()
         y += 110
@@ -135,12 +142,14 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Custom rexUI sliders don't work in containers
 		this.sliderVolume.setDepth(21).setVisible(false)
+		this.sliderMusic.setDepth(21).setVisible(false)
+
 		// Menu container which is toggled visible/not
 		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
 
 		this.confirmationContainer.add([invisibleBackground, visibleBackground,
-			txtKeywordHint, radio,
-			txtVolumeHint,
+			// txtKeywordHint, radio,
+			txtVolumeHint, txtMusicHint,
 			btnRulebook,
 			txtExitHint, btnYes, btnNo
 			])
@@ -247,23 +256,23 @@ They do not; you can have both Nourish and Starve at the same time.`
 	    return container.add([rulebook, invisibleBackground])
 	}
 
-	private doMute(btn: Button): () => void {
-		let that = this
-		return function() {
-			if (music.isPlaying) {
-				music.pause()
+	// private doMute(btn: Button): () => void {
+	// 	let that = this
+	// 	return function() {
+	// 		if (music.isPlaying) {
+	// 			music.pause()
 
-				btn.setText('♪')
-				UserSettings._set('music', false)
-			}
-			else {
-				music.resume()
+	// 			btn.setText('♪')
+	// 			UserSettings._set('music', false)
+	// 		}
+	// 		else {
+	// 			music.resume()
 
-				btn.setText('♫')
-				UserSettings._set('music', true)
-			}
-		}	
-	}
+	// 			btn.setText('♫')
+	// 			UserSettings._set('music', true)
+	// 		}
+	// 	}	
+	// }
 
 	// Overwritten by the scenes that extend this
 	beforeExit(): void {
@@ -290,6 +299,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 
 		this.confirmationContainer.setVisible(true)
 		this.sliderVolume.setVisible(true)
+		this.sliderMusic.setVisible(true)
 	}
 
 	private closeMenu(): void {
@@ -300,6 +310,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 		this.confirmationContainer.setVisible(false)
 		this.rulebookContainer.setVisible(false)
 		this.sliderVolume.setVisible(false)
+		this.sliderMusic.setVisible(false)
 	}
 
 	private doExit(): void {
