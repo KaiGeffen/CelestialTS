@@ -181,8 +181,8 @@ export default class GameScene extends BaseScene {
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
 
 	    // Status text
-	    this.txtStatus = new StatusBar(this, Space.windowHeight - Space.cardSize - Space.pad * 2)
-	    this.txtOpponentStatus = new StatusBar(this, Space.cardSize + Space.pad * 2)
+	    this.txtStatus = new StatusBar(this, Space.windowHeight - Space.cardSize - Space.pad * 2, true)
+	    this.txtOpponentStatus = new StatusBar(this, Space.cardSize + Space.pad * 2, false)
 
 	    // Passing text
 	    this.txtPass = this.add.text(Space.announceOffset, 650 - 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)

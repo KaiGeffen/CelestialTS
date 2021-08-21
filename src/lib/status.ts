@@ -15,12 +15,17 @@ export class StatusBar {
 	scene: Phaser.Scene
 	y: number
 
+	// Whether this is user's status bar or opponent's
+	isYou: boolean
+
 	// The previous objects, deleted when setting a new status
 	objs: Phaser.GameObjects.GameObject[]
 
-	constructor(scene: Phaser.Scene, y: number) {
+	constructor(scene: Phaser.Scene, y: number, isYou: boolean) {
 		this.scene = scene
     	this.y = y
+    	this.isYou = isYou
+
     	this.objs = []
   	}
 
@@ -46,10 +51,13 @@ export class StatusBar {
   				let s = Status[i] + ' ' + amts[i]
 
   				// Make a hoverable text object
-  				let txt = this.scene.add.text(x, this.y, s, StyleSettings.basic).setOrigin(0)
+  				let yOrigin = this.isYou ? 1 : 0
+  				
+  				let txt = this.scene.add.text(x, this.y, s, StyleSettings.basic).setOrigin(0, yOrigin)
   				txt.setInteractive().on('pointerover', this.onHover(i, amts[i], txt))
-  				// txt.setInteractive().on('pointerout', this.onHoverExit(i))
+  				txt.setInteractive().on('pointerout', this.onHoverExit)
 
+  				// Adjust the x so the next text is to the right of this
   				x += txt.width + Space.pad
 
   				this.objs.push(txt)
@@ -59,6 +67,8 @@ export class StatusBar {
   	}
 
   	private onHover(statusIndex: number, amt: number, obj: Phaser.GameObjects.GameObject): () => void {
+  		let that = this
+
   		return function() {
   			cardInfo.setVisible(true)
 
@@ -67,6 +77,14 @@ export class StatusBar {
   			keywords.forEach(function(keyword, i, array) {
   				if (keyword.key === Status[statusIndex]) {
   					s += keyword.text
+
+  					// Replace each instance of X with amt
+  					s = s.split(/\bX\b/).join(amt.toString())
+
+  					// Replace 'you' with 'they' if isThem
+  					if (!that.isYou) {
+  						s = s.replace('you', 'they')
+  					}
   				}
   			})
 
@@ -74,12 +92,8 @@ export class StatusBar {
 		    cardInfo.copyPosition(obj)
 		  }
   	}
+
+  	private onHoverExit(): void {
+  		cardInfo.setVisible(false)
+  	}
 }
-
-
-	    // // this.txtStatus = this.add.text(Space.pad,
-	    // // 	650 - Space.cardSize - Space.pad * 2,
-	    // // 	'', StyleSettings.basic).setOrigin(0, 1)
-	    // this.txtOpponentStatus = this.add.text(Space.pad,
-	    // 	Space.cardSize + Space.pad * 2,
-	    // 	'', StyleSettings.basic).setOrigin(0, 0)
