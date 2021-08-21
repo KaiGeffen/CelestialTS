@@ -1174,12 +1174,12 @@ export class DraftBuilderScene extends BuilderScene {
         Space.windowWidth/2,
         Space.windowHeight/2,
         800,
-        400,
+        300,
         true,
         25)
 
-      let txtTitle = this.add.text(0, -160, 'Onward!', StyleSettings.announcement).setOrigin(0.5)
-      let txtMessage = this.add.text(0, -100, msgText, StyleSettings.basic).setOrigin(0.5, 0)
+      let txtTitle = this.add.text(0, -110, 'Onward!', StyleSettings.announcement).setOrigin(0.5)
+      let txtMessage = this.add.text(0, -50, msgText, StyleSettings.basic).setOrigin(0.5, 0)
       
       menu.add([txtTitle, txtMessage])
     }

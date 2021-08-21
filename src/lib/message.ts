@@ -70,13 +70,13 @@ advanced challenges are now available!
 
 The expansion can be enabled from the deck menu.`, Screen.Main],
 	deckMenuNotice:
-[`You can find premade decks by clicking
-the [color=${ColorSettings.button}]Deck[/color] button below.`, Screen.Builder],
-	draftNotice:
-[`Draft a deck of 15 cards from random
-choices of 4 cards each.
+[`You can find premade decks by clicking the
+[color=${ColorSettings.button}]Deck[/color] button below.
 
-After each match, you may choose to
-remove a card from your deck to replace
-with any card from a new 4 card pool.`, Screen.Draft],
+[color=${ColorSettings.cardText}]Anubis[/color] is a great deck to start with.`, Screen.Builder],
+	draftNotice:
+[`Draft a deck of 15 cards from random choices
+of 4 cards each.
+
+Play as long as you like with the deck you make.`, Screen.Draft],
 }
