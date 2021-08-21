@@ -866,7 +866,10 @@ export class BuilderScene extends BuilderSceneShell {
   private manageMessages(): void {
     let msgText = MessageManager.readFirstUnreadMessage(Screen.Builder)
     if (msgText !== undefined) {
-      
+      // Make the deck button glow to catch attention
+      this.btnDeckMenu.glowUntilClicked()
+
+      // Open a window informing user of information
       let menu = new Menu(
         this,
         Space.windowWidth/2,
@@ -877,7 +880,7 @@ export class BuilderScene extends BuilderSceneShell {
         25)
 
       let txtTitle = this.add.text(0, -110, 'Welcome!', StyleSettings.announcement).setOrigin(0.5)
-      let txtMessage = this.add.text(0, -50, msgText, StyleSettings.basic).setOrigin(0.5, 0)
+      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, StyleSettings.basic).setOrigin(0.5, 0)
       
       menu.add([txtTitle, txtMessage])
     }
@@ -898,20 +901,8 @@ export class BuilderScene extends BuilderSceneShell {
 
   }
 
-  // Overwrite just to modify the deck button:
-  setDeck(deckCode: string | Card[]): boolean {
-    // Make the deck button glow if there are no cards in deck
-    if (this.deck.length === 0) {
-      this.btnDeckMenu.glowUntilClicked()
-    }
-
-    return super.setDeck(deckCode)
-  }
-
   // Add card to the existing deck
   addCardToDeck(card: Card): boolean {
-    this.btnDeckMenu.stopGlow()
-
     return super.addCardToDeck(card)
   }
 }

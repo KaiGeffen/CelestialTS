@@ -70,7 +70,6 @@ advanced challenges are now available!
 
 The expansion can be enabled from the deck menu.`, Screen.Main],
 	deckMenuNotice: 
-[`Click the Deck button in the bottom right
-to select a premade deck, or make your own
-from scratch!`, Screen.Builder],
+[`You can find premade decks by clicking
+the [color=${ColorSettings.button}]Deck[/color] button below.`, Screen.Builder],
 }
