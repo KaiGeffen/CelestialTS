@@ -23,10 +23,12 @@ export default class GameScene extends BaseScene {
 	net: Network
 
 	// Objects (CardImages and text) that will be removed before displaying a new state
-	temporaryObjs
+	temporaryObjs: any[]
 
 	mulliganHighlights: Phaser.GameObjects.Rectangle[]
 	myHand: CardImage[]
+	// Cards which were mulliganed and now await the mulligan event to shuffle back into deck
+	mulliganedCards: CardImage[]
 	txtOpponentMulligan: Phaser.GameObjects.Text
 
 	btnPass: Button
@@ -312,10 +314,10 @@ export default class GameScene extends BaseScene {
 				if (that.mulliganHighlights[i].visible) {
 					mulligans += '1'
 
-					amt += 1
-
 					// Animate the mulliganed cards moving up out of hand, and their later transition to deck
-					that.animateMulliganedCard(i)	
+					that.animateMulliganedCard(i)
+
+					amt += 1
 				} 
 				else {
 					mulligans += '0'
@@ -1414,7 +1416,20 @@ export default class GameScene extends BaseScene {
 			duration: TimeSettings.recapTweenWithPause,
 		})
 
+		// Remove this card from the destroyed objects list
+		let objIndex
+		for (var i = 0; i < this.temporaryObjs.length; i++) {
+			if (this.temporaryObjs[i] === card) {
+				objIndex = i
+			}
+		}
+		this.temporaryObjs.splice(objIndex, 1)
 
+		// Remove any click events
+		card.removeOnClick()
+
+		// Add to a listen of mulliganed cards, which animate when we get the mulligan event
+		this.mulliganedCards.append(card)
   	}
 
   	// Animate a card being kept during the mulligan filling a hole of size distance in the hand
