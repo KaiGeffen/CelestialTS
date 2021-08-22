@@ -26,6 +26,7 @@ export default class GameScene extends BaseScene {
 	temporaryObjs
 
 	mulliganHighlights: Phaser.GameObjects.Rectangle[]
+	myHand: CardImage[]
 	txtOpponentMulligan: Phaser.GameObjects.Text
 
 	btnPass: Button
@@ -303,13 +304,30 @@ export default class GameScene extends BaseScene {
 
 		let that = this
 		let f = function () {
+
+			// Get the string to send signifying which cards to mulligan
 			let mulligans = ''
+			let amt = 0
 			for (var i = 0; i < that.mulliganHighlights.length; i++) {
-				if (that.mulliganHighlights[i].visible) mulligans += '1'
-				else mulligans += '0'
+				if (that.mulliganHighlights[i].visible) {
+					mulligans += '1'
+
+					amt += 1
+
+					// Animate the mulliganed cards moving up out of hand, and their later transition to deck
+					that.animateMulliganedCard(i)	
+				} 
+				else {
+					mulligans += '0'
+
+					// Move the remaining cards to fill in any holes to their left
+					if (amt > 0) {
+						that.animateKeptCard(i, amt)						
+					}
+				}
 			}
 
-			that.net.doMulligan(mulligans)
+			that.net.doMulligan(mulligans)			
 
 			// Remove all mulligan objects
 			that.mulliganHighlights.forEach(o => o.destroy())
@@ -1027,6 +1045,9 @@ export default class GameScene extends BaseScene {
 
 		animateHand(myHand, 0)
 		animateHand(theirHand, 1)
+
+		// NOTE This is for the mulligan animation at the start of the match
+		this.myHand = myHand
 	}
 
 	// Display each player's stacks (deck, discard pile)
@@ -1381,6 +1402,32 @@ export default class GameScene extends BaseScene {
 
   		// Remember what the scores were for next time
   		this.lastScore = state.score
+  	}
+
+  	// Animate the card at given spot in hand being mulliganed away
+  	private animateMulliganedCard(i: number): void {
+  		let card = this.myHand[i]
+
+  		this.tweens.add({
+			targets: card.container,
+			y: card.container.y - Space.cardSize*2,
+			duration: TimeSettings.recapTweenWithPause,
+		})
+
+
+  	}
+
+  	// Animate a card being kept during the mulligan filling a hole of size distance in the hand
+  	private animateKeptCard(i: number, distance: number): void {
+  		let card = this.myHand[i]
+
+  		let dx = (Space.cardSize + Space.pad) * distance
+  		this.tweens.add({
+			targets: card.container,
+			x: card.container.x - dx,
+			duration: TimeSettings.recapTweenWithPause,
+			delay: TimeSettings.recapTween,
+		})
   	}
 
   	// NOTE Overwritten by Tutorial Scene
