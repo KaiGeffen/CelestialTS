@@ -631,143 +631,14 @@ export default class GameScene extends BaseScene {
 		let doAnimation = function(player: number): (animation: Animation) => void {
 			return function(animation: Animation): void {
 				if (animation.from === Zone.Shuffle) {
-					let x = Space.stackX
-					let yOffset = Space.pad + Space.cardSize/2
-					let y = player === 0 ? Space.windowHeight - yOffset : yOffset
-
-					let bottomHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
-					let topHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
-					that.stackContainer.add([bottomHalf, topHalf])
-
-					that.tweens.add({
-						targets: topHalf,
-						y: topHalf.y - Space.cardSize/2,
-						delay: delay,
-						duration: TimeSettings.recapTween/2,
-						ease: "Sine.easeInOut",
-						yoyo: true,
-						onStart: function() { that.sound.play('shuffle') },
-						onComplete: function () { topHalf.destroy() }
-					})
-					that.tweens.add({
-						targets: bottomHalf,
-						y: bottomHalf.y + Space.cardSize/2,
-						delay: delay,
-						duration: TimeSettings.recapTween/2,
-						ease: "Sine.easeInOut",
-						yoyo: true,
-						onComplete: function () { bottomHalf.destroy() }
-					})
+					that.displayShuffleAnimation(delay, player, that)
+				}
+				else if (animation.from === Zone.Status) {
+					console.log(animation)
+					that.displayStatusAnimation(animation, delay, player, that)
 				}
 				else if (animation.to !== Zone.Hand) {
-					let card: CardImage
-
-					switch(animation.from) {
-						case Zone.Hand:
-						if (player === 0) {
-							card = that.addCard(animation.card, 0, that.handContainer, player)
-						} else {
-							card = that.addCard(animation.card, 0, that.opponentHandContainer, player)
-						}
-						break
-
-						case Zone.Deck:
-						card = that.addCard(animation.card, 0, that.stackContainer, player)
-						break
-
-						case Zone.Discard:
-						card = that.addCard(animation.card, 1, that.stackContainer, player)
-						break
-
-						// case Zone.Story:
-						// 	card = that.addCard(animation.card, 0, that.stackContainer, player)
-						// 	break
-
-						case Zone.Gone:
-						card = that.addCard(animation.card, 0, that.storyContainer, player)
-						// NOTE This gets changed below
-						break
-					}
-
-					let x, y
-					switch(animation.to) {
-						// case Zone.Deck:
-						case Zone.Deck:
-						[x, y] = that.getCardPosition(0, that.stackContainer, player)
-						break
-
-						case Zone.Discard:
-						[x, y] = that.getCardPosition(1, that.stackContainer, player)
-						break
-
-						case Zone.Gone:
-						x = card.container.x
-						y = Space.windowHeight/2
-						break
-						// case Zone.Story:
-					}
-
-					// Gone start at midline, and drops vertically to wherever it's going
-					if (animation.from === Zone.Gone) {
-						card.setPosition([x, Space.windowHeight/2])
-					}
-
-					// Hide card until animation starts
-					card.hide()
-					card.container.setDepth(1)
-
-					that.tweens.add({
-						targets: card.container,
-						x: x,
-						y: y,
-						delay: delay,
-						duration: TimeSettings.recapTweenWithPause,
-						onStart: function (tween, targets, _)
-						{
-							card.show()
-						}
-					})
-
-					// If discard pile plus a zone on line with it, yo-yo in towards the center of board
-					let lateralZones = [Zone.Hand, Zone.Deck]
-					if (
-						(animation.to === Zone.Discard && lateralZones.includes(animation.from)) || 
-						(animation.from === Zone.Discard && lateralZones.includes(animation.to))) 
-					{
-						// Towards center by 2 card sizes
-						let y = (card.container.y < Space.windowHeight/2) ? card.container.y + Space.cardSize*2 : card.container.y - Space.cardSize*2
-						
-						that.tweens.add({
-							targets: card.container,
-							y: y,
-							delay: delay,
-							duration: TimeSettings.recapTweenWithPause/2,
-							yoyo: true,
-							onStart: function() { that.sound.play('discard') }
-						})
-					}
-
-					// If card is being removed from the game, fade it out
-					if (animation.to === Zone.Gone) {
-						that.tweens.add({
-							targets: card.container,
-							alpha: 0,
-							delay: delay,
-							duration: TimeSettings.recapTweenWithPause
-						})
-					}
-
-					// If card is being created, fade it in
-					if (animation.from === Zone.Gone) {
-						card.container.setAlpha(0)
-
-						that.tweens.add({
-							targets: card.container,
-							alpha: 1,
-							delay: delay,
-							duration: TimeSettings.recapTweenWithPause
-						})
-					}
+					that.displayMovementAnimation(animation, delay, player, that)
 				}
 
 				// TODO Shuffle hits this
@@ -780,6 +651,170 @@ export default class GameScene extends BaseScene {
 		delay = 0
 		animations[1].forEach(doAnimation(1))
 
+	}
+
+	// Display a shuffling animation
+	private displayShuffleAnimation(delay: number, player: number, that): void {
+		let x = Space.stackX
+		let yOffset = Space.pad + Space.cardSize/2
+		let y = player === 0 ? Space.windowHeight - yOffset : yOffset
+
+		let bottomHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
+		let topHalf = that.add.sprite(x, y, 'Cardback').setOrigin(0, 0.5)
+		that.stackContainer.add([bottomHalf, topHalf])
+
+		that.tweens.add({
+			targets: topHalf,
+			y: topHalf.y - Space.cardSize/2,
+			delay: delay,
+			duration: TimeSettings.recapTween/2,
+			ease: "Sine.easeInOut",
+			yoyo: true,
+			onStart: function() { that.sound.play('shuffle') },
+			onComplete: function () { topHalf.destroy() }
+		})
+		that.tweens.add({
+			targets: bottomHalf,
+			y: bottomHalf.y + Space.cardSize/2,
+			delay: delay,
+			duration: TimeSettings.recapTween/2,
+			ease: "Sine.easeInOut",
+			yoyo: true,
+			onComplete: function () { bottomHalf.destroy() }
+		})
+	}
+
+	// Display an animation of a status being gained
+	private displayStatusAnimation(animation: Animation, delay: number, player: number, that): void {
+		let txt: Phaser.GameObjects.Text
+
+		if (player === 0) {
+			txt = that.statusBar.get(animation.status)
+		} else {
+			txt = that.statusBarOpp.get(animation.status)
+		}
+
+		that.tweens.add({
+  			targets: txt,
+  			scale: 1.5,
+  			duration: TimeSettings.recapTweenWithPause,
+  			ease: "Sine.easeInOut",
+  			yoyo: true,
+  			delay: delay,
+			onStart: function() { that.sound.play(animation.status.toString().toLowerCase()) }
+  		})
+	}
+
+	// Display an animation which is any card moving between zones that doesn't end in the hand
+	private displayMovementAnimation(animation: Animation, delay: number, player: number, that): void {
+		let card: CardImage
+
+		switch(animation.from) {
+			case Zone.Hand:
+			if (player === 0) {
+				card = that.addCard(animation.card, 0, that.handContainer, player)
+			} else {
+				card = that.addCard(animation.card, 0, that.opponentHandContainer, player)
+			}
+			break
+
+			case Zone.Deck:
+			card = that.addCard(animation.card, 0, that.stackContainer, player)
+			break
+
+			case Zone.Discard:
+			card = that.addCard(animation.card, 1, that.stackContainer, player)
+			break
+
+			// case Zone.Story:
+			// 	card = that.addCard(animation.card, 0, that.stackContainer, player)
+			// 	break
+
+			case Zone.Gone:
+			card = that.addCard(animation.card, 0, that.storyContainer, player)
+			// NOTE This gets changed below
+			break
+		}
+
+		let x, y
+		switch(animation.to) {
+			// case Zone.Deck:
+			case Zone.Deck:
+			[x, y] = that.getCardPosition(0, that.stackContainer, player)
+			break
+
+			case Zone.Discard:
+			[x, y] = that.getCardPosition(1, that.stackContainer, player)
+			break
+
+			case Zone.Gone:
+			x = card.container.x
+			y = Space.windowHeight/2
+			break
+			// case Zone.Story:
+		}
+
+		// Gone start at midline, and drops vertically to wherever it's going
+		if (animation.from === Zone.Gone) {
+			card.setPosition([x, Space.windowHeight/2])
+		}
+
+		// Hide card until animation starts
+		card.hide()
+		card.container.setDepth(1)
+
+		that.tweens.add({
+			targets: card.container,
+			x: x,
+			y: y,
+			delay: delay,
+			duration: TimeSettings.recapTweenWithPause,
+			onStart: function (tween, targets, _)
+			{
+				card.show()
+			}
+		})
+
+		// If discard pile plus a zone on line with it, yo-yo in towards the center of board
+		let lateralZones = [Zone.Hand, Zone.Deck]
+		if (
+			(animation.to === Zone.Discard && lateralZones.includes(animation.from)) || 
+			(animation.from === Zone.Discard && lateralZones.includes(animation.to))) 
+		{
+			// Towards center by 2 card sizes
+			let y = (card.container.y < Space.windowHeight/2) ? card.container.y + Space.cardSize*2 : card.container.y - Space.cardSize*2
+
+			that.tweens.add({
+				targets: card.container,
+				y: y,
+				delay: delay,
+				duration: TimeSettings.recapTweenWithPause/2,
+				yoyo: true,
+				onStart: function() { that.sound.play('discard') }
+			})
+		}
+
+		// If card is being removed from the game, fade it out
+		if (animation.to === Zone.Gone) {
+			that.tweens.add({
+				targets: card.container,
+				alpha: 0,
+				delay: delay,
+				duration: TimeSettings.recapTweenWithPause
+			})
+		}
+
+		// If card is being created, fade it in
+		if (animation.from === Zone.Gone) {
+			card.container.setAlpha(0)
+
+			that.tweens.add({
+				targets: card.container,
+				alpha: 1,
+				delay: delay,
+				duration: TimeSettings.recapTweenWithPause
+			})
+		}
 	}
 
 

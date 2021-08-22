@@ -19,7 +19,7 @@ export class StatusBar {
 	isYou: boolean
 
 	// The previous objects, deleted when setting a new status
-	objs: Phaser.GameObjects.GameObject[]
+	objs: Phaser.GameObjects.Text[]
 
 	constructor(scene: Phaser.Scene, y: number, isYou: boolean) {
 		this.scene = scene
@@ -56,12 +56,15 @@ export class StatusBar {
   				// Make a hoverable text object
   				let yOrigin = this.isYou ? 1 : 0
   				
-  				let txt = this.scene.add.text(x, this.y, s, StyleSettings.basic).setOrigin(0, yOrigin)
+  				let txt = this.scene.add.text(x, this.y, s, StyleSettings.basic).setOrigin(0.5, yOrigin)
+  				// Move object over (0.5 centered X origin for scaling animation purposes)
+  				txt.x += (txt.width * 1.5)/2
+
   				txt.setInteractive().on('pointerover', this.onHover(i, amts[i], txt))
   				txt.setInteractive().on('pointerout', this.onHoverExit)
 
   				// Emit onHover if pointer is over it currently
-  				if (txt.x <= pointer.x && pointer.x <= txt.x + txt.width) {
+  				if (txt.x - txt.width/2 <= pointer.x && pointer.x <= txt.x + txt.width/2) {
   					let bottom = this.isYou ? txt.y - txt.height : txt.y
   					let top = this.isYou ? txt.y : txt.y - txt.height
   					if (bottom <= pointer.y && pointer.y <= top) {
@@ -71,13 +74,21 @@ export class StatusBar {
   				}
 
   				// Adjust the x so the next text is to the right of this
-  				x += txt.width + Space.pad
+  				x += txt.width * 1.5 + Space.pad
 
-  				this.objs.push(txt)
+  				// Add this object in the correct spot based off the Status enum
+  				this.objs[i] = txt
   			}
   		}
 
   		return pointerIsOver
+  	}
+
+  	// Get the text object associated with the given status
+  	get(status: Status): Phaser.GameObjects.Text {
+  		let obj = this.objs[Status[status]]
+
+  		return obj
   	}
 
   	private onHover(statusIndex: number, amt: number, obj: Phaser.GameObjects.Text): () => void {
@@ -105,7 +116,7 @@ export class StatusBar {
 		    cardInfo.text = s
 
 		    // Position cardInfo so that it doesn't hide this text
-		    let x = obj.x
+		    let x = obj.x - obj.width/2
 		    // If it's you, it's above, them it's below
 		    let y
 		    if (that.isYou) {

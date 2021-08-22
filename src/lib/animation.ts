@@ -1,17 +1,8 @@
 import Card from './card'
 import { decodeCard } from './codec'
+import { Status } from './status'
 
 
-// export enum Animation {
-// 	Draw,
-// 	Discard,
-// 	TutorDeck,
-// 	TutorDiscard,
-// 	Create,
-// 	Shuffle,
-// 	Mill,
-// 	Top
-// }
 export enum Zone {
 	Hand,
 	Deck,
@@ -21,6 +12,7 @@ export enum Zone {
 
 	Create,
 	Shuffle,
+	Status,
 }
 
 export class Animation {
@@ -28,26 +20,18 @@ export class Animation {
 	to: Zone
 	card: Card
 	index: number
+	status: Status
 
-	constructor(from, to, card, index) {
+	constructor(from, to, card, index, status) {
 		this.from = from
 		this.to = to
 		this.card = card
 		this.index = index
+		this.status = status
 	}
 }
 
 function decodeAnimation(from: string, to: string, target: string): Animation {
-	// let dict = {
-	// 	'draw': Animation.Draw,
-	// 	'discard': Animation.Discard,
-	// 	'tutor_deck': Animation.TutorDeck,
-	// 	'tutor_discard': Animation.TutorDiscard,
-	// 	'create': Animation.Create,
-	// 	'shuffle': Animation.Shuffle,
-	// 	'mill': Animation.Mill,
-	// 	'top': Animation.Top
-	// }
 	let dict = {
 		'Hand': Zone.Hand,
 		'Deck': Zone.Deck,
@@ -56,14 +40,19 @@ function decodeAnimation(from: string, to: string, target: string): Animation {
 		'Gone': Zone.Gone,
 
 		'Shuffle': Zone.Shuffle,
+		'Status': Zone.Status,
 	}
 
 	// If going to your hand, the target is referenced by index, otherwise it's a card
 	let card: Card = undefined
 	let index: number = undefined
+	let status: Status = undefined
 
 	if (dict[to] === Zone.Hand) { // TODO Or Story
 		index = parseInt(target)
+	}
+	else if (dict[from] === Zone.Status) {
+		status = Status[target]
 	}
 	else {
 		card = decodeCard(target)
@@ -74,7 +63,8 @@ function decodeAnimation(from: string, to: string, target: string): Animation {
 		dict[from],
 		dict[to],
 		card,
-		index)
+		index,
+		status)
 }
 
 export function decodeAnimationList(l: [from: string, to: string, target: string][]): Animation[] {
