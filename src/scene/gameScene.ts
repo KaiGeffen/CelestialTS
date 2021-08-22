@@ -57,8 +57,8 @@ export default class GameScene extends BaseScene {
 	txtWins: Phaser.GameObjects.Text
 	txtOpponentWins: Phaser.GameObjects.Text
 
-	txtStatus: StatusBar
-	txtOpponentStatus: StatusBar
+	statusBar: StatusBar
+	statusBarOpp: StatusBar
 
 	txtPass: Phaser.GameObjects.Text
 	txtOpponentPass: Phaser.GameObjects.Text
@@ -181,8 +181,8 @@ export default class GameScene extends BaseScene {
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
 
 	    // Status text
-	    this.txtStatus = new StatusBar(this, Space.windowHeight - Space.cardSize - Space.pad * 2, true)
-	    this.txtOpponentStatus = new StatusBar(this, Space.cardSize + Space.pad * 2, false)
+	    this.statusBar = new StatusBar(this, Space.windowHeight - Space.cardSize - Space.pad * 2, true)
+	    this.statusBarOpp = new StatusBar(this, Space.cardSize + Space.pad * 2, false)
 
 	    // Passing text
 	    this.txtPass = this.add.text(Space.announceOffset, 650 - 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
@@ -560,8 +560,8 @@ export default class GameScene extends BaseScene {
 		this.txtOpponentMana.setText('')//`Mana: ?/${state.maxMana[1]}`)
 
 		// Status
-		this.txtStatus.setStatuses(state.status)
-		this.txtOpponentStatus.setStatuses(state.opponentStatus)
+		let pointerIsOverAStatus = this.statusBar.setStatuses(state.status) ||
+			this.statusBarOpp.setStatuses(state.opponentStatus)
 
 		// Score
 		this.txtWins.setText(`Wins: ${state.wins[0]}`)
@@ -600,7 +600,9 @@ export default class GameScene extends BaseScene {
 		this.displayNonHandAnimations(state.animations)
 
 		// Refresh card info to describe what it is currently hovering over
-		refreshCardInfo()
+		if (!pointerIsOverAStatus) {
+			refreshCardInfo()
+		}
 
 		// Remember what version of the game state this is, for use when communicating with server
 		this.net.setVersionNumber(state.versionNumber)

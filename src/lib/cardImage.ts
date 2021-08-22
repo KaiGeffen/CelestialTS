@@ -3,6 +3,7 @@ import { cardback } from "../catalog/catalog"
 import { ColorSettings, StyleSettings, UserSettings, BBConfig, CardStatsConfig, Space } from "../settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
+import { StatusBar } from "../lib/status"
 
 
 export var cardInfo: any // BBCodeText

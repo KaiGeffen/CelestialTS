@@ -29,8 +29,11 @@ export class StatusBar {
     	this.objs = []
   	}
 
-  	// Set all of this bar's status
-  	setStatuses(statuses: Status[]): void {
+  	// Set all of this bar's status, return true if the points is over one of them
+  	setStatuses(statuses: Status[]): boolean {
+  		// Remember if the pointer is over any of the text objects
+  		let pointerIsOver = false
+
   		// Remove all of the previous status objects
   		this.objs.forEach(obj => obj.destroy())
 		this.objs = []
@@ -41,10 +44,10 @@ export class StatusBar {
 
   		statuses.forEach(function(status, index, array) {
   			amts[status]++
-  			console.log('here')
   		})
 
   		// For each status which exists, add a hoverable text object with its amount
+  		let pointer = this.scene.game.input.activePointer
   		let x = Space.pad
   		for (var i = 0; i < length; i++) {
   			if (amts[i] > 0) {
@@ -57,6 +60,16 @@ export class StatusBar {
   				txt.setInteractive().on('pointerover', this.onHover(i, amts[i], txt))
   				txt.setInteractive().on('pointerout', this.onHoverExit)
 
+  				// Emit onHover if pointer is over it currently
+  				if (txt.x <= pointer.x && pointer.x <= txt.x + txt.width) {
+  					let bottom = this.isYou ? txt.y - txt.height : txt.y
+  					let top = this.isYou ? txt.y : txt.y - txt.height
+  					if (bottom <= pointer.y && pointer.y <= top) {
+  						txt.emit('pointerover')
+  						pointerIsOver = true
+  					}
+  				}
+
   				// Adjust the x so the next text is to the right of this
   				x += txt.width + Space.pad
 
@@ -64,6 +77,7 @@ export class StatusBar {
   			}
   		}
 
+  		return pointerIsOver
   	}
 
   	private onHover(statusIndex: number, amt: number, obj: Phaser.GameObjects.Text): () => void {
