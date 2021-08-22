@@ -31,6 +31,7 @@ export default class Card {
   text: string
   dynamicText: string
   catalogText: string
+  fleeting: boolean
 
   constructor(data: CardData) {
     this.name = data.name
@@ -43,6 +44,9 @@ export default class Card {
 
     // TODO Take out the check once all cards have catalog text
     this.catalogText = (data.catalogText === undefined) ? '' : data.catalogText
+
+    // TODO Don't rely on card text like this
+    this.fleeting = this.text.includes("Fleeting")
   }
 
   // Get the text for this card, including formatting
