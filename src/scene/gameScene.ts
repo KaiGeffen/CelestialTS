@@ -287,6 +287,8 @@ export default class GameScene extends BaseScene {
 
 	// Create all objects relating to the mulligan phase
 	private createMulliganObjects(): void {
+		this.mulliganedCards = []
+
 		// Highlights
 		this.mulliganHighlights = []
 		for (var i = 0; i < 3; i++) {
@@ -730,6 +732,12 @@ export default class GameScene extends BaseScene {
 		let card: CardImage
 
 		switch(animation.from) {
+			case Zone.Mulligan:
+			card = that.mulliganedCards[animation.index]
+			// Add back into temporary objects, so it doesn't persist
+			that.temporaryObjs.push(card)
+			break
+
 			case Zone.Hand:
 			if (player === 0) {
 				card = that.addCard(animation.card, 0, that.handContainer, player)
@@ -780,8 +788,10 @@ export default class GameScene extends BaseScene {
 		}
 
 		// Hide card until animation starts
-		card.hide()
-		card.container.setDepth(1)
+		if (animation.from !== Zone.Mulligan) {
+			card.hide()
+			card.container.setDepth(1)	
+		}
 
 		that.tweens.add({
 			targets: card.container,
@@ -792,6 +802,9 @@ export default class GameScene extends BaseScene {
 			onStart: function (tween, targets, _)
 			{
 				card.show()
+			},
+			onComplete: function (tween, targets, _) {
+				card.hide()
 			}
 		})
 
@@ -1429,7 +1442,7 @@ export default class GameScene extends BaseScene {
 		card.removeOnClick()
 
 		// Add to a listen of mulliganed cards, which animate when we get the mulligan event
-		this.mulliganedCards.append(card)
+		this.mulliganedCards.push(card)
   	}
 
   	// Animate a card being kept during the mulligan filling a hole of size distance in the hand

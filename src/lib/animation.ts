@@ -10,6 +10,7 @@ export enum Zone {
 	Story,
 	Gone,
 
+	Mulligan,
 	Create,
 	Shuffle,
 	Status,
@@ -39,6 +40,7 @@ function decodeAnimation(from: string, to: string, target: string): Animation {
 		'Story': Zone.Story,
 		'Gone': Zone.Gone,
 
+		'Mulligan': Zone.Mulligan,
 		'Shuffle': Zone.Shuffle,
 		'Status': Zone.Status,
 	}
@@ -48,7 +50,7 @@ function decodeAnimation(from: string, to: string, target: string): Animation {
 	let index: number = undefined
 	let status: Status = undefined
 
-	if (dict[to] === Zone.Hand) { // TODO Or Story
+	if (dict[to] === Zone.Hand || dict[from] === Zone.Mulligan) { // TODO Or Story
 		index = parseInt(target)
 	}
 	else if (dict[from] === Zone.Status) {
