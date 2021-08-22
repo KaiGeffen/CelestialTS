@@ -131,11 +131,8 @@ export class CardImage {
     // Add pipeline for dissolve effect
     let postFxPlugin = scene.plugins.get('rexDissolvePipeline')
     let dissolvePipeline = postFxPlugin['add'](copyImage, {
-      resizeMode: 2,
-      fromEdgeStart: 0.0001,
-      fromEdgeWidth: 0.0005,
-      toEdgeStart: 0.0001,
-      toEdgeWidth: 0.0005,
+      noiseX: 100,
+      noiseY: 100
     })
 
     // this.dissolvePipeline.setProgress(1)
