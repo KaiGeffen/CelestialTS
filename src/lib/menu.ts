@@ -6,6 +6,9 @@ import BaseScene from '../scene/baseScene'
 export default class Menu {
 	container: Phaser.GameObjects.Container
 
+	// Callback called when menu closes
+	onCloseCallback: () => void
+
 	constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, visible: boolean = true, depth: number = 0) {
 		// Esc key closes all menus
 		let esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
@@ -51,6 +54,14 @@ export default class Menu {
 	// Close this menu
 	close(): void {
 		this.container.scene.sound.play('close')
+
 		this.container.setVisible(false)
+
+		this.onCloseCallback()
+	}
+
+	// Set the callback which is made when the menu closes
+	setOnClose(f: () => void): void {
+		this.onCloseCallback = f
 	}
 }

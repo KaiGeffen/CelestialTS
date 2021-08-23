@@ -51,11 +51,11 @@ class TutorialScene extends GameScene {
 			if (!exFound && ex.isApplicable(state)) {
 				exFound = true
 
-				ex.alterScene(this)
-
 				let s = ex.explain()
 				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', 15)
 				this.txtTutorial.setVisible(true)
+
+				ex.alterScene(this)
 			}
 		})
 
@@ -374,6 +374,10 @@ let exRoundStart: Explanation = new Explanation(
 		let height = 450
 		let menu = new Menu(scene, Space.windowWidth/2, Space.windowHeight/2, width, height, true, 10)
 
+		// Pause the tutorial text until the menu is closed
+		scene.txtTutorial.setVisible(false).pause()
+		menu.setOnClose(() => {scene.txtTutorial.setVisible(true).resume()})
+
 		let s = 
 `When a round ends, the story resolves
 from left to right. Each player gains
@@ -442,6 +446,10 @@ let exCardEffects: Explanation = new Explanation(
 		let width = 800
 		let height = 400
 		let menu = new Menu(scene, Space.windowWidth/2, Space.windowHeight/2, width, height, true, 10)
+
+		// Pause the tutorial text until the menu is closed
+		scene.txtTutorial.setVisible(false).pause()
+		menu.setOnClose(() => {scene.txtTutorial.setVisible(true).resume()})
 
 		let s = 
 `Wait! In addition to a cost and point value,
