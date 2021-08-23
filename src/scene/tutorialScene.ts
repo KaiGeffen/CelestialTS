@@ -31,8 +31,9 @@ class TutorialScene extends GameScene {
 			y: Space.pad,
 			text: this.add['rexBBCodeText'](0, 0, '', TutorialBBConfig)
 		}).setOrigin(0)
-		this.txtTutorial.setInteractive()
-		this.txtTutorial.on('pointerdown', this.doClickTutorialText, this)
+		.setVisible(false)
+		.setInteractive()
+		.on('pointerdown', this.doClickTutorialText, this)
 	}
 
 	displayState(state: ClientState, recap: boolean = false): boolean {
@@ -107,7 +108,6 @@ class TutorialScene extends GameScene {
 
 		if (txt.isTyping) {
 			txt.stop(true)
-			txt.setDepth(20)
 
 		} else {
 			txt.setVisible(false)
