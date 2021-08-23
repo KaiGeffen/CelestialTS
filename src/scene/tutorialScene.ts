@@ -379,7 +379,7 @@ let exRoundStart: Explanation = new Explanation(
 		menu.setOnClose(() => {scene.txtTutorial.setVisible(true).resume()})
 
 		let s = 
-`When a round ends, the story resolves
+`[stroke=black]When a round ends, the story resolves
 from left to right. Each player gains
 points from the cards they played.
 
@@ -387,7 +387,7 @@ That round was tied at 1 point each,
 so neither player earned a win.
 
 To see what happened again, click the
-[color=${ColorSettings.button}]Recap[/color] button above [color=${ColorSettings.button}]Pass[/color].`
+[color=${ColorSettings.button}]Recap[/color] button above [color=${ColorSettings.button}]Pass[/color].[/stroke]`
 		let txt = scene.add['rexBBCodeText'](0, 0, s, StyleSettings.basic).setOrigin(0.5)
 		menu.add(txt)
 	}
@@ -452,14 +452,14 @@ let exCardEffects: Explanation = new Explanation(
 		menu.setOnClose(() => {scene.txtTutorial.setVisible(true).resume()})
 
 		let s = 
-`Wait! In addition to a cost and point value,
+`[stroke=black]Wait! In addition to a cost and point value,
 each card has an additional effect.
 
 [color=${ColorSettings.cardText}]Doves[/color] are visible to your opponent while
 in the story, and disappear once played.
 
 [color=${ColorSettings.cardText}]Dash[/color] is worth 1 point less for every card
-played before it in the story.`
+played before it in the story.[/stroke]`
 		let txt = scene.add['rexBBCodeText'](0, 0, s, StyleSettings.basic).setOrigin(0.5)
 		menu.add(txt)
 	}
