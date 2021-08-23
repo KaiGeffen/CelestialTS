@@ -6,7 +6,7 @@
   },
   {"name": "Bone Knife", "id": 1,
     "cost": 0, "points": 0,
-    "text": "0:0, your opponent discards their leftmost card.",
+    "text": "0:0, your opponent discards the leftmost card of their hand.",
     "catalogText": "Bone Knife costs no mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard."
   },
   {"name": "Cog", "id": 2,
@@ -51,7 +51,7 @@
 
   {"name": "Factory", "id": 10,
     "cost": 3, "points": 0,
-    "text": "3:0, Build 1 for each card later in the story.",
+    "text": "3:0, Build X, where X is the number of cards later in the story.",
     "catalogText": "Factory costs 3 mana, and will increase the point-value of the leftmost robot in your hand by the number of cards later in the story. If you don't have a robot in hand, it creates a 0:0 robot first.\n\nWhile it can be tempting to play Factory as soon as possible, it ends up being much stronger in later rounds when you can follow it up with multiple other cards for maximum value."
   },
   {"name": "Fruiting", "id": 11,
@@ -67,7 +67,7 @@
 
   {"name": "Hurricane", "id": 13,
     "cost": 4, "points": 0,
-    "text": "4:0, set both players points to 0.",
+    "text": "4:0, set both player's points to 0.",
     "catalogText": "Hurricane costs 4 mana, gives no points, and resets both player's point totals to 0.\n\nThis means as long as it's the last card in the story, you can't lose. And if you play any card worth points after it, you'll win the round.\n\nNote that any boosts from things like Nourish will happen before the points are reset, essentially nullifying those effects."
   },
   {"name": "Dinosaur Bones", "id": 14,

@@ -1,8 +1,4 @@
 const path = require('path')
-const crypto = require('crypto')
-
-// Function to hash a string
-hashCode = s => s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)
 
 module.exports = {
     entry: './src/app.ts',
