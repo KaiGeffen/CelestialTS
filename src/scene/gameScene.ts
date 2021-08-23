@@ -503,6 +503,9 @@ export default class GameScene extends BaseScene {
 				let owner = completedAct[1]
 
 				lastAct = this.addCard(card, i, this.storyContainer, owner).setTransparent(true)
+
+				// Click to jump to that position in the recap
+				lastAct.setOnClick(this.jumpToRecapAct(i))
 			}
 
 			// Make the last act dissolve, but not the very last state, where wins are shown
@@ -515,6 +518,9 @@ export default class GameScene extends BaseScene {
 
 			let storyIndex = i + numActsCompleted
 			let card = this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
+
+			// Click to jump to that position in the recap
+			card.setOnClick(this.jumpToRecapAct(i + numActsCompleted))
 
 			// If opponent just played this card, animate it being played
 			if (!isRecap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
@@ -733,6 +739,7 @@ export default class GameScene extends BaseScene {
 
 		switch(animation.from) {
 			case Zone.Mulligan:
+			// NOTE We never get the opponent's mulligan animations from server
 			card = that.mulliganedCards[animation.index]
 			// Add back into temporary objects, so it doesn't persist
 			that.temporaryObjs.push(card)
@@ -889,6 +896,28 @@ export default class GameScene extends BaseScene {
 
 			that.queuedRecap = []
 			that.recapPlaying = false
+		}
+	}
+
+	// Jump to the recap action at the given index
+	private jumpToRecapAct(i: number): () => void {
+		let that = this
+
+		return function() {
+			// Get the series of states for this recap starting from the given index
+			let recap = that.lastRecap.slice(i + 1)
+
+			// Set that a recap is playing, queue the correct recap
+			that.recapPlaying = true
+			that.queuedRecap = recap
+
+			// To correctly display point changes, set the current scores to the last recaps totals
+			that.lastScore = that.lastRecap[i].score
+
+			// Skip all tweens playing currently
+			that.tweens.getAllTweens().forEach((tween) => {
+				tween.complete()
+			})
 		}
 	}
 
