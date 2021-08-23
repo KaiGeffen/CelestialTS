@@ -223,6 +223,9 @@ export class BuilderScene extends BuilderSceneShell {
   // Container containing all cards in the catalog
   catalogContainer: Phaser.GameObjects.Container
 
+  // The background object for the container, gets moved left/right to 'shrink' it down
+  catalogBackground: any
+
   // The scrollable panel which the cards are on
   panel: any
 
@@ -365,8 +368,6 @@ export class BuilderScene extends BuilderSceneShell {
     this.scene.start("GameScene", {isTutorial: false, deck: deck})
   }
 
-  // TODO put somewhere
-  catalogBackground: any
   private createCatalog(): void {
     let that = this
 
@@ -410,11 +411,6 @@ export class BuilderScene extends BuilderSceneShell {
       }
     }).setOrigin(0)
     .layout()
-    .on('scroll', function(panel) {
-      if (0 < panel.t && panel.t < 1) {
-        cardInfo.setVisible(false)
-      }
-    })
 
     // Update panel when mousewheel scrolls
     this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {

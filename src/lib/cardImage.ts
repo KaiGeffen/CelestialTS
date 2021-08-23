@@ -260,9 +260,12 @@ export class CardImage {
   setScrollable(height: number, padding: number): void {
     // NOTE Objects in Rex's scrollable containers must not be within Phaser containers, or they won't be clickable
     this.container.remove([this.image, this.txtStats])
-    // this.image['rexContainer'].parent.add(this.txtStats)
 
-    // setInterval(() => this.scrollStats(height, padding), 1)
+    // Set a scroll event to remove the highlight
+    let that = this
+    this.image.scene.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
+      that.onHoverExit()()
+    })
   } 
 
   // Scroll the stats text to copy image
@@ -348,11 +351,5 @@ export class CardImage {
 
   private onHoverExit(): () => void {
     return this.removeHighlight()
-  }
-
-  private onScroll(): () => void {
-    return function() {
-      cardInfo.setVisible(false)
-    }
   }
 }
