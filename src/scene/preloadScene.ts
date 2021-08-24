@@ -102,7 +102,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Add graphics to show information
 		let progressBox = this.add.graphics()
-		.fillStyle(ColorSettings.progressFill)
+		.fillStyle(ColorSettings.progressBackground)
 		.fillRect(x, y, width, height)
 		let progressBar = this.add.graphics()
 
@@ -117,7 +117,7 @@ export default class PreloadClass extends Phaser.Scene {
 		// Update the progress bar
 		this.load.on('progress', function (value) {
 			progressBar.clear()
-			progressBar.fillStyle(0xffffff, 1)
+			progressBar.fillStyle(ColorSettings.progressFill, 1)
 			progressBar.fillRect(x + Space.pad, y + Space.pad, (width - Space.pad*2) * value, height - Space.pad*2)
 		})
 

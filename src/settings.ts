@@ -76,10 +76,21 @@ export const Space = {
 // The base colors used throughout this app (Primary, secondary, variant)
 const Color: Record<string, any> = {
   primary: 0x202070,
+  primaryS: '#202070',
+  
+  secondaryS: "#43438a",
   secondary: 0x43438a,
-  variant: 0xa0a034,
+  
+  variant: 0xb3b320, // 0xa0a034
+  variantS: '#b3b320',
 
-  black: '#000000',
+  redS: '#cc1f19',
+  redSecondary: 0xffaaaa,
+
+  greenS: '#070',
+
+  black: 0x000000,
+  white: 0xffffff,
 }
 
 // The colors for each component in the app (Ex: Slider)
@@ -88,7 +99,8 @@ export const ColorSettings: Record<string, any> = {
   background: Color.primary,
 
   // Fill color of progress bar in loading screen
-  progressFill: Color.primary,
+  progressBackground: Color.secondary,
+  progressFill: Color.white,
 
 
 
@@ -97,7 +109,7 @@ export const ColorSettings: Record<string, any> = {
   menuBorder: Color.primary,
 
   // Button components
-  button: '#209020',
+  button: Color.variantS,
   buttonHighlight: 0xaaaaaa,
 
   // Icon components
@@ -112,15 +124,15 @@ export const ColorSettings: Record<string, any> = {
   radioFill: Color.variant,
 
   // Filter tint when active
-  filterSelected: 0xffaf00,
+  filterSelected: Color.variant,
 
   // Text entered within text areas
-  textArea: '#209020',
+  textArea: Color.variantS,
 
 
 
   // Card components
-  cardText: '#cc1f19',
+  cardText: Color.redS,
   // Text color for the reminders in card text (References, keywords)
   cardTextSecondary: '#333',
   cardTextBackground: '#aace',
@@ -130,10 +142,10 @@ export const ColorSettings: Record<string, any> = {
 
 
   // Color for text that references a button
-  buttonReference: '#209020',
+  buttonReference: Color.variantS,
 
   // Color for text that references a card
-  cardReference: '#cc1f19',
+  cardReference: Color.redS,
 
   // Rulebook components
   rulebookText: Color.black,
@@ -142,10 +154,11 @@ export const ColorSettings: Record<string, any> = {
 
 
   // The highlight behind a card that is selected for mulligan
-  mulliganHighlight: 0xffaaaa,
+  mulliganHighlight: Color.redSecondary,
 
   // The shadow of a stack text that is highlighted
-  stackHighlight: '#ff0',
+  stackText: Color.greenS,
+  stackHighlight: Color.variantS,
 
   // Rectangle showing which player has priority
   priorityRectangle: 0xf0f0f0,
@@ -153,7 +166,7 @@ export const ColorSettings: Record<string, any> = {
 
 
   // The highlight behind a card that is selected in the catalog
-  catalogHighlight: 0xffaaaa,
+  catalogHighlight: Color.redSecondary,
 
   // Credits components
   creditsText: Color.black,
@@ -164,6 +177,10 @@ export const ColorSettings: Record<string, any> = {
 
   // Background for the tutorial text
   tutorialBackground: '#aace',
+  tutorialBorder: Color.greenS,
+
+  // Check mark for when a tutorial is complete
+  checkMark: '#0f0',
 }
 
 // const FontSettings: Record<string, [string, string]
@@ -232,7 +249,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
   stack: {
     fontFamily: fontFamily,
     fontSize: FontSettings.stack.size,
-    color: ColorSettings.stack,
+    color: ColorSettings.stackText,
     fixedWidth: Space.cardSize,
     fixedHeight: Space.cardSize,
     align: 'center'
@@ -268,7 +285,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
   checkMark: {
     fontFamily: fontFamily,
     fontSize: FontSettings.huge.size,
-    color: '#0f0',
+    color: ColorSettings.checkMark,
     stroke: '#000',
     strokeThickness: 4
   },
@@ -324,7 +341,7 @@ export const TutorialBBConfig = {
   stroke: '#000',
   strokeThickness: 3,
   backgroundColor: ColorSettings.cardTextBackground,
-  backgroundStrokeColor: '#070',
+  backgroundStrokeColor: ColorSettings.tutorialBorder,
   backgroundStrokeLineWidth: 3,
   backgroundCornerRadius: 5,
   backgroundHorizontalGradient: false,

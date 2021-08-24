@@ -68,7 +68,7 @@ export default class Card {
     }
 
     // All reference/reminder text is grey
-    result += `[color=${ColorSettings.reminderText}]`
+    result += `[color=${ColorSettings.cardTextSecondary}]`
 
     result = this.replaceReferences(result)
     result = this.explainKeywords(result)
