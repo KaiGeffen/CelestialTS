@@ -35,7 +35,7 @@ export default class Menu {
 		let visibleBackground = scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground,
 			).setAlpha(0.95).setOrigin(0.5)
 		visibleBackground.setInteractive()
-		visibleBackground.setStrokeStyle(10, ColorSettings.background, 1)
+		visibleBackground.setStrokeStyle(10, ColorSettings.menuBorder, 1)
 
 		this.container.add([invisBackground, visibleBackground])
 	}

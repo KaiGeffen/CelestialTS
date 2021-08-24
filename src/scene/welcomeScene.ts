@@ -286,7 +286,7 @@ class TutorialRegion {
   private setIconHover(btn: Phaser.GameObjects.Image): void {
     btn.setInteractive()
     btn.on('pointerover', function() {
-      btn.setTint(ColorSettings.cardHighlight)
+      btn.setTint(ColorSettings.iconHighlight)
     })
     btn.on('pointerout', function() {
       btn.clearTint()

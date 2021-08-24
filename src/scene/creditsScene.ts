@@ -45,7 +45,7 @@ export default class CreditsScene extends Phaser.Scene {
           text: creditText,
           fontFamily: 'Cambria',
           fontSize: FontSettings.standard.size,
-          color: ColorSettings.standard,
+          color: ColorSettings.creditsText,
           backgroundColor: ColorSettings.creditsBackground,
           id: 'credits',
           readOnly: true

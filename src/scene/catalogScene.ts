@@ -33,7 +33,7 @@ class CatalogScene extends BaseScene {
 
 		// Highlight for selected card
 		let size = Space.cardSize + Space.pad
-		this.highlight = this.add.rectangle(0, 0, size, size, ColorSettings.mulliganHighlight, 1)
+		this.highlight = this.add.rectangle(0, 0, size, size, ColorSettings.catalogHighlight, 1)
 		this.container.add(this.highlight)
 
 		// Description of the selected card

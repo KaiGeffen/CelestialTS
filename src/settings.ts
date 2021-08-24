@@ -73,41 +73,116 @@ export const Space = {
   iconSeparation: 180
 }
 
+// The colors used throughout this app
+const Color: Record<string, any> = {
+  primary: 0x202070,
+  secondary: 0x43438a,
+  variant: 0xa0a034,
+
+  black: '#000000',
+}
+
 export const ColorSettings: Record<string, any> = {
+  // The background for all menus
+  menuBackground: Color.secondary,
+
+  // The border for menus
+  menuBorder: Color.primary,
+
+  // Tint for button when hovered
+  buttonHighlight: 0xaaaaaa,
+
+  // Text color for the reminders in card text (References, keywords)
+  reminderText: '#333',
+
+  // Tint when a card is unplayable
+  cardUnplayable: 0x888888,
+
+  // Border color when a card is highlighted
+  cardHighlight: Color.variant,
+
+  // Tint when an icon is hovered
+  iconHighlight: Color.variant,
+
+  // Color for text that references a button
+  buttonReference: '#209020',
+
+  // Color for text that references a card
+  cardReference: '#cc1f19',
+
+  // Colors for slider components
+  sliderIndicator: Color.primary,
+  sliderThumb: Color.primary,
+
+  // Rulebook components
+  rulebookText: Color.black,
+  rulebookBackground: "#aac",
+
+  // Button standard color
+  button: '#209020',
+
+  // Tint for when a filter is toggled on
+  filterSelected: 0xffaf00,
+
+  // Text within text areas
+  textArea: '#209020',
+
+  // The outline of a radio button
+  radioOutline: Color.primary,
+
+  // The inner fill of a radio button
+  radioFill: Color.variant,
+
+  // The highlight behind a card that is selected in the catalog
+  catalogHighlight: 0xffaaaa,
+
+  // The highlight behind a card that is selected for mulligan
+  mulliganHighlight: 0xffaaaa,
+
+  // Credits components
+  creditsText: Color.black,
+  creditsBackground: "#aac",
+
+  // Rectangle showing which player has priority
+  priorityRectangle: 0xf0f0f0,
+
+  // The color of the background while searching for an opponent
+  searchingBackground: Color.primary,
+
+  // The shadow of a stack text that is highlighted
+  stackHighlight: '#ff0',
+
+  // Fill color of progress bar in loading screen
+  progressFill: Color.primary,
+
+  // Background of the webpage
+  background: Color.primary,
+
+
+
+
+  // TODO Remove below? Might be used in fonts
   white: '#ffffff',
   black: '#000000',
 
-  background: 0x202070,
   recapBackground: 0x707070,
 
-  priorityRectangle: 0xf0f0f0,
-
-  button: '#209020',
-  buttonHighlight: 0xaaaaaa,
 
   announcement: '#703420',
   stack: '#e9b',
   textHighlight: '#ff0',
 
   cardText: '#cc1f19',
-  reminderText: '#333',
   cardTextBackground: '#aace',
 
-  cardHighlight: 0xa0a034,
-  cardUnplayable: 0x888888,
-
   particle: 0x3030a0,
-  mulliganHighlight: 0xffaaaa,
 
-  filterSelected: 0xffaf00,
-  menuBackground: 0x43438a,// 0x704820, //0x662b00
   sliderButton: 0x703420,
   slider: 0x3bc9c7,
 
   tutorialBackground: "#704820",
 
-  rulebookBackground: "#aac",
-  creditsBackground: "#aac"
+  
 }
 
 // const FontSettings: Record<string, [string, string]

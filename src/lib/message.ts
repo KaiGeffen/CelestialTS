@@ -71,9 +71,9 @@ advanced challenges are now available!
 The expansion can be enabled from the deck menu.`, Screen.Main],
 	deckMenuNotice:
 [`You can find premade decks by clicking the
-[color=${ColorSettings.button}]Deck[/color] button below.
+[color=${ColorSettings.buttonReference}]Deck[/color] button below.
 
-[color=${ColorSettings.cardText}]Anubis[/color] is a great deck to start with.`, Screen.Builder],
+[color=${ColorSettings.cardReference}]Anubis[/color] is a great deck to start with.`, Screen.Builder],
 	draftNotice:
 [`Draft a deck of 15 cards from random choices
 of 4 cards each.

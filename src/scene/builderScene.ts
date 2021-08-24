@@ -401,7 +401,7 @@ export class BuilderScene extends BuilderSceneShell {
       slider: {
         input: 'drag',
         track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-        thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+        thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
       },
 
       space: {
@@ -733,7 +733,7 @@ export class BuilderScene extends BuilderSceneShell {
       tooltip: 'Enter any matchmaking code to only match with players with that same code.',
       font: 'Arial',
       fontSize: '36px',
-      color: ColorSettings.button,
+      color: ColorSettings.textArea,
       border: 3,
       borderColor: '#000',
       backgroundColor: '#444',
@@ -796,9 +796,9 @@ export class BuilderScene extends BuilderSceneShell {
     y -= Space.iconSeparation - Space.cardSize/2 - Space.pad
     let txtUseExpansion = this.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
 
-    let radioExpansion = this.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.background).setOrigin(1, 0)
+    let radioExpansion = this.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.radioOutline).setOrigin(1, 0)
     if (UserSettings._get('useExpansion')) {
-      radioExpansion.setFillStyle(ColorSettings.cardHighlight)
+      radioExpansion.setFillStyle(ColorSettings.radioFill)
     }
 
     radioExpansion.setInteractive()
@@ -809,7 +809,7 @@ export class BuilderScene extends BuilderSceneShell {
       UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
 
       // Reflect the current value of useExpansion setting
-      radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.cardHighlight : undefined)
+      radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.radioFill : undefined)
 
       // Filter the cards available in catalog
       that.filter()
@@ -831,7 +831,7 @@ export class BuilderScene extends BuilderSceneShell {
       tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
       font: 'Arial',
       fontSize: '36px',
-      color: ColorSettings.button,
+      color: ColorSettings.textArea,
       border: 3,
       borderColor: '#000',
       backgroundColor: '#444',

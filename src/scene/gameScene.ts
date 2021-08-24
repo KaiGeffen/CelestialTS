@@ -381,7 +381,7 @@ export default class GameScene extends BaseScene {
 	// Display searching for opponent if still looking
 	displaySearchingStatus(searching: boolean): void {
 		if (searching) {
-			let searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.background).setOrigin(0, 0)
+			let searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.searchingBackground).setOrigin(0, 0)
 			let txtSearching = this.add.text(1100/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
 			let btnExit = new Button(this, Space.windowWidth/2, 400, "Cancel", this.exitScene()).setOrigin(0.5, 0.5)
@@ -1378,7 +1378,7 @@ export default class GameScene extends BaseScene {
   				revealedContainer.setVisible(true)
   				storyContainer.setVisible(false)
 
-  				highlightedObject.setShadow(2, 2, ColorSettings.textHighlight)
+  				highlightedObject.setShadow(2, 2, ColorSettings.stackHighlight)
   			}
   		}
   	}

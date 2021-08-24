@@ -60,7 +60,7 @@ export default class BaseScene extends Phaser.Scene {
 		// Visible background, which does nothing when clicked
 		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 510, 30, ColorSettings.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
-		visibleBackground.setStrokeStyle(10, ColorSettings.background, 1)
+		visibleBackground.setStrokeStyle(10, ColorSettings.menuBorder, 1)
 
 		// Slider for Volume
 		let x = Space.windowWidth/2 - 210
@@ -73,8 +73,8 @@ export default class BaseScene extends Phaser.Scene {
 			value: this.sound.volume,
 
             track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.background),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.sliderIndicator),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('volume', value)
@@ -98,8 +98,8 @@ export default class BaseScene extends Phaser.Scene {
 			value: UserSettings._get('musicVolume'),
 
             track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.background),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.background),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.sliderIndicator),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('musicVolume', value)
@@ -244,7 +244,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 	    		text: text,
 	    		fontFamily: 'Cambria',//FontSettings.standard.font, TODO Use a settings const
 	    		fontSize: FontSettings.standard.size,
-	    		color: ColorSettings.standard,
+	    		color: ColorSettings.rulebookText,
 	    		border: 3,
 	    		borderColor: '#000',
 	    		backgroundColor: ColorSettings.rulebookBackground,

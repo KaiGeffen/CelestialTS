@@ -102,7 +102,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Add graphics to show information
 		let progressBox = this.add.graphics()
-		.fillStyle(ColorSettings.menuBackground)
+		.fillStyle(ColorSettings.progressFill)
 		.fillRect(x, y, width, height)
 		let progressBar = this.add.graphics()
 

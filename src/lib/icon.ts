@@ -16,7 +16,7 @@ export default class Icon {
 			f()
 		})
 		.on('pointerover', () => {
-			this.btn.setTint(ColorSettings.cardHighlight)
+			this.btn.setTint(ColorSettings.iconHighlight)
 		})
 		.on('pointerout', () => {
 			this.btn.clearTint()
