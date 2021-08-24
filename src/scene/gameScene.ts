@@ -269,6 +269,7 @@ export default class GameScene extends BaseScene {
 
 	// Set the background to recap animation / not
 	interval: NodeJS.Timeout = undefined
+	isFadingIn: boolean
 	private setBackground(isRecap: boolean): void {
 		let that = this
 
@@ -278,7 +279,17 @@ export default class GameScene extends BaseScene {
 		if (isRecap) {
 			document.body.style.background = '#080808'
 			
+			// If we were fading in, stop
+			if (that.isFadingIn) {
+				clearInterval(that.interval)
+				that.interval = undefined
+
+				that.isFadingIn = false
+			}
+
 			if (that.interval === undefined) {
+				clearInterval(that.interval)
+
 				that.interval = setInterval(function() {
 
 				// Regex to get and replace the opacity
@@ -303,6 +314,14 @@ export default class GameScene extends BaseScene {
 			
 		} else {
 			document.body.style.background = '#101035'
+
+			// If we were fading out, stop
+			if (!that.isFadingIn) {
+				clearInterval(that.interval)
+				that.interval = undefined
+
+				that.isFadingIn = true
+			}
 
 			// Fade in the normal background
 			if (that.interval === undefined) {
@@ -938,8 +957,6 @@ export default class GameScene extends BaseScene {
 			that.tweens.getAllTweens().forEach((tween) => {
 				tween.complete()
 			})
-
-			// Reset the background to normal TODO
 
 			// Set variables to a recap not playing
 			that.queuedRecap = []
