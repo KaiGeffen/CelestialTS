@@ -268,20 +268,64 @@ export default class GameScene extends BaseScene {
 	}
 
 	// Set the background to recap animation / not
+	interval: NodeJS.Timeout = undefined
 	private setBackground(isRecap: boolean): void {
+		let that = this
+
 		let vMain = document.getElementById('v-main')
 		let vRecap = document.getElementById('v-recap')
 
 		if (isRecap) {
 			document.body.style.background = '#080808'
+			
+			if (that.interval === undefined) {
+				that.interval = setInterval(function() {
 
-			vMain.setAttribute('hidden', 'true')
-			vRecap.removeAttribute('hidden')
+				// Regex to get and replace the opacity
+				let re = /(opacity\()([0-9]+)(%\))/
+				let style = vMain.getAttribute('style')
+				let [_, opac, amt, perc] = style.match(re)
+
+				// If the bottom was reached, exit
+				if (amt === '0') {
+					clearInterval(that.interval)
+					that.interval = undefined
+				}
+				else {
+					// Decrement the opacity and set it
+					amt = (Number(amt) - 1).toString()
+
+					let newStyle = style.replace(re, '$1' + amt + '$3')
+					vMain.setAttribute('style', newStyle)
+				}
+			}, 1)
+			}
+			
 		} else {
 			document.body.style.background = '#101035'
 
-			vRecap.setAttribute('hidden', 'true')
-			vMain.removeAttribute('hidden')
+			// Fade in the normal background
+			if (that.interval === undefined) {
+				that.interval = setInterval(function() {
+
+				// Regex to get and replace the opacity
+				let re = /(opacity\()([0-9]+)(%\))/
+			let style = vMain.getAttribute('style')
+				let [_, opac, amt, perc] = style.match(re)
+
+				// If the top was reached, exit
+				if (amt === '100') {
+					clearInterval(that.interval)
+					that.interval = undefined
+				}
+				else {
+					// Increment the opacity and set it
+					amt = (Number(amt) + 1).toString()
+					let newStyle = style.replace(re, '$1' + amt + '$3')
+					vMain.setAttribute('style', newStyle)
+				}
+			}, 1)
+			}
 		}
 	}
 
@@ -890,12 +934,18 @@ export default class GameScene extends BaseScene {
 		let that = this
 
 		return function() {
+			// Complete all tweens
 			that.tweens.getAllTweens().forEach((tween) => {
 				tween.complete()
 			})
 
+			// Reset the background to normal TODO
+
+			// Set variables to a recap not playing
 			that.queuedRecap = []
 			that.recapPlaying = false
+
+
 		}
 	}
 
