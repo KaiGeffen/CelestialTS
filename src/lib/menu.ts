@@ -57,7 +57,9 @@ export default class Menu {
 
 		this.container.setVisible(false)
 
-		this.onCloseCallback()
+		if (this.onCloseCallback !== undefined) {
+			this.onCloseCallback()			
+		}
 	}
 
 	// Set the callback which is made when the menu closes

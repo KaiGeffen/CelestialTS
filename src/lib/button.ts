@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings } from '../settings'
+import { Space, StyleSettings, ColorSettings } from '../settings'
 
 
 // TODO There is a better way to do this where the object is defined within the Phaser Game Factor and can be added from that
@@ -36,20 +36,33 @@ export default class Button extends Phaser.GameObjects.Text {
 	}
 
 	// Causes the button to glow until stopped
-	glowTask: any
+	outline: Phaser.GameObjects.Text
+	outlineTween: Phaser.Tweens.Tween
 	glow(): void {
 		// First stop any glow that's already happening to not amplify
 		this.stopGlow()
+
+		this.outline = this.scene.add.text(this.x, this.y, this.text, this.style)
+			.setOrigin(this.originX, this.originY)
+			.setDepth(this.depth - 1)
+			.setAlpha(0)
+
+		// Add to parent container if it exists
+		if (this.parentContainer !== null) {
+			this.parentContainer.add(this.outline)
+		}
 		
-		var postFxPlugin = this.scene.plugins.get('rexGlowFilterPipeline')
+		var postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
 
-		var pipeline = postFxPlugin['add'](this)
+		let pipeline = postFxPlugin['add'](this.outline,
+        	{thickness: 3,
+          	outlineColor: ColorSettings.buttonBorder})
 
-		this.glowTask = this.scene.tweens.add({
-			targets: pipeline,
-			intensity: 0.04,
-			ease: 'Linear',
-			duration: 800,
+		this.outlineTween = this.scene.tweens.add({
+			targets: this.outline,
+			alpha: 0.5,
+			ease: 'Linear',//'Sine.easeInOut',
+			duration: 1200,
 			repeat: -1,
 			yoyo: true
 		})
@@ -62,12 +75,14 @@ export default class Button extends Phaser.GameObjects.Text {
 
 	// Stop the button from glowing, if it is glowing
 	stopGlow(): void {
-		if (this.glowTask !== undefined) {
-			var postFxPlugin = this.scene.plugins.get('rexGlowFilterPipeline')
-			postFxPlugin['remove'](this)
+		if (this.outline !== undefined) {
 
-			this.glowTask.stop()
-			this.glowTask = undefined
+			// NOTE Must remove the tween so that it doesn't stop state changes
+			this.outlineTween.remove()
+			this.outlineTween = undefined
+
+			this.outline.destroy()
+			this.outline = undefined
 		}
 	}
 

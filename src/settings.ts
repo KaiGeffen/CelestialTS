@@ -84,9 +84,11 @@ const Color: Record<string, any> = {
   variant: 0xb3b320, // 0xa0a034
   variantS: '#b3b320',
 
+  red: 0xcc1f19,
   redS: '#cc1f19',
   redSecondary: 0xffaaaa,
 
+  green: 0x007000,
   greenS: '#070',
 
   black: 0x000000,
@@ -111,6 +113,7 @@ export const ColorSettings: Record<string, any> = {
   // Button components
   button: Color.variantS,
   buttonHighlight: 0xaaaaaa,
+  buttonBorder: Color.white,
 
   // Icon components
   iconHighlight: Color.variant,
