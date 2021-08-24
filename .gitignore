@@ -10,5 +10,8 @@ node_modules/
 # dist #
 dist/
 
+# Compiled index.html #
+index.html
+
 # Project settings #
 .idea/

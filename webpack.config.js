@@ -1,4 +1,6 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
     entry: './src/app.ts',
@@ -17,6 +19,7 @@ module.exports = {
             "Access-Control-Allow-Headers": "*"
         }
     },
+    mode: 'development',
     resolve: {
         extensions: [ '.ts', '.tsx', '.js' ],
         alias: {
@@ -24,8 +27,28 @@ module.exports = {
         }
     },
     output: {
-        filename: 'app.js',//' + hashCode(Date.now.toString()) + '
-        path: path.resolve(__dirname, 'dist')
+        filename: '[name].[contenthash].js',
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
-    mode: 'development'
+    optimization: {
+     moduleIds: 'deterministic',
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
+  },
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: 'Caching',
+        template: 'template.html',
+        filename: '../index.html',
+      }),
+    ],
 };
