@@ -73,7 +73,7 @@ export const Space = {
   iconSeparation: 180
 }
 
-// The colors used throughout this app
+// The base colors used throughout this app (Primary, secondary, variant)
 const Color: Record<string, any> = {
   primary: 0x202070,
   secondary: 0x43438a,
@@ -82,27 +82,52 @@ const Color: Record<string, any> = {
   black: '#000000',
 }
 
+// The colors for each component in the app (Ex: Slider)
 export const ColorSettings: Record<string, any> = {
-  // The background for all menus
-  menuBackground: Color.secondary,
+  // Background of the webpage
+  background: Color.primary,
 
-  // The border for menus
+  // Fill color of progress bar in loading screen
+  progressFill: Color.primary,
+
+
+
+  // Menu components
+  menuBackground: Color.secondary,
   menuBorder: Color.primary,
 
-  // Tint for button when hovered
+  // Button components
+  button: '#209020',
   buttonHighlight: 0xaaaaaa,
 
+  // Icon components
+  iconHighlight: Color.variant,
+
+  // Slider components
+  sliderIndicator: Color.primary,
+  sliderThumb: Color.primary,
+
+  // Radio button components
+  radioOutline: Color.primary,
+  radioFill: Color.variant,
+
+  // Filter tint when active
+  filterSelected: 0xffaf00,
+
+  // Text entered within text areas
+  textArea: '#209020',
+
+
+
+  // Card components
+  cardText: '#cc1f19',
   // Text color for the reminders in card text (References, keywords)
-  reminderText: '#333',
-
-  // Tint when a card is unplayable
+  cardTextSecondary: '#333',
+  cardTextBackground: '#aace',
   cardUnplayable: 0x888888,
-
-  // Border color when a card is highlighted
   cardHighlight: Color.variant,
 
-  // Tint when an icon is hovered
-  iconHighlight: Color.variant,
+
 
   // Color for text that references a button
   buttonReference: '#209020',
@@ -110,79 +135,35 @@ export const ColorSettings: Record<string, any> = {
   // Color for text that references a card
   cardReference: '#cc1f19',
 
-  // Colors for slider components
-  sliderIndicator: Color.primary,
-  sliderThumb: Color.primary,
-
   // Rulebook components
   rulebookText: Color.black,
   rulebookBackground: "#aac",
 
-  // Button standard color
-  button: '#209020',
 
-  // Tint for when a filter is toggled on
-  filterSelected: 0xffaf00,
-
-  // Text within text areas
-  textArea: '#209020',
-
-  // The outline of a radio button
-  radioOutline: Color.primary,
-
-  // The inner fill of a radio button
-  radioFill: Color.variant,
-
-  // The highlight behind a card that is selected in the catalog
-  catalogHighlight: 0xffaaaa,
 
   // The highlight behind a card that is selected for mulligan
   mulliganHighlight: 0xffaaaa,
+
+  // The shadow of a stack text that is highlighted
+  stackHighlight: '#ff0',
+
+  // Rectangle showing which player has priority
+  priorityRectangle: 0xf0f0f0,
+
+
+
+  // The highlight behind a card that is selected in the catalog
+  catalogHighlight: 0xffaaaa,
 
   // Credits components
   creditsText: Color.black,
   creditsBackground: "#aac",
 
-  // Rectangle showing which player has priority
-  priorityRectangle: 0xf0f0f0,
-
   // The color of the background while searching for an opponent
   searchingBackground: Color.primary,
 
-  // The shadow of a stack text that is highlighted
-  stackHighlight: '#ff0',
-
-  // Fill color of progress bar in loading screen
-  progressFill: Color.primary,
-
-  // Background of the webpage
-  background: Color.primary,
-
-
-
-
-  // TODO Remove below? Might be used in fonts
-  white: '#ffffff',
-  black: '#000000',
-
-  recapBackground: 0x707070,
-
-
-  announcement: '#703420',
-  stack: '#e9b',
-  textHighlight: '#ff0',
-
-  cardText: '#cc1f19',
-  cardTextBackground: '#aace',
-
-  particle: 0x3030a0,
-
-  sliderButton: 0x703420,
-  slider: 0x3bc9c7,
-
-  tutorialBackground: "#704820",
-
-  
+  // Background for the tutorial text
+  tutorialBackground: '#aace',
 }
 
 // const FontSettings: Record<string, [string, string]
@@ -231,7 +212,7 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     fontFamily: fontFamily,
     fontSize: FontSettings.large.size,
     color: '#fff',
-    backgroundColor: ColorSettings.cardTextBackground,
+    backgroundColor: ColorSettings.tutorialBackground,
     wordWrap: { width: Space.windowWidth - 200 },
     fixedWidth: Space.windowWidth - 200,
     padding: { x: 10, y: 5 },
