@@ -79,7 +79,7 @@ Check out some of the available starter decks!`
 
 	    // Explanations
 	    let s = 
-`Aggresively win early rounds and fill
+`Aggressively win early rounds and fill
 up your discard pile to pull off
 powerful combos before you shuffle!`
 	    menu.add(this.add.text(xTxt, -Space.iconSeparation, s, StyleSettings.basic).setOrigin(0, 0.5))
