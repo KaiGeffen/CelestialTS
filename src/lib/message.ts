@@ -59,6 +59,11 @@ export default class MessageManager {
 
 // All of the message names/text
 const allMsgs = {
+	mobile: 
+[`It looks like you're playing on a mobile device.
+
+Celestial is not yet fully supported on mobile,
+so if possible you may want to switch to desktop.`, Screen.Main],
 	tutorialComplete: 
 [`You completed the tutorial. All of the cards in the
 base set are now available to you!

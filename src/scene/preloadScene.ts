@@ -1,7 +1,10 @@
 import "phaser"
+var mobile = require('is-mobile')
 
 import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings } from "../settings"
 import { allCards } from "../catalog/catalog"
+import MessageManager from "../lib/message"
+
 
 const SOUNDS = [
 'success',
@@ -71,6 +74,11 @@ export default class PreloadClass extends Phaser.Scene {
 
 		this.sound.volume = UserSettings._get('volume')
 
+		// If the user is using mobile, ensure that the see the mobile message
+		if (mobile()) {
+			MessageManager.addUnreadMessage('mobile')
+		}
+		
 		// Add event listeners
 		this.createProgressGraphics()
 	}
