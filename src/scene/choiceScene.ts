@@ -55,9 +55,7 @@ Check out some of the available starter decks!`
 		let that = this
 
 		let menu = new Menu(
-	      this, 
-	      Space.windowWidth / 2,
-	      Space.windowHeight / 2,
+	      this,
 	      800,
 	      Space.iconSeparation * 3,
 	      false,

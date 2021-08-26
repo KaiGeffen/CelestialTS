@@ -68,8 +68,6 @@ class TutorialScene extends GameScene {
 		if (state.winner !== null) {
 			menu = new Menu(
 		      this,
-		      Space.windowWidth/2,
-		      Space.windowHeight/2,
 		      300,
 		      300,
 		      true,
@@ -372,7 +370,7 @@ let exRoundStart: Explanation = new Explanation(
 
 		let width = 800
 		let height = 450
-		let menu = new Menu(scene, Space.windowWidth/2, Space.windowHeight/2, width, height, true, 10)
+		let menu = new Menu(scene, width, height, true, 10)
 
 		// Pause the tutorial text until the menu is closed
 		scene.txtTutorial.setVisible(false).pause()
@@ -445,7 +443,7 @@ let exCardEffects: Explanation = new Explanation(
 
 		let width = 800
 		let height = 400
-		let menu = new Menu(scene, Space.windowWidth/2, Space.windowHeight/2, width, height, true, 10)
+		let menu = new Menu(scene, width, height, true, 10)
 
 		// Pause the tutorial text until the menu is closed
 		scene.txtTutorial.setVisible(false).pause()

@@ -9,7 +9,8 @@ export default class Menu {
 	// Callback called when menu closes
 	onCloseCallback: () => void
 
-	constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, visible: boolean = true, depth: number = 0) {
+	// Make x and y default to middle of screen
+	constructor(scene: Phaser.Scene, width: number, height: number, visible: boolean = true, depth: number = 0) {
 		// Esc key closes all menus
 		let esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		esc.on('down', function() {
@@ -23,6 +24,8 @@ export default class Menu {
 		}, this)
 
 		// Create a container for this menu
+		let x = Space.windowWidth/2
+		let y = Space.windowHeight/2
 		this.container = scene.add.container(x, y).setVisible(visible).setDepth(depth)
 
 		// Invisible background rectangles, stops other containers from being clicked
@@ -65,5 +68,10 @@ export default class Menu {
 	// Set the callback which is made when the menu closes
 	setOnClose(f: () => void): void {
 		this.onCloseCallback = f
+	}
+
+	// Fit the menu to its contents
+	layout(): void {
+		// TODO
 	}
 }

@@ -29,8 +29,6 @@ export default class DraftMatchScene extends GameScene {
 		if (state.winner !== null) {
 			menu = new Menu(
 		      this,
-		      Space.windowWidth/2,
-		      Space.windowHeight/2,
 		      300,
 		      300,
 		      true,

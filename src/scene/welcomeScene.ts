@@ -67,8 +67,6 @@ export default class WelcomeScene extends BaseScene {
   private createTutorialPrompt(btnTutorial: Button): void {
     let menu = new Menu(
       this,
-      Space.windowWidth/2,
-      Space.windowHeight/2,
       800,
       200,
       true,
@@ -87,8 +85,6 @@ export default class WelcomeScene extends BaseScene {
   private displayMessage(message: string): void {
     let menu = new Menu(
       this,
-      Space.windowWidth/2,
-      Space.windowHeight/2,
       800,
       300,
       true,
@@ -177,9 +173,7 @@ class TutorialRegion {
     
     // Make this menu which all the objects go in
     this.menu = new Menu(
-      this.scene, 
-      Space.windowWidth / 2,
-      Space.windowHeight / 2,
+      this.scene,
       width,
       height,
       false,

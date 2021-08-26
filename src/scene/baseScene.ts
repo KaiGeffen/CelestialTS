@@ -231,7 +231,7 @@ Is my deck in the order that I see when hovering over it?
 No, the true order of your deck is hidden from you. The order you see is sorted by cost.
 
 Can cards that reset (ex: Hurricane) be worth points if they are Nourished?
-No, the card contibutes points first, then its effect resets your points to 0.
+No, the card contributes points first, then its effect resets your points to 0.
 
 How is the Inspire trait different than Inspired?
 Cards give you Inspire the round that they resolve, which in the Start Phase changes to that much Inspired and reflects the extra mana you have gained for that round.

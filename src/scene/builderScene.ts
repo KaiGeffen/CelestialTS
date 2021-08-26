@@ -696,8 +696,6 @@ export class BuilderScene extends BuilderSceneShell {
 
     let menu = new Menu(
           this,
-          Space.windowWidth/2,
-          Space.windowHeight/2,
           width,
           height,
           false,
@@ -758,8 +756,6 @@ export class BuilderScene extends BuilderSceneShell {
 
     let menu = new Menu(
       this,
-      Space.windowWidth/2,//Space.cardSize * 2 + Space.pad * 3,
-      Space.windowHeight/2,//Space.cardSize + Space.pad * 2,
       width,
       height,
       false,
@@ -879,8 +875,6 @@ export class BuilderScene extends BuilderSceneShell {
       // Open a window informing user of information
       let menu = new Menu(
         this,
-        Space.windowWidth/2,
-        Space.windowHeight/2,
         800,
         300,
         true,
@@ -1185,8 +1179,6 @@ export class DraftBuilderScene extends BuilderScene {
       // Open a window informing user of information
       let menu = new Menu(
         this,
-        Space.windowWidth/2,
-        Space.windowHeight/2,
         800,
         300,
         true,
