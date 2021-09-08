@@ -35,7 +35,7 @@ export function ensureUserSettings(): void {
     mmCode: '',
     volume: 0.3,
     musicVolume: 0.0,
-    animationSpeed: 1.0,
+    animationSpeed: 0.25,
     useExpansion: false,
     tutorialKnown: false,
     completedTutorials: [],
@@ -305,15 +305,15 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
 
 export class TimeSettings {
   static recapStateMinimum(): number {
-    return 1000 / UserSettings._get('animationSpeed')
+    return 1000 / (UserSettings._get('animationSpeed') + 0.75)
   }
 
   static recapTween(): number {
-    return 500 / UserSettings._get('animationSpeed')
+    return 500 / (UserSettings._get('animationSpeed') + 0.75)
   }
 
   static recapTweenWithPause(): number {
-    return 400 / UserSettings._get('animationSpeed')
+    return 400 / (UserSettings._get('animationSpeed') + 0.75)
   }
 
   static textSpeed(): number {

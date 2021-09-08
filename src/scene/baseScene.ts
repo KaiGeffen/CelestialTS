@@ -128,15 +128,14 @@ export default class BaseScene extends Phaser.Scene {
 
 		this.sliderAnimationSpeed = this['rexUI'].add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-			value: UserSettings._get('animationSpeed') - 0.75,
+			value: UserSettings._get('animationSpeed'),
 
             track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
             indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.sliderIndicator),
             thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
 
             valuechangeCallback: function (value) {
-            	// TODO Set the min / max such that not dividing by zero
-            	UserSettings._set('animationSpeed', value + 0.75)
+            	UserSettings._set('animationSpeed', value)
             },
             space: {
                 top: 4,
