@@ -13,6 +13,7 @@ export default class BaseScene extends Phaser.Scene {
 	rulebookContainer: Phaser.GameObjects.Container
 	sliderVolume: any
 	sliderMusic: any
+	sliderAnimationSpeed: any
 	private btnMenu: Button
 
 	// A menu is closing currently, so the main menu should not open with this esc event
@@ -58,13 +59,13 @@ export default class BaseScene extends Phaser.Scene {
 		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 510, 30, ColorSettings.menuBackground).setAlpha(0.95)
+		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 620, 30, ColorSettings.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
 		visibleBackground.setStrokeStyle(10, ColorSettings.menuBorder, 1)
 
 		// Slider for Volume
 		let x = Space.windowWidth/2 - 210
-		let y = Space.windowHeight/2 - 140 - 55
+		let y = Space.windowHeight/2 - 140 - 110
 
 		let txtVolumeHint = this.add.text(x, y, 'Volume:', StyleSettings.announcement).setOrigin(0, 0.5)
 
@@ -120,6 +121,31 @@ export default class BaseScene extends Phaser.Scene {
         })
         .setOrigin(0, 0.5)
         .layout()
+
+        // Slider for Animation Speed
+        y += 110
+        let txtSpeedHint = this.add.text(x, y, 'Speed:', StyleSettings.announcement).setOrigin(0, 0.5)
+
+		this.sliderAnimationSpeed = this['rexUI'].add.slider({
+			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
+			value: UserSettings._get('animationSpeed') - 0.75,
+
+            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.sliderIndicator),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
+
+            valuechangeCallback: function (value) {
+            	// TODO Set the min / max such that not dividing by zero
+            	UserSettings._set('animationSpeed', value + 0.75)
+            },
+            space: {
+                top: 4,
+                bottom: 4
+            },
+            input: 'drag',
+        })
+        .setOrigin(0, 0.5)
+        .layout()
         
         // Link to rulebook
         this.rulebookContainer = this.createRulebook()
@@ -143,13 +169,14 @@ export default class BaseScene extends Phaser.Scene {
 		// Custom rexUI sliders don't work in containers
 		this.sliderVolume.setDepth(21).setVisible(false)
 		this.sliderMusic.setDepth(21).setVisible(false)
+		this.sliderAnimationSpeed.setDepth(21).setVisible(false)
 
 		// Menu container which is toggled visible/not
 		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
 
 		this.confirmationContainer.add([invisibleBackground, visibleBackground,
 			// txtKeywordHint, radio,
-			txtVolumeHint, txtMusicHint,
+			txtVolumeHint, txtMusicHint, txtSpeedHint,
 			btnRulebook,
 			txtExitHint, btnYes, btnNo
 			])
@@ -300,6 +327,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 		this.confirmationContainer.setVisible(true)
 		this.sliderVolume.setVisible(true)
 		this.sliderMusic.setVisible(true)
+		this.sliderAnimationSpeed.setVisible(true)
 	}
 
 	private closeMenu(): void {
@@ -311,6 +339,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 		this.rulebookContainer.setVisible(false)
 		this.sliderVolume.setVisible(false)
 		this.sliderMusic.setVisible(false)
+		this.sliderAnimationSpeed.setVisible(false)
 	}
 
 	private doExit(): void {

@@ -43,7 +43,7 @@ Check out some of the available starter decks!`
 			text: this.add['rexBBCodeText'](0, 0, '', StyleSettings.basic)
 		}).setOrigin(0)
 
-		txt.start('[stroke=black]' + s + '[/stroke]', TimeSettings.textSpeed)
+		txt.start('[stroke=black]' + s + '[/stroke]', TimeSettings.textSpeed())
 
 		// Create a button to open menu
 	    let btnChoices = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Starter Decks", () => {menu.open()}).setOrigin(0.5)

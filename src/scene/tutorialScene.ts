@@ -10,6 +10,8 @@ import MessageManager from "../lib/message"
 import { cardback } from "../catalog/catalog"
 
 
+// TODO The text speed setting doesn't get used here
+
 class TutorialScene extends GameScene {
 	txtTutorial:  any // Is a rexUI TextBox
 	explanations: Explanation[]

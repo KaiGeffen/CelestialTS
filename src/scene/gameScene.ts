@@ -498,7 +498,7 @@ export default class GameScene extends BaseScene {
 			this.tweens.add({
 				targets: this.txtScores,
 				alpha: 1,
-				duration: TimeSettings.recapStateMinimum
+				duration: TimeSettings.recapStateMinimum()
 			})
 		}
 		// Queue this for after recap finishes
@@ -669,7 +669,7 @@ export default class GameScene extends BaseScene {
 			this.tweens.add({
 	  			targets: this.txtWins,
 	  			scale: 1.5,
-	  			duration: TimeSettings.recapTween,
+	  			duration: TimeSettings.recapTween(),
 	  			ease: "Sine.easeInOut",
 	  			yoyo: true
 	  		})
@@ -677,7 +677,7 @@ export default class GameScene extends BaseScene {
 			this.tweens.add({
 	  			targets: this.txtOpponentWins,
 	  			scale: 1.5,
-	  			duration: TimeSettings.recapTween,
+	  			duration: TimeSettings.recapTween(),
 	  			ease: "Sine.easeInOut",
 	  			yoyo: true
 	  		})
@@ -733,7 +733,7 @@ export default class GameScene extends BaseScene {
 				}
 
 				// TODO Shuffle hits this
-				delay += TimeSettings.recapTween
+				delay += TimeSettings.recapTween()
 			}
 		}
 
@@ -758,7 +758,7 @@ export default class GameScene extends BaseScene {
 			targets: topHalf,
 			y: topHalf.y - Space.cardSize/2,
 			delay: delay,
-			duration: TimeSettings.recapTween/2,
+			duration: TimeSettings.recapTween()/2,
 			ease: "Sine.easeInOut",
 			yoyo: true,
 			onStart: function() { that.sound.play('shuffle') },
@@ -768,7 +768,7 @@ export default class GameScene extends BaseScene {
 			targets: bottomHalf,
 			y: bottomHalf.y + Space.cardSize/2,
 			delay: delay,
-			duration: TimeSettings.recapTween/2,
+			duration: TimeSettings.recapTween()/2,
 			ease: "Sine.easeInOut",
 			yoyo: true,
 			onComplete: function () { bottomHalf.destroy() }
@@ -788,7 +788,7 @@ export default class GameScene extends BaseScene {
 		that.tweens.add({
   			targets: txt,
   			scale: 1.5,
-  			duration: TimeSettings.recapTweenWithPause,
+  			duration: TimeSettings.recapTweenWithPause(),
   			ease: "Sine.easeInOut",
   			yoyo: true,
   			delay: delay,
@@ -868,7 +868,7 @@ export default class GameScene extends BaseScene {
 			x: x,
 			y: y,
 			delay: delay,
-			duration: TimeSettings.recapTweenWithPause,
+			duration: TimeSettings.recapTweenWithPause(),
 			onStart: function (tween, targets, _)
 			{
 				card.show()
@@ -891,7 +891,7 @@ export default class GameScene extends BaseScene {
 				targets: card.container,
 				y: y,
 				delay: delay,
-				duration: TimeSettings.recapTweenWithPause/2,
+				duration: TimeSettings.recapTweenWithPause()/2,
 				yoyo: true,
 				onStart: function() { that.sound.play('discard') }
 			})
@@ -903,7 +903,7 @@ export default class GameScene extends BaseScene {
 				targets: card.container,
 				alpha: 0,
 				delay: delay,
-				duration: TimeSettings.recapTweenWithPause
+				duration: TimeSettings.recapTweenWithPause()
 			})
 		}
 
@@ -915,7 +915,7 @@ export default class GameScene extends BaseScene {
 				targets: card.container,
 				alpha: 1,
 				delay: delay,
-				duration: TimeSettings.recapTweenWithPause
+				duration: TimeSettings.recapTweenWithPause()
 			})
 		}
 	}
@@ -1064,7 +1064,7 @@ export default class GameScene extends BaseScene {
 			// TODO This isn't necessary since index is a part of animation
 			// Go through the animation list backwards, setting longest delay on rightmost drawn cards
 			for (i = state.animations[player].length - 1; i >= 0; i--) {
-				let delay = i * TimeSettings.recapTween
+				let delay = i * TimeSettings.recapTween()
 
 				let animation: Animation = state.animations[player][i]
 				if (animation.to === Zone.Hand) {
@@ -1079,7 +1079,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								y: y,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause/2,
+								duration: TimeSettings.recapTweenWithPause()/2,
 								yoyo: true
 							})
 
@@ -1093,7 +1093,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								x: x,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause,
+								duration: TimeSettings.recapTweenWithPause(),
 								onStart: function (tween, targets, _)
 								{
 									card.show()
@@ -1113,7 +1113,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								x: x,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause,
+								duration: TimeSettings.recapTweenWithPause(),
 								onStart: function (tween, targets, _)
 								{
 									card.show()
@@ -1133,7 +1133,7 @@ export default class GameScene extends BaseScene {
 							targets: card.container,
 							y: y,
 							delay: delay,
-							duration: TimeSettings.recapTweenWithPause,
+							duration: TimeSettings.recapTweenWithPause(),
 							onStart: function (tween, targets, _)
 							{
 								card.show()
@@ -1146,7 +1146,7 @@ export default class GameScene extends BaseScene {
 							targets: card.container,
 							alpha: 1,
 							delay: delay,
-							duration: TimeSettings.recapTweenWithPause
+							duration: TimeSettings.recapTweenWithPause()
 						})
 						break
 					}
@@ -1219,7 +1219,7 @@ export default class GameScene extends BaseScene {
 		this.tweens.add({
   					targets: card.container,
   					y: y,
-  					duration: TimeSettings.recapTween,
+  					duration: TimeSettings.recapTween(),
   					ease: "Sine.easeInOut"
   					})
 	}
@@ -1231,7 +1231,7 @@ export default class GameScene extends BaseScene {
 		this.tweens.add({
 			targets: this.priorityRectangle,
 			y: y,
-			duration: TimeSettings.recapTween,
+			duration: TimeSettings.recapTween(),
 			ease: "Sine.easeInOut"
 		})
 	}
@@ -1330,7 +1330,7 @@ export default class GameScene extends BaseScene {
   					targets: card.container,
   					x: end[0],
   					y: end[1],
-  					duration: TimeSettings.recapTween,
+  					duration: TimeSettings.recapTween(),
   					ease: "Sine.easeInOut",
   					// After brief delay, tell network, hide info, shift cards to fill its spot
   					onStart: function () {setTimeout(function() {
@@ -1360,7 +1360,7 @@ export default class GameScene extends BaseScene {
   			scene.tweens.add({
   				targets: card,
   				x: card.x - Space.cardSize - Space.pad,
-  				duration: TimeSettings.recapTween - 10,
+  				duration: TimeSettings.recapTween() - 10,
   				ease: "Sine.easeInOut"
   			})
   		}
@@ -1499,7 +1499,7 @@ export default class GameScene extends BaseScene {
   			targets: txt,
   			scale: 1.5,
   			// x: Space.scoresOffset,
-  			duration: TimeSettings.recapTween,
+  			duration: TimeSettings.recapTween(),
   			ease: "Sine.easeInOut",
   			yoyo: true,
   			onComplete: 
@@ -1520,7 +1520,7 @@ export default class GameScene extends BaseScene {
   		this.tweens.add({
 			targets: card.container,
 			y: card.container.y - Space.cardSize*2,
-			duration: TimeSettings.recapTweenWithPause,
+			duration: TimeSettings.recapTweenWithPause(),
 		})
 
 		// Remove this card from the destroyed objects list
@@ -1547,8 +1547,8 @@ export default class GameScene extends BaseScene {
   		this.tweens.add({
 			targets: card.container,
 			x: card.container.x - dx,
-			duration: TimeSettings.recapTweenWithPause,
-			delay: TimeSettings.recapTween,
+			duration: TimeSettings.recapTweenWithPause(),
+			delay: TimeSettings.recapTween(),
 		})
   	}
 

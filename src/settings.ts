@@ -35,6 +35,7 @@ export function ensureUserSettings(): void {
     mmCode: '',
     volume: 0.3,
     musicVolume: 0.0,
+    animationSpeed: 1.0,
     useExpansion: false,
     tutorialKnown: false,
     completedTutorials: [],
@@ -302,11 +303,22 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
   },
 }
 
-export const TimeSettings: Record<string, number> = {
-  recapStateMinimum: 1000,
-  recapTween: 500,
-  recapTweenWithPause: 400,
-  textSpeed: 15
+export class TimeSettings {
+  static recapStateMinimum(): number {
+    return 1000 / UserSettings._get('animationSpeed')
+  }
+
+  static recapTween(): number {
+    return 500 / UserSettings._get('animationSpeed')
+  }
+
+  static recapTweenWithPause(): number {
+    return 400 / UserSettings._get('animationSpeed')
+  }
+
+  static textSpeed(): number {
+    return 15
+  }
 }
 
 // Config for the BBCode text objects, used in cardInfo
