@@ -17,7 +17,7 @@
 
   {"name": "Crossed Bones", "id": 3,
     "cost": 1, "points": 2,
-    "text": "1:2, Fleeting, create 2 ${50}s in your discard pile.",
+    "text": "1:2, Fleeting, create 2 ${1002}s in your discard pile.",
     "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
   },
   {"name": "Dove", "id": 4,
@@ -72,7 +72,7 @@
   },
   {"name": "Dinosaur Bones", "id": 14,
     "cost": 4, "points": 5,
-    "text": "4:5, Fleeting, create 3 ${50}s in your discard pile.",
+    "text": "4:5, Fleeting, create 3 ${1002}s in your discard pile.",
     "catalogText": "Dinosaur Bones costs 4 mana for 5 points, which is excellent.\n\nHowever, it has the drawback that it puts 3 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
   },
   {"name": "Mine", "id": 15,

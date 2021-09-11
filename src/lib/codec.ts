@@ -19,7 +19,9 @@ function decodeCard(s: string): Card {
 	let cardId = parseInt(sections[0])
 	let baseCard = allCards.find(card => card.id === cardId)
 
-	// if (card === undefined) {
+	if (baseCard === undefined) {
+		console.log(s)
+	}
 	// 	throw {
 	// 		name:	"Codec Error",
 	// 		message: `String ${s} does not decode to a valid card.`,

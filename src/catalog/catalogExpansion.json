@@ -10,11 +10,11 @@
   },
   {"name": "Bandit", "id": 26,
     "cost": 1, "points": 2,
-    "text": "1:2, create a ${52} in your opponent's hand."
+    "text": "1:2, create a ${1004} in your opponent's hand."
   },
   {"name": "Spy", "id": 27,
     "cost": 1, "points": 0,
-    "text": "1:0, create a ${49} in your opponent's hand.",
+    "text": "1:0, create a ${1001} in your opponent's hand.",
     "catalogText": "Spy costs 1 mana, and creates a Camera in the opponent's hand.\n\nAt the start of each round, the Camera provides you with 4 Sight if it's still in the opponent's hand, allowing you to see the first 4 cards played in the story. \n\nUse this to overfill their hand and tax their mana, while also gaining information about the cards they play."
   },
   {"name": "Night Vision", "id": 28,
@@ -24,7 +24,7 @@
   },
   {"name": "Disintegrate", "id": 29,
     "cost": 1, "points": 1,
-    "text": "1:1, transform the next 1-cost card in the story into a ${50}."
+    "text": "1:1, transform the next 1-cost card in the story into a ${1002}."
   },
   {"name": "Juggle", "id": 30,
     "cost": 1, "points": 1,
