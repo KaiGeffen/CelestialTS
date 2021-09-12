@@ -25,6 +25,10 @@
     "cost": 3,
     "text": "3:3, store the top card of your discard pile in this card. This card's effect becomes to add one of the stored card to your hand."
   },
+  {"name": "Vulture", "id": 52,
+    "cost": 3, "points": 3,
+    "text": "3:3.\nAt the start of each round, if this is the top of your discard pile, create a ${4} in your hand."
+  },
 
   {"name": "Honey", "id": 132,
     "cost": 4,
