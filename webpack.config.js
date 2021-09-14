@@ -12,14 +12,14 @@ module.exports = {
         }
         ]
     },
-    devServer: {
-        headers: {
-            "Access-Control-Allow-Origin": "216.193.175.49",
-            "Access-Control-Allow-Methods": "*",
-            "Access-Control-Allow-Headers": "*"
-        }
-    },
-    mode: 'development',
+    // devServer: {
+    //     headers: {
+    //         "Access-Control-Allow-Origin": "216.193.175.49",
+    //         "Access-Control-Allow-Methods": "*",
+    //         "Access-Control-Allow-Headers": "*"
+    //     }
+    // },
+    mode: 'production',
     resolve: {
         extensions: [ '.ts', '.tsx', '.js' ],
         alias: {
