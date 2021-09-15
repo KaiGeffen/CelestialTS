@@ -1,4 +1,39 @@
 [
+  {"name": "Scarab", "id": 50,
+    "cost": 0, "points": 0,
+    "text": "0:0.\nAt the start of each round, if this is the top of your discard pile, gain Sight 1."
+  },
+  {"name": "Become Machine", "id": 55,
+    "cost": 1, "points": 1,
+    "text": "1:1, Fleeting, transform each of your cards later in the story into an 0:X ${1003}, where X is its cost."
+  },
+  {"name": "Desert", "id": 49,
+    "cost": 2, "points": 0,
+    "text": "2:0, return the last card in the story to its owner's hand. If there is none, +3."
+  },
+  {"name": "Generator", "id": 53,
+    "cost": 4, "points": 4,
+    "text": "4:4.\nAt the start of each round, if this is the top of your discard pile, Build 1."
+  },
+  {"name": "Pocket Watch", "id": 54,
+    "cost": 4, "points": 1,
+    "text": "4:1, draw 2.\nCosts X less, where X is the number of times you've passed this round."
+  },
+  {"name": "Phoenix", "id": 51,
+    "cost": 5, "points": 5,
+    "text": "5:5, Fleeting, create a ${4} in your hand."
+  },
+  {"name": "Symbiosis", "id": 57,
+    "cost": 6, "points": 6,
+    "text": "6:6, if this is nourished, your opponent discards the leftmost card of their hand."
+  },
+  {"name": "Sun", "id": 56,
+    "cost": 8, "points": 8,
+    "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, Inspired 2."
+  },
+
+
+
   
   {"name": "Bee", "id": 126,
     "cost": 0,

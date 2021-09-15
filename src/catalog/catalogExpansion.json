@@ -3,11 +3,7 @@
     "cost": 0, "points": 1,
     "text": "0:1, Visible."
   },
-  {"name": "Scarab", "id": 50,
-    "cost": 0, "points": 0,
-    "text": "0:0.\nAt the start of each round, if this is the top of your discard pile, gain Sight 1."
-  },
-
+  
   {"name": "Nectar", "id": 25,
     "cost": 1, "points": 0,
     "text": "1:0, Nourish 1.",
@@ -35,10 +31,6 @@
     "cost": 1, "points": 1,
     "text": "1:1.\nWhen played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)"
   },
-  {"name": "Become Machine", "id": 55,
-    "cost": 1, "points": 1,
-    "text": "1:1, Fleeting, transform each of your cards later in the story into an 0:X ${1003}, where X is its cost."
-  },
 
   {"name": "Sine", "id": 31,
     "cost": 2, "points": 4,
@@ -49,10 +41,6 @@
     "cost": 2, "points": 0,
     "text": "2:0, Tutor 1, Tutor 1, Tutor 1.",
     "catalogText": "Fishing Boat costs 2, and tutors for a 1-cost card 3 times.\n\nTutor will draw any card meeting the condition (Costing 1) from either your deck or your discard pile, prioritizing first cards in your deck, then cards from the top of your discard pile to the bottom.\n\nUse this to surge ahead on card advantage, and be able to stall for a huge reset."
-  },
-  {"name": "Desert", "id": 49,
-    "cost": 2, "points": 0,
-    "text": "2:0, return the last card in the story to its owner's hand. If there is none, +3."
   },
   {"name": "Raise Dead", "id": 33,
     "cost": 2, "points": 2,
@@ -93,14 +81,6 @@
     "cost": 4, "points": 4,
     "text": "4:4, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed."
   },
-  {"name": "Generator", "id": 53,
-    "cost": 4, "points": 4,
-    "text": "4:4.\nAt the start of each round, if this is the top of your discard pile, Build 1."
-  },
-  {"name": "Pocket Watch", "id": 54,
-    "cost": 4, "points": 1,
-    "text": "4:1, draw 2.\nCosts X less, where X is the number of times you've passed this round."
-  },
 
   {"name": "Beekeep", "id": 41,
     "cost": 5, "points": 5,
@@ -110,18 +90,10 @@
     "cost": 5, "points": 0,
     "text": "5:0, Inspire 2. If this is your last card in the story, set both player's points to 0."
   },
-  {"name": "Phoenix", "id": 51,
-    "cost": 5, "points": 5,
-    "text": "5:5, Fleeting, create a ${4} in your hand."
-  },
 
   {"name": "Eagle", "id": 43,
     "cost": 6, "points": 6,
     "text": "6:6, Nourish 2.\nWhen played, gain Sight 4 and transform each card in your hand into a ${4}."
-  },
-  {"name": "Symbiosis", "id": 57,
-    "cost": 6, "points": 6,
-    "text": "6:6, if this is nourished, your opponent discards the leftmost card of their hand."
   },
 
   {"name": "Ecology", "id": 44,
@@ -138,10 +110,6 @@
     "text": "7:7.\nCosts 0 if you have 5 cards in the story."
   },
 
-  {"name": "Sun", "id": 56,
-    "cost": 8, "points": 8,
-    "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, Inspired 2."
-  },
   {"name": "Enrage", "id":47,
     "cost": 8, "points": 2,
     "text": "8:2, give each card later in the story -X, where X is its cost.\nWhen played, give each card ealier in the story -X.\n(This effect is temporary)"
