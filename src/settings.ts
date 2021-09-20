@@ -79,14 +79,14 @@ const Color: Record<string, any> = {
   primary: 0x202070,
   primaryS: '#202070',
   
-  secondaryS: "#43438a",
   secondary: 0x43438a,
+  secondaryS: "#43438a",
   
   variant: 0xb3b320, // 0xa0a034
   variantS: '#b3b320',
 
-  red: 0xcc1f19,
-  redS: '#cc1f19',
+  red: 0x000000,// 0xcc1f19,
+  redS: '#000000',//'#cc1f19',
   redSecondary: 0xffaaaa,
 
   green: 0x007000,
@@ -343,6 +343,7 @@ export const BBConfig = {
     thickness: 2,
     offset: 8
   },
+  strokeThickness: 3,
   wrap: {
     mode: 'word',
     width: 500
@@ -382,6 +383,7 @@ export const CardStatsConfig = {
   backgroundStrokeLineWidth: 2,
   // backgroundCornerRadius: 5,
   backgroundHorizontalGradient: false,
+  strokeThickness: 3,
   padding: { 
     left: 5,
     right: 5,
