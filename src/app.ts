@@ -84,6 +84,15 @@ const config: Phaser.Types.Core.GameConfig = {
 export class CelestialGame extends Phaser.Game {
   constructor(config: Phaser.Types.Core.GameConfig) {
     super(config)
+
+    let vMain = document.getElementById('v-main')
+    let vRecap = document.getElementById('v-recap')
+
+    vMain.setAttribute('width', window.innerWidth.toString())
+    vMain.setAttribute('height', Space.windowHeight.toString())
+
+    vRecap.setAttribute('width', window.innerWidth.toString())
+    vRecap.setAttribute('height', Space.windowHeight.toString())
   }
 }
 

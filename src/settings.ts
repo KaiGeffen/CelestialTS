@@ -55,9 +55,21 @@ export function ensureUserSettings(): void {
   }
 }
 
+// Determine if height or width is the limiting factor for this window
+// 1100 x 650 is the size of the background
+let heightIsLimiting = window.innerHeight < (650 / 1100) * window.innerWidth 
+let height, width
+if (heightIsLimiting) {
+  height = window.innerHeight - 10
+  width = height * (1100 / 650)
+} else {
+  width = window.innerWidth
+  height = width * (650 / 1100) - 10
+}
+
 export const Space = {
-  windowWidth: 1100,
-  windowHeight: 650,
+  windowWidth: width,
+  windowHeight: height,
   cardSize: 100,
   pad: 20,
   cardsPerRow: 8,

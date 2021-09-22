@@ -84,7 +84,7 @@ export class CardImage {
     let scene: Phaser.Scene = outerContainer.scene
     // Card image
     this.image = scene.add.image(0, 0, card.name)
-    this.image.setDisplaySize(100, 100)
+    // this.image.setDisplaySize(100, 100)
 
     // Stat text
     let s = `${card.cost}:${card.points}`
