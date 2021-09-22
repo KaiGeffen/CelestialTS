@@ -134,9 +134,9 @@ export const ColorSettings: Record<string, any> = {
 
 
   // Card components
-  cardText: Color.black,
+  cardText: Color.primary,
   // Text color for the reminders in card text (References, keywords)
-  cardTextSecondary: '#444',
+  cardTextSecondary: '#555',
   cardTextBackground: '#aace',
   cardUnplayable: 0x888888,
   cardHighlight: Color.variant,
