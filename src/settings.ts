@@ -85,9 +85,7 @@ const Color: Record<string, any> = {
   variant: 0xb3b320, // 0xa0a034
   variantS: '#b3b320',
 
-  red: 0x000000,// 0xcc1f19,
-  redS: '#000000',//'#cc1f19',
-  redSecondary: 0xffaaaa,
+  red: 0xffaaaa,
 
   green: 0x007000,
   greenS: '#070',
@@ -136,9 +134,9 @@ export const ColorSettings: Record<string, any> = {
 
 
   // Card components
-  cardText: Color.redS,
+  cardText: Color.black,
   // Text color for the reminders in card text (References, keywords)
-  cardTextSecondary: '#333',
+  cardTextSecondary: '#444',
   cardTextBackground: '#aace',
   cardUnplayable: 0x888888,
   cardHighlight: Color.variant,
@@ -149,7 +147,7 @@ export const ColorSettings: Record<string, any> = {
   buttonReference: Color.variantS,
 
   // Color for text that references a card
-  cardReference: Color.redS,
+  cardReference: Color.black,
 
   // Rulebook components
   rulebookText: Color.black,
@@ -158,7 +156,7 @@ export const ColorSettings: Record<string, any> = {
 
 
   // The highlight behind a card that is selected for mulligan
-  mulliganHighlight: Color.redSecondary,
+  mulliganHighlight: Color.red,
 
   // The shadow of a stack text that is highlighted
   stackText: Color.greenS,
@@ -170,7 +168,7 @@ export const ColorSettings: Record<string, any> = {
 
 
   // The highlight behind a card that is selected in the catalog
-  catalogHighlight: Color.redSecondary,
+  catalogHighlight: Color.red,
 
   // Credits components
   creditsText: Color.black,
