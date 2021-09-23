@@ -582,8 +582,10 @@ export default class GameScene extends BaseScene {
 			let storyIndex = i + numActsCompleted
 			let card = this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
 
-			// Click to jump to that position in the recap
-			card.setOnClick(this.jumpToRecapAct(i + numActsCompleted))
+			if (isRecap) {
+				// Click to jump to that position in the recap
+				card.setOnClick(this.jumpToRecapAct(i + numActsCompleted))
+			}
 
 			// If opponent just played this card, animate it being played
 			if (!isRecap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
