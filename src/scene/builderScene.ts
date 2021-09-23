@@ -321,7 +321,7 @@ export class BuilderScene extends BuilderSceneShell {
             left: leftPadding
           }
         })
-        cardImage.txtStats.setSize(0, 0)
+        cardImage.txtStats.setSize(0, 100)
 
         // Add the image next, with padding between it and the next card
         sizer.add(cardImage.image, {
