@@ -158,7 +158,7 @@ export const ColorSettings: Record<string, any> = {
   buttonReference: Color.variantS,
 
   // Color for text that references a card
-  cardReference: Color.black,
+  cardReference: Color.primaryS,
 
   // Rulebook components
   rulebookText: Color.black,
