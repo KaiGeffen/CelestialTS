@@ -30,7 +30,7 @@ export default class WelcomeScene extends BaseScene {
     this.tutorialRegion.create()
 
     // Display text and button
-    this.add.text(Space.windowWidth/2, 200, "Celestial",
+    this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 150, "Celestial",
       StyleSettings.title).setOrigin(0.5)
 
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
@@ -45,7 +45,7 @@ export default class WelcomeScene extends BaseScene {
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
 
     // Start Button
-    new Button(this, Space.windowWidth/2, 350, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(StyleSettings.announcement)
+    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(StyleSettings.announcement)
 
 
 

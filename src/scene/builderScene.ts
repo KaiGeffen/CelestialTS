@@ -35,7 +35,7 @@ class BuilderSceneShell extends BaseScene {
 
     // Hint text - Tell user to click cards to add
     this.txtHint = this.add.text(
-      988 - 500,
+      Space.windowWidth - 112 - 500,
       Space.windowHeight - 120,
       'Click a card to add it to your deck',
       StyleSettings.announcement)
@@ -43,13 +43,13 @@ class BuilderSceneShell extends BaseScene {
 
     // Start button - Show how many cards are in deck, and enable user to start if deck is full
     this.btnStart = new Button(this,
-      988,
+      Space.windowWidth - 112,
       Space.windowHeight - 50,
       'pog')
 
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-    this.deckContainer = this.add.container(988, Space.windowHeight).setDepth(2)
+    this.deckContainer = this.add.container(Space.windowWidth - 112, Space.windowHeight).setDepth(2)
 
   }
 
@@ -229,6 +229,9 @@ export class BuilderScene extends BuilderSceneShell {
   // The scrollable panel which the cards are on
   panel: any
 
+  // How many cards fit on each row in the catalog
+  cardsPerRow: number
+
   // The deck code for this builder that is retained throughout user's session
   standardDeckCode: string = ''
 
@@ -268,7 +271,7 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Make a deck menu button with the given callback
     this.btnDeckMenu = new Button(this,
-      988,
+      Space.windowWidth - 112,
       Space.windowHeight - 100,
       'Deck',
       deckMenuCallback)
@@ -299,7 +302,7 @@ export class BuilderScene extends BuilderSceneShell {
       // The first card on each line should have padding from the left side
       // This is done here instead of in padding options so that stats text doesn't overflow 
       let leftPadding = 0
-      if (cardCount % Space.cardsPerRow === 0) {
+      if (cardCount % this.cardsPerRow === 0) {
         leftPadding = Space.pad
       }
 
@@ -339,7 +342,7 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Hide the slider if all cards fit in panel
     let slider = this.panel.getElement('slider')
-    if (cardCount <= Space.cardsPerRow * Space.rowsPerPage) {
+    if (cardCount <= this.cardsPerRow * Space.rowsPerPage) {
       slider.setVisible(false)
 
       this.catalogBackground.setX(-slider.width - 20)
@@ -371,8 +374,17 @@ export class BuilderScene extends BuilderSceneShell {
   private createCatalog(): void {
     let that = this
 
-    let width = Space.cardSize * 8 + Space.pad * 10 + 10
-    let height = Space.cardSize * 4 + Space.pad * 5
+    // let width = Space.cardSize * 8 + Space.pad * 10 + 10
+    // let height = Space.cardSize * 4 + Space.pad * 5
+    // TODO Explain the 100 & 150
+    let width = Space.windowWidth - 100
+    // Width must be rounded down so as to contain some number of cards tighly
+    let occupiedWidth = Space.pad * 2 + 10
+    let innerWidth = width - occupiedWidth
+    width -= innerWidth % (Space.cardSize + Space.pad)
+    this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
+
+    let height = Space.windowHeight - 150
     this.catalogBackground = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
 
     this.panel = this['rexUI'].add.scrollablePanel({
@@ -454,15 +466,11 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   private getCatalogCardPosition(index: number): [number, number] {
-    let pageNumber = Math.floor(index / Space.cardsPerPage)
-    index = index % Space.cardsPerPage
-
-    let col = index % Space.cardsPerRow
+    let col = index % this.cardsPerRow
     let xPad = (1 + col) * Space.pad
     let x = col * Space.cardSize + xPad + Space.cardSize / 2
-    x += pageNumber * Space.pageOffset
 
-    let row = Math.floor(index / Space.cardsPerRow)
+    let row = Math.floor(index / this.cardsPerRow)
     let yPad = (1 + row) * Space.pad
     let y = row * Space.cardSize + yPad + Space.cardSize / 2
 
@@ -952,14 +960,14 @@ export class TutorialBuilderScene extends BuilderScene {
 
     // Add a Back button
     new Button(this,
-      988,
+      Space.windowWidth - 112,
       Space.windowHeight - 150,
       'Back',
       this.onBack())
 
     // Add a Reset button
     new Button(this,
-      988,
+      Space.windowWidth - 112,
       Space.windowHeight - 100,
       'Reset',
       this.onReset())
@@ -1072,7 +1080,7 @@ export class DraftBuilderScene extends BuilderScene {
     this.removeFilterObjects()
 
     // Add a button to quit the current run
-    this.btnReset = new Button(this, 988, Space.windowHeight - 100, 'Reset', this.onReset)
+    this.btnReset = new Button(this, Space.windowWidth - 112, Space.windowHeight - 100, 'Reset', this.onReset)
 
     // Change the start button to start a match vs a draft opponent
     let that = this
@@ -1139,7 +1147,6 @@ export class DraftBuilderScene extends BuilderScene {
 
     // Reset the choice of 4 cards used
     this.lastFilter = undefined
-    console.log(this)
 
     this.scene.restart()
   }

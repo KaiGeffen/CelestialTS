@@ -725,7 +725,6 @@ export default class GameScene extends BaseScene {
 					that.displayShuffleAnimation(delay, player, that)
 				}
 				else if (animation.from === Zone.Status) {
-					console.log(animation)
 					that.displayStatusAnimation(animation, delay, player, that)
 				}
 				else if (animation.to !== Zone.Hand) {

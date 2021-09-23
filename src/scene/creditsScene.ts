@@ -37,10 +37,8 @@ export default class CreditsScene extends Phaser.Scene {
       creditText += '\n\n' + authors[i]
     }
 
-    // this.add.text(Space.windowWidth/2, 150, creditText,
-    //   StyleSettings.credits).setOrigin(0.5, 0)
     let credits = this.add['rexInputText'](
-        Space.windowWidth/2, 150, Space.windowWidth, 400, {
+        Space.windowWidth/2, 150, Space.windowWidth, Space.windowHeight - 250, {
           type: 'textarea',
           text: creditText,
           fontFamily: 'Cambria',

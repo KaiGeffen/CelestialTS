@@ -60,19 +60,19 @@ export function ensureUserSettings(): void {
 let heightIsLimiting = window.innerHeight < (650 / 1100) * window.innerWidth 
 let height, width
 if (heightIsLimiting) {
-  height = window.innerHeight - 10
-  width = height * (1100 / 650)
+  height = Math.floor(window.innerHeight) - 10
+  width = Math.floor(height * (1100 / 650))
 } else {
-  width = window.innerWidth
-  height = width * (650 / 1100) - 10
+  width = Math.floor(window.innerWidth)
+  height = Math.floor(width * (650 / 1100) - 10)
 }
+// TODO Calculate cards per row and cards per rows per page
 
 export const Space = {
   windowWidth: width,
   windowHeight: height,
   cardSize: 100,
   pad: 20,
-  cardsPerRow: 8,
   rowsPerPage: 4,
   cardsPerPage: 8 * 4,
   stackOffset: 30,
@@ -80,7 +80,6 @@ export const Space = {
   // How far from the left announcement text should start (Passed!, Mulliganing, etc) 
   announceOffset: 800 - 20,
   scoresOffset: 800 + 50,
-  pageOffset: 1200,
   stackX: 800,
   highlightWidth: 5,
   iconSeparation: 180
