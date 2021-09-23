@@ -1,6 +1,6 @@
 import "phaser"
 // TODO Remove unused
-import { StyleSettings, ColorSettings, Space, UserSettings } from "../settings"
+import { StyleSettings, ColorSettings, Space, UserSettings, UrlSettings } from "../settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
@@ -32,6 +32,9 @@ export default class WelcomeScene extends BaseScene {
     // Display text and button
     this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 150, "Celestial",
       StyleSettings.title).setOrigin(0.5)
+
+    // Login button
+    let btnLogin = new Button(this, Space.pad/2, 0, "Login", this.doLogin).setOrigin(0)
 
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
     let btnTutorial = new Button(this, Space.windowWidth/2 - 200, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
@@ -138,8 +141,12 @@ export default class WelcomeScene extends BaseScene {
       btnDiscord.stopGlow()
       UserSettings._set('newDiscord', false)
     
-      window.open("https://discord.gg/UXWswspB8S")
+      window.open(UrlSettings.discord)
     }
+  }
+
+  private doLogin(): void {
+    window.open(UrlSettings.oauth)
   }
 }
 

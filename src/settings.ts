@@ -85,6 +85,11 @@ export const Space = {
   iconSeparation: 180
 }
 
+export const UrlSettings = {
+  discord: "https://discord.gg/UXWswspB8S",
+  oauth: "https://cloud.digitalocean.com/v1/oauth/authorize?client_id=091f7103925e26319e34d7ee246eca25e7ea9a9b50b86833f6bc6327d03f4272&redirect_uri=https://celestialtcg.com/&response_type=token"
+}
+
 // The base colors used throughout this app (Primary, secondary, variant)
 const Color: Record<string, any> = {
   primary: 0x202070,
