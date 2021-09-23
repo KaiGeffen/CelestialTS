@@ -79,12 +79,11 @@ class CatalogScene extends BaseScene {
 		let pageNumber = Math.floor(index / Space.cardsPerPage)
 		index = index % Space.cardsPerPage
 
-		let col = index % Space.cardsPerRow
+		let col = index
 		let xPad = (1 + col) * Space.pad
 		let x = col * Space.cardSize + xPad + Space.cardSize / 2
-		x += pageNumber * Space.pageOffset
 
-		let row = Math.floor(index / Space.cardsPerRow)
+		let row = 0
 		let yPad = (1 + row) * Space.pad
 		let y = row * Space.cardSize + yPad + Space.cardSize / 2
 

@@ -78,9 +78,9 @@ export const Space = {
   stackOffset: 30,
   stackOverlap: 40,
   // How far from the left announcement text should start (Passed!, Mulliganing, etc) 
-  announceOffset: 800 - 20,
-  scoresOffset: 800 + 50,
-  stackX: 800,
+  announceOffset: width - 300 - 20,
+  scoresOffset: width - 300 + 50,
+  stackX: width - 300,
   highlightWidth: 5,
   iconSeparation: 180
 }

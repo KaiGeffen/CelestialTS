@@ -320,9 +320,9 @@ export class CardImage {
       {
         x = 0;
       }
-      else if (x >= 1100 - cardInfo.width / 2) // Right side
+      else if (x >= Space.windowWidth - cardInfo.width / 2) // Right side
       {
-        x = 1100 - cardInfo.width;
+        x = Space.windowWidth - cardInfo.width;
       }
       else
       {

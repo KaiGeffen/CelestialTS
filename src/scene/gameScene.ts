@@ -130,7 +130,7 @@ export default class GameScene extends BaseScene {
 
 		this.storyContainer = this.add.container(0, 0)
 		this.stackContainer = this.add.container(0, 0)
-		this.passContainer = this.add.container(1100 - Space.pad, 650/2 - 40).setVisible(false)
+		this.passContainer = this.add.container(Space.windowWidth - Space.pad, Space.windowHeight/2 - 40).setVisible(false)
 
 		this.input.on('pointerdown', this.clickAnywhere(), this)
 
@@ -149,13 +149,13 @@ export default class GameScene extends BaseScene {
 
 		// Priority highlight
 		let height = Space.cardSize + 2 * Space.pad
-		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, 1100, height, ColorSettings.priorityRectangle, 0.5).setOrigin(0, 0).setDepth(-1)
-		this.txtYourTurn = this.add.text(Space.announceOffset, 650 - 200, 'Your turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
+		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, Space.windowWidth, height, ColorSettings.priorityRectangle, 0.5).setOrigin(0, 0).setDepth(-1)
+		this.txtYourTurn = this.add.text(Space.announceOffset, Space.windowHeight - 200, 'Your turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 		this.txtTheirTurn = this.add.text(Space.announceOffset, 200, 'Their turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 
 		// Vision highlight and text
 		height = Space.cardSize + 2 * Space.stackOffset + 2 * Space.pad
-		this.visionRectangle = this.add.rectangle(0, Space.windowHeight/2, 1100, height, 0xffffff, 0.1).setOrigin(1, 0.5)
+		this.visionRectangle = this.add.rectangle(0, Space.windowHeight/2, Space.windowWidth, height, 0xffffff, 0.1).setOrigin(1, 0.5)
 		this.txtVision = this.add.text(0, Space.windowHeight/2, '', StyleSettings.small).setOrigin(0, 0.5)
 		this.storyContainer.add([this.visionRectangle, this.txtVision])
 
@@ -169,17 +169,17 @@ export default class GameScene extends BaseScene {
     	this.passContainer.add(this.btnExit)
 
 	    // Mana text
-	    this.txtMana = this.add.text(1100 - Space.pad,
-	    	650 - 30 - Space.cardSize - Space.pad * 2,
+	    this.txtMana = this.add.text(Space.windowWidth - Space.pad,
+	    	Space.windowHeight - 30 - Space.cardSize - Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
-	    this.txtOpponentMana = this.add.text(1100 - Space.pad,
+	    this.txtOpponentMana = this.add.text(Space.windowWidth - Space.pad,
 	    	30 + Space.cardSize + Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
 
-	    this.txtWins = this.add.text(1100 - Space.pad,
-	    	650 - 70 - Space.cardSize - Space.pad * 2,
+	    this.txtWins = this.add.text(Space.windowWidth - Space.pad,
+	    	Space.windowHeight - 70 - Space.cardSize - Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
-	    this.txtOpponentWins = this.add.text(1100 - Space.pad,
+	    this.txtOpponentWins = this.add.text(Space.windowWidth - Space.pad,
 	    	70 + Space.cardSize + Space.pad * 2,
 	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
 
@@ -188,14 +188,14 @@ export default class GameScene extends BaseScene {
 	    this.statusBarOpp = new StatusBar(this, Space.cardSize + Space.pad * 2, false)
 
 	    // Passing text
-	    this.txtPass = this.add.text(Space.announceOffset, 650 - 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
+	    this.txtPass = this.add.text(Space.announceOffset, Space.windowHeight - 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 	    this.txtOpponentPass = this.add.text(Space.announceOffset, 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
 
 	    // Alternate views presented when hovering over/clicking any stacks
 	    // TODO Make a method that replaces each of these sections, since they are all nearly identical
 	    this.txtDeckSize = this.add.text(
 	    	Space.stackX + Space.cardSize/2,
-	    	650 - Space.pad - Space.cardSize/2,
+	    	Space.windowHeight - Space.pad - Space.cardSize/2,
 	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
 	    this.txtDeckSize.setInteractive()
 	    this.txtDeckSize.on('pointerover', this.hoverAlternateView(this.deckContainer, this.txtDeckSize), this)
@@ -206,7 +206,7 @@ export default class GameScene extends BaseScene {
 	    
 	    this.txtDiscardSize = this.add.text(
 	    	Space.stackX + Space.cardSize*3/2 + Space.pad,
-	    	650 - Space.pad - Space.cardSize/2,
+	    	Space.windowHeight - Space.pad - Space.cardSize/2,
 	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
 	    this.txtDiscardSize.setInteractive()
 	    this.txtDiscardSize.on('pointerover', this.hoverAlternateView(this.discardContainer, this.txtDiscardSize), this)
@@ -260,7 +260,7 @@ export default class GameScene extends BaseScene {
 	    this.passContainer.add(this.btnSkip)
 
 	    // Error text, for when the user does something wrong they get an explanation
-		this.txtError = this.add.text(500, 650/2, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
+		this.txtError = this.add.text(500, Space.windowHeight/2, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
 	    this.displaySearchingStatus(true)
 
@@ -444,8 +444,8 @@ export default class GameScene extends BaseScene {
 	// Display searching for opponent if still looking
 	displaySearchingStatus(searching: boolean): void {
 		if (searching) {
-			let searchingBackground = this.add.rectangle(0, 0, 1100, 650, ColorSettings.searchingBackground).setOrigin(0, 0)
-			let txtSearching = this.add.text(1100/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
+			let searchingBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, ColorSettings.searchingBackground).setOrigin(0, 0)
+			let txtSearching = this.add.text(Space.windowWidth/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
 			let btnExit = new Button(this, Space.windowWidth/2, 400, "Cancel", this.exitScene()).setOrigin(0.5, 0.5)
 
@@ -651,7 +651,7 @@ export default class GameScene extends BaseScene {
 			this.txtVision.setText(state.vision.toString())
 
 			let x = this.getCardPosition(state.vision, this.storyContainer, 0)[0] - Space.cardSize/2
-			this.visionRectangle.setX(Math.min(x, 1100))
+			this.visionRectangle.setX(Math.min(x, Space.windowWidth))
 		}
 
 		// Mana
@@ -1296,7 +1296,7 @@ export default class GameScene extends BaseScene {
 				else x = Space.stackX + Space.cardSize*3/2 + Space.pad
 
 				// My pile is 0, opponent's is 1
-				if (owner === 0) y = 650 - Space.cardSize/2 - Space.pad
+				if (owner === 0) y = Space.windowHeight - Space.cardSize/2 - Space.pad
 				else y = Space.cardSize/2 + Space.pad
 
 				break
