@@ -34,10 +34,10 @@ export default class WelcomeScene extends BaseScene {
       StyleSettings.title).setOrigin(0.5)
 
     // TODO Logout, save the most recent token so that new celestial.com website visits don't start logged out
-    if (!this.attemptLogin()) {
-      // Login button
-      let btnLogin = new Button(this, Space.pad/2, 0, "Login", this.doLogin).setOrigin(0)
-    }
+    // if (!UserSettings._get('loggedIn')) {
+    //   // Login button
+    //   let btnLogin = new Button(this, Space.pad/2, 0, "Login", this.doLogin).setOrigin(0)
+    // }
 
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
     let btnTutorial = new Button(this, Space.windowWidth/2 - 200, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
@@ -146,22 +146,6 @@ export default class WelcomeScene extends BaseScene {
     
       window.open(UrlSettings.discord)
     }
-  }
-
-  // Attempt to log in, returns true if user can succesffuly log in, false otherwise
-  private attemptLogin(): boolean {
-    const hashParams = new URLSearchParams(window.location.hash.substr(1))
-    const accessToken = hashParams.get('access_token')
-
-    // const cmd = 'curl -X GET "https://api.digitalocean.com/v2/droplets -H "Authorization: Bearer ' + accessToken + '"'
-
-    let xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://api.digitalocean.com/v2/droplets", false)
-    xmlHttp.setRequestHeader("Authorization", "Bearer " + accessToken)
-    xmlHttp.send()
-    console.log(xmlHttp)
-
-    return xmlHttp.statusText === "OK"
   }
 
   private doLogin(): void {

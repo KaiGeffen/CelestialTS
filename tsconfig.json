@@ -4,6 +4,18 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
 },
+"typeRoots": [
+  "node_modules/@types"
+],
+"types": [
+  "gapi",
+  "gapi.auth2"
+],
+"lib": [
+  "es2017",
+  "dom"
+],
+
 "include": [
   "src/*"
 ]

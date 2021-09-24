@@ -1,9 +1,10 @@
 import "phaser"
 var mobile = require('is-mobile')
 
-import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings } from "../settings"
+import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings, UrlSettings } from "../settings"
 import { allCards } from "../catalog/catalog"
 import MessageManager from "../lib/message"
+import AccountManager from "../lib/accountManager"
 
 
 const SOUNDS = [
@@ -41,6 +42,9 @@ const SOUNDS = [
 
 
 export default class PreloadClass extends Phaser.Scene {
+	// True if could log in, false if couldn't, undefined until known
+	loginStatus: boolean = undefined
+
 	constructor() {
 		super({
 			key: "PreloadScene"
@@ -49,6 +53,10 @@ export default class PreloadClass extends Phaser.Scene {
 
 	// Load all assets used throughout the game
 	preload(): void {
+		// Ensure that every user setting is either set, or set it to its default value
+		ensureUserSettings()
+
+		this.renderSigninButton()
 
 		this.load.path = "assets/"
 
@@ -69,9 +77,6 @@ export default class PreloadClass extends Phaser.Scene {
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
 
-		// Ensure that every user setting is either set, or set it to its default value
-		ensureUserSettings()
-
 		this.sound.volume = UserSettings._get('volume')
 
 		// If the user is using mobile, ensure that the see the mobile message
@@ -81,6 +86,63 @@ export default class PreloadClass extends Phaser.Scene {
 		
 		// Add event listeners
 		this.createProgressGraphics()
+	}
+
+	renderSigninButton(): void {
+		// Initialize Google Auth
+		gapi.load('auth2', function() {
+			gapi.auth2.init({
+				client_id: UrlSettings.oauth
+			})
+		})
+
+		function onSuccess(): void {
+			console.log('Signin succesful')
+		}
+
+		function onFailure(): void {
+			console.log('Failed to signin')
+		}
+
+		// Render login button
+		gapi.signin2.render("signin", {
+			'onsuccess': onSuccess,
+			'onfailure': onFailure
+		})
+	}
+
+	// Attempt to log in the user, starts an asynch request which sets the loginStatus param when completed
+	private attemptLogin(): void {
+		const hashParams = new URLSearchParams(window.location.hash.substr(1))
+	    const accessToken = hashParams.get('access_token')
+
+	    // const cmd = 'curl -X GET "https://api.digitalocean.com/v2/droplets -H "Authorization: Bearer ' + accessToken + '"'
+
+	    let xmlHttp = new XMLHttpRequest()
+
+	    // When the request returns, set the login status
+	    let that = this
+	    xmlHttp.onloadend = function() {
+	    	let loginSuccessful = xmlHttp.statusText === "OK"
+	    	if (loginSuccessful) {
+		    	let response = JSON.parse(xmlHttp.response)['account']
+		    	console.log(response)
+		    	// console.log(response.get('foo'))
+
+		    	// console.log(response)
+		    	console.log(response['uuid'])
+		    	// TODO Load the values for this account
+		    	// new AccountManager(xmlHttp.responseText)
+	    	}
+
+	    	that.loginStatus = loginSuccessful
+	    }
+
+	    xmlHttp.open("GET", "https://api.digitalocean.com/v2/account")
+	    xmlHttp.setRequestHeader("Authorization", "Bearer " + accessToken)
+	    xmlHttp.send()
+	   	// TODO Remove this
+	    console.log(xmlHttp)
 	}
 
 	// Loads all images that are used as icons in ux
@@ -129,8 +191,11 @@ export default class PreloadClass extends Phaser.Scene {
 			progressBar.fillRect(x + Space.pad, y + Space.pad, (width - Space.pad*2) * value, height - Space.pad*2)
 		})
 
-		this.load.on('complete', function () {
+		let startWhenLoginComplete = function() {
 			that.scene.start('WelcomeScene')
+		}
+		this.load.on('complete', function () {
+			startWhenLoginComplete()
 		})
 	}
 }

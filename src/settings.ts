@@ -44,6 +44,7 @@ export function ensureUserSettings(): void {
     messages: [], // A list of the Messages that user has which are read/unread
     draftDeckCode: '', // The user's current drafted deck
     draftRecord: [0, 0], // The win/loss record with current deck
+    loggedIn: false, // Whether or not the user is logged in to an account
   }
 
   for (var key in defaultSettings) {
@@ -87,7 +88,8 @@ export const Space = {
 
 export const UrlSettings = {
   discord: "https://discord.gg/UXWswspB8S",
-  oauth: "https://cloud.digitalocean.com/v1/oauth/authorize?client_id=091f7103925e26319e34d7ee246eca25e7ea9a9b50b86833f6bc6327d03f4272&redirect_uri=https://celestialtcg.com/&response_type=token"
+  oauth: '574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com'
+  //"https://cloud.digitalocean.com/v1/oauth/authorize?client_id=091f7103925e26319e34d7ee246eca25e7ea9a9b50b86833f6bc6327d03f4272&redirect_uri=https://celestialtcg.com/&response_type=token"
 }
 
 // The base colors used throughout this app (Primary, secondary, variant)

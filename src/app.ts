@@ -85,6 +85,7 @@ export class CelestialGame extends Phaser.Game {
   constructor(config: Phaser.Types.Core.GameConfig) {
     super(config)
 
+    // Set the size of the movies in the background based on the window size
     let vMain = document.getElementById('v-main')
     let vRecap = document.getElementById('v-recap')
 
