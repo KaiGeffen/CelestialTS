@@ -96,11 +96,28 @@ export default class PreloadClass extends Phaser.Scene {
 			})
 		})
 
-		function onSuccess(): void {
+		function onSuccess(user: gapi.auth2.GoogleUser): void {
 			console.log('Signin succesful')
+
+			// Communicate with server, load data on response
+			let id_token = user.getAuthResponse().id_token
+			console.log(id_token)
+			
+			let xhr = new XMLHttpRequest()
+			let loc = window.location
+			console.log(loc.host)
+			console.log(loc.pathname)
+			let s = `${loc.host}${loc.pathname}auth/`
+			xhr.open('POST', s)
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+			xhr.onload = function() {
+			  console.log('Got user data: ' + xhr.responseText)
+			}
+			xhr.send('idtoken=' + id_token)
 		}
 
 		function onFailure(): void {
+			// TODO Add some behavior
 			console.log('Failed to signin')
 		}
 
