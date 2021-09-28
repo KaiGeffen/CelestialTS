@@ -107,8 +107,9 @@ export default class PreloadClass extends Phaser.Scene {
 			let loc = window.location
 			console.log(loc.host)
 			console.log(loc.pathname)
-			let s = `celestialtcg.com/tokensignin`
+			let s = `https://celestialtcg.com/tokensignin`
 			xhr.open('POST', s)
+			console.log(xhr)
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 			xhr.onload = function() {
 			  console.log('Got user data: ' + xhr.responseText)
