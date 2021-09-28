@@ -107,7 +107,7 @@ export default class PreloadClass extends Phaser.Scene {
 			let loc = window.location
 			console.log(loc.host)
 			console.log(loc.pathname)
-			let s = `${loc.host}${loc.pathname}auth/`
+			let s = `${loc.host}${loc.pathname}ws/`
 			xhr.open('POST', s)
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 			xhr.onload = function() {

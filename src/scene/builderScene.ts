@@ -1,7 +1,7 @@
 import "phaser"
 import { collectibleCards, baseCards } from "../catalog/catalog"
 import { CardImage, cardInfo } from "../lib/cardImage"
-import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, UserSettings, Space, MechanicSettings } from "../settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 import Button from "../lib/button"
@@ -59,7 +59,7 @@ class BuilderSceneShell extends BaseScene {
 
   // Add card to the existing deck
   addCardToDeck(card: Card): boolean {
-    if (this.deck.length >= 15) {
+    if (this.deck.length >= MechanicSettings.deckSize) {
       return false
     }
 
@@ -146,14 +146,14 @@ class BuilderSceneShell extends BaseScene {
 
   // Update the card count and deck button texts
   private updateText(): void {
-    if (this.deck.length === 15) {
+    if (this.deck.length === MechanicSettings.deckSize) {
       this.btnStart.text = 'Start'
       this.btnStart.input.enabled = true
       this.btnStart.glow()
     }
     else
     {
-      this.btnStart.text = `${this.deck.length}/15`
+      this.btnStart.text = `${this.deck.length}/${MechanicSettings.deckSize}`
       this.btnStart.stopGlow()
 
       // TODO Grey out the button, have a disable method for button class
@@ -839,7 +839,7 @@ export class BuilderScene extends BuilderSceneShell {
       border: 3,
       borderColor: '#000',
       backgroundColor: '#444',
-      maxLength: 15 * 4 - 1
+      maxLength: MechanicSettings.deckSize * 4 - 1
     })
     .setOrigin(0)
     .on('textchange', function (inputText) {
@@ -1115,7 +1115,7 @@ export class DraftBuilderScene extends BuilderScene {
     if (useLastSeed && this.lastFilter !== undefined) {
       // Don't change lastFilter
     }
-    else if (this.deck.length < 15) {
+    else if (this.deck.length < MechanicSettings.deckSize) {
       this.lastFilter = function(card: Card) {
         return newPool.includes(card)
       }
@@ -1166,7 +1166,7 @@ export class DraftBuilderScene extends BuilderScene {
     UserSettings._set('draftDeckCode', this.getDeckCode())
 
     // Make the match results visible if deck is now full
-    if (this.deck.length === 15) {
+    if (this.deck.length === MechanicSettings.deckSize) {
       this.txtRecord.setVisible(true)
     }
 

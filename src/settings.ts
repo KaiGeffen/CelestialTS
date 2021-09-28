@@ -56,6 +56,11 @@ export function ensureUserSettings(): void {
   }
 }
 
+// Settings for functional aspects of the game like hand size
+export const MechanicSettings = {
+  deckSize: 20
+}
+
 // Determine if height or width is the limiting factor for this window
 // 1100 x 650 is the size of the background
 let heightIsLimiting = window.innerHeight < (650 / 1100) * window.innerWidth 
@@ -68,6 +73,7 @@ if (heightIsLimiting) {
   height = Math.floor(width * (650 / 1100) - 10)
 }
 // TODO Calculate cards per row and cards per rows per page
+console.log(`Dimensions: ${width} x ${height}`)
 
 export const Space = {
   windowWidth: width,
