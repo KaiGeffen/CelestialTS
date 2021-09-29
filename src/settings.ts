@@ -58,7 +58,7 @@ export function ensureUserSettings(): void {
 
 // Settings for functional aspects of the game like hand size
 export const MechanicSettings = {
-  deckSize: 20
+  deckSize: 15
 }
 
 // Determine if height or width is the limiting factor for this window
