@@ -9,7 +9,7 @@ import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib
 import { StatusBar } from "../lib/status"
 
 // Import Settings itself 
-import { ColorSettings, StyleSettings, UserSettings, TimeSettings, Space } from "../settings"
+import { ColorSettings, StyleSettings, UserSettings, TimeSettings, Space, MechanicSettings } from "../settings"
 import Recap from '../lib/recap'
 import Button from '../lib/button'
 import Icon from '../lib/icon'
@@ -18,8 +18,6 @@ import { Animation, Zone } from '../lib/animation'
 
 
 var storyHiddenLock: boolean = false
-
-const num_mulligans = 4
 
 export default class GameScene extends BaseScene {
 	net: Network
@@ -356,7 +354,7 @@ export default class GameScene extends BaseScene {
 
 		// Highlights
 		this.mulliganHighlights = []
-		for (var i = 0; i < num_mulligans; i++) {
+		for (var i = 0; i < MechanicSettings.numMulligans; i++) {
 			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
 			let highlight = this.add.rectangle(x, y, 100, 140, ColorSettings.mulliganHighlight, 1).setVisible(false)
 			this.handContainer.add(highlight)

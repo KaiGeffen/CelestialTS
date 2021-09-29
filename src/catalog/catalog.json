@@ -5,8 +5,8 @@
     "catalogText": "Stars costs no mana and gives you no points, but on the next round\nyou will have 1 extra mana.\n\nThe line at the bottom describes what the Inspire keyword means.\n\nIt's best if you have a plan for how to spend that mana next round, otherwise it could go to waste."
   },
   {"name": "Bone Knife", "id": 1,
-    "cost": 1, "points": 0,
-    "text": "1:0, your opponent discards the leftmost card of their hand.",
+    "cost": 0, "points": 0,
+    "text": "0:0, your opponent discards the leftmost card of their hand.",
     "catalogText": "Bone Knife costs no mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard."
   },
   {"name": "Cog", "id": 2,
@@ -16,8 +16,8 @@
   },
 
   {"name": "Crossed Bones", "id": 3,
-    "cost": 1, "points": 1,
-    "text": "1:1, Fleeting, create 2 ${1002}s in your discard pile.",
+    "cost": 1, "points": 2,
+    "text": "1:2, Fleeting, create 2 ${1002}s in your discard pile.",
     "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
   },
   {"name": "Dove", "id": 4,
@@ -71,8 +71,8 @@
     "catalogText": "Hurricane costs 4 mana, gives no points, and resets both player's point totals to 0.\n\nThis means as long as it's the last card in the story, you can't lose. And if you play any card worth points after it, you'll win the round.\n\nNote that any boosts from things like Nourish will happen before the points are reset, essentially nullifying those effects."
   },
   {"name": "Dinosaur Bones", "id": 14,
-    "cost": 4, "points": 4,
-    "text": "4:4, Fleeting, create 3 ${1002}s in your discard pile.",
+    "cost": 4, "points": 5,
+    "text": "4:5, Fleeting, create 3 ${1002}s in your discard pile.",
     "catalogText": "Dinosaur Bones costs 4 mana for 5 points, which is excellent.\n\nHowever, it has the drawback that it puts 3 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis."
   },
   {"name": "Mine", "id": 15,
@@ -88,7 +88,7 @@
   },
   {"name": "Tumulus", "id": 17,
     "cost": 5, "points": 4,
-    "text": "5:4, +2 if your discard pile has at least 10 cards in it.",
+    "text": "5:4, +2 if your discard pile has at least 8 cards in it.",
     "catalogText": "Tumulus costs 5 mana for 4 points, but is instead worth 6 points if you have at least 8 cards in your discard pile.\n\nTo have 8 cards by round 5, you would have to play 2 cards each round for the first 4 rounds, which is hard to pull off.\n\nAlso, after you've shuffled your discard pile, it will take some time before you can get the full 6 points out of Tumulus."
   },
 
@@ -110,7 +110,7 @@
 
   {"name": "Anubis", "id": 21,
     "cost": 7, "points": 7,
-    "text": "7:7.\nCosts 0 if you have at least 15 cards in your discard pile.",
+    "text": "7:7.\nCosts 0 if you have at least 12 cards in your discard pile.",
     "catalogText": "Anubis costs 7 mana for 7 points, but can be played for free if your discard pile has at least 12 cards in it.\n\nThis is great for comboing with Sarcophagus, since you can get 14 points multiple rounds in a row.\n\nBe careful not to play this if you don't need the points; winning a round 2 to 0 is just as good as winning 9 to 0."
   },
 
