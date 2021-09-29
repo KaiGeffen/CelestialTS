@@ -98,8 +98,8 @@
     "catalogText": "Uprising costs 6 mana for 3 points, but is also worth an extra point for each card before it in the story.\n\nTry to pass at strategic times, like when your opponent thinks they need to play more to catch up to you, so that this card can be played as late in the round as possible.\n\nResolving Uprising at the end of a round is hard to beat."
   },
   {"name": "Stalker", "id": 19,
-    "cost": 7, "points": 4,
-    "text": "7:4.\nCosts X, where X is the number of cards in your opponent's hand.",
+    "cost": 6, "points": 4,
+    "text": "6:4.\nCosts X, where X is the number of cards in your opponent's hand.",
     "catalogText": "Stalker's cost is equal to the number of cards in your opponent's hand, and it's worth 4 points.\n\nIf you can force your opponent to discard some of their hand, Stalker could come out as early as round 2, beating just about anything.\n\nUnfortunately, your opponent can play around this by passing more frequently."
   },
   {"name": "Sarcophagus", "id": 20,

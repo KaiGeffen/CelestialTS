@@ -128,10 +128,10 @@ export default class PreloadClass extends Phaser.Scene {
 		}
 
 		// Render login button
-		gapi.signin2.render("signin", {
-			'onsuccess': onSuccess,
-			'onfailure': onFailure
-		})
+		// gapi.signin2.render("signin", {
+		// 	'onsuccess': onSuccess,
+		// 	'onfailure': onFailure
+		// })
 	}
 
 	// Attempt to log in the user, starts an asynch request which sets the loginStatus param when completed
