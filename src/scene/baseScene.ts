@@ -59,13 +59,13 @@ export default class BaseScene extends Phaser.Scene {
 		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 620, 30, ColorSettings.menuBackground).setAlpha(0.95)
+		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, ColorSettings.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
 		visibleBackground.setStrokeStyle(10, ColorSettings.menuBorder, 1)
 
 		// Slider for Volume
 		let x = Space.windowWidth/2 - 210
-		let y = Space.windowHeight/2 - 140 - 110
+		let y = Space.windowHeight/2 - 265
 
 		let txtVolumeHint = this.add.text(x, y, 'Volume:', StyleSettings.announcement).setOrigin(0, 0.5)
 
@@ -91,7 +91,7 @@ export default class BaseScene extends Phaser.Scene {
         .layout()
         
         // Slider for Music
-        y += 110
+        y += 90
         let txtMusicHint = this.add.text(x, y, 'Music:', StyleSettings.announcement).setOrigin(0, 0.5)
 
 		this.sliderMusic = this['rexUI'].add.slider({
@@ -123,7 +123,7 @@ export default class BaseScene extends Phaser.Scene {
         .layout()
 
         // Slider for Animation Speed
-        y += 110
+        y += 90
         let txtSpeedHint = this.add.text(x, y, 'Speed:', StyleSettings.announcement).setOrigin(0, 0.5)
 
 		this.sliderAnimationSpeed = this['rexUI'].add.slider({
@@ -145,10 +145,28 @@ export default class BaseScene extends Phaser.Scene {
         })
         .setOrigin(0, 0.5)
         .layout()
+
+        // Radio button for auto-pass
+        y += 90
+        let txtAutopassHint = this.add.text(x, y, 'Autopass:', StyleSettings.announcement).setOrigin(0, 0.5)
+
+		let radioAutopass = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, ColorSettings.background)
+		if (UserSettings._get('autopass')) {
+			radioAutopass.setFillStyle(ColorSettings.cardHighlight)
+		}
+
+		radioAutopass.setInteractive()
+		radioAutopass.on('pointerdown', function() {
+			that.sound.play('click')
+
+			UserSettings._set('autopass', !UserSettings._get('autopass'))
+
+			radioAutopass.setFillStyle((UserSettings._get('autopass')) ? ColorSettings.cardHighlight : undefined)
+		})
         
         // Link to rulebook
         this.rulebookContainer = this.createRulebook()
-        y += 110
+        y += 90
         let btnRulebook = new Button(this, x, y, "Read Rulebook", function() {
         	this.rulebookContainer.setVisible(true)
 	    	this.sound.play('open')
@@ -157,7 +175,7 @@ export default class BaseScene extends Phaser.Scene {
         	.setOrigin(0, 0.5)
 
 		// Prompt asking users if they want to exit
-		y += 110
+		y += 90
 		let txtExitHint = this.add.text(x, y, 'Exit to main menu?', StyleSettings.announcement).setOrigin(0, 0.5)
 
 		// Yes/No buttons
@@ -176,6 +194,7 @@ export default class BaseScene extends Phaser.Scene {
 		this.confirmationContainer.add([invisibleBackground, visibleBackground,
 			// txtKeywordHint, radio,
 			txtVolumeHint, txtMusicHint, txtSpeedHint,
+			txtAutopassHint, radioAutopass,
 			btnRulebook,
 			txtExitHint, btnYes, btnNo
 			])

@@ -476,7 +476,7 @@ export default class GameScene extends BaseScene {
 	// Display the given game state, returns false if the state isn't shown immediately
 	displayState(state: ClientState, isRecap: boolean = false, skipTweens: Boolean = false): boolean {
 		let that = this
-		
+
 		let isRoundStart = state.story.acts.length === 0 && state.passes === 0
 		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
 		// This is the final state shown as the recap plays
@@ -487,8 +487,7 @@ export default class GameScene extends BaseScene {
 			return false
 		}
 		// If currently watching a recap, change the colors and display scores
-		else if (isRecap)
-		{
+		else if (isRecap) {
 			this.animatePointGain(state)
 
 			let s = `${state.score[1]}\n\n${state.score[0]}`
@@ -502,19 +501,17 @@ export default class GameScene extends BaseScene {
 			})
 		}
 		// Queue this for after recap finishes
-		else if (this.recapPlaying)
-		{
+		else if (this.recapPlaying) {
 			return false
 		}
 		// Display this non-recap state, with normal background and no scores displayed
-		else
-		{
+		else {
 			this.txtScores.setText('')
 
 			// If a round just ended, recap each state that the game was in throughout the story
 			let numberStates = state.recap.stateList.length
 			if (isRoundStart && numberStates > 0) {
-				
+
 				// Start the recap playing
 				this.queueRecap(state.recap.stateList)
 
@@ -635,7 +632,7 @@ export default class GameScene extends BaseScene {
 			// NOTE Animated here and not above because the animation happens before the server responds (On press card/pass)
 			this.priorityRectangle.setVisible(true)
 			this.animatePriorityPass(1)
-			
+
 			this.txtYourTurn.setVisible(true)
 			this.txtTheirTurn.setVisible(false)
 		}
@@ -646,13 +643,13 @@ export default class GameScene extends BaseScene {
 		// Vision
 		if (state.vision === 0) {
 			this.txtVision.setText('')
-			
+
 			this.visionRectangle.setX(0)
 		}
 		else {
 			this.txtVision.setText(state.vision.toString())
 
-			let x = this.getCardPosition(state.vision, this.storyContainer, 0)[0] - Space.cardSize/2
+			let x = this.getCardPosition(state.vision, this.storyContainer, 0)[0] - Space.cardSize / 2
 			this.visionRectangle.setX(Math.min(x, Space.windowWidth))
 		}
 
@@ -669,20 +666,20 @@ export default class GameScene extends BaseScene {
 		this.txtOpponentWins.setText(`Wins: ${state.wins[1]}`)
 		if (state.soundEffect === 'win') {
 			this.tweens.add({
-	  			targets: this.txtWins,
-	  			scale: 1.5,
-	  			duration: TimeSettings.recapTween(),
-	  			ease: "Sine.easeInOut",
-	  			yoyo: true
-	  		})
+				targets: this.txtWins,
+				scale: 1.5,
+				duration: TimeSettings.recapTween(),
+				ease: "Sine.easeInOut",
+				yoyo: true
+			})
 		} else if (state.soundEffect === 'lose') {
 			this.tweens.add({
-	  			targets: this.txtOpponentWins,
-	  			scale: 1.5,
-	  			duration: TimeSettings.recapTween(),
-	  			ease: "Sine.easeInOut",
-	  			yoyo: true
-	  		})
+				targets: this.txtOpponentWins,
+				scale: 1.5,
+				duration: TimeSettings.recapTween(),
+				ease: "Sine.easeInOut",
+				yoyo: true
+			})
 		}
 
 		// Passes
@@ -709,7 +706,14 @@ export default class GameScene extends BaseScene {
 		this.net.setVersionNumber(state.versionNumber)
 
 		// Autopass
-		if (!isRecap && state.hand.length === 0 && state.priority === 0) this.net.passTurn()
+		let haveNoCards = state.hand.length === 0
+		let haveNoPlayableCards = !state.cardsPlayable.includes(true)
+		// If not a recap and it is your turn, pass if either we have no cards, or autopass is on and we have no available plays
+		if (!isRecap && state.priority === 0 &&
+			((haveNoCards) ||
+			(UserSettings._get('autopass') && haveNoPlayableCards))) {
+			this.net.passTurn()
+		}
 
 		// State was displayed
 		return true

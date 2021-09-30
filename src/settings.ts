@@ -31,11 +31,12 @@ export class UserSettings {
 export function ensureUserSettings(): void {
   const defaultSettings = {
     vsAi: true,
-    explainKeywords: true,
     mmCode: '',
     volume: 0.3,
     musicVolume: 0.0,
     animationSpeed: 0.25,
+    // Whether the player should pass automatically if there's nothing they can play
+    autopass: true,
     useExpansion: false,
     tutorialKnown: false,
     completedTutorials: [],
