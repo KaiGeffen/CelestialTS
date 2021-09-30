@@ -1128,32 +1128,63 @@ export default class GameScene extends BaseScene {
 							break
 						
 						case Zone.Gone:
-						// Animate moving y direciton
-						y = card.container.y
-						card.setPosition([card.container.x, Space.windowHeight/2])
-						card.hide()
+							// Animate moving y direciton
+							y = card.container.y
+							card.setPosition([card.container.x, Space.windowHeight/2])
+							card.hide()
 
-						// Animate moving x direction, appearing at start
-						that.tweens.add({
-							targets: card.container,
-							y: y,
-							delay: delay,
-							duration: TimeSettings.recapTweenWithPause(),
-							onStart: function (tween, targets, _)
-							{
-								card.show()
-							}
-						})
-						
-						// If card is being created, fade it in
-						card.container.setAlpha(0)
-						that.tweens.add({
-							targets: card.container,
-							alpha: 1,
-							delay: delay,
-							duration: TimeSettings.recapTweenWithPause()
-						})
-						break
+							// Animate moving x direction, appearing at start
+							that.tweens.add({
+								targets: card.container,
+								y: y,
+								delay: delay,
+								duration: TimeSettings.recapTweenWithPause(),
+								onStart: function (tween, targets, _)
+								{
+									card.show()
+								}
+							})
+							
+							// If card is being created, fade it in
+							card.container.setAlpha(0)
+							that.tweens.add({
+								targets: card.container,
+								alpha: 1,
+								delay: delay,
+								duration: TimeSettings.recapTweenWithPause()
+							})
+							break
+
+						case Zone.Story:
+							y = card.container.y
+							that.tweens.add({
+								targets: card.container,
+								y: y,
+								delay: delay,
+								duration: TimeSettings.recapTweenWithPause()
+							})
+							x = card.container.x
+							// Animate moving x direction, appearing at start
+							that.tweens.add({
+								targets: card.container,
+								x: x,
+								delay: delay,
+								duration: TimeSettings.recapTweenWithPause(),
+								onStart: function (tween, targets, _)
+								{
+									card.show()
+									// TODO Add a bounce sound for cards returning from story to hand
+									that.sound.play('draw')
+								}
+							})
+
+							// Where to end is established, move start location
+							// TODO This always pops it off the end, which works now but not in general
+							let storyIndex = animation.index2
+							card.setPosition(that.getCardPosition(storyIndex, that.storyContainer, player))
+							card.hide()
+							
+							break
 					}
 				}
 			}
