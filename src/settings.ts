@@ -117,7 +117,7 @@ const Color: Record<string, any> = {
   greenS: '#070',
 
   black: 0x000000,
-  white: 0xffffff,
+  white: 0xffffff
 }
 
 // The colors for each component in the app (Ex: Slider)
@@ -166,6 +166,8 @@ export const ColorSettings: Record<string, any> = {
   cardTextBackground: '#aace',
   cardUnplayable: 0x888888,
   cardHighlight: Color.variant,
+  // The color of the mana if cost has been reduced
+  cardCostReduced: '#fff',
 
 
 

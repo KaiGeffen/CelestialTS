@@ -205,7 +205,9 @@ export class CardImage {
   // Set the displayed cost of this card, don't change the cost if cost is null
   setCost(cost: number): void {
     if (cost !== null) {
-      this.txtStats.setText(`${cost}:${this.card.points}`)
+      // If the cost is reduced, change the color of cost
+      let costTxt = cost < this.card.cost ? `[stroke=${ColorSettings.cardCostReduced}]${cost}[/stroke]` : `${cost}`
+      this.txtStats.setText(`${costTxt}:${this.card.points}`)
     }
   }
 
