@@ -36,7 +36,7 @@ class BuilderSceneShell extends BaseScene {
 
     // Hint text - Tell user to click cards to add
     this.txtHint = this.add.text(
-      Space.windowWidth - 112 - 500,
+      Space.windowWidth/2,
       Space.windowHeight - 120,
       'Click a card to add it to your deck',
       StyleSettings.announcement)
