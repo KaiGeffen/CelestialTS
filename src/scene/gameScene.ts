@@ -697,6 +697,10 @@ export default class GameScene extends BaseScene {
 				else if (animation.from === Zone.Status) {
 					that.displayStatusAnimation(animation, delay, player, that)
 				}
+				// TODO Focus on a zone animation
+				// else if (animation.from === animation.to) {
+				// 	that.displayShakeAnimation(animation, delay, player, that)
+				// }
 				else if (animation.to !== Zone.Hand && animation.to !== Zone.Story) {
 					that.displayMovementAnimation(animation, delay, player, that)
 				}
@@ -886,6 +890,66 @@ export default class GameScene extends BaseScene {
 				duration: TimeSettings.recapTweenWithPause()
 			})
 		}
+	}
+
+	// Display an animation of the given zone shaking
+	private displayShakeAnimation(animation: Animation, delay: number, player: number, that): void {
+		console.log(animation)
+		let card: CardImage
+
+		switch(animation.from) {
+			// case Zone.Mulligan:
+			// // NOTE We never get the opponent's mulligan animations from server
+			// card = that.mulliganedCards[animation.index]
+			// // Add back into temporary objects, so it doesn't persist
+			// that.temporaryObjs.push(card)
+			// break
+
+			// case Zone.Hand:
+			// if (player === 0) {
+			// 	card = that.addCard(animation.card, 0, that.handContainer, player)
+			// } else {
+			// 	card = that.addCard(animation.card, 0, that.opponentHandContainer, player)
+			// }
+			// break
+
+			// case Zone.Deck:
+			// card = that.addCard(animation.card, 0, that.stackContainer, player)
+			// break
+
+			case Zone.Discard:
+				card = that.addCard(animation.card, 1, that.stackContainer, player)
+				break
+
+			// case Zone.Story:
+			// 	card = that.addCard(animation.card, 0, that.stackContainer, player)
+			// 	break
+
+			// case Zone.Gone:
+			// card = that.addCard(animation.card, 0, that.storyContainer, player)
+			// // NOTE This gets changed below
+			// break
+		}
+		console.log(animation)
+
+		// Hide card until animation starts
+		card.hide()
+		card.container.setDepth(1)
+
+
+		that.tweens.add({
+			targets: card.container,
+			angle: 360,
+			delay: delay,
+			duration: TimeSettings.recapTweenWithPause(),
+			onStart: function (tween, targets, _)
+			{
+				card.show()
+			},
+			onComplete: function (tween, targets, _) {
+				card.hide()
+			}
+		})
 	}
 
 
