@@ -551,44 +551,7 @@ export default class GameScene extends BaseScene {
 		this.displayHands(state, isRecap, isRoundStart)
 
 		// Story
-		let numActsCompleted = 0
-		if (isRecap) {
-			numActsCompleted = state.recap.playList.length
-
-			// Show all of the acts that have already resolved
-			let lastAct: CardImage = undefined
-			for (var i = 0; i < numActsCompleted; i++) {
-				let completedAct: [Card, number, string] = state.recap.playList[i]
-				let card = completedAct[0]
-				let owner = completedAct[1]
-
-				lastAct = this.addCard(card, i, this.storyContainer, owner).setTransparent(true)
-
-				// Click to jump to that position in the recap
-				lastAct.setOnClick(this.jumpToRecapAct(i))
-			}
-
-			// Make the last act dissolve, but not the very last state, where wins are shown
-			if (lastAct !== undefined && lastAct.card.fleeting && !isRoundEnd) {
-				lastAct.dissolve()
-			}
-		}
-		for (var i = 0; i < state.story.acts.length; i++) {
-			let act = state.story.acts[i]
-
-			let storyIndex = i + numActsCompleted
-			let card = this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
-
-			if (isRecap) {
-				// Click to jump to that position in the recap
-				card.setOnClick(this.jumpToRecapAct(i + numActsCompleted))
-			}
-
-			// If opponent just played this card, animate it being played
-			if (!isRecap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
-				this.animateOpponentPlay(card)
-			}
-		}
+		this.displayStory(state, isRecap, isRoundStart)
 
 		// Recap
 		this.btnRecap.setVisible(!isRecap && this.lastRecap.length > 0)
@@ -720,6 +683,7 @@ export default class GameScene extends BaseScene {
 	}
 
 	// Play all animations besides those which end in the hand, which are applied elsewhere
+	// TODO also not ending in story
 	private displayNonHandAnimations(animations: [Animation[], Animation[]]): void {
 		let that = this
 
@@ -733,7 +697,7 @@ export default class GameScene extends BaseScene {
 				else if (animation.from === Zone.Status) {
 					that.displayStatusAnimation(animation, delay, player, that)
 				}
-				else if (animation.to !== Zone.Hand) {
+				else if (animation.to !== Zone.Hand && animation.to !== Zone.Story) {
 					that.displayMovementAnimation(animation, delay, player, that)
 				}
 
@@ -854,7 +818,6 @@ export default class GameScene extends BaseScene {
 			x = card.container.x
 			y = Space.windowHeight/2
 			break
-			// case Zone.Story:
 		}
 
 		// Gone start at midline, and drops vertically to wherever it's going
@@ -1195,6 +1158,97 @@ export default class GameScene extends BaseScene {
 
 		// NOTE This is for the mulligan animation at the start of the match
 		this.myHand = myHand
+	}
+
+	// Display cards in the story
+	private displayStory(state: ClientState, isRecap: boolean, isRoundEnd: boolean): void {
+		let cards: CardImage[] = []
+
+		let numActsCompleted = 0
+		if (isRecap) {
+			numActsCompleted = state.recap.playList.length
+
+			// Show all of the acts that have already resolved
+			let lastAct: CardImage = undefined
+			for (var i = 0; i < numActsCompleted; i++) {
+				let completedAct: [Card, number, string] = state.recap.playList[i]
+				let card = completedAct[0]
+				let owner = completedAct[1]
+
+				lastAct = this.addCard(card, i, this.storyContainer, owner).setTransparent(true)
+
+				// Click to jump to that position in the recap
+				lastAct.setOnClick(this.jumpToRecapAct(i))
+
+				// Add this card to the list of all cards in the story
+				// cards.push(lastAct)
+			}
+
+			// Make the last act dissolve, but not the very last state, where wins are shown
+			if (lastAct !== undefined && lastAct.card.fleeting && !isRoundEnd) {
+				lastAct.dissolve()
+			}
+		}
+		for (var i = 0; i < state.story.acts.length; i++) {
+			let act = state.story.acts[i]
+
+			let storyIndex = i + numActsCompleted
+			let card = this.addCard(act.card, storyIndex, this.storyContainer, act.owner)
+
+			if (isRecap) {
+				// Click to jump to that position in the recap
+				card.setOnClick(this.jumpToRecapAct(i + numActsCompleted))
+			}
+
+			// TODO Make this an animation from server instead of figuring out which cases it's being played
+			// If opponent just played this card, animate it being played
+			if (!isRecap && act.owner === 1 && state.passes === 0 && i === state.story.acts.length - 1) {
+				this.animateOpponentPlay(card)
+			}
+
+			// Add this card to the list of all cards in the story
+			cards.push(card)
+		}
+
+		let that = this
+		function animateStory(player: number) {
+			// Go through the animation list backwards, setting longest delay on rightmost drawn cards
+			for (i = 0; i < state.animations[player].length; i++) {
+				let delay = i * TimeSettings.recapTween()
+
+				let animation: Animation = state.animations[player][i]
+				if (animation.to === Zone.Story) {
+					let card = cards[animation.index]
+
+					let x, y
+					switch(animation.from) {
+						case Zone.Discard:
+							// Animate towards eventual position
+							that.tweens.add({
+								targets: card.container,
+								x: card.container.x,
+								y: card.container.y,
+								delay: delay,
+								duration: TimeSettings.recapTweenWithPause(),
+								onStart: function (tween, targets, _)
+								{
+									card.show()
+									that.sound.play('play')
+								}
+							})
+
+							// Move to discard pile to start
+							card.setPosition(that.getCardPosition(1, that.stackContainer, player))
+							card.hide()
+							break
+						// TODO Other cases
+					}
+				}
+			}
+		}
+
+		animateStory(0)
+		animateStory(1)
 	}
 
 	// Display each player's stacks (deck, discard pile)

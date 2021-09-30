@@ -53,7 +53,7 @@ function decodeAnimation(from: string, to: string, target: string, extraTarget: 
 	let index2: number = undefined
 	let status: Status = undefined
 
-	if (dict[to] === Zone.Hand || dict[from] === Zone.Mulligan) { // TODO Or Story
+	if (dict[to] === Zone.Hand || dict[from] === Zone.Mulligan || dict[to] === Zone.Story) {
 		index = parseInt(target)
 	}
 	else if (dict[from] === Zone.Status) {
