@@ -16,6 +16,7 @@ import { Screen } from "../lib/message"
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
 // TODO 112
+const maxCostFilter: number = 7
 
 class BuilderSceneShell extends BaseScene {
   // Hint telling users how to add cards
@@ -497,11 +498,12 @@ export class BuilderScene extends BuilderSceneShell {
   private createFilters(): void {
     // Add each of the number buttons
     let btnNumbers: Phaser.GameObjects.Text[] = []
-    for (var i = 0; i <= 8; i++) {
+    for (var i = 0; i <= maxCostFilter; i++) {
       this.filterCostAry[i] = false
 
       let y = 50 * (i + 1)
-      let btn = this.add.text(Space.windowWidth - 80, y, i.toString(), StyleSettings.basic)
+      let s = i === maxCostFilter ? `${i}+` : i.toString()
+      let btn = this.add.text(Space.windowWidth - 80, y, s, StyleSettings.basic)
       
       btn.setInteractive()
       btn.on('pointerdown', this.onClickFilterNumber(i, btn))
@@ -617,6 +619,7 @@ export class BuilderScene extends BuilderSceneShell {
     this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
   }
 
+  // TODO Change btn to actually be a button
   private onClickFilterNumber(i: number, btn): () => void {
     let that = this
 
@@ -665,7 +668,8 @@ export class BuilderScene extends BuilderSceneShell {
         return true
       }
       else {
-        return that.filterCostAry[card.cost]
+        // The last filtered cost includes everything more than it
+        return that.filterCostAry[Math.min(card.cost, maxCostFilter)]
       }
     }
 
