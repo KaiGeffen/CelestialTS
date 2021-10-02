@@ -45,16 +45,16 @@
     "catalogText": "Fishing Boat costs 2, and tutors for a 1-cost card 3 times.\n\nTutor will draw any card meeting the condition (Costing 1) from either your deck or your discard pile, prioritizing first cards in your deck, then cards from the top of your discard pile to the bottom.\n\nUse this to surge ahead on card advantage, and be able to stall for a huge reset.",
     "rarity": 1
   },
-  {"name": "Raise Dead", "id": 33,
+  {"name": "Unearth", "id": 33,
     "cost": 2, "points": 2,
     "text": "2:2, put the top card of your discard pile on top of your deck.",
-    "catalogText": "Raise Dead costs 2 mana for 2 points, and puts the top card of your discard pile on top of your deck.\n\nBe aware that any cards which resolve before Raise Dead in the story will be in the discard pile by the time it happens.\n\nUse this to get back powerful cards like Oak or Bastet, or keep Bandits out of your discard pile to deny your opponent points.",
+    "catalogText": "Unearth costs 2 mana for 2 points, and puts the top card of your discard pile on top of your deck.\n\nBe aware that any cards which resolve before Unearth in the story will be in the discard pile by the time it happens.\n\nUse this to get back powerful cards like Oak or Bastet, or keep Bandits out of your discard pile to deny your opponent points.",
     "rarity": 0
   },
   {"name": "Bastet", "id": 34,
     "cost": 2, "points": 1,
     "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)",
-    "catalogText": "Bastet costs 2 mana for 1 point, but also keeps any changes to its points permanently.\n\nThis means that if you have any Nourish when Bastet resolves, it will keep that boost and can be developed into a win-condition.\n\nOnce boosted, try to draw Bastet as quickly as possible with cards like Raise Dead, tutors, and by thinning cards out of your deck.",
+    "catalogText": "Bastet costs 2 mana for 1 point, but also keeps any changes to its points permanently.\n\nThis means that if you have any Nourish when Bastet resolves, it will keep that boost and can be developed into a win-condition.\n\nOnce boosted, try to draw Bastet as quickly as possible with cards like Unearth, tutors, and by thinning cards out of your deck.",
     "rarity": 2
   },
   {"name": "Imprison", "id": 35,
