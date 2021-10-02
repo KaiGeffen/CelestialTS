@@ -14,6 +14,7 @@ export enum Zone {
 	Create,
 	Shuffle,
 	Status,
+	Transform,
 }
 
 export class Animation {
@@ -45,6 +46,7 @@ function decodeAnimation(from: string, to: string, target: string, extraTarget: 
 		'Mulligan': Zone.Mulligan,
 		'Shuffle': Zone.Shuffle,
 		'Status': Zone.Status,
+		'Transform': Zone.Transform,
 	}
 
 	// If going to your hand or story, the target is referenced by index, otherwise it's a card
@@ -59,6 +61,9 @@ function decodeAnimation(from: string, to: string, target: string, extraTarget: 
 	else if (dict[from] === Zone.Status) {
 		status = Status[target]
 	}
+	// else if (dict[from] === dict[to]) {
+	// 	card = decodeCard(target)
+	// }
 	else {
 		card = decodeCard(target)
 	}
@@ -66,6 +71,9 @@ function decodeAnimation(from: string, to: string, target: string, extraTarget: 
 	// If coming from the story, the target has an additional index for its position therein
 	if (dict[from] === Zone.Story) {
 		index2 = parseInt(extraTarget)
+	}
+	else if (dict[from] === Zone.Transform) {
+		card = decodeCard(extraTarget)
 	}
 
 	// return dict[s]

@@ -697,9 +697,8 @@ export default class GameScene extends BaseScene {
 				else if (animation.from === Zone.Status) {
 					that.displayStatusAnimation(animation, delay, player, that)
 				}
-				// TODO Focus on a zone animation
 				// else if (animation.from === animation.to) {
-				// 	that.displayShakeAnimation(animation, delay, player, that)
+				// 	that.displayFocusAnimation(animation, delay, player, that)
 				// }
 				else if (animation.to !== Zone.Hand && animation.to !== Zone.Story) {
 					that.displayMovementAnimation(animation, delay, player, that)
@@ -893,7 +892,7 @@ export default class GameScene extends BaseScene {
 	}
 
 	// Display an animation of the given zone shaking
-	private displayShakeAnimation(animation: Animation, delay: number, player: number, that): void {
+	private displayFocusAnimation(animation: Animation, delay: number, player: number, that): void {
 		console.log(animation)
 		let card: CardImage
 
@@ -1276,7 +1275,6 @@ export default class GameScene extends BaseScene {
 
 		let that = this
 		function animateStory(player: number) {
-			// Go through the animation list backwards, setting longest delay on rightmost drawn cards
 			for (i = 0; i < state.animations[player].length; i++) {
 				let delay = i * TimeSettings.recapTween()
 
@@ -1304,6 +1302,23 @@ export default class GameScene extends BaseScene {
 							// Move to discard pile to start
 							card.setPosition(that.getCardPosition(1, that.stackContainer, player))
 							card.hide()
+							break
+						
+						case Zone.Transform:
+							// Don't position correctly, just copy the position from card it's transforming into
+							let fromCard = that.addCard(animation.card, 0, that.storyContainer, 0)
+							fromCard.setPosition([card.container.x, card.container.y])
+
+							that.tweens.add({
+								targets: fromCard.container,
+								alpha: 0,
+								delay: delay,
+								duration: TimeSettings.recapTweenWithPause(),
+								onComplete: function (tween, targets, _) {
+									fromCard.destroy()
+								}
+							})
+
 							break
 						// TODO Other cases
 					}
