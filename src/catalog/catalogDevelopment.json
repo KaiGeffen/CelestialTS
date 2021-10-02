@@ -88,5 +88,10 @@
     "cost": 5, "points": 2,
     "text": "5:2, Visible, +X, where X is the cost of the next card in the story.",
     "rarity": 1
+  },
+  {"name": "Nightmare", "id": 68,
+    "cost": 3, "points": 0,
+    "text": "3:0, Visible, +4 if you have more cards in hand than your opponent.",
+    "rarity": 1
   }
 ]
