@@ -31,6 +31,8 @@ export default class Card {
   cost: number
   points: number
   text: string
+  rarity: Rarity
+  
   dynamicText: string
   catalogText: string
   fleeting: boolean
@@ -40,7 +42,9 @@ export default class Card {
     this.id = data.id
     this.cost = data.cost
     this.points = data.points
-    this.text = data.text
+    this.text = data.text + data.rarity
+
+    this.rarity = data.rarity
 
     this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText
 
