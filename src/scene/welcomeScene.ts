@@ -40,18 +40,18 @@ export default class WelcomeScene extends BaseScene {
     // }
 
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
-    let btnTutorial = new Button(this, Space.windowWidth/2 - 200, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
+    let btnTutorial = new Button(this, Space.windowWidth/2 - 300, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
     btnTutorial.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
 
     // Credits button
-    let btnCredits = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
+    let btnCredits = new Button(this, Space.windowWidth/2 - 100, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
 
     // Discord button
-    let btnDiscord = new Button(this, Space.windowWidth/2 + 200, Space.windowHeight - 50, "Discord").setOrigin(0.5)
+    let btnDiscord = new Button(this, Space.windowWidth/2 + 100, Space.windowHeight - 50, "Discord").setOrigin(0.5)
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
 
     // Store button
-    let btnStore = new Button(this, Space.windowWidth/2 + 400, Space.windowHeight - 50, "Store", this.doStore).setOrigin(0.5)
+    let btnStore = new Button(this, Space.windowWidth/2 + 300, Space.windowHeight - 50, "Store", this.doStore).setOrigin(0.5)
 
     // Start Button
     new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(StyleSettings.announcement)

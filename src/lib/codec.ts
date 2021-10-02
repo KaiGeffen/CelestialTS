@@ -44,7 +44,8 @@ function decodeCard(s: string): Card {
 			points: points,
 			text: baseCard.text,
 			dynamicText: dynamicText,
-			catalogText: ''
+			catalogText: '',
+			rarity: baseCard.rarity
 		}
 
 		return new Card(data)
