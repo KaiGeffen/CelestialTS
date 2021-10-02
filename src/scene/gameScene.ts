@@ -697,9 +697,9 @@ export default class GameScene extends BaseScene {
 				else if (animation.from === Zone.Status) {
 					that.displayStatusAnimation(animation, delay, player, that)
 				}
-				// else if (animation.from === animation.to) {
-				// 	that.displayFocusAnimation(animation, delay, player, that)
-				// }
+				else if (animation.from === animation.to) {
+					that.displayFocusAnimation(animation, delay, player, that)
+				}
 				else if (animation.to !== Zone.Hand && animation.to !== Zone.Story) {
 					that.displayMovementAnimation(animation, delay, player, that)
 				}
@@ -893,7 +893,6 @@ export default class GameScene extends BaseScene {
 
 	// Display an animation of the given zone shaking
 	private displayFocusAnimation(animation: Animation, delay: number, player: number, that): void {
-		console.log(animation)
 		let card: CardImage
 
 		switch(animation.from) {
@@ -904,13 +903,13 @@ export default class GameScene extends BaseScene {
 			// that.temporaryObjs.push(card)
 			// break
 
-			// case Zone.Hand:
-			// if (player === 0) {
-			// 	card = that.addCard(animation.card, 0, that.handContainer, player)
-			// } else {
-			// 	card = that.addCard(animation.card, 0, that.opponentHandContainer, player)
-			// }
-			// break
+			case Zone.Hand:
+				if (player === 0) {
+					card = that.addCard(animation.card, animation.index, that.handContainer, player)
+				} else {
+					card = that.addCard(animation.card, animation.index, that.opponentHandContainer, player)
+				}
+				break
 
 			// case Zone.Deck:
 			// card = that.addCard(animation.card, 0, that.stackContainer, player)
@@ -929,16 +928,15 @@ export default class GameScene extends BaseScene {
 			// // NOTE This gets changed below
 			// break
 		}
-		console.log(animation)
 
 		// Hide card until animation starts
 		card.hide()
 		card.container.setDepth(1)
 
-
 		that.tweens.add({
 			targets: card.container,
-			angle: 360,
+			alpha: 0,
+			scale: 2,
 			delay: delay,
 			duration: TimeSettings.recapTweenWithPause(),
 			onStart: function (tween, targets, _)
@@ -946,7 +944,7 @@ export default class GameScene extends BaseScene {
 				card.show()
 			},
 			onComplete: function (tween, targets, _) {
-				card.hide()
+				card.destroy()
 			}
 		})
 	}
@@ -1067,11 +1065,6 @@ export default class GameScene extends BaseScene {
 
 			if (!state.cardsPlayable[i]) {
 				cardImage.setPlayable(false)
-			}
-
-			// If the card is a Camera and this is the start of a round, animate it
-			if (isRoundStart && !recap && cardImage.card.name === 'Camera') {
-				cardImage.animateCamera(0)
 			}
 
 			myHand.push(cardImage)

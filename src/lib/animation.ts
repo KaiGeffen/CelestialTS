@@ -55,15 +55,21 @@ function decodeAnimation(from: string, to: string, target: string, extraTarget: 
 	let index2: number = undefined
 	let status: Status = undefined
 
+	// TODO This is hacky, just send all fields from server
 	if (dict[to] === Zone.Hand || dict[from] === Zone.Mulligan || dict[to] === Zone.Story) {
 		index = parseInt(target)
+
+
+		if (dict[from] === dict[to]) {
+			card = decodeCard(extraTarget)
+		}
 	}
 	else if (dict[from] === Zone.Status) {
 		status = Status[target]
 	}
-	// else if (dict[from] === dict[to]) {
-	// 	card = decodeCard(target)
-	// }
+	else if (dict[from] === dict[to]) {
+		card = decodeCard(target)
+	}
 	else {
 		card = decodeCard(target)
 	}
