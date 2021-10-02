@@ -6,8 +6,8 @@
     "rarity": 0
   },
   {"name": "Bone Knife", "id": 1,
-    "cost": 0, "points": 0,
-    "text": "0:0, your opponent discards the leftmost card of their hand.",
+    "cost": 1, "points": 0,
+    "text": "1:0, your opponent discards the leftmost card of their hand.",
     "catalogText": "Bone Knife costs no mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard.",
     "rarity": 1
   },
@@ -19,8 +19,8 @@
   },
 
   {"name": "Crossed Bones", "id": 3,
-    "cost": 1, "points": 2,
-    "text": "1:2, Fleeting, create 2 ${1002}s in your discard pile.",
+    "cost": 1, "points": 1,
+    "text": "1:1, Fleeting, create 2 ${1002}s in your discard pile.",
     "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis.",
     "rarity": 0
   },
@@ -85,8 +85,8 @@
     "rarity": 2
   },
   {"name": "Dinosaur Bones", "id": 14,
-    "cost": 4, "points": 5,
-    "text": "4:5, Fleeting, create 3 ${1002}s in your discard pile.",
+    "cost": 4, "points": 4,
+    "text": "4:4, Fleeting, create 3 ${1002}s in your discard pile.",
     "catalogText": "Dinosaur Bones costs 4 mana for 5 points, which is excellent.\n\nHowever, it has the drawback that it puts 3 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis.",
     "rarity": 0
   },
@@ -117,8 +117,8 @@
     "rarity": 1
   },
   {"name": "Stalker", "id": 19,
-    "cost": 6, "points": 4,
-    "text": "6:4.\nCosts X, where X is the number of cards in your opponent's hand.",
+    "cost": 6, "points": 3,
+    "text": "6:3.\nCosts X, where X is the number of cards in your opponent's hand.",
     "catalogText": "Stalker's cost is equal to the number of cards in your opponent's hand, and it's worth 4 points.\n\nIf you can force your opponent to discard some of their hand, Stalker could come out as early as round 2, beating just about anything.\n\nUnfortunately, your opponent can play around this by passing more frequently.",
     "rarity": 2
   },

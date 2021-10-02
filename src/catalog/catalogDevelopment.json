@@ -78,5 +78,10 @@
     "cost": 5, "points": 4,
     "text": "5:4, Fleeting, Inspire X, where X is the number of cards with Fleeting in your hand.",
     "rarity": 1
+  },
+  {"name": "Kneel", "id": 66,
+    "cost": 0, "points": 0,
+    "text": "0:0, Fleeting, discard the leftmost card of your hand, Tutor 7.",
+    "rarity": 0
   }
 ]
