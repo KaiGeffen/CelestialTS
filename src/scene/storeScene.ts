@@ -100,6 +100,8 @@ export default class StoreScene extends BaseScene {
     // When clicked, send to server the choice, destroy the cards, return open pack button
     let that = this
     cardImage.setOnClick(function() {
+      that.sound.play('win')
+
       that.btnOpen.setVisible(true)
       that.btnExit.setVisible(true)
       that.txtHint.setVisible(false)
