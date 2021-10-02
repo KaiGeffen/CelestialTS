@@ -1,10 +1,4 @@
 [
-  {"name": "Bee", "id": 24,
-    "cost": 0, "points": 1,
-    "text": "0:1, Visible.",
-    "rarity": 0
-  },
-  
   {"name": "Nectar", "id": 25,
     "cost": 1, "points": 0,
     "text": "1:0, Nourish 1.",
@@ -94,8 +88,8 @@
   },
 
   {"name": "Pelican", "id": 40,
-    "cost": 4, "points": 4,
-    "text": "4:4, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed.",
+    "cost": 4, "points": 3,
+    "text": "4:3, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed.",
     "rarity": 0
   },
 
