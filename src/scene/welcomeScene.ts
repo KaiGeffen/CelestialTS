@@ -50,6 +50,9 @@ export default class WelcomeScene extends BaseScene {
     let btnDiscord = new Button(this, Space.windowWidth/2 + 200, Space.windowHeight - 50, "Discord").setOrigin(0.5)
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
 
+    // Store button
+    let btnStore = new Button(this, Space.windowWidth/2 + 400, Space.windowHeight - 50, "Store", this.doStore).setOrigin(0.5)
+
     // Start Button
     new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(StyleSettings.announcement)
 
@@ -137,6 +140,10 @@ export default class WelcomeScene extends BaseScene {
 
   private doCredits(): void {
     this.scene.start("CreditsScene")
+  }
+
+  private doStore(): void {
+    this.scene.start("StoreScene")
   }
   
   private doDiscord(btnDiscord: Button): () => void {
