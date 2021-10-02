@@ -2,6 +2,7 @@ import { cardback,  } from "../catalog/catalog"
 import { UserSettings, ColorSettings } from "../settings"
 import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
+import { Rarity } from "./rarity"
 
 
 interface CardData {
@@ -12,6 +13,7 @@ interface CardData {
   text: string
   dynamicText: string
   catalogText: string
+  rarity: Rarity
 }
 
 // For the tutorial, the card info shown will only be the mana/points
