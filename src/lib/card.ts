@@ -3,7 +3,7 @@ import { UserSettings, ColorSettings } from "../settings"
 import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
 import { Rarity } from "./rarity"
-
+import { baseCards } from "../catalog/catalog"
 
 interface CardData {
   name: string
@@ -42,7 +42,7 @@ export default class Card {
     this.id = data.id
     this.cost = data.cost
     this.points = data.points
-    this.text = data.text + data.rarity
+    this.text = data.text
 
     this.rarity = data.rarity
 
@@ -91,6 +91,20 @@ export default class Card {
     }
 
     result += '[/i][/color]'
+
+    // Add any hidden text that the search will find but won't be displayed
+    result += '[size=0]'
+    
+    const rarityText = ['Common', 'Uncommon', 'Rare', 'Legend']
+    result += `${rarityText[this.rarity]} `
+    
+    if (baseCards.includes(this)) {
+      result += 'Base '
+    } else {
+      result += 'Expansion '
+    }
+
+    result += '[/size]'
 
     return result
   }

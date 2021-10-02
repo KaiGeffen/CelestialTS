@@ -678,6 +678,10 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Filter cards based on if they contain the string being searched
     let searchTextFilter = function(card: Card): boolean {
+      // If searching for 'common', return false to uncommon cards
+      if (that.searchText.toLowerCase() === 'common' && card.getCardText().toLowerCase().includes('uncommon')) {
+        return false
+      }
       return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
     }
 
