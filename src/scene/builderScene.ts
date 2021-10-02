@@ -343,7 +343,14 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Hide the slider if all cards fit in panel
     let slider = this.panel.getElement('slider')
-    if (cardCount <= this.cardsPerRow * Space.rowsPerPage) {
+    
+    // Taken from RexUI implementation of overflow for scrollable panel
+    let isOverflow = function(panel: any): boolean {
+      let t = panel.childrenMap.child
+      return t.topChildOY!==t.bottomChildOY;
+    }
+    
+    if (!isOverflow(this.panel)) {
       slider.setVisible(false)
 
       this.catalogBackground.setX(-slider.width - 20)
