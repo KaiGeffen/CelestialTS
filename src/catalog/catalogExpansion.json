@@ -93,11 +93,6 @@
     "rarity": 0
   },
 
-  {"name": "Beekeep", "id": 41,
-    "cost": 5, "points": 5,
-    "text": "5:5, remove from the game and note all 0-cost cards in your discard pile. This card becomes \"5:5, add to your discard pile a copy of each of the noted cards.\"",
-    "rarity": 1
-  },
   {"name": "Lotus", "id": 42,
     "cost": 5, "points": 0,
     "text": "5:0, Inspire 2. If this is your last card in the story, set both player's points to 0.",
