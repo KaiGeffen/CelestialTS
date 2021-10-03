@@ -6,7 +6,7 @@
   },
   {"name": "Become Machine", "id": 55,
     "cost": 1, "points": 0,
-    "text": "1:0, Fleeting, transform each of your cards later in the story into an 0:X ${1003}, where X is its cost.",
+    "text": "1:0, Fleeting, transform each of your cards later in the story into an 0:X Fleeting ${1003}, where X is its cost.",
     "rarity": 1
   },
   {"name": "Desert", "id": 49,
