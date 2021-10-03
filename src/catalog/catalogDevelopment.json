@@ -36,7 +36,7 @@
   },
   {"name": "Sun", "id": 56,
     "cost": 8, "points": 8,
-    "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, Inspired 2.",
+    "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, gain Inspired 1.",
     "rarity": 2
   },
   {"name": "Sickness", "id": 58,
