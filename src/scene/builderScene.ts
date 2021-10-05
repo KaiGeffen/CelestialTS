@@ -521,11 +521,7 @@ export class BuilderScene extends BuilderSceneShell {
       },
 
       header: this['rexUI'].add.label({
-                // width: 30,
-                // height: 30,
-
                 orientation: 0,
-                // background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, ColorSettings.menuHeader),
                 text: this.add.text(0, 0, '  Decks:', StyleSettings.announcement),
             }),
       space: {
@@ -534,123 +530,127 @@ export class BuilderScene extends BuilderSceneShell {
         bottom: 10,
       }
     }).setOrigin(0)
-    // .layout()
 
     // Add each of the decks
-    let i = 0
     let that = this
-    for (const name in PrebuiltDeck.getAll()) {
-      region.add(
-        new Button(this, 0, 0, name, function() {
-          let deckCode = PrebuiltDeck.get(name)
-          that.setDeck(deckCode)
-        }))
+    let decks: [name: string, value: string][] = UserSettings._get('decks')
+    let btns: Button[] = []
+    let selectedBtnIndex: number
+
+    let createDeckBtn = function(i: number): Button {
+      let deck = UserSettings._get('decks')[i]
+
+      console.log(deck)
+      let name = deck === undefined ? '' : deck['name']
+
+      let btn = new Button(that, 0, 0, name).setDepth(4)
+
+      // Set as active, glow and stop others glowing, set the deck
+      btn.setOnClick(function() {
+        btns.forEach(b => b.stopGlow())
+
+        btn.glow(false)
+
+        selectedBtnIndex = i
+        
+        that.setDeck(deck['value'])
+      })
+      // Will have a bug when deleting twice
+      
+      btns.push(btn)
+
+      return btn
+    }
+
+    // Create the preexisting decks
+    for (var i = 0; i < UserSettings._get('decks').length; i++) {
+      let btn = createDeckBtn(i)
+
+      region.add(btn)
     }
 
     // Add a + and - button after this
     region.add(
       new Button(this, 0, 0, '+', function() {
-        console.log('420')
+
+        // Create a new button
+        let newBtn = createDeckBtn(btns.length)
+        newBtn.setOrigin(0.5)
+      
+        region.add(newBtn, {
+          index: -2
+        }).layout()
+
+        this.createNewDeckMenu(newBtn, region)
       }))
+
     region.add(
-      new Button(this, 0, 0, '-', function() {
-        console.log('420')
+      new Button(this, 0, 0, 'DELETE', function() {
+        btns[selectedBtnIndex].stopGlow()
+        btns[selectedBtnIndex].destroy()
+        region.layout()
       }))
 
     region.layout()
 
-
-    // let table = this['rexUI'].add.gridTable({
-          // x: 0,
-          // y: 0,
-          // width: Space.iconSeparation,
-          // height: 600,
-          // background: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, ColorSettings.menuBackground),
-          // table: {
-          //       cellWidth: (0 === 0) ? undefined : 60,
-          //       cellHeight: (0 === 0) ? 60 : undefined,
-
-          //       columns: 2,
-
-          //       mask: {
-          //           padding: 2,
-          //       },
-
-          //       reuseCellContainer: true,
-          //   },
-
-          //   slider: {
-          //       track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xff0000),
-          //       thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, 0xffffff),
-          //   },
-          
-          //   mouseWheelScroller: {
-          //       focus: false,
-          //       speed: 0.1
-          //   },
-
-          //   header: this['rexUI'].add.label({
-          //       width: (0 === 0) ? undefined : 30,
-          //       height: (0 === 0) ? 30 : undefined,
-
-          //       orientation: 0,
-          //       background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, ColorSettings.menuHeader),
-          //       text: this.add.text(0, 0, 'Decks', StyleSettings.announcement),
-          //   }),
-
-          //   // footer: ,
-
-          //   space: {
-          //       left: 20,
-          //       right: 20,
-          //       top: 20,
-          //       bottom: 20,
-
-          //       table: 10,
-          //       header: 10,
-          //       // footer: 10,
-          //   },
-
-          //   createCellContainerCallback: function (cell, cellContainer) {
-          //       var scene = cell.scene,
-          //           width = cell.width,
-          //           height = cell.height,
-          //           item = cell.item,
-          //           index = cell.index;
-          //       if (cellContainer === null) {
-          //           cellContainer = scene.rexUI.add.label({
-          //               width: width,
-          //               height: height,
-
-          //               orientation: 0,
-          //               background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, 0xff0000),
-          //               icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0x0),
-          //               text: scene.add.text(0, 0, ''),
-
-          //               space: {
-          //                   icon: 10,
-          //                   left: 15,
-          //                   top: 15,
-          //               }
-          //           });
-          //           console.log(cell.index + ': create new cell-container');
-          //       } else {
-          //           console.log(cell.index + ': reuse cell-container');
-          //       }
-
-          //       // Set properties from item value
-          //       cellContainer.setMinSize(width, height); // Size might changed in this demo
-          //       cellContainer.getElement('text').setText(item.id); // Set text of text object
-          //       cellContainer.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
-          //       cellContainer.getElement('background').setStrokeStyle(2, 0xff0000).setDepth(0);
-          //       return cellContainer;
-          //   },
-          //   items: [{id:0, color:0x00ff00}]
-          // }).setOrigin(0)
-    
-    
-
     return region.width
+  }
+
+  // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
+  private createNewDeckMenu(btn: Button, region): void {
+    let height = 250
+
+    let menu = new Menu(
+      this,
+      450,
+      height,
+      true,
+      20)
+
+    let txtTitle = this.add.text(0, -height/2, 'Deck Name:', StyleSettings.announcement).setOrigin(0.5, 0)
+    menu.add(txtTitle)
+
+    let textboxSearch = this.add['rexInputText'](
+      0, 0, 350, Space.textAreaHeight, {
+      type: 'text',
+      text: '',
+      placeholder: 'Name',
+      tooltip: 'The name for your new deck.',
+      font: 'Arial',
+      fontSize: '60px',
+      color: ColorSettings.button,
+      align: Phaser.Display.Align.BOTTOM_RIGHT,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: ColorSettings.textAreaBackground,
+      maxLength: 6,
+      selectAll: true,
+      id: 'search-field'
+    })
+      .on('textchange', function(inputText) {
+        btn.setText(inputText.text)
+      }, this)
+    menu.add(textboxSearch)
+
+    // When menu is exited, add the deck to saved decks
+    menu.setOnClose(function() {
+      let name = textboxSearch.text
+
+      // If name is not empty, add it to the list of decks
+      if (name !== '') {
+        UserSettings._push('decks', {name: name, value: ''})
+      } else {
+        btn.destroy()
+        region.layout()
+      }
+
+      menu.destroy()
+    })
+  }
+
+  // TODO
+  private onAddDeck(): Button {
+
   }
 
   // Populate the catalog header with buttons, text, fields
@@ -673,7 +673,7 @@ export class BuilderScene extends BuilderSceneShell {
       align: Phaser.Display.Align.BOTTOM_RIGHT,
       border: 3,
       borderColor: '#000',
-      backgroundColor: ColorSettings.textAreaBackground,
+      backgroundColor: ColorSettings.textAreaBackgroundAlt,
       maxLength: 12,
       selectAll: true,
       id: 'search-field'
@@ -869,7 +869,10 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Matchmaking text region
     y += Space.cardSize/2 + Space.pad
-    let textBoxMM = this.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize/2, {
+    let textBoxMM = this.add['rexInputText'](Space.pad - width/2, y,
+      width - Space.pad*2,
+      Space.textAreaHeight,
+      {
       type: 'textarea',
       text: UserSettings._get('mmCode'),
       placeholder: 'Matchmaking code',
@@ -879,7 +882,7 @@ export class BuilderScene extends BuilderSceneShell {
       color: ColorSettings.textArea,
       border: 3,
       borderColor: '#000',
-      backgroundColor: '#444',
+      backgroundColor: ColorSettings.textAreaBackground,
       maxLength: 24
     })
     .setOrigin(0)
@@ -978,7 +981,10 @@ export class BuilderScene extends BuilderSceneShell {
     let txtDeckCode = this.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
 
     y += Space.pad + Space.cardSize/2
-    let textboxDeckCode = this.add['rexInputText'](Space.pad - width/2, y, width - Space.pad*2, Space.cardSize, {
+    let textboxDeckCode = this.add['rexInputText'](Space.pad - width/2, y,
+      width - Space.pad*2,
+      Space.textAreaHeight,
+      {
       type: 'textarea',
       text: '',
       tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
@@ -987,7 +993,7 @@ export class BuilderScene extends BuilderSceneShell {
       color: ColorSettings.textArea,
       border: 3,
       borderColor: '#000',
-      backgroundColor: '#444',
+      backgroundColor: ColorSettings.textAreaBackground,
       maxLength: MechanicSettings.deckSize * 4 - 1
     })
     .setOrigin(0)

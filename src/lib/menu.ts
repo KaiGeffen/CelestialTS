@@ -65,6 +65,11 @@ export default class Menu {
 		}
 	}
 
+	// Destroy the menu and all objects within it
+	destroy(): void {
+		this.container.destroy()
+	}
+
 	// Set the callback which is made when the menu closes
 	setOnClose(f: () => void): void {
 		this.onCloseCallback = f

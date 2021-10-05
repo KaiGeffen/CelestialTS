@@ -46,6 +46,14 @@ export function ensureUserSettings(): void {
     draftDeckCode: '', // The user's current drafted deck
     draftRecord: [0, 0], // The win/loss record with current deck
     loggedIn: false, // Whether or not the user is logged in to an account
+    decks: [
+      {name: 'Anubis', value: "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"},
+      {name: 'Robots', value: "22:22:15:10:11:11:8:8:8:4:4:2:2:2:2"},
+      {name: 'Stalker', value: "23:20:19:19:19:19:13:11:12:1:1:1:1:1:1"},
+      {name: 'Crypt', value: "20:19:19:19:15:12:12:36:36:36:35:1:1:1:0"},
+      {name: 'Bastet', value: "11:11:11:11:34:34:34:33:33:33:3:3:28:28:0"},
+      {name: 'Horus', value: "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"},
+      ]
   }
 
   for (var key in defaultSettings) {
@@ -94,6 +102,7 @@ export const Space = {
   iconSeparation: 180,
   // The maximum height that something can be and still fit within the standard 780 browser height
   maxHeight: 750,
+  textAreaHeight: 60,
 }
 
 export const UrlSettings = {
@@ -159,7 +168,8 @@ export const ColorSettings: Record<string, any> = {
 
   // Text entered within text areas
   textArea: Color.variantS,
-  textAreaBackground: Color.secondaryS,
+  textAreaBackground: '#444',
+  textAreaBackgroundAlt: Color.secondaryS,
 
 
 
