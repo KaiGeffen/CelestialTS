@@ -439,9 +439,9 @@ export class BuilderScene extends BuilderSceneShell {
         }
         }).addBackground(
           this['rexUI'].add.roundRectangle(0, 0, 0, 0,
-            {tl: 16, tr: 16, bl: 0, br: 0},
+            {tl: 0, tr: 16, bl: 0, br: 16},
             ColorSettings.menuHeader),
-          {left: 10, right: 10, top: 10, bottom: 10}
+          {right: 10, bottom: 10}
           ),
       
 
@@ -493,18 +493,22 @@ export class BuilderScene extends BuilderSceneShell {
 
   // Create the are where player can manipulate their decks
   private createDeckRegion(): number {
+    let width = Space.iconSeparation + Space.pad
+
     let region = this['rexUI'].add.scrollablePanel({
       x: 0,
-      y: 0,
-      width: Space.iconSeparation,
-      height: Space.windowHeight,
+      y: 10,
+      width: width,
+      height: 0,
 
-      scrollMode: 0,
+      // scrollMode: 0,
 
-      background: this['rexUI'].add.roundRectangle(0, 0, Space.iconSeparation, Space.windowHeight, 16, ColorSettings.menuHeader).setOrigin(0),
+      background: this.add.rectangle(0, 0, width, Space.windowHeight, ColorSettings.menuHeader),
 
       panel: {
-        child: this['rexUI'].add.fixWidthSizer({
+        child: this['rexUI'].add.sizer({
+          orientation: 'vertical',
+          anchor: 'centerY',
           space: {
             // left: Space.pad,
             right: Space.pad - 10,
@@ -517,12 +521,12 @@ export class BuilderScene extends BuilderSceneShell {
       },
 
       header: this['rexUI'].add.label({
-                width: (0 === 0) ? undefined : 30,
-                height: (0 === 0) ? 30 : undefined,
+                // width: 30,
+                // height: 30,
 
                 orientation: 0,
                 // background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, ColorSettings.menuHeader),
-                text: this.add.text(0, 0, 'Decks:', StyleSettings.announcement),
+                text: this.add.text(0, 0, '  Decks:', StyleSettings.announcement),
             }),
       space: {
         right: 10,
@@ -530,32 +534,29 @@ export class BuilderScene extends BuilderSceneShell {
         bottom: 10,
       }
     }).setOrigin(0)
-    .layout()
+    // .layout()
 
     // Add each of the decks
     let i = 0
+    let that = this
     for (const name in PrebuiltDeck.getAll()) {
-      // Create the icon
-      // new Icon(this, menu, x, y, name, function() {
-        let icon = this.add.image(0, 0, 'icon-' + name)
-      //   let deckCode = PrebuiltDeck.get(name)
-
-      //   // Set the built deck to this prebuilt deck
-      //   that.setDeck(deckCode)
-
-      //   // Update the textbox
-      //   textboxDeckCode.text = deckCode
-      // })
-
-      // // Move to the next row after 3 icons
-      // x += Space.iconSeparation
-      // if (++i >= 3) {
-      //   i = 0
-      //   x = -width/2 + Space.iconSeparation/2
-      //   y += Space.iconSeparation
-      // }
-      region.add(icon)
+      region.add(
+        new Button(this, 0, 0, name, function() {
+          let deckCode = PrebuiltDeck.get(name)
+          that.setDeck(deckCode)
+        }))
     }
+
+    // Add a + and - button after this
+    region.add(
+      new Button(this, 0, 0, '+', function() {
+        console.log('420')
+      }))
+    region.add(
+      new Button(this, 0, 0, '-', function() {
+        console.log('420')
+      }))
+
     region.layout()
 
 
