@@ -75,8 +75,7 @@ export default class Button extends Phaser.GameObjects.Text {
 
 	// Stop the button from glowing, if it is glowing
 	stopGlow(): void {
-		if (this.outline !== undefined) {
-
+		if (this.isGlowing()) {
 			// NOTE Must remove the tween so that it doesn't stop state changes
 			this.outlineTween.remove()
 			this.outlineTween = undefined
@@ -84,6 +83,11 @@ export default class Button extends Phaser.GameObjects.Text {
 			this.outline.destroy()
 			this.outline = undefined
 		}
+	}
+
+	// Return if the button is glowing
+	isGlowing(): boolean {
+		return this.outline !== undefined
 	}
 
 	private sfxThenDo(f: () => void): () => void {

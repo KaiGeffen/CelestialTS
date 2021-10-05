@@ -260,7 +260,6 @@ export class BuilderScene extends BuilderSceneShell {
     this.createCatalog()
 
     // Add filters
-    this.createFilters()
     this.filter()
 
     // Add mode menu
@@ -424,6 +423,19 @@ export class BuilderScene extends BuilderSceneShell {
         thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
       },
 
+      header: this['rexUI'].add.fixWidthSizer({
+        height: 100,
+        anchor: 'top',
+        space: {
+          left: Space.pad,
+          right: Space.pad,
+          top: Space.pad,
+          bottom: Space.pad,
+          item: Space.pad,
+        }
+        }),
+      
+
       space: {
         right: 10,
         top: 10,
@@ -431,6 +443,9 @@ export class BuilderScene extends BuilderSceneShell {
       }
     }).setOrigin(0)
     .layout()
+
+    // Add buttons and fields to the header
+    this.populateHeader(this.panel.getElement('header'))
 
     // Update panel when mousewheel scrolls
     this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
@@ -461,6 +476,64 @@ export class BuilderScene extends BuilderSceneShell {
       .setOrigin(0)
       .setInteractive()
   }
+
+  // Populate the catalog header with buttons, text, fields
+  private populateHeader(header: any): void {
+    let that = this
+
+    // Add a hint
+    let txtHint = this.add.text(0, 0, 'Cost:', StyleSettings.announcement)
+
+    // Add search field
+    let textboxSearch = this.add['rexInputText'](
+      0, 0, 350, txtHint.height, {
+        type: 'text',
+        text: '',
+        placeholder: 'Search',
+        tooltip: 'Search for cards by text.',
+        font: 'Arial',
+        fontSize: '60px',
+        color: ColorSettings.button,
+        border: 3,
+        borderColor: '#000',
+        backgroundColor: '#444',
+        maxLength: 12,
+        selectAll: true,
+        id: 'search-field'
+      })
+    header.add(textboxSearch)
+    header.add(txtHint)
+
+    // Add each of the number buttons
+    for (var i = 0; i <= maxCostFilter; i++) {
+      this.filterCostAry[i] = false
+      let s = i === maxCostFilter ? `${i}+` : i.toString()
+      let btn = new Button(this, 0, 0, s)
+
+      btn.setOnClick(this.onClickFilterButton(i, btn))
+
+      btn.setFontSize(parseInt(StyleSettings.announcement.fontSize))
+
+      header.add(btn)
+    }
+  }
+
+  private onClickFilterButton(i: number, btn: Button): () => void {
+    let that = this
+
+    return function() {
+      if (!btn.isGlowing()) {
+        btn.glow()
+      } else {
+        btn.stopGlow()
+      }
+      
+      that.filterCostAry[i] = !that.filterCostAry[i]
+      that.filter()
+    }
+        
+  }
+      
 
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.catalogContainer)
@@ -501,152 +574,131 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   // Create all of the objects used by the filtering system
-  filterObjects: Phaser.GameObjects.GameObject[]
-  private createFilters(): void {
-    // Add each of the number buttons
-    let btnNumbers: Phaser.GameObjects.Text[] = []
-    for (var i = 0; i <= maxCostFilter; i++) {
-      this.filterCostAry[i] = false
+  // TODO Remove
+  // filterObjects: Phaser.GameObjects.GameObject[]
+  // private createFilters(): void {
+  //   // Add each of the number buttons
+  //   let btnNumbers: Phaser.GameObjects.Text[] = []
+  //   for (var i = 0; i <= maxCostFilter; i++) {
+  //     this.filterCostAry[i] = false
 
-      let y = 50 * (i + 1)
-      let s = i === maxCostFilter ? `${i}+` : i.toString()
-      let btn = this.add.text(Space.windowWidth - 80, y, s, StyleSettings.basic)
+  //     let y = 50 * (i + 3 + 1) // gear, "i", x icons
+  //     let s = i === maxCostFilter ? `${i}+` : i.toString()
+  //     let btn = this.add.text(Space.windowWidth - Space.pad/2 - 15, y, s, StyleSettings.basic).setOrigin(0.5)
       
-      btn.setInteractive()
-      btn.on('pointerdown', this.onClickFilterNumber(i, btn))
+  //     btn.setInteractive()
+  //     btn.on('pointerdown', this.onClickFilterNumber(i, btn))
 
-      btnNumbers.push(btn)
-    }
+  //     btnNumbers.push(btn)
+  //   }
 
-    // Add the X (Clear) button
-    let btnClear = this.add.text(Space.windowWidth - 80, 0, 'x', StyleSettings.basic)
-    btnClear.setInteractive()
-    btnClear.on('pointerdown', this.onClearFilterNumbers(btnNumbers))
+  //   // Add the X (Clear) button
+  //   let btnClear = this.add.text(Space.windowWidth - Space.pad/2 - 15, 150, 'x', StyleSettings.basic).setOrigin(0.5)
+  //   btnClear.setInteractive()
+  //   btnClear.on('pointerdown', this.onClearFilterNumbers(btnNumbers))
 
-    // Add text search menu
-    let invisBackground = this.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
-    invisBackground.setInteractive().setVisible(false).setDepth(30)
+  //   // Add text search menu
+  //   let invisBackground = this.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
+  //   invisBackground.setInteractive().setVisible(false).setDepth(30)
 
-    invisBackground.on('pointerdown', function() {
-      this.sound.play('close')
+  //   invisBackground.on('pointerdown', function() {
+  //     this.sound.play('close')
 
-      textboxSearch.setVisible(false)
-      invisBackground.setVisible(false)
-    }, this)
+  //     textboxSearch.setVisible(false)
+  //     invisBackground.setVisible(false)
+  //   }, this)
 
-    // Text input for the search
-    let textboxSearch = this.add['rexInputText'](
-      Space.windowWidth/2 - 2, Space.windowHeight/2, 620, Space.cardSize, {
-        type: 'text',
-        text: '',
-        placeholder: 'Search',
-        tooltip: 'Search for cards by text.',
-        font: 'Arial',
-        fontSize: '80px',
-        color: ColorSettings.button,
-        border: 3,
-        borderColor: '#000',
-        backgroundColor: '#444',
-        maxLength: 12,
-        selectAll: true,
-        id: 'search-field'
-      })
-    .setOrigin(0.5)
-    .setVisible(false)
-    .on('blur', function () {
-      this.setVisible(false)
-      invisBackground.setVisible(false)
-    })
-    .on('textchange', function (inputText) {
-      // Filter the visible cards based on the text
-      this.searchText = inputText.text
-      this.filter()
+  //   // Text input for the search
+  //   let textboxSearch = this.add['rexInputText'](
+  //     Space.windowWidth/2 - 2, Space.windowHeight/2, 620, Space.cardSize, {
+  //       type: 'text',
+  //       text: '',
+  //       placeholder: 'Search',
+  //       tooltip: 'Search for cards by text.',
+  //       font: 'Arial',
+  //       fontSize: '80px',
+  //       color: ColorSettings.button,
+  //       border: 3,
+  //       borderColor: '#000',
+  //       backgroundColor: '#444',
+  //       maxLength: 12,
+  //       selectAll: true,
+  //       id: 'search-field'
+  //     })
+  //   .setOrigin(0.5)
+  //   .setVisible(false)
+  //   .on('blur', function () {
+  //     this.setVisible(false)
+  //     invisBackground.setVisible(false)
+  //   })
+  //   .on('textchange', function (inputText) {
+  //     // Filter the visible cards based on the text
+  //     this.searchText = inputText.text
+  //     this.filter()
 
-      // If there is any text, set the search button to glow
-      if (inputText.text !== "") {
-        btnSearch.glow()
-      } else {
-        btnSearch.stopGlow()
-      }
-    }, this)
+  //     // If there is any text, set the search button to glow
+  //     if (inputText.text !== "") {
+  //       btnSearch.glow()
+  //     } else {
+  //       btnSearch.stopGlow()
+  //     }
+  //   }, this)
 
-    // Search button - Opens the search field, just below the base scene buttons
-    let that = this
-    let openSearch = function() {
-      that.sound.play('open')
+  //   // Search button - Opens the search field, just below the base scene buttons
+  //   let that = this
+  //   let openSearch = function() {
+  //     that.sound.play('open')
 
-      textboxSearch.setVisible(true)
-      invisBackground.setVisible(true)
+  //     textboxSearch.setVisible(true)
+  //     invisBackground.setVisible(true)
 
-      cardInfo.setVisible(false)
+  //     cardInfo.setVisible(false)
 
-      setTimeout(function() {
-        textboxSearch.setFocus()
-        textboxSearch.selectAll()
-        }, 20)
-      }
-    let btnSearch = new Button(this, Space.windowWidth, 50, '"i"', openSearch).setOrigin(1, 0)
+  //     setTimeout(function() {
+  //       textboxSearch.setFocus()
+  //       textboxSearch.selectAll()
+  //       }, 20)
+  //     }
+  //   let btnSearch = new Button(this, Space.windowWidth, 50, '"i"', openSearch).setOrigin(1, 0)
 
-    // Listen for esc or return key, and close search field if seen
-    let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-    esc.on('down', function () {
-      if (invisBackground && invisBackground.visible) {
-        textboxSearch.setVisible(false)
-        invisBackground.setVisible(false)
+  //   // Listen for esc or return key, and close search field if seen
+  //   let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+  //   esc.on('down', function () {
+  //     if (invisBackground && invisBackground.visible) {
+  //       textboxSearch.setVisible(false)
+  //       invisBackground.setVisible(false)
 
-        this.sound.play('close')
+  //       this.sound.play('close')
 
-        BaseScene.menuClosing = true
-      }
-    }, this)
+  //       BaseScene.menuClosing = true
+  //     }
+  //   }, this)
 
-    // If enter is pressed, toggle search open/closed
-    let enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
-    enter.on('down', function () {
+  //   // If enter is pressed, toggle search open/closed
+  //   let enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
+  //   enter.on('down', function () {
 
-      if (invisBackground.visible) {
-        textboxSearch.setVisible(false)
-        invisBackground.setVisible(false)
+  //     if (invisBackground.visible) {
+  //       textboxSearch.setVisible(false)
+  //       invisBackground.setVisible(false)
 
-        this.sound.play('close')
-      }
-      else {
-        openSearch()
-      }
-    }, this)
+  //       this.sound.play('close')
+  //     }
+  //     else {
+  //       openSearch()
+  //     }
+  //   }, this)
 
-    this.filterObjects = [...btnNumbers, btnClear, btnSearch, textboxSearch, invisBackground]
-  }
+  //   this.filterObjects = [...btnNumbers, btnClear, btnSearch, textboxSearch, invisBackground]
+  // }
 
   // Remove all of the filter objects, used by children of this class
   removeFilterObjects(): void {
-    this.filterObjects.forEach(function(obj) {obj.destroy()})
+    // TODO Fix for new filters
+    // this.filterObjects.forEach(function(obj) {obj.destroy()})
 
-    // Remove the enter event that opens up search
-    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
-  }
-
-  // TODO Change btn to actually be a button
-  private onClickFilterNumber(i: number, btn): () => void {
-    let that = this
-
-    return function() {
-      that.sound.play('click')
-
-      // Highlight the button, or remove its highlight
-      if (btn.isTinted) {
-        btn.clearTint()
-      }
-      else
-      {
-        btn.setTint(ColorSettings.filterSelected)
-      }
-
-      // Toggle filtering the chosen number
-      that.filterCostAry[i] = !that.filterCostAry[i]
-
-      that.filter()
-    }
+    // // Remove the enter event that opens up search
+    // this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
   }
 
   private onClearFilterNumbers(btns: Phaser.GameObjects.Text[]): () => void {
@@ -790,99 +842,100 @@ export class BuilderScene extends BuilderSceneShell {
 
     let x = -width/2 + Space.iconSeparation/2
 
-    // Create the table for decks
+//TODO remove
+    // // Create the table for decks
 
-    let table = this['rexUI'].add.gridTable({
-          x: x,
-          y: y,
-          width: 3000,
-          height: 4000,
-          background: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffee00),
-          table: {
-                cellWidth: (0 === 0) ? undefined : 60,
-                cellHeight: (0 === 0) ? 60 : undefined,
+    // let table = this['rexUI'].add.gridTable({
+    //       x: x,
+    //       y: y,
+    //       width: 3000,
+    //       height: 4000,
+    //       background: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffee00),
+    //       table: {
+    //             cellWidth: (0 === 0) ? undefined : 60,
+    //             cellHeight: (0 === 0) ? 60 : undefined,
 
-                columns: 2,
+    //             columns: 2,
 
-                mask: {
-                    padding: 2,
-                },
+    //             mask: {
+    //                 padding: 2,
+    //             },
 
-                reuseCellContainer: true,
-            },
+    //             reuseCellContainer: true,
+    //         },
 
-            slider: {
-                track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xff0000),
-                thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, 0xffffff),
-            },
+    //         slider: {
+    //             track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xff0000),
+    //             thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, 0xffffff),
+    //         },
           
-            mouseWheelScroller: {
-                focus: false,
-                speed: 0.1
-            },
+    //         mouseWheelScroller: {
+    //             focus: false,
+    //             speed: 0.1
+    //         },
 
-            header: this['rexUI'].add.label({
-                width: (0 === 0) ? undefined : 30,
-                height: (0 === 0) ? 30 : undefined,
+    //         header: this['rexUI'].add.label({
+    //             width: (0 === 0) ? undefined : 30,
+    //             height: (0 === 0) ? 30 : undefined,
 
-                orientation: 0,
-                background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, 0xff0000),
-                text: this.add.text(0, 0, 'Header'),
-            }),
+    //             orientation: 0,
+    //             background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, 0xff0000),
+    //             text: this.add.text(0, 0, 'Header'),
+    //         }),
 
-            // footer: ,
+    //         // footer: ,
 
-            space: {
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: 20,
+    //         space: {
+    //             left: 20,
+    //             right: 20,
+    //             top: 20,
+    //             bottom: 20,
 
-                table: 10,
-                header: 10,
-                // footer: 10,
-            },
+    //             table: 10,
+    //             header: 10,
+    //             // footer: 10,
+    //         },
 
-            createCellContainerCallback: function (cell, cellContainer) {
-                var scene = cell.scene,
-                    width = cell.width,
-                    height = cell.height,
-                    item = cell.item,
-                    index = cell.index;
-                if (cellContainer === null) {
-                    cellContainer = scene.rexUI.add.label({
-                        width: width,
-                        height: height,
+    //         createCellContainerCallback: function (cell, cellContainer) {
+    //             var scene = cell.scene,
+    //                 width = cell.width,
+    //                 height = cell.height,
+    //                 item = cell.item,
+    //                 index = cell.index;
+    //             if (cellContainer === null) {
+    //                 cellContainer = scene.rexUI.add.label({
+    //                     width: width,
+    //                     height: height,
 
-                        orientation: 0,
-                        background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, 0xff0000),
-                        icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0x0),
-                        text: scene.add.text(0, 0, ''),
+    //                     orientation: 0,
+    //                     background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, 0xff0000),
+    //                     icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0x0),
+    //                     text: scene.add.text(0, 0, ''),
 
-                        space: {
-                            icon: 10,
-                            left: 15,
-                            top: 15,
-                        }
-                    });
-                    console.log(cell.index + ': create new cell-container');
-                } else {
-                    console.log(cell.index + ': reuse cell-container');
-                }
+    //                     space: {
+    //                         icon: 10,
+    //                         left: 15,
+    //                         top: 15,
+    //                     }
+    //                 });
+    //                 console.log(cell.index + ': create new cell-container');
+    //             } else {
+    //                 console.log(cell.index + ': reuse cell-container');
+    //             }
 
-                // Set properties from item value
-                cellContainer.setMinSize(width, height); // Size might changed in this demo
-                cellContainer.getElement('text').setText(item.id); // Set text of text object
-                cellContainer.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
-                cellContainer.getElement('background').setStrokeStyle(2, 0xff0000).setDepth(0);
-                return cellContainer;
-            },
-            items: [{id:0, color:0x00ff00}]
-          })
+    //             // Set properties from item value
+    //             cellContainer.setMinSize(width, height); // Size might changed in this demo
+    //             cellContainer.getElement('text').setText(item.id); // Set text of text object
+    //             cellContainer.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
+    //             cellContainer.getElement('background').setStrokeStyle(2, 0xff0000).setDepth(0);
+    //             return cellContainer;
+    //         },
+    //         items: [{id:0, color:0x00ff00}]
+    //       })
     
-    console.log(table)
-    menu.add(table)
-    // table.layout()
+    // console.log(table)
+    // menu.add(table)
+    // // table.layout()
 
 
 
@@ -1070,7 +1123,7 @@ export class TutorialBuilderScene extends BuilderScene {
     let that = this
     this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
 
-    this.removeFilterObjects()
+    // this.removeFilterObjects()
 
     this.createDescriptionText()
 
@@ -1193,7 +1246,7 @@ export class DraftBuilderScene extends BuilderScene {
     this.btnDeckMenu.setVisible(false)
 
     // Remove all of the objects relating to filtering
-    this.removeFilterObjects()
+    // this.removeFilterObjects()
 
     // Add a button to quit the current run
     this.btnReset = new Button(this, Space.windowWidth - 112, Space.windowHeight - 100, 'Reset', this.onReset)
