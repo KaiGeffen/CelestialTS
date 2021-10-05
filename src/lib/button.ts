@@ -27,12 +27,14 @@ export default class Button extends Phaser.GameObjects.Text {
 	}
 
 	// Set the on click function for this button, removing any previous functions
-	setOnClick(f: () => void, removeListeners = false): void {
+	setOnClick(f: () => void, removeListeners = false): Button {
 		if (removeListeners) {
       		this.removeAllListeners('pointerdown')
       	}
 
 		this.on('pointerdown', f)
+
+		return this
 	}
 
 	// Causes the button to glow until stopped, if doAnimate, it will fade in/out

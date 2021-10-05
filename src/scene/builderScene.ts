@@ -494,21 +494,24 @@ export class BuilderScene extends BuilderSceneShell {
     header.add(txtHint)
 
     // Add each of the number buttons and the X button
-
-
+    let btns: Button[] = []
     for (var i = 0; i <= maxCostFilter; i++) {
       this.filterCostAry[i] = false
       let s = i === maxCostFilter ? `${i}+` : i.toString()
       let btn = new Button(this, 0, 0, s)
 
       btn.setOnClick(this.onClickFilterButton(i, btn))
-
-      btn.setFontSize(parseInt(StyleSettings.announcement.fontSize))
-
-      btn.setDepth(4)
+        .setFontSize(parseInt(StyleSettings.announcement.fontSize))
+        .setDepth(4)
 
       header.add(btn)
+      btns.push(btn)
     }
+
+    let btn = new Button(this, 0, 0, 'X', this.onClearFilters(btns))
+      .setFontSize(parseInt(StyleSettings.announcement.fontSize))
+      .setDepth(4)
+    header.add(btn)
 
     // Add search field
     // TODO Make width relative to the available space
@@ -546,7 +549,20 @@ export class BuilderScene extends BuilderSceneShell {
     }
         
   }
-      
+
+  private onClearFilters(btns: Button[]): () => void {
+    let that = this
+
+    return function() {
+      btns.forEach( (btn) => btn.stopGlow())
+
+      for (var i = 0; i < that.filterCostAry.length; i++) {
+        that.filterCostAry[i] = false
+      }
+
+      that.filter()
+    }
+  }  
 
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.catalogContainer)
