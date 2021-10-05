@@ -159,6 +159,7 @@ export const ColorSettings: Record<string, any> = {
 
   // Text entered within text areas
   textArea: Color.variantS,
+  textAreaBackground: Color.secondaryS,
 
 
 

@@ -384,7 +384,7 @@ export class BuilderScene extends BuilderSceneShell {
     // let width = Space.cardSize * 8 + Space.pad * 10 + 10
     // let height = Space.cardSize * 4 + Space.pad * 5
     // TODO Explain the 100 & 150
-    let width = Space.windowWidth - 100
+    let width = Space.windowWidth
     // Width must be rounded down so as to contain some number of cards tighly
     let occupiedWidth = Space.pad * 2 + 10
     let innerWidth = width - occupiedWidth
@@ -425,16 +425,19 @@ export class BuilderScene extends BuilderSceneShell {
 
       header: this['rexUI'].add.fixWidthSizer({
         height: 100,
-        anchor: 'top',
+        align: 'center',
         space: {
           left: Space.pad,
           right: Space.pad,
           top: Space.pad,
           bottom: Space.pad,
           item: Space.pad,
+          line: Space.pad
         }
         }).addBackground(
-          this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.menuHeader),
+          this['rexUI'].add.roundRectangle(0, 0, 0, 0,
+            {tl: 16, tr: 16, bl: 0, br: 0},
+            ColorSettings.menuHeader),
           {left: 10, right: 10, top: 10, bottom: 10}
           ),
       
@@ -489,8 +492,37 @@ export class BuilderScene extends BuilderSceneShell {
   private populateHeader(header: any): void {
     let that = this
 
-    // Add a hint
     let txtHint = this.add.text(0, 0, 'Cost:', StyleSettings.announcement)
+
+
+    // Add search field
+    // TODO Make width relative to the available space
+    let textboxSearch = this.add['rexInputText'](
+      0, 0, 350, txtHint.height, {
+      type: 'text',
+      text: this.searchText,
+      placeholder: 'Search',
+      tooltip: 'Search for cards by text.',
+      font: 'Arial',
+      fontSize: '60px',
+      color: ColorSettings.button,
+      align: Phaser.Display.Align.BOTTOM_RIGHT,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: ColorSettings.textAreaBackground,
+      maxLength: 12,
+      selectAll: true,
+      id: 'search-field'
+    })
+      .on('textchange', function(inputText) {
+        // Filter the visible cards based on the text
+        this.searchText = inputText.text
+        this.filter()
+      }, this)
+    header.add(textboxSearch)
+    header.addNewLine()
+
+    // Add a hint
     header.add(txtHint)
 
     // Add each of the number buttons and the X button
@@ -513,25 +545,7 @@ export class BuilderScene extends BuilderSceneShell {
       .setDepth(4)
     header.add(btn)
 
-    // Add search field
-    // TODO Make width relative to the available space
-    let textboxSearch = this.add['rexInputText'](
-      0, 0, 350, txtHint.height, {
-      type: 'text',
-      text: '',
-      placeholder: 'Search',
-      tooltip: 'Search for cards by text.',
-      font: 'Arial',
-      fontSize: '60px',
-      color: ColorSettings.button,
-      border: 3,
-      borderColor: '#000',
-      backgroundColor: '#4444',
-      maxLength: 12,
-      selectAll: true,
-      id: 'search-field'
-    })
-    header.add(textboxSearch)
+
   }
 
   private onClickFilterButton(i: number, btn: Button): () => void {
@@ -546,8 +560,7 @@ export class BuilderScene extends BuilderSceneShell {
       
       that.filterCostAry[i] = !that.filterCostAry[i]
       that.filter()
-    }
-        
+    }   
   }
 
   private onClearFilters(btns: Button[]): () => void {
@@ -602,36 +615,6 @@ export class BuilderScene extends BuilderSceneShell {
     }
   }
 
-  // Create all of the objects used by the filtering system
-  // TODO Remove
-  // filterObjects: Phaser.GameObjects.GameObject[]
-  // private createFilters(): void {
-  //   // Add each of the number buttons
-  //   let btnNumbers: Phaser.GameObjects.Text[] = []
-  //   for (var i = 0; i <= maxCostFilter; i++) {
-  //     this.filterCostAry[i] = false
-
-  //     let y = 50 * (i + 3 + 1) // gear, "i", x icons
-  //     let s = i === maxCostFilter ? `${i}+` : i.toString()
-  //     let btn = this.add.text(Space.windowWidth - Space.pad/2 - 15, y, s, StyleSettings.basic).setOrigin(0.5)
-      
-  //     btn.setInteractive()
-  //     btn.on('pointerdown', this.onClickFilterNumber(i, btn))
-
-  //     btnNumbers.push(btn)
-  //   }
-
-  //   // Add the X (Clear) button
-  //   let btnClear = this.add.text(Space.windowWidth - Space.pad/2 - 15, 150, 'x', StyleSettings.basic).setOrigin(0.5)
-  //   btnClear.setInteractive()
-  //   btnClear.on('pointerdown', this.onClearFilterNumbers(btnNumbers))
-
-  //   // Add text search menu
-  //   let invisBackground = this.add.rectangle(0, 0, Space.windowWidth*2, Space.windowHeight*2, 0x000000, 0.2)
-  //   invisBackground.setInteractive().setVisible(false).setDepth(30)
-
-  //   invisBackground.on('pointerdown', function() {
-  //     this.sound.play('close')
 
   //     textboxSearch.setVisible(false)
   //     invisBackground.setVisible(false)
@@ -730,6 +713,7 @@ export class BuilderScene extends BuilderSceneShell {
     // this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
   }
 
+  // TODO Remove
   private onClearFilterNumbers(btns: Phaser.GameObjects.Text[]): () => void {
     let that = this
     return function() {
