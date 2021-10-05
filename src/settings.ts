@@ -91,7 +91,9 @@ export const Space = {
   scoresOffset: width - 300 + 50,
   stackX: width - 300,
   highlightWidth: 5,
-  iconSeparation: 180
+  iconSeparation: 180,
+  // The maximum height that something can be and still fit within the standard 780 browser height
+  maxHeight: 750,
 }
 
 export const UrlSettings = {

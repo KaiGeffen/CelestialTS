@@ -775,7 +775,7 @@ export class BuilderScene extends BuilderSceneShell {
     let that = this
 
     let width = Space.iconSeparation * 3
-    let height = 640
+    let height = Space.maxHeight
 
     let menu = new Menu(
       this,
@@ -784,11 +784,112 @@ export class BuilderScene extends BuilderSceneShell {
       false,
       20)
 
-    // Prebuilt decks
+    // Base x and y
     let y = Space.pad/2 - height/2
     y += Space.iconSeparation/2 + Space.pad
 
     let x = -width/2 + Space.iconSeparation/2
+
+    // Create the table for decks
+
+    let table = this['rexUI'].add.gridTable({
+          x: x,
+          y: y,
+          width: 3000,
+          height: 4000,
+          background: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffee00),
+          table: {
+                cellWidth: (0 === 0) ? undefined : 60,
+                cellHeight: (0 === 0) ? 60 : undefined,
+
+                columns: 2,
+
+                mask: {
+                    padding: 2,
+                },
+
+                reuseCellContainer: true,
+            },
+
+            slider: {
+                track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xff0000),
+                thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, 0xffffff),
+            },
+          
+            mouseWheelScroller: {
+                focus: false,
+                speed: 0.1
+            },
+
+            header: this['rexUI'].add.label({
+                width: (0 === 0) ? undefined : 30,
+                height: (0 === 0) ? 30 : undefined,
+
+                orientation: 0,
+                background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, 0xff0000),
+                text: this.add.text(0, 0, 'Header'),
+            }),
+
+            // footer: ,
+
+            space: {
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: 20,
+
+                table: 10,
+                header: 10,
+                // footer: 10,
+            },
+
+            createCellContainerCallback: function (cell, cellContainer) {
+                var scene = cell.scene,
+                    width = cell.width,
+                    height = cell.height,
+                    item = cell.item,
+                    index = cell.index;
+                if (cellContainer === null) {
+                    cellContainer = scene.rexUI.add.label({
+                        width: width,
+                        height: height,
+
+                        orientation: 0,
+                        background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, 0xff0000),
+                        icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0x0),
+                        text: scene.add.text(0, 0, ''),
+
+                        space: {
+                            icon: 10,
+                            left: 15,
+                            top: 15,
+                        }
+                    });
+                    console.log(cell.index + ': create new cell-container');
+                } else {
+                    console.log(cell.index + ': reuse cell-container');
+                }
+
+                // Set properties from item value
+                cellContainer.setMinSize(width, height); // Size might changed in this demo
+                cellContainer.getElement('text').setText(item.id); // Set text of text object
+                cellContainer.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
+                cellContainer.getElement('background').setStrokeStyle(2, 0xff0000).setDepth(0);
+                return cellContainer;
+            },
+            items: [{id:0, color:0x00ff00}]
+          })
+    
+    console.log(table)
+    menu.add(table)
+    // table.layout()
+
+
+
+
+
+    // Prebuilt decks
+    
     let i = 0
     for (const name in PrebuiltDeck.getAll()) {
       // Create the icon
@@ -813,34 +914,34 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Use expansion toggleable button
     y -= Space.iconSeparation - Space.cardSize/2 - Space.pad
-    let txtUseExpansion = this.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
+    // let txtUseExpansion = this.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
 
-    let radioExpansion = this.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.radioOutline).setOrigin(1, 0)
-    if (UserSettings._get('useExpansion')) {
-      radioExpansion.setFillStyle(ColorSettings.radioFill)
-    }
+    // let radioExpansion = this.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.radioOutline).setOrigin(1, 0)
+    // if (UserSettings._get('useExpansion')) {
+    //   radioExpansion.setFillStyle(ColorSettings.radioFill)
+    // }
 
-    radioExpansion.setInteractive()
-    radioExpansion.on('pointerdown', function() {
-      that.sound.play('click')
+    // radioExpansion.setInteractive()
+    // radioExpansion.on('pointerdown', function() {
+    //   that.sound.play('click')
 
-      // Toggle useExpansion setting
-      UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
+    //   // Toggle useExpansion setting
+    //   UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
 
-      // Reflect the current value of useExpansion setting
-      radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.radioFill : undefined)
+    //   // Reflect the current value of useExpansion setting
+    //   radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.radioFill : undefined)
 
-      // Filter the cards available in catalog
-      that.filter()
+    //   // Filter the cards available in catalog
+    //   that.filter()
 
-      // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
-      // TODO
-      // deckRegion.showCardsLegality()
-    })
+    //   // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
+    //   // TODO
+    //   // deckRegion.showCardsLegality()
+    // })
 
 
     // Text field for the deck-code
-    y += Space.cardSize * 3/4
+    // y += Space.cardSize * 3/4
     let txtDeckCode = this.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
 
     y += Space.pad + Space.cardSize/2
@@ -867,8 +968,8 @@ export class BuilderScene extends BuilderSceneShell {
     })
     
     menu.add([
-      txtUseExpansion,
-      radioExpansion,
+      // txtUseExpansion,
+      // radioExpansion,
       txtDeckCode,
       textboxDeckCode
       ])
