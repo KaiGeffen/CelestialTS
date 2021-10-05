@@ -433,7 +433,10 @@ export class BuilderScene extends BuilderSceneShell {
           bottom: Space.pad,
           item: Space.pad,
         }
-        }),
+        }).addBackground(
+          this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.menuHeader),
+          {left: 10, right: 10, top: 10, bottom: 10}
+          ),
       
 
       space: {
@@ -444,8 +447,13 @@ export class BuilderScene extends BuilderSceneShell {
     }).setOrigin(0)
     .layout()
 
+    // let background = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
+    // this.panel.getElement('header').setBackground(background, {left: 0, right: 0, top: 0, bottom: 0}, 'foo')
+
     // Add buttons and fields to the header
     this.populateHeader(this.panel.getElement('header'))
+
+    
 
     // Update panel when mousewheel scrolls
     this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
@@ -483,28 +491,11 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Add a hint
     let txtHint = this.add.text(0, 0, 'Cost:', StyleSettings.announcement)
-
-    // Add search field
-    let textboxSearch = this.add['rexInputText'](
-      0, 0, 350, txtHint.height, {
-        type: 'text',
-        text: '',
-        placeholder: 'Search',
-        tooltip: 'Search for cards by text.',
-        font: 'Arial',
-        fontSize: '60px',
-        color: ColorSettings.button,
-        border: 3,
-        borderColor: '#000',
-        backgroundColor: '#444',
-        maxLength: 12,
-        selectAll: true,
-        id: 'search-field'
-      })
-    header.add(textboxSearch)
     header.add(txtHint)
 
-    // Add each of the number buttons
+    // Add each of the number buttons and the X button
+
+
     for (var i = 0; i <= maxCostFilter; i++) {
       this.filterCostAry[i] = false
       let s = i === maxCostFilter ? `${i}+` : i.toString()
@@ -514,8 +505,30 @@ export class BuilderScene extends BuilderSceneShell {
 
       btn.setFontSize(parseInt(StyleSettings.announcement.fontSize))
 
+      btn.setDepth(4)
+
       header.add(btn)
     }
+
+    // Add search field
+    // TODO Make width relative to the available space
+    let textboxSearch = this.add['rexInputText'](
+      0, 0, 350, txtHint.height, {
+      type: 'text',
+      text: '',
+      placeholder: 'Search',
+      tooltip: 'Search for cards by text.',
+      font: 'Arial',
+      fontSize: '60px',
+      color: ColorSettings.button,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: '#4444',
+      maxLength: 12,
+      selectAll: true,
+      id: 'search-field'
+    })
+    header.add(textboxSearch)
   }
 
   private onClickFilterButton(i: number, btn: Button): () => void {
@@ -523,7 +536,7 @@ export class BuilderScene extends BuilderSceneShell {
 
     return function() {
       if (!btn.isGlowing()) {
-        btn.glow()
+        btn.glow(false)
       } else {
         btn.stopGlow()
       }

@@ -35,17 +35,16 @@ export default class Button extends Phaser.GameObjects.Text {
 		this.on('pointerdown', f)
 	}
 
-	// Causes the button to glow until stopped
+	// Causes the button to glow until stopped, if doAnimate, it will fade in/out
 	outline: Phaser.GameObjects.Text
 	outlineTween: Phaser.Tweens.Tween
-	glow(): void {
+	glow(doAnimate = true): void {
 		// First stop any glow that's already happening to not amplify
 		this.stopGlow()
 
 		this.outline = this.scene.add.text(this.x, this.y, this.text, this.style)
 			.setOrigin(this.originX, this.originY)
 			.setDepth(this.depth - 1)
-			.setAlpha(0)
 
 		// Add to parent container if it exists
 		if (this.parentContainer !== null) {
@@ -58,14 +57,18 @@ export default class Button extends Phaser.GameObjects.Text {
         	{thickness: 3,
           	outlineColor: ColorSettings.buttonBorder})
 
-		this.outlineTween = this.scene.tweens.add({
-			targets: this.outline,
-			alpha: 0.5,
-			ease: 'Linear',//'Sine.easeInOut',
-			duration: 1200,
-			repeat: -1,
-			yoyo: true
-		})
+		if (doAnimate) {
+			this.outline.setAlpha(0)
+
+			this.outlineTween = this.scene.tweens.add({
+				targets: this.outline,
+				alpha: 0.5,
+				ease: 'Linear',//'Sine.easeInOut',
+				duration: 1200,
+				repeat: -1,
+				yoyo: true
+			})
+		}
 	}
 
 	glowUntilClicked(): void {
@@ -73,13 +76,15 @@ export default class Button extends Phaser.GameObjects.Text {
 		this.setOnClick(() => this.stopGlow())
 	}
 
-	// Stop the button from glowing, if it is glowing
+	// Stop the button from glowing
 	stopGlow(): void {
-		if (this.isGlowing()) {
-			// NOTE Must remove the tween so that it doesn't stop state changes
+		// NOTE Must remove the tween so that it doesn't stop state changes
+		if (this.outlineTween !== undefined) {
 			this.outlineTween.remove()
 			this.outlineTween = undefined
+		}
 
+		if (this.outline !== undefined) {
 			this.outline.destroy()
 			this.outline = undefined
 		}

@@ -136,6 +136,7 @@ export const ColorSettings: Record<string, any> = {
   // Menu components
   menuBackground: Color.secondary,
   menuBorder: Color.primary,
+  menuHeader: Color.primary,
 
   // Button components
   button: Color.variantS,
