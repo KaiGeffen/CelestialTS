@@ -256,8 +256,11 @@ export class BuilderScene extends BuilderSceneShell {
     this.cardCatalog = []
     this.catalogContainer = this.add.container(0, 0)
 
+    // Create decks region, return the width
+    let width = this.createDeckRegion()
+
     // Add the catalog
-    this.createCatalog()
+    this.createCatalog(width)
 
     // Add filters
     this.filter()
@@ -378,13 +381,13 @@ export class BuilderScene extends BuilderSceneShell {
     this.scene.start("GameScene", {isTutorial: false, deck: deck})
   }
 
-  private createCatalog(): void {
+  private createCatalog(x: number): void {
     let that = this
 
     // let width = Space.cardSize * 8 + Space.pad * 10 + 10
     // let height = Space.cardSize * 4 + Space.pad * 5
     // TODO Explain the 100 & 150
-    let width = Space.windowWidth
+    let width = Space.windowWidth - x
     // Width must be rounded down so as to contain some number of cards tighly
     let occupiedWidth = Space.pad * 2 + 10
     let innerWidth = width - occupiedWidth
@@ -392,17 +395,17 @@ export class BuilderScene extends BuilderSceneShell {
     this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
 
     let height = Space.windowHeight - 150
-    this.catalogBackground = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
+    this.catalogBackground = this['rexUI'].add.roundRectangle(x, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0).setAlpha(0)
 
     this.panel = this['rexUI'].add.scrollablePanel({
-      x: 0,
+      x: x,
       y: 0,
       width: width,
       height: height,
 
       scrollMode: 0,
 
-      background: this.catalogBackground,
+      background: this['rexUI'].add.roundRectangle(x, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0),
 
       panel: {
         child: this['rexUI'].add.fixWidthSizer({
@@ -488,6 +491,167 @@ export class BuilderScene extends BuilderSceneShell {
       .setInteractive()
   }
 
+  // Create the are where player can manipulate their decks
+  private createDeckRegion(): number {
+    let region = this['rexUI'].add.scrollablePanel({
+      x: 0,
+      y: 0,
+      width: Space.iconSeparation,
+      height: Space.windowHeight,
+
+      scrollMode: 0,
+
+      background: this['rexUI'].add.roundRectangle(0, 0, Space.iconSeparation, Space.windowHeight, 16, ColorSettings.menuHeader).setOrigin(0),
+
+      panel: {
+        child: this['rexUI'].add.fixWidthSizer({
+          space: {
+            // left: Space.pad,
+            right: Space.pad - 10,
+            top: Space.pad - 10,
+            bottom: Space.pad - 10,
+            // item: Space.pad,
+            line: Space.pad,
+          }
+        })
+      },
+
+      header: this['rexUI'].add.label({
+                width: (0 === 0) ? undefined : 30,
+                height: (0 === 0) ? 30 : undefined,
+
+                orientation: 0,
+                // background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, ColorSettings.menuHeader),
+                text: this.add.text(0, 0, 'Decks:', StyleSettings.announcement),
+            }),
+      space: {
+        right: 10,
+        top: 10,
+        bottom: 10,
+      }
+    }).setOrigin(0)
+    .layout()
+
+    // Add each of the decks
+    let i = 0
+    for (const name in PrebuiltDeck.getAll()) {
+      // Create the icon
+      // new Icon(this, menu, x, y, name, function() {
+        let icon = this.add.image(0, 0, 'icon-' + name)
+      //   let deckCode = PrebuiltDeck.get(name)
+
+      //   // Set the built deck to this prebuilt deck
+      //   that.setDeck(deckCode)
+
+      //   // Update the textbox
+      //   textboxDeckCode.text = deckCode
+      // })
+
+      // // Move to the next row after 3 icons
+      // x += Space.iconSeparation
+      // if (++i >= 3) {
+      //   i = 0
+      //   x = -width/2 + Space.iconSeparation/2
+      //   y += Space.iconSeparation
+      // }
+      region.add(icon)
+    }
+    region.layout()
+
+
+    // let table = this['rexUI'].add.gridTable({
+          // x: 0,
+          // y: 0,
+          // width: Space.iconSeparation,
+          // height: 600,
+          // background: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, ColorSettings.menuBackground),
+          // table: {
+          //       cellWidth: (0 === 0) ? undefined : 60,
+          //       cellHeight: (0 === 0) ? 60 : undefined,
+
+          //       columns: 2,
+
+          //       mask: {
+          //           padding: 2,
+          //       },
+
+          //       reuseCellContainer: true,
+          //   },
+
+          //   slider: {
+          //       track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xff0000),
+          //       thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, 0xffffff),
+          //   },
+          
+          //   mouseWheelScroller: {
+          //       focus: false,
+          //       speed: 0.1
+          //   },
+
+          //   header: this['rexUI'].add.label({
+          //       width: (0 === 0) ? undefined : 30,
+          //       height: (0 === 0) ? 30 : undefined,
+
+          //       orientation: 0,
+          //       background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, ColorSettings.menuHeader),
+          //       text: this.add.text(0, 0, 'Decks', StyleSettings.announcement),
+          //   }),
+
+          //   // footer: ,
+
+          //   space: {
+          //       left: 20,
+          //       right: 20,
+          //       top: 20,
+          //       bottom: 20,
+
+          //       table: 10,
+          //       header: 10,
+          //       // footer: 10,
+          //   },
+
+          //   createCellContainerCallback: function (cell, cellContainer) {
+          //       var scene = cell.scene,
+          //           width = cell.width,
+          //           height = cell.height,
+          //           item = cell.item,
+          //           index = cell.index;
+          //       if (cellContainer === null) {
+          //           cellContainer = scene.rexUI.add.label({
+          //               width: width,
+          //               height: height,
+
+          //               orientation: 0,
+          //               background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, 0xff0000),
+          //               icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0x0),
+          //               text: scene.add.text(0, 0, ''),
+
+          //               space: {
+          //                   icon: 10,
+          //                   left: 15,
+          //                   top: 15,
+          //               }
+          //           });
+          //           console.log(cell.index + ': create new cell-container');
+          //       } else {
+          //           console.log(cell.index + ': reuse cell-container');
+          //       }
+
+          //       // Set properties from item value
+          //       cellContainer.setMinSize(width, height); // Size might changed in this demo
+          //       cellContainer.getElement('text').setText(item.id); // Set text of text object
+          //       cellContainer.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
+          //       cellContainer.getElement('background').setStrokeStyle(2, 0xff0000).setDepth(0);
+          //       return cellContainer;
+          //   },
+          //   items: [{id:0, color:0x00ff00}]
+          // }).setOrigin(0)
+    
+    
+
+    return region.width
+  }
+
   // Populate the catalog header with buttons, text, fields
   private populateHeader(header: any): void {
     let that = this
@@ -496,7 +660,6 @@ export class BuilderScene extends BuilderSceneShell {
 
 
     // Add search field
-    // TODO Make width relative to the available space
     let textboxSearch = this.add['rexInputText'](
       0, 0, 350, txtHint.height, {
       type: 'text',
@@ -544,8 +707,6 @@ export class BuilderScene extends BuilderSceneShell {
       .setFontSize(parseInt(StyleSettings.announcement.fontSize))
       .setDepth(4)
     header.add(btn)
-
-
   }
 
   private onClickFilterButton(i: number, btn: Button): () => void {
@@ -615,95 +776,6 @@ export class BuilderScene extends BuilderSceneShell {
     }
   }
 
-
-  //     textboxSearch.setVisible(false)
-  //     invisBackground.setVisible(false)
-  //   }, this)
-
-  //   // Text input for the search
-  //   let textboxSearch = this.add['rexInputText'](
-  //     Space.windowWidth/2 - 2, Space.windowHeight/2, 620, Space.cardSize, {
-  //       type: 'text',
-  //       text: '',
-  //       placeholder: 'Search',
-  //       tooltip: 'Search for cards by text.',
-  //       font: 'Arial',
-  //       fontSize: '80px',
-  //       color: ColorSettings.button,
-  //       border: 3,
-  //       borderColor: '#000',
-  //       backgroundColor: '#444',
-  //       maxLength: 12,
-  //       selectAll: true,
-  //       id: 'search-field'
-  //     })
-  //   .setOrigin(0.5)
-  //   .setVisible(false)
-  //   .on('blur', function () {
-  //     this.setVisible(false)
-  //     invisBackground.setVisible(false)
-  //   })
-  //   .on('textchange', function (inputText) {
-  //     // Filter the visible cards based on the text
-  //     this.searchText = inputText.text
-  //     this.filter()
-
-  //     // If there is any text, set the search button to glow
-  //     if (inputText.text !== "") {
-  //       btnSearch.glow()
-  //     } else {
-  //       btnSearch.stopGlow()
-  //     }
-  //   }, this)
-
-  //   // Search button - Opens the search field, just below the base scene buttons
-  //   let that = this
-  //   let openSearch = function() {
-  //     that.sound.play('open')
-
-  //     textboxSearch.setVisible(true)
-  //     invisBackground.setVisible(true)
-
-  //     cardInfo.setVisible(false)
-
-  //     setTimeout(function() {
-  //       textboxSearch.setFocus()
-  //       textboxSearch.selectAll()
-  //       }, 20)
-  //     }
-  //   let btnSearch = new Button(this, Space.windowWidth, 50, '"i"', openSearch).setOrigin(1, 0)
-
-  //   // Listen for esc or return key, and close search field if seen
-  //   let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-  //   esc.on('down', function () {
-  //     if (invisBackground && invisBackground.visible) {
-  //       textboxSearch.setVisible(false)
-  //       invisBackground.setVisible(false)
-
-  //       this.sound.play('close')
-
-  //       BaseScene.menuClosing = true
-  //     }
-  //   }, this)
-
-  //   // If enter is pressed, toggle search open/closed
-  //   let enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
-  //   enter.on('down', function () {
-
-  //     if (invisBackground.visible) {
-  //       textboxSearch.setVisible(false)
-  //       invisBackground.setVisible(false)
-
-  //       this.sound.play('close')
-  //     }
-  //     else {
-  //       openSearch()
-  //     }
-  //   }, this)
-
-  //   this.filterObjects = [...btnNumbers, btnClear, btnSearch, textboxSearch, invisBackground]
-  // }
-
   // Remove all of the filter objects, used by children of this class
   removeFilterObjects(): void {
     // TODO Fix for new filters
@@ -711,22 +783,6 @@ export class BuilderScene extends BuilderSceneShell {
 
     // // Remove the enter event that opens up search
     // this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
-  }
-
-  // TODO Remove
-  private onClearFilterNumbers(btns: Phaser.GameObjects.Text[]): () => void {
-    let that = this
-    return function() {
-      that.sound.play('click')
-
-      btns.forEach( (btn) => btn.clearTint())
-
-      for (var i = 0; i < that.filterCostAry.length; i++) {
-        that.filterCostAry[i] = false
-      }
-
-      that.filter()
-    }
   }
 
   // Returns a function which filters cards to see which are selectable
@@ -858,97 +914,7 @@ export class BuilderScene extends BuilderSceneShell {
 //TODO remove
     // // Create the table for decks
 
-    // let table = this['rexUI'].add.gridTable({
-    //       x: x,
-    //       y: y,
-    //       width: 3000,
-    //       height: 4000,
-    //       background: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffee00),
-    //       table: {
-    //             cellWidth: (0 === 0) ? undefined : 60,
-    //             cellHeight: (0 === 0) ? 60 : undefined,
-
-    //             columns: 2,
-
-    //             mask: {
-    //                 padding: 2,
-    //             },
-
-    //             reuseCellContainer: true,
-    //         },
-
-    //         slider: {
-    //             track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xff0000),
-    //             thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 13, 0xffffff),
-    //         },
-          
-    //         mouseWheelScroller: {
-    //             focus: false,
-    //             speed: 0.1
-    //         },
-
-    //         header: this['rexUI'].add.label({
-    //             width: (0 === 0) ? undefined : 30,
-    //             height: (0 === 0) ? 30 : undefined,
-
-    //             orientation: 0,
-    //             background: this['rexUI'].add.roundRectangle(0, 0, 20, 20, 0, 0xff0000),
-    //             text: this.add.text(0, 0, 'Header'),
-    //         }),
-
-    //         // footer: ,
-
-    //         space: {
-    //             left: 20,
-    //             right: 20,
-    //             top: 20,
-    //             bottom: 20,
-
-    //             table: 10,
-    //             header: 10,
-    //             // footer: 10,
-    //         },
-
-    //         createCellContainerCallback: function (cell, cellContainer) {
-    //             var scene = cell.scene,
-    //                 width = cell.width,
-    //                 height = cell.height,
-    //                 item = cell.item,
-    //                 index = cell.index;
-    //             if (cellContainer === null) {
-    //                 cellContainer = scene.rexUI.add.label({
-    //                     width: width,
-    //                     height: height,
-
-    //                     orientation: 0,
-    //                     background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, 0xff0000),
-    //                     icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0x0),
-    //                     text: scene.add.text(0, 0, ''),
-
-    //                     space: {
-    //                         icon: 10,
-    //                         left: 15,
-    //                         top: 15,
-    //                     }
-    //                 });
-    //                 console.log(cell.index + ': create new cell-container');
-    //             } else {
-    //                 console.log(cell.index + ': reuse cell-container');
-    //             }
-
-    //             // Set properties from item value
-    //             cellContainer.setMinSize(width, height); // Size might changed in this demo
-    //             cellContainer.getElement('text').setText(item.id); // Set text of text object
-    //             cellContainer.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
-    //             cellContainer.getElement('background').setStrokeStyle(2, 0xff0000).setDepth(0);
-    //             return cellContainer;
-    //         },
-    //         items: [{id:0, color:0x00ff00}]
-    //       })
     
-    // console.log(table)
-    // menu.add(table)
-    // // table.layout()
 
 
 
