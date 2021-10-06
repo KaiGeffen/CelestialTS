@@ -48,7 +48,7 @@ export default class BaseScene extends Phaser.Scene {
 		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 0, '⚙', this.openMenu).setOrigin(1, 0)
 
 	    // Error text, for when the user does something wrong they get an explanation
-		this.txtError = this.add.text(500, Space.windowHeight/2, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
+		this.txtError = this.add.text(500, Space.windowHeight/2, '', StyleSettings.announcement).setOrigin(0.5).setDepth(50)
 
 		// When esc key if pressed, toggle the menu open/closed
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)

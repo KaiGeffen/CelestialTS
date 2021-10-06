@@ -602,7 +602,7 @@ export class BuilderScene extends BuilderSceneShell {
       region.add(btn)
     }
 
-    // Add a + and - button after this
+    // Add a +, DELETE, CODE buttons after this
     region.add(
       new Button(this, 0, 0, '+', function() {
         // If user already has 9 decks, signal error instead
@@ -614,8 +614,9 @@ export class BuilderScene extends BuilderSceneShell {
           let newBtn = createDeckBtn(btns.length)
           newBtn.setOrigin(0.5)
         
+          // Add it before the 3 function buttons (+, DEL, CODE)
           region.add(newBtn, {
-            index: -2
+            index: -3
           }).layout()
 
           this.createNewDeckMenu(newBtn, region)
@@ -632,6 +633,11 @@ export class BuilderScene extends BuilderSceneShell {
         
         region.destroy()
         that.createDeckRegion()
+      }))
+
+    region.add(
+      new Button(this, 0, 0, 'CODE', function() {
+        this.createNewCodeMenu()
       }))
 
     region.layout()
@@ -653,7 +659,7 @@ export class BuilderScene extends BuilderSceneShell {
     let txtTitle = this.add.text(0, -height/2, 'Deck Name:', StyleSettings.announcement).setOrigin(0.5, 0)
     menu.add(txtTitle)
 
-    let textboxSearch = this.add['rexInputText'](
+    let textArea = this.add['rexInputText'](
       0, 0, 350, Space.textAreaHeight, {
       type: 'text',
       text: '',
@@ -673,12 +679,12 @@ export class BuilderScene extends BuilderSceneShell {
       .on('textchange', function(inputText) {
         btn.setText(inputText.text)
       }, this)
-    menu.add(textboxSearch)
+    menu.add(textArea)
 
     // When menu is exited, add the deck to saved decks
     let that = this
     menu.setOnClose(function() {
-      let name = textboxSearch.text
+      let name = textArea.text
 
       // If name is not empty, add it to the list of decks
       if (name !== '') {
@@ -689,6 +695,53 @@ export class BuilderScene extends BuilderSceneShell {
         region.layout()
       }
 
+      menu.destroy()
+    })
+  }
+
+  // Create a new code menu which shows the current decks code, and allows for pasting in a new code
+  private createNewCodeMenu(): void {
+    let that = this
+    let height = 250
+    let width = 600
+
+    let menu = new Menu(
+      this,
+      width,
+      height,
+      true,
+      20)
+
+    let txtTitle = this.add.text(0, -height / 2, 'Deck Code:', StyleSettings.announcement).setOrigin(0.5, 0)
+    menu.add(txtTitle)
+
+    let textArea = this.add['rexInputText'](
+      0, 0, width - Space.pad * 2, Space.textAreaHeight, {
+      type: 'text',
+      text: that.getDeckCode(),
+      placeholder: '',
+      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
+      font: 'Arial',
+      fontSize: '60px',
+      color: ColorSettings.button,
+      align: Phaser.Display.Align.BOTTOM_RIGHT,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: ColorSettings.textAreaBackground,
+      maxLength: 4 * MechanicSettings.deckSize,
+      selectAll: true,
+      id: 'search-field'
+    })
+      .on('textchange', function(inputText) {
+        that.setDeck(inputText.text)
+      })
+    menu.add(textArea)
+
+    // When menu is exited, destroy this menu
+    menu.setOnClose(function() {
+      if (!that.setDeck(textArea.text)) {
+        that.signalError('Deck code invalid.')
+      }
       menu.destroy()
     })
   }
@@ -809,10 +862,7 @@ export class BuilderScene extends BuilderSceneShell {
         that.sound.play('click')
       }
       else {
-        // TODO Change to signal failure from base scene
-        that.sound.play('failure') 
-
-        that.cameras.main.flash(300, 0, 0, 0.1)
+        that.signalError('Deck is full.')
       }
       
     }
