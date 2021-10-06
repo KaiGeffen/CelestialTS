@@ -77,9 +77,6 @@ export class BuilderScene extends BuilderSceneShell {
   // The deck code for this builder that is retained throughout user's session
   standardDeckCode: string = ''
 
-  // Button that opens up the deck menu
-  btnDeckMenu: Button
-
   // The costs and string that cards in the catalog are filtered for
   filterCostAry: boolean[] = []
   searchText: string = ""
@@ -113,16 +110,6 @@ export class BuilderScene extends BuilderSceneShell {
     // Add mode menu
     let modeMenu: Menu = this.createModeMenu()
     this.btnStart.setOnClick(() => modeMenu.open())
-
-    // Add deck menu
-    let deckMenuCallback: () => void = this.createDeckMenu()
-
-    // Make a deck menu button with the given callback
-    this.btnDeckMenu = new Button(this,
-      Space.windowWidth - 112,
-      Space.windowHeight - 100,
-      'Deck',
-      deckMenuCallback)
 
     // Set the user's deck to this deck
     this.setDeck(this.standardDeckCode)
@@ -625,14 +612,18 @@ export class BuilderScene extends BuilderSceneShell {
 
     region.add(
       new Button(this, 0, 0, 'DELETE', function() {
-        // NOTE Have to do this because the glow is separate from the region
-        btns[that.savedDeckIndex].stopGlow()
-        btns[that.savedDeckIndex].destroy()
+        if (that.savedDeckIndex === undefined) {
+          that.signalError('No deck selected.')
+        } else {
+          // NOTE Have to do this because the glow is separate from the region
+          btns[that.savedDeckIndex].stopGlow()
+          btns[that.savedDeckIndex].destroy()
 
-        UserSettings._pop('decks', that.savedDeckIndex)
-        
-        region.destroy()
-        that.createDeckRegion()
+          UserSettings._pop('decks', that.savedDeckIndex)
+          
+          region.destroy()
+          that.createDeckRegion()
+        }
       }))
 
     region.add(
@@ -986,136 +977,12 @@ export class BuilderScene extends BuilderSceneShell {
     return menu
   }
 
-  // Create the menu for user to select a deck or enter a deck code
-  private createDeckMenu(): () => void {
-    let that = this
-
-    let width = Space.iconSeparation * 3
-    let height = Space.maxHeight
-
-    let menu = new Menu(
-      this,
-      width,
-      height,
-      false,
-      20)
-
-    // Base x and y
-    let y = Space.pad/2 - height/2
-    y += Space.iconSeparation/2 + Space.pad
-
-    let x = -width/2 + Space.iconSeparation/2
-    // TODO Remove
-    // Prebuilt decks
-    
-    let i = 0
-    for (const name in PrebuiltDeck.getAll()) {
-      // Create the icon
-      new Icon(this, menu, x, y, name, function() {
-        let deckCode = PrebuiltDeck.get(name)
-
-        // Set the built deck to this prebuilt deck
-        that.setDeck(deckCode)
-
-        // Update the textbox
-        textboxDeckCode.text = deckCode
-      })
-
-      // Move to the next row after 3 icons
-      x += Space.iconSeparation
-      if (++i >= 3) {
-        i = 0
-        x = -width/2 + Space.iconSeparation/2
-        y += Space.iconSeparation
-      }
-    }
-
-    // Use expansion toggleable button
-    y -= Space.iconSeparation - Space.cardSize/2 - Space.pad
-    // let txtUseExpansion = this.add.text(Space.pad - width/2, y, 'Use expansion:', StyleSettings.announcement).setOrigin(0)
-
-    // let radioExpansion = this.add.circle(width/2 - Space.pad*2, y + 26, 14).setStrokeStyle(4, ColorSettings.radioOutline).setOrigin(1, 0)
-    // if (UserSettings._get('useExpansion')) {
-    //   radioExpansion.setFillStyle(ColorSettings.radioFill)
-    // }
-
-    // radioExpansion.setInteractive()
-    // radioExpansion.on('pointerdown', function() {
-    //   that.sound.play('click')
-
-    //   // Toggle useExpansion setting
-    //   UserSettings._set('useExpansion', !UserSettings._get('useExpansion'))
-
-    //   // Reflect the current value of useExpansion setting
-    //   radioExpansion.setFillStyle(UserSettings._get('useExpansion') ? ColorSettings.radioFill : undefined)
-
-    //   // Filter the cards available in catalog
-    //   that.filter()
-
-    //   // Deck should grey/un-grey cards in it to reflect whether they are legal in that format
-    //   // TODO
-    //   // deckRegion.showCardsLegality()
-    // })
-
-
-    // Text field for the deck-code
-    // y += Space.cardSize * 3/4
-    let txtDeckCode = this.add.text(Space.pad - width/2, y, 'Deck code:', StyleSettings.announcement).setOrigin(0)
-
-    y += Space.pad + Space.cardSize/2
-    let textboxDeckCode = this.add['rexInputText'](Space.pad - width/2, y,
-      width - Space.pad*2,
-      Space.textAreaHeight,
-      {
-      type: 'textarea',
-      text: '',
-      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
-      font: 'Arial',
-      fontSize: '36px',
-      color: ColorSettings.textArea,
-      border: 3,
-      borderColor: '#000',
-      backgroundColor: ColorSettings.textAreaBackground,
-      maxLength: MechanicSettings.deckSize * 4 - 1
-    })
-    .setOrigin(0)
-    .on('textchange', function (inputText) {
-      inputText.text = inputText.text.replace('\n', '')
-      
-      that.setDeck(inputText.text)
-    })
-    .on('blur', function (inputText) {
-      textboxDeckCode.text = that.getDeckCode()
-    })
-    
-    menu.add([
-      // txtUseExpansion,
-      // radioExpansion,
-      txtDeckCode,
-      textboxDeckCode
-      ])
-
-    // Return the callback that happens when this menu is opened
-    return function() {
-      menu.open()
-
-      // Set the deck-code textbox to have current deck described
-      textboxDeckCode.text = that.getDeckCode()
-
-      // Wait long enough for the menu to be open, then select the textbox
-      setTimeout(function() {
-        textboxDeckCode.setFocus()
-        textboxDeckCode.selectAll()
-      }, 20)
-    }
-  }
-
   // Manage any messages that may need to be displayed for the user
   manageMessages(): void {
     let msgText = MessageManager.readFirstUnreadMessage(Screen.Builder)
     if (msgText !== undefined) {
+      // TODO Remove or change since ux changed
       // Make the deck button glow to catch attention
-      this.btnDeckMenu.glowUntilClicked()
 
       // Open a window informing user of information
       let menu = new Menu(
@@ -1178,9 +1045,6 @@ export class TutorialBuilderScene extends BuilderScene {
 
   create(): void {
     super.create()
-
-    // Remove the Deck button
-    this.btnDeckMenu.setVisible(false)
 
     // Change the start button to start a match vs ai
     let that = this
@@ -1304,9 +1168,6 @@ export class DraftBuilderScene extends BuilderScene {
 
     // Set the user's deck to their saved deck
     this.setDeck(UserSettings._get('draftDeckCode'))
-    
-    // Remove the Deck button
-    this.btnDeckMenu.setVisible(false)
 
     // Remove all of the objects relating to filtering
     // this.removeFilterObjects()
