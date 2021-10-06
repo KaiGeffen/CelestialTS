@@ -16,6 +16,9 @@ export default class BaseScene extends Phaser.Scene {
 	sliderAnimationSpeed: any
 	private btnMenu: Button
 
+	// Message explaining to user what they did wrong
+	txtError: Phaser.GameObjects.Text
+
 	// A menu is closing currently, so the main menu should not open with this esc event
 	static menuClosing: boolean = false
 
@@ -44,11 +47,32 @@ export default class BaseScene extends Phaser.Scene {
 		// Menu button
 		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 0, '⚙', this.openMenu).setOrigin(1, 0)
 
+	    // Error text, for when the user does something wrong they get an explanation
+		this.txtError = this.add.text(500, Space.windowHeight/2, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
+
 		// When esc key if pressed, toggle the menu open/closed
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		esc.on('down', this.toggleMenu, this)
 		
 		this.createMenu()
+	}
+
+	// Alert the user that they have taken an illegal or impossible action
+	errorMsgTimeout: NodeJS.Timeout
+	signalError(msg: string = ''): void {
+      	this.sound.play('failure')
+
+		this.cameras.main.flash(300, 0, 0, 0.1)
+
+		this.txtError.setText(msg)
+
+		// Remove previous timeout, create a new one
+		if (this.errorMsgTimeout !== undefined) {
+			clearTimeout(this.errorMsgTimeout)
+		}
+
+		let that = this
+		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('') }, 1000)
 	}
 
 	private createMenu(): void {

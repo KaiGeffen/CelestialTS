@@ -486,7 +486,7 @@ export class BuilderScene extends BuilderSceneShell {
     // Must add an invisible region below the scroller or else partially visible cards will be clickable on
     // their bottom parts, which cannot be seen and are below the scroller
     let invisBackground = this.add
-      .rectangle(0, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+      .rectangle(200, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
       .setOrigin(0)
       .setInteractive()
   }
@@ -568,16 +568,21 @@ export class BuilderScene extends BuilderSceneShell {
     // Add a + and - button after this
     region.add(
       new Button(this, 0, 0, '+', function() {
+        // If user already has 9 decks, signal error instead
+        if (UserSettings._get('decks').length >= 9) {
+          this.signalError()
+        }
+        else {
+          // Create a new button
+          let newBtn = createDeckBtn(btns.length)
+          newBtn.setOrigin(0.5)
+        
+          region.add(newBtn, {
+            index: -2
+          }).layout()
 
-        // Create a new button
-        let newBtn = createDeckBtn(btns.length)
-        newBtn.setOrigin(0.5)
-      
-        region.add(newBtn, {
-          index: -2
-        }).layout()
-
-        this.createNewDeckMenu(newBtn, region)
+          this.createNewDeckMenu(newBtn, region)
+        }
       }))
 
     region.add(

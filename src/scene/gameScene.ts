@@ -77,9 +77,6 @@ export default class GameScene extends BaseScene {
 	// Information about the recap that is playing
 	txtScores: Phaser.GameObjects.Text
 
-	// Message explaining to user what they did wrong
-	txtError: Phaser.GameObjects.Text
-
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates: { [key: number]: ClientState}
 
@@ -258,9 +255,6 @@ export default class GameScene extends BaseScene {
 	    // Skip button - skip the recap once it is playing
 	    this.btnSkip = new Button(this, 0, 0, 'Skip', this.doSkip()).setOrigin(1, 0.5)
 	    this.passContainer.add(this.btnSkip)
-
-	    // Error text, for when the user does something wrong they get an explanation
-		this.txtError = this.add.text(500, Space.windowHeight/2, '', StyleSettings.announcement).setOrigin(0.5, 0.5)
 
 	    this.displaySearchingStatus(true)
 
@@ -1015,24 +1009,6 @@ export default class GameScene extends BaseScene {
 				tween.complete()
 			})
 		}
-	}
-
-	// Alert the user that they have taken an illegal or impossible action
-	errorMsgTimeout: NodeJS.Timeout
-	signalError(msg: string = ''): void {
-      	this.sound.play('failure')
-
-		this.cameras.main.flash(300, 0, 0, 0.1)
-
-		this.txtError.setText(msg)
-
-		// Remove previous timeout, create a new one
-		if (this.errorMsgTimeout !== undefined) {
-			clearTimeout(this.errorMsgTimeout)
-		}
-
-		let that = this
-		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('') }, 1000)
 	}
 
 	// Alert user that their opponent left
