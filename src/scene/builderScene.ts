@@ -501,8 +501,6 @@ export class BuilderScene extends BuilderSceneShell {
       width: width,
       height: 0,
 
-      // scrollMode: 0,
-
       background: this.add.rectangle(0, 0, width, Space.windowHeight, ColorSettings.menuHeader),
 
       panel: {
@@ -540,7 +538,6 @@ export class BuilderScene extends BuilderSceneShell {
     let createDeckBtn = function(i: number): Button {
       let deck = UserSettings._get('decks')[i]
 
-      console.log(deck)
       let name = deck === undefined ? '' : deck['name']
 
       let btn = new Button(that, 0, 0, name).setDepth(4)
@@ -552,10 +549,9 @@ export class BuilderScene extends BuilderSceneShell {
         btn.glow(false)
 
         selectedBtnIndex = i
-        
-        that.setDeck(deck['value'])
+
+        that.setDeck(UserSettings._get('decks')[i]['value'])
       })
-      // Will have a bug when deleting twice
       
       btns.push(btn)
 
@@ -586,9 +582,14 @@ export class BuilderScene extends BuilderSceneShell {
 
     region.add(
       new Button(this, 0, 0, 'DELETE', function() {
+        // NOTE Have to do this because the glow is separate from the region
         btns[selectedBtnIndex].stopGlow()
         btns[selectedBtnIndex].destroy()
-        region.layout()
+
+        UserSettings._pop('decks', selectedBtnIndex)
+        
+        region.destroy()
+        that.createDeckRegion()
       }))
 
     region.layout()
@@ -623,7 +624,7 @@ export class BuilderScene extends BuilderSceneShell {
       border: 3,
       borderColor: '#000',
       backgroundColor: ColorSettings.textAreaBackground,
-      maxLength: 6,
+      maxLength: 8,
       selectAll: true,
       id: 'search-field'
     })
@@ -633,12 +634,14 @@ export class BuilderScene extends BuilderSceneShell {
     menu.add(textboxSearch)
 
     // When menu is exited, add the deck to saved decks
+    let that = this
     menu.setOnClose(function() {
+      console.log('menu is closing')
       let name = textboxSearch.text
 
       // If name is not empty, add it to the list of decks
       if (name !== '') {
-        UserSettings._push('decks', {name: name, value: ''})
+        UserSettings._push('decks', {name: name, value: that.getDeckCode()})
       } else {
         btn.destroy()
         region.layout()
@@ -646,11 +649,6 @@ export class BuilderScene extends BuilderSceneShell {
 
       menu.destroy()
     })
-  }
-
-  // TODO
-  private onAddDeck(): Button {
-
   }
 
   // Populate the catalog header with buttons, text, fields
@@ -914,16 +912,7 @@ export class BuilderScene extends BuilderSceneShell {
     y += Space.iconSeparation/2 + Space.pad
 
     let x = -width/2 + Space.iconSeparation/2
-
-//TODO remove
-    // // Create the table for decks
-
-    
-
-
-
-
-
+    // TODO Remove
     // Prebuilt decks
     
     let i = 0
@@ -1067,6 +1056,8 @@ export class BuilderScene extends BuilderSceneShell {
 
   // Add card to the existing deck
   addCardToDeck(card: Card): boolean {
+    // TODO Changes should be reflected in the stored deck now
+
     return super.addCardToDeck(card)
   }
 }

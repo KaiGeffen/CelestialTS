@@ -26,6 +26,14 @@ export class UserSettings {
 
     this._set(key, ary)
   }
+
+  static _pop(key: string, index: number) {
+    let ary = this._get(key)
+
+    ary.splice(index, 1)
+
+    this._set(key, ary)
+  }
 }
 
 export function ensureUserSettings(): void {
