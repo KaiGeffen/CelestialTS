@@ -509,11 +509,16 @@ export class BuilderScene extends BuilderSceneShell {
 
     this.panel.layout()
 
-    // Must add an invisible region below the scroller or else partially visible cards will be clickable on
+    // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
     // their bottom parts, which cannot be seen and are below the scroller
-    let invisBackground = this.add
-      .rectangle(200, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+    let invisBackgroundBottom = this.add
+      .rectangle(this.panel._x, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
       .setOrigin(0)
+      .setInteractive()
+
+    let invisBackgroundTop = this.add
+      .rectangle(this.panel._x, this.panel.getElement('header').height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+      .setOrigin(0, 1)
       .setInteractive()
   }
 
