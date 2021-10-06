@@ -666,12 +666,12 @@ export class BuilderScene extends BuilderSceneShell {
     // When menu is exited, add the deck to saved decks
     let that = this
     menu.setOnClose(function() {
-      console.log('menu is closing')
       let name = textboxSearch.text
 
       // If name is not empty, add it to the list of decks
       if (name !== '') {
         UserSettings._push('decks', {name: name, value: that.getDeckCode()})
+        btn.emit('pointerdown')
       } else {
         btn.destroy()
         region.layout()
