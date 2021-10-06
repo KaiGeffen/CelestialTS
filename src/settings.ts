@@ -1,4 +1,5 @@
 import "phaser"
+import { baseCards } from "./catalog/catalog"
 
 
 export class UserSettings {
@@ -76,7 +77,8 @@ export function ensureUserSettings(): void {
       {name: 'Crypt', value: "20:19:19:19:15:12:12:36:36:36:35:1:1:1:0"},
       {name: 'Bastet', value: "11:11:11:11:34:34:34:33:33:33:3:3:28:28:0"},
       {name: 'Horus', value: "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"},
-      ]
+      ],
+    inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0))
   }
 
   for (var key in defaultSettings) {

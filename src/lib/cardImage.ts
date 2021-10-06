@@ -78,7 +78,7 @@ export class CardImage {
     this.init(card, container, interactive);
   }
 
-  init(card: Card, outerContainer: any, interactive: Boolean) {
+  init(card: Card, outerContainer: any, interactive: Boolean, modifier: string = undefined) {
     this.card = card
 
     let scene: Phaser.Scene = outerContainer.scene
@@ -87,7 +87,9 @@ export class CardImage {
     // this.image.setDisplaySize(100, 100)
 
     // Stat text
-    let s = `${card.cost}:${card.points}`
+    let sModifier = modifier === undefined ? '' : 'modifier\n'
+    let s = `${sModifier}${card.cost}:${card.points}`
+    
     this.txtStats = scene.add['rexBBCodeText'](-Space.cardSize/2, -Space.cardSize/2, s, CardStatsConfig).setOrigin(0)
     if (card === cardback) {
       this.txtStats.setAlpha(0)
