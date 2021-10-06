@@ -19,6 +19,15 @@ export class UserSettings {
     localStorage.setItem(key, JSON.stringify(value))
   }
 
+  // Set the nth index of the given array
+  static _setIndex(key: string, index: number, value: any) {
+    let ary = this._get(key)
+    
+    ary[index] = value
+
+    this._set(key, ary)
+  }
+
   static _push(key: string, value: any) {
     let ary = this._get(key)
     
@@ -27,13 +36,19 @@ export class UserSettings {
     this._set(key, ary)
   }
 
-  static _pop(key: string, index: number) {
+  static _pop(key: string, index: number): any {
     let ary = this._get(key)
+
+    let result = ary[index]
 
     ary.splice(index, 1)
 
     this._set(key, ary)
+
+    return result
   }
+
+  static _
 }
 
 export function ensureUserSettings(): void {

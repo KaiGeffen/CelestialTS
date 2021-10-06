@@ -46,174 +46,15 @@ class BuilderSceneShell extends BaseScene {
     this.btnStart = new Button(this,
       Space.windowWidth - 112,
       Space.windowHeight - 50,
-      'pog')
+      '')
 
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
     this.deckContainer = this.add.container(Space.windowWidth - 112, Space.windowHeight).setDepth(2)
-
   }
 
   postcreate(): void {
     super.create()
-  }
-
-  // Add card to the existing deck
-  addCardToDeck(card: Card): boolean {
-    if (this.deck.length >= MechanicSettings.deckSize) {
-      return false
-    }
-
-    let index = this.deck.length
-
-    let cardImage = new CardImage(card, this.deckContainer)
-    cardImage.setPosition(this.getDeckCardPosition(index))
-    cardImage.setOnClick(this.removeCardFromDeck(index))
-
-    // Add this to the deck
-    this.deck.push(cardImage)
-
-    // Update start button to reflect new amount of cards in deck
-    this.updateText()
-
-    // Sort the deck, now done automatically after each card added
-    this.sort()
-
-    return true
-  }
-
-  // Set the current deck, returns true if deck was valid
-  setDeck(deckCode: string | Card[]): boolean {
-    let deck: Card[]
-    if (typeof deckCode === "string") {
-      // Get the deck from this code
-      let cardCodes: string[] = deckCode.split(':')
-
-      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
-
-      if (deckCode === '') {
-        deck = []
-      }
-    }
-    else {
-      deck = deckCode
-    }
-
-    // Check if the deck is valid, then create it if so
-    if (deck.includes(undefined))
-    {
-      return false
-    }
-    else
-    {
-      // Remove the current deck
-      this.deck.forEach( (cardImage) => cardImage.destroy())
-      this.deck = []
-      cardInfo.setVisible(false)
-      this.updateText()
-      
-      // Add the new deck
-      deck.forEach( (card) => this.addCardToDeck(card))
-
-      return true
-    }
-  }
-
-  // Remove the card from deck which has given index
-  private removeCardFromDeck(index: number): () => void {
-    let that = this
-    return function() {
-      // Play a sound
-      that.sound.play('click')
-
-      // The text for the removed card would otherwise linger
-      cardInfo.setVisible(false)
-
-      // Remove the image
-      that.deck[index].destroy()
-
-      // Remove from the deck array
-      that.deck.splice(index, 1)
-
-      that.correctDeckIndices()
-
-      that.updateText()
-
-      if (that.deck.length === 0) {
-        that.txtHint.setVisible(true)
-      }
-    }
-  }
-
-  // Update the card count and deck button texts
-  private updateText(): void {
-    if (this.deck.length === MechanicSettings.deckSize) {
-      this.btnStart.text = 'Start'
-      this.btnStart.input.enabled = true
-      this.btnStart.glow()
-    }
-    else
-    {
-      this.btnStart.text = `${this.deck.length}/${MechanicSettings.deckSize}`
-      this.btnStart.stopGlow()
-
-      // TODO Grey out the button, have a disable method for button class
-      // For debugging, allow sub-15 card decks locally
-      if (location.port !== '4949') {
-        this.btnStart.input.enabled = false
-      }
-    }
-
-    // Deck button stops glowing if there are any cards in it
-    // if (this.deck.length > 0) {
-    //   this.btnD.stopGlow()
-    // }
-
-    this.txtHint.setVisible(this.deck.length === 0)
-  }
-
-  private getDeckCardPosition(index: number): [number, number] {
-    let xPad = Space.pad
-    let x = index * (Space.cardSize - Space.stackOverlap) + xPad + Space.cardSize/2
-
-    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
-
-    return [-x, -y]
-  }
-
-  // Sort by cost all cards in the deck
-  private sort(): void {
-    this.deck.sort(function (card1, card2): number {
-      if (card1.card.cost < card2.card.cost)
-      {
-        return 1
-      }
-      else if (card1.card.cost > card2.card.cost)
-      {
-        return -1
-      }
-      else
-      {
-        return card1.card.name.localeCompare(card2.card.name)
-      }
-    })
-
-    this.correctDeckIndices()
-  }
-
-  // Set each card in deck to have the right position and onClick events for its index
-  private correctDeckIndices(): void {
-    for (var i = 0; i < this.deck.length; i++) {
-      let cardImage = this.deck[i]
-
-      cardImage.setPosition(this.getDeckCardPosition(i))
-
-      // Ensure that each card is above all cards to its left
-      cardImage.container.parentContainer.sendToBack(cardImage.container)
-
-      // Remove the previous onclick event and add one with the updated index
-      cardImage.setOnClick(this.removeCardFromDeck(i), true)
-    }
   }
 }
 
@@ -246,6 +87,9 @@ export class BuilderScene extends BuilderSceneShell {
   // List of cards available in this builder, overwritten by children
   cardpool: Card[] = collectibleCards
 
+  // The index of the currently selected saved deck, or undefined if none
+  savedDeckIndex: number
+
   constructor(params = {key: "BuilderScene"}) {
     super(params)
   }
@@ -255,6 +99,7 @@ export class BuilderScene extends BuilderSceneShell {
 
     this.cardCatalog = []
     this.catalogContainer = this.add.container(0, 0)
+    this.savedDeckIndex = undefined
 
     // Create decks region, return the width
     let width = this.createDeckRegion()
@@ -369,6 +214,187 @@ export class BuilderScene extends BuilderSceneShell {
       // Move up to be atop image
       cardImage.txtStats.setDepth(1)
     })
+  }
+
+  // Add card to the existing deck
+  addCardToDeck(card: Card): boolean {
+    if (this.deck.length >= MechanicSettings.deckSize) {
+      return false
+    }
+
+    let index = this.deck.length
+
+    let cardImage = new CardImage(card, this.deckContainer)
+    cardImage.setPosition(this.getDeckCardPosition(index))
+    cardImage.setOnClick(this.removeCardFromDeck(index))
+
+    // Add this to the deck
+    this.deck.push(cardImage)
+
+    // Update start button to reflect new amount of cards in deck
+    this.updateText()
+
+    // Sort the deck, now done automatically after each card added
+    this.sort()
+
+    this.updateSavedDeck()
+
+    return true
+  }
+
+  // Set the current deck, returns true if deck was valid
+  setDeck(deckCode: string | Card[]): boolean {
+    let deck: Card[]
+    if (typeof deckCode === "string") {
+      // Get the deck from this code
+      let cardCodes: string[] = deckCode.split(':')
+
+      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
+
+      if (deckCode === '') {
+        deck = []
+      }
+    }
+    else {
+      deck = deckCode
+    }
+
+    // Check if the deck is valid, then create it if so
+    if (deck.includes(undefined))
+    {
+      return false
+    }
+    else
+    {
+      // Remove the current deck
+      this.deck.forEach( (cardImage) => cardImage.destroy())
+      this.deck = []
+      cardInfo.setVisible(false)
+      this.updateText()
+      
+      // Add the new deck
+      deck.forEach( (card) => this.addCardToDeck(card))
+
+      this.updateSavedDeck()
+
+      return true
+    }
+  }
+
+  // Remove the card from deck which has given index
+  private removeCardFromDeck(index: number): () => void {
+    let that = this
+    return function() {
+      // Play a sound
+      that.sound.play('click')
+
+      // The text for the removed card would otherwise linger
+      cardInfo.setVisible(false)
+
+      // Remove the image
+      that.deck[index].destroy()
+
+      // Remove from the deck array
+      that.deck.splice(index, 1)
+
+      that.correctDeckIndices()
+
+      that.updateText()
+
+      if (that.deck.length === 0) {
+        that.txtHint.setVisible(true)
+      }
+
+      that.updateSavedDeck()
+    }
+  }
+
+  // Update the user's saved deck to reflect its new contents
+  private updateSavedDeck(): void {
+    let index = this.savedDeckIndex
+    if (index !== undefined) {
+      let deck = UserSettings._get('decks')[index]
+      let name = deck['name']
+      let deckCode = this.getDeckCode()
+
+      let newDeck = {
+        name: name,
+        value: deckCode
+      }
+
+      UserSettings._setIndex('decks', index, newDeck)
+    }
+  }
+
+  // Update the card count and deck button texts
+  private updateText(): void {
+    if (this.deck.length === MechanicSettings.deckSize) {
+      this.btnStart.text = 'Start'
+      this.btnStart.input.enabled = true
+      this.btnStart.glow()
+    }
+    else
+    {
+      this.btnStart.text = `${this.deck.length}/${MechanicSettings.deckSize}`
+      this.btnStart.stopGlow()
+
+      // TODO Grey out the button, have a disable method for button class
+      // For debugging, allow sub-15 card decks locally
+      if (location.port !== '4949') {
+        this.btnStart.input.enabled = false
+      }
+    }
+
+    // Deck button stops glowing if there are any cards in it
+    // if (this.deck.length > 0) {
+    //   this.btnD.stopGlow()
+    // }
+
+    this.txtHint.setVisible(this.deck.length === 0)
+  }
+
+  private getDeckCardPosition(index: number): [number, number] {
+    let xPad = Space.pad
+    let x = index * (Space.cardSize - Space.stackOverlap) + xPad + Space.cardSize/2
+
+    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
+
+    return [-x, -y]
+  }
+
+  // Sort by cost all cards in the deck
+  private sort(): void {
+    this.deck.sort(function (card1, card2): number {
+      if (card1.card.cost < card2.card.cost)
+      {
+        return 1
+      }
+      else if (card1.card.cost > card2.card.cost)
+      {
+        return -1
+      }
+      else
+      {
+        return card1.card.name.localeCompare(card2.card.name)
+      }
+    })
+
+    this.correctDeckIndices()
+  }
+
+  // Set each card in deck to have the right position and onClick events for its index
+  private correctDeckIndices(): void {
+    for (var i = 0; i < this.deck.length; i++) {
+      let cardImage = this.deck[i]
+
+      cardImage.setPosition(this.getDeckCardPosition(i))
+
+      // Ensure that each card is above all cards to its left
+      cardImage.container.parentContainer.sendToBack(cardImage.container)
+
+      // Remove the previous onclick event and add one with the updated index
+      cardImage.setOnClick(this.removeCardFromDeck(i), true)
+    }
   }
 
   // Start the game, exit from this scene and move to gameScene
@@ -533,7 +559,6 @@ export class BuilderScene extends BuilderSceneShell {
     let that = this
     let decks: [name: string, value: string][] = UserSettings._get('decks')
     let btns: Button[] = []
-    let selectedBtnIndex: number
 
     let createDeckBtn = function(i: number): Button {
       let deck = UserSettings._get('decks')[i]
@@ -548,7 +573,7 @@ export class BuilderScene extends BuilderSceneShell {
 
         btn.glow(false)
 
-        selectedBtnIndex = i
+        that.savedDeckIndex = i
 
         that.setDeck(UserSettings._get('decks')[i]['value'])
       })
@@ -588,10 +613,10 @@ export class BuilderScene extends BuilderSceneShell {
     region.add(
       new Button(this, 0, 0, 'DELETE', function() {
         // NOTE Have to do this because the glow is separate from the region
-        btns[selectedBtnIndex].stopGlow()
-        btns[selectedBtnIndex].destroy()
+        btns[that.savedDeckIndex].stopGlow()
+        btns[that.savedDeckIndex].destroy()
 
-        UserSettings._pop('decks', selectedBtnIndex)
+        UserSettings._pop('decks', that.savedDeckIndex)
         
         region.destroy()
         that.createDeckRegion()
@@ -772,6 +797,7 @@ export class BuilderScene extends BuilderSceneShell {
         that.sound.play('click')
       }
       else {
+        // TODO Change to signal failure from base scene
         that.sound.play('failure') 
 
         that.cameras.main.flash(300, 0, 0, 0.1)
@@ -1057,13 +1083,6 @@ export class BuilderScene extends BuilderSceneShell {
   // TODO
   private showCardLegality() {
 
-  }
-
-  // Add card to the existing deck
-  addCardToDeck(card: Card): boolean {
-    // TODO Changes should be reflected in the stored deck now
-
-    return super.addCardToDeck(card)
   }
 }
 
