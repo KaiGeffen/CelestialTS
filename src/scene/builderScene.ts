@@ -569,13 +569,20 @@ export class BuilderScene extends BuilderSceneShell {
 
       // Set as active, glow and stop others glowing, set the deck
       btn.setOnClick(function() {
-        btns.forEach(b => b.stopGlow())
+        btns.forEach(b => {if (b !== btn) b.stopGlow()})
 
-        btn.glow(false)
+        // If it's already selected, deselect it
+        if (btn.isGlowing()) {
+          that.savedDeckIndex = undefined
+          btn.stopGlow()
+        }
+        // Otherwise select this button
+        else {
+          that.savedDeckIndex = i
+          btn.glow(false)
 
-        that.savedDeckIndex = i
-
-        that.setDeck(UserSettings._get('decks')[i]['value'])
+          that.setDeck(UserSettings._get('decks')[i]['value'])
+        }        
       })
       
       btns.push(btn)
