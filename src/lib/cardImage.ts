@@ -75,10 +75,10 @@ export class CardImage {
   container: Phaser.GameObjects.Container
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
-    this.init(card, container, interactive);
+    this.init(card, container, interactive)
   }
 
-  init(card: Card, outerContainer: any, interactive: Boolean, modifier: string = undefined) {
+  init(card: Card, outerContainer: any, interactive: Boolean) {
     this.card = card
 
     let scene: Phaser.Scene = outerContainer.scene
@@ -87,8 +87,7 @@ export class CardImage {
     // this.image.setDisplaySize(100, 100)
 
     // Stat text
-    let sModifier = modifier === undefined ? '' : 'modifier\n'
-    let s = `${sModifier}${card.cost}:${card.points}`
+    let s = `${card.cost}:${card.points}`
     
     this.txtStats = scene.add['rexBBCodeText'](-Space.cardSize/2, -Space.cardSize/2, s, CardStatsConfig).setOrigin(0)
     if (card === cardback) {
@@ -238,6 +237,13 @@ export class CardImage {
       that.onHoverExit()()
     })
   } 
+
+  // Set the quantity of this card that is available for the user
+  setQuantity(amt: number): void {
+    this.txtStats.setText(`${amt}\n${this.card.cost}:${this.card.points}`)
+
+    this.setTransparent(amt <= 0)
+  }
 
   // Scroll the stats text to copy image
   // Height is how tall the containing sizer is, for manually setting visiblity of txt

@@ -296,8 +296,18 @@ export class BuilderScene extends BuilderSceneShell {
     }
   }
 
+  // TODO This both updates the saved deck and the quantities of cards in catalog, rename
   // Update the user's saved deck to reflect its new contents
   private updateSavedDeck(): void {
+    // For each card in the catalog, update its displayed quantity to reflect the new quantity
+    this.cardCatalog.forEach( cardImage => {
+      let id = cardImage.card.id
+      let amtInDeck = this.deck.filter(ci => ci.card.id === id).length
+      let quantity = UserSettings._get('inventory')[id] - amtInDeck
+
+      cardImage.setQuantity(quantity)
+    })
+
     let index = this.savedDeckIndex
     if (index !== undefined) {
       let deck = UserSettings._get('decks')[index]
@@ -825,6 +835,7 @@ export class BuilderScene extends BuilderSceneShell {
 
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.catalogContainer)
+
     cardImage.image.setPosition(...this.getCatalogCardPosition(index))
     cardImage.setOnClick(this.onClickCatalogCard(card))
 
