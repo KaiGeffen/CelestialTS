@@ -80,6 +80,7 @@ export class BuilderScene extends BuilderSceneShell {
   // The costs and string that cards in the catalog are filtered for
   filterCostAry: boolean[] = []
   searchText: string = ""
+  filterUnowned: boolean = true
 
   // List of cards available in this builder, overwritten by children
   cardpool: Card[] = collectibleCards
@@ -778,6 +779,14 @@ export class BuilderScene extends BuilderSceneShell {
         this.filter()
       }, this)
     header.add(textboxSearch)
+
+    let btnOwned = new Button(this, 0, 0, '👁', function() {
+      that.filterUnowned = !that.filterUnowned
+      that.filter()
+    })
+      .setFontSize(parseInt(StyleSettings.announcement.fontSize))
+    
+    header.add(btnOwned)
     header.addNewLine()
 
     // Add a hint
@@ -907,9 +916,14 @@ export class BuilderScene extends BuilderSceneShell {
       return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
     }
 
+    // Filter cards based on if they contain the string being searched
+    let ownershipFilter = function(card: Card): boolean {
+      return !that.filterUnowned || UserSettings._get('inventory')[card.id] > 0
+    }
+
     // Filter based on the overlap of all above filters
     let andFilter = function(card: Card): boolean {
-      return costFilter(card) && expansionFilter(card) && searchTextFilter(card)
+      return costFilter(card) && expansionFilter(card) && searchTextFilter(card) && ownershipFilter(card)
     }
 
     return andFilter
