@@ -40,7 +40,7 @@ export default class Button extends Phaser.GameObjects.Text {
 	// Causes the button to glow until stopped, if doAnimate, it will fade in/out
 	outline: Phaser.GameObjects.Text
 	outlineTween: Phaser.Tweens.Tween
-	glow(doAnimate = true): void {
+	glow(doAnimate = true): Button {
 		// First stop any glow that's already happening to not amplify
 		this.stopGlow()
 
@@ -71,6 +71,8 @@ export default class Button extends Phaser.GameObjects.Text {
 				yoyo: true
 			})
 		}
+
+		return this
 	}
 
 	glowUntilClicked(): void {
