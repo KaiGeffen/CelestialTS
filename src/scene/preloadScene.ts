@@ -69,6 +69,9 @@ export default class PreloadClass extends Phaser.Scene {
 		// Load the icon images
 		this.loadIcons()
 
+		// Load the background images
+		this.loadBackgrounds()
+
 		// Load all audio
 		SOUNDS.forEach( (sound) => {
 			this.load.audio(sound, `sfx/${sound}.wav`)
@@ -176,6 +179,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Anubis', 'Robots', 'Stalker',
 			'Crypt', 'Bastet', 'Horus',
 			'Victory!', 'Defeat!',
+			'Exit', 'Retry', 'Review',
 			'Draft'
 		]
 
@@ -184,7 +188,18 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 	}
 
-	// Create the graphics which show user how much has loaded
+	// Loads all background images
+	private loadBackgrounds(): void {
+		let backgroundNames = [
+			'Defeat', 'Victory',
+		]
+
+		backgroundNames.forEach( (s) => {
+			this.load.image(`bg-${s}`, `backgrounds/${s}.png`)
+		})
+	}
+
+	// Create the which show user how much has loaded
 	private createProgressGraphics(): void {
 		let that = this
 

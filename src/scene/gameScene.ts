@@ -22,6 +22,9 @@ var storyHiddenLock: boolean = false
 export default class GameScene extends BaseScene {
 	net: Network
 
+	// The params used to instantiate this scene
+	params: any
+
 	// Objects (CardImages and text) that will be removed before displaying a new state
 	temporaryObjs: any[]
 
@@ -95,6 +98,8 @@ export default class GameScene extends BaseScene {
 	}
 
 	init(params: any): void {
+		this.params = params
+
 		// Code to matchmake player with ('ai' if versus computer)
 		let mmCode = UserSettings._get('mmCode')
 	    if (UserSettings._get('vsAi')) {
@@ -1332,8 +1337,8 @@ export default class GameScene extends BaseScene {
 		if (state.winner !== null) {
 			menu = new Menu(
 		      this,
-		      300,
-		      300,
+		      Space.maxHeight,
+		      Space.maxHeight,
 		      true,
 		      25)
 
@@ -1341,12 +1346,31 @@ export default class GameScene extends BaseScene {
 			this.btnPass.setVisible(false)
 			this.btnExit.setVisible(true)
 		}
-		if (state.winner === 0) {
-			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.exitScene())
 
+		let width = Space.maxHeight - 250
+		if (state.winner === 0) {
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', StyleSettings.announcement).setOrigin(0.5, 1)
+			menu.add(txtTitle)
+
+			let bgDefeat = this.add.image(0, -50, 'bg-Victory')
+			menu.add(bgDefeat)
+
+			let y = width/2 + 50
+			new Icon(this, menu, -Space.iconSeparation, y, 'Exit', this.exitScene())
+			new Icon(this, menu, 0, y, 'Retry', this.doRetry())
+			new Icon(this, menu, Space.iconSeparation, y, 'Review', () => menu.close())
 		}
 		else if (state.winner === 1) {
-			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.exitScene())
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Defeat!', StyleSettings.announcement).setOrigin(0.5, 1)
+			menu.add(txtTitle)
+
+			let bgDefeat = this.add.image(0, -50, 'bg-Defeat')
+			menu.add(bgDefeat)
+
+			let y = width/2 + 50
+			new Icon(this, menu, -Space.iconSeparation, y, 'Exit', this.exitScene())
+			new Icon(this, menu, 0, y, 'Retry', this.doRetry())
+			new Icon(this, menu, Space.iconSeparation, y, 'Review', () => menu.close())
 		}
 	}
 
@@ -1688,6 +1712,14 @@ export default class GameScene extends BaseScene {
 			duration: TimeSettings.recapTweenWithPause(),
 			delay: TimeSettings.recapTween(),
 		})
+  	}
+
+  	// Retry the current game mode
+  	private doRetry(): () => void {
+  		let that = this
+  		return function () {
+	  		that.scene.start("GameScene", that.params)
+  		}
   	}
 
   	// NOTE Overwritten by Tutorial Scene
