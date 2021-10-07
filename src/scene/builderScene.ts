@@ -624,7 +624,7 @@ export class BuilderScene extends BuilderSceneShell {
     region.add(
       new Button(this, 0, 0, 'DELETE', function() {
         if (that.savedDeckIndex === undefined) {
-          that.signalError('No deck selected.')
+          that.signalError('No deck selected')
         } else {
           // NOTE Have to do this because the glow is separate from the region
           btns[that.savedDeckIndex].stopGlow()
@@ -873,7 +873,7 @@ export class BuilderScene extends BuilderSceneShell {
         that.sound.play('click')
       }
       else {
-        that.signalError('Deck is full.')
+        that.signalError('Deck is full')
       }
       
     }

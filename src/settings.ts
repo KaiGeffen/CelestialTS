@@ -373,6 +373,10 @@ export class TimeSettings {
     return 1000 / (UserSettings._get('animationSpeed') + 0.75)
   }
 
+  static errorMsgTime(): number {
+    return 1400 / (UserSettings._get('animationSpeed') + 0.75)
+  }
+
   static recapTween(): number {
     return 500 / (UserSettings._get('animationSpeed') + 0.75)
   }
@@ -454,6 +458,33 @@ export const CardStatsConfig = {
     right: 5,
     top: 5,
     bottom: 5
+  }
+}
+
+export const ErrorConfig = {
+  fontFamily: fontFamily,
+  fontSize: FontSettings.huge.size,
+  color: '#fff',
+  backgroundColor: ColorSettings.cardTextBackground,
+  backgroundStrokeColor: "#fff",
+  backgroundStrokeLineWidth: 2,
+  backgroundCornerRadius: 5,
+  backgroundHorizontalGradient: false,
+  padding: { 
+    left: 10,
+    right: 10,
+    top: 5,
+    bottom: 5
+  },
+  underline: {
+    color: ColorSettings.cardText,
+    thickness: 2,
+    offset: 8
+  },
+  strokeThickness: 4,
+  wrap: {
+    mode: 'word',
+    width: 500
   }
 }
 

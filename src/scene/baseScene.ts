@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, FontSettings, ColorSettings, UserSettings, Space } from "../settings"
+import { StyleSettings, FontSettings, ColorSettings, TimeSettings, ErrorConfig, UserSettings, Space } from "../settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
 
@@ -48,7 +48,10 @@ export default class BaseScene extends Phaser.Scene {
 		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 0, '⚙', this.openMenu).setOrigin(1, 0)
 
 	    // Error text, for when the user does something wrong they get an explanation
-		this.txtError = this.add.text(500, Space.windowHeight/2, '', StyleSettings.announcement).setOrigin(0.5).setDepth(50)
+	    this.txtError = this.add['rexBBCodeText'](Space.windowWidth/2, Space.windowHeight/2, '', ErrorConfig)
+	    	.setOrigin(0.5)
+	    	.setDepth(50)
+	    	.setVisible(false)
 
 		// When esc key if pressed, toggle the menu open/closed
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
@@ -64,7 +67,9 @@ export default class BaseScene extends Phaser.Scene {
 
 		this.cameras.main.flash(300, 0, 0, 0.1)
 
-		this.txtError.setText(msg)
+		this.txtError
+			.setText(`[stroke=black]${msg}[/stroke]`)
+			.setVisible(true)
 
 		// Remove previous timeout, create a new one
 		if (this.errorMsgTimeout !== undefined) {
@@ -72,7 +77,7 @@ export default class BaseScene extends Phaser.Scene {
 		}
 
 		let that = this
-		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('') }, 1000)
+		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('').setVisible(false) }, TimeSettings.errorMsgTime())
 	}
 
 	private createMenu(): void {
