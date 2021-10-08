@@ -37,6 +37,8 @@ export default class GameScene extends BaseScene {
 	btnPass: Button
 	// Replaces the pass button after the game has ended
 	btnExit: Button
+
+	btnMulligan: Button
 	
 	handContainer: Phaser.GameObjects.Container
 	opponentHandContainer: Phaser.GameObjects.Container
@@ -366,7 +368,8 @@ export default class GameScene extends BaseScene {
 
 		// Button for player to confirm their mulligan
 		let x = Space.pad * 2 + Space.cardSize * 1.5
-		let btnMulligan = new Button(this, x, Space.windowHeight - 200, 'Mulligan').setOrigin(0.5, 0.5)
+		this.btnMulligan = new Button(this, x, Space.windowHeight - 200, 'Mulligan').setOrigin(0.5, 0.5)
+
 
 		let that = this
 		let f = function () {
@@ -397,11 +400,11 @@ export default class GameScene extends BaseScene {
 
 			// Remove all mulligan objects
 			that.mulliganHighlights.forEach(o => o.destroy())
-			btnMulligan.destroy()
+			this.btnMulligan.destroy()
 		}
-		btnMulligan.setOnClick(f)
+		this.btnMulligan.setOnClick(f)
 
-		this.mulliganContainer.add([this.txtOpponentMulligan, btnMulligan])
+		this.mulliganContainer.add([this.txtOpponentMulligan, this.btnMulligan])
 	}
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
@@ -442,15 +445,22 @@ export default class GameScene extends BaseScene {
 
 	// Display searching for opponent if still looking
 	displaySearchingStatus(searching: boolean): void {
+		// Objects hidden while searching for opponent
+		let hiddenObjets = [this.priorityRectangle, this.txtOpponentMulligan, this.btnMulligan]
+
 		if (searching) {
-			let searchingBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, ColorSettings.searchingBackground).setOrigin(0, 0)
-			let txtSearching = this.add.text(Space.windowWidth/2, 300, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5, 0.5)
+			let txtSearching = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 50, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5)
 
-			let btnExit = new Button(this, Space.windowWidth/2, 400, "Cancel", this.exitScene()).setOrigin(0.5, 0.5)
+			let btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight/2 + 50, "Cancel", this.exitScene()).setOrigin(0.5)
 
-			this.temporaryObjs.push(searchingBackground, txtSearching, btnExit)
+			this.temporaryObjs.push(txtSearching, btnExit)
+
+			// Set hidden objects as invisible
+			hiddenObjets.forEach( obj => obj.setAlpha(0))
 		}
 		else {
+			hiddenObjets.forEach(obj => obj.setAlpha(1))
+
 			this.sound.play('success')
 		}
 	}
