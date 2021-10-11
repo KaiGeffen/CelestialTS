@@ -65,11 +65,11 @@ export class BuilderScene extends BuilderSceneShell {
   // Container containing all cards in the catalog
   catalogContainer: Phaser.GameObjects.Container
 
-  // The background object for the container, gets moved left/right to 'shrink' it down
-  catalogBackground: any
-
   // The scrollable panel which the cards are on
   panel: any
+
+  // The scrollable panel which houses all deck options
+  deckPanel: any
 
   // How many cards fit on each row in the catalog
   cardsPerRow: number
@@ -87,6 +87,10 @@ export class BuilderScene extends BuilderSceneShell {
 
   // The index of the currently selected saved deck, or undefined if none
   savedDeckIndex: number
+
+  // The invisible background atop the catalog that keeps the 
+  // cards from being clickable above where they are displayed
+  invisBackgroundTop: Phaser.GameObjects.Rectangle
 
   constructor(params = {key: "BuilderScene"}) {
     super(params)
@@ -187,12 +191,8 @@ export class BuilderScene extends BuilderSceneShell {
     
     if (!isOverflow(this.panel)) {
       slider.setVisible(false)
-
-      this.catalogBackground.setX(-slider.width - 20)
     } else {
       slider.setVisible(true)
-      
-      this.catalogBackground.setX(0)
     }
 
     // Resize each stats text back to original size
@@ -419,7 +419,6 @@ export class BuilderScene extends BuilderSceneShell {
     this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
 
     let height = Space.windowHeight - 150
-    this.catalogBackground = this['rexUI'].add.roundRectangle(x, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0).setAlpha(0)
 
     this.panel = this['rexUI'].add.scrollablePanel({
       x: x,
@@ -477,13 +476,8 @@ export class BuilderScene extends BuilderSceneShell {
     }).setOrigin(0)
     .layout()
 
-    // let background = this['rexUI'].add.roundRectangle(0, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0)
-    // this.panel.getElement('header').setBackground(background, {left: 0, right: 0, top: 0, bottom: 0}, 'foo')
-
     // Add buttons and fields to the header
     this.populateHeader(this.panel.getElement('header'))
-
-    
 
     // Update panel when mousewheel scrolls
     this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
@@ -514,7 +508,7 @@ export class BuilderScene extends BuilderSceneShell {
       .setOrigin(0)
       .setInteractive()
 
-    let invisBackgroundTop = this.add
+    this.invisBackgroundTop = this.add
       .rectangle(this.panel._x, this.panel.getElement('header').height, Space.windowWidth, Space.cardSize, 0x000000, 0)
       .setOrigin(0, 1)
       .setInteractive()
@@ -524,7 +518,7 @@ export class BuilderScene extends BuilderSceneShell {
   private createDeckRegion(): number {
     let width = Space.iconSeparation + Space.pad
 
-    let region = this['rexUI'].add.scrollablePanel({
+    let region = this.deckPanel = this['rexUI'].add.scrollablePanel({
       x: 0,
       y: 10,
       width: width,
@@ -1089,7 +1083,7 @@ export class TutorialBuilderScene extends BuilderScene {
     let that = this
     this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
 
-    // this.removeFilterObjects()
+    this.removeHeaderAndDeckRegion()
 
     this.createDescriptionText()
 
@@ -1138,13 +1132,24 @@ export class TutorialBuilderScene extends BuilderScene {
     })
   }
 
+  // Remove the header above and deck menu at left, which aren't present during the tutorial
+  private removeHeaderAndDeckRegion(): void {
+    this.panel.getElement('header').destroy()
+    this.panel.width = Space.windowWidth
+    this.deckPanel.destroy()
+    this.invisBackgroundTop.destroy()
+
+    // Fixes card layout
+    this.filter()
+  }
+
   private createDescriptionText(): void {
     let s = "Now try winning a full match against a computer opponent.\n\nThe deck provided below "
     s += this.deckDescription + "\n\n"
     s += `If you want to make changes, click any of the cards in the
 deck to remove them, then add cards from the choices above.`
 
-    let txt = this.add.text(Space.pad, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
+    let txt = this.add.text(250, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
   }
 
   private onBack(): () => void {
@@ -1165,8 +1170,6 @@ deck to remove them, then add cards from the choices above.`
   // Overwrite to undo the background shifting
   filter(f = function(card: Card) {return true}): void {
     super.filter(f)
-
-    this.catalogBackground.setX(0)
   }
 
   beforeExit(): void {
