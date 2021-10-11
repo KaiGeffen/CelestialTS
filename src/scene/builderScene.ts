@@ -1083,6 +1083,8 @@ export class TutorialBuilderScene extends BuilderScene {
     let that = this
     this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
 
+    this.filterUnowned = false
+
     this.removeHeaderAndDeckRegion()
 
     this.createDescriptionText()
@@ -1151,7 +1153,7 @@ deck to remove them, then add cards from the choices above.`
 
     let txt = this.add.text(0, 0, s, StyleSettings.basic)
     this.panel.setX(Space.pad)
-    this.panel.add(txt)
+    this.panel.add(txt, {padding: {left: Space.pad, right: Space.pad, bottom: Space.pad}})
     this.filter()
   }
 
