@@ -400,7 +400,7 @@ export default class GameScene extends BaseScene {
 
 			// Remove all mulligan objects
 			that.mulliganHighlights.forEach(o => o.destroy())
-			this.btnMulligan.destroy()
+			that.btnMulligan.destroy()
 		}
 		this.btnMulligan.setOnClick(f)
 
