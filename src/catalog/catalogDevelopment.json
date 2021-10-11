@@ -56,7 +56,7 @@
   },
   {"name": "Cornucopia", "id": 61,
     "cost": 6, "points": 2,
-    "text": "6:2, Nourish 2.\nCosts X less, where X is the number of costs of cards you can see in the story.",
+    "text": "6:2, Nourish 2.\nCosts X less, where X is the number of different cost values you can see in the story.",
     "rarity": 2
   },
   {"name": "Paramountcy", "id": 62,

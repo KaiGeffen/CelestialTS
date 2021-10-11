@@ -768,7 +768,7 @@ export class BuilderScene extends BuilderSceneShell {
       align: Phaser.Display.Align.BOTTOM_RIGHT,
       border: 3,
       borderColor: '#000',
-      backgroundColor: ColorSettings.textAreaBackgroundAlt,
+      // backgroundColor: ColorSettings.textAreaBackgroundAlt,
       maxLength: 12,
       selectAll: true,
       id: 'search-field'
