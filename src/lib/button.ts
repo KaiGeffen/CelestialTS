@@ -19,9 +19,9 @@ export default class Button extends Phaser.GameObjects.Text {
 			this.on('pointerdown', f, scene)
 		}
 
-		this.on('pointerover', this.onHover, this)
-		this.on('pointerout', this.onHoverExit, this)
-		this.scene.input.on('gameout', this.onHoverExit, this)
+		this.on('pointerover', () => this.setTint(ColorSettings.buttonHighlight), this)
+		this.on('pointerout', () => this.clearTint(), this)
+		this.scene.input.on('gameout', () => this.clearTint(), this)
 
 		this.scene.add.existing(this)
 	}
@@ -35,6 +35,13 @@ export default class Button extends Phaser.GameObjects.Text {
 		this.on('pointerdown', f)
 
 		return this
+	}
+
+	onHover(f: () => void, fExit: () => void = () => {}): Button {
+	    this.on('pointerover', f)
+	    this.on('pointerout', fExit)
+
+	    return this
 	}
 
 	// Causes the button to glow until stopped, if doAnimate, it will fade in/out
@@ -109,13 +116,4 @@ export default class Button extends Phaser.GameObjects.Text {
 			f.call(scene)
 		}
 	}
-
-	private onHover(): void {
-		this.setTint(ColorSettings.buttonHighlight)
-	}
-
-	private onHoverExit(): void {
-		this.clearTint()
-	}
-
 }
