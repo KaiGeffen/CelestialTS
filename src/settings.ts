@@ -272,7 +272,8 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     // fontStyle: "Bold",
     color: '#fff',
     stroke: '#000',
-    strokeThickness: 2
+    strokeThickness: 2,
+    wordWrap: { width: Space.windowWidth - Space.pad * 2 }
   },
   button: {
     fontFamily: fontFamily,

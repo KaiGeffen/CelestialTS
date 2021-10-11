@@ -121,9 +121,7 @@ export class AnubisCatalogScene extends CatalogScene {
 	defaultDeck: string = prebuiltDecks.get('Anubis')
 	name = "Anubis"
 	deckDescription: string = 
-`wins early rounds with Crossed Bones,
-plays Anubis for free in later rounds, then uses Sarcophagus
-to put him back on top of the deck to wrap up the match.`
+'wins early rounds with Crossed Bones, plays Anubis for free in later rounds, then uses Sarcophagus to put him back on top of the deck to wrap up the match.'
 
 	constructor() {
 		super({
@@ -137,9 +135,7 @@ export class RobotsCatalogScene extends CatalogScene {
 	defaultDeck: string = prebuiltDecks.get('Robots')
 	name = "Robots"
 	deckDescription: string = 
-`spends early rounds building large robots.
-It seeks to use Mine to remove weaker cards, then settle into
-a powerful final state of playing cheap AI for points and card draw.`
+'spends early rounds building large robots. It seeks to use Mine to remove weaker cards, then settle into a powerful final state of playing cheap AI for points and card draw.'
 
 	constructor() {
 		super({
@@ -153,9 +149,7 @@ export class StalkerCatalogScene extends CatalogScene {
 	defaultDeck: string = prebuiltDecks.get('Stalker')
 	name = "Stalker"
 	deckDescription: string = 
-`attacks the opponent's hand with multiple
-copies of Bone Knife, then steals rounds with cheap Stalkers.
-It ends with strong and consistent high-cost cards like Oak.`
+"attacks the opponent's hand with multiple copies of Bone Knife, then steals rounds with cheap Stalkers. It ends with strong and consistent high-cost cards like Oak."
 
 	constructor() {
 		super({
@@ -169,9 +163,7 @@ export class CryptCatalogScene extends CatalogScene {
 	defaultDeck: string = prebuiltDecks.get('Crypt')
 	name = "Crypt"
 	deckDescription: string = 
-`attacks your opponent's hand in the early
-game, then transforms Stalker into Sarcophagus and Crypt into
-Imprison in the late game to control and overwhelm your opponent.`
+"attacks your opponent's hand in the early game, then transforms Stalker into Sarcophagus and Crypt into Imprison in the late game to control and overwhelm your opponent."
 
 	constructor() {
 		super({
@@ -185,9 +177,7 @@ export class BastetCatalogScene extends CatalogScene {
 	defaultDeck: string = prebuiltDecks.get('Bastet')
 	name = "Bastet"
 	deckDescription: string = 
-`survives the early game, trading rounds
-by spending Nourish and empowering Bastets. It seeks to replay
-the strongest Bastet often using Raise Dead and the shuffle.`
+"survives the early game, trading rounds by spending Nourish and empowering Bastets. It seeks to replay the strongest Bastet often using Raise Dead and the shuffle."
 
 	constructor() {
 		super({
@@ -201,9 +191,7 @@ export class HorusCatalogScene extends CatalogScene {
 	defaultDeck: string = prebuiltDecks.get('Horus')
 	name = "Horus"
 	deckDescription: string = 
-`only occasionally wins rounds in the early
-game with Sine, opting instead to fill up the opponent's hand with
-Cameras, ensuring knowledge it uses to reset or play free Horus's.`
+"only occasionally wins rounds in the early game with Sine, opting instead to fill up the opponent's hand with Cameras, ensuring knowledge it uses to reset or play free Horus's."
 
 	constructor() {
 		super({

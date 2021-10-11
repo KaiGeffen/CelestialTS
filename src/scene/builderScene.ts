@@ -1149,7 +1149,10 @@ export class TutorialBuilderScene extends BuilderScene {
     s += `If you want to make changes, click any of the cards in the
 deck to remove them, then add cards from the choices above.`
 
-    let txt = this.add.text(250, Space.cardSize + Space.pad * 2, s, StyleSettings.basic)
+    let txt = this.add.text(0, 0, s, StyleSettings.basic)
+    this.panel.setX(Space.pad)
+    this.panel.add(txt)
+    this.filter()
   }
 
   private onBack(): () => void {
