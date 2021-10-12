@@ -21,7 +21,7 @@
   {"name": "Crossed Bones", "id": 3,
     "cost": 1, "points": 1,
     "text": "1:1, Fleeting, create 2 ${1002}s in your discard pile.",
-    "catalogText": "Crossed Bones costs 1 mana for 2 points, which is very good value.\n\nHowever, it has the drawback that it puts 2 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis.",
+    "catalogText": "Crossed Bones costs 1 mana for 1 point, and also fills up your discard pile.\n\nHaving extra cards in your discard pile can be to your advantage for cards like Tumulus or Anubis.\n\nHowever, if you end up drawing the Broken Bones after shuffling your discard pile, they can be annoying since they give no points and force you to wait a round to draw better cards.",
     "rarity": 0
   },
   {"name": "Dove", "id": 4,
@@ -87,7 +87,7 @@
   {"name": "Dinosaur Bones", "id": 14,
     "cost": 4, "points": 4,
     "text": "4:4, Fleeting, create 3 ${1002}s in your discard pile.",
-    "catalogText": "Dinosaur Bones costs 4 mana for 5 points, which is excellent.\n\nHowever, it has the drawback that it puts 3 bad cards (Broken Bones) into your discard pile, which you may end up drawing later on.\n\nThis downside can be used to your advantage if you play cards that care about having large discard piles, such as Tumulus or Anubis.",
+    "catalogText": "Dinosaur Bones costs 4 mana for 4 points, and also fills up your discard pile.\n\nHaving extra cards in your discard pile can be to your advantage for cards like Tumulus or Anubis.\n\nHowever, if you end up drawing the Broken Bones after shuffling your discard pile, they can be annoying since they give no points and force you to wait a round to draw better cards.",
     "rarity": 0
   },
   {"name": "Mine", "id": 15,

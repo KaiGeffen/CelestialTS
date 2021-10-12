@@ -1,6 +1,6 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { StyleSettings, ColorSettings, Space, UserSettings, TutorialBBConfig } from "../settings"
+import { StyleSettings, ColorSettings, Space, UserSettings, TimeSettings, TutorialBBConfig } from "../settings"
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo, getSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
@@ -54,7 +54,7 @@ class TutorialScene extends GameScene {
 				exFound = true
 
 				let s = ex.explain()
-				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', 15)
+				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', TimeSettings.textSpeed)
 				this.txtTutorial.setVisible(true)
 
 				ex.alterScene(this)
