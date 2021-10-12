@@ -65,34 +65,57 @@ class TutorialScene extends GameScene {
 	}
 
 	// Display what the user sees when they win or lose
+	
+
 	displayWinLose(state: ClientState): void {
 		let menu
 		if (state.winner !== null) {
 			menu = new Menu(
 		      this,
-		      300,
-		      300,
+		      Space.maxHeight,
+		      Space.maxHeight,
 		      true,
 		      25)
 
 			// Replace the pass button with an exit button
 			this.btnPass.setVisible(false)
 			this.btnExit.setVisible(true)
+
 			// Remove the ordinary exit events
 			this.btnExit.removeAllListeners('pointerdown')
 		}
+
+		let width = Space.maxHeight - 250
 		if (state.winner === 0) {
-			// Do everything that happens when you complete this tutorial
+			// Do anything that happens when you win
 			this.onWin()
 
-			let iconWin = new Icon(this, menu, 0, 0, 'Victory!', this.onWinExit())
-
 			this.btnExit.setOnClick(this.onWinExit())
+
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', StyleSettings.announcement).setOrigin(0.5, 1)
+			menu.add(txtTitle)
+
+			let bgDefeat = this.add.image(0, -50, 'bg-Victory')
+			menu.add(bgDefeat)
+
+			let y = width/2 + 50
+			new Icon(this, menu, -Space.iconSeparation, y, 'Exit', this.onWinExit())
+			// new Icon(this, menu, 0, y, 'Retry', this.doRetry())
+			new Icon(this, menu, Space.iconSeparation, y, 'Review', () => menu.close())
 		}
 		else if (state.winner === 1) {
-			let iconLose = new Icon(this, menu, 0, 0, 'Defeat!', this.onRetry())
-			this.btnExit.text = 'Retry'
-			this.btnExit.setOnClick(this.onRetry())
+			this.btnExit.setOnClick(this.exitScene())
+
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Defeat!', StyleSettings.announcement).setOrigin(0.5, 1)
+			menu.add(txtTitle)
+
+			let bgDefeat = this.add.image(0, -50, 'bg-Defeat')
+			menu.add(bgDefeat)
+
+			let y = width/2 + 50
+			new Icon(this, menu, -Space.iconSeparation, y, 'Exit', this.exitScene())
+			new Icon(this, menu, 0, y, 'Retry', this.onRetry())
+			new Icon(this, menu, Space.iconSeparation, y, 'Review', () => menu.close())
 		}
 	}
 
