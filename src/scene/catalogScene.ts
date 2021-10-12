@@ -29,7 +29,7 @@ class CatalogScene extends BaseScene {
     
 		// Instructional text
 		let txt = "Below are just a few of the cards that you can use in Celestial.\nClick on them to see explanations and advice.\nClick 'Next' to move on to the deck-builder."
-		this.add.text(Space.pad, Space.pad, txt, StyleSettings.catalog)
+		this.add.text(Space.pad, Space.pad, txt, StyleSettings.basic)
 
 		// Highlight for selected card
 		let size = Space.cardSize + Space.pad
@@ -37,7 +37,7 @@ class CatalogScene extends BaseScene {
 		this.container.add(this.highlight)
 
 		// Description of the selected card
-		this.txtDescription = this.add.text(Space.pad, 280, '', StyleSettings.catalog)
+		this.txtDescription = this.add.text(Space.pad, 280, '', StyleSettings.basic)
 
 		// Next button
 		let [x, y] = this.getCardPosition(6)

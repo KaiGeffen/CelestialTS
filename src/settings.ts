@@ -343,15 +343,6 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     stroke: '#000',
     strokeThickness: 1
   },
-  catalog: {
-    fontFamily: fontFamily,
-    fontSize: FontSettings.standard.size,
-    // fontStyle: "Bold",
-    color: '#fff',
-    stroke: '#000',
-    strokeThickness: 2,
-    wordWrap: { width: 1030, useAdvancedWrap: false },
-  },
   checkMark: {
     fontFamily: fontFamily,
     fontSize: FontSettings.huge.size,
