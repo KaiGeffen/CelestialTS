@@ -4,6 +4,7 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Card from "../lib/card"
 import {cardInfo, addCardInfoToScene, CardImage} from "../lib/cardImage"
+import Server from "../server"
 
 // TODO remove
 import {collectibleCards} from "../catalog/catalog"
@@ -61,23 +62,12 @@ export default class StoreScene extends BaseScene {
     let that = this
 
     return function() {
-      // Make the hint visible and button invisible
-      that.btnOpen.setVisible(false)
-      that.btnExit.setVisible(false)
-      that.txtHint.setVisible(true)
-
-      // Get the cards from server
-      for(var i = 0; i < 4; i++) {
-        const card = collectibleCards[i]
-
-        that.addCard(card, i)
+      if (!Server.loggedIn()) {
+        this.signalError("You aren't logged in.")
+        return
       }
 
-      for(var i = 0; i < 3; i++) {
-        const card = collectibleCards[i + 10]
-
-        that.addChoiceCard(card, i)
-      }
+      Server.requestPack(that.openPackCallback())
     }
   }
 
@@ -98,9 +88,13 @@ export default class StoreScene extends BaseScene {
     cardImage.setPosition([(index - 1) * (Space.cardSize*2 + Space.pad), Space.cardSize*1.5])
 
     // When clicked, send to server the choice, destroy the cards, return open pack button
+    // TODO Communicate to server
     let that = this
     cardImage.setOnClick(function() {
       that.sound.play('win')
+
+      // Communicate choice to serve
+      Server.sendChoiceCard(index)
 
       that.btnOpen.setVisible(true)
       that.btnExit.setVisible(true)
@@ -115,5 +109,30 @@ export default class StoreScene extends BaseScene {
     })
 
     this.temporaryObjs.push(cardImage)
+  }
+
+  // The callback for when server responds with a pack of cards
+  private openPackCallback(): (cards: Card[]) => void {
+    let that = this
+
+    return function(cards: Card[]) {
+      if (!that.scene.isActive(that)) {
+        console.log('Pack opened, but no longer in the shop')
+        return
+      }
+
+      // Make the hint visible and button invisible
+      that.btnOpen.setVisible(false)
+      that.btnExit.setVisible(false)
+      that.txtHint.setVisible(true)
+
+      for(var i = 0; i < 4; i++) {
+        that.addCard(cards[i], i)
+      }
+
+      for(var i = 4; i < 4 + 3; i++) {
+        that.addChoiceCard(cards[i], i - 4)
+      }
+    }
   }
 }
