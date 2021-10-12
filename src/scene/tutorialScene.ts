@@ -65,8 +65,6 @@ class TutorialScene extends GameScene {
 	}
 
 	// Display what the user sees when they win or lose
-	
-
 	displayWinLose(state: ClientState): void {
 		let menu
 		if (state.winner !== null) {
@@ -100,11 +98,11 @@ class TutorialScene extends GameScene {
 
 			let y = width/2 + 50
 			new Icon(this, menu, -Space.iconSeparation, y, 'Exit', this.onWinExit())
-			// new Icon(this, menu, 0, y, 'Retry', this.doRetry())
+			new Icon(this, menu, 0, y, 'Retry', this.onRetry())
 			new Icon(this, menu, Space.iconSeparation, y, 'Review', () => menu.close())
 		}
 		else if (state.winner === 1) {
-			this.btnExit.setOnClick(this.exitScene())
+			this.btnExit.setOnClick(this.onRetry())
 
 			let txtTitle = this.add.text(0, -(width/2 + 50), 'Defeat!', StyleSettings.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
@@ -123,6 +121,7 @@ class TutorialScene extends GameScene {
 	onWin(): void {}
 	onWinExit(): () => void {return function() {}}
 	onRetry(): () => void {return function() {}}
+	exitScene(): () => void {return function() {}}
 
 	// Called when the tutorial text is clicked on
 	// Skips it to the end if it's animating, or makes it invisible if not
@@ -271,6 +270,16 @@ export class TutorialScene2 extends TutorialScene {
   			that.beforeExit()
   			that.scene.start("TutorialBuilderScene")
   		}
+  	}
+
+  	// NOTE This is called by btnCancel in GameScene
+	exitScene(): () => void {
+		let that = this
+
+		return function() {
+			that.beforeExit()
+  			that.scene.start("WelcomeScene")
+		}
   	}
 }
 
