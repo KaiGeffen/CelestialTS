@@ -67,6 +67,7 @@
   {"name": "Axolotl", "id": 63,
     "cost": 1, "points": 1,
     "text": "1:1.\nAt the start of each round, if this is the top of your discard pile, create an Axolotl in your hand.",
+    "catalogText": "Axolotl costs 1 mana for 1 point, and will also create a new Axolotl in your hand if it's on top of your discard pile when the round starts.\n\nIf you want this ability to activate, be sure to play Axolotl last in a round so that it's on top of your other cards. This can give you lots of card-advantage and consistency.\n\nSometimes, creating an Axolotl could force you to not draw another card from your deck, which might be bad. Additionally, you'll end up with lots of the little guys after you shuffle, so watch out!",
     "rarity": 0
   },
   {"name": "Fish Bones", "id": 64,

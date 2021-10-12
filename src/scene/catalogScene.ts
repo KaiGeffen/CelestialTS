@@ -159,7 +159,7 @@ export class StalkerCatalogScene extends CatalogScene {
 }
 
 export class CryptCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("0™1™35™36™12™15™19™20")
+	pool: Card[] = decodeDeck("0™1™63™35™36™15™19™20")
 	defaultDeck: string = prebuiltDecks.get('Crypt')
 	name = "Crypt"
 	deckDescription: string = 

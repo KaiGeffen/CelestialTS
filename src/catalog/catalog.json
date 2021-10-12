@@ -8,7 +8,7 @@
   {"name": "Bone Knife", "id": 1,
     "cost": 1, "points": 0,
     "text": "1:0, your opponent discards the leftmost card of their hand.",
-    "catalogText": "Bone Knife costs no mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard.",
+    "catalogText": "Bone Knife costs 1 mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard.",
     "rarity": 1
   },
   {"name": "Cog", "id": 2,
@@ -119,7 +119,7 @@
   {"name": "Stalker", "id": 19,
     "cost": 6, "points": 3,
     "text": "6:3.\nCosts X, where X is the number of cards in your opponent's hand.",
-    "catalogText": "Stalker's cost is equal to the number of cards in your opponent's hand, and it's worth 4 points.\n\nIf you can force your opponent to discard some of their hand, Stalker could come out as early as round 2, beating just about anything.\n\nUnfortunately, your opponent can play around this by passing more frequently.",
+    "catalogText": "Stalker's cost is equal to the number of cards in your opponent's hand, and it's worth 3 points.\n\nIf you can force your opponent to discard some of their hand, Stalker could come out as early as round 2, beating just about anything.\n\nUnfortunately, your opponent can play around this by passing more frequently.",
     "rarity": 2
   },
   {"name": "Sarcophagus", "id": 20,
