@@ -227,10 +227,12 @@ export class BuilderScene extends BuilderSceneShell {
 
     this.updateSavedDeck()
 
+    this.filter()
+
     return true
   }
 
-  // Set the current deck, returns true if deck was valid
+  // Set thek current deck, returns true if deck was valid
   setDeck(deckCode: string | Card[]): boolean {
     let deck: Card[]
     if (typeof deckCode === "string") {
@@ -294,6 +296,8 @@ export class BuilderScene extends BuilderSceneShell {
       }
 
       that.updateSavedDeck()
+
+      that.filter()
     }
   }
 
@@ -924,9 +928,11 @@ export class BuilderScene extends BuilderSceneShell {
       return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
     }
 
-    // Filter cards based on if they contain the string being searched
+    // Filter cards based on whether you have more of them in your inventory
     let ownershipFilter = function(card: Card): boolean {
-      return !that.filterUnowned || UserSettings._get('inventory')[card.id] > 0
+      let moreInInventory = UserSettings._get('inventory')[card.id] > that.deck.filter(ci => ci.card.id === card.id).length
+
+      return !that.filterUnowned || moreInInventory
     }
 
     // Filter based on the overlap of all above filters
