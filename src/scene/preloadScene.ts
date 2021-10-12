@@ -5,7 +5,7 @@ import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings, 
 import { allCards } from "../catalog/catalog"
 import MessageManager from "../lib/message"
 import AccountManager from "../lib/accountManager"
-import Authentication from "../authenticate"
+import Server from "../server"
 
 
 const SOUNDS = [
@@ -107,7 +107,7 @@ export default class PreloadClass extends Phaser.Scene {
 			let token = user.getAuthResponse().id_token
 			console.log(token)
 
-			new Authentication(token)
+			Server.login(token)
 
 
 			
@@ -131,10 +131,10 @@ export default class PreloadClass extends Phaser.Scene {
 		}
 
 		// Render login button
-		// gapi.signin2.render("signin", {
-		// 	'onsuccess': onSuccess,
-		// 	'onfailure': onFailure
-		// })
+		gapi.signin2.render("signin", {
+			'onsuccess': onSuccess,
+			'onfailure': onFailure
+		})
 	}
 
 	// Attempt to log in the user, starts an asynch request which sets the loginStatus param when completed

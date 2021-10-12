@@ -1,17 +1,15 @@
-
-const bufSize = 4096 * 2
-
 const ip = '127.0.0.1' //'10.244.30.242'
 //'10.244.10.228'//'216.193.175.49'
 //'127.0.0.1'//'192.168.1.154' //'server-6d66b4ccc9-xc989'
 const port = 5555
 // const internalPort = 4321
 
+// The websocket which is open with the main server (Authentication/pack opening)
+var wsServer: WebSocket = undefined
 
-export default class Authentication {
-	socket: WebSocket
-
-	constructor(token) {
+class Server {
+	// Log in with the server for user with given OAuth token
+	static login(token) {
 		let that = this
 
 		// The first message sent to server once the match starts
@@ -20,15 +18,15 @@ export default class Authentication {
 			value: token
 		})
 
-		let socket = this.socket = this.getSocket()
+		wsServer = this.getWebSocket()
 
 		// Connection opened
-		socket.addEventListener('open', function (event) {
+		wsServer.addEventListener('open', function (event) {
 			console.log('Auth socket open')
 		})
 
 		// Listen for messages
-		socket.addEventListener('message', function (event) {
+		wsServer.addEventListener('message', function (event) {
 			let msg
 			try {
 				msg = JSON.parse(event.data)
@@ -39,23 +37,20 @@ export default class Authentication {
 
 			switch (msg.type) {
 				case 'request_token':
-					socket.send(tokenMessage)
+					wsServer.send(tokenMessage)
 					break
 
 				case 'send_user_data':
 					let val = msg.value
 					console.log(val)
+					// TODO Use user data
 					break
 			}
 		})
 	}
 
-	closeSocket() {
-		this.socket.close(1000)
-	}
-
 	// Get a websocket connection
-	private getSocket(): WebSocket {
+	private static getWebSocket(): WebSocket {
 		// Establish a websocket based on the environment
 		// The WS location on DO
 		let loc = window.location
@@ -65,4 +60,11 @@ export default class Authentication {
 		return socket
 	}
 
+	requestPack(): void {
+		console.log('you want a pack lol')
+	}
+
+	pick3rdCard(): void {
+		console.log('you picking a card lol')
+	}
 }
