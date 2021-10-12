@@ -113,7 +113,7 @@ export default class GameScene extends BaseScene {
 	    	if (params['tutorialNumber'] === 1) {
 	    		mmCode = 'tutorial'
 	    	} else if (params['tutorialNumber'] === 2) {
-	    		mmCode = 'ai'
+	    		mmCode = `ai:${params['opponentDeck']}`
 	    	}
 	    }
 

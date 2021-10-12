@@ -1063,6 +1063,7 @@ export class TutorialBuilderScene extends BuilderScene {
   lastScene: string
   deckDescription: string
   tutorialName: string
+  opponentDeck: string
 
   constructor(params) {
     super({
@@ -1080,6 +1081,7 @@ export class TutorialBuilderScene extends BuilderScene {
     this.lastScene = params.lastScene
     this.deckDescription = params.deckDescription
     this.tutorialName = params.tutorialName
+    this.opponentDeck = params.opponentDeck
   }
 
   create(): void {
@@ -1136,7 +1138,8 @@ export class TutorialBuilderScene extends BuilderScene {
       isTutorial: true,
       tutorialNumber: 2,
       deck: deck,
-      tutorialName: this.tutorialName
+      tutorialName: this.tutorialName,
+      opponentDeck: this.opponentDeck
     })
   }
 

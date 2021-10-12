@@ -19,6 +19,7 @@ class CatalogScene extends BaseScene {
 	defaultDeck: string
 	name: string
 	deckDescription: string
+	opponentDeck: string
 
 	init(params: any): void {
 		this.container = this.add.container(0, 140)
@@ -109,7 +110,8 @@ class CatalogScene extends BaseScene {
   			defaultDeck: this.defaultDeck,
   			lastScene: this.name + "CatalogScene",
   			deckDescription: this.deckDescription,
-  			tutorialName: this.name
+  			tutorialName: this.name,
+  			opponentDeck: this.opponentDeck
   			}
   			)
   	}
@@ -122,7 +124,7 @@ export class AnubisCatalogScene extends CatalogScene {
 	name = "Anubis"
 	deckDescription: string = 
 'wins early rounds with Crossed Bones, plays Anubis for free in later rounds, then uses Sarcophagus to put him back on top of the deck to wrap up the match.'
-
+	opponentDeck: string = '17:17:14:14:14:12:12:12:6:3:3:3:4:4:4'
 	constructor() {
 		super({
 			key: "AnubisCatalogScene"
@@ -136,6 +138,7 @@ export class RobotsCatalogScene extends CatalogScene {
 	name = "Robots"
 	deckDescription: string = 
 'spends early rounds building large robots. It seeks to use Mine to remove weaker cards, then settle into a powerful final state of playing cheap AI for points and card draw.'
+	opponentDeck: string = '14:14:14:12:12:12:7:7:7:4:4:4:4:0:0'
 
 	constructor() {
 		super({
@@ -150,6 +153,7 @@ export class StalkerCatalogScene extends CatalogScene {
 	name = "Stalker"
 	deckDescription: string = 
 "attacks the opponent's hand with multiple copies of Bone Knife, then steals rounds with cheap Stalkers. It ends with strong and consistent high-cost cards like Oak."
+	opponentDeck: string = '23:18:15:15:12:12:12:6:3:3:3:3:0:0:0'
 
 	constructor() {
 		super({
