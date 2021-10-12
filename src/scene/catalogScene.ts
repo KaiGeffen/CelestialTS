@@ -168,6 +168,7 @@ export class CryptCatalogScene extends CatalogScene {
 	name = "Crypt"
 	deckDescription: string = 
 "attacks your opponent's hand in the early game, then transforms Stalker into Sarcophagus and Crypt into Imprison in the late game to control and overwhelm your opponent."
+	opponentDeck: string = '21:67:14:14:14:64:64:7:3:3:3:3:0:0:0'
 
 	constructor() {
 		super({
@@ -182,6 +183,7 @@ export class BastetCatalogScene extends CatalogScene {
 	name = "Bastet"
 	deckDescription: string = 
 "survives the early game, trading rounds by spending Nourish and empowering Bastets. It seeks to replay the strongest Bastet often using Raise Dead and the shuffle."
+	opponentDeck: string = '18:18:60:10:12:12:9:6:8:63:63:2:2:2:2'
 
 	constructor() {
 		super({
@@ -196,6 +198,7 @@ export class HorusCatalogScene extends CatalogScene {
 	name = "Horus"
 	deckDescription: string = 
 "only occasionally wins rounds in the early game with Sine, opting instead to fill up the opponent's hand with Cameras, ensuring knowledge it uses to reset or play free Horus's."
+	opponentDeck: string = '47:16:51:53:53:11:11:12:6:6:32:29:29:29:29'
 
 	constructor() {
 		super({
