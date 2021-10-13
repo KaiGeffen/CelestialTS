@@ -1,5 +1,5 @@
 import "phaser"
-import { Space, StyleSettings, ColorSettings } from '../settings'
+import { Space, Style, Color } from '../settings/settings'
 
 
 // TODO There is a better way to do this where the object is defined within the Phaser Game Factor and can be added from that
@@ -8,7 +8,7 @@ export default class Button extends Phaser.GameObjects.Text {
 	constructor(scene: Phaser.Scene, x: number, y: number, text: string,
 		f: () => void = function() { },
 		playSound: boolean = true) {
-		super(scene, x, y, text, StyleSettings.button)
+		super(scene, x, y, text, Style.button)
 
 		this.setInteractive()
 
@@ -19,7 +19,7 @@ export default class Button extends Phaser.GameObjects.Text {
 			this.on('pointerdown', f, scene)
 		}
 
-		this.on('pointerover', () => this.setTint(ColorSettings.buttonHighlight), this)
+		this.on('pointerover', () => this.setTint(Color.buttonHighlight), this)
 		this.on('pointerout', () => this.clearTint(), this)
 		this.scene.input.on('gameout', () => this.clearTint(), this)
 
@@ -64,7 +64,7 @@ export default class Button extends Phaser.GameObjects.Text {
 
 		let pipeline = postFxPlugin['add'](this.outline,
         	{thickness: 3,
-          	outlineColor: ColorSettings.buttonBorder})
+          	outlineColor: Color.buttonBorder})
 
 		if (doAnimate) {
 			this.outline.setAlpha(0)

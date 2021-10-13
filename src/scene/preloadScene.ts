@@ -1,7 +1,7 @@
 import "phaser"
 var mobile = require('is-mobile')
 
-import { Style, Color, Space, ensureUserSettings, UserSettings, Url } from "../settings/settings"
+import { Style, Color, Space, UserSettings, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import MessageManager from "../lib/message"
 import Server from "../server"
@@ -54,7 +54,7 @@ export default class PreloadClass extends Phaser.Scene {
 	// Load all assets used throughout the game
 	preload(): void {
 		// Ensure that every user setting is either set, or set it to its default value
-		ensureUserSettings()
+		UserSettings._ensure()
 
 		this.renderSigninButton()
 
