@@ -1,6 +1,6 @@
 import "phaser"
 import { keywords } from "../catalog/keywords"
-import { Space, StyleSettings } from "../settings"
+import { Space, Style } from "../settings/settings"
 import { cardInfo } from "./cardImage"
 
 
@@ -56,7 +56,7 @@ export class StatusBar {
   				// Make a hoverable text object
   				let yOrigin = this.isYou ? 1 : 0
   				
-  				let txt = this.scene.add.text(x, this.y, s, StyleSettings.basic).setOrigin(0.5, yOrigin)
+  				let txt = this.scene.add.text(x, this.y, s, Style.basic).setOrigin(0.5, yOrigin)
   				// Move object over (0.5 centered X origin for scaling animation purposes)
   				txt.x += (txt.width * 1.5)/2
 

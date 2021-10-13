@@ -1,6 +1,6 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { ColorSettings, StyleSettings, UserSettings, BBConfig, CardStatsConfig, TimeSettings, Space } from "../settings"
+import { Color, BBStyle, Time, Space } from "../settings/settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
@@ -9,7 +9,7 @@ import { StatusBar } from "../lib/status"
 export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBConfig).setOrigin(0, 1)
+  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1)
 
   // Add image render information
   allCards.forEach( (card) => {
@@ -89,7 +89,7 @@ export class CardImage {
     // Stat text
     let s = `${card.cost}:${card.points}`
     
-    this.txtStats = scene.add['rexBBCodeText'](-Space.cardSize/2, -Space.cardSize/2, s, CardStatsConfig).setOrigin(0)
+    this.txtStats = scene.add['rexBBCodeText'](-Space.cardSize/2, -Space.cardSize/2, s, BBStyle.cardStats).setOrigin(0)
     if (card === cardback) {
       this.txtStats.setAlpha(0)
     }
@@ -142,7 +142,7 @@ export class CardImage {
       targets: dissolvePipeline,
         progress: 1,
         ease: 'Quad',
-        duration: TimeSettings.recapStateMinimum,
+        duration: Time.recapStateMinimum,
         onComplete: function(tween, targets, params) {
           copyImage.destroy()
         }
@@ -171,7 +171,7 @@ export class CardImage {
       this.image.clearTint()
     }
     else {
-      this.image.setTint(ColorSettings.cardUnplayable)
+      this.image.setTint(Color.cardUnplayable)
     }
   }
 
@@ -207,7 +207,7 @@ export class CardImage {
   setCost(cost: number): void {
     if (cost !== null) {
       // If the cost is reduced, change the color of cost
-      let costTxt = cost < this.card.cost ? `[stroke=${ColorSettings.cardCostReduced}]${cost}[/stroke]` : `${cost}`
+      let costTxt = cost < this.card.cost ? `[stroke=${Color.cardCostReduced}]${cost}[/stroke]` : `${cost}`
       this.txtStats.setText(`${costTxt}:${this.card.points}`)
     }
   }
@@ -274,7 +274,7 @@ export class CardImage {
       postFxPlugin['remove'](that.image)
       postFxPlugin['add'](that.image,
         {thickness: Space.highlightWidth,
-          outlineColor: ColorSettings.cardHighlight})
+          outlineColor: Color.cardHighlight})
     }
 
     return function() {

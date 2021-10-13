@@ -1,5 +1,5 @@
 import { cardback,  } from "../catalog/catalog"
-import { UserSettings, ColorSettings } from "../settings"
+import { Color } from "../settings/settings"
 import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
 import { Rarity } from "./rarity"
@@ -74,7 +74,7 @@ export default class Card {
     }
 
     // All reference/reminder text is grey
-    result += `[color=${ColorSettings.cardTextSecondary}][i]`
+    result += `[color=${Color.cardTextSecondary}][i]`
 
     result = this.replaceReferences(result)
     result = this.explainKeywords(result)

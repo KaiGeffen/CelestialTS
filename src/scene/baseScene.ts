@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, TimeSettings, ErrorConfig, UserSettings, Space } from "../settings"
+import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
 
@@ -48,7 +48,7 @@ export default class BaseScene extends Phaser.Scene {
 		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 0, '⚙', this.openMenu).setOrigin(1, 0)
 
 	    // Error text, for when the user does something wrong they get an explanation
-	    this.txtError = this.add['rexBBCodeText'](Space.windowWidth/2, Space.windowHeight/2, '', ErrorConfig)
+	    this.txtError = this.add['rexBBCodeText'](Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
 	    	.setOrigin(0.5)
 	    	.setDepth(50)
 	    	.setVisible(false)
@@ -77,7 +77,7 @@ export default class BaseScene extends Phaser.Scene {
 		}
 
 		let that = this
-		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('').setVisible(false) }, TimeSettings.errorMsgTime())
+		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('').setVisible(false) }, Time.errorMsgTime())
 	}
 
 	private createMenu(): void {
@@ -88,23 +88,23 @@ export default class BaseScene extends Phaser.Scene {
 		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, ColorSettings.menuBackground).setAlpha(0.95)
+		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, Color.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
-		visibleBackground.setStrokeStyle(10, ColorSettings.menuBorder, 1)
+		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 
 		// Slider for Volume
 		let x = Space.windowWidth/2 - 210
 		let y = Space.windowHeight/2 - 265
 
-		let txtVolumeHint = this.add.text(x, y, 'Volume:', StyleSettings.announcement).setOrigin(0, 0.5)
+		let txtVolumeHint = this.add.text(x, y, 'Volume:', Style.announcement).setOrigin(0, 0.5)
 
 		this.sliderVolume = this['rexUI'].add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
 			value: this.sound.volume,
 
             track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('volume', value)
@@ -121,15 +121,15 @@ export default class BaseScene extends Phaser.Scene {
         
         // Slider for Music
         y += 90
-        let txtMusicHint = this.add.text(x, y, 'Music:', StyleSettings.announcement).setOrigin(0, 0.5)
+        let txtMusicHint = this.add.text(x, y, 'Music:', Style.announcement).setOrigin(0, 0.5)
 
 		this.sliderMusic = this['rexUI'].add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
 			value: UserSettings._get('musicVolume'),
 
             track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('musicVolume', value)
@@ -153,15 +153,15 @@ export default class BaseScene extends Phaser.Scene {
 
         // Slider for Animation Speed
         y += 90
-        let txtSpeedHint = this.add.text(x, y, 'Speed:', StyleSettings.announcement).setOrigin(0, 0.5)
+        let txtSpeedHint = this.add.text(x, y, 'Speed:', Style.announcement).setOrigin(0, 0.5)
 
 		this.sliderAnimationSpeed = this['rexUI'].add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
 			value: UserSettings._get('animationSpeed'),
 
             track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, ColorSettings.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
+            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('animationSpeed', value)
@@ -177,11 +177,11 @@ export default class BaseScene extends Phaser.Scene {
 
         // Radio button for auto-pass
         y += 90
-        let txtAutopassHint = this.add.text(x, y, 'Autopass:', StyleSettings.announcement).setOrigin(0, 0.5)
+        let txtAutopassHint = this.add.text(x, y, 'Autopass:', Style.announcement).setOrigin(0, 0.5)
 
-		let radioAutopass = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, ColorSettings.background)
+		let radioAutopass = this.add.circle(Space.windowWidth/2 + 182, y + 5, 14).setStrokeStyle(4, Color.background)
 		if (UserSettings._get('autopass')) {
-			radioAutopass.setFillStyle(ColorSettings.cardHighlight)
+			radioAutopass.setFillStyle(Color.cardHighlight)
 		}
 
 		radioAutopass.setInteractive()
@@ -190,7 +190,7 @@ export default class BaseScene extends Phaser.Scene {
 
 			UserSettings._set('autopass', !UserSettings._get('autopass'))
 
-			radioAutopass.setFillStyle((UserSettings._get('autopass')) ? ColorSettings.cardHighlight : undefined)
+			radioAutopass.setFillStyle((UserSettings._get('autopass')) ? Color.cardHighlight : undefined)
 		})
         
         // Link to rulebook
@@ -200,12 +200,12 @@ export default class BaseScene extends Phaser.Scene {
         	this.rulebookContainer.setVisible(true)
 	    	this.sound.play('open')
         })
-        	.setStyle(StyleSettings.announcement)
+        	.setStyle(Style.announcement)
         	.setOrigin(0, 0.5)
 
 		// Prompt asking users if they want to exit
 		y += 90
-		let txtExitHint = this.add.text(x, y, 'Exit to main menu?', StyleSettings.announcement).setOrigin(0, 0.5)
+		let txtExitHint = this.add.text(x, y, 'Exit to main menu?', Style.announcement).setOrigin(0, 0.5)
 
 		// Yes/No buttons
 		y += 80
@@ -316,12 +316,12 @@ They do not; you can have both Nourish and Starve at the same time.`
 	    	Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
 	    		type: 'textarea',
 	    		text: text,
-	    		fontFamily: StyleSettings.basic.fontFamily,
-	    		fontSize: StyleSettings.basic.fontSize,
-	    		color: ColorSettings.rulebookText,
+	    		fontFamily: Style.basic.fontFamily,
+	    		fontSize: Style.basic.fontSize,
+	    		color: Color.rulebookText,
 	    		border: 3,
 	    		borderColor: '#000',
-	    		backgroundColor: ColorSettings.rulebookBackground,
+	    		backgroundColor: Color.rulebookBackground,
 	    		id: 'rulebook',
 	    		readOnly: true
 	    	})

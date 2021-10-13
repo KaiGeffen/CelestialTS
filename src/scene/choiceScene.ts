@@ -5,7 +5,7 @@ import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 
-import { StyleSettings, TimeSettings, Space } from "../settings"
+import { Style, Time, Space } from "../settings/settings"
 
 
 export default class ChoiceScene extends BaseScene {
@@ -36,14 +36,14 @@ single-player experience, with lots of interesting decks to tinker with.
 Press 'esc' to open the options menu, or click on the ⚙ above.
 
 Check out some of the available starter decks!`
-		// this.add.text(Space.pad, Space.pad, s, StyleSettings.catalog)
+		// this.add.text(Space.pad, Space.pad, s, Style.catalog)
 		let txt = this['rexUI'].add['textBox']({
 			x: Space.pad,
 			y: Space.pad,
-			text: this.add['rexBBCodeText'](0, 0, '', StyleSettings.basic)
+			text: this.add['rexBBCodeText'](0, 0, '', Style.basic)
 		}).setOrigin(0)
 
-		txt.start('[stroke=black]' + s + '[/stroke]', TimeSettings.textSpeed())
+		txt.start('[stroke=black]' + s + '[/stroke]', Time.textSpeed())
 
 		// Create a button to open menu
 	    let btnChoices = new Button(this, Space.windowWidth/2, Space.windowHeight - 50, "Starter Decks", () => {menu.open()}).setOrigin(0.5)
@@ -80,19 +80,19 @@ Check out some of the available starter decks!`
 `Aggressively win early rounds and fill
 up your discard pile to pull off
 powerful combos before you shuffle!`
-	    menu.add(this.add.text(xTxt, -Space.iconSeparation, s, StyleSettings.basic).setOrigin(0, 0.5))
+	    menu.add(this.add.text(xTxt, -Space.iconSeparation, s, Style.basic).setOrigin(0, 0.5))
 
 	    s = 
 `Build huge robots while removing
 weaker cards from your deck in
 order to dominate the late game!`
-	    menu.add(this.add.text(xTxt, 0, s, StyleSettings.basic).setOrigin(0, 0.5))
+	    menu.add(this.add.text(xTxt, 0, s, Style.basic).setOrigin(0, 0.5))
 
 	    s = 
 `Control your opponent's hand and
 reset their points before stealing
 rounds with deadly ease!`
-	    menu.add(this.add.text(xTxt, Space.iconSeparation, s, StyleSettings.basic).setOrigin(0, 0.5))
+	    menu.add(this.add.text(xTxt, Space.iconSeparation, s, Style.basic).setOrigin(0, 0.5))
 
 	    return menu
 	}

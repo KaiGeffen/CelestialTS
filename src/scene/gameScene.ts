@@ -9,7 +9,7 @@ import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib
 import { StatusBar } from "../lib/status"
 
 // Import Settings itself 
-import { ColorSettings, StyleSettings, UserSettings, TimeSettings, Space, MechanicSettings } from "../settings"
+import { Color, Style, UserSettings, Time, Space, Mechanics } from "../settings/settings"
 import Recap from '../lib/recap'
 import Button from '../lib/button'
 import Icon from '../lib/icon'
@@ -153,14 +153,14 @@ export default class GameScene extends BaseScene {
 
 		// Priority highlight
 		let height = Space.cardSize + 2 * Space.pad
-		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, Space.windowWidth, height, ColorSettings.priorityRectangle, 0.5).setOrigin(0, 0).setDepth(-1)
-		this.txtYourTurn = this.add.text(Space.announceOffset, Space.windowHeight - 200, 'Your turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
-		this.txtTheirTurn = this.add.text(Space.announceOffset, 200, 'Their turn', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
+		this.priorityRectangle = this.add.rectangle(0, Space.windowHeight - height, Space.windowWidth, height, Color.priorityRectangle, 0.5).setOrigin(0, 0).setDepth(-1)
+		this.txtYourTurn = this.add.text(Space.announceOffset, Space.windowHeight - 200, 'Your turn', Style.announcement).setVisible(false).setOrigin(1, 0.5)
+		this.txtTheirTurn = this.add.text(Space.announceOffset, 200, 'Their turn', Style.announcement).setVisible(false).setOrigin(1, 0.5)
 
 		// Vision highlight and text
 		height = Space.cardSize + 2 * Space.stackOffset + 2 * Space.pad
 		this.visionRectangle = this.add.rectangle(0, Space.windowHeight/2, Space.windowWidth, height, 0xffffff, 0.1).setOrigin(1, 0.5)
-		this.txtVision = this.add.text(0, Space.windowHeight/2, '', StyleSettings.small).setOrigin(0, 0.5)
+		this.txtVision = this.add.text(0, Space.windowHeight/2, '', Style.small).setOrigin(0, 0.5)
 		this.storyContainer.add([this.visionRectangle, this.txtVision])
 
 		// Mulligan highlights and button
@@ -175,32 +175,32 @@ export default class GameScene extends BaseScene {
 	    // Mana text
 	    this.txtMana = this.add.text(Space.windowWidth - Space.pad,
 	    	Space.windowHeight - 30 - Space.cardSize - Space.pad * 2,
-	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
+	    	'', Style.basic).setOrigin(1.0, 0.5)
 	    this.txtOpponentMana = this.add.text(Space.windowWidth - Space.pad,
 	    	30 + Space.cardSize + Space.pad * 2,
-	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
+	    	'', Style.basic).setOrigin(1.0, 0.5)
 
 	    this.txtWins = this.add.text(Space.windowWidth - Space.pad,
 	    	Space.windowHeight - 70 - Space.cardSize - Space.pad * 2,
-	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
+	    	'', Style.basic).setOrigin(1.0, 0.5)
 	    this.txtOpponentWins = this.add.text(Space.windowWidth - Space.pad,
 	    	70 + Space.cardSize + Space.pad * 2,
-	    	'', StyleSettings.basic).setOrigin(1.0, 0.5)
+	    	'', Style.basic).setOrigin(1.0, 0.5)
 
 	    // Status text
 	    this.statusBar = new StatusBar(this, Space.windowHeight - Space.cardSize - Space.pad * 2, true)
 	    this.statusBarOpp = new StatusBar(this, Space.cardSize + Space.pad * 2, false)
 
 	    // Passing text
-	    this.txtPass = this.add.text(Space.announceOffset, Space.windowHeight - 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
-	    this.txtOpponentPass = this.add.text(Space.announceOffset, 200, 'Passed', StyleSettings.announcement).setVisible(false).setOrigin(1, 0.5)
+	    this.txtPass = this.add.text(Space.announceOffset, Space.windowHeight - 200, 'Passed', Style.announcement).setVisible(false).setOrigin(1, 0.5)
+	    this.txtOpponentPass = this.add.text(Space.announceOffset, 200, 'Passed', Style.announcement).setVisible(false).setOrigin(1, 0.5)
 
 	    // Alternate views presented when hovering over/clicking any stacks
 	    // TODO Make a method that replaces each of these sections, since they are all nearly identical
 	    this.txtDeckSize = this.add.text(
 	    	Space.stackX + Space.cardSize/2,
 	    	Space.windowHeight - Space.pad - Space.cardSize/2,
-	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
+	    	'', Style.stack).setOrigin(0.5, 0.5)
 	    this.txtDeckSize.setInteractive()
 	    this.txtDeckSize.on('pointerover', this.hoverAlternateView(this.deckContainer, this.txtDeckSize), this)
 	    let hoverExit = this.hoverAlternateViewExit(this.deckContainer, this.txtDeckSize)
@@ -211,7 +211,7 @@ export default class GameScene extends BaseScene {
 	    this.txtDiscardSize = this.add.text(
 	    	Space.stackX + Space.cardSize*3/2 + Space.pad,
 	    	Space.windowHeight - Space.pad - Space.cardSize/2,
-	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
+	    	'', Style.stack).setOrigin(0.5, 0.5)
 	    this.txtDiscardSize.setInteractive()
 	    this.txtDiscardSize.on('pointerover', this.hoverAlternateView(this.discardContainer, this.txtDiscardSize), this)
 	    hoverExit = this.hoverAlternateViewExit(this.discardContainer, this.txtDiscardSize)
@@ -222,7 +222,7 @@ export default class GameScene extends BaseScene {
 	    this.txtOpponentDeckSize = this.add.text(
 	    	Space.stackX + Space.cardSize/2,
 	    	Space.pad + Space.cardSize/2,
-	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
+	    	'', Style.stack).setOrigin(0.5, 0.5)
 	    this.txtOpponentDeckSize.setInteractive()
 	    this.txtOpponentDeckSize.on('pointerover', this.hoverAlternateView(this.opponentDeckContainer, this.txtOpponentDeckSize), this)
 	    hoverExit = this.hoverAlternateViewExit(this.opponentDeckContainer, this.txtOpponentDeckSize)
@@ -233,7 +233,7 @@ export default class GameScene extends BaseScene {
 	    this.txtOpponentDiscardSize = this.add.text(
 	    	Space.stackX + Space.cardSize*3/2 + Space.pad,
 	    	Space.pad + Space.cardSize/2,
-	    	'', StyleSettings.stack).setOrigin(0.5, 0.5)
+	    	'', Style.stack).setOrigin(0.5, 0.5)
 	    this.txtOpponentDiscardSize.setInteractive()
 	    this.txtOpponentDiscardSize.on('pointerover', this.hoverAlternateView(this.opponentDiscardContainer, this.txtOpponentDiscardSize), this)
 	    hoverExit = this.hoverAlternateViewExit(this.opponentDiscardContainer, this.txtOpponentDiscardSize)
@@ -245,14 +245,14 @@ export default class GameScene extends BaseScene {
 	    this.stackContainer.add(stacks)
 
 	    let txtLastShuffleExplanation = this.add.text(
-	    	Space.pad, Space.windowHeight/2 - (Space.cardSize/2 + Space.pad), "Opponent's last known shuffle:", StyleSettings.basic)
+	    	Space.pad, Space.windowHeight/2 - (Space.cardSize/2 + Space.pad), "Opponent's last known shuffle:", Style.basic)
 	    txtLastShuffleExplanation.setOrigin(0, 1)
 	    this.opponentDeckContainer.add(txtLastShuffleExplanation)
 
 	    // Scores text for recap states, same as below text but viewed when recalling recap states
 	    this.txtScores = this.add.text(
 	    	Space.scoresOffset, Space.windowHeight/2,
-	    	'', StyleSettings.announcement).setOrigin(0.5, 0.5)
+	    	'', Style.announcement).setOrigin(0.5, 0.5)
 	    this.storyContainer.add(this.txtScores)
 
 	    // Recap button - click to watch the last recap
@@ -355,16 +355,16 @@ export default class GameScene extends BaseScene {
 
 		// Highlights
 		this.mulliganHighlights = []
-		for (var i = 0; i < MechanicSettings.numMulligans; i++) {
+		for (var i = 0; i < Mechanics.numMulligans; i++) {
 			let [x, y] = this.getCardPosition(i, this.handContainer, 0)
-			let highlight = this.add.rectangle(x, y, 100, 140, ColorSettings.mulliganHighlight, 1).setVisible(false)
+			let highlight = this.add.rectangle(x, y, 100, 140, Color.mulliganHighlight, 1).setVisible(false)
 			this.handContainer.add(highlight)
   			
   			this.mulliganHighlights.push(highlight)
 		}
 
 		// Text announcing opponent is still mulliganing
-		this.txtOpponentMulligan = this.add.text(Space.announceOffset, 200, 'Opponent is still mulliganing...', StyleSettings.announcement).setOrigin(1, 0.5)
+		this.txtOpponentMulligan = this.add.text(Space.announceOffset, 200, 'Opponent is still mulliganing...', Style.announcement).setOrigin(1, 0.5)
 
 		// Button for player to confirm their mulligan
 		let x = Space.pad * 2 + Space.cardSize * 1.5
@@ -449,7 +449,7 @@ export default class GameScene extends BaseScene {
 		let hiddenObjets = [this.priorityRectangle, this.txtOpponentMulligan, this.btnMulligan]
 
 		if (searching) {
-			let txtSearching = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 50, 'Searching for an opponent...', StyleSettings.announcement).setOrigin(0.5)
+			let txtSearching = this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 50, 'Searching for an opponent...', Style.announcement).setOrigin(0.5)
 
 			let btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight/2 + 50, "Cancel", this.exitScene()).setOrigin(0.5)
 
@@ -506,7 +506,7 @@ export default class GameScene extends BaseScene {
 			this.tweens.add({
 				targets: this.txtScores,
 				alpha: 1,
-				duration: TimeSettings.recapStateMinimum()
+				duration: Time.recapStateMinimum()
 			})
 		}
 		// Queue this for after recap finishes
@@ -640,7 +640,7 @@ export default class GameScene extends BaseScene {
 			this.tweens.add({
 				targets: this.txtWins,
 				scale: 1.5,
-				duration: TimeSettings.recapTween(),
+				duration: Time.recapTween(),
 				ease: "Sine.easeInOut",
 				yoyo: true
 			})
@@ -648,7 +648,7 @@ export default class GameScene extends BaseScene {
 			this.tweens.add({
 				targets: this.txtOpponentWins,
 				scale: 1.5,
-				duration: TimeSettings.recapTween(),
+				duration: Time.recapTween(),
 				ease: "Sine.easeInOut",
 				yoyo: true
 			})
@@ -714,7 +714,7 @@ export default class GameScene extends BaseScene {
 				}
 
 				// TODO Shuffle hits this
-				delay += TimeSettings.recapTween()
+				delay += Time.recapTween()
 			}
 		}
 
@@ -739,7 +739,7 @@ export default class GameScene extends BaseScene {
 			targets: topHalf,
 			y: topHalf.y - Space.cardSize/2,
 			delay: delay,
-			duration: TimeSettings.recapTween()/2,
+			duration: Time.recapTween()/2,
 			ease: "Sine.easeInOut",
 			yoyo: true,
 			onStart: function() { that.sound.play('shuffle') },
@@ -749,7 +749,7 @@ export default class GameScene extends BaseScene {
 			targets: bottomHalf,
 			y: bottomHalf.y + Space.cardSize/2,
 			delay: delay,
-			duration: TimeSettings.recapTween()/2,
+			duration: Time.recapTween()/2,
 			ease: "Sine.easeInOut",
 			yoyo: true,
 			onComplete: function () { bottomHalf.destroy() }
@@ -769,7 +769,7 @@ export default class GameScene extends BaseScene {
 		that.tweens.add({
   			targets: txt,
   			scale: 1.5,
-  			duration: TimeSettings.recapTweenWithPause(),
+  			duration: Time.recapTweenWithPause(),
   			ease: "Sine.easeInOut",
   			yoyo: true,
   			delay: delay,
@@ -848,7 +848,7 @@ export default class GameScene extends BaseScene {
 			x: x,
 			y: y,
 			delay: delay,
-			duration: TimeSettings.recapTweenWithPause(),
+			duration: Time.recapTweenWithPause(),
 			onStart: function (tween, targets, _)
 			{
 				card.show()
@@ -871,7 +871,7 @@ export default class GameScene extends BaseScene {
 				targets: card.container,
 				y: y,
 				delay: delay,
-				duration: TimeSettings.recapTweenWithPause()/2,
+				duration: Time.recapTweenWithPause()/2,
 				yoyo: true,
 				onStart: function() { that.sound.play('discard') }
 			})
@@ -883,7 +883,7 @@ export default class GameScene extends BaseScene {
 				targets: card.container,
 				alpha: 0,
 				delay: delay,
-				duration: TimeSettings.recapTweenWithPause()
+				duration: Time.recapTweenWithPause()
 			})
 		}
 
@@ -895,7 +895,7 @@ export default class GameScene extends BaseScene {
 				targets: card.container,
 				alpha: 1,
 				delay: delay,
-				duration: TimeSettings.recapTweenWithPause()
+				duration: Time.recapTweenWithPause()
 			})
 		}
 	}
@@ -947,7 +947,7 @@ export default class GameScene extends BaseScene {
 			alpha: 0,
 			scale: 2,
 			delay: delay,
-			duration: TimeSettings.recapTweenWithPause(),
+			duration: Time.recapTweenWithPause(),
 			onStart: function (tween, targets, _)
 			{
 				card.show()
@@ -1032,7 +1032,7 @@ export default class GameScene extends BaseScene {
 		let txt = 'Your opponent disconnected, you win!'
 		let btn = new Button(this, Space.windowWidth/2, Space.windowHeight/2, txt, this.exitScene())
 			.setOrigin(0.5)
-			.setStyle(StyleSettings.announcement)
+			.setStyle(Style.announcement)
 
 		this.storyContainer.add(btn)
 	}
@@ -1079,7 +1079,7 @@ export default class GameScene extends BaseScene {
 			// TODO This isn't necessary since index is a part of animation
 			// Go through the animation list backwards, setting longest delay on rightmost drawn cards
 			for (i = state.animations[player].length - 1; i >= 0; i--) {
-				let delay = i * TimeSettings.recapTween()
+				let delay = i * Time.recapTween()
 
 				let animation: Animation = state.animations[player][i]
 				if (animation.to === Zone.Hand) {
@@ -1094,7 +1094,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								y: y,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause()/2,
+								duration: Time.recapTweenWithPause()/2,
 								yoyo: true
 							})
 
@@ -1108,7 +1108,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								x: x,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause(),
+								duration: Time.recapTweenWithPause(),
 								onStart: function (tween, targets, _)
 								{
 									card.show()
@@ -1128,7 +1128,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								x: x,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause(),
+								duration: Time.recapTweenWithPause(),
 								onStart: function (tween, targets, _)
 								{
 									card.show()
@@ -1148,7 +1148,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								y: y,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause(),
+								duration: Time.recapTweenWithPause(),
 								onStart: function (tween, targets, _)
 								{
 									card.show()
@@ -1161,7 +1161,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								alpha: 1,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause()
+								duration: Time.recapTweenWithPause()
 							})
 							break
 
@@ -1171,7 +1171,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								y: y,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause()
+								duration: Time.recapTweenWithPause()
 							})
 							x = card.container.x
 							// Animate moving x direction, appearing at start
@@ -1179,7 +1179,7 @@ export default class GameScene extends BaseScene {
 								targets: card.container,
 								x: x,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause(),
+								duration: Time.recapTweenWithPause(),
 								onStart: function (tween, targets, _)
 								{
 									card.show()
@@ -1260,7 +1260,7 @@ export default class GameScene extends BaseScene {
 		let that = this
 		function animateStory(player: number) {
 			for (i = 0; i < state.animations[player].length; i++) {
-				let delay = i * TimeSettings.recapTween()
+				let delay = i * Time.recapTween()
 
 				let animation: Animation = state.animations[player][i]
 				if (animation.to === Zone.Story) {
@@ -1275,7 +1275,7 @@ export default class GameScene extends BaseScene {
 								x: card.container.x,
 								y: card.container.y,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause(),
+								duration: Time.recapTweenWithPause(),
 								onStart: function (tween, targets, _)
 								{
 									card.show()
@@ -1297,7 +1297,7 @@ export default class GameScene extends BaseScene {
 								targets: fromCard.container,
 								alpha: 0,
 								delay: delay,
-								duration: TimeSettings.recapTweenWithPause(),
+								duration: Time.recapTweenWithPause(),
 								onComplete: function (tween, targets, _) {
 									fromCard.destroy()
 								}
@@ -1359,7 +1359,7 @@ export default class GameScene extends BaseScene {
 
 		let width = Space.maxHeight - 250
 		if (state.winner === 0) {
-			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', StyleSettings.announcement).setOrigin(0.5, 1)
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
 			let bgDefeat = this.add.image(0, -50, 'bg-Victory')
@@ -1371,7 +1371,7 @@ export default class GameScene extends BaseScene {
 			new Icon(this, menu, Space.iconSeparation, y, 'Review', () => menu.close())
 		}
 		else if (state.winner === 1) {
-			let txtTitle = this.add.text(0, -(width/2 + 50), 'Defeat!', StyleSettings.announcement).setOrigin(0.5, 1)
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Defeat!', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
 			let bgDefeat = this.add.image(0, -50, 'bg-Defeat')
@@ -1391,7 +1391,7 @@ export default class GameScene extends BaseScene {
 		this.tweens.add({
   					targets: card.container,
   					y: y,
-  					duration: TimeSettings.recapTween(),
+  					duration: Time.recapTween(),
   					ease: "Sine.easeInOut"
   					})
 	}
@@ -1403,7 +1403,7 @@ export default class GameScene extends BaseScene {
 		this.tweens.add({
 			targets: this.priorityRectangle,
 			y: y,
-			duration: TimeSettings.recapTween(),
+			duration: Time.recapTween(),
 			ease: "Sine.easeInOut"
 		})
 	}
@@ -1502,7 +1502,7 @@ export default class GameScene extends BaseScene {
   					targets: card.container,
   					x: end[0],
   					y: end[1],
-  					duration: TimeSettings.recapTween(),
+  					duration: Time.recapTween(),
   					ease: "Sine.easeInOut",
   					// After brief delay, tell network, hide info, shift cards to fill its spot
   					onStart: function () {setTimeout(function() {
@@ -1532,7 +1532,7 @@ export default class GameScene extends BaseScene {
   			scene.tweens.add({
   				targets: card,
   				x: card.x - Space.cardSize - Space.pad,
-  				duration: TimeSettings.recapTween() - 10,
+  				duration: Time.recapTween() - 10,
   				ease: "Sine.easeInOut"
   			})
   		}
@@ -1615,7 +1615,7 @@ export default class GameScene extends BaseScene {
   				revealedContainer.setVisible(true)
   				storyContainer.setVisible(false)
 
-  				highlightedObject.setShadow(2, 2, ColorSettings.stackHighlight)
+  				highlightedObject.setShadow(2, 2, Color.stackHighlight)
   			}
   		}
   	}
@@ -1665,13 +1665,13 @@ export default class GameScene extends BaseScene {
   		// Send a this card to its place in the story
   		let txt = this.add.text(
 	    	x, Space.windowHeight/2,
-	    	s, StyleSettings.announcement).setOrigin(0.5, 0.5)
+	    	s, Style.announcement).setOrigin(0.5, 0.5)
 
   		this.tweens.add({
   			targets: txt,
   			scale: 1.5,
   			// x: Space.scoresOffset,
-  			duration: TimeSettings.recapTween(),
+  			duration: Time.recapTween(),
   			ease: "Sine.easeInOut",
   			yoyo: true,
   			onComplete: 
@@ -1692,7 +1692,7 @@ export default class GameScene extends BaseScene {
   		this.tweens.add({
 			targets: card.container,
 			y: card.container.y - Space.cardSize*2,
-			duration: TimeSettings.recapTweenWithPause(),
+			duration: Time.recapTweenWithPause(),
 		})
 
 		// Remove this card from the destroyed objects list
@@ -1719,8 +1719,8 @@ export default class GameScene extends BaseScene {
   		this.tweens.add({
 			targets: card.container,
 			x: card.container.x - dx,
-			duration: TimeSettings.recapTweenWithPause(),
-			delay: TimeSettings.recapTween(),
+			duration: Time.recapTweenWithPause(),
+			delay: Time.recapTween(),
 		})
   	}
 

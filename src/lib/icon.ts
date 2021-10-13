@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, Space } from '../settings'
+import { Style, Color, Space } from '../settings/settings'
 import Menu from "../lib/menu"
 
 
@@ -16,7 +16,7 @@ export default class Icon {
 			f()
 		})
 		.on('pointerover', () => {
-			this.btn.setTint(ColorSettings.iconHighlight)
+			this.btn.setTint(Color.iconHighlight)
 		})
 		.on('pointerout', () => {
 			this.btn.clearTint()
@@ -24,7 +24,7 @@ export default class Icon {
 
 		// Add a label above the icon
 		let yDelta = Space.cardSize - Space.pad
-    	this.txt = scene.add.text(x, y - yDelta, text, StyleSettings.announcement).setOrigin(0.5)
+    	this.txt = scene.add.text(x, y - yDelta, text, Style.announcement).setOrigin(0.5)
 
     	// Add both to the container
     	menu.add([this.btn, this.txt])

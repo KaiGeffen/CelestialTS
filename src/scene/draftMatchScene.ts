@@ -1,6 +1,6 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { StyleSettings, Space, UserSettings } from "../settings"
+import { Space, UserSettings } from "../settings/settings"
 import ClientState from "../lib/clientState"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"

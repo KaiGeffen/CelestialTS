@@ -11,7 +11,7 @@ import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, CryptCatal
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
 import DraftMatchScene from "./scene/draftMatchScene"
 
-import { ColorSettings, Space } from "./settings"
+import { Color, Space } from "./settings/settings"
 
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js'
@@ -41,7 +41,7 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  backgroundColor: ColorSettings.background,
+  backgroundColor: Color.background,
   plugins: {
     scene: [{
       key: 'rexUI',

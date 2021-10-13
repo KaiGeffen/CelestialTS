@@ -1,5 +1,5 @@
 import "phaser"
-import { Space, ColorSettings } from '../settings'
+import { Space, Color } from '../settings/settings'
 import BaseScene from '../scene/baseScene'
 
 
@@ -33,10 +33,10 @@ export default class Menu {
 		invisBackground.on('pointerdown', () => this.close())
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = scene.add['rexRoundRectangle'](0, 0, width, height, 30, ColorSettings.menuBackground,
+		let visibleBackground = scene.add['rexRoundRectangle'](0, 0, width, height, 30, Color.menuBackground,
 			).setAlpha(0.95).setOrigin(0.5)
 		visibleBackground.setInteractive()
-		visibleBackground.setStrokeStyle(10, ColorSettings.menuBorder, 1)
+		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 
 		this.container.add([invisBackground, visibleBackground])
 	}

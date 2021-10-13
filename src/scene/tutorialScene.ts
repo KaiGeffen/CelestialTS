@@ -1,6 +1,6 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { StyleSettings, ColorSettings, Space, UserSettings, TimeSettings, TutorialBBConfig } from "../settings"
+import { Style, BBStyle, Color, Space, UserSettings, Time } from "../settings/settings"
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo, getSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
@@ -31,7 +31,7 @@ class TutorialScene extends GameScene {
 		this.txtTutorial = this['rexUI'].add['textBox']({
 			x: Space.pad,
 			y: Space.pad,
-			text: this.add['rexBBCodeText'](0, 0, '', TutorialBBConfig)
+			text: this.add['rexBBCodeText'](0, 0, '', BBStyle.tutorial)
 		}).setOrigin(0)
 		.setVisible(false)
 		.setInteractive()
@@ -54,7 +54,7 @@ class TutorialScene extends GameScene {
 				exFound = true
 
 				let s = ex.explain()
-				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', TimeSettings.textSpeed())
+				this.txtTutorial.start('[stroke=black]' + s + '[/stroke]', Time.textSpeed())
 				this.txtTutorial.setVisible(true)
 
 				ex.alterScene(this)
@@ -90,7 +90,7 @@ class TutorialScene extends GameScene {
 
 			this.btnExit.setOnClick(this.onWinExit())
 
-			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', StyleSettings.announcement).setOrigin(0.5, 1)
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
 			let bgDefeat = this.add.image(0, -50, 'bg-Victory')
@@ -104,7 +104,7 @@ class TutorialScene extends GameScene {
 		else if (state.winner === 1) {
 			this.btnExit.setOnClick(this.onRetry())
 
-			let txtTitle = this.add.text(0, -(width/2 + 50), 'Defeat!', StyleSettings.announcement).setOrigin(0.5, 1)
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Defeat!', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
 			let bgDefeat = this.add.image(0, -50, 'bg-Defeat')
@@ -333,7 +333,7 @@ class Explanation {
 
 let exMulligan: Explanation = new Explanation(
 	function (state) {return !state.mulligansComplete[0]},
-	`Click on each card you don't want in your starting hand, then click [color=${ColorSettings.buttonReference}]Mulligan[/color] to replace those cards with new ones.`
+	`Click on each card you don't want in your starting hand, then click [color=${Color.buttonReference}]Mulligan[/color] to replace those cards with new ones.`
 	)
 
 // TODO This is kinda hacky, don't keep long-term
@@ -345,7 +345,7 @@ let exMulliganOver: Explanation = new Explanation(
 
 let exPlayOrPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
-	`Click on a card in your hand to play it, or click [color=${ColorSettings.buttonReference}]Pass[/color].`
+	`Click on a card in your hand to play it, or click [color=${Color.buttonReference}]Pass[/color].`
 	)
 
 
@@ -369,7 +369,7 @@ let exPlay: Explanation = new Explanation(
 	)
 let exPass: Explanation = new Explanation(
 	function (state) {return state.priority === 0},
-`Click [color=${ColorSettings.buttonReference}]Pass[/color] once you're done playing cards.
+`Click [color=${Color.buttonReference}]Pass[/color] once you're done playing cards.
 Once both players have passed in a row, the round ends and points are tallied.`,
 	function (scene) {
 		// Mana text moves to its normal position
@@ -419,8 +419,8 @@ That round was tied at 1 point each,
 so neither player earned a win.
 
 To see what happened again, click the
-[color=${ColorSettings.buttonReference}]Recap[/color] button above [color=${ColorSettings.buttonReference}]Pass[/color].[/stroke]`
-		let txt = scene.add['rexBBCodeText'](0, 0, s, StyleSettings.basic).setOrigin(0.5)
+[color=${Color.buttonReference}]Recap[/color] button above [color=${Color.buttonReference}]Pass[/color].[/stroke]`
+		let txt = scene.add['rexBBCodeText'](0, 0, s, Style.basic).setOrigin(0.5)
 		menu.add(txt)
 	}
 	)
@@ -464,7 +464,7 @@ let exMaxHand: Explanation = new Explanation(
 	)
 let exGift: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 3 && state.story.acts.length >= 2},
-	`Try not to play cards like [color=${ColorSettings.cardReference}]Gift[/color] when your hand is nearly full.`
+	`Try not to play cards like [color=${Color.cardReference}]Gift[/color] when your hand is nearly full.`
 	)
 
 
@@ -487,18 +487,18 @@ let exCardEffects: Explanation = new Explanation(
 `[stroke=black]Wait! In addition to a cost and point value,
 each card has an additional effect.
 
-[color=${ColorSettings.cardReference}]Doves[/color] are visible to your opponent while
+[color=${Color.cardReference}]Doves[/color] are visible to your opponent while
 in the story, and disappear once played.
 
-[color=${ColorSettings.cardReference}]Dash[/color] is worth 1 point less for every card
+[color=${Color.cardReference}]Dash[/color] is worth 1 point less for every card
 played before it in the story.[/stroke]`
-		let txt = scene.add['rexBBCodeText'](0, 0, s, StyleSettings.basic).setOrigin(0.5)
+		let txt = scene.add['rexBBCodeText'](0, 0, s, Style.basic).setOrigin(0.5)
 		menu.add(txt)
 	}
 	)
 let exDash: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] >= 2 && state.story.acts.length >= 2},
-	`It's better to play a card like [color=${ColorSettings.cardReference}]Dash[/color] early in a round, so that it's worth the most points.`
+	`It's better to play a card like [color=${Color.cardReference}]Dash[/color] early in a round, so that it's worth the most points.`
 	)
 
 let exStacks: Explanation = new Explanation(

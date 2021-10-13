@@ -2,7 +2,7 @@ import 'phaser'
 import BaseScene from "./baseScene"
 
 import Card from "../lib/card"
-import { StyleSettings, ColorSettings, UserSettings, Space } from "../settings"
+import { Style, Color, Space } from "../settings/settings"
 import { CardImage } from "../lib/cardImage"
 import { decodeDeck } from "../lib/codec"
 import Button from "../lib/button"
@@ -30,15 +30,15 @@ class CatalogScene extends BaseScene {
     
 		// Instructional text
 		let txt = "Below are just a few of the cards that you can use in Celestial.\nClick on them to see explanations and advice.\nClick 'Next' to move on to the deck-builder."
-		this.add.text(Space.pad, Space.pad, txt, StyleSettings.basic)
+		this.add.text(Space.pad, Space.pad, txt, Style.basic)
 
 		// Highlight for selected card
 		let size = Space.cardSize + Space.pad
-		this.highlight = this.add.rectangle(0, 0, size, size, ColorSettings.catalogHighlight, 1)
+		this.highlight = this.add.rectangle(0, 0, size, size, Color.catalogHighlight, 1)
 		this.container.add(this.highlight)
 
 		// Description of the selected card
-		this.txtDescription = this.add.text(Space.pad, 280, '', StyleSettings.basic)
+		this.txtDescription = this.add.text(Space.pad, 280, '', Style.basic)
 
 		// Next button
 		let [x, y] = this.getCardPosition(7)

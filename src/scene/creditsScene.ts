@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, Space } from "../settings"
+import { Style, Color, Space } from "../settings/settings"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 
@@ -15,7 +15,7 @@ export default class CreditsScene extends Phaser.Scene {
   create(): void {
     this.createCreditsTextbox()
 
-    this.add.text(Space.windowWidth/2, 80, "Credits", StyleSettings.title).setOrigin(0.5)
+    this.add.text(Space.windowWidth/2, 80, "Credits", Style.title).setOrigin(0.5)
 
     let btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight - 40, "Exit", this.doWelcome).setOrigin(0.5)
   }
@@ -41,10 +41,10 @@ export default class CreditsScene extends Phaser.Scene {
         Space.windowWidth/2, 150, Space.windowWidth, Space.windowHeight - 250, {
           type: 'textarea',
           text: creditText,
-          fontFamily: StyleSettings.basic.fontFamily,
-          fontSize: StyleSettings.basic.fontSize,
-          color: ColorSettings.creditsText,
-          backgroundColor: ColorSettings.creditsBackground,
+          fontFamily: Style.basic.fontFamily,
+          fontSize: Style.basic.fontSize,
+          color: Color.creditsText,
+          backgroundColor: Color.creditsBackground,
           id: 'credits',
           readOnly: true
         })

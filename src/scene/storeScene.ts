@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, ColorSettings, Space } from "../settings"
+import { Style, Space } from "../settings/settings"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Card from "../lib/card"
@@ -31,7 +31,7 @@ export default class StoreScene extends BaseScene {
     this.temporaryObjs = []
 
     // Header text
-    this.add.text(Space.windowWidth/2, 80, "Store", StyleSettings.title).setOrigin(0.5)
+    this.add.text(Space.windowWidth/2, 80, "Store", Style.title).setOrigin(0.5)
 
     // Button to open a pack
     this.btnOpen = new Button(this,
@@ -46,7 +46,7 @@ export default class StoreScene extends BaseScene {
       Space.windowWidth/2,
       Space.windowHeight/2,
       'Pick your 5th card:',
-      StyleSettings.announcement)
+      Style.announcement)
       .setOrigin(0.5)
       .setVisible(false)
 

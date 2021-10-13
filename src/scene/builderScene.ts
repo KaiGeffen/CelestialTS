@@ -1,7 +1,7 @@
 import "phaser"
 import { collectibleCards, baseCards } from "../catalog/catalog"
 import { CardImage, cardInfo } from "../lib/cardImage"
-import { StyleSettings, ColorSettings, UserSettings, Space, MechanicSettings } from "../settings"
+import { Style, Color, UserSettings, Space, Mechanics } from "../settings/settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 import Button from "../lib/button"
@@ -38,7 +38,7 @@ class BuilderSceneShell extends BaseScene {
       Space.windowWidth/2,
       Space.windowHeight - 120,
       'Click a card to add it to your deck',
-      StyleSettings.announcement)
+      Style.announcement)
     .setOrigin(0.5, 0)
 
     // Start button - Show how many cards are in deck, and enable user to start if deck is full
@@ -205,7 +205,7 @@ export class BuilderScene extends BuilderSceneShell {
 
   // Add card to the existing deck
   addCardToDeck(card: Card): boolean {
-    if (this.deck.length >= MechanicSettings.deckSize) {
+    if (this.deck.length >= Mechanics.deckSize) {
       return false
     }
 
@@ -329,14 +329,14 @@ export class BuilderScene extends BuilderSceneShell {
 
   // Update the card count and deck button texts
   private updateText(): void {
-    if (this.deck.length === MechanicSettings.deckSize) {
+    if (this.deck.length === Mechanics.deckSize) {
       this.btnStart.text = 'Start'
       this.btnStart.input.enabled = true
       this.btnStart.glow()
     }
     else
     {
-      this.btnStart.text = `${this.deck.length}/${MechanicSettings.deckSize}`
+      this.btnStart.text = `${this.deck.length}/${Mechanics.deckSize}`
       this.btnStart.stopGlow()
 
       // TODO Grey out the button, have a disable method for button class
@@ -431,7 +431,7 @@ export class BuilderScene extends BuilderSceneShell {
 
       scrollMode: 0,
 
-      background: this['rexUI'].add.roundRectangle(x, 0, width, height, 16, ColorSettings.menuBackground, 0.7).setOrigin(0),
+      background: this['rexUI'].add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
 
       panel: {
         child: this['rexUI'].add.fixWidthSizer({
@@ -449,7 +449,7 @@ export class BuilderScene extends BuilderSceneShell {
       slider: {
         input: 'drag',
         track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-        thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, ColorSettings.sliderThumb),
+        thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
       },
 
       header: this['rexUI'].add.fixWidthSizer({
@@ -466,7 +466,7 @@ export class BuilderScene extends BuilderSceneShell {
         }).addBackground(
           this['rexUI'].add.roundRectangle(0, 0, 0, 0,
             {tl: 0, tr: 16, bl: 0, br: 16},
-            ColorSettings.menuHeader),
+            Color.menuHeader),
           {right: 10, bottom: 10}
           ),
       
@@ -527,7 +527,7 @@ export class BuilderScene extends BuilderSceneShell {
       width: width,
       height: 0,
 
-      background: this.add.rectangle(0, 0, width, Space.windowHeight, ColorSettings.menuHeader),
+      background: this.add.rectangle(0, 0, width, Space.windowHeight, Color.menuHeader),
 
       panel: {
         child: this['rexUI'].add.sizer({
@@ -546,7 +546,7 @@ export class BuilderScene extends BuilderSceneShell {
 
       header: this['rexUI'].add.label({
                 orientation: 0,
-                text: this.add.text(0, 0, '  Decks:', StyleSettings.announcement),
+                text: this.add.text(0, 0, '  Decks:', Style.announcement),
             }),
       space: {
         right: 10,
@@ -655,7 +655,7 @@ export class BuilderScene extends BuilderSceneShell {
       true,
       20)
 
-    let txtTitle = this.add.text(0, -height/2, 'Deck Name:', StyleSettings.announcement).setOrigin(0.5, 0)
+    let txtTitle = this.add.text(0, -height/2, 'Deck Name:', Style.announcement).setOrigin(0.5, 0)
     menu.add(txtTitle)
 
     let textArea = this.add['rexInputText'](
@@ -666,11 +666,11 @@ export class BuilderScene extends BuilderSceneShell {
       tooltip: 'The name for your new deck.',
       fontFamily: 'Mulish',
       fontSize: '60px',
-      color: ColorSettings.button,
+      color: Color.button,
       align: Phaser.Display.Align.BOTTOM_RIGHT,
       border: 3,
       borderColor: '#000',
-      backgroundColor: ColorSettings.textAreaBackground,
+      backgroundColor: Color.textAreaBackground,
       maxLength: 8,
       selectAll: true,
       id: 'search-field'
@@ -711,7 +711,7 @@ export class BuilderScene extends BuilderSceneShell {
       true,
       20)
 
-    let txtTitle = this.add.text(0, -height / 2, 'Deck Code:', StyleSettings.announcement).setOrigin(0.5, 0)
+    let txtTitle = this.add.text(0, -height / 2, 'Deck Code:', Style.announcement).setOrigin(0.5, 0)
     menu.add(txtTitle)
 
     let textArea = this.add['rexInputText'](
@@ -722,12 +722,12 @@ export class BuilderScene extends BuilderSceneShell {
       tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
       fontFamily: 'Mulish',
       fontSize: '60px',
-      color: ColorSettings.button,
+      color: Color.button,
       align: Phaser.Display.Align.BOTTOM_RIGHT,
       border: 3,
       borderColor: '#000',
-      backgroundColor: ColorSettings.textAreaBackground,
-      maxLength: 4 * MechanicSettings.deckSize,
+      backgroundColor: Color.textAreaBackground,
+      maxLength: 4 * Mechanics.deckSize,
       selectAll: true,
       id: 'search-field'
     })
@@ -749,7 +749,7 @@ export class BuilderScene extends BuilderSceneShell {
   private populateHeader(header: any): void {
     let that = this
 
-    let txtHint = this.add.text(0, 0, 'Cost:', StyleSettings.announcement)
+    let txtHint = this.add.text(0, 0, 'Cost:', Style.announcement)
 
 
     // Add search field
@@ -761,11 +761,11 @@ export class BuilderScene extends BuilderSceneShell {
       tooltip: 'Search for cards by text.',
       fontFamily: 'Mulish',
       fontSize: '60px',
-      color: ColorSettings.button,
+      color: Color.button,
       align: Phaser.Display.Align.BOTTOM_RIGHT,
       border: 3,
       borderColor: '#000',
-      // backgroundColor: ColorSettings.textAreaBackgroundAlt,
+      // backgroundColor: Color.textAreaBackgroundAlt,
       maxLength: 12,
       selectAll: true,
       id: 'search-field'
@@ -789,7 +789,7 @@ export class BuilderScene extends BuilderSceneShell {
       
       that.filter()
     })
-      .setFontSize(parseInt(StyleSettings.announcement.fontSize))
+      .setFontSize(parseInt(Style.announcement.fontSize))
       .setDepth(4)
     
     // Timeout so that grid layout is complete, glow if filtering by ownership
@@ -811,7 +811,7 @@ export class BuilderScene extends BuilderSceneShell {
       let btn = new Button(this, 0, 0, s)
 
       btn.setOnClick(this.onClickFilterButton(i, btn))
-        .setFontSize(parseInt(StyleSettings.announcement.fontSize))
+        .setFontSize(parseInt(Style.announcement.fontSize))
         .setDepth(4)
 
       header.add(btn)
@@ -819,7 +819,7 @@ export class BuilderScene extends BuilderSceneShell {
     }
 
     let btn = new Button(this, 0, 0, 'X', this.onClearFilters(btns))
-      .setFontSize(parseInt(StyleSettings.announcement.fontSize))
+      .setFontSize(parseInt(Style.announcement.fontSize))
       .setDepth(4)
     header.add(btn)
   }
@@ -985,10 +985,10 @@ export class BuilderScene extends BuilderSceneShell {
       tooltip: 'Enter any matchmaking code to only match with players with that same code.',
       fontFamily: 'Mulish',
       fontSize: '36px',
-      color: ColorSettings.textArea,
+      color: Color.textArea,
       border: 3,
       borderColor: '#000',
-      backgroundColor: ColorSettings.textAreaBackground,
+      backgroundColor: Color.textAreaBackground,
       maxLength: 24
     })
     .setOrigin(0)
@@ -1016,8 +1016,8 @@ export class BuilderScene extends BuilderSceneShell {
         true,
         25)
 
-      let txtTitle = this.add.text(0, -110, 'Welcome!', StyleSettings.announcement).setOrigin(0.5)
-      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, StyleSettings.basic).setOrigin(0.5, 0)
+      let txtTitle = this.add.text(0, -110, 'Welcome!', Style.announcement).setOrigin(0.5)
+      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, Style.basic).setOrigin(0.5, 0)
       
       menu.add([txtTitle, txtMessage])
     }
@@ -1140,7 +1140,7 @@ export class TutorialBuilderScene extends BuilderScene {
     s += `If you want to make changes, click any of the cards in the
 deck to remove them, then add cards from the choices above.`
 
-    let txt = this.add.text(0, 0, s, StyleSettings.basic)
+    let txt = this.add.text(0, 0, s, Style.basic)
     this.panel.setX(Space.pad)
     this.panel.add(txt, {padding: {left: Space.pad, right: Space.pad, bottom: Space.pad}})
     this.filter()
@@ -1195,7 +1195,7 @@ export class DraftBuilderScene extends BuilderScene {
     // Show the user their draft results
     let record = UserSettings._get('draftRecord')
     let s = `Wins: ${record[0]} | Losses: ${record[1]}`
-    this.txtRecord = this.add.text(500, 300, s, StyleSettings.announcement)
+    this.txtRecord = this.add.text(500, 300, s, Style.announcement)
       .setOrigin(0.5)
       .setVisible(false)
       .setDepth(1) // Above catalog background
@@ -1244,7 +1244,7 @@ export class DraftBuilderScene extends BuilderScene {
     if (useLastSeed && this.lastFilter !== undefined) {
       // Don't change lastFilter
     }
-    else if (this.deck.length < MechanicSettings.deckSize) {
+    else if (this.deck.length < Mechanics.deckSize) {
       this.lastFilter = function(card: Card) {
         return newPool.includes(card)
       }
@@ -1295,7 +1295,7 @@ export class DraftBuilderScene extends BuilderScene {
     UserSettings._set('draftDeckCode', this.getDeckCode())
 
     // Make the match results visible if deck is now full
-    if (this.deck.length === MechanicSettings.deckSize) {
+    if (this.deck.length === Mechanics.deckSize) {
       this.txtRecord.setVisible(true)
     }
 
@@ -1315,8 +1315,8 @@ export class DraftBuilderScene extends BuilderScene {
         true,
         25)
 
-      let txtTitle = this.add.text(0, -110, 'Onward!', StyleSettings.announcement).setOrigin(0.5)
-      let txtMessage = this.add.text(0, -50, msgText, StyleSettings.basic).setOrigin(0.5, 0)
+      let txtTitle = this.add.text(0, -110, 'Onward!', Style.announcement).setOrigin(0.5)
+      let txtMessage = this.add.text(0, -50, msgText, Style.basic).setOrigin(0.5, 0)
       
       menu.add([txtTitle, txtMessage])
     }

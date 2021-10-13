@@ -1,4 +1,4 @@
-import { UserSettings, ColorSettings } from '../settings'
+import { UserSettings, Color } from '../settings/settings'
 
 
 // Maintain a list of Messages, which appear when visiting the main menu
@@ -76,9 +76,9 @@ advanced challenges are now available!
 The expansion can be enabled from the deck menu.`, Screen.Main],
 	deckMenuNotice:
 [`You can find premade decks by clicking the
-[color=${ColorSettings.buttonReference}]Deck[/color] button below.
+[color=${Color.buttonReference}]Deck[/color] button below.
 
-[color=${ColorSettings.cardReference}]Anubis[/color] is a great deck to start with.`, Screen.Builder],
+[color=${Color.cardReference}]Anubis[/color] is a great deck to start with.`, Screen.Builder],
 	draftNotice:
 [`Draft a deck of 15 cards from random choices
 of 4 cards each.

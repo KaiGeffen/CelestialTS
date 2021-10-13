@@ -1,6 +1,5 @@
 import "phaser"
-// TODO Remove unused
-import { StyleSettings, ColorSettings, Space, UserSettings, UrlSettings } from "../settings"
+import { Style, Color, Space, UserSettings, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
@@ -31,7 +30,7 @@ export default class WelcomeScene extends BaseScene {
 
     // Display text and button
     this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 150, "Celestial",
-      StyleSettings.title).setOrigin(0.5)
+      Style.title).setOrigin(0.5)
 
     // TODO Logout, save the most recent token so that new celestial.com website visits don't start logged out
     // if (!UserSettings._get('loggedIn')) {
@@ -54,7 +53,7 @@ export default class WelcomeScene extends BaseScene {
     let btnStore = new Button(this, Space.windowWidth/2 + 300, Space.windowHeight - 50, "Store", this.doStore).setOrigin(0.5)
 
     // Start Button
-    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(StyleSettings.announcement)
+    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(Style.announcement)
 
 
 
@@ -81,7 +80,7 @@ export default class WelcomeScene extends BaseScene {
       true,
       25)
 
-    let txtHint = this.add.text(0, -40, 'Would you like to try the tutorial?', StyleSettings.announcement).setOrigin(0.5, 0.5)
+    let txtHint = this.add.text(0, -40, 'Would you like to try the tutorial?', Style.announcement).setOrigin(0.5, 0.5)
 
     // Yes button exits this menu and opens the tutorial menu
     let btnYes = new Button(this, -50, 40, 'Yes', () => menu.close()).setOrigin(1, 0.5)
@@ -100,8 +99,8 @@ export default class WelcomeScene extends BaseScene {
       25)
 
     // TODO Don't always say Congratulations, make the first line of message the title?
-    let txtTitle = this.add.text(0, -110, 'Congratulations!', StyleSettings.announcement).setOrigin(0.5)
-    let txtMessage = this.add.text(0, -50, message, StyleSettings.basic).setOrigin(0.5, 0)
+    let txtTitle = this.add.text(0, -110, 'Congratulations!', Style.announcement).setOrigin(0.5)
+    let txtMessage = this.add.text(0, -50, message, Style.basic).setOrigin(0.5, 0)
     
     menu.add([txtTitle, txtMessage])
   }
@@ -151,12 +150,12 @@ export default class WelcomeScene extends BaseScene {
       btnDiscord.stopGlow()
       UserSettings._set('newDiscord', false)
     
-      window.open(UrlSettings.discord)
+      window.open(Url.discord)
     }
   }
 
   private doLogin(): void {
-    window.open(UrlSettings.oauth)
+    window.open(Url.oauth)
   }
 }
 
@@ -260,33 +259,33 @@ class TutorialRegion {
   // Create a check mark over each tutorial that user has completed
   private createCheckMarks(xDelta: number, yDelta: number): void {
     if (UserSettings._get('completedTutorials').includes('Basics')) {
-      this.menu.add(this.scene.add.text(0, -yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(0, -yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     // Core set decks
     if (UserSettings._get('completedTutorials').includes('Anubis')) {
-      this.menu.add(this.scene.add.text(-xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(-xDelta, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Robots')) {
-      this.menu.add(this.scene.add.text(0, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(0, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Stalker')) {
-      this.menu.add(this.scene.add.text(xDelta, 0, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(xDelta, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     // Expansion decks
     if (UserSettings._get('completedTutorials').includes('Crypt')) {
-      this.menu.add(this.scene.add.text(-xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(-xDelta, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Bastet')) {
-      this.menu.add(this.scene.add.text(0, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(0, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     if (UserSettings._get('completedTutorials').includes('Horus')) {
-      this.menu.add(this.scene.add.text(xDelta, yDelta, '✓', StyleSettings.checkMark).setOrigin(0.5).setDepth(1))
+      this.menu.add(this.scene.add.text(xDelta, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
   }
 
@@ -294,7 +293,7 @@ class TutorialRegion {
   private setIconHover(btn: Phaser.GameObjects.Image): void {
     btn.setInteractive()
     btn.on('pointerover', function() {
-      btn.setTint(ColorSettings.iconHighlight)
+      btn.setTint(Color.iconHighlight)
     })
     btn.on('pointerout', function() {
       btn.clearTint()

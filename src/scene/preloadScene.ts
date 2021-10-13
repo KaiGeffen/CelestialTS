@@ -1,10 +1,9 @@
 import "phaser"
 var mobile = require('is-mobile')
 
-import { StyleSettings, ColorSettings, Space, ensureUserSettings, UserSettings, UrlSettings } from "../settings"
+import { Style, Color, Space, ensureUserSettings, UserSettings, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import MessageManager from "../lib/message"
-import AccountManager from "../lib/accountManager"
 import Server from "../server"
 
 
@@ -96,7 +95,7 @@ export default class PreloadClass extends Phaser.Scene {
 		// Initialize Google Auth
 		gapi.load('auth2', function() {
 			gapi.auth2.init({
-				client_id: UrlSettings.oauth
+				client_id: Url.oauth
 			})
 		})
 
@@ -209,7 +208,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Add graphics to show information
 		let progressBox = this.add.graphics()
-		.fillStyle(ColorSettings.progressBackground)
+		.fillStyle(Color.progressBackground)
 		.fillRect(x, y, width, height)
 		let progressBar = this.add.graphics()
 
@@ -218,13 +217,13 @@ export default class PreloadClass extends Phaser.Scene {
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			text: 'Loading...',
-			style: StyleSettings.announcement
+			style: Style.announcement
 		}).setOrigin(0.5, 0.5)
 
 		// Update the progress bar
 		this.load.on('progress', function (value) {
 			progressBar.clear()
-			progressBar.fillStyle(ColorSettings.progressFill, 1)
+			progressBar.fillStyle(Color.progressFill, 1)
 			progressBar.fillRect(x + Space.pad, y + Space.pad, (width - Space.pad*2) * value, height - Space.pad*2)
 		})
 
