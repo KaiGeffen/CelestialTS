@@ -82,7 +82,7 @@ export class BuilderScene extends BuilderSceneShell {
   cardpool: Card[] = collectibleCards
 
   // The index of the currently selected saved deck, or undefined if none
-  savedDeckIndex: number
+  savedDeckIndex: number = undefined
 
   // The invisible background atop the catalog that keeps the 
   // cards from being clickable above where they are displayed
@@ -97,7 +97,6 @@ export class BuilderScene extends BuilderSceneShell {
 
     this.cardCatalog = []
     this.catalogContainer = this.add.container(0, 0)
-    this.savedDeckIndex = undefined
 
     // Create decks region, return the width
     let width = this.createDeckRegion()
@@ -591,6 +590,12 @@ export class BuilderScene extends BuilderSceneShell {
     for (var i = 0; i < UserSettings._get('decks').length; i++) {
       let btn = createDeckBtn(i)
 
+      // Highlight this deck, if it's selected
+      if (this.savedDeckIndex === i) {
+        // So that layout happens correctly
+        setTimeout(() => btn.glow(false), 4)
+      }
+
       region.add(btn)
     }
 
@@ -615,6 +620,7 @@ export class BuilderScene extends BuilderSceneShell {
         }
       }))
 
+    // DELETE button
     region.add(
       new Button(this, 0, 0, 'DELETE', function() {
         if (that.savedDeckIndex === undefined) {
@@ -625,6 +631,8 @@ export class BuilderScene extends BuilderSceneShell {
           btns[that.savedDeckIndex].destroy()
 
           UserSettings._pop('decks', that.savedDeckIndex)
+
+          that.savedDeckIndex = undefined
           
           region.destroy()
           that.createDeckRegion()
