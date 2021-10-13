@@ -42,7 +42,7 @@ export default class CreditsScene extends Phaser.Scene {
           type: 'textarea',
           text: creditText,
           fontFamily: StyleSettings.basic.fontFamily,
-          fontSize: StyleSettings.standard.fontSize,
+          fontSize: StyleSettings.basic.fontSize,
           color: ColorSettings.creditsText,
           backgroundColor: ColorSettings.creditsBackground,
           id: 'credits',
