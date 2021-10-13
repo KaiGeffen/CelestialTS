@@ -52,6 +52,9 @@ export default class WelcomeScene extends BaseScene {
 
     // Store button
     let btnStore = new Button(this, Space.windowWidth/2 + 300, Space.windowHeight - 50, "Store", this.doStore).setOrigin(0.5)
+    if (!UserProgress.contains('store')) {
+      btnStore.glowUntilClicked()
+    }
 
     // Start Button
     new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(Style.announcement)
@@ -85,7 +88,7 @@ export default class WelcomeScene extends BaseScene {
   private displayMessage(message: string): void {
     let menu = new Menu(
       this,
-      800,
+      1000,
       300,
       true,
       25)
@@ -113,6 +116,7 @@ export default class WelcomeScene extends BaseScene {
 
   private doDeckbuilder(): void {
     UserProgress.addAchievement('deckMenuNotice')
+    
     this.scene.start("BuilderScene", {isTutorial: false})
   }
 
@@ -121,6 +125,8 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doStore(): void {
+    UserProgress.addAchievement('store')
+
     this.scene.start("StoreScene")
   }
   

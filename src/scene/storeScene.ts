@@ -1,8 +1,9 @@
 import "phaser"
-import { Style, Space } from "../settings/settings"
+import { Style, Space, UserProgress } from "../settings/settings"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Card from "../lib/card"
+import Menu from "../lib/menu"
 import {cardInfo, addCardInfoToScene, CardImage} from "../lib/cardImage"
 import Server from "../server"
 
@@ -52,6 +53,9 @@ export default class StoreScene extends BaseScene {
 
     this.btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight - 40, "Exit", this.doWelcome).setOrigin(0.5)
 
+    // Manage any messages that are displayed
+    this.manageMessages()
+    
     // This scene displays card info
     addCardInfoToScene(this)
 
@@ -133,6 +137,25 @@ export default class StoreScene extends BaseScene {
       for(var i = 4; i < 4 + 3; i++) {
         that.addChoiceCard(cards[i], i - 4)
       }
+    }
+  }
+
+  // Manage any messages that may need to be displayed for the user
+  private manageMessages(): void {
+    let msgText = UserProgress.getMessage('store')
+    if (msgText !== undefined) {
+      // Open a window informing user of information
+      let menu = new Menu(
+        this,
+        1000,
+        300,
+        true,
+        25)
+
+      let txtTitle = this.add.text(0, -110, 'Welcome!', Style.announcement).setOrigin(0.5)
+      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, Style.basic).setOrigin(0.5, 0)
+      
+      menu.add([txtTitle, txtMessage])
     }
   }
 }

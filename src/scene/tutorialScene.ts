@@ -183,8 +183,7 @@ export class TutorialScene1 extends TutorialScene {
 	onWin(): void {
 		this.net.closeSocket()
 
-  		// Add this tutorial (Basics) to the list of completed tutorials
-  		UserProgress.addAchievement('tutorialComplete' + 'Basics')
+  		UserProgress.addAchievement('tutorialComplete')
   	}
 
   	onWinExit(): () => void {

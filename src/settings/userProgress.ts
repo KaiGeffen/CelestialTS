@@ -67,10 +67,10 @@ Click start to check them out.`, 'welcome'],
 [`You completed all the core set challenges. More
 advanced challenges are now available!
 
-The expansion can be enabled from the deck menu.`, 'welcome'],
+Cards from the expansion come from the store.`, 'welcome'],
 	deckMenuNotice:
-[`You can find premade decks by clicking the choices
-on the left side of the screen.
+[`You can find premade decks by clicking the
+choices on the left side of the screen.
 
 [color=${Color.cardReference}]Anubis[/color] is a great deck to start with.`, 'builder'],
 	draftNotice:
@@ -78,4 +78,9 @@ on the left side of the screen.
 of 4 cards each.
 
 Play as long as you like with the deck you make.`, 'draft'],
+	store: 
+[`In the store, you spend coins received from
+winning matchs to open up packs.
+
+You must make an account first to earn coins.`, 'store'],
 }

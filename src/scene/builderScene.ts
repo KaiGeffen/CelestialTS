@@ -1002,13 +1002,10 @@ export class BuilderScene extends BuilderSceneShell {
   manageMessages(): void {
     let msgText = UserProgress.getMessage('builder')
     if (msgText !== undefined) {
-      // TODO Remove or change since ux changed
-      // Make the deck button glow to catch attention
-
       // Open a window informing user of information
       let menu = new Menu(
         this,
-        800,
+        1000,
         300,
         true,
         25)
@@ -1307,7 +1304,7 @@ export class DraftBuilderScene extends BuilderScene {
       // Open a window informing user of information
       let menu = new Menu(
         this,
-        800,
+        1000,
         300,
         true,
         25)
