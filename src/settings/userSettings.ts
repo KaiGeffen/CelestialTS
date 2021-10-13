@@ -31,7 +31,8 @@ export class UserSettings {
       {name: 'Bastet', value: "11:11:11:11:34:34:34:33:33:33:3:3:28:28:0"},
       {name: 'Horus', value: "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"},
       ],
-      inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0))
+      inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
+      igc: 0
     }
 
     for (var key in defaultSettings) {
