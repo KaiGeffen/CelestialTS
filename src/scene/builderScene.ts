@@ -915,9 +915,6 @@ export class BuilderScene extends BuilderSceneShell {
       }
     }
 
-    // Get filter for expansion vs no-expansion
-    let expansionFilter = this.getExpansionFilter
-
     // Filter cards based on if they contain the string being searched
     let searchTextFilter = function(card: Card): boolean {
       // If searching for 'common', return false to uncommon cards
@@ -936,21 +933,10 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Filter based on the overlap of all above filters
     let andFilter = function(card: Card): boolean {
-      return costFilter(card) && expansionFilter(card) && searchTextFilter(card) && ownershipFilter(card)
+      return costFilter(card) && searchTextFilter(card) && ownershipFilter(card)
     }
 
     return andFilter
-  }
-
-  // Filter cards based on whether expansion is enabled
-  // Overwritten by children
-  getExpansionFilter(card: Card): boolean {
-    if (UserSettings._get('useExpansion')) {
-      return true
-    }
-    else {
-      return baseCards.includes(card)
-    }
   }
 
   // Create the menu for user to select which mode to play in
@@ -1118,11 +1104,6 @@ export class TutorialBuilderScene extends BuilderScene {
     else {
       this.setDeck(this.defaultDeck)
     }
-  }
-
-  // Prevents filtering out cards based from the expansion
-  getExpansionFilter(card: Card): boolean {
-    return true
   }
 
   // Start the game, exit from this scene and move to gameScene
@@ -1319,11 +1300,6 @@ export class DraftBuilderScene extends BuilderScene {
     }
 
     return result
-  }
-
-  // Prevents filtering out cards based from the expansion
-  getExpansionFilter(card: Card): boolean {
-    return true
   }
 
   // Manage any messages that may need to be displayed for the user

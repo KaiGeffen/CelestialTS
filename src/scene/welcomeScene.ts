@@ -219,15 +219,12 @@ class TutorialRegion {
 
     // Expansion icons
     let iconCrypt = new Icon(this.scene, this.menu, -xDelta, yDelta, 'Crypt', function() {
-      UserSettings._set('useExpansion', true)
       that.scene.scene.start("CryptCatalogScene")
     })
     let iconBastet = new Icon(this.scene, this.menu, 0, yDelta, 'Bastet', function() {
-      UserSettings._set('useExpansion', true)
       that.scene.scene.start("BastetCatalogScene")
     })
     let iconHorus = new Icon(this.scene, this.menu, xDelta, yDelta, 'Horus', function() {
-      UserSettings._set('useExpansion', true)
       that.scene.scene.start("HorusCatalogScene")
     })
 

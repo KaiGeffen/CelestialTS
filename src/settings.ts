@@ -61,7 +61,6 @@ export function ensureUserSettings(): void {
     animationSpeed: 0.25,
     // Whether the player should pass automatically if there's nothing they can play
     autopass: true,
-    useExpansion: false,
     tutorialKnown: false,
     completedTutorials: [],
     newDiscord: true, // Discord has a new indicator until clicked
