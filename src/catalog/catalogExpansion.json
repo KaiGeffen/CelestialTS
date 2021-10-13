@@ -1,4 +1,15 @@
 [
+  {"name": "Scarab", "id": 50,
+    "cost": 0, "points": 0,
+    "text": "0:0.\nWhen played, gain Sight 4.\nAt the start of each round, if this is the top of your discard pile, gain Sight 1.",
+    "rarity": 0
+  },
+  {"name": "Kneel", "id": 66,
+    "cost": 0, "points": 0,
+    "text": "0:0, Fleeting, discard the leftmost card of your hand, Tutor 7.",
+    "rarity": 0
+  },
+
   {"name": "Nectar", "id": 25,
     "cost": 1, "points": 0,
     "text": "1:0, Nourish 1.",
@@ -10,11 +21,11 @@
     "text": "1:2, create a ${1004} in your opponent's hand.",
     "rarity": 0
   },
-  {"name": "Spy", "id": 27,
-    "cost": 1, "points": 0,
-    "text": "1:0, create a ${1001} in your opponent's hand.",
-    "catalogText": "Spy costs 1 mana, and creates a Camera in the opponent's hand.\n\nAt the start of each round, the Camera provides you with 4 Sight if it's still in the opponent's hand, allowing you to see the first 4 cards played in the story. \n\nUse this to overfill their hand and tax their mana, while also gaining information about the cards they play.",
-    "rarity": 1
+  {"name": "Axolotl", "id": 63,
+    "cost": 1, "points": 1,
+    "text": "1:1.\nAt the start of each round, if this is the top of your discard pile, create an Axolotl in your hand.",
+    "catalogText": "Axolotl costs 1 mana for 1 point, and will also create a new Axolotl in your hand if it's on top of your discard pile when the round starts.\n\nIf you want this ability to activate, be sure to play Axolotl last in a round so that it's on top of your other cards. This can give you lots of card-advantage and consistency.\n\nSometimes, creating an Axolotl could force you to not draw another card from your deck, which might be bad. Additionally, you'll end up with lots of the little guys after you shuffle, so watch out!",
+    "rarity": 0
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1, "points": 0,
@@ -26,6 +37,17 @@
     "cost": 1, "points": 1,
     "text": "1:1, transform the next 1-cost card in the story into a ${1002}.",
     "rarity": 0
+  },
+  {"name": "Spy", "id": 27,
+    "cost": 1, "points": 0,
+    "text": "1:0, create a ${1001} in your opponent's hand.",
+    "catalogText": "Spy costs 1 mana, and creates a Camera in the opponent's hand.\n\nAt the start of each round, the Camera provides you with 4 Sight if it's still in the opponent's hand, allowing you to see the first 4 cards played in the story. \n\nUse this to overfill their hand and tax their mana, while also gaining information about the cards they play.",
+    "rarity": 1
+  },
+  {"name": "Become Machine", "id": 55,
+    "cost": 1, "points": 0,
+    "text": "1:0, Fleeting, transform each of your cards later in the story into an 0:X Fleeting ${1003}, where X is its cost.",
+    "rarity": 1
   },
   {"name": "Juggle", "id": 30,
     "cost": 1, "points": 1,
@@ -39,11 +61,15 @@
     "catalogText": "Sine costs 2 mana for 4 points, but causes the next card you resolve to be worth 4 less points.\n\nIf you play a card after Sine in the same round, it won't net you any points.\n\nBut it can be effective at trading rounds, taking a final win, or setting up resets.",
     "rarity": 0
   },
-  {"name": "Fishing Boat", "id": 32,
+  {"name": "Desert", "id": 49,
     "cost": 2, "points": 0,
-    "text": "2:0, Tutor 1, Tutor 1, Tutor 1.",
-    "catalogText": "Fishing Boat costs 2, and tutors for a 1-cost card 3 times.\n\nTutor will draw any card meeting the condition (Costing 1) from either your deck or your discard pile, prioritizing first cards in your deck, then cards from the top of your discard pile to the bottom.\n\nUse this to surge ahead on card advantage, and be able to stall for a huge reset.",
-    "rarity": 1
+    "text": "2:0, if this is the last card in the story, +3. Otherwise, return the last card in the story to its owner's hand.",
+    "rarity": 0
+  },
+  {"name": "Fish Bones", "id": 64,
+    "cost": 2, "points": 0,
+    "text": "2:0, Fleeting, draw 2, create 3 ${1002}s in your discard pile.",
+    "rarity": 0
   },
   {"name": "Unearth", "id": 33,
     "cost": 2, "points": 2,
@@ -51,17 +77,23 @@
     "catalogText": "Unearth costs 2 mana for 2 points, and puts the top card of your discard pile on top of your deck.\n\nBe aware that any cards which resolve before Unearth in the story will be in the discard pile by the time it happens.\n\nUse this to get back powerful cards like Oak or Bastet, or keep Bandits out of your discard pile to deny your opponent points.",
     "rarity": 0
   },
-  {"name": "Bastet", "id": 34,
-    "cost": 2, "points": 1,
-    "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)",
-    "catalogText": "Bastet costs 2 mana for 1 point, but also keeps any changes to its points permanently.\n\nThis means that if you have any Nourish when Bastet resolves, it will keep that boost and can be developed into a win-condition.\n\nOnce boosted, try to draw Bastet as quickly as possible with cards like Unearth, tutors, and by thinning cards out of your deck.",
-    "rarity": 2
+  {"name": "Fishing Boat", "id": 32,
+    "cost": 2, "points": 0,
+    "text": "2:0, Tutor 1, Tutor 1, Tutor 1.",
+    "catalogText": "Fishing Boat costs 2, and tutors for a 1-cost card 3 times.\n\nTutor will draw any card meeting the condition (Costing 1) from either your deck or your discard pile, prioritizing first cards in your deck, then cards from the top of your discard pile to the bottom.\n\nUse this to surge ahead on card advantage, and be able to stall for a huge reset.",
+    "rarity": 1
   },
   {"name": "Imprison", "id": 35,
     "cost": 2, "points": 0,
     "text": "2:0, set both player's points to 0, then give your opponent 1 point for each card in their hand.",
     "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for.",
     "rarity": 1
+  },
+  {"name": "Bastet", "id": 34,
+    "cost": 2, "points": 1,
+    "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)",
+    "catalogText": "Bastet costs 2 mana for 1 point, but also keeps any changes to its points permanently.\n\nThis means that if you have any Nourish when Bastet resolves, it will keep that boost and can be developed into a win-condition.\n\nOnce boosted, try to draw Bastet as quickly as possible with cards like Unearth, tutors, and by thinning cards out of your deck.",
+    "rarity": 2
   },
   {"name": "Crypt", "id": 36,
     "cost": 2, "points": 2,
@@ -75,6 +107,21 @@
     "text": "3:3, both players Nourish 2.",
     "rarity": 0
   },
+  {"name": "Anvil", "id": 60,
+    "cost": 3, "points": 2,
+    "text": "3:2, Build 2.",
+    "rarity": 0
+  },
+  {"name": "Nightmare", "id": 68,
+    "cost": 3, "points": 0,
+    "text": "3:0, Visible, +4 if you have more cards in hand than your opponent.",
+    "rarity": 1
+  },
+  {"name": "Sickness", "id": 58,
+    "cost": 3, "points": 0,
+    "text": "3:0, Fleeting, give your opponent Starve 4, create a Sickness in their hand.",
+    "rarity": 1
+  },
   {"name": "Paranoia", "id": 39,
     "cost": 3, "points": 3,
     "text": "3:3.\nWhen played, gain Sight X, where X is the number of cards before this in the story.",
@@ -87,13 +134,55 @@
     "text": "4:3, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed.",
     "rarity": 0
   },
+  {"name": "Generator", "id": 53,
+    "cost": 4, "points": 4,
+    "text": "4:4.\nAt the start of each round, if this is the top of your discard pile, Build 1.",
+    "rarity": 1
+  },
+  {"name": "Pocket Watch", "id": 54,
+    "cost": 4, "points": 1,
+    "text": "4:1, draw 2.\nCosts X less, where X is the number of times you've passed this round.",
+    "rarity": 1
+  },
+  {"name": "Cogsplosion", "id": 59,
+    "cost": 4, "points": 0,
+    "text": "4:0, discard the leftmost Robot from your hand. +X where X is that Robot's point value.",
+    "rarity": 2
+  },
 
+  {"name": "Heron", "id": 65,
+    "cost": 5, "points": 4,
+    "text": "5:4, Fleeting, Inspire X, where X is the number of cards with Fleeting in your hand.",
+    "rarity": 1
+  },
+  {"name": "Conquer", "id": 67,
+    "cost": 5, "points": 2,
+    "text": "5:2, Visible, +X, where X is the cost of the next card in the story.",
+    "rarity": 1
+  },
+  {"name": "Phoenix", "id": 51,
+    "cost": 5, "points": 5,
+    "text": "5:5, Fleeting, create a ${4} in your hand.",
+    "rarity": 0
+  },
   {"name": "Lotus", "id": 42,
     "cost": 5, "points": 0,
     "text": "5:0, Inspire 2. If this is your last card in the story, set both player's points to 0.",
     "rarity": 2
   },
 
+  {"name": "Symbiosis", "id": 57,
+    "cost": 6, "points": 6,
+    "text": "6:6, if this is nourished, your opponent discards the leftmost card of their hand.",
+    "catalogText": "Symbiosis costs 6 mana for 6 points, and will also force the opponent to discard their leftmost card if it's effected by Nourish.\n\nEnding the last round with something that gives you Nourish, like Fruiting or Oak, then playing Symbiosis is a powerful way to gain card-advantage.\n\nIf you're looking for an efficient way to attack the opponent's hand, Symbiosis has a lot to offer.",
+    "rarity": 0
+  },
+  {"name": "Cornucopia", "id": 61,
+    "cost": 6, "points": 2,
+    "text": "6:2, Nourish 2.\nCosts X less, where X is the number of different cost values you can see in the story.",
+    "catalogText": "Cornucopia costs 6 mana for 2 points and 2 points of Nourish, but its cost is reduced by the number of different cost values you can see in the story.\n\nThis means that if you play 2 cards to the story with different cost values, Cornucopia will only cost 4. And if you can gain Sight of the opponent's cards, then it can be reduced by them as well.\n\nTo play this optimally, you'll want a variety of cost values in your deck, and to play cards with cost values that you don't expect to see your opponent play in the round.",
+    "rarity": 2
+  },
   {"name": "Eagle", "id": 43,
     "cost": 6, "points": 6,
     "text": "6:6, Nourish 2.\nWhen played, gain Sight 4 and transform each card in your hand into a ${4}.",
@@ -121,5 +210,16 @@
     "cost": 8, "points": 2,
     "text": "8:2, give each card later in the story -X, where X is its cost.\nWhen played, give each card ealier in the story -X.\n(This effect is temporary)",
     "rarity": 2
+  },
+  {"name": "Sun", "id": 56,
+    "cost": 8, "points": 8,
+    "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, gain Inspired 1.",
+    "rarity": 2
+  },
+
+  {"name": "Paramountcy", "id": 62,
+    "cost": 9, "points": 0,
+    "text": "9:0, add the top 5 cards of your discard pile to the end of the story.\n(The story can't exceed 12 cards this way, 'when played' effects don't trigger)",
+    "rarity": 3
   }
 ]

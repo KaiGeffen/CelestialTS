@@ -83,7 +83,7 @@ export default class Server {
 		console.log('you picking a card lol')
 
 		if (wsServer === undefined) {
-			throw 'Pick a choice card when server ws doesnt exist.'
+			throw 'Picking a choice card when server ws doesnt exist.'
 		}
 		else {
 			wsServer.send(JSON.stringify({type: 'send_choice_card', value: index}))

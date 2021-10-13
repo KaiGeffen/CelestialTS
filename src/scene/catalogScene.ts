@@ -178,11 +178,11 @@ export class CryptCatalogScene extends CatalogScene {
 }
 
 export class BastetCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("0™28™25™3™33™34™11™23")
+	pool: Card[] = decodeDeck("0™28™25™33™34™11™61™57")
 	defaultDeck: string = prebuiltDecks.get('Bastet')
 	name = "Bastet"
 	deckDescription: string = 
-"survives the early game, trading rounds by spending Nourish and empowering Bastets. It seeks to replay the strongest Bastet often using Raise Dead and the shuffle."
+"survives the early game, trading rounds by spending Nourish and empowering Bastets. It seeks to replay the strongest Bastet often using Unearth, tutoring with Night Vision, and the shuffle."
 	opponentDeck: string = '18:18:60:10:12:12:9:6:8:63:63:2:2:2:2'
 
 	constructor() {
