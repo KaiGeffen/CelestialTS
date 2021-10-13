@@ -253,7 +253,7 @@ export const ColorSettings: Record<string, any> = {
 }
 
 // const FontSettings: Record<string, [string, string]
-export const FontSettings: Record<string, Record<string, string>> = {
+const FontSettings: Record<string, Record<string, string>> = {
   standard: {size: '36px', font: 'Arial', full: '36px Arial Bold'},
   small: {size: '14px', font: 'Arial', full: '14px Arial Italic'},
   large: {size: '44px', font: 'Arial', full: '44px Arial Bold'},

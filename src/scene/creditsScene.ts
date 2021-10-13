@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, FontSettings, ColorSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, Space } from "../settings"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 
@@ -41,8 +41,8 @@ export default class CreditsScene extends Phaser.Scene {
         Space.windowWidth/2, 150, Space.windowWidth, Space.windowHeight - 250, {
           type: 'textarea',
           text: creditText,
-          fontFamily: 'Cambria',
-          fontSize: FontSettings.standard.size,
+          fontFamily: StyleSettings.basic.fontFamily,
+          fontSize: StyleSettings.standard.fontSize,
           color: ColorSettings.creditsText,
           backgroundColor: ColorSettings.creditsBackground,
           id: 'credits',

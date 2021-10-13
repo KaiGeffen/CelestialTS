@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, FontSettings, ColorSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, Space } from "../settings"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Card from "../lib/card"

@@ -1,5 +1,5 @@
 import "phaser"
-import { StyleSettings, FontSettings, ColorSettings, TimeSettings, ErrorConfig, UserSettings, Space } from "../settings"
+import { StyleSettings, ColorSettings, TimeSettings, ErrorConfig, UserSettings, Space } from "../settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
 
@@ -316,8 +316,8 @@ They do not; you can have both Nourish and Starve at the same time.`
 	    	Space.windowWidth/2, Space.windowHeight/2, Space.windowWidth*7/8, Space.windowHeight*7/8, {
 	    		type: 'textarea',
 	    		text: text,
-	    		fontFamily: 'Cambria',//FontSettings.standard.font, TODO Use a settings const
-	    		fontSize: FontSettings.standard.size,
+	    		fontFamily: StyleSettings.basic.fontFamily,
+	    		fontSize: StyleSettings.basic.fontSize,
 	    		color: ColorSettings.rulebookText,
 	    		border: 3,
 	    		borderColor: '#000',
