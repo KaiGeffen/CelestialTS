@@ -8,6 +8,8 @@ export class UserSettings {
   // Ensure that each expected setting exists, or give it a default value
   static _ensure(): void {
     const defaultSettings = {
+
+      // Settings
       vsAi: true,
       mmCode: '',
       volume: 0.3,
@@ -16,31 +18,31 @@ export class UserSettings {
       // Whether the player should pass automatically if there's nothing they can play
       autopass: true,
 
+      // List of Messages that user should be shown
+      // NOTE Doesn't get pushed to sql, is the result of the userProgress below
+      newMessages: [],
+
+
+
       // List of all things user has accomplished (Beat Anubis, seen Discord, etc)
       userProgress: [],
 
-      // List of Messages that user should be shown
-      newMessages: [],
+      igc: 0,
 
-      // tutorialKnown: false,
-      // completedTutorials: [],
-      // newDiscord: true, // Discord has a new indicator until clicked
-      // newTutorial: true, // Tutorial has new indicator when new tutorials are unlocked
-      // messages: [], // A list of the Messages that user has which are read/unread
+      inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
+
+      decks: [
+        {name: 'Anubis', value: "21:20:20:17:17:14:14:6:3:3:3:3:0:0:0"},
+        {name: 'Robots', value: "22:22:15:10:11:11:8:8:8:4:4:2:2:2:2"},
+        {name: 'Stalker', value: "23:20:19:19:19:19:13:11:12:1:1:1:1:1:1"},
+        {name: 'Crypt', value: "20:19:19:19:15:36:36:36:35:63:63:1:1:1:0"},
+        {name: 'Bastet', value: "61:61:11:11:11:11:34:34:34:33:33:28:28:28:0"},
+        {name: 'Horus', value: "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"},
+      ],
       
       draftDeckCode: '', // The user's current drafted deck
       draftRecord: [0, 0], // The win/loss record with current deck
-      loggedIn: false, // Whether or not the user is logged in to an account
-      decks: [
-      {name: 'Anubis', value: "21:20:20:14:14:14:14:3:3:3:3:3:0:0:0"},
-      {name: 'Robots', value: "22:22:15:10:11:11:8:8:8:4:4:2:2:2:2"},
-      {name: 'Stalker', value: "23:20:19:19:19:19:13:11:12:1:1:1:1:1:1"},
-      {name: 'Crypt', value: "20:19:19:19:15:12:12:36:36:36:35:1:1:1:0"},
-      {name: 'Bastet', value: "11:11:11:11:34:34:34:33:33:33:3:3:28:28:0"},
-      {name: 'Horus', value: "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"},
-      ],
-      inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
-      igc: 0
+      // loggedIn: false, // Whether or not the user is logged in to an account
     }
 
     for (var key in defaultSettings) {

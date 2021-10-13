@@ -2,14 +2,6 @@
 import { Color, UserSettings } from './settings'
 
 
-// Have a list of messages user has seen (Key is descriptive string)
-// And a list of messages they are ready to see
-// If user has seen a given message, it shouldn't be added to the list that they are waiting to see
-
-
-var userHasCompleted = []
-
-
 // Message manager should take a screen, look at user's progress mapping, and tell you what message to show
 export class UserProgress {
 	// Get a message to display when the given screen is visited
@@ -32,7 +24,8 @@ export class UserProgress {
 	}
 
 	// Add a given accomplishment to user's progress. Some might also add a message that user will see
-	static addAchievement(key: string): void {
+	// Returns true if the achievement is new, false if it exists already
+	static addAchievement(key: string): boolean {
 		if (!UserSettings._get('userProgress').includes(key)) {
 
 			// Add any associated messages that user should now see
@@ -42,7 +35,16 @@ export class UserProgress {
 
 			// Add this achievement to list of user achievements
 			UserSettings._push('userProgress', key)
+
+			return true
 		}
+
+		return false
+	}
+
+	// Check if user progress contains given key
+	static contains(key: string): boolean {
+		return UserSettings._get('userProgress').includes(key)
 	}
 }
 
@@ -67,8 +69,8 @@ advanced challenges are now available!
 
 The expansion can be enabled from the deck menu.`, 'welcome'],
 	deckMenuNotice:
-[`You can find premade decks by clicking the
-[color=${Color.buttonReference}]Deck[/color] button below.
+[`You can find premade decks by clicking the choices
+on the left side of the screen.
 
 [color=${Color.cardReference}]Anubis[/color] is a great deck to start with.`, 'builder'],
 	draftNotice:

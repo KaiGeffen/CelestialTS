@@ -1,11 +1,10 @@
 import "phaser"
-import { Style, Color, Space, UserSettings, UserProgress, Url } from "../settings/settings"
+import { Style, Color, Space, UserProgress, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
-import { Screen } from "../lib/message"
 
 
 export default class WelcomeScene extends BaseScene {
@@ -47,6 +46,9 @@ export default class WelcomeScene extends BaseScene {
     // Discord button
     let btnDiscord = new Button(this, Space.windowWidth/2 + 100, Space.windowHeight - 50, "Discord").setOrigin(0.5)
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
+    if (!UserProgress.contains('discord')) {
+      btnDiscord.glowUntilClicked()
+    }
 
     // Store button
     let btnStore = new Button(this, Space.windowWidth/2 + 300, Space.windowHeight - 50, "Store", this.doStore).setOrigin(0.5)
@@ -54,19 +56,10 @@ export default class WelcomeScene extends BaseScene {
     // Start Button
     new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(Style.announcement)
 
-
-
     let msgText = UserProgress.getMessage('welcome')
     if (msgText !== undefined) {
       this.displayMessage(msgText)
-
-      // TODO Shouldn't do this in all cases, adjust if messages are more than just tutorials
-      // NOTE This needs to happen before new options are indicated below, because it can set those settings
-      UserSettings._set('newTutorial', true)
     }
-
-    // Indicate which buttons have new options in them
-    this.indicateNewOptions(btnTutorial, btnDiscord)
     
     super.create()
   }
@@ -104,25 +97,12 @@ export default class WelcomeScene extends BaseScene {
     menu.add([txtTitle, txtMessage])
   }
 
-  private indicateNewOptions(btnTutorial: Button, btnDiscord: Button): void {
-    if (UserSettings._get('newDiscord')) {
-      btnDiscord.glow()
-    }
-
-    if (UserSettings._get('newTutorial')) {
-      btnTutorial.glow()
-    }
-  }
-
   // Do everything that occurs when the start button is pressed - either start, or prompt tutorial
   private doStart(btnTutorial: Button): () => void {
     let that = this
     return function() {
       // Guide user to Tutorial if this is their first time here
-      if (!UserSettings._get('tutorialKnown')) {
-        // Set that user has been prompted to try the tutorial
-        UserSettings._set('tutorialKnown', true)
-
+      if (UserProgress.addAchievement('tutorialKnown')) {
         that.createTutorialPrompt(btnTutorial)
       }
       else {
@@ -146,8 +126,7 @@ export default class WelcomeScene extends BaseScene {
   
   private doDiscord(btnDiscord: Button): () => void {
     return function() {
-      btnDiscord.stopGlow()
-      UserSettings._set('newDiscord', false)
+      UserProgress.addAchievement('discord')
     
       window.open(Url.discord)
     }
@@ -227,14 +206,15 @@ class TutorialRegion {
     })
 
     // Unlock (Make clickable and legible) any tutorials which user now has access to
-    let completed = UserSettings._get('completedTutorials')
-    if (!completed.includes('Basics')) {
+    if (!UserProgress.contains('tutorialCompleteBasics')) {
       iconDraft.lock()
       iconAnubis.lock()
       iconRobots.lock()
       iconStalker.lock()
     }
-    if (!(completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker'))) {
+    if (!(UserProgress.contains('tutorialCompleteAnubis') &&
+      UserProgress.contains('tutorialCompleteRobots') &&
+      UserProgress.contains('tutorialCompleteStalker'))) {
       iconCrypt.lock()
       iconBastet.lock()
       iconHorus.lock()
@@ -248,8 +228,7 @@ class TutorialRegion {
     let that = this
     return function() {
       btnTutorial.stopGlow()
-      UserSettings._set('tutorialKnown', true)
-      UserSettings._set('newTutorial', false)
+      UserProgress.addAchievement('tutorialKnown')
 
       that.menu.open()
     }
@@ -257,33 +236,34 @@ class TutorialRegion {
 
   // Create a check mark over each tutorial that user has completed
   private createCheckMarks(xDelta: number, yDelta: number): void {
-    if (UserSettings._get('completedTutorials').includes('Basics')) {
+    UserProgress.contains('tutorialCompleteAnubis')
+    if (UserProgress.contains('tutorialCompleteBasics')) {
       this.menu.add(this.scene.add.text(0, -yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     // Core set decks
-    if (UserSettings._get('completedTutorials').includes('Anubis')) {
+    if (UserProgress.contains('tutorialCompleteAnubis')) {
       this.menu.add(this.scene.add.text(-xDelta, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
-    if (UserSettings._get('completedTutorials').includes('Robots')) {
+    if (UserProgress.contains('tutorialCompleteRobots')) {
       this.menu.add(this.scene.add.text(0, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
-    if (UserSettings._get('completedTutorials').includes('Stalker')) {
+    if (UserProgress.contains('tutorialCompleteStalker')) {
       this.menu.add(this.scene.add.text(xDelta, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
     // Expansion decks
-    if (UserSettings._get('completedTutorials').includes('Crypt')) {
+    if (UserProgress.contains('tutorialCompleteCrypt')) {
       this.menu.add(this.scene.add.text(-xDelta, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
-    if (UserSettings._get('completedTutorials').includes('Bastet')) {
+    if (UserProgress.contains('tutorialCompleteBastet')) {
       this.menu.add(this.scene.add.text(0, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
-    if (UserSettings._get('completedTutorials').includes('Horus')) {
+    if (UserProgress.contains('tutorialCompleteHorus')) {
       this.menu.add(this.scene.add.text(xDelta, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
   }

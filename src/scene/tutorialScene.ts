@@ -1,6 +1,6 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { Style, BBStyle, Color, Space, UserSettings, UserProgress, Time } from "../settings/settings"
+import { Style, BBStyle, Color, Space, UserProgress, Time } from "../settings/settings"
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo, getSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
@@ -182,14 +182,9 @@ export class TutorialScene1 extends TutorialScene {
 
 	onWin(): void {
 		this.net.closeSocket()
-  		
-  		// If user just completed the Basics tutorial for the first time, signal that more tutorial content is now available
-  		if (!UserSettings._get('completedTutorials').includes('Basics')) {
-  			UserSettings._set('newTutorial', true)
-  		}
 
   		// Add this tutorial (Basics) to the list of completed tutorials
-  		UserSettings._push('completedTutorials', 'Basics')
+  		UserProgress.addAchievement('tutorialComplete' + 'Basics')
   	}
 
   	onWinExit(): () => void {
@@ -240,14 +235,15 @@ export class TutorialScene2 extends TutorialScene {
   	onWin(): void {
   		this.net.closeSocket()
 
-		UserProgress.addAchievement('tutorialComplete')
-
   		// Add this tutorial to the list of completed tutorials
-  		UserSettings._push('completedTutorials', this.tutorialName)
+		UserProgress.addAchievement('tutorialComplete' + this.tutorialName)
 
   		// If all the core challenges have been completed, expansion is unlocked
-		let completed = UserSettings._get('completedTutorials')
-		let expansionUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
+		let expansionUnlocked = 
+			UserProgress.contains('tutorialCompleteAnubis') &&
+			UserProgress.contains('tutorialCompleteRobots') &&
+			UserProgress.contains('tutorialCompleteStalker')
+		
 		if (expansionUnlocked) {
 			UserProgress.addAchievement('coreChallengesComplete')
 		}
