@@ -15,7 +15,6 @@ import { Screen } from "../lib/message"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
-// TODO 112
 const maxCostFilter: number = 7
 
 class BuilderSceneShell extends BaseScene {
@@ -44,13 +43,13 @@ class BuilderSceneShell extends BaseScene {
 
     // Start button - Show how many cards are in deck, and enable user to start if deck is full
     this.btnStart = new Button(this,
-      Space.windowWidth - 112,
+      Space.windowWidth - Space.pad,
       Space.windowHeight - 50,
-      '')
+      '').setOrigin(1, 0)
 
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-    this.deckContainer = this.add.container(Space.windowWidth - 112, Space.windowHeight).setDepth(2)
+    this.deckContainer = this.add.container(Space.windowWidth - 150, Space.windowHeight).setDepth(2)
   }
 
   postcreate(): void {
@@ -1099,17 +1098,17 @@ export class TutorialBuilderScene extends BuilderScene {
 
     // Add a Back button
     new Button(this,
-      Space.windowWidth - 112,
+      Space.windowWidth - Space.pad,
       Space.windowHeight - 150,
       'Back',
-      this.onBack())
+      this.onBack()).setOrigin(1, 0)
 
     // Add a Reset button
     new Button(this,
-      Space.windowWidth - 112,
+      Space.windowWidth - Space.pad,
       Space.windowHeight - 100,
       'Reset',
-      this.onReset())
+      this.onReset()).setOrigin(1, 0)
 
     // If the user has made a deck for this tutorial, use it
     let usersCustomDeck = this.tutorialDeckCodes[this.tutorialName]
@@ -1229,7 +1228,7 @@ export class DraftBuilderScene extends BuilderScene {
     // this.removeFilterObjects()
 
     // Add a button to quit the current run
-    this.btnReset = new Button(this, Space.windowWidth - 112, Space.windowHeight - 100, 'Reset', this.onReset)
+    this.btnReset = new Button(this, Space.windowWidth - Space.pad, Space.windowHeight - 100, 'Reset', this.onReset).setOrigin(1, 0)
 
     // Change the start button to start a match vs a draft opponent
     let that = this
