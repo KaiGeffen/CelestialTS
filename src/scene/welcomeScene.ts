@@ -1,11 +1,10 @@
 import "phaser"
-import { Style, Color, Space, UserSettings, Url } from "../settings/settings"
+import { Style, Color, Space, UserSettings, UserProgress, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
-import MessageManager from "../lib/message"
 import { Screen } from "../lib/message"
 
 
@@ -57,7 +56,7 @@ export default class WelcomeScene extends BaseScene {
 
 
 
-    let msgText = MessageManager.readFirstUnreadMessage(Screen.Main)
+    let msgText = UserProgress.getMessage('welcome')
     if (msgText !== undefined) {
       this.displayMessage(msgText)
 
@@ -133,7 +132,7 @@ export default class WelcomeScene extends BaseScene {
   }
 
   private doDeckbuilder(): void {
-    MessageManager.addUnreadMessage('deckMenuNotice')
+    UserProgress.addAchievement('deckMenuNotice')
     this.scene.start("BuilderScene", {isTutorial: false})
   }
 
@@ -201,7 +200,7 @@ class TutorialRegion {
       that.scene.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
     })
     let iconDraft = new Icon(this.scene, this.menu, -xDelta, -yDelta, 'Draft', function() {
-      MessageManager.addUnreadMessage('draftNotice')
+      UserProgress.addAchievement('draftNotice')
       that.scene.scene.start("DraftBuilderScene")
     })
 

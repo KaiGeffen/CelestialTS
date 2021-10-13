@@ -1,12 +1,11 @@
 import "phaser"
 import GameScene from "./gameScene"
-import { Style, BBStyle, Color, Space, UserSettings, Time } from "../settings/settings"
+import { Style, BBStyle, Color, Space, UserSettings, UserProgress, Time } from "../settings/settings"
 import ClientState from "../lib/clientState"
 import { setSimplifyCardInfo, getSimplifyCardInfo } from "../lib/card"
 import Button from "../lib/button"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
-import MessageManager from "../lib/message"
 import { cardback } from "../catalog/catalog"
 
 
@@ -241,7 +240,7 @@ export class TutorialScene2 extends TutorialScene {
   	onWin(): void {
   		this.net.closeSocket()
 
-		MessageManager.addUnreadMessage('tutorialComplete')
+		UserProgress.addAchievement('tutorialComplete')
 
   		// Add this tutorial to the list of completed tutorials
   		UserSettings._push('completedTutorials', this.tutorialName)
@@ -250,7 +249,7 @@ export class TutorialScene2 extends TutorialScene {
 		let completed = UserSettings._get('completedTutorials')
 		let expansionUnlocked = completed.includes('Anubis') && completed.includes('Robots') && completed.includes('Stalker')
 		if (expansionUnlocked) {
-			MessageManager.addUnreadMessage('coreChallengesComplete')
+			UserProgress.addAchievement('coreChallengesComplete')
 		}
   	}
 

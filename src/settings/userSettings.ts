@@ -15,11 +15,19 @@ export class UserSettings {
       animationSpeed: 0.25,
       // Whether the player should pass automatically if there's nothing they can play
       autopass: true,
-      tutorialKnown: false,
-      completedTutorials: [],
-      newDiscord: true, // Discord has a new indicator until clicked
-      newTutorial: true, // Tutorial has new indicator when new tutorials are unlocked
-      messages: [], // A list of the Messages that user has which are read/unread
+
+      // List of all things user has accomplished (Beat Anubis, seen Discord, etc)
+      userProgress: [],
+
+      // List of Messages that user should be shown
+      newMessages: [],
+
+      // tutorialKnown: false,
+      // completedTutorials: [],
+      // newDiscord: true, // Discord has a new indicator until clicked
+      // newTutorial: true, // Tutorial has new indicator when new tutorials are unlocked
+      // messages: [], // A list of the Messages that user has which are read/unread
+      
       draftDeckCode: '', // The user's current drafted deck
       draftRecord: [0, 0], // The win/loss record with current deck
       loggedIn: false, // Whether or not the user is logged in to an account

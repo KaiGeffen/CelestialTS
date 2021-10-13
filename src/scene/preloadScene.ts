@@ -1,9 +1,8 @@
 import "phaser"
 var mobile = require('is-mobile')
 
-import { Style, Color, Space, UserSettings, Url } from "../settings/settings"
+import { Style, Color, Space, UserSettings, UserProgress, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
-import MessageManager from "../lib/message"
 import Server from "../server"
 
 
@@ -84,7 +83,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// If the user is using mobile, ensure that the see the mobile message
 		if (mobile()) {
-			MessageManager.addUnreadMessage('mobile')
+			UserProgress.addAchievement('mobile')
 		}
 		
 		// Add event listeners

@@ -1,7 +1,7 @@
 import "phaser"
 import { collectibleCards, baseCards } from "../catalog/catalog"
 import { CardImage, cardInfo } from "../lib/cardImage"
-import { Style, Color, UserSettings, Space, Mechanics } from "../settings/settings"
+import { Style, Color, UserSettings, UserProgress, Space, Mechanics } from "../settings/settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 import Button from "../lib/button"
@@ -9,9 +9,6 @@ import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
 import PrebuiltDeck from "../catalog/prebuiltDecks"
-
-import MessageManager from "../lib/message"
-import { Screen } from "../lib/message"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
@@ -1003,7 +1000,7 @@ export class BuilderScene extends BuilderSceneShell {
 
   // Manage any messages that may need to be displayed for the user
   manageMessages(): void {
-    let msgText = MessageManager.readFirstUnreadMessage(Screen.Builder)
+    let msgText = UserProgress.getMessage('builder')
     if (msgText !== undefined) {
       // TODO Remove or change since ux changed
       // Make the deck button glow to catch attention
@@ -1304,7 +1301,7 @@ export class DraftBuilderScene extends BuilderScene {
 
   // Manage any messages that may need to be displayed for the user
   manageMessages(): void {
-    let msgText = MessageManager.readFirstUnreadMessage(Screen.Draft)
+    let msgText = UserProgress.getMessage('draft')
     if (msgText !== undefined) {
 
       // Open a window informing user of information
