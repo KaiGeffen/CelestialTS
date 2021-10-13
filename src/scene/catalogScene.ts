@@ -41,7 +41,7 @@ class CatalogScene extends BaseScene {
 		this.txtDescription = this.add.text(Space.pad, 280, '', StyleSettings.basic)
 
 		// Next button
-		let [x, y] = this.getCardPosition(6)
+		let [x, y] = this.getCardPosition(7)
 		x += Space.cardSize/2
 		y += 50
 		new Button(this, x, y, 'Next', this.goNext).setOrigin(1, 0.5)
