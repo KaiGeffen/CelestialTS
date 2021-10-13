@@ -257,13 +257,13 @@ export const FontSettings: Record<string, Record<string, string>> = {
   standard: {size: '36px', font: 'Arial', full: '36px Arial Bold'},
   small: {size: '14px', font: 'Arial', full: '14px Arial Italic'},
   large: {size: '44px', font: 'Arial', full: '44px Arial Bold'},
-  huge: {size: '54px', font: 'Calibri', full: '54px Calibri Bold'},
+  huge: {size: '50px', font: 'Calibri', full: '50px Calibri Bold'},
   stack: {size: '85px', font: 'Arial', full: '85px Arial Bold'},
   title: {size: '128px', font: 'Calibri', full: '128px Calibri Bold'},
   credits: {size: '19px', font: 'Arial', full: '19px Arial Bold'}
 }
 
-const fontFamily = 'Cambria'//'Playfair Display'//'EB Garamond'//'Georgia'//'Garamond'//'Cambria'
+const fontFamily = 'Mulish'//'Cambria'//'Playfair Display'//'EB Garamond'//'Georgia'//'Garamond'//'Cambria'
 
 export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   basic: {
@@ -305,16 +305,6 @@ export const StyleSettings: Record<string, Phaser.Types.GameObjects.Text.TextSty
     padding: { x: 10, y: 5 },
     stroke: '#000',
     strokeThickness: 3
-  },
-  cardText: {
-    fontFamily: 'EB Garamond',
-    fontSize: FontSettings.standard.size,
-    color: ColorSettings.cardText,
-    backgroundColor: ColorSettings.cardTextBackground,
-    wordWrap: { width: 500, useAdvancedWrap: false },
-    padding: { x: 10, y: 5 },
-    stroke: '#000',
-    strokeThickness: 0
   },
   stack: {
     fontFamily: fontFamily,
