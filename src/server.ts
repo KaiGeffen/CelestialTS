@@ -87,7 +87,7 @@ export default class Server {
 			throw 'Picking a choice card when server ws doesnt exist.'
 		}
 		else {
-			wsServer.send(JSON.stringify({type: 'send_choice_card', value: index}))
+			wsServer.send(JSON.stringify({type: 'make_choice', value: index}))
 		}
 	}
 
