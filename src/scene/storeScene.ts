@@ -7,9 +7,6 @@ import Menu from "../lib/menu"
 import {cardInfo, addCardInfoToScene, CardImage} from "../lib/cardImage"
 import Server from "../server"
 
-// TODO remove
-import {collectibleCards} from "../catalog/catalog"
-
 
 export default class StoreScene extends BaseScene {
   container: Phaser.GameObjects.Container
@@ -92,7 +89,6 @@ export default class StoreScene extends BaseScene {
     cardImage.setPosition([(index - 1) * (Space.cardSize*2 + Space.pad), Space.cardSize*1.5])
 
     // When clicked, send to server the choice, destroy the cards, return open pack button
-    // TODO Communicate to server
     let that = this
     cardImage.setOnClick(function() {
       that.sound.play('win')

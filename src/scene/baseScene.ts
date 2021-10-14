@@ -36,7 +36,6 @@ export default class BaseScene extends Phaser.Scene {
 	create(): void {
 		// Add music if it doesn't exist
 		if (music === undefined) {
-			// todo
 			music = this.sound.add('background', {volume: UserSettings._get('musicVolume'), loop: true})
 			music.play()
 		}
@@ -337,24 +336,6 @@ They do not; you can have both Nourish and Starve at the same time.`
 
 	    return container.add([rulebook, invisibleBackground])
 	}
-
-	// private doMute(btn: Button): () => void {
-	// 	let that = this
-	// 	return function() {
-	// 		if (music.isPlaying) {
-	// 			music.pause()
-
-	// 			btn.setText('♪')
-	// 			UserSettings._set('music', false)
-	// 		}
-	// 		else {
-	// 			music.resume()
-
-	// 			btn.setText('♫')
-	// 			UserSettings._set('music', true)
-	// 		}
-	// 	}	
-	// }
 
 	// Overwritten by the scenes that extend this
 	beforeExit(): void {

@@ -135,40 +135,6 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 	}
 
-	// Attempt to log in the user, starts an asynch request which sets the loginStatus param when completed
-	private attemptLogin(): void {
-		const hashParams = new URLSearchParams(window.location.hash.substr(1))
-	    const accessToken = hashParams.get('access_token')
-
-	    // const cmd = 'curl -X GET "https://api.digitalocean.com/v2/droplets -H "Authorization: Bearer ' + accessToken + '"'
-
-	    let xmlHttp = new XMLHttpRequest()
-
-	    // When the request returns, set the login status
-	    let that = this
-	    xmlHttp.onloadend = function() {
-	    	let loginSuccessful = xmlHttp.statusText === "OK"
-	    	if (loginSuccessful) {
-		    	let response = JSON.parse(xmlHttp.response)['account']
-		    	console.log(response)
-		    	// console.log(response.get('foo'))
-
-		    	// console.log(response)
-		    	console.log(response['uuid'])
-		    	// TODO Load the values for this account
-		    	// new AccountManager(xmlHttp.responseText)
-	    	}
-
-	    	that.loginStatus = loginSuccessful
-	    }
-
-	    xmlHttp.open("GET", "https://api.digitalocean.com/v2/account")
-	    xmlHttp.setRequestHeader("Authorization", "Bearer " + accessToken)
-	    xmlHttp.send()
-	   	// TODO Remove this
-	    console.log(xmlHttp)
-	}
-
 	// Loads all images that are used as icons in ux
 	private loadIcons(): void {
 		let iconNames = [

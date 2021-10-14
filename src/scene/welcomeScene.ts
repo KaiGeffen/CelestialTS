@@ -184,10 +184,10 @@ class TutorialRegion {
     let iconBasics = new Icon(this.scene, this.menu, 0, -yDelta, 'Basics', function() {
       that.scene.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
     })
-    let iconDraft = new Icon(this.scene, this.menu, -xDelta, -yDelta, 'Draft', function() {
-      UserProgress.addAchievement('draftNotice')
-      that.scene.scene.start("DraftBuilderScene")
-    })
+    // let iconDraft = new Icon(this.scene, this.menu, -xDelta, -yDelta, 'Draft', function() {
+    //   UserProgress.addAchievement('draftNotice')
+    //   that.scene.scene.start("DraftBuilderScene")
+    // })
 
     // Core icons
     let iconAnubis = new Icon(this.scene, this.menu, -xDelta, 0, 'Anubis', function() {
