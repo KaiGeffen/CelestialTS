@@ -213,7 +213,7 @@ class TutorialRegion {
 
     // Unlock (Make clickable and legible) any tutorials which user now has access to
     if (!UserProgress.contains('tutorialCompleteBasics')) {
-      iconDraft.lock()
+      // iconDraft.lock()
       iconAnubis.lock()
       iconRobots.lock()
       iconStalker.lock()

@@ -47,7 +47,8 @@ export default class Server {
 					break
 
 				case 'send_user_data':
-					console.log(msg.value)
+					that.loadUserData(msg.value)
+
 					// TODO Use user data
 					break
 
@@ -88,6 +89,19 @@ export default class Server {
 		else {
 			wsServer.send(JSON.stringify({type: 'send_choice_card', value: index}))
 		}
+	}
+
+	private static loadUserData(data: string): void {
+		console.log(data)
+
+		console.log(JSON.parse(data))
+		let parsed = JSON.parse(data)
+
+		// Put this data into the session storage so that UserSettings sees it before local storage
+		sessionStorage.setItem('igc', 'hewwo')
+		sessionStorage.setItem('inventory', 'hewwo')
+		sessionStorage.setItem('decks', 'hewwo')
+		sessionStorage.setItem('userProgress', 'hewwo')
 	}
 
 	// Get a websocket connection
