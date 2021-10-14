@@ -91,17 +91,14 @@ export default class Server {
 		}
 	}
 
-	private static loadUserData(data: string): void {
+	private static loadUserData(data): void {
 		console.log(data)
 
-		console.log(JSON.parse(data))
-		let parsed = JSON.parse(data)
-
 		// Put this data into the session storage so that UserSettings sees it before local storage
-		sessionStorage.setItem('igc', parsed[1])
-		sessionStorage.setItem('userProgress', parsed[5])
-		sessionStorage.setItem('decks', parsed[6])
-		sessionStorage.setItem('inventory', parsed[8])
+		sessionStorage.setItem('igc', data[1])
+		sessionStorage.setItem('userProgress', data[5])
+		sessionStorage.setItem('decks', data[6])
+		sessionStorage.setItem('inventory', data[8])
 	}
 
 	// Get a websocket connection
