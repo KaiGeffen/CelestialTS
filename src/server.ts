@@ -54,7 +54,9 @@ export default class Server {
 
 				case 'send_pack':
 					console.log(msg.value)
-					let cards: Card[] = decodeDeck(msg.value)
+					let ids: number[] = msg.value
+					// TODO Bad smell
+					let cards: Card[] = decodeDeck(ids.join('™'))
 					packOpenCallback(cards)
 					break
 			}
