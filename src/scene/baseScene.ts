@@ -272,11 +272,11 @@ Each round has the following structure: start phase, action phase, end phase.
 
 >>> START PHASE
 In the start phase, the following things occur in the following order:
+* Any 'start of round' effects trigger (ex: Sun).
 * If one player has won more rounds than the other, that player receives priority. Otherwise, priority is determined at random.
 * Each player's maximum mana increases by 1 if it is less than 10.
 * Each player's current mana is set to their maximum mana.
 * Each player draws 2 cards.
-* Any 'start of round' effects trigger (ex: Camera).
 
 >>> ACTION PHASE
 During the action phase, the player with priority can either pass, or play a card from their hand (Assuming they have sufficient mana to pay for it).
