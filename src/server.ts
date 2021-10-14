@@ -98,10 +98,10 @@ export default class Server {
 		let parsed = JSON.parse(data)
 
 		// Put this data into the session storage so that UserSettings sees it before local storage
-		sessionStorage.setItem('igc', 'hewwo')
-		sessionStorage.setItem('inventory', 'hewwo')
-		sessionStorage.setItem('decks', 'hewwo')
-		sessionStorage.setItem('userProgress', 'hewwo')
+		sessionStorage.setItem('igc', parsed[1])
+		sessionStorage.setItem('userProgress', parsed[5])
+		sessionStorage.setItem('decks', parsed[6])
+		sessionStorage.setItem('inventory', parsed[8])
 	}
 
 	// Get a websocket connection
