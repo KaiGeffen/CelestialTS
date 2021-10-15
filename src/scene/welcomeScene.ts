@@ -243,7 +243,7 @@ class TutorialRegion {
   // Create a check mark over each tutorial that user has completed
   private createCheckMarks(xDelta: number, yDelta: number): void {
     UserProgress.contains('tutorialCompleteAnubis')
-    if (UserProgress.contains('tutorialCompleteBasics')) {
+    if (UserProgress.contains('tutorialComplete')) {
       this.menu.add(this.scene.add.text(0, -yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 
