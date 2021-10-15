@@ -606,7 +606,7 @@ export class BuilderScene extends BuilderSceneShell {
       new Button(this, 0, 0, '+', function() {
         // If user already has 9 decks, signal error instead
         if (UserSettings._get('decks').length >= 9) {
-          this.signalError()
+          this.signalError('Reached max number of decks (9).')
         }
         else {
           // Create a new button
