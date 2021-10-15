@@ -48,8 +48,6 @@ export default class Server {
 
 				case 'send_user_data':
 					that.loadUserData(msg.value)
-
-					// TODO Use user data
 					break
 
 				case 'send_pack':
@@ -99,8 +97,8 @@ export default class Server {
 		// Put this data into the session storage so that UserSettings sees it before local storage
 		sessionStorage.setItem('igc', JSON.stringify(data[1]))
 		sessionStorage.setItem('userProgress', JSON.stringify(data[5]))
-		sessionStorage.setItem('decks', JSON.stringify(data[6]))
-		sessionStorage.setItem('inventory', JSON.stringify(data[8]))
+		sessionStorage.setItem('inventory', JSON.stringify(data[7]))
+		sessionStorage.setItem('decks', JSON.stringify(data[8]))
 	}
 
 	// Get a websocket connection

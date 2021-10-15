@@ -1,5 +1,5 @@
 import "phaser"
-import { Style, Space, UserProgress, UserSettings } from "../settings/settings"
+import { Style, Space, UserProgress, UserSettings, Mechanics } from "../settings/settings"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Card from "../lib/card"
@@ -14,6 +14,8 @@ export default class StoreScene extends BaseScene {
 
   btnOpen: Button
   btnExit: Button
+  // Cost of the pack, as a portion of user's igc
+  txtCost: Phaser.GameObjects.Text
   txtHint: Phaser.GameObjects.Text
 
   constructor() {
@@ -37,7 +39,15 @@ export default class StoreScene extends BaseScene {
       Space.windowHeight/2,
       'Open Pack',
       this.openPack()
-      ).setOrigin(0.5)
+      ).setOrigin(0.5, 1)
+    
+    this.txtCost = this.add.text(
+      Space.windowWidth/2,
+      Space.windowHeight/2,
+      '',
+      Style.basic
+      ).setOrigin(0.5, 0)
+    this.updateCostText()
 
     // Text hint to pick your 5th card
     this.txtHint = this.add.text(
@@ -66,7 +76,13 @@ export default class StoreScene extends BaseScene {
       if (!Server.loggedIn()) {
         this.signalError("You aren't logged in.")
         return
+      } else if (UserSettings._get('igc') < Mechanics.costPack) {
+        this.signalError("You don't have enough ☆.")
+        return
       }
+
+      // Reduce user's igc locally, so that it displays correctly until servers updates us with new state
+      UserSettings._set('igc', UserSettings._get('igc') - Mechanics.costPack)
 
       Server.requestPack(that.openPackCallback())
     }
@@ -91,7 +107,7 @@ export default class StoreScene extends BaseScene {
   // Add a card which player can choose
   private addChoiceCard(card: Card, index: number): void {
     let cardImage = new CardImage(card, this.container, true)
-    
+
     // Set position of card
     cardImage.setPosition([(index - 1) * (Space.cardSize*2 + Space.pad), Space.cardSize*1.5])
 
@@ -107,8 +123,11 @@ export default class StoreScene extends BaseScene {
       Server.sendChoiceCard(index)
 
       that.btnOpen.setVisible(true)
+      that.txtCost.setVisible(true)
       that.btnExit.setVisible(true)
       that.txtHint.setVisible(false)
+
+      that.updateCostText()
 
       // Clear out the old cards
       that.temporaryObjs.forEach(obj => obj.destroy())
@@ -133,6 +152,7 @@ export default class StoreScene extends BaseScene {
 
       // Make the hint visible and button invisible
       that.btnOpen.setVisible(false)
+      that.txtCost.setVisible(false)
       that.btnExit.setVisible(false)
       that.txtHint.setVisible(true)
 
@@ -163,5 +183,10 @@ export default class StoreScene extends BaseScene {
       
       menu.add([txtTitle, txtMessage])
     }
+  }
+
+  // Update the cost text to reflect user's current available igc
+  private updateCostText(): void {
+    this.txtCost.setText(`(${Mechanics.costPack}/${UserSettings._get('igc')} ☆)`)
   }
 }
