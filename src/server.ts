@@ -98,7 +98,16 @@ export default class Server {
 		sessionStorage.setItem('igc', JSON.stringify(data[1]))
 		sessionStorage.setItem('userProgress', JSON.stringify(data[5]))
 		sessionStorage.setItem('inventory', JSON.stringify(data[7]))
-		sessionStorage.setItem('decks', JSON.stringify(data[8]))
+
+		// Decks must be translated from string, string to dictionary
+		let decks = []
+		data[8].forEach(pair => {
+			let name = pair[0]
+			let deckCode = pair[1]
+
+			decks.push({name: name, value: deckCode})
+		})
+		sessionStorage.setItem('decks', JSON.stringify(decks))
 	}
 
 	// Get a websocket connection

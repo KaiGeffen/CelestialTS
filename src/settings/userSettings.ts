@@ -39,7 +39,7 @@ export class UserSettings {
         {name: 'Bastet', value: "61:61:11:11:11:11:34:34:34:33:33:28:28:28:0"},
         {name: 'Horus', value: "45:45:13:13:11:39:39:32:31:31:28:27:27:27:27"},
       ],
-      
+
       draftDeckCode: '', // The user's current drafted deck
       draftRecord: [0, 0], // The win/loss record with current deck
       // loggedIn: false, // Whether or not the user is logged in to an account
