@@ -99,7 +99,7 @@ export default class StoreScene extends BaseScene {
     cardImage.setPosition([(index - 1.5) * (Space.cardSize + Space.pad), -Space.cardSize])
 
     // Display for user how many of the card they have
-    cardImage.setQuantity(UserSettings._get('inventory')[card.id])
+    cardImage.setQuantity(UserSettings._getQuantity(card.id))
 
     this.temporaryObjs.push(cardImage)
   }
@@ -112,7 +112,7 @@ export default class StoreScene extends BaseScene {
     cardImage.setPosition([(index - 1) * (Space.cardSize*2 + Space.pad), Space.cardSize*1.5])
 
     // Display for user how many of the card they have
-    cardImage.setQuantity(UserSettings._get('inventory')[card.id])
+    cardImage.setQuantity(UserSettings._getQuantity(card.id))
 
     // When clicked, send to server the choice, destroy the cards, return open pack button
     let that = this
