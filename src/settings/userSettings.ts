@@ -70,8 +70,11 @@ export class UserSettings {
 
       // If key is in session storage then we're signed in
       // User progress and decks should be communicated to the server
-      if (key === 'userProgress' || key === 'decks') {
+      if (key === 'userProgress') {
         Server.sendUserProgress(value)
+      }
+      else if (key === 'decks') {
+        Server.sendDecks(value)
       }
     }
     else {
