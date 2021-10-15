@@ -1,4 +1,5 @@
 import "phaser"
+import Server from "../server"
 import { collectibleCards, baseCards } from "../catalog/catalog"
 import { CardImage, cardInfo } from "../lib/cardImage"
 import { Style, Color, UserSettings, UserProgress, Space, Mechanics } from "../settings/settings"
@@ -121,7 +122,13 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   beforeExit(): void {
+    // Save the current deck so that it persists between scenes (Session)
     this.standardDeckCode = this.getDeckCode()
+
+    // If user is logged in, send their new decks to server
+    if (Server.loggedIn()) {
+      Server.sendDecks(UserSettings._get('decks'))
+    }
   }
 
   // Filter which cards can be selected in the catalog based on current filtering parameters

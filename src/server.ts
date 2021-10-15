@@ -91,6 +91,53 @@ export default class Server {
 		}
 	}
 
+	// Send server an updated list of userProgress
+	static sendUserProgress(value): void {
+		console.log('Tryna send user progress lol')
+
+		if (wsServer === undefined) {
+			throw 'Sending user progress when server ws doesnt exist.'
+		}
+		else {
+			let message = JSON.stringify({
+				type: 'send_user_progress',
+				value: value
+			})
+
+			console.log(message)
+
+			wsServer.send(message)
+		}
+	}
+
+	// Send server an updated list of decks
+	static sendDecks(decks): void {
+		console.log('Tryna send decks lol')
+
+		if (wsServer === undefined) {
+			throw 'Sending decks when server ws doesnt exist.'
+		}
+		else {
+			// On database, decks are stored as a pair of strings, convert before sending
+			let decksAsList = []
+
+			decks.forEach(deck => {
+				let tuple = [deck['name'], deck['value']]
+				decksAsList.push(tuple)
+			})
+
+			let message = JSON.stringify({
+				type: 'send_decks',
+				value: decksAsList
+			})
+
+			console.log(message)
+
+			wsServer.send(message)
+		}
+	}
+
+	// Load user data that was sent from server into session storage
 	private static loadUserData(data): void {
 		console.log(data)
 

@@ -1,3 +1,4 @@
+import Server from "../server"
 import { baseCards } from "../catalog/catalog"
 
 
@@ -64,12 +65,17 @@ export class UserSettings {
   }
 
   static _set(key: string, value: any) {
-    // TODO Send these changes back to server
     if (key in sessionStorage) {
       sessionStorage.setItem(key, JSON.stringify(value))
     }
     else {
       localStorage.setItem(key, JSON.stringify(value))
+
+      // If key is in local storage then we're signed in
+      // User progress should also be communicated to the server
+      if (key === 'userProgress') {
+        Server.sendUserProgress(value)
+      }
     }
   }
 
@@ -101,9 +107,4 @@ export class UserSettings {
 
     return result
   }
-
-  static _loadUserData(data): void {
-    // TODO Map from the data to where it should live in local storage
-  }
 }
-
