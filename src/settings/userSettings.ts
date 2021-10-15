@@ -115,7 +115,7 @@ export class UserSettings {
   static _getQuantity(cardId: number): number {
     let amt = this._get('inventory')[cardId]
     
-    if (isNaN(amt)) {
+    if (isNaN(amt) || amt == null) {
       return 0
     }
     else {
