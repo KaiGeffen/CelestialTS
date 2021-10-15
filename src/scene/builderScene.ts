@@ -124,11 +124,6 @@ export class BuilderScene extends BuilderSceneShell {
   beforeExit(): void {
     // Save the current deck so that it persists between scenes (Session)
     this.standardDeckCode = this.getDeckCode()
-
-    // If user is logged in, send their new decks to server
-    if (Server.loggedIn()) {
-      Server.sendDecks(UserSettings._get('decks'))
-    }
   }
 
   // Filter which cards can be selected in the catalog based on current filtering parameters
