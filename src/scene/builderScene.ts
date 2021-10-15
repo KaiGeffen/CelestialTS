@@ -305,7 +305,7 @@ export class BuilderScene extends BuilderSceneShell {
     this.cardCatalog.forEach( cardImage => {
       let id = cardImage.card.id
       let amtInDeck = this.deck.filter(ci => ci.card.id === id).length
-      let quantity = UserSettings._get('inventory')[id] - amtInDeck
+      let quantity = UserSettings._getQuantity(id) - amtInDeck
 
       cardImage.setQuantity(quantity)
     })

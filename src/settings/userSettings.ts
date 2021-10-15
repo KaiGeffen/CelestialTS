@@ -112,10 +112,10 @@ export class UserSettings {
   }
 
   // Get the quantity of a given card in inventory
-  static _getQuantity(cardId: number) {
+  static _getQuantity(cardId: number): number {
     let amt = this._get('inventory')[cardId]
     
-    if (amt === undefined) {
+    if (isNaN(amt)) {
       return 0
     }
     else {
