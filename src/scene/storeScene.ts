@@ -1,5 +1,5 @@
 import "phaser"
-import { Style, Space, UserProgress } from "../settings/settings"
+import { Style, Space, UserProgress, UserSettings } from "../settings/settings"
 import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Card from "../lib/card"
@@ -78,7 +78,12 @@ export default class StoreScene extends BaseScene {
 
   private addCard(card: Card, index: number): void {
     let cardImage = new CardImage(card, this.container, true)
+
+    // Set position of card
     cardImage.setPosition([(index - 1.5) * (Space.cardSize + Space.pad), -Space.cardSize])
+
+    // Display for user how many of the card they have
+    cardImage.setQuantity(UserSettings._get('inventory')[card.id])
 
     this.temporaryObjs.push(cardImage)
   }
@@ -86,7 +91,12 @@ export default class StoreScene extends BaseScene {
   // Add a card which player can choose
   private addChoiceCard(card: Card, index: number): void {
     let cardImage = new CardImage(card, this.container, true)
+    
+    // Set position of card
     cardImage.setPosition([(index - 1) * (Space.cardSize*2 + Space.pad), Space.cardSize*1.5])
+
+    // Display for user how many of the card they have
+    cardImage.setQuantity(UserSettings._get('inventory')[card.id])
 
     // When clicked, send to server the choice, destroy the cards, return open pack button
     let that = this
