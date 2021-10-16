@@ -103,24 +103,8 @@ export default class PreloadClass extends Phaser.Scene {
 
 			// Communicate with server, load data on response
 			let token = user.getAuthResponse().id_token
-			console.log(token)
 
 			Server.login(token)
-
-
-			
-			// let xhr = new XMLHttpRequest()
-			// let loc = window.location
-			// console.log(loc.host)
-			// console.log(loc.pathname)
-			// let s = `tokensignin`
-			// xhr.open('POST', s)
-			// console.log(xhr)
-			// xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-			// xhr.onload = function() {
-			//   console.log('Got user data: ' + xhr.responseText)
-			// }
-			// xhr.send('idtoken=' + id_token)
 		}
 
 		function onFailure(): void {

@@ -51,7 +51,6 @@ export default class Server {
 					break
 
 				case 'send_pack':
-					console.log(msg.value)
 					let ids: number[] = msg.value
 					// TODO Bad smell
 					let cards: Card[] = decodeDeck(ids.join('™'))
@@ -73,8 +72,6 @@ export default class Server {
 
 	// Request a pack from the server, sets the callback for when the pack is sent
 	static requestPack(callback: (cards: Card[]) => void): void {
-		console.log('you want a pack lol')
-
 		if (wsServer === undefined) {
 			throw 'Opening a pack when server ws doesnt exist.'
 		}
@@ -86,8 +83,6 @@ export default class Server {
 
 	// Send the server the id of the card user wants to choose from the pack
 	static sendChoiceCard(index: number): void {
-		console.log('you picking a card lol')
-
 		if (wsServer === undefined) {
 			throw 'Picking a choice card when server ws doesnt exist.'
 		}
@@ -98,8 +93,6 @@ export default class Server {
 
 	// Send server an updated list of userProgress
 	static sendUserProgress(value): void {
-		console.log('Tryna send user progress lol')
-
 		if (wsServer === undefined) {
 			throw 'Sending user progress when server ws doesnt exist.'
 		}
@@ -117,8 +110,6 @@ export default class Server {
 
 	// Send server an updated list of decks
 	static sendDecks(decks): void {
-		console.log('Tryna send decks lol')
-
 		if (wsServer === undefined) {
 			throw 'Sending decks when server ws doesnt exist.'
 		}
@@ -144,8 +135,6 @@ export default class Server {
 
 	// Load user data that was sent from server into session storage
 	private static loadUserData(data): void {
-		console.log(data)
-
 		// Put this data into the session storage so that UserSettings sees it before local storage
 		sessionStorage.setItem('igc', JSON.stringify(data[1]))
 		sessionStorage.setItem('userProgress', JSON.stringify(data[5]))

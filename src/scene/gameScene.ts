@@ -1359,7 +1359,7 @@ export default class GameScene extends BaseScene {
 
 		let width = Space.maxHeight - 250
 		if (state.winner === 0) {
-			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', Style.announcement).setOrigin(0.5, 1)
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory! +15☆', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
 			let bgDefeat = this.add.image(0, -50, 'bg-Victory')

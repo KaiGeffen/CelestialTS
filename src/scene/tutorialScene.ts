@@ -181,14 +181,13 @@ export class TutorialScene1 extends TutorialScene {
 	}
 
 	onWin(): void {
-		this.net.exitMatch()
-
   		UserProgress.addAchievement('tutorialComplete')
   	}
 
   	onWinExit(): () => void {
   		let that = this
   		return function() {
+  			that.net.exitMatch()
   			that.beforeExit()
 	  		that.scene.start('AnubisCatalogScene')
   		}
@@ -208,6 +207,7 @@ export class TutorialScene1 extends TutorialScene {
 		let that = this
 
 		return function() {
+			that.net.exitMatch()
 			that.beforeExit()
   			that.scene.start("WelcomeScene")
 		}

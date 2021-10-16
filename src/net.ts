@@ -82,11 +82,13 @@ export class Network {
 		})
 
 		// If user is logged in, communicate that we are now searching for a match
-		let message = JSON.stringify({
-			type: 'find_match',
-			value: mmCode
-		})
-		socket.send(message)
+		if (Server.loggedIn()) {
+			let message = JSON.stringify({
+				type: 'find_match',
+				value: mmCode
+			})
+			socket.send(message)
+		}
 	}
 
 	playCard(index: number) {
@@ -117,8 +119,6 @@ export class Network {
 
 	// Signal to server that we are exiting this match
 	exitMatch() {
-		console.log(Server.loggedIn())
-
 		// If user is logged in, send a message but keep the ws
 		if (Server.loggedIn()) {
 			let msg = {
@@ -140,8 +140,6 @@ export class Network {
 	// Get the appropriate websocket for this environment / matchmaking code
 	// If user is logged in, use the existing ws instead of opening a new one
 	private getSocket(mmCode): WebSocket {
-		console.log(Server.loggedIn())
-
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
 		if (Server.loggedIn()) {
