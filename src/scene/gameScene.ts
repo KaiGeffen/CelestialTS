@@ -2,7 +2,7 @@ import "phaser";
 import { collectibleCards, cardback } from "../catalog/catalog"
 import Card from "../lib/card"
 
-import { Network } from "../net"
+import { Network, versionNumber } from "../net"
 import ClientState from "../lib/clientState"
 import BaseScene from "./baseScene"
 import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib/cardImage"
@@ -425,7 +425,7 @@ export default class GameScene extends BaseScene {
 		}
 
 		// Otherwise, show a non-recap state, as determined by its version number
-		let nextVersionNumber = this.net.versionNumber + 1
+		let nextVersionNumber = versionNumber + 1
 
 		// When a recap replay finishes, return to the current state
 		if (this.currentState !== undefined) {

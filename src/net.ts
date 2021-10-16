@@ -25,7 +25,7 @@ var currentScene: Phaser.Scene
 var initMessage: string
 var listenerAdded = false
 // The version-number of that state that the client is displaying, for use with verifying with server
-var versionNumber: number
+export var versionNumber: number
 
 export class Network {
 	socket: WebSocket
