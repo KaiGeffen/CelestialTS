@@ -19,6 +19,11 @@ const port = 5555
 
 const MATCH_MAKING_PARAM = 'mm'
 
+var currentScene: Phaser.Scene
+
+// The init message that client should send in response to a request for user's deck
+var initMessage: string
+var listenerAdded = false
 
 export class Network {
 	socket: WebSocket
@@ -33,7 +38,7 @@ export class Network {
 		that.versionNumber = -1
 
 		// The first message sent to server once the match starts
-		let initMessage = JSON.stringify({
+		initMessage = JSON.stringify({
 			type: 'init',
 			value: encodeDeck(deck)
 		})
@@ -45,20 +50,22 @@ export class Network {
 			console.log('Socket open')
 		})
 
-		// Listen for messages
-		socket.addEventListener('message', function (event) {
-			let msg
+		// NOTE Only add this listener if it hasn't been added already
+		if (!listenerAdded) {
+			// Listen for messages
+			socket.addEventListener('message', function (event) {
+				let msg
 
-			console.log(msg)
-			try {
-				msg = JSON.parse(event.data)
-			} catch (e) {
-				console.log('Not valid json: ' + event.data)
-				return
-			}
+				console.log(msg)
+				try {
+					msg = JSON.parse(event.data)
+				} catch (e) {
+					console.log('Not valid json: ' + event.data)
+					return
+				}
 
-			switch (msg.type) {
-				case 'both_players_connected':
+				switch (msg.type) {
+					case 'both_players_connected':
 					if (msg.value) {
 						socket.send(initMessage)
 						scene.displaySearchingStatus(false)
@@ -68,7 +75,7 @@ export class Network {
 					}
 					break
 
-				case 'transmit_state':
+					case 'transmit_state':
 					let state = new ClientState(msg.value)
 					console.log(state)
 					if (state.versionNumber > that.versionNumber) {
@@ -76,20 +83,24 @@ export class Network {
 					}
 					break
 
-				// Signal to the user that they chose an illegal action
-				case 'signal_error':
+					// Signal to the user that they chose an illegal action
+					case 'signal_error':
 					scene.signalError()
 					break
 
-				// Tell user that their opponent disconnected
-				case 'dc':
+					// Tell user that their opponent disconnected
+					case 'dc':
 					scene.signalDC()
 					break
-			}
-		})
+				}
+			})
+		}
 
 		// If user is logged in, communicate that we are now searching for a match
 		if (Server.loggedIn()) {
+			// If logged in, this same ws/listener will get reused
+			listenerAdded = true
+
 			let message = JSON.stringify({
 				type: 'find_match',
 				value: mmCode
