@@ -86,6 +86,7 @@ export class Network {
 			type: 'find_match',
 			value: mmCode
 		})
+		socket.send(message)
 	}
 
 	playCard(index: number) {
@@ -140,7 +141,7 @@ export class Network {
 	// If user is logged in, use the existing ws instead of opening a new one
 	private getSocket(mmCode): WebSocket {
 		console.log(Server.loggedIn())
-		
+
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
 		if (Server.loggedIn()) {
