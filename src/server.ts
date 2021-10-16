@@ -61,6 +61,11 @@ export default class Server {
 		})
 	}
 
+	// Get the open websocket, for use in playing a match
+	static getWS() {
+		return wsServer
+	}
+
 	// Returns if the user is logged in
 	static loggedIn(): boolean {
 		return wsServer !== undefined

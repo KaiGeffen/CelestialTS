@@ -2,6 +2,7 @@
 // import * as dgram from "dgram"
 import { encodeDeck } from "./lib/codec"
 import ClientState from "./lib/clientState"
+import Server from "./server"
 
 
 const messageHeaders = {
@@ -79,6 +80,12 @@ export class Network {
 					break
 			}
 		})
+
+		// If user is logged in, communicate that we are now searching for a match
+		let message = JSON.stringify({
+			type: 'find_match',
+			value: mmCode
+		})
 	}
 
 	playCard(index: number) {
@@ -107,8 +114,19 @@ export class Network {
 		this.socket.send(JSON.stringify(msg))
 	}
 
-	closeSocket() {
-		this.socket.close(1000)
+	// Signal to server that we are exiting this match
+	exitMatch() {
+		// If user is logged in, send a message but keep the ws
+		if (Server.loggedIn()) {
+			let msg = {
+				"type": "exit_match"
+			}
+			this.socket.send(JSON.stringify(msg))
+		}
+		// If user is anon, close socket
+		else {
+			this.socket.close(1000)
+		}
 	}
 
 	// Establish the version number of the state that the client is seeing
@@ -117,9 +135,13 @@ export class Network {
 	}
 
 	// Get the appropriate websocket for this environment / matchmaking code
+	// If user is logged in, use the existing ws instead of opening a new one
 	private getSocket(mmCode): WebSocket {
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
+		if (Server.loggedIn()) {
+			socket = Server.getWS()
+		}
 		if (location.port === '4949') {
 			socket = new WebSocket(`ws://${ip}:${port}/${mmCode}`)
 		} else {

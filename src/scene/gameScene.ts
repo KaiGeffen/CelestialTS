@@ -1039,7 +1039,7 @@ export default class GameScene extends BaseScene {
 
 	// Called by the BaseScene button which returns to main menu, must alert server that we are exiting
 	beforeExit(): void {
-		this.net.closeSocket()
+		this.net.exitMatch()
 
 		this.setBackground(false)
 	}

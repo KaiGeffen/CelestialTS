@@ -181,7 +181,7 @@ export class TutorialScene1 extends TutorialScene {
 	}
 
 	onWin(): void {
-		this.net.closeSocket()
+		this.net.exitMatch()
 
   		UserProgress.addAchievement('tutorialComplete')
   	}
@@ -198,7 +198,7 @@ export class TutorialScene1 extends TutorialScene {
   		let that = this
 
   		return function() {
-  			that.net.closeSocket()
+  			that.net.exitMatch()
     		that.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
   		}
   	}
@@ -232,7 +232,7 @@ export class TutorialScene2 extends TutorialScene {
 	}
 
   	onWin(): void {
-  		this.net.closeSocket()
+  		this.net.exitMatch()
 
   		// Add this tutorial to the list of completed tutorials
 		UserProgress.addAchievement('tutorialComplete' + this.tutorialName)
