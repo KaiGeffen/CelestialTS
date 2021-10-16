@@ -28,10 +28,6 @@ export class Network {
 	constructor(deck, scene, mmCode) {
 		let that = this
 
-		// Must be set each time constructed so that it doesn't persist and cause weird behavior
-		// (States from previous match shown at the beginning)
-		that.versionNumber = -1
-
 		// The first message sent to server once the match starts
 		let initMessage = JSON.stringify({
 			type: 'init',
@@ -48,6 +44,8 @@ export class Network {
 		// Listen for messages
 		socket.addEventListener('message', function (event) {
 			let msg
+
+			console.log(msg)
 			try {
 				msg = JSON.parse(event.data)
 			} catch (e) {
@@ -68,6 +66,7 @@ export class Network {
 
 				case 'transmit_state':
 					let state = new ClientState(msg.value)
+					console.log(state)
 					if (state.versionNumber > that.versionNumber) {
 						scene.queueState(state)
 					}
