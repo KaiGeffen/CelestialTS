@@ -116,6 +116,8 @@ export class Network {
 
 	// Signal to server that we are exiting this match
 	exitMatch() {
+		console.log(Server.loggedIn())
+
 		// If user is logged in, send a message but keep the ws
 		if (Server.loggedIn()) {
 			let msg = {
@@ -137,14 +139,17 @@ export class Network {
 	// Get the appropriate websocket for this environment / matchmaking code
 	// If user is logged in, use the existing ws instead of opening a new one
 	private getSocket(mmCode): WebSocket {
+		console.log(Server.loggedIn())
+		
 		// Establish a websocket based on the environment (Dev runs on 4949)
 		let socket
 		if (Server.loggedIn()) {
 			socket = Server.getWS()
 		}
-		if (location.port === '4949') {
+		else if (location.port === '4949') {
 			socket = new WebSocket(`ws://${ip}:${port}/${mmCode}`)
-		} else {
+		}
+		else {
 			// The WS location on DO
 			let loc = window.location
 			let fullPath = `wss://${loc.host}${loc.pathname}ws/${mmCode}`
