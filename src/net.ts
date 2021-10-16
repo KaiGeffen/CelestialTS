@@ -24,18 +24,16 @@ var currentScene: Phaser.Scene
 // The init message that client should send in response to a request for user's deck
 var initMessage: string
 var listenerAdded = false
+// The version-number of that state that the client is displaying, for use with verifying with server
+var versionNumber: number
 
 export class Network {
 	socket: WebSocket
-	// The version-number of that state that the client is displaying, for use with verifying with server
-	versionNumber: number
-
+	
 	constructor(deck, scene, mmCode) {
-		let that = this
-
 		// Must be set each time constructed so that it doesn't persist and cause weird behavior
 		// (States from previous match shown at the beginning)
-		that.versionNumber = -1
+		versionNumber = -1
 
 		// The first message sent to server once the match starts
 		initMessage = JSON.stringify({
@@ -78,7 +76,7 @@ export class Network {
 					case 'transmit_state':
 					let state = new ClientState(msg.value)
 					console.log(state)
-					if (state.versionNumber > that.versionNumber) {
+					if (state.versionNumber > versionNumber) {
 						scene.queueState(state)
 					}
 					break
@@ -113,7 +111,7 @@ export class Network {
 		let msg = {
 			"type": "play_card",
 			"value": index,
-			"version": this.versionNumber
+			"version": versionNumber
 		}
 		this.socket.send(JSON.stringify(msg))
 	}
@@ -130,7 +128,7 @@ export class Network {
 	passTurn() {
 		let msg = {
 			"type": "pass_turn",
-			"version": this.versionNumber
+			"version": versionNumber
 		}
 		this.socket.send(JSON.stringify(msg))
 	}
@@ -151,8 +149,8 @@ export class Network {
 	}
 
 	// Establish the version number of the state that the client is seeing
-	setVersionNumber(versionNumber: number): void {
-		this.versionNumber = versionNumber
+	setVersionNumber(vn: number): void {
+		versionNumber = vn
 	}
 
 	// Get the appropriate websocket for this environment / matchmaking code
