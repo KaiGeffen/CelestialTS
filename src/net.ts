@@ -23,10 +23,14 @@ const MATCH_MAKING_PARAM = 'mm'
 export class Network {
 	socket: WebSocket
 	// The version-number of that state that the client is displaying, for use with verifying with server
-	versionNumber: number = -1
+	versionNumber: number
 
 	constructor(deck, scene, mmCode) {
 		let that = this
+
+		// Must be set each time constructed so that it doesn't persist and cause weird behavior
+		// (States from previous match shown at the beginning)
+		that.versionNumber = -1
 
 		// The first message sent to server once the match starts
 		let initMessage = JSON.stringify({
