@@ -249,7 +249,7 @@ export class TutorialScene2 extends TutorialScene {
   	onWinExit(): () => void {
   		let that = this
   		return function() {  			
-  			this.net.exitMatch()
+  			that.net.exitMatch()
 
   			that.beforeExit()
 	  		that.scene.start("WelcomeScene")
@@ -259,7 +259,7 @@ export class TutorialScene2 extends TutorialScene {
   	onRetry(): () => void {
   		let that = this
   		return function() {  			
-  			this.net.exitMatch()
+  			that.net.exitMatch()
 
   			that.beforeExit()
   			that.scene.start("TutorialBuilderScene")
@@ -271,8 +271,8 @@ export class TutorialScene2 extends TutorialScene {
 		let that = this
 
 		return function() {
-  			this.net.exitMatch()
-  			
+  			that.net.exitMatch()
+
 			that.beforeExit()
   			that.scene.start("WelcomeScene")
 		}
