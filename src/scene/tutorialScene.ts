@@ -90,8 +90,8 @@ class TutorialScene extends GameScene {
 			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
-			let bgDefeat = this.add.image(0, -50, 'bg-Victory')
-			menu.add(bgDefeat)
+			let bgVictory = this.add.image(0, -50, 'bg-Victory')
+			menu.add(bgVictory)
 
 			let y = width/2 + 50
 			new Icon(this, menu, -Space.iconSeparation, y, 'Exit', this.onWinExit())
@@ -187,7 +187,6 @@ export class TutorialScene1 extends TutorialScene {
   	onWinExit(): () => void {
   		let that = this
   		return function() {
-  			that.net.exitMatch()
   			that.beforeExit()
 	  		that.scene.start('AnubisCatalogScene')
   		}
@@ -197,7 +196,7 @@ export class TutorialScene1 extends TutorialScene {
   		let that = this
 
   		return function() {
-  			that.net.exitMatch()
+  			that.beforeExit()
     		that.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
   		}
   	}
@@ -207,7 +206,6 @@ export class TutorialScene1 extends TutorialScene {
 		let that = this
 
 		return function() {
-			that.net.exitMatch()
 			that.beforeExit()
   			that.scene.start("WelcomeScene")
 		}
@@ -248,9 +246,7 @@ export class TutorialScene2 extends TutorialScene {
 
   	onWinExit(): () => void {
   		let that = this
-  		return function() {  			
-  			that.net.exitMatch()
-
+  		return function() {
   			that.beforeExit()
 	  		that.scene.start("WelcomeScene")
   		}
@@ -258,9 +254,7 @@ export class TutorialScene2 extends TutorialScene {
 
   	onRetry(): () => void {
   		let that = this
-  		return function() {  			
-  			that.net.exitMatch()
-
+  		return function() {
   			that.beforeExit()
   			that.scene.start("TutorialBuilderScene")
   		}
@@ -271,8 +265,6 @@ export class TutorialScene2 extends TutorialScene {
 		let that = this
 
 		return function() {
-  			that.net.exitMatch()
-
 			that.beforeExit()
   			that.scene.start("WelcomeScene")
 		}

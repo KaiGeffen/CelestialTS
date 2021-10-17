@@ -1362,8 +1362,8 @@ export default class GameScene extends BaseScene {
 			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory! +15☆', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
-			let bgDefeat = this.add.image(0, -50, 'bg-Victory')
-			menu.add(bgDefeat)
+			let bgVictory = this.add.image(0, -50, 'bg-Victory')
+			menu.add(bgVictory)
 
 			let y = width/2 + 50
 			new Icon(this, menu, -Space.iconSeparation, y, 'Exit', this.exitScene())
