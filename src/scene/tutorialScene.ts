@@ -232,8 +232,6 @@ export class TutorialScene2 extends TutorialScene {
 	}
 
   	onWin(): void {
-  		this.net.exitMatch()
-
   		// Add this tutorial to the list of completed tutorials
 		UserProgress.addAchievement('tutorialComplete' + this.tutorialName)
 
@@ -250,7 +248,9 @@ export class TutorialScene2 extends TutorialScene {
 
   	onWinExit(): () => void {
   		let that = this
-  		return function() {
+  		return function() {  			
+  			this.net.exitMatch()
+
   			that.beforeExit()
 	  		that.scene.start("WelcomeScene")
   		}
@@ -258,7 +258,9 @@ export class TutorialScene2 extends TutorialScene {
 
   	onRetry(): () => void {
   		let that = this
-  		return function() {
+  		return function() {  			
+  			this.net.exitMatch()
+
   			that.beforeExit()
   			that.scene.start("TutorialBuilderScene")
   		}
@@ -269,6 +271,8 @@ export class TutorialScene2 extends TutorialScene {
 		let that = this
 
 		return function() {
+  			this.net.exitMatch()
+  			
 			that.beforeExit()
   			that.scene.start("WelcomeScene")
 		}
