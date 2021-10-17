@@ -19,18 +19,18 @@ const port = 5555
 
 const MATCH_MAKING_PARAM = 'mm'
 
-var currentScene: Phaser.Scene
-
 // The init message that client should send in response to a request for user's deck
 var initMessage: string
 var listenerAdded = false
 // The version-number of that state that the client is displaying, for use with verifying with server
 export var versionNumber: number
+// NOTE Need this because could be normal game scene or tutorial scene (They are different)
+var scene
 
 export class Network {
 	socket: WebSocket
 	
-	constructor(deck, scene, mmCode) {
+	constructor(deck, newScene, mmCode) {
 		// Must be set each time constructed so that it doesn't persist and cause weird behavior
 		// (States from previous match shown at the beginning)
 		versionNumber = -1
@@ -40,6 +40,8 @@ export class Network {
 			type: 'init',
 			value: encodeDeck(deck)
 		})
+
+		scene = newScene
 
 		let socket = this.socket = this.getSocket(mmCode)
 
