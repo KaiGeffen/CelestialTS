@@ -572,6 +572,7 @@ export class BuilderScene extends BuilderSceneShell {
         // If it's already selected, deselect it
         if (btn.isGlowing()) {
           that.savedDeckIndex = undefined
+          that.setDeck([])
           btn.stopGlow()
         }
         // Otherwise select this button
@@ -635,6 +636,7 @@ export class BuilderScene extends BuilderSceneShell {
           UserSettings._pop('decks', that.savedDeckIndex)
 
           that.savedDeckIndex = undefined
+          that.setDeck([])
           
           region.destroy()
           that.createDeckRegion()
