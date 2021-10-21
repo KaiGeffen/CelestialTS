@@ -68,6 +68,8 @@ export class UserSettings {
     if (key in sessionStorage) {
       sessionStorage.setItem(key, JSON.stringify(value))
 
+      // TODO Only update these on server when the window is closing, for efficiency
+
       // If key is in session storage then we're signed in
       // User progress and decks should be communicated to the server
       if (key === 'userProgress') {
