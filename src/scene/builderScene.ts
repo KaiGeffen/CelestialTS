@@ -268,6 +268,17 @@ export class BuilderScene extends BuilderSceneShell {
     }
   }
 
+  // Remove the header above and deck menu at left, which aren't present during the tutorial or on mobile
+  removeHeaderAndDeckRegion(): void {
+    this.panel.getElement('header').destroy()
+    this.panel.width = Space.windowWidth
+    this.deckPanel.destroy()
+    this.invisBackgroundTop.destroy()
+
+    // Fixes card layout
+    this.filter()
+  }
+
   // Remove the card from deck which has given index
   private removeCardFromDeck(index: number): () => void {
     let that = this
@@ -1127,17 +1138,6 @@ export class TutorialBuilderScene extends BuilderScene {
       tutorialName: this.tutorialName,
       opponentDeck: this.opponentDeck
     })
-  }
-
-  // Remove the header above and deck menu at left, which aren't present during the tutorial
-  private removeHeaderAndDeckRegion(): void {
-    this.panel.getElement('header').destroy()
-    this.panel.width = Space.windowWidth
-    this.deckPanel.destroy()
-    this.invisBackgroundTop.destroy()
-
-    // Fixes card layout
-    this.filter()
   }
 
   private createDescriptionText(): void {
