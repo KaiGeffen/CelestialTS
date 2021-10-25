@@ -487,7 +487,7 @@ export class BuilderScene extends BuilderSceneShell {
 
       // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
       that.panel.t = Math.max(0, that.panel.t)
-      that.panel.t = Math.min(1, that.panel.t)
+      that.panel.t = Math.min(0.999999, that.panel.t)
     })
 
     // Add each of the cards to the catalog
