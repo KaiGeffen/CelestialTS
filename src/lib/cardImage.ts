@@ -240,7 +240,7 @@ export class CardImage {
 
   // Set the quantity of this card that is available for the user
   setQuantity(amt: number): void {
-    this.txtStats.setText(`${amt}\n${this.card.cost}:${this.card.points}`)
+    this.txtStats.setText(`${this.card.cost}:${this.card.points}`)
 
     this.setTransparent(amt <= 0)
   }
@@ -289,40 +289,26 @@ export class CardImage {
       // TODO Adjust for extra container
       // Copy the position of the card in its local space
       let outerContainer = that.container.parentContainer
-      let x = that.image.x + that.container.x + outerContainer.x 
-      let y = that.image.y + that.container.y + outerContainer.y - Space.cardSize/2 - Space.highlightWidth * 2
+      let x = that.image.x + that.container.x + outerContainer.x + Space.cardSize/2 + Space.highlightWidth * 2
+      let y = that.image.y + that.container.y + outerContainer.y + Space.cardSize/2
 
       // Change alignment of text based on horizontal position on screen
-      if (x <= cardInfo.width / 2) // Left
+      if (x + cardInfo.width > Space.windowWidth) // Going off right side
       {
-        x = 0;
-      }
-      else if (x >= Space.windowWidth - cardInfo.width / 2) // Right side
-      {
-        x = Space.windowWidth - cardInfo.width;
-      }
-      else
-      {
-        x = x - cardInfo.width / 2;
+        x -= Space.cardSize + Space.highlightWidth*4 + cardInfo.width
       }
 
-      // Going over the top
-      if (y - cardInfo.height < 0)
+      // Adjust y
+      if (y - cardInfo.height < 0) // Going over the top
       {
-        // If it can fit below the card, put it there
-        let yIfBelow = y + Space.cardSize + cardInfo.height + Space.highlightWidth * 4
-        if (yIfBelow < Space.windowHeight) {
-          y = yIfBelow
-        }
-        // Keep it within the top of the window
-        else
-        {
-          y = cardInfo.height
-        }
+        y = cardInfo.height
+      }
+      else if (y > Space.windowHeight) {
+        y = Space.windowHeight
       }
       
-      cardInfo.setX(x);
-      cardInfo.setY(y);
+      cardInfo.setX(x)
+      cardInfo.setY(y)
     }
   }
 
