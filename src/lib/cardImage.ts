@@ -37,29 +37,31 @@ export function refreshCardInfo() {
 
   let pointer = scene.game.input.activePointer
 
-  allContainers.forEach(function (container: Phaser.GameObjects.Container) {
-    container.list.forEach(function (obj) {
-      if (obj.type === 'Container') {
-        let cont2 = obj as Phaser.GameObjects.Container
-        cont2.list.forEach(function (obj2) {
-          if (obj2.type === 'Image') {
-            let sprite = obj2 as Phaser.GameObjects.Image
-            
-            if (sprite.getBounds().contains(pointer.x, pointer.y)) {
-              // Show text only if the sprite has a pointerover listener
-              if (sprite.emit('pointerover')) {
-                showText = true
+  if (pointer.active) {
+    allContainers.forEach(function (container: Phaser.GameObjects.Container) {
+      container.list.forEach(function (obj) {
+        if (obj.type === 'Container') {
+          let cont2 = obj as Phaser.GameObjects.Container
+          cont2.list.forEach(function (obj2) {
+            if (obj2.type === 'Image') {
+              let sprite = obj2 as Phaser.GameObjects.Image
+              
+              if (sprite.getBounds().contains(pointer.x, pointer.y)) {
+                // Show text only if the sprite has a pointerover listener
+                if (sprite.emit('pointerover')) {
+                  showText = true
+                }
+              }
+              else {
+                sprite.emit('pointerout')
               }
             }
-            else {
-              sprite.emit('pointerout')
-            }
-          }
-        })
-        
-      }
+          })
+          
+        }
+      })
     })
-  })
+  }
 
   // Card info should only become visible is something is hovered over
   cardInfo.setVisible(showText)
