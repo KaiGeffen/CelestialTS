@@ -114,8 +114,9 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Render login button
 		gapi.signin2.render("signin", {
-			'onsuccess': onSuccess,
-			'onfailure': onFailure
+			theme: 'dark',
+			onsuccess: onSuccess,
+			onfailure: onFailure
 		})
 	}
 
