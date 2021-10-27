@@ -297,7 +297,13 @@ export class CardImage {
       // Change alignment of text based on horizontal position on screen
       if (x + cardInfo.width > Space.windowWidth) // Going off right side
       {
+        // Try it on the left side
         x -= Space.cardSize + Space.highlightWidth*4 + cardInfo.width
+
+        // If it's now going of the left side, instead put it as far right as possible
+        if (x < 0) {
+          x = Space.windowWidth - cardInfo.width
+        }
       }
 
       // Adjust y
