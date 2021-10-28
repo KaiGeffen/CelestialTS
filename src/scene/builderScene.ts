@@ -616,9 +616,16 @@ export class BuilderScene extends BuilderSceneShell {
     // Add a +, DELETE, CODE buttons after this
     region.add(
       new Button(this, 0, 0, '+', function() {
+
+        let maxDecks = 9
+        // NOTE This is to prevent overflow off the bottom for resolutions that otherwise would be too small
+        if (Space.windowHeight <= 750) {
+          maxDecks = 6
+        }
+
         // If user already has 9 decks, signal error instead
-        if (UserSettings._get('decks').length >= 9) {
-          this.signalError('Reached max number of decks (9).')
+        if (UserSettings._get('decks').length >= maxDecks) {
+          this.signalError(`Reached max number of decks (${maxDecks}).`)
         }
         else {
           // Create a new button
