@@ -99,7 +99,7 @@ export default class StoreScene extends BaseScene {
     cardImage.setPosition([(index - 1.5) * (Space.cardSize + Space.pad), -Space.cardSize])
 
     // Display for user how many of the card they have
-    cardImage.setQuantity(UserSettings._getQuantity(card.id))
+    cardImage.setQuantity(UserSettings._getQuantity(card.id), true)
 
     this.temporaryObjs.push(cardImage)
   }

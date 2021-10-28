@@ -241,8 +241,10 @@ export class CardImage {
   } 
 
   // Set the quantity of this card that is available for the user
-  setQuantity(amt: number): void {
-    this.txtStats.setText(`${this.card.cost}:${this.card.points}`)
+  setQuantity(amt: number, alterText = false): void {
+    if (alterText) {
+      this.txtStats.setText(`${amt}\n${this.card.cost}:${this.card.points}`)
+    }
 
     this.setTransparent(amt <= 0)
   }
