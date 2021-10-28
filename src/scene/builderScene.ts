@@ -365,7 +365,10 @@ export class BuilderScene extends BuilderSceneShell {
 
   private getDeckCardPosition(index: number): [number, number] {
     let xPad = Space.pad
-    let x = index * (Space.cardSize - Space.stackOverlap) + xPad + Space.cardSize/2
+
+    // For resolutions below a threshold, make the overlap more intense to fit 15 cards
+    let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
+    let x = index * (Space.cardSize - overlap) + xPad + Space.cardSize/2
 
     let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
 
