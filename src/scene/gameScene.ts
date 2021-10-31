@@ -275,10 +275,13 @@ export default class GameScene extends BaseScene {
 		let that = this
 
 		let vMain = document.getElementById('v-main')
-		let vRecap = document.getElementById('v-recap')
+		let vRecap: any = document.getElementById('v-recap')
 
 		if (isRecap) {
 			document.body.style.background = '#080808'
+
+			// If the recap video isn't yet playing, play it
+			vRecap.play()
 			
 			// If we were fading in, stop
 			if (that.isFadingIn) {
@@ -335,6 +338,9 @@ export default class GameScene extends BaseScene {
 
 				// If the top was reached, exit
 				if (amt === '100') {
+					// Pause the recap video
+					vRecap.pause()
+
 					clearInterval(that.interval)
 					that.interval = undefined
 				}
