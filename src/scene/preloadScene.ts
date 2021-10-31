@@ -55,8 +55,6 @@ export default class PreloadClass extends Phaser.Scene {
 		// Ensure that every user setting is either set, or set it to its default value
 		UserSettings._ensure()
 
-		this.renderSigninButton()
-
 		this.load.path = "assets/"
 
 		// Load each of the card and token images
@@ -74,7 +72,8 @@ export default class PreloadClass extends Phaser.Scene {
 		SOUNDS.forEach( (sound) => {
 			this.load.audio(sound, `sfx/${sound}.wav`)
 		})
-		this.load.audio('background', 'music/background.wav')
+		// TODO Move to postload
+		this.load.audio('background', 'music/background.mp3')
 
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
@@ -88,6 +87,11 @@ export default class PreloadClass extends Phaser.Scene {
 		
 		// Add event listeners
 		this.createProgressGraphics()
+	}
+
+	// Load all assets that are not critical
+	postload(): void {
+		this.renderSigninButton()
 	}
 
 	renderSigninButton(): void {
@@ -193,6 +197,7 @@ export default class PreloadClass extends Phaser.Scene {
 			that.scene.start('WelcomeScene')
 		}
 		this.load.on('complete', function () {
+			that.postload()
 			startWhenLoginComplete()
 		})
 	}
