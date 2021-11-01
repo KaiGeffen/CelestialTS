@@ -221,5 +221,11 @@
     "cost": 9, "points": 0,
     "text": "9:0, add the top 5 cards of your discard pile to the end of the story.\n(The story can't exceed 12 cards this way, 'when played' effects don't trigger)",
     "rarity": 3
+  },
+
+  {"name": "King of the Dead", "id": 69,
+    "cost": 5, "points": 0,
+    "text": "5:0, Fleeting, remove all cards with Fleeting in your discard pile from the game. Your max mana becomes equal to the number of cards removed this way.",
+    "rarity": 3
   }
 ]
