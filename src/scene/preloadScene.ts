@@ -70,7 +70,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Load all audio
 		SOUNDS.forEach( (sound) => {
-			this.load.audio(sound, `sfx/${sound}.wav`)
+			this.load.audio(sound, `sfx/${sound}.mp3`)
 		})
 		// TODO Move to postload
 		this.load.audio('background', 'music/background.mp3')

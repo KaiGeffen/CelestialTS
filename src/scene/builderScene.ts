@@ -807,13 +807,13 @@ export class BuilderScene extends BuilderSceneShell {
       }, this)
     header.add(textboxSearch)
 
-    let btnOwned = new Button(this, 0, 0, 'Own', function() {
+    let btnAll = new Button(this, 0, 0, 'All', function() {
       if (that.filterUnowned) {
-        btnOwned.stopGlow()
+        btnAll.glow(false)
         that.filterUnowned = false
       }
       else {
-        btnOwned.glow(false)
+        btnAll.stopGlow()
         that.filterUnowned = true
       }
       
@@ -821,13 +821,8 @@ export class BuilderScene extends BuilderSceneShell {
     })
       .setFontSize(parseInt(Style.announcement.fontSize))
       .setDepth(4)
-    
-    // Timeout so that grid layout is complete, glow if filtering by ownership
-    setTimeout(() => {
-      if (that.filterUnowned) btnOwned.glow(false)
-    }, 10)
 
-    header.add(btnOwned)
+    header.add(btnAll)
     header.addNewLine()
 
     // Add a hint
