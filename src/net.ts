@@ -85,7 +85,8 @@ export class Network {
 
 					// Signal to the user that they chose an illegal action
 					case 'signal_error':
-					scene.signalError()
+					console.log('Server says that an action was in error.')
+					// scene.signalError()
 					break
 
 					// Tell user that their opponent disconnected
