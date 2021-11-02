@@ -55,6 +55,8 @@ export default class PreloadClass extends Phaser.Scene {
 		// Ensure that every user setting is either set, or set it to its default value
 		UserSettings._ensure()
 
+		this.renderSigninButton()
+
 		this.load.path = "assets/"
 
 		// Load each of the card and token images
@@ -87,11 +89,6 @@ export default class PreloadClass extends Phaser.Scene {
 		
 		// Add event listeners
 		this.createProgressGraphics()
-	}
-
-	// Load all assets that are not critical
-	postload(): void {
-		this.renderSigninButton()
 	}
 
 	renderSigninButton(): void {
@@ -197,7 +194,6 @@ export default class PreloadClass extends Phaser.Scene {
 			that.scene.start('WelcomeScene')
 		}
 		this.load.on('complete', function () {
-			that.postload()
 			startWhenLoginComplete()
 		})
 	}
