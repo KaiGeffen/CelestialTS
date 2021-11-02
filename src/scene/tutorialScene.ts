@@ -319,6 +319,19 @@ class Explanation {
 	}
 }
 
+function openMenu(scene, s: string) {
+	let width = 800
+	let height = 450
+	let menu = new Menu(scene, width, height, true, 10)
+
+	// Pause the tutorial text until the menu is closed
+	scene.txtTutorial.setVisible(false).pause()
+	menu.setOnClose(() => {scene.txtTutorial.setVisible(true).resume()})
+
+	let txt = scene.add['rexBBCodeText'](0, 0, s, Style.basic).setOrigin(0.5)
+	menu.add(txt)
+}
+
 let exMulligan: Explanation = new Explanation(
 	function (state) {return !state.mulligansComplete[0]},
 	`Click on each card you don't want in your starting hand, then click [color=${Color.buttonReference}]Mulligan[/color] to replace those cards with new ones.`
@@ -373,9 +386,6 @@ Once both players have passed in a row, the round ends and points are tallied.`,
           		btn.glowUntilClicked()
           	}
         })
-
-        // scene.btnPass.setVisible(true)
-        // state.btnPass.setX((Space.pad + Space.cardSize) * 3)
 	}
 	)
 
@@ -390,14 +400,6 @@ let exRoundStart: Explanation = new Explanation(
 		scene.btnRecap.setAlpha(1)
 		scene.btnSkip.setAlpha(1)
 
-		let width = 800
-		let height = 450
-		let menu = new Menu(scene, width, height, true, 10)
-
-		// Pause the tutorial text until the menu is closed
-		scene.txtTutorial.setVisible(false).pause()
-		menu.setOnClose(() => {scene.txtTutorial.setVisible(true).resume()})
-
 		let s = 
 `[stroke=black]When a round ends, the story resolves
 from left to right. Each player gains
@@ -408,8 +410,7 @@ so neither player earned a win.
 
 To see what happened again, click the
 [color=${Color.buttonReference}]Recap[/color] button above [color=${Color.buttonReference}]Pass[/color].[/stroke]`
-		let txt = scene.add['rexBBCodeText'](0, 0, s, Style.basic).setOrigin(0.5)
-		menu.add(txt)
+		openMenu(scene, s)
 	}
 	)
 
@@ -417,7 +418,20 @@ To see what happened again, click the
 
 let exWin: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] > 0},
-	"If you score more points than your opponent in a round, you win that round."
+	"If you score more points than your opponent in a round, you win that round.",
+	function(scene) {
+		let s = 
+`[stroke=black]By default, you will pass once you
+run out of cards you can play.
+
+You can change this and other behavior
+from the [color=${Color.buttonReference}]Options Menu[/color] by clicking
+[color=${Color.buttonReference}]⚙[/color] in the upper right corner, or pressing 'esc'.
+
+You can also pass at any time, in order
+to save the cards in your hand.[/stroke]`
+		openMenu(scene, s)
+	}
 	)
 let exWinCondition: Explanation = new Explanation(
 	function (state) {return state.priority === 0 && state.wins[0] > 0 && state.story.acts.length >= 2},
@@ -463,14 +477,6 @@ let exCardEffects: Explanation = new Explanation(
 	function(scene) {
 		setSimplifyCardInfo(false)
 
-		let width = 800
-		let height = 400
-		let menu = new Menu(scene, width, height, true, 10)
-
-		// Pause the tutorial text until the menu is closed
-		scene.txtTutorial.setVisible(false).pause()
-		menu.setOnClose(() => {scene.txtTutorial.setVisible(true).resume()})
-
 		let s = 
 `[stroke=black]Wait! In addition to a cost and point value,
 each card has an additional effect.
@@ -480,8 +486,7 @@ in the story, and disappear once played.
 
 [color=${Color.cardReference}]Dash[/color] is worth 1 point less for every card
 played before it in the story.[/stroke]`
-		let txt = scene.add['rexBBCodeText'](0, 0, s, Style.basic).setOrigin(0.5)
-		menu.add(txt)
+		openMenu(scene, s)
 	}
 	)
 let exDash: Explanation = new Explanation(
