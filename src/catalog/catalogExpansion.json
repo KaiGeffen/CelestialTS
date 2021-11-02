@@ -225,7 +225,7 @@
 
   {"name": "King of the Dead", "id": 69,
     "cost": 5, "points": 0,
-    "text": "5:0, Fleeting, remove all cards with Fleeting in your discard pile from the game. Your max mana becomes equal to the number of cards removed this way.",
+    "text": "5:0, Fleeting, remove all cards with Fleeting in your discard pile from the game. Your max mana becomes equal to half the number of cards removed this way, rounded up.",
     "rarity": 3
   },
 
