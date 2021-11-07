@@ -464,6 +464,11 @@ export class BuilderScene extends BuilderSceneShell {
         thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
       },
 
+      mouseWheelScroller: {
+        focus: false,
+        speed: 1
+      },
+
       header: this['rexUI'].add.fixWidthSizer({
         height: 100,
         align: 'center',
@@ -495,14 +500,14 @@ export class BuilderScene extends BuilderSceneShell {
     this.populateHeader(this.panel.getElement('header'))
 
     // Update panel when mousewheel scrolls
-    this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
-      // Scroll panel down by amount wheel moved
-      that.panel.childOY -= dy
+    // this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
+    //   // Scroll panel down by amount wheel moved
+    //   that.panel.childOY -= dy
 
-      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-      that.panel.t = Math.max(0, that.panel.t)
-      that.panel.t = Math.min(0.999999, that.panel.t)
-    })
+    //   // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+    //   that.panel.t = Math.max(0, that.panel.t)
+    //   that.panel.t = Math.min(0.999999, that.panel.t)
+    // })
 
     // Add each of the cards to the catalog
     let pool = this.cardpool
@@ -533,26 +538,18 @@ export class BuilderScene extends BuilderSceneShell {
   private createDeckRegion(): number {
     let width = Space.iconSeparation + Space.pad
 
-    let region = this.deckPanel = this['rexUI'].add.scrollablePanel({
+    this.deckPanel = this['rexUI'].add.scrollablePanel({
       x: 0,
       y: 10,
       width: width,
-      height: 0,
+      height: Space.windowHeight,
 
       background: this.add.rectangle(0, 0, width, Space.windowHeight, Color.menuHeader),
 
       panel: {
-        child: this['rexUI'].add.sizer({
+        child: this['rexUI'].add.fixWidthSizer({
           orientation: 'vertical',
-          anchor: 'centerY',
-          space: {
-            // left: Space.pad,
-            right: Space.pad - 10,
-            top: Space.pad - 10,
-            bottom: Space.pad - 10,
-            // item: Space.pad,
-            line: Space.pad,
-          }
+          anchor: 'centerX'
         })
       },
 
@@ -564,8 +561,15 @@ export class BuilderScene extends BuilderSceneShell {
         right: 10,
         top: 10,
         bottom: 10,
+      },
+
+      mouseWheelScroller: {
+        focus: false,
+        speed: 1
       }
-    }).setOrigin(0)
+    }).setOrigin(0).layout()
+
+    let region = this.deckPanel.getElement('panel')
 
     // Add each of the decks
     let that = this
@@ -614,13 +618,14 @@ export class BuilderScene extends BuilderSceneShell {
       }
 
       region.add(btn)
+      region.addNewLine()
     }
 
     // Add a +, DELETE, CODE buttons after this
     region.add(
       new Button(this, 0, 0, '+', function() {
 
-        let maxDecks = 9
+        let maxDecks = 21
         // NOTE This is to prevent overflow off the bottom for resolutions that otherwise would be too small
         if (Space.windowHeight <= 750) {
           maxDecks = 6
@@ -671,7 +676,7 @@ export class BuilderScene extends BuilderSceneShell {
 
     region.layout()
 
-    return region.width
+    return this.deckPanel.width
   }
 
   // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
