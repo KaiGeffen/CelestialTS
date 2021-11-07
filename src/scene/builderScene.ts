@@ -464,10 +464,10 @@ export class BuilderScene extends BuilderSceneShell {
         thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
       },
 
-      mouseWheelScroller: {
-        focus: false,
-        speed: 1
-      },
+      // mouseWheelScroller: {
+      //   focus: false,
+      //   speed: 1
+      // },
 
       header: this['rexUI'].add.fixWidthSizer({
         height: 100,
@@ -500,14 +500,20 @@ export class BuilderScene extends BuilderSceneShell {
     this.populateHeader(this.panel.getElement('header'))
 
     // Update panel when mousewheel scrolls
-    // this.input.on('wheel', function(pointer, gameObject, dx, dy, dz, event) {
-    //   // Scroll panel down by amount wheel moved
-    //   that.panel.childOY -= dy
+    let panel = this.panel.getElement('panel')
+    this.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+      // Return if the pointer is outside of the panel
+      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+        return
+      }
 
-    //   // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-    //   that.panel.t = Math.max(0, that.panel.t)
-    //   that.panel.t = Math.min(0.999999, that.panel.t)
-    // })
+      // Scroll panel down by amount wheel moved
+      that.panel.childOY -= dy
+
+      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+      that.panel.t = Math.max(0, that.panel.t)
+      that.panel.t = Math.min(0.999999, that.panel.t)
+    })
 
     // Add each of the cards to the catalog
     let pool = this.cardpool
@@ -536,6 +542,7 @@ export class BuilderScene extends BuilderSceneShell {
 
   // Create the are where player can manipulate their decks
   private createDeckRegion(): number {
+    let that = this
     let width = Space.iconSeparation + Space.pad
 
     this.deckPanel = this['rexUI'].add.scrollablePanel({
@@ -550,29 +557,45 @@ export class BuilderScene extends BuilderSceneShell {
         child: this['rexUI'].add.fixWidthSizer({
           orientation: 'vertical',
           anchor: 'centerX'
-        })
-      },
+        }).addBackground(
+        this.add.rectangle(0, 0, width, Space.windowHeight, Color.menuBackground)
+      )},
 
       header: this['rexUI'].add.label({
                 orientation: 0,
                 text: this.add.text(0, 0, '  Decks:', Style.announcement),
             }),
+
+      footer: this['rexUI'].add.fixWidthSizer({
+          orientation: 'vertical',
+          anchor: 'centerX'
+        }),
+
       space: {
-        right: 10,
         top: 10,
         bottom: 10,
-      },
-
-      mouseWheelScroller: {
-        focus: false,
-        speed: 1
       }
     }).setOrigin(0).layout()
 
-    let region = this.deckPanel.getElement('panel')
+    let panel = this.deckPanel.getElement('panel')
+    let footer = this.deckPanel.getElement('footer')
+
+    // Update panel when mousewheel scrolls
+    this.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+      // Return if the pointer is outside of the panel
+      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+        return
+      }
+
+      // Scroll panel down by amount wheel moved
+      that.deckPanel.childOY -= dy
+
+      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+      that.deckPanel.t = Math.max(0, that.deckPanel.t)
+      that.deckPanel.t = Math.min(0.999999, that.deckPanel.t)
+    })
 
     // Add each of the decks
-    let that = this
     let decks: [name: string, value: string][] = UserSettings._get('decks')
     let btns: Button[] = []
 
@@ -617,13 +640,14 @@ export class BuilderScene extends BuilderSceneShell {
         setTimeout(() => btn.glow(false), 4)
       }
 
-      region.add(btn)
-      region.addNewLine()
+      panel.add(btn)
+      panel.addNewLine()
     }
 
-    // Add a +, DELETE, CODE buttons after this
-    region.add(
-      new Button(this, 0, 0, '+', function() {
+    // Add a NEW, DELETE, CODE buttons after this
+    // TODO New should scroll down to show the new item
+    footer.add(
+      new Button(this, 0, 0, 'NEW', function() {
 
         let maxDecks = 21
         // NOTE This is to prevent overflow off the bottom for resolutions that otherwise would be too small
@@ -637,20 +661,18 @@ export class BuilderScene extends BuilderSceneShell {
         }
         else {
           // Create a new button
-          let newBtn = createDeckBtn(btns.length)
-          newBtn.setOrigin(0.5)
+          let newBtn = createDeckBtn(btns.length).setOrigin(0, 0.5)
         
-          // Add it before the 3 function buttons (+, DEL, CODE)
-          region.add(newBtn, {
-            index: -3
-          }).layout()
+          panel.add(newBtn).addNewLine()
 
-          this.createNewDeckMenu(newBtn, region)
+          that.deckPanel.layout()
+
+          this.createNewDeckMenu(newBtn, panel)
         }
       }))
 
     // DELETE button
-    region.add(
+    footer.add(
       new Button(this, 0, 0, 'DELETE', function() {
         if (that.savedDeckIndex === undefined) {
           that.signalError('No deck selected')
@@ -664,17 +686,17 @@ export class BuilderScene extends BuilderSceneShell {
           that.savedDeckIndex = undefined
           that.setDeck([])
           
-          region.destroy()
+          panel.destroy()
           that.createDeckRegion()
         }
       }))
 
-    region.add(
+    footer.add(
       new Button(this, 0, 0, 'CODE', function() {
         this.createNewCodeMenu()
       }))
 
-    region.layout()
+    this.deckPanel.layout()
 
     return this.deckPanel.width
   }
