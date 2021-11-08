@@ -645,7 +645,6 @@ export class BuilderScene extends BuilderSceneShell {
     }
 
     // Add a NEW, DELETE, CODE buttons after this
-    // TODO New should scroll down to show the new item
     footer.add(
       new Button(this, 0, 0, 'NEW', function() {
 
@@ -663,10 +662,15 @@ export class BuilderScene extends BuilderSceneShell {
           // Create a new button
           let newBtn = createDeckBtn(btns.length).setOrigin(0, 0.5)
         
+          // Add the button, followed by a new line
           panel.add(newBtn).addNewLine()
 
           that.deckPanel.layout()
 
+          // Scroll down to show the new deck
+          that.deckPanel.t = 1
+
+          // Open up a new deck menu to input the deck's name
           this.createNewDeckMenu(newBtn, panel)
         }
       }))
