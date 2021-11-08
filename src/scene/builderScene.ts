@@ -611,7 +611,7 @@ export class BuilderScene extends BuilderSceneShell {
         btns.forEach(b => {if (b !== btn) b.stopGlow()})
 
         // If it's already selected, deselect it
-        if (btn.isGlowing()) {
+        if (btn.isHighlighted()) {
           that.savedDeckIndex = undefined
           that.setDeck([])
           btn.stopGlow()
@@ -649,7 +649,7 @@ export class BuilderScene extends BuilderSceneShell {
     footer.add(
       new Button(this, 0, 0, 'NEW', function() {
 
-        let maxDecks = 21
+        let maxDecks = 20
         // NOTE This is to prevent overflow off the bottom for resolutions that otherwise would be too small
         if (Space.windowHeight <= 750) {
           maxDecks = 6
@@ -880,7 +880,7 @@ export class BuilderScene extends BuilderSceneShell {
     let that = this
 
     return function() {
-      if (!btn.isGlowing()) {
+      if (!btn.isHighlighted()) {
         btn.glow(false)
       } else {
         btn.stopGlow()

@@ -5,6 +5,9 @@ import { Space, Style, Color } from '../settings/settings'
 // TODO There is a better way to do this where the object is defined within the Phaser Game Factor and can be added from that
 
 export default class Button extends Phaser.GameObjects.Text {
+	// If this button is currently selected
+	isSelected = false
+
 	constructor(scene: Phaser.Scene, x: number, y: number, text: string,
 		f: () => void = function() { },
 		playSound: boolean = true) {
@@ -44,10 +47,28 @@ export default class Button extends Phaser.GameObjects.Text {
 	    return this
 	}
 
+	// Highlight this button
+	highlight(): Button {
+		this.stopGlow()
+
+		this.isSelected = true
+
+		this.scene.plugins.get('rexOutlinePipeline')['add'](this,
+        	{thickness: 3,
+          	outlineColor: Color.buttonBorder})
+
+		return this
+	}
+
 	// Causes the button to glow until stopped, if doAnimate, it will fade in/out
 	outline: Phaser.GameObjects.Text
 	outlineTween: Phaser.Tweens.Tween
 	glow(doAnimate = true): Button {
+		// TODO Clarify what a button does and how it displays visually that it's selected, be consistent to that
+		if (!doAnimate) {
+			return this.highlight()
+		}
+
 		// First stop any glow that's already happening to not amplify
 		this.stopGlow()
 
@@ -66,6 +87,8 @@ export default class Button extends Phaser.GameObjects.Text {
         	{thickness: 3,
           	outlineColor: Color.buttonBorder})
 
+
+		// Animate the outline glowing from 0 to 1 alpha
 		if (doAnimate) {
 			this.outline.setAlpha(0)
 
@@ -99,11 +122,21 @@ export default class Button extends Phaser.GameObjects.Text {
 			this.outline.destroy()
 			this.outline = undefined
 		}
+
+		this.isSelected = false
+
+		// Remove this object's highlight, if it has one
+		this.scene.plugins.get('rexOutlinePipeline')['remove'](this)
 	}
 
 	// Return if the button is glowing
 	isGlowing(): boolean {
 		return this.outline !== undefined
+	}
+
+	// Return if the button is highlighted
+	isHighlighted(): boolean {
+		return this.isSelected
 	}
 
 	private sfxThenDo(f: () => void): () => void {
