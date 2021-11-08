@@ -56,7 +56,6 @@ export class Network {
 			socket.addEventListener('message', function (event) {
 				let msg
 
-				console.log(msg)
 				try {
 					msg = JSON.parse(event.data)
 				} catch (e) {
