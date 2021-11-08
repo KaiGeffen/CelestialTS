@@ -77,7 +77,7 @@ export class Network {
 
 					case 'transmit_state':
 					let state = new ClientState(msg.value)
-					console.log(state)
+					
 					if (state.versionNumber > versionNumber) {
 						scene.queueState(state)
 					}
