@@ -690,7 +690,7 @@ export class BuilderScene extends BuilderSceneShell {
           that.savedDeckIndex = undefined
           that.setDeck([])
           
-          panel.destroy()
+          that.deckPanel.destroy()
           that.createDeckRegion()
         }
       }))

@@ -126,7 +126,9 @@ export default class Button extends Phaser.GameObjects.Text {
 		this.isSelected = false
 
 		// Remove this object's highlight, if it has one
-		this.scene.plugins.get('rexOutlinePipeline')['remove'](this)
+		if (this.scene.plugins.get('rexOutlinePipeline')['get'](this).length > 0) {
+			this.scene.plugins.get('rexOutlinePipeline')['remove'](this)		
+		}
 	}
 
 	// Return if the button is glowing
