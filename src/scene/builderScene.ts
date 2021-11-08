@@ -681,15 +681,12 @@ export class BuilderScene extends BuilderSceneShell {
         if (that.savedDeckIndex === undefined) {
           that.signalError('No deck selected')
         } else {
-          // NOTE Have to do this because the glow is separate from the region
-          btns[that.savedDeckIndex].stopGlow()
-          btns[that.savedDeckIndex].destroy()
-
           UserSettings._pop('decks', that.savedDeckIndex)
 
           that.savedDeckIndex = undefined
           that.setDeck([])
           
+          panel.destroy()
           that.deckPanel.destroy()
           that.createDeckRegion()
         }
@@ -706,7 +703,7 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
-  private createNewDeckMenu(btn: Button, region): void {
+  private createNewDeckMenu(btn: Button, panel): void {
     let height = 250
 
     let menu = new Menu(
@@ -751,8 +748,11 @@ export class BuilderScene extends BuilderSceneShell {
         UserSettings._push('decks', {name: name, value: that.getDeckCode()})
         btn.emit('pointerdown')
       } else {
-        btn.destroy()
-        region.layout()
+        // Destroy the panel and recreate it
+        // NOTE Panel is the sizer containing the deck buttons
+        panel.destroy()
+        that.deckPanel.destroy()
+        that.createDeckRegion()
       }
 
       menu.destroy()
