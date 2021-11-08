@@ -649,10 +649,6 @@ export class BuilderScene extends BuilderSceneShell {
       new Button(this, 0, 0, 'NEW', function() {
 
         let maxDecks = 20
-        // NOTE This is to prevent overflow off the bottom for resolutions that otherwise would be too small
-        if (Space.windowHeight <= 750) {
-          maxDecks = 6
-        }
 
         // If user already has 9 decks, signal error instead
         if (UserSettings._get('decks').length >= maxDecks) {
