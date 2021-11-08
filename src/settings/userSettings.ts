@@ -69,9 +69,12 @@ export class UserSettings {
       sessionStorage.setItem(key, JSON.stringify(value))
 
       // If key is in session storage then we're signed in
-      // User progress should be communicated to the server immediately
+      // User progress and decks should be communicated to the server immediately
       if (key === 'userProgress') {
         Server.sendUserProgress(value)
+      }
+      else if (key === 'decks') {
+        Server.sendDecks(value)
       }
     }
     else {

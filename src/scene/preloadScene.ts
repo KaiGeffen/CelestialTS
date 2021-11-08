@@ -106,19 +106,6 @@ export default class PreloadClass extends Phaser.Scene {
 			let token = user.getAuthResponse().id_token
 
 			Server.login(token)
-
-			// Send the server all of users decks before closing the page
-			window.onbeforeunload = function(evt) {
-				Server.sendDecks(UserSettings._get('decks'))
-
-				// Cancel the event (if necessary)
-				// evt.preventDefault()
-
-				// Google Chrome requires returnValue to be set
-				evt.returnValue = ''
-
-				return null
-			}
 		}
 
 		function onFailure(): void {

@@ -202,7 +202,7 @@ export class BuilderScene extends BuilderSceneShell {
   }
 
   // Add card to the existing deck
-  addCardToDeck(card: Card): boolean {
+  addCardToDeck(card: Card, doUpdateSavedDecks = true): boolean {
     if (this.deck.length >= Mechanics.deckSize) {
       return false
     }
@@ -222,7 +222,9 @@ export class BuilderScene extends BuilderSceneShell {
     // Sort the deck, now done automatically after each card added
     this.sort()
 
-    this.updateSavedDeck()
+    if (doUpdateSavedDecks) {
+      this.updateSavedDeck()      
+    }
 
     this.filter()
 
@@ -260,7 +262,7 @@ export class BuilderScene extends BuilderSceneShell {
       this.updateText()
       
       // Add the new deck
-      deck.forEach( (card) => this.addCardToDeck(card))
+      deck.forEach( (card) => this.addCardToDeck(card, false))
 
       this.updateSavedDeck()
 
