@@ -44,7 +44,7 @@
   },
   {"name": "Swift", "id": 7,
     "cost": 2, "points": 2,
-    "text": "2:2, Visible, +1 if the next card costs 1.",
+    "text": "2:2, Visible, Fleeting, +1 if the next card costs 1.",
     "rarity": 0
   },
   {"name": "Gears", "id": 8,
