@@ -274,6 +274,8 @@ export class BuilderScene extends BuilderSceneShell {
   removeHeaderAndDeckRegion(): void {
     this.panel.getElement('header').destroy()
     this.panel.width = Space.windowWidth
+
+    this.deckPanel.getElement('panel').destroy()
     this.deckPanel.destroy()
     this.invisBackgroundTop.destroy()
 
