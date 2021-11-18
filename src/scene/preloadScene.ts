@@ -142,7 +142,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'AI', 'PWD', 'PVP',
 			'Basics',
 			'Anubis', 'Robots', 'Stalker',
-			'Paramountcy', 'Bastet', 'Horus',
+			'Lord', 'Bastet', 'Horus',
 			'Exit', 'Retry', 'Review',
 			'Draft'
 		]

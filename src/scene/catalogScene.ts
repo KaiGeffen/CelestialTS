@@ -162,17 +162,17 @@ export class StalkerCatalogScene extends CatalogScene {
 	}
 }
 
-export class ParamountcyCatalogScene extends CatalogScene {
+export class LordCatalogScene extends CatalogScene {
 	pool: Card[] = decodeDeck("0™63™69™11™57™20™44™62")
-	defaultDeck: string = prebuiltDecks.get('Paramountcy')
-	name = "Paramountcy"
+	defaultDeck: string = prebuiltDecks.get('Lord')
+	name = "Lord"
 	deckDescription: string = 
-"TODO attacks your opponent's hand in the early game, then transforms Stalker into Sarcophagus and Paramountcy into Imprison in the late game to control and overwhelm your opponent."
+"TODO attacks your opponent's hand in the early game, then transforms Stalker into Sarcophagus and Lord into Imprison in the late game to control and overwhelm your opponent."
 	opponentDeck: string = '21:67:14:14:14:64:64:7:3:3:3:3:0:0:0'
 
 	constructor() {
 		super({
-			key: "ParamountcyCatalogScene"
+			key: "LordCatalogScene"
 		})
 	}
 }

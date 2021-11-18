@@ -7,7 +7,7 @@ import { BuilderScene, TutorialBuilderScene, DraftBuilderScene } from "./scene/b
 import CreditsScene from "./scene/creditsScene"
 import StoreScene from "./scene/storeScene"
 import ChoiceScene from "./scene/choiceScene"
-import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, ParamountcyCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
+import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
 import DraftMatchScene from "./scene/draftMatchScene"
 
@@ -34,7 +34,7 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scene: [PreloadScene, WelcomeScene, CreditsScene, StoreScene,
   ChoiceScene,
-  AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, ParamountcyCatalogScene, BastetCatalogScene, HorusCatalogScene,
+  AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
   GameScene, DraftMatchScene,
   BuilderScene, TutorialBuilderScene, DraftBuilderScene,
   TutorialScene1, TutorialScene2],

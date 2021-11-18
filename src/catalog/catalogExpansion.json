@@ -59,6 +59,7 @@
   {"name": "Sunflower", "id": 69,
     "cost": 2, "points": 1,
     "text": "2:1, Inspire X, where X is this card's points.",
+    "catalogText": "Sunflower costs 2 mana for 1 point, and also Inspires you equal to its points as it resolves.\n\nTry to take advantage of this effect by having Nourish when you play Sunflower, and also consider how you'll spend the extra mana in the next round.\n\nDecks that remove their own cards in order to end up with a thin deck (Coined 'hyperthin' decks) can take advantage of this effect to consistently boost up Sunflower, then have extra mana in the next round to go above the 10 mana limit.",
     "rarity": 1
   },
   {"name": "Desert", "id": 49,
@@ -141,6 +142,7 @@
   {"name": "Gentle Rain", "id": 71,
     "cost": 4, "points": 1,
     "text": "4:1, Nourish X, where X is the number of cards you've drawn this round.",
+    "catalogText": "Gentle Rain costs 4 mana for 1 point, but will also Nourish you equal to the number of cards you drew this round.\n\nThis includes the 2 cards that you drew at the start of the round, assuming your hand wasn't full.\n\nIt also includes any cards that you drew or tutored because of cards that resolved before it in the current round, so try to land a full Fishing Boat to get the most out of this effect.",
     "rarity": 3
   },
   {"name": "Pocket Watch", "id": 54,
@@ -185,6 +187,7 @@
   {"name": "Ecology", "id": 44,
     "cost": 7, "points": 0,
     "text": "7:0.\nWhen played, gain 10 mana this round.",
+    "catalogText": "Ecology costs 7 mana for 0 points, but will also provide you 10 mana when played. Effectively netting you +3 mana the round it's played.\n\nYour opponent won't know about this burst of mana, and can be caught off guard by your more expensive cards.\n\nThe high mana cost of 7 also can be used to your advantage with cards like Sarcophagus or Become Machine, which care about a card's cost.",
     "rarity": 1
   },
   {"name": "Horus", "id": 45,
@@ -218,6 +221,7 @@
   {"name": "Paramountcy", "id": 62,
     "cost": 9, "points": 0,
     "text": "9:0, add the top 5 cards of your discard pile to the end of the story.\n(The story can't exceed 12 cards this way, 'when played' effects don't trigger)",
+    "catalogText": "Paramountcy costs 9 mana for 0 points, but has a unique and powerful effect.\n\nIt will take up to 5 cards from the top of your discard pile and add them to the end of the story (The story can't exceed 12 cards). The top card will be added first, and so on. This means that after the round is over, the ordering of those 5 cards will have reversed.\n\nMany powerful combos are possible if you order your discard pile right. Try to find the strongest!",
     "rarity": 3
   }
 ]
