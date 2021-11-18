@@ -1,3 +1,5 @@
+import 'phaser'
+
 import Card from "./lib/card"
 import { decodeDeck } from "./lib/codec"
 
@@ -15,7 +17,7 @@ var packOpenCallback: (cards: Card[]) => void = undefined
 
 export default class Server {
 	// Log in with the server for user with given OAuth token
-	static login(token) {
+	static login(token, scene: Phaser.Scene) {
 		let that = this
 
 		// The first message sent to server once the match starts
@@ -48,6 +50,13 @@ export default class Server {
 
 				case 'send_user_data':
 					that.loadUserData(msg.value)
+
+					// Reload the welcome scene if we just loaded
+					// TODO Call onExit for the current scene?
+					if (scene.scene.isActive('WelcomeScene')) {
+						scene.scene.start('WelcomeScene')
+					}
+
 					break
 
 				case 'send_pack':
