@@ -4,10 +4,6 @@ import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
 
 
-var music: Phaser.Sound.BaseSound
-
-
-
 export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
 	rulebookContainer: Phaser.GameObjects.Container
@@ -34,12 +30,6 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	create(): void {
-		// Add music if it doesn't exist
-		if (music === undefined) {
-			music = this.sound.add('background', {volume: UserSettings._get('musicVolume'), loop: true})
-			music.play()
-		}
-
 		// Make sure that cardInfo is above everything else
 		addCardInfoToScene(this).setDepth(15)
 
@@ -133,13 +123,10 @@ export default class BaseScene extends Phaser.Scene {
             valuechangeCallback: function (value) {
             	UserSettings._set('musicVolume', value)
 
-            	music.play({
-            		volume: value,
-            		// delay: 0.03,
-            		seek: music['seek'],
-            		loop: true,
-            	})
-            	music.resume()
+            	let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
+
+            	music.volume = value
+            	music.play()
             },
             space: {
                 top: 4,
