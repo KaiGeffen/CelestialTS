@@ -201,8 +201,8 @@ class TutorialRegion {
     })
 
     // Expansion icons
-    let iconCrypt = new Icon(this.scene, this.menu, -xDelta, yDelta, 'Crypt', function() {
-      that.scene.scene.start("CryptCatalogScene")
+    let iconLord = new Icon(this.scene, this.menu, -xDelta, yDelta, 'Lord', function() {
+      that.scene.scene.start("LordCatalogScene")
     })
     let iconBastet = new Icon(this.scene, this.menu, 0, yDelta, 'Bastet', function() {
       that.scene.scene.start("BastetCatalogScene")
@@ -221,7 +221,7 @@ class TutorialRegion {
     if (!(UserProgress.contains('tutorialCompleteAnubis') &&
       UserProgress.contains('tutorialCompleteRobots') &&
       UserProgress.contains('tutorialCompleteStalker'))) {
-      iconCrypt.lock()
+      iconLord.lock()
       iconBastet.lock()
       iconHorus.lock()
     }
@@ -261,7 +261,7 @@ class TutorialRegion {
     }
 
     // Expansion decks
-    if (UserProgress.contains('tutorialCompleteCrypt')) {
+    if (UserProgress.contains('tutorialCompleteLord')) {
       this.menu.add(this.scene.add.text(-xDelta, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
     }
 

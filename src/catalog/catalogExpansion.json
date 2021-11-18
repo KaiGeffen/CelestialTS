@@ -49,17 +49,18 @@
     "text": "1:0, Fleeting, transform each of your cards later in the story into an 0:X Fleeting ${1003}, where X is its cost.",
     "rarity": 1
   },
-  {"name": "Juggle", "id": 30,
-    "cost": 1, "points": 1,
-    "text": "1:1.\nWhen played, put the 3 leftmost cards in your hand on the bottom of your deck, then draw that many.\n(Of the 3, your leftmost card will be closest to the top of the deck)",
-    "rarity": 2
-  },
 
   {"name": "Sine", "id": 31,
     "cost": 2, "points": 4,
     "text": "2:4, Starve 4.",
     "catalogText": "Sine costs 2 mana for 4 points, but causes the next card you resolve to be worth 4 less points.\n\nIf you play a card after Sine in the same round, it won't net you any points.\n\nBut it can be effective at trading rounds, taking a final win, or setting up resets.",
     "rarity": 0
+  },
+  {"name": "Sunflower", "id": 69,
+    "cost": 2, "points": 1,
+    "text": "2:1, Inspire X, where X is this card's points.",
+    "catalogText": "Sunflower costs 2 mana for 1 point, and also Inspires you equal to its points as it resolves.\n\nTry to take advantage of this effect by having Nourish when you play Sunflower, and also consider how you'll spend the extra mana in the next round.\n\nDecks that remove their own cards in order to end up with a thin deck (Coined 'hyperthin' decks) can take advantage of this effect to consistently boost up Sunflower, then have extra mana in the next round to go above the 10 mana limit.",
+    "rarity": 1
   },
   {"name": "Desert", "id": 49,
     "cost": 2, "points": 0,
@@ -89,16 +90,15 @@
     "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for.",
     "rarity": 1
   },
+  {"name": "Carrion", "id": 74,
+    "cost": 2, "points": 0,
+    "text": "2:0, remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
+    "rarity": 2
+  },
   {"name": "Bastet", "id": 34,
     "cost": 2, "points": 1,
     "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)",
     "catalogText": "Bastet costs 2 mana for 1 point, but also keeps any changes to its points permanently.\n\nThis means that if you have any Nourish when Bastet resolves, it will keep that boost and can be developed into a win-condition.\n\nOnce boosted, try to draw Bastet as quickly as possible with cards like Unearth, tutors, and by thinning cards out of your deck.",
-    "rarity": 2
-  },
-  {"name": "Crypt", "id": 36,
-    "cost": 2, "points": 2,
-    "text": "2:2, your last card in the story transforms into the top card of your discard pile with the same cost as it.\n(For example, if your last card in the story costs 3, that card transforms into whichever 3-cost card is closest to the top of your discard pile. If there are no 3-cost cards in your discard pile, nothing happens)",
-    "catalogText": "Crypt costs 2 mana for 2 points, and transforms your last card in the story (Not itself) PERMANENTLY into a copy of another card.\n\nThe card it chooses is based on that card's original cost. It chooses the topmost equally costed card from your discard pile.\n\nUse this to change cards in your deck to the best choices for the matchup, or play cards with reduced cost that become stronger.",
     "rarity": 2
   },
 
@@ -139,6 +139,12 @@
     "text": "4:4.\nAt the start of each round, if this is the top of your discard pile, Build 1.",
     "rarity": 1
   },
+  {"name": "Gentle Rain", "id": 71,
+    "cost": 4, "points": 1,
+    "text": "4:1, Nourish X, where X is the number of cards you've drawn this round.",
+    "catalogText": "Gentle Rain costs 4 mana for 1 point, but will also Nourish you equal to the number of cards you drew this round.\n\nThis includes the 2 cards that you drew at the start of the round, assuming your hand wasn't full.\n\nIt also includes any cards that you drew or tutored because of cards that resolved before it in the current round, so try to land a full Fishing Boat to get the most out of this effect.",
+    "rarity": 3
+  },
   {"name": "Pocket Watch", "id": 54,
     "cost": 4, "points": 1,
     "text": "4:1, draw 2.\nCosts X less, where X is the number of times you've passed this round.",
@@ -151,8 +157,8 @@
   },
 
   {"name": "Heron", "id": 65,
-    "cost": 5, "points": 4,
-    "text": "5:4, Fleeting, Inspire X, where X is the number of cards with Fleeting in your hand.",
+    "cost": 5, "points": 0,
+    "text": "5:0, set both player's points to 0.\nCosts X, where X is the number of cards in your discard pile.",
     "rarity": 1
   },
   {"name": "Conquer", "id": 67,
@@ -162,7 +168,7 @@
   },
   {"name": "Phoenix", "id": 51,
     "cost": 5, "points": 5,
-    "text": "5:5, Fleeting, create a ${4} in your hand.",
+    "text": "5:5, Visible, Fleeting, create a ${4} in your hand.",
     "rarity": 0
   },
   {"name": "Lotus", "id": 42,
@@ -177,21 +183,11 @@
     "catalogText": "Symbiosis costs 6 mana for 6 points, and will also force the opponent to discard their leftmost card if it's effected by Nourish.\n\nEnding the last round with something that gives you Nourish, like Fruiting or Oak, then playing Symbiosis is a powerful way to gain card-advantage.\n\nIf you're looking for an efficient way to attack the opponent's hand, Symbiosis has a lot to offer.",
     "rarity": 0
   },
-  {"name": "Cornucopia", "id": 61,
-    "cost": 6, "points": 2,
-    "text": "6:2, Nourish 2.\nCosts X less, where X is the number of different cost values you can see in the story.",
-    "catalogText": "Cornucopia costs 6 mana for 2 points and 2 points of Nourish, but its cost is reduced by the number of different cost values you can see in the story.\n\nThis means that if you play 2 cards to the story with different cost values, Cornucopia will only cost 4. And if you can gain Sight of the opponent's cards, then it can be reduced by them as well.\n\nTo play this optimally, you'll want a variety of cost values in your deck, and to play cards with cost values that you don't expect to see your opponent play in the round.",
-    "rarity": 2
-  },
-  {"name": "Eagle", "id": 43,
-    "cost": 6, "points": 6,
-    "text": "6:6, Nourish 2.\nWhen played, gain Sight 4 and transform each card in your hand into a ${4}.",
-    "rarity": 2
-  },
 
   {"name": "Ecology", "id": 44,
     "cost": 7, "points": 0,
     "text": "7:0.\nWhen played, gain 10 mana this round.",
+    "catalogText": "Ecology costs 7 mana for 0 points, but will also provide you 10 mana when played. Effectively netting you +3 mana the round it's played.\n\nYour opponent won't know about this burst of mana, and can be caught off guard by your more expensive cards.\n\nThe high mana cost of 7 also can be used to your advantage with cards like Sarcophagus or Become Machine, which care about a card's cost.",
     "rarity": 1
   },
   {"name": "Horus", "id": 45,
@@ -216,10 +212,16 @@
     "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, gain Inspired 1.",
     "rarity": 2
   },
+  {"name": "Occupation", "id": 75,
+    "cost": 8, "points": 8,
+    "text": "8:8, create a ${1001} in your opponent's hand.",
+    "rarity": 2
+  },
 
   {"name": "Paramountcy", "id": 62,
     "cost": 9, "points": 0,
     "text": "9:0, add the top 5 cards of your discard pile to the end of the story.\n(The story can't exceed 12 cards this way, 'when played' effects don't trigger)",
+    "catalogText": "Paramountcy costs 9 mana for 0 points, but has a unique and powerful effect.\n\nIt will take up to 5 cards from the top of your discard pile and add them to the end of the story (The story can't exceed 12 cards). The top card will be added first, and so on. This means that after the round is over, the ordering of those 5 cards will have reversed.\n\nMany powerful combos are possible if you order your discard pile right. Try to find the strongest!",
     "rarity": 3
   }
 ]
