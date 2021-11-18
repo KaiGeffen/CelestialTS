@@ -162,23 +162,23 @@ export class StalkerCatalogScene extends CatalogScene {
 	}
 }
 
-export class CryptCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("0™1™63™35™36™15™19™20")
-	defaultDeck: string = prebuiltDecks.get('Crypt')
-	name = "Crypt"
+export class ParamountcyCatalogScene extends CatalogScene {
+	pool: Card[] = decodeDeck("0™63™69™11™57™20™44™62")
+	defaultDeck: string = prebuiltDecks.get('Paramountcy')
+	name = "Paramountcy"
 	deckDescription: string = 
-"attacks your opponent's hand in the early game, then transforms Stalker into Sarcophagus and Crypt into Imprison in the late game to control and overwhelm your opponent."
+"TODO attacks your opponent's hand in the early game, then transforms Stalker into Sarcophagus and Paramountcy into Imprison in the late game to control and overwhelm your opponent."
 	opponentDeck: string = '21:67:14:14:14:64:64:7:3:3:3:3:0:0:0'
 
 	constructor() {
 		super({
-			key: "CryptCatalogScene"
+			key: "ParamountcyCatalogScene"
 		})
 	}
 }
 
 export class BastetCatalogScene extends CatalogScene {
-	pool: Card[] = decodeDeck("0™28™25™33™34™11™57™61")
+	pool: Card[] = decodeDeck("0™28™25™32™34™11™71™57")
 	defaultDeck: string = prebuiltDecks.get('Bastet')
 	name = "Bastet"
 	deckDescription: string = 
