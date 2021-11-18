@@ -30,6 +30,12 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	create(): void {
+		// Play music
+		if (UserSettings._get('musicVolume') > 0) {
+			let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
+        	music.play()
+		}
+
 		// Make sure that cardInfo is above everything else
 		addCardInfoToScene(this).setDepth(15)
 
