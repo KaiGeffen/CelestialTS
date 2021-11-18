@@ -167,7 +167,7 @@ export class LordCatalogScene extends CatalogScene {
 	defaultDeck: string = prebuiltDecks.get('Lord')
 	name = "Lord"
 	deckDescription: string = 
-"TODO attacks your opponent's hand in the early game, then transforms Stalker into Sarcophagus and Lord into Imprison in the late game to control and overwhelm your opponent."
+"plays carryover in the form of Inspire and Nourish to trade early rounds, then plays Paramountcy to replay 5 cards, aiming to hit Sarcophagus to get back Paramountcy."
 	opponentDeck: string = '21:67:14:14:14:64:64:7:3:3:3:3:0:0:0'
 
 	constructor() {
