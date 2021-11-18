@@ -56,6 +56,11 @@
     "catalogText": "Sine costs 2 mana for 4 points, but causes the next card you resolve to be worth 4 less points.\n\nIf you play a card after Sine in the same round, it won't net you any points.\n\nBut it can be effective at trading rounds, taking a final win, or setting up resets.",
     "rarity": 0
   },
+  {"name": "Sunflower", "id": 69,
+    "cost": 2, "points": 1,
+    "text": "2:1, Inspire X, where X is this card's points.",
+    "rarity": 1
+  },
   {"name": "Desert", "id": 49,
     "cost": 2, "points": 0,
     "text": "2:0, if this is the last card in the story, +3. Otherwise, return the last card in the story to its owner's hand.",
@@ -83,6 +88,11 @@
     "text": "2:0, set both player's points to 0, then give your opponent 1 point for each card in their hand.",
     "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for.",
     "rarity": 1
+  },
+  {"name": "Carrion", "id": 74,
+    "cost": 2, "points": 0,
+    "text": "2:0, remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
+    "rarity": 2
   },
   {"name": "Bastet", "id": 34,
     "cost": 2, "points": 1,
@@ -127,6 +137,11 @@
     "cost": 4, "points": 4,
     "text": "4:4.\nAt the start of each round, if this is the top of your discard pile, Build 1.",
     "rarity": 1
+  },
+  {"name": "Gentle Rain", "id": 71,
+    "cost": 4, "points": 1,
+    "text": "4:1, Nourish X, where X is the number of cards you've drawn this round.",
+    "rarity": 3
   },
   {"name": "Pocket Watch", "id": 54,
     "cost": 4, "points": 1,
@@ -194,34 +209,15 @@
     "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, gain Inspired 1.",
     "rarity": 2
   },
+  {"name": "Occupation", "id": 75,
+    "cost": 8, "points": 8,
+    "text": "8:8, create a ${1001} in your opponent's hand.",
+    "rarity": 2
+  },
 
   {"name": "Paramountcy", "id": 62,
     "cost": 9, "points": 0,
     "text": "9:0, add the top 5 cards of your discard pile to the end of the story.\n(The story can't exceed 12 cards this way, 'when played' effects don't trigger)",
     "rarity": 3
-  },
-
-  {"name": "Sunflower", "id": 69,
-    "cost": 2, "points": 1,
-    "text": "2:1, Inspire X, where X is this card's points.",
-    "rarity": 1
-  },
-
-  {"name": "Gentle Rain", "id": 71,
-    "cost": 4, "points": 1,
-    "text": "4:1, Nourish X, where X is the number of cards you've drawn this round.",
-    "rarity": 3
-  },
-
-  {"name": "Carrion", "id": 74,
-    "cost": 2, "points": 0,
-    "text": "2:0, remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
-    "rarity": 2
-  },
-
-  {"name": "Occupation", "id": 75,
-    "cost": 8, "points": 8,
-    "text": "8:8, create a ${1001} in your opponent's hand.",
-    "rarity": 2
-  }
+  }  
 ]
