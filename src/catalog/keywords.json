@@ -34,7 +34,7 @@
 		"x": true
 	},
 	{"key": "Tutor",
-		"text": "Tutor X - Draw a X-cost card. Priority for the card drawn is deck top to bottom, then discard pile top to bottom.",
+		"text": "Tutor X - Draw the top card of your deck that costs X, if there is one.",
 		"x": true
 	}
 ]
