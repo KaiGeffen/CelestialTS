@@ -27,7 +27,7 @@ export default class CreditsScene extends Phaser.Scene {
     creditText += "\n\nAll icons are from game-icons.net under CC BY 3.0"
 
     let creditsDelapouite = "Delapouite: https://delapouite.com/\nStars, Spy, Swift, Crypt, Fishing Boat, Factory, Mine, Chimney, Uprising, Sarcophagus, Anubis, Horus, Enrage, Camera, Butterfly, Bandit, Wanted Poster, Night Vision, Bastet, Stable, Pelican, Beehive, Eagle, Icarus, Ecology, Scarab, Kneel, Desert, Generator, Conquer, Cornucopia, Paramountcy, Sunflower, Gentle Rain, PVP icon, Draft icon, Exit icon, Retry icon"
-    let creditsLorc = "Lorc: https://lorcblog.blogspot.com/\nBone Knife, Cog, Crossed Bones, Dove, Juggle, Drown, Gears, Dash, Cosmos, Fruiting, Gift, Paranoia, Hurricane, Dinosaur Bones, Lotus, Oak, Cardback, Broken Bone, Robot, Bee, Disintegrate, Imprison, Fish Bones, Bounty, Anvil, Nightmare, Sickness, Cogsplosion, Phoenix, Symbiosis, Sun, Carrion, Basics icon, Review icon"
+    let creditsLorc = "Lorc: https://lorcblog.blogspot.com/\nBone Knife, Cog, Crossed Bones, Dove, Juggle, Drown, Gears, Dash, Cosmos, Fruiting, Gift, Paranoia, Hurricane, Dinosaur Bones, Lotus, Oak, Cardback, Broken Bone, Robot, Bee, Disintegrate, Imprison, Fish Bones, Bounty, Anvil, Nightmare, Sickness, Cogsplosion, Phoenix, Symbiosis, Sun, Carrion, Hollow, Basics icon, Review icon"
     let creditsBerandas = "Lord Berandas: https://www.deviantart.com/berandas\nSine, AI"
     let creditsDarkZaitzev = "Dark Zaitzev: https://www.deviantart.com/darkzaitzev\nStalker"
     let creditsCathelineau = "Cathelineau: Tumulus, Occupation"
