@@ -6,13 +6,13 @@
   },
   {"name": "Kneel", "id": 66,
     "cost": 0, "points": 0,
-    "text": "0:0, Fleeting, discard the leftmost card of your hand, Tutor 7.",
+    "text": "0:0, Fleeting, discard the leftmost card of your hand, draw a card that costs 7.",
     "rarity": 0
   },
 
   {"name": "Nectar", "id": 25,
     "cost": 1, "points": 0,
-    "text": "1:0, Nourish 1.",
+    "text": "1:0, Nourish 1.\nWhen played, gain Sight 3.",
     "catalogText": "Nectar costs 1 mana and provides you with 1 Nourish.\n\nThis can be flexibly used for carryover, to dodge resets, or to permanently boost Bastet.\n\nA good use of this card is to play it, then if the opponent passes, play another utility card to gain the boost and win the round.",
     "rarity": 0
   },
@@ -29,13 +29,8 @@
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1, "points": 0,
-    "text": "1:0, Tutor 2.\nWhen played, gain Sight 3.",
+    "text": "1:0, draw a card that costs 2.\nWhen played, gain Sight 3.",
     "catalogText": "Night Vision costs 1 mana, provides you with 3 Sight immediately when play, and tutors any 2-cost card out of your deck or discard pile.\n\nThe 3 Sight makes the first 3 cards of the story visible to you, and accumulates with other Sight gain. This could let you see what your opponent is up to before committing to a round.\n\nTutor prioritizes deck, then discard pile, and not cards in the story.",
-    "rarity": 0
-  },
-  {"name": "Disintegrate", "id": 29,
-    "cost": 1, "points": 1,
-    "text": "1:1, transform the next 1-cost card in the story into a ${1002}.",
     "rarity": 0
   },
   {"name": "Spy", "id": 27,
@@ -80,7 +75,7 @@
   },
   {"name": "Fishing Boat", "id": 32,
     "cost": 2, "points": 0,
-    "text": "2:0, Tutor 1, Tutor 1, Tutor 1.",
+    "text": "2:0, draw up to 3 cards that cost 1.",
     "catalogText": "Fishing Boat costs 2, and tutors for a 1-cost card 3 times.\n\nTutor will draw any card meeting the condition (Costing 1) from either your deck or your discard pile, prioritizing first cards in your deck, then cards from the top of your discard pile to the bottom.\n\nUse this to surge ahead on card advantage, and be able to stall for a huge reset.",
     "rarity": 1
   },
@@ -91,8 +86,8 @@
     "rarity": 1
   },
   {"name": "Carrion", "id": 74,
-    "cost": 2, "points": 0,
-    "text": "2:0, remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
+    "cost": 2, "points": 1,
+    "text": "2:1, remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
     "rarity": 2
   },
   {"name": "Bastet", "id": 34,
@@ -140,14 +135,14 @@
     "rarity": 1
   },
   {"name": "Gentle Rain", "id": 71,
-    "cost": 4, "points": 1,
-    "text": "4:1, Nourish X, where X is the number of cards you've drawn this round.",
+    "cost": 4, "points": 2,
+    "text": "4:2, Nourish X, where X is the number of cards you've drawn this round.",
     "catalogText": "Gentle Rain costs 4 mana for 1 point, but will also Nourish you equal to the number of cards you drew this round.\n\nThis includes the 2 cards that you drew at the start of the round, assuming your hand wasn't full.\n\nIt also includes any cards that you drew or tutored because of cards that resolved before it in the current round, so try to land a full Fishing Boat to get the most out of this effect.",
     "rarity": 3
   },
   {"name": "Pocket Watch", "id": 54,
-    "cost": 4, "points": 1,
-    "text": "4:1, draw 2.\nCosts X less, where X is the number of times you've passed this round.",
+    "cost": 4, "points": 2,
+    "text": "4:2, draw 2.\nCosts X less, where X is the number of times you've passed this round.",
     "rarity": 1
   },
   {"name": "Cogsplosion", "id": 59,
@@ -213,8 +208,8 @@
     "rarity": 2
   },
   {"name": "Occupation", "id": 75,
-    "cost": 8, "points": 8,
-    "text": "8:8, create a ${1001} in your opponent's hand.",
+    "cost": 7, "points": 7,
+    "text": "7:7, create a ${1001} in your opponent's hand.",
     "rarity": 2
   },
 
@@ -223,5 +218,11 @@
     "text": "9:0, add the top 5 cards of your discard pile to the end of the story.\n(The story can't exceed 12 cards this way, 'when played' effects don't trigger)",
     "catalogText": "Paramountcy costs 9 mana for 0 points, but has a unique and powerful effect.\n\nIt will take up to 5 cards from the top of your discard pile and add them to the end of the story (The story can't exceed 12 cards). The top card will be added first, and so on. This means that after the round is over, the ordering of those 5 cards will have reversed.\n\nMany powerful combos are possible if you order your discard pile right. Try to find the strongest!",
     "rarity": 3
+  },
+
+  {"name": "Hollow", "id": 76,
+    "cost": 0, "points": 0,
+    "text": "0:0, set your points to 0. Gain Nourish equal to the amount of points you lost this way.",
+    "rarity": 2
   }
 ]
