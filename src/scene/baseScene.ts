@@ -11,6 +11,7 @@ export default class BaseScene extends Phaser.Scene {
 	sliderMusic: any
 	sliderAnimationSpeed: any
 	private btnMenu: Button
+	private btnDebug: Button
 
 	// Message explaining to user what they did wrong
 	txtError: Phaser.GameObjects.Text
@@ -41,6 +42,9 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Menu button
 		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 0, '⚙', this.openMenu).setOrigin(1, 0)
+
+		// Sound debug menu
+		this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
 
 	    // Error text, for when the user does something wrong they get an explanation
 	    this.txtError = this.add['rexBBCodeText'](Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
@@ -357,6 +361,20 @@ They do not; you can have both Nourish and Starve at the same time.`
 		this.sliderVolume.setVisible(true)
 		this.sliderMusic.setVisible(true)
 		this.sliderAnimationSpeed.setVisible(true)
+	}
+
+	private openDebugMenu(): void {
+		document.getElementById('soundFile').click()
+		// new Promise((resolve, reject) => {
+		// 	let fr = new FileReader()
+		// 	fr.onload = _ => resolve(fr.result)
+
+		// })
+		// // let sound = this.sound.get('success')
+		// this.load.audio('click', `sfx/failure.mp3`)
+		// null if not found
+
+      	// console.log(sound)
 	}
 
 	private closeMenu(): void {

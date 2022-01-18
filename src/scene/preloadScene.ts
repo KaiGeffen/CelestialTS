@@ -76,6 +76,9 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 		// TODO Move to postload
 		this.load.audio('background', 'music/background.mp3')
+		
+		// Allow for audio to be uploaded to test out different sfx
+		this.enableSFXSwapping()
 
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
@@ -185,5 +188,33 @@ export default class PreloadClass extends Phaser.Scene {
 		this.load.on('complete', function () {
 			startWhenLoginComplete()
 		})
+	}
+
+	// Enable the file element to swap audio files for testing out various sfx
+	private enableSFXSwapping(): void {
+		let that = this
+
+		let element = <HTMLInputElement>document.getElementById("soundFile")
+
+		element.onchange = e => {
+			let file = e.target['files'][0]
+			
+			let name = file.name.split('.')[0]
+			console.log(file)
+
+			// Load the audio 
+			let reader = new FileReader()
+			reader.onload = function(ev) {
+				console.log(ev.target.result)
+				// that.load.audio(ev.target.result)
+				that.sound['decodeAudio']('click', ev.target.result)
+			}
+			reader.readAsArrayBuffer(file)
+
+
+			// let fileContents = null
+
+			// that.load.audio(name, fileContents)
+		}
 	}
 }
