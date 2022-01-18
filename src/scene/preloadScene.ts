@@ -194,27 +194,29 @@ export default class PreloadClass extends Phaser.Scene {
 	private enableSFXSwapping(): void {
 		let that = this
 
-		let element = <HTMLInputElement>document.getElementById("soundFile")
+		let element = document.createElement('input')
+		element.type = 'file'
+		element.id = 'soundFile'
+		element.accept = 'audio/*'
+		element.hidden = true
+
+		document.getElementById('game').appendChild(element)
 
 		element.onchange = e => {
 			let file = e.target['files'][0]
 			
 			let name = file.name.split('.')[0]
-			console.log(file)
 
 			// Load the audio 
 			let reader = new FileReader()
 			reader.onload = function(ev) {
-				console.log(ev.target.result)
-				// that.load.audio(ev.target.result)
-				that.sound['decodeAudio']('click', ev.target.result)
+				// Remove the old sfx
+				that.sound.removeByKey(name)
+
+				// Add in the new sfx
+				that.sound['decodeAudio'](name, ev.target.result)
 			}
 			reader.readAsArrayBuffer(file)
-
-
-			// let fileContents = null
-
-			// that.load.audio(name, fileContents)
 		}
 	}
 }
