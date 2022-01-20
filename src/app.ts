@@ -10,6 +10,7 @@ import ChoiceScene from "./scene/choiceScene"
 import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
 import DraftMatchScene from "./scene/draftMatchScene"
+import AdventureScene from "./scene/adventureScene"
 
 import { Color, Space } from "./settings/settings"
 
@@ -37,7 +38,8 @@ const config: Phaser.Types.Core.GameConfig = {
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
   GameScene, DraftMatchScene,
   BuilderScene, TutorialBuilderScene, DraftBuilderScene,
-  TutorialScene1, TutorialScene2],
+  TutorialScene1, TutorialScene2,
+  AdventureScene],
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },

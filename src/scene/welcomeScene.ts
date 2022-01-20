@@ -37,8 +37,8 @@ export default class WelcomeScene extends BaseScene {
     // }
 
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
-    let btnTutorial = new Button(this, Space.windowWidth/2 - 300, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
-    btnTutorial.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
+    let btnTutorial = new Button(this, Space.windowWidth/2 - 300, Space.windowHeight - 50, "Adventure", this.doAdventure).setOrigin(0.5)
+    // btnTutorial.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
 
     // Credits button
     let btnCredits = new Button(this, Space.windowWidth/2 - 100, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
@@ -118,6 +118,10 @@ export default class WelcomeScene extends BaseScene {
     UserProgress.addAchievement('deckMenuNotice')
     
     this.scene.start("BuilderScene", {isTutorial: false})
+  }
+
+  private doAdventure(): void {
+    this.scene.start("AdventureScene")
   }
 
   private doCredits(): void {
