@@ -1,6 +1,9 @@
 import "phaser"
 import BaseScene from './baseScene'
 import { Style, Space, Color } from '../settings/settings'
+import Button from "../lib/button"
+
+import adventureData from "../adventure.json"
 
 export default class AdventureScene extends BaseScene {
 	constructor() {
@@ -18,6 +21,8 @@ export default class AdventureScene extends BaseScene {
 
 	// Create the panel containing the missions
 	private createPanel(): void {
+		let that = this
+
 		let x = Space.pad
 		let y = Space.pad
 		let width = Space.windowWidth - Space.pad*2
@@ -85,11 +90,15 @@ export default class AdventureScene extends BaseScene {
 		.layout()
 		let panel = fullPanel.getElement('panel')
 
-		for(let i = 0; i < 30; i++) {
-			let txt = this.add.text(0, 0, `${i}`, Style.basic)
-			panel.add(txt)
+		// Add each of the adventures as its own line
+		adventureData.forEach(adventure => {
+			let name = adventure.name
+			let btn = new Button(that, 0, 0, `${name}`, () => {
+				that.scene.start("AdventureBuilderScene", adventure)
+			})
+			panel.add(btn)
 			panel.addNewLine()
-		}
+		})
 
 		fullPanel.layout()
 	}

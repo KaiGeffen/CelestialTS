@@ -1364,3 +1364,50 @@ export class DraftBuilderScene extends BuilderScene {
     }
   }
 }
+
+export class AdventureBuilderScene extends BuilderScene {
+  constructor() {
+    super({
+      key: "AdventureBuilderScene"
+    })
+  }
+
+  create(params = null): void {
+    super.create()
+
+    // Set the user's required cards
+    this.setRequiredCards(params.deck)
+
+    // Change the start button to start a match vs an ai opponent with the given deck
+    let that = this
+    this.btnStart.setOnClick(function() {
+      that.startAIMatch(params.opponent)
+    }, true)
+  }
+
+  // Start a match against an ai opponent with the specified deck
+  private startAIMatch(opponentDeck): void {
+    this.beforeExit()
+
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+
+    let mmCode = `ai:${opponentDeck}`
+    UserSettings._set('mmCode', mmCode)
+
+    this.scene.start("GameScene", {isTutorial: false, deck: deck})
+  }
+
+  // Set any cards that user must have in their deck for this mission, and prevent those cards from being removed
+  private setRequiredCards(cards): void {
+    this.setDeck(cards)
+
+    // Remove the ability to remove any of the existing cards from the deck
+    this.deck.forEach(function(cardImage, index, array) {cardImage.image.removeAllListeners('pointerdown')})
+  }
+
+  // Overwrite to prevent writing to standard's saved deck
+  beforeExit(): void {
+  }
+}

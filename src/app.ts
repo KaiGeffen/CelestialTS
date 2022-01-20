@@ -2,7 +2,7 @@ import "phaser"
 import PreloadScene from "./scene/preloadScene"
 import WelcomeScene from "./scene/welcomeScene"
 import GameScene from "./scene/gameScene"
-import { BuilderScene, TutorialBuilderScene, DraftBuilderScene } from "./scene/builderScene"
+import { BuilderScene, TutorialBuilderScene, DraftBuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 
 import CreditsScene from "./scene/creditsScene"
 import StoreScene from "./scene/storeScene"
@@ -36,7 +36,7 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [PreloadScene, WelcomeScene, CreditsScene, StoreScene,
   ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
-  GameScene, DraftMatchScene,
+  GameScene, DraftMatchScene, AdventureBuilderScene,
   BuilderScene, TutorialBuilderScene, DraftBuilderScene,
   TutorialScene1, TutorialScene2,
   AdventureScene],
