@@ -72,6 +72,9 @@ export class CardImage {
   image: Phaser.GameObjects.Image
   txtStats: Phaser.GameObjects.Text
 
+  // Whether the current card is required in this context (Must be in the deck)
+  required = false
+
   unplayable: boolean = false
   // A container just for this cardImage / objects related to it
   container: Phaser.GameObjects.Container
@@ -247,6 +250,12 @@ export class CardImage {
     }
 
     this.setTransparent(amt <= 0)
+  }
+
+  // Set that this card is required and can't be removed from the deck
+  setRequired(): void {
+    this.image.setTint(Color.cardUnplayable)
+    this.required = true
   }
 
   // Scroll the stats text to copy image

@@ -410,7 +410,10 @@ export class BuilderScene extends BuilderSceneShell {
       cardImage.container.parentContainer.sendToBack(cardImage.container)
 
       // Remove the previous onclick event and add one with the updated index
-      cardImage.setOnClick(this.removeCardFromDeck(i), true)
+      // Only do this if the card isn't required in the deck, in which case it can't be removed
+      if (!cardImage.required) {
+        cardImage.setOnClick(this.removeCardFromDeck(i), true)
+      }
     }
   }
 
@@ -1404,7 +1407,10 @@ export class AdventureBuilderScene extends BuilderScene {
     this.setDeck(cards)
 
     // Remove the ability to remove any of the existing cards from the deck
-    this.deck.forEach(function(cardImage, index, array) {cardImage.image.removeAllListeners('pointerdown')})
+    this.deck.forEach(function(cardImage, index, array) {
+      cardImage.setRequired()
+      cardImage.removeOnClick()
+    })
   }
 
   // Overwrite to prevent writing to standard's saved deck
