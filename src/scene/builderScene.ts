@@ -1397,9 +1397,8 @@ export class AdventureBuilderScene extends BuilderScene {
     })
 
     let mmCode = `ai:${opponentDeck}`
-    UserSettings._set('mmCode', mmCode)
-
-    this.scene.start("GameScene", {isTutorial: false, deck: deck})
+    
+    this.scene.start("GameScene", {isTutorial: false, deck: deck, mmCode: mmCode})
   }
 
   // Set any cards that user must have in their deck for this mission, and prevent those cards from being removed

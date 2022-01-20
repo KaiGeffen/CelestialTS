@@ -102,20 +102,28 @@ export default class GameScene extends BaseScene {
 	init(params: any): void {
 		this.params = params
 
-		// Code to matchmake player with ('ai' if versus computer)
-		let mmCode = UserSettings._get('mmCode')
-	    if (UserSettings._get('vsAi')) {
-	    	mmCode = 'ai'
-	    }
+		let mmCode
+		if (params.mmCode !== undefined) {
+			mmCode = params.mmCode
+		}
+		else {
+			// TODO Clean up mmCode, shouldn't use UserSettings, remove this case
+			// Code to matchmake player with ('ai' if versus computer)
+			let mmCode = UserSettings._get('mmCode')
+			if (UserSettings._get('vsAi')) {
+				mmCode = 'ai'
+			}
 
-	    // Tutorial should always be against ai
-	    if (params['isTutorial']) {
-	    	if (params['tutorialNumber'] === 1) {
-	    		mmCode = 'tutorial'
-	    	} else if (params['tutorialNumber'] === 2) {
-	    		mmCode = `ai:${params['opponentDeck']}`
-	    	}
-	    }
+			// Tutorial should always be against ai
+			if (params['isTutorial']) {
+				if (params['tutorialNumber'] === 1) {
+					mmCode = 'tutorial'
+				} else if (params['tutorialNumber'] === 2) {
+					mmCode = `ai:${params['opponentDeck']}`
+				}
+			}
+		}
+		
 
 		// Connect with the server
 		this.net = new Network(params.deck, this, mmCode)

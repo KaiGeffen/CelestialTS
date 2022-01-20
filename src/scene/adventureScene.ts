@@ -15,7 +15,7 @@ export default class AdventureScene extends BaseScene {
 	create(): void {
 		super.create()
 
-		// Rex object
+		// Create the panel that displays all of the available adventures
 		this.createPanel()
 	}
 
