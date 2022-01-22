@@ -30,7 +30,12 @@ export class UserSettings {
 
       igc: 0,
 
-      inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
+      // For adventure mode, for each card, whether or not that card has been unlocked
+      inventory: Array(baseCards.length).fill(false),
+
+      // List of each mission by its id, and if the player has completed it
+      completedMissions: Array(200).fill(false),
+      // inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
 
       decks: [
         {name: 'Anubis', value: "21:20:20:17:17:14:14:6:3:3:3:3:0:0:0"},

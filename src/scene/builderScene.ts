@@ -984,10 +984,14 @@ export class BuilderScene extends BuilderSceneShell {
     }
 
     // Filter cards based on whether you have more of them in your inventory
-    let ownershipFilter = function(card: Card): boolean {
-      let moreInInventory = UserSettings._get('inventory')[card.id] > that.deck.filter(ci => ci.card.id === card.id).length
+    // let ownershipFilter = function(card: Card): boolean {
+    //   let moreInInventory = UserSettings._get('inventory')[card.id] > that.deck.filter(ci => ci.card.id === card.id).length
 
-      return !that.filterUnowned || moreInInventory
+    //   return !that.filterUnowned || moreInInventory
+    // }
+    // Filter cards based on whether you have unlocked them
+    let ownershipFilter = function(card: Card): boolean {
+      return !that.filterUnowned || UserSettings._get('inventory')[card.id]
     }
 
     // Filter based on the overlap of all above filters
@@ -1376,6 +1380,14 @@ export class AdventureBuilderScene extends BuilderScene {
   }
 
   create(params = null): void {
+    // Unlock any cards that this mission gives you
+    let unlocks = params.unlocks
+    if (unlocks !== undefined) {
+      unlocks.split(':').forEach(id => {
+        UserSettings._setIndex('inventory', id, true)
+      })
+    }
+
     super.create()
 
     // Set the user's required cards
@@ -1384,12 +1396,12 @@ export class AdventureBuilderScene extends BuilderScene {
     // Change the start button to start a match vs an ai opponent with the given deck
     let that = this
     this.btnStart.setOnClick(function() {
-      that.startAIMatch(params.opponent)
+      that.startAIMatch(params.opponent, params.id)
     }, true)
   }
 
   // Start a match against an ai opponent with the specified deck
-  private startAIMatch(opponentDeck): void {
+  private startAIMatch(opponentDeck, id): void {
     this.beforeExit()
 
     let deck = this.deck.map(function(cardImage, index, array) {
@@ -1397,8 +1409,8 @@ export class AdventureBuilderScene extends BuilderScene {
     })
 
     let mmCode = `ai:${opponentDeck}`
-    
-    this.scene.start("GameScene", {isTutorial: false, deck: deck, mmCode: mmCode})
+
+    this.scene.start("GameScene", {isTutorial: false, deck: deck, mmCode: mmCode, missionID: id})
   }
 
   // Set any cards that user must have in their deck for this mission, and prevent those cards from being removed

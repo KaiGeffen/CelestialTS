@@ -1373,6 +1373,14 @@ export default class GameScene extends BaseScene {
 
 		let width = Space.maxHeight - 250
 		if (state.winner === 0) {
+			// Set that user has completed the missions with this id
+			if (this.params.missionID !== undefined) {
+				UserSettings._setIndex(
+					'completedMissions',
+					this.params.missionID,
+					true)
+			}
+			
 			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory! +15☆', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
