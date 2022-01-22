@@ -1,6 +1,6 @@
 import "phaser"
 import BaseScene from './baseScene'
-import { Style, Space, Color } from '../settings/settings'
+import { Style, Space, Color, UserSettings } from '../settings/settings'
 import Button from "../lib/button"
 
 import adventureData from "../adventure.json"
@@ -90,16 +90,37 @@ export default class AdventureScene extends BaseScene {
 		.layout()
 		let panel = fullPanel.getElement('panel')
 
+		this.addAdventureData(panel)
+
+		fullPanel.layout()
+	}
+
+	// Add all of the missions to the panel
+	private addAdventureData(panel): void {
+		let that = this
+		let completed = UserSettings._get('completedMissions')
+
+		let unlockedMissions = adventureData.filter(function(mission) {
+			// Return whether each prereq has been met
+			return mission.prereq.every(function(id, _) {
+				return completed[id]
+			})
+		})
+
 		// Add each of the adventures as its own line
-		adventureData.forEach(adventure => {
-			let name = adventure.name
+		unlockedMissions.forEach(mission => {
+			// Get the string for this adventure
+			let id = mission.id
+
+			// If it has been completed, filled in star, otherwise empty star
+			let name = completed[id] ? '★' : '☆'
+			name += mission.name
+
 			let btn = new Button(that, 0, 0, `${name}`, () => {
-				that.scene.start("AdventureBuilderScene", adventure)
+				that.scene.start("AdventureBuilderScene", mission)
 			})
 			panel.add(btn)
 			panel.addNewLine()
 		})
-
-		fullPanel.layout()
 	}
 }
