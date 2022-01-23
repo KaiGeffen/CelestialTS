@@ -273,6 +273,10 @@ export default class GameScene extends BaseScene {
 
 	    this.displaySearchingStatus(true)
 
+	    // Debug, autowin
+	    let w = this.input.keyboard.addKey('W')
+	    w.on('down', () => {that.net.playCard(13)})
+
 	    super.create()
 	}
 
@@ -1380,7 +1384,7 @@ export default class GameScene extends BaseScene {
 					this.params.missionID,
 					true)
 			}
-			
+
 			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory! +15☆', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
