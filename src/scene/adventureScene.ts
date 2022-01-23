@@ -116,11 +116,33 @@ export default class AdventureScene extends BaseScene {
 			let name = completed[id] ? '★' : '☆'
 			name += mission.name
 
-			let btn = new Button(that, 0, 0, `${name}`, () => {
-				that.scene.start("AdventureBuilderScene", mission)
-			})
+			let btn = new Button(that, 0, 0, `${name}`, that.missionOnClick(mission))
 			panel.add(btn)
 			panel.addNewLine()
 		})
+	}
+
+	// Return the function for what happens when the given mission node is clicked on
+	private missionOnClick(mission): () => void {
+		let that = this
+		if (mission.type === 'mission') {
+			return function() {
+				that.scene.start("AdventureBuilderScene", mission)
+			}
+		}
+		else if (mission.type === 'card') {
+			return function() {
+				UserSettings._setIndex('inventory', mission.card, true)
+
+				// Complete this mission
+				UserSettings._setIndex(
+					'completedMissions',
+					mission.id,
+					true)
+
+				// TODO Go to a screen that shows this card's story
+				that.scene.start("AdventureScene")
+			}
+		}
 	}
 }

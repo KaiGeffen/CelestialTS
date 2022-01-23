@@ -1380,14 +1380,6 @@ export class AdventureBuilderScene extends BuilderScene {
   }
 
   create(params = null): void {
-    // Unlock any cards that this mission gives you
-    let unlocks = params.unlocks
-    if (unlocks !== undefined) {
-      unlocks.split(':').forEach(id => {
-        UserSettings._setIndex('inventory', id, true)
-      })
-    }
-
     super.create()
 
     // Set the user's required cards
