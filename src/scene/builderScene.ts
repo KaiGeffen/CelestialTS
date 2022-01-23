@@ -1401,8 +1401,7 @@ export class AdventureBuilderScene extends BuilderScene {
     })
 
     // TODO Make custom decks for each mission and use those
-    // let mmCode = `ai:${opponentDeck}`
-    let mmCode = 'ai'
+    let mmCode = `ai:${opponentDeck}`
 
     this.scene.start("GameScene", {isTutorial: false, deck: deck, mmCode: mmCode, missionID: id})
   }
