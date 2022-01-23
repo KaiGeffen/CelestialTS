@@ -109,7 +109,7 @@ export default class GameScene extends BaseScene {
 		else {
 			// TODO Clean up mmCode, shouldn't use UserSettings, remove this case
 			// Code to matchmake player with ('ai' if versus computer)
-			let mmCode = UserSettings._get('mmCode')
+			mmCode = UserSettings._get('mmCode')
 			if (UserSettings._get('vsAi')) {
 				mmCode = 'ai'
 			}
@@ -1764,8 +1764,12 @@ export default class GameScene extends BaseScene {
   		return function() {
   			that.beforeExit()
 
-  			// that.scene.start("BuilderScene")
-  			that.scene.start('AdventureScene')
+  			if (that.params.missionID !== undefined) {
+  				that.scene.start('AdventureScene')
+  			}
+  			else {
+  				that.scene.start("BuilderScene")
+  			}
   		}
   	}
 }

@@ -94,7 +94,7 @@
   {
     "name": "Birds 2 - Phoenix",
     "id": 12,
-    "prereq": [10],
+    "prereq": [11],
     "type": "mission",
     "deck": "18:51:51:0:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -712,7 +712,7 @@
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
   },
   {
-    "name": "Nascence",
+    "name": "Birth",
     "id": 205,
     "prereq": [204],
     "type": "card",
@@ -727,7 +727,7 @@
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
   },
   {
-    "name": "Nascence",
+    "name": "The Future",
     "id": 207,
     "prereq": [206],
     "type": "card",

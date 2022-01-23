@@ -37,8 +37,8 @@ export default class WelcomeScene extends BaseScene {
     // }
 
     // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
-    let btnTutorial = new Button(this, Space.windowWidth/2 - 300, Space.windowHeight - 50, "Adventure", this.doAdventure).setOrigin(0.5)
-    // btnTutorial.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
+    let btnTutorial = new Button(this, Space.windowWidth/2 - 300, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
+    btnTutorial.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
 
     // Credits button
     let btnCredits = new Button(this, Space.windowWidth/2 - 100, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
@@ -55,6 +55,9 @@ export default class WelcomeScene extends BaseScene {
     if (!UserProgress.contains('store')) {
       btnStore.glowUntilClicked()
     }
+
+    // Adventure button
+    let btnAdventure = new Button(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", this.doAdventure).setOrigin(0.5)
 
     // Start Button
     new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(Style.announcement)
