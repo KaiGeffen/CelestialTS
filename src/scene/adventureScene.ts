@@ -4,6 +4,7 @@ import { Style, Space, Color, UserSettings } from '../settings/settings'
 import Button from "../lib/button"
 
 import adventureData from "../adventure.json"
+adventureData.reverse()
 
 export default class AdventureScene extends BaseScene {
 	constructor() {
@@ -114,6 +115,7 @@ export default class AdventureScene extends BaseScene {
 
 			// If it has been completed, filled in star, otherwise empty star
 			let name = completed[id] ? '★' : '☆'
+			name += mission.type === 'card' ? '🂡' : ''
 			name += mission.name
 
 			let btn = new Button(that, 0, 0, `${name}`, that.missionOnClick(mission))

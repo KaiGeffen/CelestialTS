@@ -7,27 +7,68 @@
     "card": 4
   },
   {
-    "name": "Intro",
+    "name": "Dash",
     "id": 1,
     "prereq": [0],
-    "type": "mission",
-    "deck": "12:12:12:6:6:6:4:4:4:4:4:4:4:4:4",
-    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
-    "unlocks": "12:6:4"
+    "type": "card",
+    "card": 6
   },
   {
-    "name": "Intro 2 - Stars, Uprising",
+    "name": "Mercy",
     "id": 2,
     "prereq": [1],
+    "type": "card",
+    "card": 12
+  },
+  {
+    "name": "Intro",
+    "id": 3,
+    "prereq": [2],
+    "type": "mission",
+    "deck": "12:12:12:6:6:6:4:4:4:4:4:4:4:4:4",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Stars",
+    "id": 4,
+    "prereq": [3],
+    "type": "card",
+    "card": 0
+  },
+  {
+    "name": "Uprising",
+    "id": 5,
+    "prereq": [4],
+    "type": "card",
+    "card": 18
+  },
+  {
+    "name": "Intro 2",
+    "id": 6,
+    "prereq": [5],
     "type": "mission",
     "deck": "18:12:12:12:6:6:4:4:4:4:4:4:0:0:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
     "unlocks": "0:18"
   },
   {
-    "name": "Intro 3 - Fruiting, Hurricane",
-    "id": 3,
-    "prereq": [2],
+    "name": "Fruiting",
+    "id": 7,
+    "prereq": [6],
+    "type": "card",
+    "card": 11
+  },
+  {
+    "name": "Mine",
+    "id": 8,
+    "prereq": [7],
+    "type": "card",
+    "card": 15
+  },
+  {
+    "name": "Intro 3",
+    "id": 9,
+    "prereq": [8],
     "type": "mission",
     "deck": "18:13:13:11:11:11:12:6:6:4:4:4:4:4:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
@@ -39,7 +80,7 @@
   {
     "name": "Birds 1",
     "id": 10,
-    "prereq": [2],
+    "prereq": [9],
     "type": "mission",
     "deck": "18:12:12:7:7:4:4:4:4:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
@@ -69,7 +110,7 @@
   {
     "name": "Ashes 1",
     "id": 20,
-    "prereq": [2],
+    "prereq": [9],
     "type": "mission",
     "deck": "17:17:14:14:14:6:3:3:3:3:0:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
@@ -115,7 +156,7 @@
   {
     "name": "Shadow 1",
     "id": 30,
-    "prereq": [2],
+    "prereq": [9],
     "type": "mission",
     "deck": "19:19:19:19:19:1:1:1:1:1",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
@@ -145,7 +186,7 @@
   {
     "name": "Princess 1",
     "id": 40,
-    "prereq": [2],
+    "prereq": [9],
     "type": "mission",
     "deck": "11:11:11:34:34:33:33",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
