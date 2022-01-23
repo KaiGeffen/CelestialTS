@@ -1764,7 +1764,8 @@ export default class GameScene extends BaseScene {
   		return function() {
   			that.beforeExit()
 
-  			that.scene.start("BuilderScene")
+  			// that.scene.start("BuilderScene")
+  			that.scene.start('AdventureScene')
   		}
   	}
 }

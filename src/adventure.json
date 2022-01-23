@@ -281,15 +281,15 @@
     "id": 42,
     "prereq": [35, 54],
     "type": "mission",
-    "deck": "21:68:68:64:64",
+    "deck": "21:21:20:66:66",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
   },
   {
-    "name": "Parch",
+    "name": "Kneel",
     "id": 43,
     "prereq": [42],
     "type": "card",
-    "card": 64
+    "card": 66
   },
   {
     "name": "Ashes Bonus 4 - Jude",
@@ -305,6 +305,21 @@
     "prereq": [44],
     "type": "card",
     "card": 74
+  },
+  {
+    "name": "Ashes Bonus 5 - Mia & Jude",
+    "id": 46,
+    "prereq": [43, 45],
+    "type": "mission",
+    "deck": "21:68:68:64:64",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Parch",
+    "id": 47,
+    "prereq": [46],
+    "type": "card",
+    "card": 64
   },
 
 
@@ -434,7 +449,7 @@
   {
     "name": "Princess 3 - Gentle Rain",
     "id": 75,
-    "prereq": [74],
+    "prereq": [74, 91],
     "type": "mission",
     "deck": "71:71:32",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -446,11 +461,54 @@
     "type": "card",
     "card": 71
   },
+  {
+    "name": "Princess Bonus 1 - Bounty",
+    "id": 77,
+    "prereq": [76],
+    "type": "mission",
+    "deck": "48:48:48",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Bounty",
+    "id": 78,
+    "prereq": [77],
+    "type": "card",
+    "card": 48
+  },
+  {
+    "name": "Princess Bonus 2 - Hollow",
+    "id": 79,
+    "prereq": [76],
+    "type": "mission",
+    "deck": "76:76",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Hollow",
+    "id": 80,
+    "prereq": [79],
+    "type": "card",
+    "card": 76
+  },
+  {
+    "name": "Princess Bonus 3 - Night Vision",
+    "id": 81,
+    "prereq": [76],
+    "type": "mission",
+    "deck": "34:33:33:28:28:28",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Night Vision",
+    "id": 82,
+    "prereq": [81],
+    "type": "card",
+    "card": 28
+  },
 
 
 
-  // Water unlocks based on completion of the 4 starting themes
-  // Dove, Impulse, Bone Knife
   {
     "name": "Water 1",
     "id": 90,
@@ -465,5 +523,275 @@
     "prereq": [90],
     "type": "card",
     "card": 32
+  },
+  {
+    "name": "Water 2",
+    "id": 92,
+    "prereq": [420],
+    "type": "mission",
+    "deck": "57:71:54:28:0",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Melting Ice",
+    "id": 93,
+    "prereq": [92],
+    "type": "card",
+    "card": 54
+  },
+  {
+    "name": "Water 3",
+    "id": 94,
+    "prereq": [420],
+    "type": "mission",
+    "deck": "46:46:46:46:46:46",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Excess",
+    "id": 95,
+    "prereq": [94],
+    "type": "card",
+    "card": 46
+  },
+
+
+
+  {
+    "name": "Vision 1",
+    "id": 100,
+    "prereq": [82],
+    "type": "mission",
+    "deck": "13:13:12:12:32:63:26:5:27:27:27:0",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Clear Vision",
+    "id": 101,
+    "prereq": [100],
+    "type": "card",
+    "card": 27
+  },
+  {
+    "name": "Prey",
+    "id": 102,
+    "prereq": [101],
+    "type": "card",
+    "card": 26
+  },
+  {
+    "name": "Vision 2 - Enlightenment",
+    "id": 103,
+    "prereq": [102],
+    "type": "mission",
+    "deck": "45:45:11:12:26:28:27",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Enlightenment",
+    "id": 104,
+    "prereq": [103],
+    "type": "card",
+    "card": 45
+  },
+  {
+    "name": "Vision 3 - Awakening",
+    "id": 105,
+    "prereq": [104],
+    "type": "mission",
+    "deck": "45:39:39:28",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Awakening",
+    "id": 106,
+    "prereq": [105],
+    "type": "card",
+    "card": 39
+  },
+  {
+    "name": "Vision 4 - Nectar",
+    "id": 107,
+    "prereq": [106, 23, 76],
+    "type": "mission",
+    "deck": "71:69:69:25:25",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Nectar",
+    "id": 108,
+    "prereq": [107],
+    "type": "card",
+    "card": 25
+  },
+  {
+    "name": "Vision 5 - Clear Mind",
+    "id": 109,
+    "prereq": [106, 43],
+    "type": "mission",
+    "deck": "75:12:26:27:66",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Clear Mind",
+    "id": 110,
+    "prereq": [109],
+    "type": "card",
+    "card": 76
+  },
+  {
+    "name": "Vision 6 - Morning Light",
+    "id": 111,
+    "prereq": [106, 17],
+    "type": "mission",
+    "deck": "56:65:65:4:50:50",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Morning Light",
+    "id": 112,
+    "prereq": [111],
+    "type": "card",
+    "card": 50
+  },
+  {
+    "name": "Vision 7 - Conquer",
+    "id": 113,
+    "prereq": [108, 110, 112],
+    "type": "mission",
+    "deck": "75:67:67:39:50",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Conquer",
+    "id": 114,
+    "prereq": [113],
+    "type": "card",
+    "card":  67
+  },
+
+
+
+
+
+  {
+    "name": "Birth 1 - Posterity",
+    "id": 200,
+    "prereq": [17],
+    "type": "mission",
+    "deck": "51:53:53:4:4",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Posterity",
+    "id": 201,
+    "prereq": [200],
+    "type": "card",
+    "card": 53
+  },
+  {
+    "name": "Birth 2 - Nascence",
+    "id": 202,
+    "prereq": [201],
+    "type": "mission",
+    "deck": "18:15:12:2:2:2",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Nascence",
+    "id": 203,
+    "prereq": [202],
+    "type": "card",
+    "card": 2
+  },
+  {
+    "name": "Birth 3 - Birth",
+    "id": 204,
+    "prereq": [203],
+    "type": "mission",
+    "deck": "53:11:11:8:8:1:1",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Nascence",
+    "id": 205,
+    "prereq": [204],
+    "type": "card",
+    "card": 8
+  },
+  {
+    "name": "Birth 4 - The Future",
+    "id": 206,
+    "prereq": [205],
+    "type": "mission",
+    "deck": "22:22:22",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Nascence",
+    "id": 207,
+    "prereq": [206],
+    "type": "card",
+    "card": 22
+  },
+  {
+    "name": "Birth 5 - Cradle",
+    "id": 208,
+    "prereq": [207],
+    "type": "mission",
+    "deck": "16:54:60:60:8:8:0",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Cradle",
+    "id": 209,
+    "prereq": [208],
+    "type": "card",
+    "card": 60
+  },
+  {
+    "name": "Birth 6 - Ancestry",
+    "id": 210,
+    "prereq": [207],
+    "type": "mission",
+    "deck": "22:22:18:15:10:0:0",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Ancestry",
+    "id": 211,
+    "prereq": [210],
+    "type": "card",
+    "card": 10
+  },
+  {
+    "name": "Birth 7 - Leave the Nest",
+    "id": 212,
+    "prereq": [209, 211],
+    "type": "mission",
+    "deck": "65:65:59:59:15:33:33",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Leave the Nest",
+    "id": 213,
+    "prereq": [212],
+    "type": "card",
+    "card": 59
+  },
+  {
+    "name": "Birth 8 - Born Fresh",
+    "id": 214,
+    "prereq": [213],
+    "type": "mission",
+    "deck": "55:55:55",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Born Fresh",
+    "id": 215,
+    "prereq": [214],
+    "type": "card",
+    "card": 55
   }
 ]
