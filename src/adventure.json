@@ -59,20 +59,20 @@
     "card": 11
   },
   {
-    "name": "Mine",
+    "name": "Intro 3",
     "id": 8,
     "prereq": [7],
-    "type": "card",
-    "card": 15
+    "type": "mission",
+    "deck": "18:11:11:11:12:6:6:4:4:4:4:4:0:0:0",
+    "opponent": "15:12:12:12:4:4:4:4:4:4:4:4:4:4:0",
+    "unlocks": "13:11"
   },
   {
-    "name": "Intro 3",
+    "name": "Hurricane",
     "id": 9,
     "prereq": [8],
-    "type": "mission",
-    "deck": "18:13:13:11:11:11:12:6:6:4:4:4:4:4:0",
-    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
-    "unlocks": "13:11"
+    "type": "card",
+    "card": 13
   },
 
 
@@ -83,26 +83,45 @@
     "prereq": [9],
     "type": "mission",
     "deck": "18:12:12:7:7:4:4:4:4:0",
-    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
-    "unlocks": "7"
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Starling",
+    "id": 11,
+    "prereq": [10],
+    "type": "card",
+    "card": 7
   },
   {
     "name": "Birds 2 - Phoenix",
-    "id": 11,
+    "id": 12,
     "prereq": [10],
     "type": "mission",
     "deck": "18:51:51:0:0",
-    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
-    "unlocks": "51"
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
   },
   {
-    "name": "Birds 3 - Heron",
-    "id": 12,
-    "prereq": [11],
+    "name": "Phoenix",
+    "id": 13,
+    "prereq": [12],
+    "type": "card",
+    "card": 51
+  },
+  {
+    "name": "Birds 3",
+    "id": 14,
+    "prereq": [13],
     "type": "mission",
     "deck": "65:65:7:7:7:4:4:4:4:4",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
     "unlocks": "65"
+  },
+  {
+    "name": "Heron",
+    "id": 15,
+    "prereq": [14],
+    "type": "card",
+    "card": 65
   },
 
 
@@ -117,40 +136,71 @@
     "unlocks": "17:14:3"
   },
   {
-    "name": "Ashes 2 - Death",
+    "name": "Impulse",
     "id": 21,
     "prereq": [20],
-    "type": "mission",
-    "deck": "21:17:14:14:6:3:3:3:0:0",
-    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
-    "unlocks": "21"
+    "type": "card",
+    "card": 3
   },
   {
-    "name": "Ashes 3 - Cling (Full Adonis deck)",
+    "name": "Arsonist",
     "id": 22,
     "prereq": [21],
-    "type": "mission",
-    "deck": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0",
-    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4",
-    "unlocks": "20"
+    "type": "card",
+    "card": 14
   },
   {
-    "name": "Ashes 4 - Drown",
+    "name": "Veteran",
     "id": 23,
     "prereq": [22],
-    "type": "mission",
-    "deck": "17:17:14:14:12:12:5:5:3:3:0:0:0",
-    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+    "type": "card",
+    "card": 17
   },
   {
-    "name": "Ashes 5 - Parch",
+    "name": "Ashes 2",
     "id": 24,
     "prereq": [23],
     "type": "mission",
-    "deck": "18:6:64:64:3:3:3:3:3:0:0:0",
+    "deck": "21:17:14:14:6:3:3:3:0:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
   },
-
+  {
+    "name": "Death",
+    "id": 25,
+    "prereq": [24],
+    "type": "card",
+    "card": 21
+  },
+  {
+    "name": "Ashes 3 - Cling to Death",
+    "id": 26,
+    "prereq": [25],
+    "type": "mission",
+    "deck": "21:20:20:14:14:3:3:0",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Cling",
+    "id": 27,
+    "prereq": [26],
+    "type": "card",
+    "card": 17
+  },
+  {
+    "name": "Ashes Extra 1 - Drown",
+    "id": 28,
+    "prereq": [27],
+    "type": "mission",
+    "deck": "21:20:20:17:17:5:5:5:0:0",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Drown",
+    "id": 29,
+    "prereq": [28],
+    "type": "card",
+    "card": 5
+  },
 
 
   {
