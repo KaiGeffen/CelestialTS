@@ -10,29 +10,36 @@ adventureData.reverse()
 
 
 export default class AdventureScene extends BaseScene {
+	// The scrollable panel that adventures are listed on
+	panel: any
+
 	constructor() {
 		super({
 			key: "AdventureScene"
 		})
 	}
 
-	create(params = {txt: undefined}): void {
+	create(params): void {
 		super.create()
 
 		// Create the panel that displays all of the available adventures
 		this.createPanel()
 
 		// Make up pop-up for the card you just received, if there is one
-		if (params.txt !== undefined) {
+		if (params.txt) {
 			let menu = new Menu(
 		      this,
-		      0,
-		      0,
-		      true)
+		      1000,
+		      240)
 
 			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0.5)
 
 			menu.add(txt)
+
+			params.txt = ''
+		}
+		if (params.scroll) {
+			this.panel.childOY = params.scroll
 		}
 	}
 
@@ -110,6 +117,8 @@ export default class AdventureScene extends BaseScene {
 		this.addAdventureData(panel)
 
 		fullPanel.layout()
+
+		this.panel = fullPanel
 	}
 
 	// Add all of the missions to the panel
@@ -143,7 +152,6 @@ export default class AdventureScene extends BaseScene {
 	// Return the function for what happens when the given mission node is clicked on
 	private missionOnClick(mission): () => void {
 		let that = this
-		let foo = getCard
 
 		if (mission.type === 'mission') {
 			return function() {
@@ -160,14 +168,16 @@ export default class AdventureScene extends BaseScene {
 					mission.id,
 					true)
 
-				// TODO Go to a screen that shows this card's story
-				let params = null
-				console.log(mission.card)
+				// TODO Clean this impl
+				let params = {
+					scroll: that.panel.childOY,
+					txt: ''
+				}
+
 				let card = getCard(mission.card)
 				if (card !== undefined) {
-					params = {txt: card.story}
+					params.txt = card.story
 				}
-				console.log(card)
 
 				that.scene.start("AdventureScene", params)
 			}
