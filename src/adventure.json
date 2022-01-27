@@ -406,7 +406,7 @@
 
 
   {
-    "name": "Princess 1",
+    "name": "Pet 1",
     "id": 70,
     "prereq": [10, 30],
     "type": "mission",
@@ -414,7 +414,7 @@
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
   },
   {
-    "name": "Princess",
+    "name": "Pet",
     "id": 71,
     "prereq": [70],
     "type": "card",
@@ -428,7 +428,7 @@
     "card": 33
   },
   {
-    "name": "Princess 2 - Oak",
+    "name": "Pet 2 - Oak",
     "id": 73,
     "prereq": [72],
     "type": "mission",
@@ -443,7 +443,7 @@
     "card": 23
   },
   {
-    "name": "Princess 3 - Gentle Rain",
+    "name": "Pet 3 - Gentle Rain",
     "id": 75,
     "prereq": [74, 91],
     "type": "mission",
@@ -458,7 +458,7 @@
     "card": 71
   },
   {
-    "name": "Princess Bonus 1 - Bounty",
+    "name": "Pet Bonus 1 - Bounty",
     "id": 77,
     "prereq": [76],
     "type": "mission",
@@ -473,7 +473,7 @@
     "card": 48
   },
   {
-    "name": "Princess Bonus 2 - Hollow",
+    "name": "Pet Bonus 2 - Hollow",
     "id": 79,
     "prereq": [76],
     "type": "mission",
@@ -488,7 +488,7 @@
     "card": 76
   },
   {
-    "name": "Princess Bonus 3 - Night Vision",
+    "name": "Pet Bonus 3 - Night Vision",
     "id": 81,
     "prereq": [76],
     "type": "mission",
