@@ -65,6 +65,7 @@
   {"name": "Fish Bones", "id": 64,
     "cost": 2, "points": 0,
     "text": "2:0, Fleeting, draw 2, create 3 ${1002}s in your discard pile.",
+    "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips",
     "rarity": 0
   },
   {"name": "Unearth", "id": 33,
@@ -88,6 +89,7 @@
   {"name": "Carrion", "id": 74,
     "cost": 2, "points": 1,
     "text": "2:1, remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
+    "story": "Ash tends, mends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning",
     "rarity": 2
   },
   {"name": "Bastet", "id": 34,

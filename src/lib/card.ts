@@ -14,6 +14,7 @@ interface CardData {
   dynamicText: string
   catalogText: string
   rarity: Rarity
+  story: string
 }
 
 // For the tutorial, the card info shown will only be the mana/points
@@ -32,6 +33,7 @@ export default class Card {
   points: number
   text: string
   rarity: Rarity
+  story: string
   
   dynamicText: string
   catalogText: string
@@ -53,6 +55,9 @@ export default class Card {
 
     // TODO Don't rely on card text like this
     this.fleeting = this.text.includes("Fleeting")
+
+    // TODO Take out the check once all cards have story text
+    this.story = (data.story === undefined) ? '' : data.story
   }
 
   // Get the text for this card, including formatting

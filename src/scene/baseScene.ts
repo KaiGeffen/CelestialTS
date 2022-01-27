@@ -30,7 +30,7 @@ export default class BaseScene extends Phaser.Scene {
 		esc.removeListener('down')
 	}
 
-	create(): void {
+	create(params = {}): void {
 		// Play music
 		if (UserSettings._get('musicVolume') > 0) {
 			let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")

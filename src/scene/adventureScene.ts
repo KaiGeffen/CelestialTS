@@ -2,9 +2,12 @@ import "phaser"
 import BaseScene from './baseScene'
 import { Style, Space, Color, UserSettings } from '../settings/settings'
 import Button from "../lib/button"
+import Menu from "../lib/menu"
 
+import { getCard } from "../catalog/catalog"
 import adventureData from "../adventure.json"
 adventureData.reverse()
+
 
 export default class AdventureScene extends BaseScene {
 	constructor() {
@@ -13,11 +16,24 @@ export default class AdventureScene extends BaseScene {
 		})
 	}
 
-	create(): void {
+	create(params = {txt: undefined}): void {
 		super.create()
 
 		// Create the panel that displays all of the available adventures
 		this.createPanel()
+
+		// Make up pop-up for the card you just received, if there is one
+		if (params.txt !== undefined) {
+			let menu = new Menu(
+		      this,
+		      0,
+		      0,
+		      true)
+
+			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0.5)
+
+			menu.add(txt)
+		}
 	}
 
 	// Create the panel containing the missions
@@ -127,6 +143,8 @@ export default class AdventureScene extends BaseScene {
 	// Return the function for what happens when the given mission node is clicked on
 	private missionOnClick(mission): () => void {
 		let that = this
+		let foo = getCard
+
 		if (mission.type === 'mission') {
 			return function() {
 				that.scene.start("AdventureBuilderScene", mission)
@@ -143,7 +161,15 @@ export default class AdventureScene extends BaseScene {
 					true)
 
 				// TODO Go to a screen that shows this card's story
-				that.scene.start("AdventureScene")
+				let params = null
+				console.log(mission.card)
+				let card = getCard(mission.card)
+				if (card !== undefined) {
+					params = {txt: card.story}
+				}
+				console.log(card)
+
+				that.scene.start("AdventureScene", params)
 			}
 		}
 	}

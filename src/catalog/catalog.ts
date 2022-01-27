@@ -38,3 +38,16 @@ export const tokenCards: Card[] = dataToCards(tokenData)
 export const cardback: Card = tokenCards[0]
 
 export const allCards: Card[] = collectibleCards.concat(tokenCards)
+
+// Return the card with the given id, or undefined if none exists
+export function getCard(id: number): Card {
+
+  for(let i = 0; i < collectibleCards.length; i++) {
+    let card = collectibleCards[i]
+    if (card.id === id) {
+      return card
+    }
+  }
+
+  return undefined
+}
