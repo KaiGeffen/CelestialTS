@@ -98,8 +98,8 @@
   },
 
   {"name": "Chimney", "id": 16,
-    "cost": 5, "points": 2,
-    "text": "5:2, your opponent puts the leftmost card of their hand on top of their deck.",
+    "cost": 5, "points": 3,
+    "text": "5:3, your opponent puts the leftmost card of their hand on top of their deck.",
     "catalogText": "Chimney costs 5 mana for just 2 points, but it also forces your opponent to put the leftmost card of their hand on top of their deck.\n\nThis is even better than Bone Knife for only 5 extra mana.\n\nIf the 2 points are enough to win you a round, this can get you card advantage. Maybe.",
     "rarity": 1
   },
@@ -132,7 +132,7 @@
   {"name": "Anubis", "id": 21,
     "cost": 7, "points": 7,
     "text": "7:7.\nCosts 0 if you have at least 12 cards in your discard pile.",
-    "story": "Reaching back with the back of the eyes\nTo that moment when\nI see myself – not as I am – but as I was - clearly",
+    "story": "I knew you were coming, I just didn’t know when.\nGo easy on me. I am tired, sated, and looking for new life.",
     "rarity": 3
   },
 
