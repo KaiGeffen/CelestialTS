@@ -2,28 +2,28 @@
   {
     "name": "Dove",
     "id": 0,
-    "prereq": [],
+    "prereq": [[]],
     "type": "card",
     "card": 4
   },
   {
     "name": "Dash",
     "id": 1,
-    "prereq": [0],
+    "prereq": [[0]],
     "type": "card",
     "card": 6
   },
   {
     "name": "Mercy",
     "id": 2,
-    "prereq": [1],
+    "prereq": [[1]],
     "type": "card",
     "card": 12
   },
   {
     "name": "Intro",
     "id": 3,
-    "prereq": [2],
+    "prereq": [[2]],
     "type": "mission",
     "deck": "12:12:12:6:6:6:4:4:4:4:4:4:4:4:4",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -31,21 +31,21 @@
   {
     "name": "Stars",
     "id": 4,
-    "prereq": [3],
+    "prereq": [[3]],
     "type": "card",
     "card": 0
   },
   {
     "name": "Uprising",
     "id": 5,
-    "prereq": [4],
+    "prereq": [[4]],
     "type": "card",
     "card": 18
   },
   {
     "name": "Intro 2",
     "id": 6,
-    "prereq": [5],
+    "prereq": [[5]],
     "type": "mission",
     "deck": "18:12:12:12:6:6:4:4:4:4:4:4:0:0:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -53,14 +53,14 @@
   {
     "name": "Fruiting",
     "id": 7,
-    "prereq": [6],
+    "prereq": [[6]],
     "type": "card",
     "card": 11
   },
   {
     "name": "Intro 3",
     "id": 8,
-    "prereq": [7],
+    "prereq": [[7]],
     "type": "mission",
     "deck": "18:11:11:11:12:6:6:4:4:4:4:4:0:0:0",
     "opponent": "12:12:12:12:6:4:4:4:4:4:4:4:4:0:0"
@@ -68,7 +68,7 @@
   {
     "name": "Hurricane",
     "id": 9,
-    "prereq": [8],
+    "prereq": [[8]],
     "type": "card",
     "card": 13
   },
@@ -78,7 +78,7 @@
   {
     "name": "Birds 1",
     "id": 10,
-    "prereq": [9],
+    "prereq": [[9]],
     "type": "mission",
     "deck": "18:12:12:7:7:4:4:4:4:0",
     "opponent": "17:17:14:14:14:12:12:6:3:3:3:3:3:3:3"
@@ -86,14 +86,14 @@
   {
     "name": "Starling",
     "id": 11,
-    "prereq": [10],
+    "prereq": [[10]],
     "type": "card",
     "card": 7
   },
   {
     "name": "Birds 2 - Phoenix",
     "id": 12,
-    "prereq": [11],
+    "prereq": [[11]],
     "type": "mission",
     "deck": "18:51:51:0:0",
     "opponent": "17:17:14:14:14:12:12:6:3:3:3:3:3:0:0"
@@ -101,14 +101,14 @@
   {
     "name": "Phoenix",
     "id": 13,
-    "prereq": [12],
+    "prereq": [[12]],
     "type": "card",
     "card": 51
   },
   {
     "name": "Birds 3 - Heron",
     "id": 14,
-    "prereq": [13],
+    "prereq": [[13]],
     "type": "mission",
     "deck": "65:65:7:7:7:4:4:4:4:4",
     "opponent": "21:17:17:14:14:14:12:6:3:3:3:3:3:0:0"
@@ -116,14 +116,14 @@
   {
     "name": "Heron",
     "id": 15,
-    "prereq": [14],
+    "prereq": [[14]],
     "type": "card",
     "card": 65
   },
   {
     "name": "Birds Bonus 1 - Shining Sun",
     "id": 16,
-    "prereq": [15],
+    "prereq": [[15]],
     "type": "mission",
     "deck": "56:65:12",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -131,14 +131,14 @@
   {
     "name": "Sun",
     "id": 17,
-    "prereq": [16],
+    "prereq": [[16]],
     "type": "card",
     "card": 56
   },
   {
     "name": "Birds Bonus 2 - Adonis",
     "id": 18,
-    "prereq": [13, 37],
+    "prereq": [[13, 37]],
     "type": "mission",
     "deck": "21:20:51:63:63",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -146,14 +146,14 @@
   {
     "name": "Morning Dew",
     "id": 19,
-    "prereq": [18],
+    "prereq": [[18]],
     "type": "card",
     "card": 63
   },
   {
     "name": "Birds Bonus 3 - Mia",
     "id": 20,
-    "prereq": [13, 51],
+    "prereq": [[13, 51]],
     "type": "mission",
     "deck": "51:40:1:1:1",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -161,14 +161,14 @@
   {
     "name": "Gamecock",
     "id": 21,
-    "prereq": [20],
+    "prereq": [[20]],
     "type": "card",
     "card": 40
   },
   {
     "name": "Birds Bonus 4 - Jude",
     "id": 22,
-    "prereq": [17, 76],
+    "prereq": [[17, 76]],
     "type": "mission",
     "deck": "56:71:71:69:69",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -176,7 +176,7 @@
   {
     "name": "Sunflower",
     "id": 23,
-    "prereq": [22],
+    "prereq": [[22]],
     "type": "card",
     "card": 69
   },
@@ -186,51 +186,51 @@
   {
     "name": "Ashes 1",
     "id": 30,
-    "prereq": [9],
+    "prereq": [[9]],
     "type": "mission",
     "deck": "17:17:14:14:14:6:3:3:3:3:0:0",
-    "opponent": "18:11:11:11:7:7:7:4:4:4:4:4:4:0:0"
+    "opponent": "11:11:12:12:7:7:7:4:4:4:4:4:4:0:0"
   },
   {
     "name": "Impulse",
     "id": 31,
-    "prereq": [30],
+    "prereq": [[30]],
     "type": "card",
     "card": 3
   },
   {
     "name": "Arsonist",
     "id": 32,
-    "prereq": [31],
+    "prereq": [[31]],
     "type": "card",
     "card": 14
   },
   {
     "name": "Veteran",
     "id": 33,
-    "prereq": [32],
+    "prereq": [[32]],
     "type": "card",
     "card": 17
   },
   {
     "name": "Ashes 2",
     "id": 34,
-    "prereq": [33],
+    "prereq": [[33]],
     "type": "mission",
     "deck": "21:17:14:14:6:3:3:3:0:0",
-    "opponent": "18:51:51:12:12:7:7:7:4:4:4:4:4:0:0"
+    "opponent": "18:51:11:11:12:7:7:7:4:4:4:4:4:0:0"
   },
   {
     "name": "Death",
     "id": 35,
-    "prereq": [34],
+    "prereq": [[34]],
     "type": "card",
     "card": 21
   },
   {
     "name": "Ashes 3 - Cling to Death",
     "id": 36,
-    "prereq": [35],
+    "prereq": [[35]],
     "type": "mission",
     "deck": "21:20:20:17:17",
     "opponent": "56:51:51:11:12:7:7:7:4:4:4:4:4:0:0"
@@ -238,14 +238,14 @@
   {
     "name": "Cling",
     "id": 37,
-    "prereq": [36],
+    "prereq": [[36]],
     "type": "card",
     "card": 20
   },
   {
     "name": "Ashes Bonus 1 - Drown",
     "id": 38,
-    "prereq": [35],
+    "prereq": [[35]],
     "type": "mission",
     "deck": "21:17:17:5:5:5:0:0",
     "opponent": "56:65:65:51:12:12:7:7:7:4:4:4:4:4:4"
@@ -253,14 +253,14 @@
   {
     "name": "Drown",
     "id": 39,
-    "prereq": [38],
+    "prereq": [[38]],
     "type": "card",
     "card": 5
   },
   {
     "name": "Ashes Bonus 2 - Mine",
     "id": 40,
-    "prereq": [37],
+    "prereq": [[37]],
     "type": "mission",
     "deck": "15:15:3:3:0:0",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -268,14 +268,14 @@
   {
     "name": "Mine",
     "id": 41,
-    "prereq": [40],
+    "prereq": [[40]],
     "type": "card",
     "card": 15
   },
   {
     "name": "Ashes Bonus 3 - Mia",
     "id": 42,
-    "prereq": [37, 54],
+    "prereq": [[37, 54]],
     "type": "mission",
     "deck": "21:21:20:66:66",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -283,14 +283,14 @@
   {
     "name": "Kneel",
     "id": 43,
-    "prereq": [42],
+    "prereq": [[42]],
     "type": "card",
     "card": 66
   },
   {
     "name": "Ashes Bonus 4 - Jude",
     "id": 44,
-    "prereq": [32, 71],
+    "prereq": [[32, 71]],
     "type": "mission",
     "deck": "34:74:74:3:3:3",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -298,14 +298,14 @@
   {
     "name": "Sprout from Ashes",
     "id": 45,
-    "prereq": [44],
+    "prereq": [[44]],
     "type": "card",
     "card": 74
   },
   {
     "name": "Ashes Bonus 5 - Mia & Jude",
     "id": 46,
-    "prereq": [43, 45],
+    "prereq": [[43, 45]],
     "type": "mission",
     "deck": "21:68:68:64:64",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -313,7 +313,7 @@
   {
     "name": "Parch",
     "id": 47,
-    "prereq": [46],
+    "prereq": [[46]],
     "type": "card",
     "card": 64
   },
@@ -323,7 +323,7 @@
   {
     "name": "Shadow 1",
     "id": 50,
-    "prereq": [10, 30],
+    "prereq": [[10], [30]],
     "type": "mission",
     "deck": "19:19:19:19:19:1:1:1:1:1",
     "opponent": "56:51:51:12:12:7:7:7:4:4:4:4:4:4:0"
@@ -331,21 +331,21 @@
   {
     "name": "Dagger",
     "id": 51,
-    "prereq": [50],
+    "prereq": [[50]],
     "type": "card",
     "card": 1
   },
   {
     "name": "Shadow",
     "id": 52,
-    "prereq": [51],
+    "prereq": [[51]],
     "type": "card",
     "card": 19
   },
   {
     "name": "Shadow 2",
     "id": 53,
-    "prereq": [52],
+    "prereq": [[52]],
     "type": "mission",
     "deck": "68:68:1:1:1",
     "opponent": "21:17:17:14:14:14:12:12:6:3:3:3:3:3:0"
@@ -353,14 +353,14 @@
   {
     "name": "Nightmare",
     "id": 54,
-    "prereq": [53],
+    "prereq": [[53]],
     "type": "card",
     "card": 68
   },
   {
     "name": "Shadow 3 - Imprison",
     "id": 55,
-    "prereq": [54],
+    "prereq": [[54]],
     "type": "mission",
     "deck": "1:1:1:35:35",
     "opponent": "21:20:18:18:17:14:11:11:7:7:7:3:5:5:5"
@@ -368,14 +368,14 @@
   {
     "name": "Imprison",
     "id": 56,
-    "prereq": [55],
+    "prereq": [[55]],
     "type": "card",
     "card": 35
   },
   {
     "name": "Shadow Bonus 1 - Clip",
     "id": 57,
-    "prereq": [56],
+    "prereq": [[56]],
     "type": "mission",
     "deck": "19:19:16:16:1",
     "opponent": "18:18:51:17:14:14:12:12:6:6:7:3:3:3:3"
@@ -383,14 +383,14 @@
   {
     "name": "Clip your Wings",
     "id": 58,
-    "prereq": [57],
+    "prereq": [[57]],
     "type": "card",
     "card": 16
   },
   {
     "name": "Shadow Bonus 2 - Jude, also Cling",
     "id": 59,
-    "prereq": [37, 52, 76],
+    "prereq": [[37, 52, 76]],
     "type": "mission",
     "deck": "20:19:57:71",
     "opponent": "23:20:20:19:19:17:17:11:12:7:7:5:5:5:5"
@@ -398,7 +398,7 @@
   {
     "name": "Boa",
     "id": 60,
-    "prereq": [59],
+    "prereq": [[59]],
     "type": "card",
     "card": 57
   },
@@ -408,7 +408,7 @@
   {
     "name": "Pet 1",
     "id": 70,
-    "prereq": [10, 30],
+    "prereq": [[10], [30]],
     "type": "mission",
     "deck": "11:11:11:34:34:33:33",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -416,21 +416,21 @@
   {
     "name": "Pet",
     "id": 71,
-    "prereq": [70],
+    "prereq": [[70]],
     "type": "card",
     "card": 34
   },
   {
     "name": "Mole",
     "id": 72,
-    "prereq": [71],
+    "prereq": [[71]],
     "type": "card",
     "card": 33
   },
   {
     "name": "Pet 2 - Oak",
     "id": 73,
-    "prereq": [72],
+    "prereq": [[72]],
     "type": "mission",
     "deck": "23:34",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -438,14 +438,14 @@
   {
     "name": "Oak",
     "id": 74,
-    "prereq": [73],
+    "prereq": [[73]],
     "type": "card",
     "card": 23
   },
   {
     "name": "Pet 3 - Gentle Rain",
     "id": 75,
-    "prereq": [74, 91],
+    "prereq": [[74, 91]],
     "type": "mission",
     "deck": "71:71:32",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -453,14 +453,14 @@
   {
     "name": "Gentle Rain",
     "id": 76,
-    "prereq": [75],
+    "prereq": [[75]],
     "type": "card",
     "card": 71
   },
   {
     "name": "Pet Bonus 1 - Bounty",
     "id": 77,
-    "prereq": [76],
+    "prereq": [[76]],
     "type": "mission",
     "deck": "48:48:48",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -468,14 +468,14 @@
   {
     "name": "Bounty",
     "id": 78,
-    "prereq": [77],
+    "prereq": [[77]],
     "type": "card",
     "card": 48
   },
   {
     "name": "Pet Bonus 2 - Hollow",
     "id": 79,
-    "prereq": [76],
+    "prereq": [[76]],
     "type": "mission",
     "deck": "76:76",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -483,14 +483,14 @@
   {
     "name": "Hollow",
     "id": 80,
-    "prereq": [79],
+    "prereq": [[79]],
     "type": "card",
     "card": 76
   },
   {
     "name": "Pet Bonus 3 - Night Vision",
     "id": 81,
-    "prereq": [76],
+    "prereq": [[76]],
     "type": "mission",
     "deck": "34:33:33:28:28:28",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -498,7 +498,7 @@
   {
     "name": "Night Vision",
     "id": 82,
-    "prereq": [81],
+    "prereq": [[81]],
     "type": "card",
     "card": 28
   },
@@ -508,7 +508,7 @@
   {
     "name": "Water 1",
     "id": 90,
-    "prereq": [31, 51],
+    "prereq": [[31, 51]],
     "type": "mission",
     "deck": "32:1:3:4",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -516,14 +516,14 @@
   {
     "name": "Fishing Boat",
     "id": 91,
-    "prereq": [90],
+    "prereq": [[90]],
     "type": "card",
     "card": 32
   },
   {
     "name": "Water 2",
     "id": 92,
-    "prereq": [420],
+    "prereq": [[420]],
     "type": "mission",
     "deck": "57:71:54:28:0",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -531,14 +531,14 @@
   {
     "name": "Melting Ice",
     "id": 93,
-    "prereq": [92],
+    "prereq": [[92]],
     "type": "card",
     "card": 54
   },
   {
     "name": "Water 3",
     "id": 94,
-    "prereq": [420],
+    "prereq": [[420]],
     "type": "mission",
     "deck": "46:46:46:46:46:46",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -546,7 +546,7 @@
   {
     "name": "Excess",
     "id": 95,
-    "prereq": [94],
+    "prereq": [[94]],
     "type": "card",
     "card": 46
   },
@@ -556,7 +556,7 @@
   {
     "name": "Vision 1",
     "id": 100,
-    "prereq": [82],
+    "prereq": [[56], [76]],
     "type": "mission",
     "deck": "13:13:12:12:32:63:26:5:27:27:27:0",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -564,21 +564,21 @@
   {
     "name": "Clear Vision",
     "id": 101,
-    "prereq": [100],
+    "prereq": [[100]],
     "type": "card",
     "card": 27
   },
   {
     "name": "Prey",
     "id": 102,
-    "prereq": [101],
+    "prereq": [[101]],
     "type": "card",
     "card": 26
   },
   {
     "name": "Vision 2 - Enlightenment",
     "id": 103,
-    "prereq": [102],
+    "prereq": [[102]],
     "type": "mission",
     "deck": "45:45:11:12:26:28:27",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -586,14 +586,14 @@
   {
     "name": "Enlightenment",
     "id": 104,
-    "prereq": [103],
+    "prereq": [[103]],
     "type": "card",
     "card": 45
   },
   {
     "name": "Vision 3 - Awakening",
     "id": 105,
-    "prereq": [104],
+    "prereq": [[104]],
     "type": "mission",
     "deck": "45:39:39:28",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -601,14 +601,14 @@
   {
     "name": "Awakening",
     "id": 106,
-    "prereq": [105],
+    "prereq": [[105]],
     "type": "card",
     "card": 39
   },
   {
     "name": "Vision 4 - Nectar",
     "id": 107,
-    "prereq": [106, 23, 76],
+    "prereq": [[106, 23, 76]],
     "type": "mission",
     "deck": "71:69:69:25:25",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -616,14 +616,14 @@
   {
     "name": "Nectar",
     "id": 108,
-    "prereq": [107],
+    "prereq": [[107]],
     "type": "card",
     "card": 25
   },
   {
     "name": "Vision 5 - Clear Mind",
     "id": 109,
-    "prereq": [106, 43],
+    "prereq": [[106, 43]],
     "type": "mission",
     "deck": "75:12:26:27:66",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -631,14 +631,14 @@
   {
     "name": "Clear Mind",
     "id": 110,
-    "prereq": [109],
+    "prereq": [[109]],
     "type": "card",
     "card": 76
   },
   {
     "name": "Vision 6 - Morning Light",
     "id": 111,
-    "prereq": [106, 17],
+    "prereq": [[106, 17]],
     "type": "mission",
     "deck": "56:65:65:4:50:50",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -646,14 +646,14 @@
   {
     "name": "Morning Light",
     "id": 112,
-    "prereq": [111],
+    "prereq": [[111]],
     "type": "card",
     "card": 50
   },
   {
     "name": "Vision 7 - Conquer",
     "id": 113,
-    "prereq": [108, 110, 112],
+    "prereq": [[108, 110, 112]],
     "type": "mission",
     "deck": "75:67:67:39:50",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -661,7 +661,7 @@
   {
     "name": "Conquer",
     "id": 114,
-    "prereq": [113],
+    "prereq": [[113]],
     "type": "card",
     "card":  67
   },
@@ -673,7 +673,7 @@
   {
     "name": "Birth 1 - Posterity",
     "id": 200,
-    "prereq": [17],
+    "prereq": [[56], [76]],
     "type": "mission",
     "deck": "51:53:53:4:4",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -681,14 +681,14 @@
   {
     "name": "Posterity",
     "id": 201,
-    "prereq": [200],
+    "prereq": [[200]],
     "type": "card",
     "card": 53
   },
   {
     "name": "Birth 2 - Nascence",
     "id": 202,
-    "prereq": [201],
+    "prereq": [[201]],
     "type": "mission",
     "deck": "18:15:12:2:2:2",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -696,14 +696,14 @@
   {
     "name": "Nascence",
     "id": 203,
-    "prereq": [202],
+    "prereq": [[202]],
     "type": "card",
     "card": 2
   },
   {
     "name": "Birth 3 - Birth",
     "id": 204,
-    "prereq": [203],
+    "prereq": [[203]],
     "type": "mission",
     "deck": "53:11:11:8:8:1:1",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -711,14 +711,14 @@
   {
     "name": "Birth",
     "id": 205,
-    "prereq": [204],
+    "prereq": [[204]],
     "type": "card",
     "card": 8
   },
   {
     "name": "Birth 4 - The Future",
     "id": 206,
-    "prereq": [205],
+    "prereq": [[205]],
     "type": "mission",
     "deck": "22:22:22",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -726,14 +726,14 @@
   {
     "name": "The Future",
     "id": 207,
-    "prereq": [206],
+    "prereq": [[206]],
     "type": "card",
     "card": 22
   },
   {
     "name": "Birth 5 - Cradle",
     "id": 208,
-    "prereq": [207],
+    "prereq": [[207]],
     "type": "mission",
     "deck": "16:54:60:60:8:8:0",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -741,14 +741,14 @@
   {
     "name": "Cradle",
     "id": 209,
-    "prereq": [208],
+    "prereq": [[208]],
     "type": "card",
     "card": 60
   },
   {
     "name": "Birth 6 - Ancestry",
     "id": 210,
-    "prereq": [207],
+    "prereq": [[207]],
     "type": "mission",
     "deck": "22:22:18:15:10:0:0",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -756,14 +756,14 @@
   {
     "name": "Ancestry",
     "id": 211,
-    "prereq": [210],
+    "prereq": [[210]],
     "type": "card",
     "card": 10
   },
   {
     "name": "Birth 7 - Leave the Nest",
     "id": 212,
-    "prereq": [209, 211],
+    "prereq": [[209, 211]],
     "type": "mission",
     "deck": "65:65:59:59:15:33:33",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -771,14 +771,14 @@
   {
     "name": "Leave the Nest",
     "id": 213,
-    "prereq": [212],
+    "prereq": [[212]],
     "type": "card",
     "card": 59
   },
   {
     "name": "Birth 8 - Born Fresh",
     "id": 214,
-    "prereq": [213],
+    "prereq": [[213]],
     "type": "mission",
     "deck": "55:55:55",
     "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
@@ -786,7 +786,7 @@
   {
     "name": "Born Fresh",
     "id": 215,
-    "prereq": [214],
+    "prereq": [[214]],
     "type": "card",
     "card": 55
   }

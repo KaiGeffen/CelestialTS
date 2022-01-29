@@ -127,9 +127,12 @@ export default class AdventureScene extends BaseScene {
 		let completed = UserSettings._get('completedMissions')
 
 		let unlockedMissions = adventureData.filter(function(mission) {
-			// Return whether each prereq has been met
-			return mission.prereq.every(function(id, _) {
-				return completed[id]
+			// Return whether any of the necessary conditions have been met
+			// Prereqs are in CNF (Or of sets of ands)
+			return mission.prereq.some(function(prereqs, _) {
+				return prereqs.every(function(id, _) {
+					return completed[id]
+				})
 			})
 		})
 
