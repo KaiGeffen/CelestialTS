@@ -94,6 +94,23 @@ class DeckRegion extends Phaser.GameObjects.Container {
     return this.deckPanel.width
   }
 
+  // Update the currently selected deck
+  updateSavedDeck(): void {
+    let index = this.savedDeckIndex
+    if (index !== undefined) {
+      let deck = UserSettings._get('decks')[index]
+      let name = deck['name']
+      let deckCode = this.scene.getDeckCode()
+
+      let newDeck = {
+        name: name,
+        value: deckCode
+      }
+
+      UserSettings._setIndex('decks', index, newDeck)
+    }
+  }
+
   // Create and return the scrollable panel where premade decks go
   private createDeckpanel() {
     const scene = this.scene
@@ -367,86 +384,253 @@ class DeckRegion extends Phaser.GameObjects.Container {
   }
 }
 
-export class BuilderScene extends BuilderSceneShell {
-  // The panel containing all created decks and the buttons to interact with them
-  deckRegion: DeckRegion
+class CatalogRegion extends Phaser.GameObjects.Container {  
+  // Overwrite the 'scene' property of container to specifically be a BuilderScene
+  scene: BuilderScene
 
-
-
-
-
+  // The scrollable panel on which the catalog and filters are displayed
+  panel
 
   // Full list of all cards in the catalog (Even those invisible)
   cardCatalog: CardImage[]
 
-  // Container containing all cards in the catalog
-  catalogContainer: Phaser.GameObjects.Container
-
-  // The scrollable panel which the cards are on
-  panel: any
-
-  // The scrollable panel which houses all deck options
-  deckPanel: any
-
   // How many cards fit on each row in the catalog
   cardsPerRow: number
-
-  // The deck code for this builder that is retained throughout user's session
-  standardDeckCode: string = ''
-
+  
   // The costs and string that cards in the catalog are filtered for
   filterCostAry: boolean[] = []
   searchText: string = ""
   filterUnowned: boolean = true
 
-  // List of cards available in this builder, overwritten by children
-  cardpool: Card[] = collectibleCards
 
-  // The index of the currently selected saved deck, or undefined if none
-  savedDeckIndex: number = undefined
-
-  // The invisible background atop the catalog that keeps the 
-  // cards from being clickable above where they are displayed
-  invisBackgroundTop: Phaser.GameObjects.Rectangle
-
-  constructor(params = {key: "BuilderScene"}) {
-    super(params)
-  }
-
-  create(): void {
-    super.precreate()
-
+  // Create this region, offset by the given width
+  create(xOffset: number) {
     this.cardCatalog = []
-    this.catalogContainer = this.add.container(0, 0)
+    // TODO This, remove
+    // this.catalogContainer = this.add.container(0, 0)
 
-    // Create decks region, return the width
-    this.deckRegion = new DeckRegion(this)
-    let width = this.deckRegion.create()
+    this.createCatalog(xOffset)
 
-    // Add the catalog
-    this.createCatalog(width)
-
-    // Add filters
+    // Create filters
     this.filter()
-
-    // Add mode menu
-    let modeMenu: Menu = this.createModeMenu()
-    this.btnStart.setOnClick(() => modeMenu.open())
-
-    // Set the user's deck to this deck
-    this.setDeck(this.standardDeckCode)
-
-    // Manage any messages that are displayed
-    this.manageMessages()
-
-    super.postcreate()
   }
 
-  beforeExit(): void {
-    // Save the current deck so that it persists between scenes (Session)
-    this.standardDeckCode = this.getDeckCode()
+  private createCatalog(x: number): void {
+    let that = this
+    let scene = this.scene
+
+    // let width = Space.cardSize * 8 + Space.pad * 10 + 10
+    // let height = Space.cardSize * 4 + Space.pad * 5
+    // TODO Explain the 100 & 150
+    let width = Space.windowWidth - x
+    // Width must be rounded down so as to contain some number of cards tighly
+    let occupiedWidth = Space.pad * 2 + 10
+    let innerWidth = width - occupiedWidth
+    width -= innerWidth % (Space.cardSize + Space.pad)
+    this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
+
+    let height = Space.windowHeight - 150
+
+    this.panel = this.createPanel(x, width, height)
+
+    // Add buttons and fields to the header
+    this.populateHeader(this.panel.getElement('header'))
+
+    // Update panel when mousewheel scrolls
+    let panel = this.panel.getElement('panel')
+    scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+      // Return if the pointer is outside of the panel
+      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+        return
+      }
+
+      // Scroll panel down by amount wheel moved
+      that.panel.childOY -= dy
+
+      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+      that.panel.t = Math.max(0, that.panel.t)
+      that.panel.t = Math.min(0.999999, that.panel.t)
+    })
+
+    // Add each of the cards to the catalog
+    let pool = collectibleCards
+    for (var i = 0; i < pool.length; i++) {
+      let cardImage = this.addCardToCatalog(pool[i], i)
+
+      this.panel.getElement('panel').add(cardImage.image)
+
+      cardImage.setScrollable(height, 10)
+    }
+
+    this.panel.layout()
+
+    // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
+    // their bottom parts, which cannot be seen and are below the scroller
+    // TODO let invisBackgroundBottom = 
+    scene.add
+      .rectangle(this.panel._x, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+      .setOrigin(0)
+      .setInteractive()
+
+    // TODO this.invisBackgroundTop = 
+    scene.add
+      .rectangle(this.panel._x, this.panel.getElement('header').height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+      .setOrigin(0, 1)
+      .setInteractive()
   }
 
+  private createPanel(x, width, height) {
+    let scene = this.scene
+
+    return scene['rexUI'].add.scrollablePanel({
+      x: x,
+      y: 0,
+      width: width,
+      height: height,
+
+      scrollMode: 0,
+
+      background: scene['rexUI'].add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
+
+      panel: {
+        child: scene['rexUI'].add.fixWidthSizer({
+          space: {
+            // left: Space.pad,
+            right: Space.pad - 10,
+            top: Space.pad - 10,
+            bottom: Space.pad - 10,
+            // item: Space.pad,
+            line: Space.pad,
+          }
+        })
+      },
+
+      slider: {
+        input: 'drag',
+        track: scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
+        thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+      },
+
+      // mouseWheelScroller: {
+      //   focus: false,
+      //   speed: 1
+      // },
+
+      header: scene['rexUI'].add.fixWidthSizer({
+        height: 100,
+        align: 'center',
+        space: {
+          left: Space.pad,
+          right: Space.pad,
+          top: Space.pad,
+          bottom: Space.pad,
+          item: Space.pad,
+          line: Space.pad
+        }
+        }).addBackground(
+          scene['rexUI'].add.roundRectangle(0, 0, 0, 0,
+            {tl: 0, tr: 16, bl: 0, br: 16},
+            Color.menuHeader),
+          {right: 10, bottom: 10}
+          ),
+      
+
+      space: {
+        right: 10,
+        top: 10,
+        bottom: 10,
+      }
+    }).setOrigin(0)
+    .layout()
+  }
+
+  // Populate the catalog header with filter buttons, text, fields
+  private populateHeader(header: any): void {
+    let scene = this.scene
+
+    let txtHint = scene.add.text(0, 0, 'Cost:', Style.announcement)
+
+    // Add search field
+    let textboxSearch = scene.add['rexInputText'](
+      0, 0, 350, txtHint.height, {
+      type: 'text',
+      text: this.searchText,
+      placeholder: 'Search',
+      tooltip: 'Search for cards by text.',
+      fontFamily: 'Mulish',
+      fontSize: '60px',
+      color: Color.button,
+      align: Phaser.Display.Align.BOTTOM_RIGHT,
+      border: 3,
+      borderColor: '#0005',
+      backgroundColor: "#fff3",
+      maxLength: 12,
+      selectAll: true,
+      id: 'search-field'
+    })
+      .on('textchange', function(inputText) {
+        // Filter the visible cards based on the text
+        this.searchText = inputText.text
+        scene.filter()
+      }, scene)
+
+    header.add(textboxSearch)
+    header.addNewLine()
+
+    // Add a hint
+    header.add(txtHint)
+
+    // Add each of the number buttons and the X button
+    let btns: Button[] = []
+    for (var i = 0; i <= maxCostFilter; i++) {
+      this.filterCostAry[i] = false
+      let s = i === maxCostFilter ? `${i}+` : i.toString()
+      let btn = new Button(scene, 0, 0, s)
+
+      btn.setOnClick(this.onClickFilterButton(i, btn))
+        .setFontSize(parseInt(Style.announcement.fontSize))
+        .setDepth(4)
+
+      header.add(btn)
+      btns.push(btn)
+    }
+
+    let btn = new Button(scene, 0, 0, 'X', this.onClearFilters(btns))
+      .setFontSize(parseInt(Style.announcement.fontSize))
+      .setDepth(4)
+    header.add(btn)
+  }
+
+  private onClickFilterButton(i: number, btn: Button): () => void {
+    let that = this
+
+    return function() {
+      if (!btn.isHighlighted()) {
+        btn.glow(false)
+      } else {
+        btn.stopGlow()
+      }
+      
+      that.filterCostAry[i] = !that.filterCostAry[i]
+      that.filter()
+    }   
+  }
+
+  private onClearFilters(btns: Button[]): () => void {
+    let that = this
+
+    return function() {
+      btns.forEach( (btn) => btn.stopGlow())
+
+      for (var i = 0; i < that.filterCostAry.length; i++) {
+        that.filterCostAry[i] = false
+      }
+
+      that.filter()
+    }
+  }
+
+  // TODO
   // Filter which cards can be selected in the catalog based on current filtering parameters
   // Contains an optional function to check, which is passed by children of this class
   filter(f = function(card: Card) {return true}): void {
@@ -522,6 +706,141 @@ export class BuilderScene extends BuilderSceneShell {
     })
   }
 
+
+  private addCardToCatalog(card: Card, index: number): CardImage {
+    let cardImage = new CardImage(card, this)
+
+    cardImage.image.setPosition(...this.getCatalogCardPosition(index))
+    cardImage.setOnClick(this.onClickCatalogCard(card))
+
+    // Add this cardImage to the maintained list of cardImages in the catalog
+    this.cardCatalog.push(cardImage)
+
+    return cardImage
+  }
+
+  private getCatalogCardPosition(index: number): [number, number] {
+    let col = index % this.cardsPerRow
+    let xPad = (1 + col) * Space.pad
+    let x = col * Space.cardSize + xPad + Space.cardSize / 2
+
+    let row = Math.floor(index / this.cardsPerRow)
+    let yPad = (1 + row) * Space.pad
+    let y = row * Space.cardSize + yPad + Space.cardSize / 2
+
+    return [x, y]
+  }
+
+  // Event when a card in the catalog is clicked
+  private onClickCatalogCard(card: Card): () => void {
+    let scene = this.scene
+
+    return function() {
+      if (scene.addCardToDeck(card)) {
+        scene.sound.play('click')
+      }
+      else {
+        scene.signalError('Deck is full')
+      }
+    }
+  }
+
+  // Returns a function which filters cards to see which are selectable
+  private getFilterFunction(): (card: Card) => boolean {
+    let that = this
+
+    // Filter cards based on their cost
+    let costFilter = function(card: Card): boolean {
+      // If no number are selected, all cards are fine
+      if (!that.filterCostAry.includes(true)) {
+        return true
+      }
+      else {
+        // The last filtered cost includes everything more than it
+        return that.filterCostAry[Math.min(card.cost, maxCostFilter)]
+      }
+    }
+
+    // Filter cards based on if they contain the string being searched
+    let searchTextFilter = function(card: Card): boolean {
+      // If searching for 'common', return false to uncommon cards
+      if (that.searchText.toLowerCase() === 'common' && card.getCardText().toLowerCase().includes('uncommon')) {
+        return false
+      }
+      return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
+    }
+
+    // Filter cards based on whether you have unlocked them
+    let ownershipFilter = function(card: Card): boolean {
+      return !that.filterUnowned || UserSettings._get('inventory')[card.id]
+    }
+
+    // Filter based on the overlap of all above filters
+    let andFilter = function(card: Card): boolean {
+      return costFilter(card) && searchTextFilter(card) && ownershipFilter(card)
+    }
+
+    return andFilter
+  }
+
+}
+
+
+export class BuilderScene extends BuilderSceneShell {
+  // Region containing all created decks and the buttons to interact with them
+  deckRegion: DeckRegion
+
+  // Region containing all of the cards user can select, and filters
+  catalogRegion: CatalogRegion
+
+
+  // The deck code for this builder that is retained throughout user's session
+  standardDeckCode: string = ''
+
+  // The invisible background atop the catalog that keeps the 
+  // cards from being clickable above where they are displayed
+  invisBackgroundTop: Phaser.GameObjects.Rectangle
+
+  constructor(params = {key: "BuilderScene"}) {
+    super(params)
+  }
+
+  create(): void {
+    super.precreate()
+
+    // Create decks region, return the width
+    this.deckRegion = new DeckRegion(this)
+    let width = this.deckRegion.create()
+
+    // Create catalog region
+    this.catalogRegion = new CatalogRegion(this)
+    this.catalogRegion.create(width)
+
+    // Add mode menu
+    let modeMenu: Menu = this.createModeMenu()
+    this.btnStart.setOnClick(() => modeMenu.open())
+
+    // Set the user's deck to this deck
+    this.setDeck(this.standardDeckCode)
+
+    // Manage any messages that are displayed
+    this.manageMessages()
+
+    super.postcreate()
+  }
+
+  beforeExit(): void {
+    // Save the current deck so that it persists between scenes (Session)
+    this.standardDeckCode = this.getDeckCode()
+  }
+
+  // TODO Remove f
+  // Filter which cards can be selected in the catalog based on current filtering parameters
+  // Contains an optional function to check, which is passed by children of this class
+  filter(f = function(card: Card) {return true}): void {
+    this.catalogRegion.filter(f)
+  }
+
   // Add card to the existing deck
   addCardToDeck(card: Card, doUpdateSavedDecks = true): boolean {
     if (this.deck.length >= Mechanics.deckSize) {
@@ -554,15 +873,16 @@ export class BuilderScene extends BuilderSceneShell {
 
   // Remove the header above and deck menu at left, which aren't present during the tutorial or on mobile
   removeHeaderAndDeckRegion(): void {
-    this.panel.getElement('header').destroy()
-    this.panel.width = Space.windowWidth
+    console.log('remove header and deck region todo')
+    // this.panel.getElement('header').destroy()
+    // this.panel.width = Space.windowWidth
 
-    this.deckPanel.getElement('panel').destroy()
-    this.deckPanel.destroy()
-    this.invisBackgroundTop.destroy()
+    // this.deckPanel.getElement('panel').destroy()
+    // this.deckPanel.destroy()
+    // this.invisBackgroundTop.destroy()
 
-    // Fixes card layout
-    this.filter()
+    // // Fixes card layout
+    // this.filter()
   }
 
   // Remove the card from deck which has given index
@@ -595,31 +915,9 @@ export class BuilderScene extends BuilderSceneShell {
     }
   }
 
-  // TODO This both updates the saved deck and the quantities of cards in catalog, rename
   // Update the user's saved deck to reflect its new contents
   private updateSavedDeck(): void {
-    // For each card in the catalog, update its displayed quantity to reflect the new quantity
-    this.cardCatalog.forEach( cardImage => {
-      let id = cardImage.card.id
-      let amtInDeck = this.deck.filter(ci => ci.card.id === id).length
-      let quantity = UserSettings._getQuantity(id) - amtInDeck
-
-      cardImage.setQuantity(quantity)
-    })
-
-    let index = this.savedDeckIndex
-    if (index !== undefined) {
-      let deck = UserSettings._get('decks')[index]
-      let name = deck['name']
-      let deckCode = this.getDeckCode()
-
-      let newDeck = {
-        name: name,
-        value: deckCode
-      }
-
-      UserSettings._setIndex('decks', index, newDeck)
-    }
+    this.deckRegion.updateSavedDeck()
   }
 
   // Update the card count and deck button texts
@@ -709,266 +1007,6 @@ export class BuilderScene extends BuilderSceneShell {
     this.scene.start("GameScene", {isTutorial: false, deck: deck})
   }
 
-  private createCatalog(x: number): void {
-    let that = this
-
-    // let width = Space.cardSize * 8 + Space.pad * 10 + 10
-    // let height = Space.cardSize * 4 + Space.pad * 5
-    // TODO Explain the 100 & 150
-    let width = Space.windowWidth - x
-    // Width must be rounded down so as to contain some number of cards tighly
-    let occupiedWidth = Space.pad * 2 + 10
-    let innerWidth = width - occupiedWidth
-    width -= innerWidth % (Space.cardSize + Space.pad)
-    this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
-
-    let height = Space.windowHeight - 150
-
-    this.panel = this['rexUI'].add.scrollablePanel({
-      x: x,
-      y: 0,
-      width: width,
-      height: height,
-
-      scrollMode: 0,
-
-      background: this['rexUI'].add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
-
-      panel: {
-        child: this['rexUI'].add.fixWidthSizer({
-          space: {
-            // left: Space.pad,
-            right: Space.pad - 10,
-            top: Space.pad - 10,
-            bottom: Space.pad - 10,
-            // item: Space.pad,
-            line: Space.pad,
-          }
-        })
-      },
-
-      slider: {
-        input: 'drag',
-        track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-        thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
-      },
-
-      // mouseWheelScroller: {
-      //   focus: false,
-      //   speed: 1
-      // },
-
-      header: this['rexUI'].add.fixWidthSizer({
-        height: 100,
-        align: 'center',
-        space: {
-          left: Space.pad,
-          right: Space.pad,
-          top: Space.pad,
-          bottom: Space.pad,
-          item: Space.pad,
-          line: Space.pad
-        }
-        }).addBackground(
-          this['rexUI'].add.roundRectangle(0, 0, 0, 0,
-            {tl: 0, tr: 16, bl: 0, br: 16},
-            Color.menuHeader),
-          {right: 10, bottom: 10}
-          ),
-      
-
-      space: {
-        right: 10,
-        top: 10,
-        bottom: 10,
-      }
-    }).setOrigin(0)
-    .layout()
-
-    // Add buttons and fields to the header
-    this.populateHeader(this.panel.getElement('header'))
-
-    // Update panel when mousewheel scrolls
-    let panel = this.panel.getElement('panel')
-    this.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-      // Return if the pointer is outside of the panel
-      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
-        return
-      }
-
-      // Scroll panel down by amount wheel moved
-      that.panel.childOY -= dy
-
-      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-      that.panel.t = Math.max(0, that.panel.t)
-      that.panel.t = Math.min(0.999999, that.panel.t)
-    })
-
-    // Add each of the cards to the catalog
-    let pool = this.cardpool
-    for (var i = 0; i < pool.length; i++) {
-      let cardImage = this.addCardToCatalog(pool[i], i)
-
-      this.panel.getElement('panel').add(cardImage.image)
-
-      cardImage.setScrollable(height, 10)
-    }
-
-    this.panel.layout()
-
-    // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
-    // their bottom parts, which cannot be seen and are below the scroller
-    let invisBackgroundBottom = this.add
-      .rectangle(this.panel._x, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
-      .setOrigin(0)
-      .setInteractive()
-
-    this.invisBackgroundTop = this.add
-      .rectangle(this.panel._x, this.panel.getElement('header').height, Space.windowWidth, Space.cardSize, 0x000000, 0)
-      .setOrigin(0, 1)
-      .setInteractive()
-  }
-
-  // Populate the catalog header with buttons, text, fields
-  private populateHeader(header: any): void {
-    let that = this
-
-    let txtHint = this.add.text(0, 0, 'Cost:', Style.announcement)
-
-
-    // Add search field
-    let textboxSearch = this.add['rexInputText'](
-      0, 0, 350, txtHint.height, {
-      type: 'text',
-      text: this.searchText,
-      placeholder: 'Search',
-      tooltip: 'Search for cards by text.',
-      fontFamily: 'Mulish',
-      fontSize: '60px',
-      color: Color.button,
-      align: Phaser.Display.Align.BOTTOM_RIGHT,
-      border: 3,
-      borderColor: '#0005',
-      backgroundColor: "#fff3",
-      maxLength: 12,
-      selectAll: true,
-      id: 'search-field'
-    })
-      .on('textchange', function(inputText) {
-        // Filter the visible cards based on the text
-        this.searchText = inputText.text
-        this.filter()
-      }, this)
-    header.add(textboxSearch)
-
-    let btnAll = new Button(this, 0, 0, 'All', function() {
-      if (that.filterUnowned) {
-        btnAll.glow(false)
-        that.filterUnowned = false
-      }
-      else {
-        btnAll.stopGlow()
-        that.filterUnowned = true
-      }
-      
-      that.filter()
-    })
-      .setFontSize(parseInt(Style.announcement.fontSize))
-      .setDepth(4)
-
-    header.add(btnAll)
-    header.addNewLine()
-
-    // Add a hint
-    header.add(txtHint)
-
-    // Add each of the number buttons and the X button
-    let btns: Button[] = []
-    for (var i = 0; i <= maxCostFilter; i++) {
-      this.filterCostAry[i] = false
-      let s = i === maxCostFilter ? `${i}+` : i.toString()
-      let btn = new Button(this, 0, 0, s)
-
-      btn.setOnClick(this.onClickFilterButton(i, btn))
-        .setFontSize(parseInt(Style.announcement.fontSize))
-        .setDepth(4)
-
-      header.add(btn)
-      btns.push(btn)
-    }
-
-    let btn = new Button(this, 0, 0, 'X', this.onClearFilters(btns))
-      .setFontSize(parseInt(Style.announcement.fontSize))
-      .setDepth(4)
-    header.add(btn)
-  }
-
-  private onClickFilterButton(i: number, btn: Button): () => void {
-    let that = this
-
-    return function() {
-      if (!btn.isHighlighted()) {
-        btn.glow(false)
-      } else {
-        btn.stopGlow()
-      }
-      
-      that.filterCostAry[i] = !that.filterCostAry[i]
-      that.filter()
-    }   
-  }
-
-  private onClearFilters(btns: Button[]): () => void {
-    let that = this
-
-    return function() {
-      btns.forEach( (btn) => btn.stopGlow())
-
-      for (var i = 0; i < that.filterCostAry.length; i++) {
-        that.filterCostAry[i] = false
-      }
-
-      that.filter()
-    }
-  }  
-
-  private addCardToCatalog(card: Card, index: number): CardImage {
-    let cardImage = new CardImage(card, this.catalogContainer)
-
-    cardImage.image.setPosition(...this.getCatalogCardPosition(index))
-    cardImage.setOnClick(this.onClickCatalogCard(card))
-
-    // Add this cardImage to the maintained list of cardImages in the catalog
-    this.cardCatalog.push(cardImage)
-
-    return cardImage
-  }
-
-  private getCatalogCardPosition(index: number): [number, number] {
-    let col = index % this.cardsPerRow
-    let xPad = (1 + col) * Space.pad
-    let x = col * Space.cardSize + xPad + Space.cardSize / 2
-
-    let row = Math.floor(index / this.cardsPerRow)
-    let yPad = (1 + row) * Space.pad
-    let y = row * Space.cardSize + yPad + Space.cardSize / 2
-
-    return [x, y]
-  }
-
-  private onClickCatalogCard(card: Card): () => void {
-    let that = this
-    return function() {
-      if (that.addCardToDeck(card)) {
-        that.sound.play('click')
-      }
-      else {
-        that.signalError('Deck is full')
-      }
-      
-    }
-  }
-
   // Remove all of the filter objects, used by children of this class
   removeFilterObjects(): void {
     // TODO Fix for new filters
@@ -976,50 +1014,6 @@ export class BuilderScene extends BuilderSceneShell {
 
     // // Remove the enter event that opens up search
     // this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
-  }
-
-  // Returns a function which filters cards to see which are selectable
-  private getFilterFunction(): (card: Card) => boolean {
-    let that = this
-
-    // Filter cards based on their cost
-    let costFilter = function(card: Card): boolean {
-      // If no number are selected, all cards are fine
-      if (!that.filterCostAry.includes(true)) {
-        return true
-      }
-      else {
-        // The last filtered cost includes everything more than it
-        return that.filterCostAry[Math.min(card.cost, maxCostFilter)]
-      }
-    }
-
-    // Filter cards based on if they contain the string being searched
-    let searchTextFilter = function(card: Card): boolean {
-      // If searching for 'common', return false to uncommon cards
-      if (that.searchText.toLowerCase() === 'common' && card.getCardText().toLowerCase().includes('uncommon')) {
-        return false
-      }
-      return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
-    }
-
-    // Filter cards based on whether you have more of them in your inventory
-    // let ownershipFilter = function(card: Card): boolean {
-    //   let moreInInventory = UserSettings._get('inventory')[card.id] > that.deck.filter(ci => ci.card.id === card.id).length
-
-    //   return !that.filterUnowned || moreInInventory
-    // }
-    // Filter cards based on whether you have unlocked them
-    let ownershipFilter = function(card: Card): boolean {
-      return !that.filterUnowned || UserSettings._get('inventory')[card.id]
-    }
-
-    // Filter based on the overlap of all above filters
-    let andFilter = function(card: Card): boolean {
-      return costFilter(card) && searchTextFilter(card) && ownershipFilter(card)
-    }
-
-    return andFilter
   }
 
   // Create the menu for user to select which mode to play in
@@ -1192,7 +1186,7 @@ export class TutorialBuilderScene extends BuilderScene {
     let that = this
     this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
 
-    this.filterUnowned = false
+    // this.filterUnowned = false
 
     this.removeHeaderAndDeckRegion()
 
@@ -1245,9 +1239,10 @@ export class TutorialBuilderScene extends BuilderScene {
     s += `If you want to make changes, click any of the cards in the
 deck to remove them, then add cards from the choices above.`
 
-    let txt = this.add.text(0, 0, s, Style.basic)
-    this.panel.setX(Space.pad)
-    this.panel.add(txt, {padding: {left: Space.pad, right: Space.pad, bottom: Space.pad}})
+    // TODO Add
+    // let txt = this.add.text(0, 0, s, Style.basic)
+    // this.panel.setX(Space.pad)
+    // this.panel.add(txt, {padding: {left: Space.pad, right: Space.pad, bottom: Space.pad}})
     this.filter()
   }
 
@@ -1274,157 +1269,6 @@ deck to remove them, then add cards from the choices above.`
   beforeExit(): void {
     // Save user's current deck to this tutorials custom deck
     this.tutorialDeckCodes[this.tutorialName] = this.getDeckCode()
-  }
-}
-
-export class DraftBuilderScene extends BuilderScene {
-  // Users win / loss record with their current draft deck
-  matchRecord: [number, number] = [0, 0]
-
-  // Button to reset the current draft run
-  btnReset: Button
-
-  // Text describing user's current win/loss record
-  txtRecord: Phaser.GameObjects.Text
-
-  // The last filter which gives random cards
-  lastFilter: (card: Card) => boolean
-
-  constructor() {
-    super({
-      key: "DraftBuilderScene"
-    })
-  }
-
-  create(): void {
-    // Show the user their draft results
-    let record = UserSettings._get('draftRecord')
-    let s = `Wins: ${record[0]} | Losses: ${record[1]}`
-    this.txtRecord = this.add.text(500, 300, s, Style.announcement)
-      .setOrigin(0.5)
-      .setVisible(false)
-      .setDepth(1) // Above catalog background
-
-    super.create()
-
-    // Set the user's deck to their saved deck
-    this.setDeck(UserSettings._get('draftDeckCode'))
-
-    // Remove all of the objects relating to filtering
-    // this.removeFilterObjects()
-
-    // Add a button to quit the current run
-    this.btnReset = new Button(this, Space.windowWidth - Space.pad, Space.windowHeight - 100, 'Reset', this.onReset).setOrigin(1, 0)
-
-    // Change the start button to start a match vs a draft opponent
-    let that = this
-    this.btnStart.setOnClick(function() {that.startDraftMatch()}, true)
-
-    // Give the user a choice of cards to draft
-    this.giveRandomChoices(true)
-
-    // Each card in catalog will also reroll the drafting options when clicked
-    this.cardCatalog.forEach(function(cardImage, index, ary) {
-      cardImage.setOnClick(function() {
-        that.giveRandomChoices()
-      })
-    })
-  }
-
-  // Randomly pick 4 cards for user to choose from
-  private giveRandomChoices(useLastSeed: boolean = false): void {
-    let newPool = []
-    while (newPool.length < 4) {
-
-      // Randomly select a card from all cards
-      let card = collectibleCards[Math.floor(Math.random() * collectibleCards.length)]
-
-      // Only add the card if it isn't in the pool yet
-      if (!newPool.includes(card)) {
-        newPool.push(card)
-      }
-    }
-
-    // Filter based on if the card is in the pool
-    if (useLastSeed && this.lastFilter !== undefined) {
-      // Don't change lastFilter
-    }
-    else if (this.deck.length < Mechanics.deckSize) {
-      this.lastFilter = function(card: Card) {
-        return newPool.includes(card)
-      }
-    }
-    // If user has a full deck, filter away all cards
-    else {
-      this.lastFilter = function(card: Card) {
-        return false
-      }
-    }
-
-    this.filter(this.lastFilter)
-  }
-
-  // Start a match against a draft opponent
-  private startDraftMatch(): void {
-    this.beforeExit()
-
-    let deck = this.deck.map(function(cardImage, index, array) {
-      return cardImage.card
-    })
-
-    this.scene.start("draftMatchScene", {deck: deck})
-  }
-
-  private onReset(): void {
-    UserSettings._set('draftDeckCode', '')
-    UserSettings._set('draftRecord', [0, 0])
-
-    // Reset the choice of 4 cards used
-    this.lastFilter = undefined
-
-    this.scene.restart()
-  }
-
-  // Overwrite to prevent writing to standard's saved deck
-  beforeExit(): void {
-  }
-
-  // Remove ability to remove cards from deck by clicking on them
-  addCardToDeck(card: Card): boolean {
-    let result = super.addCardToDeck(card)
-
-    // Remove any on click events
-    this.deck.forEach(function(cardImage, index, array) {cardImage.image.removeAllListeners('pointerdown')})
-
-    // Update the user's currently saved deck code
-    UserSettings._set('draftDeckCode', this.getDeckCode())
-
-    // Make the match results visible if deck is now full
-    if (this.deck.length === Mechanics.deckSize) {
-      this.txtRecord.setVisible(true)
-    }
-
-    return result
-  }
-
-  // Manage any messages that may need to be displayed for the user
-  manageMessages(): void {
-    let msgText = UserProgress.getMessage('draft')
-    if (msgText !== undefined) {
-
-      // Open a window informing user of information
-      let menu = new Menu(
-        this,
-        1000,
-        300,
-        true,
-        25)
-
-      let txtTitle = this.add.text(0, -110, 'Onward!', Style.announcement).setOrigin(0.5)
-      let txtMessage = this.add.text(0, -50, msgText, Style.basic).setOrigin(0.5, 0)
-      
-      menu.add([txtTitle, txtMessage])
-    }
   }
 }
 
