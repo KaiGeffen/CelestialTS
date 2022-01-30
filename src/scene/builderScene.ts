@@ -762,6 +762,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
   // Populate the catalog header with filter buttons, text, fields
   private populateHeader(header: any): void {
+    let that = this
     let scene = this.scene
 
     let txtHint = scene.add.text(0, 0, 'Cost:', Style.announcement)
@@ -786,7 +787,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     })
       .on('textchange', function(inputText) {
         // Filter the visible cards based on the text
-        this.searchText = inputText.text
+        that.searchText = inputText.text
         scene.filter()
       }, scene)
 
