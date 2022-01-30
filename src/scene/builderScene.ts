@@ -15,6 +15,7 @@ import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 
 const maxCostFilter: number = 7
 
+// TODO Take in-deck cards region out of shell and make it its own region
 class BuilderSceneShell extends BaseScene {
   // Hint telling users how to add cards
   txtHint: Phaser.GameObjects.Text
@@ -50,14 +51,231 @@ class BuilderSceneShell extends BaseScene {
     this.deckContainer = this.add.container(Space.windowWidth - 150, Space.windowHeight).setDepth(2)
   }
 
-  postcreate(): void {
+  postcreate(): void {    
+    // Manage any messages that are displayed
+    this.manageMessages()
+
     super.create()
+  }
+
+  // Get the deck code for player's current deck
+  getDeckCode(): string {
+    let txt = ''
+    this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+    txt = txt.slice(0, -1)
+
+    return txt
+  }
+
+  // Set the current deck, returns true if deck was valid
+  setDeck(deckCode: string | Card[]): boolean {
+    let deck: Card[]
+    if (typeof deckCode === "string") {
+      // Get the deck from this code
+      let cardCodes: string[] = deckCode.split(':')
+
+      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
+
+      if (deckCode === '') {
+        deck = []
+      }
+    }
+    else {
+      deck = deckCode
+    }
+
+    // Check if the deck is valid, then create it if so
+    if (deck.includes(undefined))
+    {
+      return false
+    }
+    else
+    {
+      // Remove the current deck
+      this.deck.forEach( (cardImage) => cardImage.destroy())
+      this.deck = []
+      cardInfo.setVisible(false)
+      this.updateText()
+      
+      // Add the new deck
+      deck.forEach( (card) => this.addCardToDeck(card, false))
+
+      this.updateSavedDeck()
+
+      return true
+    }
+  }
+
+  // Add card to the existing deck
+  // TODO Subclass this, return same result but possibly save the deck
+  addCardToDeck(card: Card, doUpdateSavedDecks = true): boolean {
+    if (this.deck.length >= Mechanics.deckSize) {
+      return false
+    }
+
+    let index = this.deck.length
+
+    let cardImage = new CardImage(card, this.deckContainer)
+    cardImage.setPosition(this.getDeckCardPosition(index))
+    cardImage.setOnClick(this.removeCardFromDeck(index))
+
+    // Add this to the deck
+    this.deck.push(cardImage)
+
+    // Update start button to reflect new amount of cards in deck
+    this.updateText()
+
+    // Sort the deck, now done automatically after each card added
+    this.sort()
+
+    if (doUpdateSavedDecks) {
+      this.updateSavedDeck()      
+    }
+
+    return true
+  }
+
+  // Filter the cards shown in the catalog based on the existing filter states
+  filter() {
+    throw 'Filter function on BuilderSceneShell must be implemented by subclass.'
+  }
+
+  // Remove the card from deck which has given index
+  private removeCardFromDeck(index: number): () => void {
+    let that = this
+    return function() {
+      // Play a sound
+      that.sound.play('click')
+
+      // The text for the removed card would otherwise linger
+      cardInfo.setVisible(false)
+
+      // Remove the image
+      that.deck[index].destroy()
+
+      // Remove from the deck array
+      that.deck.splice(index, 1)
+
+      that.correctDeckIndices()
+
+      that.updateText()
+
+      if (that.deck.length === 0) {
+        that.txtHint.setVisible(true)
+      }
+
+      that.updateSavedDeck()
+    }
+  }
+
+  // Update the user's saved deck to reflect its new contents
+  private updateSavedDeck(): void {
+    // TODO
+    console.log('update saved deck needs to be implemented')
+    //this.deckRegion.updateSavedDeck()
+  }
+
+  // Update the card count and deck button texts
+  private updateText(): void {
+    if (this.deck.length === Mechanics.deckSize) {
+      this.btnStart.text = 'Start'
+      this.btnStart.input.enabled = true
+      this.btnStart.glow()
+    }
+    else
+    {
+      this.btnStart.text = `${this.deck.length}/${Mechanics.deckSize}`
+      this.btnStart.stopGlow()
+
+      // TODO Grey out the button, have a disable method for button class
+      // For debugging, allow sub-15 card decks locally
+      if (location.port !== '4949') {
+        this.btnStart.input.enabled = false
+      }
+    }
+
+    // Deck button stops glowing if there are any cards in it
+    // if (this.deck.length > 0) {
+    //   this.btnD.stopGlow()
+    // }
+
+    this.txtHint.setVisible(this.deck.length === 0)
+  }
+
+  private getDeckCardPosition(index: number): [number, number] {
+    let xPad = Space.pad
+
+    // For resolutions below a threshold, make the overlap more intense to fit 15 cards
+    let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
+    let x = index * (Space.cardSize - overlap) + xPad + Space.cardSize/2
+
+    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
+
+    return [-x, -y]
+  }
+
+  // Sort by cost all cards in the deck
+  private sort(): void {
+    this.deck.sort(function (card1, card2): number {
+      if (card1.card.cost < card2.card.cost)
+      {
+        return 1
+      }
+      else if (card1.card.cost > card2.card.cost)
+      {
+        return -1
+      }
+      else
+      {
+        return card1.card.name.localeCompare(card2.card.name)
+      }
+    })
+
+    this.correctDeckIndices()
+  }
+
+  // Set each card in deck to have the right position and onClick events for its index
+  private correctDeckIndices(): void {
+    for (var i = 0; i < this.deck.length; i++) {
+      let cardImage = this.deck[i]
+
+      cardImage.setPosition(this.getDeckCardPosition(i))
+
+      // Ensure that each card is above all cards to its left
+      cardImage.container.parentContainer.sendToBack(cardImage.container)
+
+      // Remove the previous onclick event and add one with the updated index
+      // Only do this if the card isn't required in the deck, in which case it can't be removed
+      if (!cardImage.required) {
+        cardImage.setOnClick(this.removeCardFromDeck(i), true)
+      }
+    }
+  }
+
+  // Manage any messages that may need to be displayed for the user
+  private manageMessages(): void {
+    let msgText = UserProgress.getMessage('builder')
+    if (msgText !== undefined) {
+      // Open a window informing user of information
+      let menu = new Menu(
+        this,
+        1000,
+        300,
+        true,
+        25)
+
+      let txtTitle = this.add.text(0, -110, 'Welcome!', Style.announcement).setOrigin(0.5)
+      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, Style.basic).setOrigin(0.5, 0)
+      
+      menu.add([txtTitle, txtMessage])
+    }
   }
 }
 
+// Region in builder scene where the user's decks and buttons that affect them live
 class DeckRegion extends Phaser.GameObjects.Container {
   // Overwrite the 'scene' property of container to specifically be a BuilderScene
-  scene: BuilderScene
+  scene: BuilderSceneShell
 
   // TODO needed?
   deckPanel
@@ -67,8 +285,6 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
   // List of buttons for user-defined decks
   deckBtns: Button[]
-
-
 
   // Create the are where player can manipulate their decks
   create(): number {
@@ -178,22 +394,23 @@ class DeckRegion extends Phaser.GameObjects.Container {
       let btn = new Button(this.scene, 0, 0, name).setDepth(4)
 
       // Set as active, glow and stop others glowing, set the deck
+      let that = this
       btn.setOnClick(function() {
-        this.deckBtns.forEach(b => {if (b !== btn) b.stopGlow()})
+        that.deckBtns.forEach(b => {if (b !== btn) b.stopGlow()})
 
         // If it's already selected, deselect it
         if (btn.isHighlighted()) {
-          this.savedDeckIndex = undefined
-          this.setDeck([])
+          that.savedDeckIndex = undefined
+          that.scene.setDeck([])
           btn.stopGlow()
         }
         // Otherwise select this button
         else {
-          this.savedDeckIndex = i
+          that.savedDeckIndex = i
           btn.glow(false)
 
-          this.setDeck(UserSettings._get('decks')[i]['value'])
-        }        
+          that.scene.setDeck(UserSettings._get('decks')[i]['value'])
+        }
       })
       
       this.deckBtns.push(btn)
@@ -384,9 +601,10 @@ class DeckRegion extends Phaser.GameObjects.Container {
   }
 }
 
+// Region in builder scene where filters and selectable cards live
 class CatalogRegion extends Phaser.GameObjects.Container {  
   // Overwrite the 'scene' property of container to specifically be a BuilderScene
-  scene: BuilderScene
+  scene: BuilderSceneShell
 
   // The scrollable panel on which the catalog and filters are displayed
   panel
@@ -402,13 +620,11 @@ class CatalogRegion extends Phaser.GameObjects.Container {
   searchText: string = ""
   filterUnowned: boolean = true
 
-
   // Create this region, offset by the given width
-  create(xOffset: number) {
+  create(xOffset: number, filterUnowned) {
     this.cardCatalog = []
-    // TODO This, remove
-    // this.catalogContainer = this.add.container(0, 0)
-
+    this.filterUnowned = filterUnowned
+    
     this.createCatalog(xOffset)
 
     // Create filters
@@ -630,10 +846,8 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     }
   }
 
-  // TODO
   // Filter which cards can be selected in the catalog based on current filtering parameters
-  // Contains an optional function to check, which is passed by children of this class
-  filter(f = function(card: Card) {return true}): void {
+  filter(): void {
     let filterFunction: (card: Card) => boolean = this.getFilterFunction()
     let sizer = this.panel.getElement('panel')
     sizer.clear()
@@ -651,7 +865,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       let cardImage = this.cardCatalog[i]
 
       // Check if this card is present
-      if (filterFunction(cardImage.card) && f(cardImage.card)) {
+      if (filterFunction(cardImage.card)) {
         cardCount++
 
         cardImage.image.setVisible(true)
@@ -705,7 +919,6 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       cardImage.txtStats.setDepth(1)
     })
   }
-
 
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this)
@@ -782,17 +995,10 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
     return andFilter
   }
-
 }
 
-
 export class BuilderScene extends BuilderSceneShell {
-  // Region containing all created decks and the buttons to interact with them
-  deckRegion: DeckRegion
-
-  // Region containing all of the cards user can select, and filters
   catalogRegion: CatalogRegion
-
 
   // The deck code for this builder that is retained throughout user's session
   standardDeckCode: string = ''
@@ -809,12 +1015,12 @@ export class BuilderScene extends BuilderSceneShell {
     super.precreate()
 
     // Create decks region, return the width
-    this.deckRegion = new DeckRegion(this)
-    let width = this.deckRegion.create()
+    let deckRegion = new DeckRegion(this)
+    let width = deckRegion.create()
 
     // Create catalog region
     this.catalogRegion = new CatalogRegion(this)
-    this.catalogRegion.create(width)
+    this.catalogRegion.create(width, false)
 
     // Add mode menu
     let modeMenu: Menu = this.createModeMenu()
@@ -822,9 +1028,6 @@ export class BuilderScene extends BuilderSceneShell {
 
     // Set the user's deck to this deck
     this.setDeck(this.standardDeckCode)
-
-    // Manage any messages that are displayed
-    this.manageMessages()
 
     super.postcreate()
   }
@@ -834,187 +1037,11 @@ export class BuilderScene extends BuilderSceneShell {
     this.standardDeckCode = this.getDeckCode()
   }
 
-  // TODO Remove f
-  // Filter which cards can be selected in the catalog based on current filtering parameters
-  // Contains an optional function to check, which is passed by children of this class
-  filter(f = function(card: Card) {return true}): void {
-    this.catalogRegion.filter(f)
+  // Filter the cards shown in the catalog based on the existing filter states
+  filter() {
+    this.catalogRegion.filter()
   }
 
-  // Add card to the existing deck
-  addCardToDeck(card: Card, doUpdateSavedDecks = true): boolean {
-    if (this.deck.length >= Mechanics.deckSize) {
-      return false
-    }
-
-    let index = this.deck.length
-
-    let cardImage = new CardImage(card, this.deckContainer)
-    cardImage.setPosition(this.getDeckCardPosition(index))
-    cardImage.setOnClick(this.removeCardFromDeck(index))
-
-    // Add this to the deck
-    this.deck.push(cardImage)
-
-    // Update start button to reflect new amount of cards in deck
-    this.updateText()
-
-    // Sort the deck, now done automatically after each card added
-    this.sort()
-
-    if (doUpdateSavedDecks) {
-      this.updateSavedDeck()      
-    }
-
-    this.filter()
-
-    return true
-  }
-
-  // Remove the header above and deck menu at left, which aren't present during the tutorial or on mobile
-  removeHeaderAndDeckRegion(): void {
-    console.log('remove header and deck region todo')
-    // this.panel.getElement('header').destroy()
-    // this.panel.width = Space.windowWidth
-
-    // this.deckPanel.getElement('panel').destroy()
-    // this.deckPanel.destroy()
-    // this.invisBackgroundTop.destroy()
-
-    // // Fixes card layout
-    // this.filter()
-  }
-
-  // Remove the card from deck which has given index
-  private removeCardFromDeck(index: number): () => void {
-    let that = this
-    return function() {
-      // Play a sound
-      that.sound.play('click')
-
-      // The text for the removed card would otherwise linger
-      cardInfo.setVisible(false)
-
-      // Remove the image
-      that.deck[index].destroy()
-
-      // Remove from the deck array
-      that.deck.splice(index, 1)
-
-      that.correctDeckIndices()
-
-      that.updateText()
-
-      if (that.deck.length === 0) {
-        that.txtHint.setVisible(true)
-      }
-
-      that.updateSavedDeck()
-
-      that.filter()
-    }
-  }
-
-  // Update the user's saved deck to reflect its new contents
-  private updateSavedDeck(): void {
-    this.deckRegion.updateSavedDeck()
-  }
-
-  // Update the card count and deck button texts
-  private updateText(): void {
-    if (this.deck.length === Mechanics.deckSize) {
-      this.btnStart.text = 'Start'
-      this.btnStart.input.enabled = true
-      this.btnStart.glow()
-    }
-    else
-    {
-      this.btnStart.text = `${this.deck.length}/${Mechanics.deckSize}`
-      this.btnStart.stopGlow()
-
-      // TODO Grey out the button, have a disable method for button class
-      // For debugging, allow sub-15 card decks locally
-      if (location.port !== '4949') {
-        this.btnStart.input.enabled = false
-      }
-    }
-
-    // Deck button stops glowing if there are any cards in it
-    // if (this.deck.length > 0) {
-    //   this.btnD.stopGlow()
-    // }
-
-    this.txtHint.setVisible(this.deck.length === 0)
-  }
-
-  private getDeckCardPosition(index: number): [number, number] {
-    let xPad = Space.pad
-
-    // For resolutions below a threshold, make the overlap more intense to fit 15 cards
-    let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
-    let x = index * (Space.cardSize - overlap) + xPad + Space.cardSize/2
-
-    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
-
-    return [-x, -y]
-  }
-
-  // Sort by cost all cards in the deck
-  private sort(): void {
-    this.deck.sort(function (card1, card2): number {
-      if (card1.card.cost < card2.card.cost)
-      {
-        return 1
-      }
-      else if (card1.card.cost > card2.card.cost)
-      {
-        return -1
-      }
-      else
-      {
-        return card1.card.name.localeCompare(card2.card.name)
-      }
-    })
-
-    this.correctDeckIndices()
-  }
-
-  // Set each card in deck to have the right position and onClick events for its index
-  private correctDeckIndices(): void {
-    for (var i = 0; i < this.deck.length; i++) {
-      let cardImage = this.deck[i]
-
-      cardImage.setPosition(this.getDeckCardPosition(i))
-
-      // Ensure that each card is above all cards to its left
-      cardImage.container.parentContainer.sendToBack(cardImage.container)
-
-      // Remove the previous onclick event and add one with the updated index
-      // Only do this if the card isn't required in the deck, in which case it can't be removed
-      if (!cardImage.required) {
-        cardImage.setOnClick(this.removeCardFromDeck(i), true)
-      }
-    }
-  }
-
-  // Start the game, exit from this scene and move to gameScene
-  private startGame(): void {
-    this.beforeExit()
-
-    let deck = this.deck.map(function(cardImage, index, array) {
-      return cardImage.card
-    })
-    this.scene.start("GameScene", {isTutorial: false, deck: deck})
-  }
-
-  // Remove all of the filter objects, used by children of this class
-  removeFilterObjects(): void {
-    // TODO Fix for new filters
-    // this.filterObjects.forEach(function(obj) {obj.destroy()})
-
-    // // Remove the enter event that opens up search
-    // this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).removeAllListeners()
-  }
 
   // Create the menu for user to select which mode to play in
   private createModeMenu(): Menu {
@@ -1078,78 +1105,18 @@ export class BuilderScene extends BuilderSceneShell {
     return menu
   }
 
-  // Manage any messages that may need to be displayed for the user
-  manageMessages(): void {
-    let msgText = UserProgress.getMessage('builder')
-    if (msgText !== undefined) {
-      // Open a window informing user of information
-      let menu = new Menu(
-        this,
-        1000,
-        300,
-        true,
-        25)
+  // Start the game, exit from this scene and move to gameScene
+  private startGame(): void {
+    this.beforeExit()
 
-      let txtTitle = this.add.text(0, -110, 'Welcome!', Style.announcement).setOrigin(0.5)
-      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, Style.basic).setOrigin(0.5, 0)
-      
-      menu.add([txtTitle, txtMessage])
-    }
-  }
-
-  // TODO Should this be in shell? If used elsewhere move it up there
-  // Get the deck code for player's current deck
-  // TODO Clarify this is accessed by regions, is used publically in that way
-  getDeckCode(): string {
-    let txt = ''
-    this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
-    txt = txt.slice(0, -1)
-
-    return txt
-  }
-
-  // TODO Publically accessible for regions
-  // Set thek current deck, returns true if deck was valid
-  setDeck(deckCode: string | Card[]): boolean {
-    let deck: Card[]
-    if (typeof deckCode === "string") {
-      // Get the deck from this code
-      let cardCodes: string[] = deckCode.split(':')
-
-      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
-
-      if (deckCode === '') {
-        deck = []
-      }
-    }
-    else {
-      deck = deckCode
-    }
-
-    // Check if the deck is valid, then create it if so
-    if (deck.includes(undefined))
-    {
-      return false
-    }
-    else
-    {
-      // Remove the current deck
-      this.deck.forEach( (cardImage) => cardImage.destroy())
-      this.deck = []
-      cardInfo.setVisible(false)
-      this.updateText()
-      
-      // Add the new deck
-      deck.forEach( (card) => this.addCardToDeck(card, false))
-
-      this.updateSavedDeck()
-
-      return true
-    }
+    let deck = this.deck.map(function(cardImage, index, array) {
+      return cardImage.card
+    })
+    this.scene.start("GameScene", {isTutorial: false, deck: deck})
   }
 }
 
-export class TutorialBuilderScene extends BuilderScene {
+export class TutorialBuilderScene extends BuilderSceneShell {
   // Dictionary from tutorial name to the code for the deck the user used for that tutorial
   tutorialDeckCodes: Record<string, string> = {}
 
@@ -1180,15 +1147,19 @@ export class TutorialBuilderScene extends BuilderScene {
   }
 
   create(): void {
-    super.create()
+    super.precreate()
+
+    // Create decks region, return the width
+    let deckRegion = new DeckRegion(this)
+    let width = deckRegion.create()
+
+    // Create catalog region
+    let catalogRegion = new CatalogRegion(this)
+    catalogRegion.create(width, false)
 
     // Change the start button to start a match vs ai
     let that = this
     this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
-
-    // this.filterUnowned = false
-
-    this.removeHeaderAndDeckRegion()
 
     this.createDescriptionText()
 
@@ -1214,6 +1185,13 @@ export class TutorialBuilderScene extends BuilderScene {
     else {
       this.setDeck(this.defaultDeck)
     }
+
+    super.postcreate()
+  }
+
+  // Filter the cards shown in the catalog based on the existing filter states
+  filter() {
+    // Shouldn't exist in tutorial
   }
 
   // Start the game, exit from this scene and move to gameScene
@@ -1238,12 +1216,6 @@ export class TutorialBuilderScene extends BuilderScene {
     s += this.deckDescription + "\n\n"
     s += `If you want to make changes, click any of the cards in the
 deck to remove them, then add cards from the choices above.`
-
-    // TODO Add
-    // let txt = this.add.text(0, 0, s, Style.basic)
-    // this.panel.setX(Space.pad)
-    // this.panel.add(txt, {padding: {left: Space.pad, right: Space.pad, bottom: Space.pad}})
-    this.filter()
   }
 
   private onBack(): () => void {
@@ -1261,18 +1233,15 @@ deck to remove them, then add cards from the choices above.`
     }
   }
 
-  // Overwrite to undo the background shifting
-  filter(f = function(card: Card) {return true}): void {
-    super.filter(f)
-  }
-
   beforeExit(): void {
     // Save user's current deck to this tutorials custom deck
     this.tutorialDeckCodes[this.tutorialName] = this.getDeckCode()
   }
 }
 
-export class AdventureBuilderScene extends BuilderScene {
+export class AdventureBuilderScene extends BuilderSceneShell {
+  catalogRegion: CatalogRegion
+
   constructor() {
     super({
       key: "AdventureBuilderScene"
@@ -1280,7 +1249,15 @@ export class AdventureBuilderScene extends BuilderScene {
   }
 
   create(params = null): void {
-    super.create()
+    super.precreate()
+
+    // Create decks region, return the width
+    let deckRegion = new DeckRegion(this)
+    let width = deckRegion.create()
+
+    // Create catalog region
+    this.catalogRegion = new CatalogRegion(this)
+    this.catalogRegion.create(width, false)
 
     // Set the user's required cards
     this.setRequiredCards(params.deck)
@@ -1290,6 +1267,13 @@ export class AdventureBuilderScene extends BuilderScene {
     this.btnStart.setOnClick(function() {
       that.startAIMatch(params.opponent, params.id)
     }, true)
+    
+    super.postcreate()
+  }
+
+  // Filter the cards shown in the catalog based on the existing filter states
+  filter() {
+    this.catalogRegion.filter()
   }
 
   // Start a match against an ai opponent with the specified deck
@@ -1300,7 +1284,6 @@ export class AdventureBuilderScene extends BuilderScene {
       return cardImage.card
     })
 
-    // TODO Make custom decks for each mission and use those
     let mmCode = `ai:${opponentDeck}`
 
     this.scene.start("GameScene", {isTutorial: false, deck: deck, mmCode: mmCode, missionID: id})
@@ -1318,6 +1301,5 @@ export class AdventureBuilderScene extends BuilderScene {
   }
 
   // Overwrite to prevent writing to standard's saved deck
-  beforeExit(): void {
-  }
+  beforeExit(): void { }
 }
