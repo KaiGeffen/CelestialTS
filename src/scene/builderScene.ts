@@ -55,7 +55,327 @@ class BuilderSceneShell extends BaseScene {
   }
 }
 
+class DeckRegion extends Phaser.GameObjects.Container {
+  // Overwrite the 'scene' property of container to specifically be a BuilderScene
+  scene: BuilderScene
+
+  // TODO needed?
+  deckPanel
+
+  // The index of the currently selected deck
+  savedDeckIndex: number
+
+  // List of buttons for user-defined decks
+  deckBtns: Button[]
+
+
+
+  // Create the are where player can manipulate their decks
+  create(): number {
+    let deckPanel = this.createDeckpanel()
+    this.deckPanel = deckPanel
+
+    let panel = deckPanel.getElement('panel')
+    let footer = deckPanel.getElement('footer')
+
+    // Update panel when mousewheel scrolls
+    this.updateOnScroll(panel)
+
+    // Add each of the decks
+    this.createDeckButtons(panel)
+
+    // Add a NEW, DELETE, CODE buttons after this
+    this.createNewButton(panel, footer)
+    this.createDeleteButton(panel, footer)
+    this.createCodeButton(panel, footer)
+
+    this.deckPanel.layout()
+
+    return this.deckPanel.width
+  }
+
+  // Create and return the scrollable panel where premade decks go
+  private createDeckpanel() {
+    const scene = this.scene
+    const width = Space.iconSeparation + Space.pad
+
+    return scene['rexUI'].add.scrollablePanel({
+      x: 0,
+      y: 10,
+      width: width,
+      height: Space.windowHeight,
+
+      background: scene.add.rectangle(0, 0, width, Space.windowHeight, Color.menuHeader),
+
+      panel: {
+        child: scene['rexUI'].add.fixWidthSizer({
+          orientation: 'vertical',
+          anchor: 'centerX'
+        }).addBackground(
+        scene.add.rectangle(0, 0, width, Space.windowHeight, Color.menuBackground)
+      )},
+
+      header: scene['rexUI'].add.label({
+                orientation: 0,
+                text: scene.add.text(0, 0, '  Decks:', Style.announcement),
+            }),
+
+      footer: scene['rexUI'].add.fixWidthSizer({
+          orientation: 'vertical',
+          anchor: 'centerX'
+        }),
+
+      space: {
+        top: 10,
+        bottom: 10,
+      }
+    }).setOrigin(0).layout()
+  }
+
+  // Update the panel when user scrolls with their mouse wheel
+  private updateOnScroll(panel) {
+    let that = this
+
+    this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+      // Return if the pointer is outside of the panel
+      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+        return
+      }
+
+      // Scroll panel down by amount wheel moved
+      that.deckPanel.childOY -= dy
+
+      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+      that.deckPanel.t = Math.max(0, that.deckPanel.t)
+      that.deckPanel.t = Math.min(0.999999, that.deckPanel.t)
+    })
+  }
+
+  // Create a button for a new user-made deck at the given index
+  // Add it to the list of deck buttons, and return it
+  private createDeckBtn(i: number): Button {
+      let deck = UserSettings._get('decks')[i]
+
+      let name = deck === undefined ? '' : deck['name']
+
+      let btn = new Button(this.scene, 0, 0, name).setDepth(4)
+
+      // Set as active, glow and stop others glowing, set the deck
+      btn.setOnClick(function() {
+        this.deckBtns.forEach(b => {if (b !== btn) b.stopGlow()})
+
+        // If it's already selected, deselect it
+        if (btn.isHighlighted()) {
+          this.savedDeckIndex = undefined
+          this.setDeck([])
+          btn.stopGlow()
+        }
+        // Otherwise select this button
+        else {
+          this.savedDeckIndex = i
+          btn.glow(false)
+
+          this.setDeck(UserSettings._get('decks')[i]['value'])
+        }        
+      })
+      
+      this.deckBtns.push(btn)
+
+      return btn
+    }
+
+  // Create a button for each deck that user has created
+  private createDeckButtons(panel) {
+    // Instantiate list of deck buttons
+    this.deckBtns = []
+
+    // Create the preexisting decks
+    for (var i = 0; i < UserSettings._get('decks').length; i++) {
+      let btn = this.createDeckBtn(i)
+
+      // Highlight this deck, if it's selected
+      if (this.savedDeckIndex === i) {
+        // So that layout happens correctly
+        setTimeout(() => btn.glow(false), 4)
+      }
+
+      panel.add(btn)
+      panel.addNewLine()
+    }
+  }
+
+  // Create the "New" button which prompts user to make a new deck
+  private createNewButton(panel, footer) {
+    footer.add(
+      new Button(this.scene, 0, 0, 'NEW', function() {
+
+        let maxDecks = 20
+
+        // If user already has 9 decks, signal error instead
+        if (UserSettings._get('decks').length >= maxDecks) {
+          this.signalError(`Reached max number of decks (${maxDecks}).`)
+        }
+        else {
+          // Create a new button
+          let newBtn = this.createDeckBtn(this.deckBtns.length).setOrigin(0, 0.5)
+        
+          // Add the button, followed by a new line
+          panel.add(newBtn).addNewLine()
+
+          this.deckPanel.layout()
+
+          // Scroll down to show the new deck
+          this.deckPanel.t = 1
+
+          // Open up a new deck menu to input the deck's name
+          this.createNewDeckMenu(newBtn, panel)
+        }
+      }))
+  }
+
+  // Create the "Delete" button which deletes the currently selected deck
+  private createDeleteButton(panel, footer) {
+    footer.add(
+      new Button(this.scene, 0, 0, 'DELETE', function() {
+        if (this.savedDeckIndex === undefined) {
+          this.signalError('No deck selected')
+        } else {
+          UserSettings._pop('decks', this.savedDeckIndex)
+
+          this.savedDeckIndex = undefined
+          this.setDeck([])
+          
+          panel.destroy()
+          this.deckPanel.destroy()
+          this.create()
+        }
+      }))
+  }
+
+  // Create the "Code" button which prompts user to copy/paste a deck-code
+  private createCodeButton(panel, footer) {
+    footer.add(
+      new Button(this.scene, 0, 0, 'CODE', function() {
+        this.createNewCodeMenu()
+      }))
+  }
+
+  // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
+  private createNewDeckMenu(btn: Button, panel): void {
+    let scene = this.scene
+    let height = 250
+
+    let menu = new Menu(
+      scene,
+      450,
+      height,
+      true,
+      20)
+
+    let txtTitle = scene.add.text(0, -height/2, 'Deck Name:', Style.announcement).setOrigin(0.5, 0)
+    menu.add(txtTitle)
+
+    let textArea = scene.add['rexInputText'](
+      0, 0, 350, Space.textAreaHeight, {
+      type: 'text',
+      text: '',
+      placeholder: 'Name',
+      tooltip: 'The name for your new deck.',
+      fontFamily: 'Mulish',
+      fontSize: '60px',
+      color: Color.button,
+      align: Phaser.Display.Align.BOTTOM_RIGHT,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: Color.textAreaBackground,
+      maxLength: 8,
+      selectAll: true,
+      id: 'search-field'
+    })
+      .on('textchange', function(inputText) {
+        btn.setText(inputText.text)
+      }, scene)
+    menu.add(textArea)
+
+    // When menu is exited, add the deck to saved decks
+    let that = this
+    menu.setOnClose(function() {
+      let name = textArea.text
+
+      // If name is not empty, add it to the list of decks
+      if (name !== '') {
+        UserSettings._push('decks', {name: name, value: scene.getDeckCode()})
+        btn.emit('pointerdown')
+      } else {
+        // Destroy the panel and recreate it
+        // NOTE Panel is the sizer containing the deck buttons
+        panel.destroy()
+        that.deckPanel.destroy()
+        that.create()
+      }
+
+      menu.destroy()
+    })
+  }
+
+  // Create a new code menu which shows the current decks code, and allows for pasting in a new code
+  private createNewCodeMenu(): void {
+    let scene = this.scene
+    let that = this
+    let height = 250
+    let width = 600
+
+    let menu = new Menu(
+      scene,
+      width,
+      height,
+      true,
+      20)
+
+    let txtTitle = scene.add.text(0, -height / 2, 'Deck Code:', Style.announcement).setOrigin(0.5, 0)
+    menu.add(txtTitle)
+
+    let textArea = scene.add['rexInputText'](
+      0, 0, width - Space.pad * 2, Space.textAreaHeight, {
+      type: 'text',
+      text: scene.getDeckCode(),
+      placeholder: '',
+      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
+      fontFamily: 'Mulish',
+      fontSize: '60px',
+      color: Color.button,
+      align: Phaser.Display.Align.BOTTOM_RIGHT,
+      border: 3,
+      borderColor: '#000',
+      backgroundColor: Color.textAreaBackground,
+      maxLength: 4 * Mechanics.deckSize,
+      selectAll: true,
+      id: 'search-field'
+    })
+      .on('textchange', function(inputText) {
+        scene.setDeck(inputText.text)
+      })
+    menu.add(textArea)
+
+    // When menu is exited, destroy this menu
+    menu.setOnClose(function() {
+      if (!scene.setDeck(textArea.text)) {
+        scene.signalError('Deck code invalid.')
+      }
+      menu.destroy()
+    })
+  }
+}
+
 export class BuilderScene extends BuilderSceneShell {
+  // The panel containing all created decks and the buttons to interact with them
+  deckRegion: DeckRegion
+
+
+
+
+
+
   // Full list of all cards in the catalog (Even those invisible)
   cardCatalog: CardImage[]
 
@@ -100,7 +420,8 @@ export class BuilderScene extends BuilderSceneShell {
     this.catalogContainer = this.add.container(0, 0)
 
     // Create decks region, return the width
-    let width = this.createDeckRegion()
+    this.deckRegion = new DeckRegion(this)
+    let width = this.deckRegion.create()
 
     // Add the catalog
     this.createCatalog(width)
@@ -229,45 +550,6 @@ export class BuilderScene extends BuilderSceneShell {
     this.filter()
 
     return true
-  }
-
-  // Set thek current deck, returns true if deck was valid
-  setDeck(deckCode: string | Card[]): boolean {
-    let deck: Card[]
-    if (typeof deckCode === "string") {
-      // Get the deck from this code
-      let cardCodes: string[] = deckCode.split(':')
-
-      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
-
-      if (deckCode === '') {
-        deck = []
-      }
-    }
-    else {
-      deck = deckCode
-    }
-
-    // Check if the deck is valid, then create it if so
-    if (deck.includes(undefined))
-    {
-      return false
-    }
-    else
-    {
-      // Remove the current deck
-      this.deck.forEach( (cardImage) => cardImage.destroy())
-      this.deck = []
-      cardInfo.setVisible(false)
-      this.updateText()
-      
-      // Add the new deck
-      deck.forEach( (card) => this.addCardToDeck(card, false))
-
-      this.updateSavedDeck()
-
-      return true
-    }
   }
 
   // Remove the header above and deck menu at left, which aren't present during the tutorial or on mobile
@@ -547,268 +829,6 @@ export class BuilderScene extends BuilderSceneShell {
       .setInteractive()
   }
 
-  // Create the are where player can manipulate their decks
-  private createDeckRegion(): number {
-    let that = this
-    let width = Space.iconSeparation + Space.pad
-
-    this.deckPanel = this['rexUI'].add.scrollablePanel({
-      x: 0,
-      y: 10,
-      width: width,
-      height: Space.windowHeight,
-
-      background: this.add.rectangle(0, 0, width, Space.windowHeight, Color.menuHeader),
-
-      panel: {
-        child: this['rexUI'].add.fixWidthSizer({
-          orientation: 'vertical',
-          anchor: 'centerX'
-        }).addBackground(
-        this.add.rectangle(0, 0, width, Space.windowHeight, Color.menuBackground)
-      )},
-
-      header: this['rexUI'].add.label({
-                orientation: 0,
-                text: this.add.text(0, 0, '  Decks:', Style.announcement),
-            }),
-
-      footer: this['rexUI'].add.fixWidthSizer({
-          orientation: 'vertical',
-          anchor: 'centerX'
-        }),
-
-      space: {
-        top: 10,
-        bottom: 10,
-      }
-    }).setOrigin(0).layout()
-
-    let panel = this.deckPanel.getElement('panel')
-    let footer = this.deckPanel.getElement('footer')
-
-    // Update panel when mousewheel scrolls
-    this.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-      // Return if the pointer is outside of the panel
-      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
-        return
-      }
-
-      // Scroll panel down by amount wheel moved
-      that.deckPanel.childOY -= dy
-
-      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-      that.deckPanel.t = Math.max(0, that.deckPanel.t)
-      that.deckPanel.t = Math.min(0.999999, that.deckPanel.t)
-    })
-
-    // Add each of the decks
-    let decks: [name: string, value: string][] = UserSettings._get('decks')
-    let btns: Button[] = []
-
-    let createDeckBtn = function(i: number): Button {
-      let deck = UserSettings._get('decks')[i]
-
-      let name = deck === undefined ? '' : deck['name']
-
-      let btn = new Button(that, 0, 0, name).setDepth(4)
-
-      // Set as active, glow and stop others glowing, set the deck
-      btn.setOnClick(function() {
-        btns.forEach(b => {if (b !== btn) b.stopGlow()})
-
-        // If it's already selected, deselect it
-        if (btn.isHighlighted()) {
-          that.savedDeckIndex = undefined
-          that.setDeck([])
-          btn.stopGlow()
-        }
-        // Otherwise select this button
-        else {
-          that.savedDeckIndex = i
-          btn.glow(false)
-
-          that.setDeck(UserSettings._get('decks')[i]['value'])
-        }        
-      })
-      
-      btns.push(btn)
-
-      return btn
-    }
-
-    // Create the preexisting decks
-    for (var i = 0; i < UserSettings._get('decks').length; i++) {
-      let btn = createDeckBtn(i)
-
-      // Highlight this deck, if it's selected
-      if (this.savedDeckIndex === i) {
-        // So that layout happens correctly
-        setTimeout(() => btn.glow(false), 4)
-      }
-
-      panel.add(btn)
-      panel.addNewLine()
-    }
-
-    // Add a NEW, DELETE, CODE buttons after this
-    footer.add(
-      new Button(this, 0, 0, 'NEW', function() {
-
-        let maxDecks = 20
-
-        // If user already has 9 decks, signal error instead
-        if (UserSettings._get('decks').length >= maxDecks) {
-          this.signalError(`Reached max number of decks (${maxDecks}).`)
-        }
-        else {
-          // Create a new button
-          let newBtn = createDeckBtn(btns.length).setOrigin(0, 0.5)
-        
-          // Add the button, followed by a new line
-          panel.add(newBtn).addNewLine()
-
-          that.deckPanel.layout()
-
-          // Scroll down to show the new deck
-          that.deckPanel.t = 1
-
-          // Open up a new deck menu to input the deck's name
-          this.createNewDeckMenu(newBtn, panel)
-        }
-      }))
-
-    // DELETE button
-    footer.add(
-      new Button(this, 0, 0, 'DELETE', function() {
-        if (that.savedDeckIndex === undefined) {
-          that.signalError('No deck selected')
-        } else {
-          UserSettings._pop('decks', that.savedDeckIndex)
-
-          that.savedDeckIndex = undefined
-          that.setDeck([])
-          
-          panel.destroy()
-          that.deckPanel.destroy()
-          that.createDeckRegion()
-        }
-      }))
-
-    footer.add(
-      new Button(this, 0, 0, 'CODE', function() {
-        this.createNewCodeMenu()
-      }))
-
-    this.deckPanel.layout()
-
-    return this.deckPanel.width
-  }
-
-  // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
-  private createNewDeckMenu(btn: Button, panel): void {
-    let height = 250
-
-    let menu = new Menu(
-      this,
-      450,
-      height,
-      true,
-      20)
-
-    let txtTitle = this.add.text(0, -height/2, 'Deck Name:', Style.announcement).setOrigin(0.5, 0)
-    menu.add(txtTitle)
-
-    let textArea = this.add['rexInputText'](
-      0, 0, 350, Space.textAreaHeight, {
-      type: 'text',
-      text: '',
-      placeholder: 'Name',
-      tooltip: 'The name for your new deck.',
-      fontFamily: 'Mulish',
-      fontSize: '60px',
-      color: Color.button,
-      align: Phaser.Display.Align.BOTTOM_RIGHT,
-      border: 3,
-      borderColor: '#000',
-      backgroundColor: Color.textAreaBackground,
-      maxLength: 8,
-      selectAll: true,
-      id: 'search-field'
-    })
-      .on('textchange', function(inputText) {
-        btn.setText(inputText.text)
-      }, this)
-    menu.add(textArea)
-
-    // When menu is exited, add the deck to saved decks
-    let that = this
-    menu.setOnClose(function() {
-      let name = textArea.text
-
-      // If name is not empty, add it to the list of decks
-      if (name !== '') {
-        UserSettings._push('decks', {name: name, value: that.getDeckCode()})
-        btn.emit('pointerdown')
-      } else {
-        // Destroy the panel and recreate it
-        // NOTE Panel is the sizer containing the deck buttons
-        panel.destroy()
-        that.deckPanel.destroy()
-        that.createDeckRegion()
-      }
-
-      menu.destroy()
-    })
-  }
-
-  // Create a new code menu which shows the current decks code, and allows for pasting in a new code
-  private createNewCodeMenu(): void {
-    let that = this
-    let height = 250
-    let width = 600
-
-    let menu = new Menu(
-      this,
-      width,
-      height,
-      true,
-      20)
-
-    let txtTitle = this.add.text(0, -height / 2, 'Deck Code:', Style.announcement).setOrigin(0.5, 0)
-    menu.add(txtTitle)
-
-    let textArea = this.add['rexInputText'](
-      0, 0, width - Space.pad * 2, Space.textAreaHeight, {
-      type: 'text',
-      text: that.getDeckCode(),
-      placeholder: '',
-      tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
-      fontFamily: 'Mulish',
-      fontSize: '60px',
-      color: Color.button,
-      align: Phaser.Display.Align.BOTTOM_RIGHT,
-      border: 3,
-      borderColor: '#000',
-      backgroundColor: Color.textAreaBackground,
-      maxLength: 4 * Mechanics.deckSize,
-      selectAll: true,
-      id: 'search-field'
-    })
-      .on('textchange', function(inputText) {
-        that.setDeck(inputText.text)
-      })
-    menu.add(textArea)
-
-    // When menu is exited, destroy this menu
-    menu.setOnClose(function() {
-      if (!that.setDeck(textArea.text)) {
-        that.signalError('Deck code invalid.')
-      }
-      menu.destroy()
-    })
-  }
-
   // Populate the catalog header with buttons, text, fields
   private populateHeader(header: any): void {
     let that = this
@@ -1085,6 +1105,7 @@ export class BuilderScene extends BuilderSceneShell {
 
   // TODO Should this be in shell? If used elsewhere move it up there
   // Get the deck code for player's current deck
+  // TODO Clarify this is accessed by regions, is used publically in that way
   getDeckCode(): string {
     let txt = ''
     this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
@@ -1093,9 +1114,44 @@ export class BuilderScene extends BuilderSceneShell {
     return txt
   }
 
-  // TODO
-  private showCardLegality() {
+  // TODO Publically accessible for regions
+  // Set thek current deck, returns true if deck was valid
+  setDeck(deckCode: string | Card[]): boolean {
+    let deck: Card[]
+    if (typeof deckCode === "string") {
+      // Get the deck from this code
+      let cardCodes: string[] = deckCode.split(':')
 
+      deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
+
+      if (deckCode === '') {
+        deck = []
+      }
+    }
+    else {
+      deck = deckCode
+    }
+
+    // Check if the deck is valid, then create it if so
+    if (deck.includes(undefined))
+    {
+      return false
+    }
+    else
+    {
+      // Remove the current deck
+      this.deck.forEach( (cardImage) => cardImage.destroy())
+      this.deck = []
+      cardInfo.setVisible(false)
+      this.updateText()
+      
+      // Add the new deck
+      deck.forEach( (card) => this.addCardToDeck(card, false))
+
+      this.updateSavedDeck()
+
+      return true
+    }
   }
 }
 
