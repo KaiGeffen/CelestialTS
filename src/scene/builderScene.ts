@@ -105,9 +105,9 @@ class BuilderSceneShell extends BaseScene {
   }
 
   // Add card to the existing deck
-  addCardToDeck(card: Card, updateSavedDeck=false): boolean {
+  addCardToDeck(card: Card, updateSavedDeck=false): CardImage {
     if (this.deck.length >= Mechanics.deckSize) {
-      return false
+      return undefined
     }
 
     let index = this.deck.length
@@ -125,7 +125,7 @@ class BuilderSceneShell extends BaseScene {
     // Sort the deck, now done automatically after each card added
     this.sort()
 
-    return true
+    return cardImage
   }
 
   // Filter the cards shown in the catalog based on the existing filter states
@@ -158,6 +158,7 @@ class BuilderSceneShell extends BaseScene {
       }
 
       // TODO Update saved deck
+
     }
   }
 
@@ -786,7 +787,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       let s = i === maxCostFilter ? `${i}+` : i.toString()
       let btn = new Button(scene, 0, 0, s)
 
-      btn.setOnClick(this.onClickFilterButton(i, btn))
+      btn.setOnClick(this.onClickFilterButton(i, btns))
         .setFontSize(parseInt(Style.announcement.fontSize))
         .setDepth(4)
 
@@ -800,17 +801,17 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     header.add(btn)
   }
 
-  private onClickFilterButton(i: number, btn: Button): () => void {
+  private onClickFilterButton(i: number, btns: Button[]): () => void {
     let that = this
 
     return function() {
-      if (!btn.isHighlighted()) {
-        btn.glow(false)
-      } else {
-        btn.stopGlow()
-      }
-      
-      that.filterCostAry[i] = !that.filterCostAry[i]
+      // Clear out all buttons
+      that.onClearFilters(btns)()
+
+      // Highlight this one
+      btns[i].glow(false)
+      that.filterCostAry[i] = true
+
       that.filter()
     }   
   }
@@ -1029,14 +1030,21 @@ export class BuilderScene extends BuilderSceneShell {
   // Add the given card to users current deck, return whether it can be added
   // NOTE Don't always save the result because we might be doing this 15 times
   // and it's better to just save once
-  addCardToDeck(card: Card, updateSavedDeck): boolean {
-    let result = super.addCardToDeck(card)
+  addCardToDeck(card: Card, updateSavedDeck): CardImage {
+    let cardImage = super.addCardToDeck(card)
 
-    if (result && updateSavedDeck) {
-      this.updateSavedDeck()
+    if (cardImage) {
+      // Add an on-click that updates the saved deck
+      let that = this
+      // CorrectIndices breaks this TODO
+      cardImage.setOnClick(() => {console.log('fooo')})
+
+      if (updateSavedDeck) {
+        this.updateSavedDeck()
+      }
     }
 
-    return result
+    return cardImage
   }
 
   // Set the current deck, returns true if deck was valid
