@@ -98,17 +98,14 @@ class BuilderSceneShell extends BaseScene {
       this.updateText()
       
       // Add the new deck
-      deck.forEach( (card) => this.addCardToDeck(card, false))
-
-      this.updateSavedDeck()
+      deck.forEach( (card) => this.addCardToDeck(card))
 
       return true
     }
   }
 
   // Add card to the existing deck
-  // TODO Subclass this, return same result but possibly save the deck
-  addCardToDeck(card: Card, doUpdateSavedDecks = true): boolean {
+  addCardToDeck(card: Card, updateSavedDeck=false): boolean {
     if (this.deck.length >= Mechanics.deckSize) {
       return false
     }
@@ -127,10 +124,6 @@ class BuilderSceneShell extends BaseScene {
 
     // Sort the deck, now done automatically after each card added
     this.sort()
-
-    if (doUpdateSavedDecks) {
-      this.updateSavedDeck()      
-    }
 
     return true
   }
@@ -164,15 +157,8 @@ class BuilderSceneShell extends BaseScene {
         that.txtHint.setVisible(true)
       }
 
-      that.updateSavedDeck()
+      // TODO Update saved deck
     }
-  }
-
-  // Update the user's saved deck to reflect its new contents
-  private updateSavedDeck(): void {
-    // TODO
-    console.log('update saved deck needs to be implemented')
-    //this.deckRegion.updateSavedDeck()
   }
 
   // Update the card count and deck button texts
@@ -193,11 +179,6 @@ class BuilderSceneShell extends BaseScene {
         this.btnStart.input.enabled = false
       }
     }
-
-    // Deck button stops glowing if there are any cards in it
-    // if (this.deck.length > 0) {
-    //   this.btnD.stopGlow()
-    // }
 
     this.txtHint.setVisible(this.deck.length === 0)
   }
@@ -488,9 +469,10 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
   // Create the "Code" button which prompts user to copy/paste a deck-code
   private createCodeButton(panel, footer) {
+    let that = this
     footer.add(
       new Button(this.scene, 0, 0, 'CODE', function() {
-        this.createNewCodeMenu()
+        that.createNewCodeMenu()
       }))
   }
 
@@ -1000,6 +982,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
 export class BuilderScene extends BuilderSceneShell {
   catalogRegion: CatalogRegion
+  deckRegion: DeckRegion
 
   // The deck code for this builder that is retained throughout user's session
   standardDeckCode: string = ''
@@ -1016,8 +999,8 @@ export class BuilderScene extends BuilderSceneShell {
     super.precreate()
 
     // Create decks region, return the width
-    let deckRegion = new DeckRegion(this)
-    let width = deckRegion.create()
+    this.deckRegion = new DeckRegion(this)
+    let width = this.deckRegion.create()
 
     // Create catalog region
     this.catalogRegion = new CatalogRegion(this)
@@ -1043,6 +1026,34 @@ export class BuilderScene extends BuilderSceneShell {
     this.catalogRegion.filter()
   }
 
+  // Add the given card to users current deck, return whether it can be added
+  // NOTE Don't always save the result because we might be doing this 15 times
+  // and it's better to just save once
+  addCardToDeck(card: Card, updateSavedDeck): boolean {
+    let result = super.addCardToDeck(card)
+
+    if (result && updateSavedDeck) {
+      this.updateSavedDeck()
+    }
+
+    return result
+  }
+
+  // Set the current deck, returns true if deck was valid
+  setDeck(deckCode: string | Card[]): boolean {
+    let result = super.setDeck(deckCode)
+
+    if (result) {
+      this.updateSavedDeck()
+    }
+
+    return result
+  }
+
+  // Update the user's currently selected deck in persistant memory
+  private updateSavedDeck() {
+    this.deckRegion.updateSavedDeck()
+  }
 
   // Create the menu for user to select which mode to play in
   private createModeMenu(): Menu {
