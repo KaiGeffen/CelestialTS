@@ -618,7 +618,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
   // The costs and string that cards in the catalog are filtered for
   filterCostAry: boolean[] = []
   searchText: string = ""
-  filterUnowned: boolean = true
+  filterUnowned: boolean
 
   // Create this region, offset by the given width
   create(xOffset: number, filterUnowned) {
@@ -1251,13 +1251,9 @@ export class AdventureBuilderScene extends BuilderSceneShell {
   create(params = null): void {
     super.precreate()
 
-    // Create decks region, return the width
-    let deckRegion = new DeckRegion(this)
-    let width = deckRegion.create()
-
     // Create catalog region
     this.catalogRegion = new CatalogRegion(this)
-    this.catalogRegion.create(width, false)
+    this.catalogRegion.create(0, true)
 
     // Set the user's required cards
     this.setRequiredCards(params.deck)
