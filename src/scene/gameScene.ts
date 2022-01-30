@@ -35,6 +35,8 @@ export default class GameScene extends BaseScene {
 	txtOpponentMulligan: Phaser.GameObjects.Text
 
 	btnPass: Button
+	// Replaces the pass button before the story plays
+	btnPlay: Button
 	// Replaces the pass button after the game has ended
 	btnExit: Button
 
@@ -177,6 +179,8 @@ export default class GameScene extends BaseScene {
 		// Pass button
     	this.btnPass = new Button(this, 0, 80, 'Pass', this.onPass()).setOrigin(1, 0.5)
     	this.passContainer.add(this.btnPass)
+    	this.btnPlay = new Button(this, 0, 80, 'Play').setOrigin(1, 0.5).setVisible(false)
+    	this.passContainer.add(this.btnPlay)
     	this.btnExit = new Button(this, 0, 80, 'Exit', this.exitScene()).setOrigin(1, 0.5).setVisible(false)
     	this.passContainer.add(this.btnExit)
 
@@ -526,6 +530,15 @@ export default class GameScene extends BaseScene {
 				alpha: 1,
 				duration: Time.recapStateMinimum()
 			})
+
+			// Play button visible at the start of night
+			// Play button stops transition to next state until clicked
+			const isRecapStart = state.recap.playList.length === 0 && isRecap && !isRoundEnd
+			this.btnPass.setVisible(!isRecapStart)
+			this.btnPlay.setVisible(isRecapStart)
+			if (isRecapStart) {
+				this.btnPlay.glowUntilClicked()
+			}
 		}
 		// Queue this for after recap finishes
 		else if (this.recapPlaying) {
@@ -1018,7 +1031,13 @@ export default class GameScene extends BaseScene {
 			that.queuedRecap = []
 			that.recapPlaying = false
 
+			// Hide the play button
+			that.btnPlay.setVisible(false).stopGlow()
 
+			// Show the pass button unless the game is over
+			if (!that.btnExit.visible) {
+				that.btnPass.setVisible(true)
+			}
 		}
 	}
 
