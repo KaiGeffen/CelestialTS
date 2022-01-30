@@ -443,7 +443,7 @@
     "card": 23
   },
   {
-    "name": "Pet 3 - Gentle Rain",
+    "name": "Pet 3 - Gentle Rain, TODO",
     "id": 75,
     "prereq": [[74]],
     "type": "mission",

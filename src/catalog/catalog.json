@@ -22,6 +22,7 @@
     "cost": 1, "points": 1,
     "text": "1:1, Fleeting, create 2 ${1002}s in your discard pile.",
     "story": "Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me",
+    "catalogText": "Crossed Bones costs 1 mana for 1 point, and also fills up your discard pile.\n\nHaving extra cards in your discard pile can be to your advantage for cards like Tumulus or Anubis.\n\nHowever, if you end up drawing the Broken Bones after shuffling your discard pile, they can be annoying since they give no points and force you to wait a round to draw better cards.",
     "rarity": 0
   },
   {"name": "Dove", "id": 4,
@@ -40,6 +41,7 @@
     "cost": 2, "points": 3,
     "text": "2:3, -1 for each card before this in the story.",
     "story": "I look around only to remind me: Move on! Fast!",
+    "catalogText": "Dash costs 2 mana for 3 points, which means it beats most other 2 mana cards.\n\nHowever, because of its ability, it will be worth 1 less point for every card that was played before it in a round.\n\nIf you have more wins than your opponent, you will start the round with priority, and can play Dash as your first card for maximum points.",
     "rarity": 0
   },
   {"name": "Swift", "id": 7,
@@ -88,6 +90,7 @@
     "cost": 4, "points": 4,
     "text": "4:4, Fleeting, create 3 ${1002}s in your discard pile.",
     "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly all is up in smoke",
+    "catalogText": "Dinosaur Bones costs 4 mana for 4 points, and also fills up your discard pile.\n\nHaving extra cards in your discard pile can be to your advantage for cards like Tumulus or Anubis.\n\nHowever, if you end up drawing the Broken Bones after shuffling your discard pile, they can be annoying since they give no points and force you to wait a round to draw better cards.",
     "rarity": 0
   },
   {"name": "Mine", "id": 15,
@@ -107,6 +110,7 @@
     "cost": 5, "points": 4,
     "text": "5:4, +2 if your discard pile has at least 8 cards in it.",
     "story": "The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat mattered",
+    "catalogText": "Tumulus costs 5 mana for 4 points, but is instead worth 6 points if you have at least 8 cards in your discard pile.\n\nTo have 8 cards by round 5, you would have to play 2 cards each round for the first 4 rounds, which is hard to pull off.\n\nAlso, after you've shuffled your discard pile, it will take some time before you can get the full 6 points out of Tumulus.",
     "rarity": 1
   },
 
@@ -126,6 +130,7 @@
     "cost": 6, "points": 0,
     "text": "6:0, put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost.",
     "story": "Reaching back with the back of the eyes\nTo that moment when\nI see myself – not as I am – but as I was - clearly",
+    "catalogText": "Sarcophagus will put the most expensive card in your discard pile back on top of your deck, and give you points equal to its cost.\n\nThis means you'll draw that card next round, which is great for ensuring you don't run out of things to spend your mana on.\n\nPutting a card on top of your deck also delays you shuffling your discard pile, which is sometimes to your advantage.",
     "rarity": 2
   },
 
@@ -133,6 +138,7 @@
     "cost": 7, "points": 7,
     "text": "7:7.\nCosts 0 if you have at least 12 cards in your discard pile.",
     "story": "I knew you were coming, I just didn’t know when.\nGo easy on me. I am tired, sated, and looking for new life.",
+    "catalogText": "Anubis costs 7 mana for 7 points, but can be played for free if your discard pile has at least 12 cards in it.\n\nThis is great for comboing with Sarcophagus, since you can get 14 points multiple rounds in a row.\n\nBe careful not to play this if you don't need the points; winning a round 2 to 0 is just as good as winning 9 to 0.",
     "rarity": 3
   },
 
