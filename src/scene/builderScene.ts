@@ -932,7 +932,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     let scene = this.scene
 
     return function() {
-      if (scene.addCardToDeck(card)) {
+      if (scene.addCardToDeck(card, true)) {
         scene.sound.play('click')
       }
       else {
