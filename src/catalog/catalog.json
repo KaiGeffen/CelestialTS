@@ -89,7 +89,7 @@
   {"name": "Dinosaur Bones", "id": 14,
     "cost": 4, "points": 4,
     "text": "4:4, Fleeting, create 3 ${1002}s in your discard pile.",
-    "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly all is up in smoke",
+    "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
     "catalogText": "Dinosaur Bones costs 4 mana for 4 points, and also fills up your discard pile.\n\nHaving extra cards in your discard pile can be to your advantage for cards like Tumulus or Anubis.\n\nHowever, if you end up drawing the Broken Bones after shuffling your discard pile, they can be annoying since they give no points and force you to wait a round to draw better cards.",
     "rarity": 0
   },
