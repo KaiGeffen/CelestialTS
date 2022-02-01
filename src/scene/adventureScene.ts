@@ -1,6 +1,6 @@
 import "phaser"
 import BaseScene from './baseScene'
-import { Style, Space, Color, UserSettings } from '../settings/settings'
+import { Style, Space, Color, UserSettings, Time, BBStyle } from '../settings/settings'
 import Button from "../lib/button"
 import Menu from "../lib/menu"
 
@@ -26,18 +26,41 @@ export default class AdventureScene extends BaseScene {
 		this.createPanel()
 
 		// Make up pop-up for the card you just received, if there is one
-		if (params.txt) {
+		if (params.card) {
+			const width = 1000
+			const height = 250
 			let menu = new Menu(
 		      this,
-		      1000,
-		      240)
+		      width,
+		      height)
 
-			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0.5)
-
-			menu.add(txt)
+			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0)
+			let icon = this.add.image(0, 0, params.card)
+			let textBox = this['rexUI'].add['textBox']({
+				x: 0,
+				y: 0,
+				width: width,
+				height: height,
+				icon: icon,
+				space: {
+					left: Space.pad,
+					right: Space.pad,
+					top: Space.pad,
+					bottom: Space.pad,
+					icon: Space.pad
+				},
+				text: txt
+			}).setOrigin(0.5)
+			
+			textBox.start(params.txt, Time.vignetteSpeed())
+			
+			menu.add([txt, icon, textBox])
 
 			params.txt = ''
+			params.card = ''
 		}
+		
+		// Scroll to the given position
 		if (params.scroll) {
 			this.panel.childOY = params.scroll
 		}
@@ -174,12 +197,14 @@ export default class AdventureScene extends BaseScene {
 				// TODO Clean this impl
 				let params = {
 					scroll: that.panel.childOY,
-					txt: ''
+					txt: '',
+					card: ''
 				}
 
 				let card = getCard(mission.card)
 				if (card !== undefined) {
 					params.txt = card.story
+					params.card = card.name
 				}
 
 				that.scene.start("AdventureScene", params)

@@ -981,6 +981,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
   }
 }
 
+// The main deck builder seen for pvp mode
 export class BuilderScene extends BuilderSceneShell {
   catalogRegion: CatalogRegion
   deckRegion: DeckRegion

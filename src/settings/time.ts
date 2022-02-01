@@ -21,4 +21,8 @@ export class Time {
   static textSpeed(): number {
     return 15
   }
+
+  static vignetteSpeed(): number {
+    return 30
+  }
 }

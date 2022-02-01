@@ -137,7 +137,7 @@
   {"name": "Anubis", "id": 21,
     "cost": 7, "points": 7,
     "text": "7:7.\nCosts 0 if you have at least 12 cards in your discard pile.",
-    "story": "I knew you were coming, I just didn’t know when.\nGo easy on me. I am tired, sated, and looking for new life.",
+    "story": "I knew you were coming, I just didn’t know when.\nGo easy on me.\nI am tired, sated, and looking for new life.",
     "catalogText": "Anubis costs 7 mana for 7 points, but can be played for free if your discard pile has at least 12 cards in it.\n\nThis is great for comboing with Sarcophagus, since you can get 14 points multiple rounds in a row.\n\nBe careful not to play this if you don't need the points; winning a round 2 to 0 is just as good as winning 9 to 0.",
     "rarity": 3
   },
