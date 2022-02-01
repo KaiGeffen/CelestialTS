@@ -3,6 +3,7 @@ import BaseScene from './baseScene'
 import { Style, Space, Color, UserSettings, Time, BBStyle } from '../settings/settings'
 import Button from "../lib/button"
 import Menu from "../lib/menu"
+import { CardImage } from "../lib/cardImage"
 
 import { getCard } from "../catalog/catalog"
 import adventureData from "../adventure.json"
@@ -35,7 +36,7 @@ export default class AdventureScene extends BaseScene {
 		      height)
 
 			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0)
-			let icon = this.add.image(0, 0, params.card)
+			let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
 			let textBox = this['rexUI'].add['textBox']({
 				x: 0,
 				y: 0,
@@ -57,9 +58,9 @@ export default class AdventureScene extends BaseScene {
 			menu.add([txt, icon, textBox])
 
 			params.txt = ''
-			params.card = ''
+			params.card = undefined
 		}
-		
+
 		// Scroll to the given position
 		if (params.scroll) {
 			this.panel.childOY = params.scroll
@@ -198,13 +199,13 @@ export default class AdventureScene extends BaseScene {
 				let params = {
 					scroll: that.panel.childOY,
 					txt: '',
-					card: ''
+					card: undefined
 				}
 
 				let card = getCard(mission.card)
 				if (card !== undefined) {
 					params.txt = card.story
-					params.card = card.name
+					params.card = card
 				}
 
 				that.scene.start("AdventureScene", params)

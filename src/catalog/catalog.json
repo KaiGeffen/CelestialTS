@@ -109,7 +109,7 @@
   {"name": "Tumulus", "id": 17,
     "cost": 5, "points": 4,
     "text": "5:4, +2 if your discard pile has at least 8 cards in it.",
-    "story": "The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat mattered",
+    "story": "The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat there was to know",
     "catalogText": "Tumulus costs 5 mana for 4 points, but is instead worth 6 points if you have at least 8 cards in your discard pile.\n\nTo have 8 cards by round 5, you would have to play 2 cards each round for the first 4 rounds, which is hard to pull off.\n\nAlso, after you've shuffled your discard pile, it will take some time before you can get the full 6 points out of Tumulus.",
     "rarity": 1
   },
