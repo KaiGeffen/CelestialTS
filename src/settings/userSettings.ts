@@ -15,7 +15,7 @@ export class UserSettings {
       mmCode: '',
       volume: 0.3,
       musicVolume: 0.0,
-      animationSpeed: 0.25,
+      animationSpeed: location.port === '4949' ? 1 : 0.25, // Max speed if playing locally
       // Whether the player should pass automatically if there's nothing they can play
       autopass: true,
 

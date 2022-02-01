@@ -1284,6 +1284,9 @@ export class AdventureBuilderScene extends BuilderSceneShell {
     this.btnStart.setOnClick(function() {
       that.startAIMatch(params.opponent, params.id)
     }, true)
+
+    // Add a back button to return to the adventure scene
+    let btnBack = new Button(this, Space.pad, Space.pad, 'Back', this.doBack)
     
     super.postcreate()
   }
@@ -1315,6 +1318,10 @@ export class AdventureBuilderScene extends BuilderSceneShell {
       cardImage.setRequired()
       cardImage.removeOnClick()
     })
+  }
+
+  private doBack(): void {
+    this.scene.start("AdventureScene")
   }
 
   // Overwrite to prevent writing to standard's saved deck
