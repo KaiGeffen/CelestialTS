@@ -13,6 +13,7 @@ export default class ClientState {
 	opponentDeckSize: number
 	discard: Card[][]
 	lastShuffle: Card[][]
+	expended: Card[][]
 	wins: number[]
 	maxMana: number[]
 	mana: number
@@ -48,6 +49,7 @@ export default class ClientState {
 		this.opponentDeckSize = state.opp_deck
 		this.discard = state.pile.map(pile => decodeDeck(pile))
 		this.lastShuffle = state.last_shuffle.map(pile => decodeDeck(pile))
+		this.expended = state.expended.map(cards => decodeDeck(cards))
 		this.wins = state.wins
 		this.maxMana = state.max_mana
 		this.mana = state.mana

@@ -46,8 +46,10 @@ export default class GameScene extends BaseScene {
 	opponentHandContainer: Phaser.GameObjects.Container
 	deckContainer: Phaser.GameObjects.Container
 	discardContainer: Phaser.GameObjects.Container
+	expendContainer: Phaser.GameObjects.Container
 	opponentDeckContainer: Phaser.GameObjects.Container
 	opponentDiscardContainer: Phaser.GameObjects.Container
+	opponentExpendContainer: Phaser.GameObjects.Container
 
 	mulliganContainer: Phaser.GameObjects.Container
 
@@ -137,8 +139,10 @@ export default class GameScene extends BaseScene {
 		this.opponentHandContainer = this.add.container(0, 0)
 		this.deckContainer = this.add.container(0, 0).setVisible(false)
 		this.discardContainer = this.add.container(0, 0).setVisible(false)
+		this.expendContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDiscardContainer = this.add.container(0, 0).setVisible(false)
 		this.opponentDeckContainer = this.add.container(0, 0).setVisible(false)
+		this.opponentExpendContainer = this.add.container(0, 0).setVisible(false)
 
 		this.mulliganContainer = this.add.container(0, 0).setVisible(true)
 
@@ -276,6 +280,12 @@ export default class GameScene extends BaseScene {
 	    this.passContainer.add(this.btnSkip)
 
 	    this.displaySearchingStatus(true)
+
+	    // Debug, expend container
+	    let e = this.input.keyboard.addKey('E')
+	    e.on('down', () => {that.expendContainer.setVisible(!that.expendContainer.visible)})
+	    let r = this.input.keyboard.addKey('R')
+	    r.on('down', () => {that.opponentExpendContainer.setVisible(!that.opponentExpendContainer.visible)})
 
 	    // Debug, autowin
 	    let w = this.input.keyboard.addKey('W')
@@ -597,18 +607,26 @@ export default class GameScene extends BaseScene {
 		this.btnRecap.setVisible(!isRecap && this.lastRecap.length > 0)
 		this.btnSkip.setVisible(isRecap)
 
-		// Deck, discard piles
+		// Deck, discard, expended piles
 		for (var i = 0; i < state.deck.length; i++) {
 			this.addCard(state.deck[i], i, this.deckContainer)
 		}
+		console.log(state)
 		for (var i = 0; i < state.discard[0].length; i++) {
 			this.addCard(state.discard[0][i], i, this.discardContainer)
 		}
+		for (var i = 0; i < state.expended[0].length; i++) {
+			this.addCard(state.expended[0][i], i, this.expendContainer)
+		}
+
 		for (var i = 0; i < state.lastShuffle[1].length; i++) {
 			this.addCard(state.lastShuffle[1][i], i, this.opponentDeckContainer)
 		}
 		for (var i = 0; i < state.discard[1].length; i++) {
 			this.addCard(state.discard[1][i], i, this.opponentDiscardContainer)
+		}
+		for (var i = 0; i < state.expended[1].length; i++) {
+			this.addCard(state.expended[1][i], i, this.opponentExpendContainer)
 		}
 
 		// Stacks
@@ -1502,6 +1520,8 @@ export default class GameScene extends BaseScene {
 			case this.discardContainer:
 			case this.opponentDeckContainer:
 			case this.opponentDiscardContainer:
+			case this.expendContainer:
+			case this.opponentExpendContainer:
 				// Each row contains 15 cards, then next row of cards is below with some overlap
 				x = Space.pad + Space.cardSize/2 + (Space.cardSize - Space.stackOverlap)  * (index%15)
 				y = Math.floor(index / 15) * (Space.cardSize - Space.stackOffset) + Space.windowHeight/2
