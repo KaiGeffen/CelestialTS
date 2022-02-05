@@ -123,6 +123,7 @@
   {"name": "Stalker", "id": 19,
     "cost": 6, "points": 3,
     "text": "6:3.\nCosts X, where X is the number of cards in your opponent's hand.",
+    "story": "Your pain blooms like flowers on a misty day.\nI breathe it in.\nI can rest now.",
     "catalogText": "Stalker's cost is equal to the number of cards in your opponent's hand, and it's worth 3 points.\n\nIf you can force your opponent to discard some of their hand, Stalker could come out as early as round 2, beating just about anything.\n\nUnfortunately, your opponent can play around this by passing more frequently.",
     "rarity": 2
   },

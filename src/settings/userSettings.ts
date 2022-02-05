@@ -34,7 +34,7 @@ export class UserSettings {
       inventory: Array(baseCards.length).fill(false),
 
       // List of each mission by its id, and if the player has completed it
-      completedMissions: Array(200).fill(false),
+      completedMissions: Array(100).fill(true), // Tutorial complete
       // inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
 
       decks: [
