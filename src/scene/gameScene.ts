@@ -611,7 +611,6 @@ export default class GameScene extends BaseScene {
 		for (var i = 0; i < state.deck.length; i++) {
 			this.addCard(state.deck[i], i, this.deckContainer)
 		}
-		console.log(state)
 		for (var i = 0; i < state.discard[0].length; i++) {
 			this.addCard(state.discard[0][i], i, this.discardContainer)
 		}
@@ -840,6 +839,7 @@ export default class GameScene extends BaseScene {
 
 			case Zone.Hand:
 			if (player === 0) {
+				// TODO Include the index, and use that instead of '0'
 				card = that.addCard(animation.card, 0, that.handContainer, player)
 			} else {
 				card = that.addCard(animation.card, 0, that.opponentHandContainer, player)

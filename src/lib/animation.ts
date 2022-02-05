@@ -35,63 +35,29 @@ export class Animation {
 	}
 }
 
-function decodeAnimation(from: string, to: string, target: string, extraTarget: string): Animation {
-	let dict = {
-		'Hand': Zone.Hand,
-		'Deck': Zone.Deck,
-		'Discard': Zone.Discard,
-		'Story': Zone.Story,
-		'Gone': Zone.Gone,
+function decodeAnimation(animation: animationData): Animation {
+	let card = animation.card === null ? null : decodeCard(animation.card)
 
-		'Mulligan': Zone.Mulligan,
-		'Shuffle': Zone.Shuffle,
-		'Status': Zone.Status,
-		'Transform': Zone.Transform,
-	}
-
-	// If going to your hand or story, the target is referenced by index, otherwise it's a card
-	let card: Card = undefined
-	let index: number = undefined
-	let index2: number = undefined
-	let status: Status = undefined
-
-	// TODO This is hacky, just send all fields from server
-	if (dict[to] === Zone.Hand || dict[from] === Zone.Mulligan || dict[to] === Zone.Story) {
-		index = parseInt(target)
-
-
-		if (dict[from] === dict[to]) {
-			card = decodeCard(extraTarget)
-		}
-	}
-	else if (dict[from] === Zone.Status) {
-		status = Status[target]
-	}
-	else if (dict[from] === dict[to]) {
-		card = decodeCard(target)
-	}
-	else {
-		card = decodeCard(target)
-	}
-
-	// If coming from the story, the target has an additional index for its position therein
-	if (dict[from] === Zone.Story) {
-		index2 = parseInt(extraTarget)
-	}
-	else if (dict[from] === Zone.Transform) {
-		card = decodeCard(extraTarget)
-	}
+	let status = animation.zone_from === 'Status' ? Status[animation.index] : null
 
 	// return dict[s]
 	return new Animation(
-		dict[from],
-		dict[to],
+		animation.zone_from,
+		animation.zone_to,
 		card,
-		index,
-		index2,
+		animation.index,
+		animation.index2,
 		status)
 }
 
-export function decodeAnimationList(l: [from: string, to: string, target: string, extraTarget: string][]): Animation[] {
-	return l.map(s => decodeAnimation(...s))
+interface animationData {
+	zone_from,
+	zone_to,
+	card,
+	index,
+	index2
+}
+
+export function decodeAnimationList(l: animationData[]): Animation[] {
+	return l.map(animation => decodeAnimation(animation))
 }
