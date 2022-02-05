@@ -827,6 +827,7 @@ export default class GameScene extends BaseScene {
 
 	// Display an animation which is any card moving between zones that doesn't end in the hand
 	private displayMovementAnimation(animation: Animation, delay: number, player: number, that): void {
+		console.log(animation)
 		let card: CardImage
 
 		switch(animation.from) {

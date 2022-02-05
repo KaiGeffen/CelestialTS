@@ -3,6 +3,8 @@ import { decodeCard } from './codec'
 import { Status } from './status'
 
 
+// TODO Clean up redundant types
+
 export enum Zone {
 	Hand,
 	Deck,
@@ -36,14 +38,27 @@ export class Animation {
 }
 
 function decodeAnimation(animation: animationData): Animation {
+	const dict = {
+		'Hand': Zone.Hand,
+		'Deck': Zone.Deck,
+		'Discard': Zone.Discard,
+		'Story': Zone.Story,
+		'Gone': Zone.Gone,
+
+		'Mulligan': Zone.Mulligan,
+		'Shuffle': Zone.Shuffle,
+		'Status': Zone.Status,
+		'Transform': Zone.Transform,
+	}
+
 	let card = animation.card === null ? null : decodeCard(animation.card)
 
 	let status = animation.zone_from === 'Status' ? Status[animation.index] : null
 
 	// return dict[s]
 	return new Animation(
-		animation.zone_from,
-		animation.zone_to,
+		dict[animation.zone_from],
+		dict[animation.zone_to],
 		card,
 		animation.index,
 		animation.index2,
