@@ -827,7 +827,6 @@ export default class GameScene extends BaseScene {
 
 	// Display an animation which is any card moving between zones that doesn't end in the hand
 	private displayMovementAnimation(animation: Animation, delay: number, player: number, that): void {
-		console.log(animation)
 		let card: CardImage
 
 		switch(animation.from) {
@@ -840,10 +839,9 @@ export default class GameScene extends BaseScene {
 
 			case Zone.Hand:
 			if (player === 0) {
-				// TODO Include the index, and use that instead of '0'
-				card = that.addCard(animation.card, 0, that.handContainer, player)
+				card = that.addCard(animation.card, animation.index, that.handContainer, player)
 			} else {
-				card = that.addCard(animation.card, 0, that.opponentHandContainer, player)
+				card = that.addCard(animation.card, animation.index, that.opponentHandContainer, player)
 			}
 			break
 

@@ -8,6 +8,7 @@
   {"name": "Bone Knife", "id": 1,
     "cost": 1, "points": 0,
     "text": "1:0, your opponent discards the leftmost card of their hand.",
+    "story": "Hating you soothes me.\nI have a point now\nI am no longer alone, scattered \nbut trained wholly\nOn the prospect of you\nwrithing",
     "catalogText": "Bone Knife costs 1 mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard.",
     "rarity": 1
   },
@@ -103,6 +104,7 @@
   {"name": "Chimney", "id": 16,
     "cost": 5, "points": 3,
     "text": "5:3, your opponent puts the leftmost card of their hand on top of their deck.",
+    "story": "You must love your chains just as I do\nYou must need them enough never to leave\nme",
     "catalogText": "Chimney costs 5 mana for just 2 points, but it also forces your opponent to put the leftmost card of their hand on top of their deck.\n\nThis is even better than Bone Knife for only 5 extra mana.\n\nIf the 2 points are enough to win you a round, this can get you card advantage. Maybe.",
     "rarity": 1
   },
