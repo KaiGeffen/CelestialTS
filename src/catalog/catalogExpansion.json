@@ -59,7 +59,7 @@
   },
   {"name": "Desert", "id": 49,
     "cost": 2, "points": 0,
-    "text": "2:0, if this is the last card in the story, +3. Otherwise, return the last card in the story to its owner's hand.",
+    "text": "2:0, worth +3 points if this is the last card in the story. Otherwise, return the last card in the story to its owner's hand.",
     "rarity": 0
   },
   {"name": "Fish Bones", "id": 64,
@@ -112,7 +112,7 @@
   },
   {"name": "Nightmare", "id": 68,
     "cost": 3, "points": 0,
-    "text": "3:0, Visible, +4 if you have more cards in hand than your opponent.",
+    "text": "3:0, Visible, worth +4 points if you have more cards in hand than your opponent.",
     "story": "A wide lightless gaping hole\nDraws me chest first\nI struggle to find myself\nLoss is staring me down",
     "rarity": 1
   },
@@ -130,7 +130,7 @@
 
   {"name": "Pelican", "id": 40,
     "cost": 4, "points": 3,
-    "text": "4:3, remove from the game each card in your hand that costs 0 or 1. +1 for each card removed.",
+    "text": "4:3, remove from the game each card in your hand that costs 0 or 1. Worth +1 point for each card removed.",
     "rarity": 0
   },
   {"name": "Generator", "id": 53,
@@ -151,7 +151,7 @@
   },
   {"name": "Cogsplosion", "id": 59,
     "cost": 4, "points": 0,
-    "text": "4:0, discard the leftmost Robot from your hand. +X where X is that Robot's point value.",
+    "text": "4:0, discard the leftmost Robot from your hand. Worth +X points, where X is that Robot's point value.",
     "rarity": 2
   },
 
@@ -162,7 +162,7 @@
   },
   {"name": "Conquer", "id": 67,
     "cost": 5, "points": 2,
-    "text": "5:2, Visible, +X, where X is the cost of the next card in the story.",
+    "text": "5:2, Visible, worth +X points, where X is the cost of the next card in the story.",
     "rarity": 1
   },
   {"name": "Phoenix", "id": 51,

@@ -22,11 +22,11 @@
 		"x": true
 	},
 	{"key": "Nourish",
-		"text": "Nourish X - The next card you resolve is worth +X.",
+		"text": "Nourish X - The next card you resolve is worth +X points.",
 		"x": true
 	},
 	{"key": "Starve",
-		"text": "Starve X - The next card you resolve is worth -X.",
+		"text": "Starve X - The next card you resolve is worth -X points.",
 		"x": true
 	},
 	{"key": "Build",

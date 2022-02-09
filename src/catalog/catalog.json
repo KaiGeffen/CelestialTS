@@ -40,14 +40,14 @@
 
   {"name": "Dash", "id": 6,
     "cost": 2, "points": 3,
-    "text": "2:3, -1 for each card before this in the story.",
+    "text": "2:3, worth -1 point for each card before this in the story.",
     "story": "I look around only to remind me: Move on! Fast!",
     "catalogText": "Dash costs 2 mana for 3 points, which means it beats most other 2 mana cards.\n\nHowever, because of its ability, it will be worth 1 less point for every card that was played before it in a round.\n\nIf you have more wins than your opponent, you will start the round with priority, and can play Dash as your first card for maximum points.",
     "rarity": 0
   },
   {"name": "Swift", "id": 7,
     "cost": 2, "points": 2,
-    "text": "2:2, Visible, Fleeting, +1 if the next card costs 1.",
+    "text": "2:2, Visible, Fleeting, worth +1 point if the next card in the story costs 1.",
     "rarity": 0
   },
   {"name": "Gears", "id": 8,
@@ -76,7 +76,7 @@
   },
   {"name": "Gift", "id": 12,
     "cost": 3, "points": 3,
-    "text": "3:3, both players draw 1.",
+    "text": "3:3, each player draws a card.",
     "catalogText": "Gift costs 3 mana for 3 points, and also makes both players draw 1.\n\nIf your opponent doesn't have enough room in their hand, they won't end up drawing a card, and Gift becomes extra efficient.\n\nAgainst certain combo decks, gift can also break up what they are trying to do by drawing them a card at the wrong time.",
     "rarity": 0
   },
@@ -110,7 +110,7 @@
   },
   {"name": "Tumulus", "id": 17,
     "cost": 5, "points": 4,
-    "text": "5:4, +2 if your discard pile has at least 8 cards in it.",
+    "text": "5:4, worth +2 points if your discard pile has at least 8 cards in it.",
     "story": "The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat there was to know",
     "catalogText": "Tumulus costs 5 mana for 4 points, but is instead worth 6 points if you have at least 8 cards in your discard pile.\n\nTo have 8 cards by round 5, you would have to play 2 cards each round for the first 4 rounds, which is hard to pull off.\n\nAlso, after you've shuffled your discard pile, it will take some time before you can get the full 6 points out of Tumulus.",
     "rarity": 1
@@ -118,7 +118,7 @@
 
   {"name": "Uprising", "id": 18,
     "cost": 6, "points": 3,
-    "text": "6:3, +1 for each card before this in the story.",
+    "text": "6:3, worth +1 point for each card before this in the story.",
     "catalogText": "Uprising costs 6 mana for 3 points, but is also worth an extra point for each card before it in the story.\n\nTry to pass at strategic times, like when your opponent thinks they need to play more to catch up to you, so that this card can be played as late in the round as possible.\n\nResolving Uprising at the end of a round is hard to beat.",
     "rarity": 1
   },
