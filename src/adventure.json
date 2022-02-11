@@ -182,8 +182,8 @@
   },
   {
     "name": "Sunflower",
-    "id": 126,
-    "prereq": [[22]],
+    "id": 127,
+    "prereq": [[126]],
     "type": "card",
     "card": 69
   },
