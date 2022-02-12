@@ -140,7 +140,7 @@
   },
   {"name": "Gentle Rain", "id": 71,
     "cost": 4, "points": 2,
-    "text": "4:2, Nourish X, where X is the number of cards you've drawn this round.",
+    "text": "4:2, Nourish 1 for each card you've drawn this round.",
     "catalogText": "Gentle Rain costs 4 mana for 1 point, but will also Nourish you equal to the number of cards you drew this round.\n\nThis includes the 2 cards that you drew at the start of the round, assuming your hand wasn't full.\n\nIt also includes any cards that you drew or tutored because of cards that resolved before it in the current round, so try to land a full Fishing Boat to get the most out of this effect.",
     "rarity": 3
   },

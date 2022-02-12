@@ -128,7 +128,7 @@
     "card": 65
   },
   {
-    "name": "Birds Bonus 1 - Shining Sun",
+    "name": "Birds Bonus 1 - Sun",
     "id": 120,
     "prereq": [[105]],
     "type": "mission",
@@ -143,9 +143,9 @@
     "card": 56
   },
   {
-    "name": "Birds Bonus 2 - Adonis",
+    "name": "Birds Bonus 2 - Dew, after Sun, Cling, 1 of the 2-tiers",
     "id": 122,
-    "prereq": [[105, 37]],
+    "prereq": [[121, 207, 306], [121, 207, 406]],
     "type": "mission",
     "deck": "21:20:51:63:63",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -158,11 +158,11 @@
     "card": 63
   },
   {
-    "name": "Birds Bonus 3 - Mia",
+    "name": "Birds Bonus 3 - Gamecock, after dagger, dew, impulse, boat",
     "id": 124,
     "prereq": [[105, 51]],
     "type": "mission",
-    "deck": "51:40:1:1:1",
+    "deck": "51:40:40:32:63:1:3",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
   },
   {
@@ -173,7 +173,7 @@
     "card": 40
   },
   {
-    "name": "Birds Bonus 4 - Jude",
+    "name": "Birds Bonus 4 - Sunflower",
     "id": 126,
     "prereq": [[105, 76]],
     "type": "mission",
