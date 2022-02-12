@@ -4,11 +4,6 @@
     "text": "0:0.\nWhen played, gain Sight 4.\nAt the start of each round, if this is the top of your discard pile, gain Sight 1.",
     "rarity": 0
   },
-  {"name": "Kneel", "id": 66,
-    "cost": 0, "points": 0,
-    "text": "0:0, Fleeting, discard the leftmost card of your hand, draw a card that costs 7.",
-    "rarity": 0
-  },
 
   {"name": "Nectar", "id": 25,
     "cost": 1, "points": 0,
@@ -149,11 +144,6 @@
     "text": "4:2, draw 2.\nCosts X less, where X is the number of times you've passed this round.",
     "rarity": 1
   },
-  {"name": "Cogsplosion", "id": 59,
-    "cost": 4, "points": 0,
-    "text": "4:0, discard the leftmost Robot from your hand. Worth +X points, where X is that Robot's point value.",
-    "rarity": 2
-  },
 
   {"name": "Heron", "id": 65,
     "cost": 5, "points": 0,
@@ -169,11 +159,6 @@
     "cost": 5, "points": 5,
     "text": "5:5, Visible, Fleeting, create a ${4} in your hand.",
     "rarity": 0
-  },
-  {"name": "Lotus", "id": 42,
-    "cost": 5, "points": 0,
-    "text": "5:0, Inspire 2. If this is your last card in the story, set both player's points to 0.",
-    "rarity": 2
   },
 
   {"name": "Symbiosis", "id": 57,
@@ -202,11 +187,6 @@
     "rarity": 3
   },
 
-  {"name": "Enrage", "id":47,
-    "cost": 8, "points": 2,
-    "text": "8:2, give each card later in the story -X, where X is its cost.\nWhen played, give each card ealier in the story -X.\n(This effect is temporary)",
-    "rarity": 2
-  },
   {"name": "Sun", "id": 56,
     "cost": 8, "points": 8,
     "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, gain Inspired 1.",
