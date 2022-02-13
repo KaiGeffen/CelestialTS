@@ -4,7 +4,7 @@
 		"x": false
 	},
 	{"key": "Visible",
-		"text": "Visible - This card is visible to your opponent while in the story.",
+		"text": "Visible - Both players can see this card while it is in the story.",
 		"x": false
 	},
 	{"key": "Sight",
@@ -30,11 +30,7 @@
 		"x": true
 	},
 	{"key": "Build",
-		"text": "Build X - If you have a robot in hand, give it +X. Otherwise create a 0:X Fleeting Robot in hand.",
-		"x": true
-	},
-	{"key": "Tutor",
-		"text": "Tutor X - Draw the top card of your deck that costs X, if there is one.",
+		"text": "Build X - If you have a Robot in hand, increase its points by X. Otherwise create a 0:X Fleeting Robot in hand.",
 		"x": true
 	}
 ]
