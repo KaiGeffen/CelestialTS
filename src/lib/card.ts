@@ -3,7 +3,6 @@ import { Color } from "../settings/settings"
 import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
 import { Rarity } from "./rarity"
-import { baseCards } from "../catalog/catalog"
 
 interface CardData {
   name: string
@@ -102,12 +101,6 @@ export default class Card {
     
     const rarityText = ['Common', 'Uncommon', 'Rare', 'Legend']
     result += `${rarityText[this.rarity]} `
-    
-    if (baseCards.includes(this)) {
-      result += 'Base '
-    } else {
-      result += 'Expansion '
-    }
 
     result += '[/size]'
 

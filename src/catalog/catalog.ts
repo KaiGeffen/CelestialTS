@@ -1,7 +1,5 @@
 import data from "./catalog.json"
-import expansionData from "./catalogExpansion.json"
 import tokenData from "./tokens.json"
-// import developmentData from "./catalogDevelopment.json"
 
 import Card from "../lib/card"
 
@@ -12,13 +10,7 @@ function dataToCards(_data: any[]): Card[] {
 
 export const baseCards: Card[] = dataToCards(data)
 
-let availableCards
-if (location.port === '4949') {
-  // availableCards = baseCards.concat(dataToCards(expansionData)).concat(dataToCards(developmentData))
-  availableCards = baseCards.concat(dataToCards(expansionData))
-} else {
-  availableCards = baseCards.concat(dataToCards(expansionData))
-}
+let availableCards = baseCards
 
 
 // Collectible cards are sorted by cost
