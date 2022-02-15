@@ -283,8 +283,8 @@
   },
 
   {"name": "Pelican", "id": 40,
-    "cost": 4, "points": 3,
-    "text": "4:3, remove from the game each card in your hand that costs 0 or 1. Worth +1 point for each card removed.",
+    "cost": 4, "points": 4,
+    "text": "4:4, Visible, remove from the game each card in your hand that costs 0 or 1. Worth +1 point for each card removed.",
     "rarity": 0
   },
   {"name": "Generator", "id": 53,
@@ -306,7 +306,7 @@
 
   {"name": "Heron", "id": 65,
     "cost": 5, "points": 0,
-    "text": "5:0, set both player's points to 0.\nCosts X, where X is the number of cards in your discard pile.",
+    "text": "5:0, Visible, set both player's points to 0.\nCosts X, where X is the number of cards in your discard pile.",
     "rarity": 1
   },
   {"name": "Conquer", "id": 67,
