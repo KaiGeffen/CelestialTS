@@ -55,7 +55,7 @@ export default class PreloadClass extends Phaser.Scene {
 		// Ensure that every user setting is either set, or set it to its default value
 		UserSettings._ensure()
 
-		this.renderSigninButton()
+		// this.renderSigninButton()
 
 		this.load.path = "assets/"
 
