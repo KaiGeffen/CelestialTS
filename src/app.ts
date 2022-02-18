@@ -1,4 +1,6 @@
 import "phaser"
+
+import MenuScene from "./scene/menuScene"
 import PreloadScene from "./scene/preloadScene"
 import WelcomeScene from "./scene/welcomeScene"
 import GameScene from "./scene/gameScene"
@@ -33,7 +35,9 @@ const config: Phaser.Types.Core.GameConfig = {
   dom: {
     createContainer: true
   },
-  scene: [PreloadScene, WelcomeScene, CreditsScene, StoreScene,
+  scene: [PreloadScene, WelcomeScene,
+  MenuScene,
+  CreditsScene, StoreScene,
   ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
   GameScene, DraftMatchScene, AdventureBuilderScene,
