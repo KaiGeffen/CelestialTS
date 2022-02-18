@@ -37,7 +37,7 @@ export default class AdventureScene extends BaseScene {
 
 			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0)
 			let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
-			let textBox = this['rexUI'].add['textBox']({
+			let textBox = this.rexUI.add.textBox({
 				x: 0,
 				y: 0,
 				width: width,
@@ -76,7 +76,7 @@ export default class AdventureScene extends BaseScene {
 		let width = Space.windowWidth - Space.pad*2
 		let height = Space.windowHeight - Space.pad*2
 
-		let fullPanel = this['rexUI'].add.scrollablePanel({
+		let fullPanel = this.rexUI.add.scrollablePanel({
 			x: x,
 			y: y,
 			width: width,
@@ -84,10 +84,10 @@ export default class AdventureScene extends BaseScene {
 
 			scrollMode: 0,
 
-			background: this['rexUI'].add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
+			background: this.rexUI.add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
 
 			panel: {
-				child: this['rexUI'].add.fixWidthSizer({
+				child: this.rexUI.add.fixWidthSizer({
 					space: {
 						// left: Space.pad,
 						right: Space.pad - 10,
@@ -101,8 +101,8 @@ export default class AdventureScene extends BaseScene {
 
 			slider: {
 				input: 'drag',
-				track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-				thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+				track: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
+				thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 			},
 
 			mouseWheelScroller: {
@@ -110,7 +110,7 @@ export default class AdventureScene extends BaseScene {
 				  speed: 1
 				},
 
-				header: this['rexUI'].add.fixWidthSizer({
+				header: this.rexUI.add.fixWidthSizer({
 					height: 100,
 					align: 'center',
 					space: {
@@ -122,7 +122,7 @@ export default class AdventureScene extends BaseScene {
 						line: Space.pad
 					}
 				}).addBackground(
-				this['rexUI'].add.roundRectangle(0, 0, 0, 0,
+				this.rexUI.add.roundRectangle(0, 0, 0, 0,
 					{tl: 0, tr: 16, bl: 0, br: 16},
 					Color.menuHeader),
 				{right: 10, bottom: 10}

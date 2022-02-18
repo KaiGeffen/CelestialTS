@@ -314,7 +314,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     const scene = this.scene
     const width = Space.iconSeparation + Space.pad
 
-    return scene['rexUI'].add.scrollablePanel({
+    return scene.rexUI.add.scrollablePanel({
       x: 0,
       y: 10,
       width: width,
@@ -323,22 +323,16 @@ class DeckRegion extends Phaser.GameObjects.Container {
       background: scene.add.rectangle(0, 0, width, Space.windowHeight, Color.menuHeader),
 
       panel: {
-        child: scene['rexUI'].add.fixWidthSizer({
-          orientation: 'vertical',
-          anchor: 'centerX'
-        }).addBackground(
+        child: scene.rexUI.add.fixWidthSizer().addBackground(
         scene.add.rectangle(0, 0, width, Space.windowHeight, Color.menuBackground)
       )},
 
-      header: scene['rexUI'].add.label({
+      header: scene.rexUI.add.label({
                 orientation: 0,
                 text: scene.add.text(0, 0, '  Decks:', Style.announcement),
             }),
 
-      footer: scene['rexUI'].add.fixWidthSizer({
-          orientation: 'vertical',
-          anchor: 'centerX'
-        }),
+      footer: scene.rexUI.add.fixWidthSizer(),
 
       space: {
         top: 10,
@@ -681,7 +675,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
   private createPanel(x, width, height) {
     let scene = this.scene
 
-    return scene['rexUI'].add.scrollablePanel({
+    return scene.rexUI.add.scrollablePanel({
       x: x,
       y: 0,
       width: width,
@@ -689,10 +683,10 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
       scrollMode: 0,
 
-      background: scene['rexUI'].add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
+      background: scene.rexUI.add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
 
       panel: {
-        child: scene['rexUI'].add.fixWidthSizer({
+        child: scene.rexUI.add.fixWidthSizer({
           space: {
             // left: Space.pad,
             right: Space.pad - 10,
@@ -706,8 +700,8 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
       slider: {
         input: 'drag',
-        track: scene['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-        thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+        track: scene.rexUI.add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
+        thumb: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
       },
 
       // mouseWheelScroller: {
@@ -715,7 +709,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       //   speed: 1
       // },
 
-      header: scene['rexUI'].add.fixWidthSizer({
+      header: scene.rexUI.add.fixWidthSizer({
         height: 100,
         align: 'center',
         space: {
@@ -727,7 +721,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
           line: Space.pad
         }
         }).addBackground(
-          scene['rexUI'].add.roundRectangle(0, 0, 0, 0,
+          scene.rexUI.add.roundRectangle(0, 0, 0, 0,
             {tl: 0, tr: 16, bl: 0, br: 16},
             Color.menuHeader),
           {right: 10, bottom: 10}

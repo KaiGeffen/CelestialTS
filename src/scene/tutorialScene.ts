@@ -25,7 +25,7 @@ class TutorialScene extends GameScene {
 		this.explanations.forEach(ex => ex.seen = false)
 
 		// Add the tutorial text
-		this.txtTutorial = this['rexUI'].add['textBox']({
+		this.txtTutorial = this.rexUI.add['textBox']({
 			x: Space.pad,
 			y: Space.pad,
 			text: this.add['rexBBCodeText'](0, 0, '', BBStyle.tutorial)

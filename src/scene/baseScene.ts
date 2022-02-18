@@ -1,7 +1,10 @@
 import "phaser"
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
+
 
 
 export default class BaseScene extends Phaser.Scene {
@@ -12,6 +15,9 @@ export default class BaseScene extends Phaser.Scene {
 	sliderAnimationSpeed: any
 	private btnMenu: Button
 	private btnDebug: Button
+
+	// Allows for typing objects in RexUI library
+	rexUI: RexUIPlugin
 
 	// Message explaining to user what they did wrong
 	txtError: Phaser.GameObjects.Text
@@ -97,13 +103,12 @@ export default class BaseScene extends Phaser.Scene {
 
 		let txtVolumeHint = this.add.text(x, y, 'Volume:', Style.announcement).setOrigin(0, 0.5)
 
-		this.sliderVolume = this['rexUI'].add.slider({
+		this.sliderVolume = this.rexUI.add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-			value: this.sound.volume,
 
-            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('volume', value)
@@ -115,6 +120,7 @@ export default class BaseScene extends Phaser.Scene {
             },
             input: 'drag',
         })
+        .setValue(this.sound.volume)
         .setOrigin(0, 0.5)
         .layout()
         
@@ -122,13 +128,12 @@ export default class BaseScene extends Phaser.Scene {
         y += 90
         let txtMusicHint = this.add.text(x, y, 'Music:', Style.announcement).setOrigin(0, 0.5)
 
-		this.sliderMusic = this['rexUI'].add.slider({
+		this.sliderMusic = this.rexUI.add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-			value: UserSettings._get('musicVolume'),
 
-            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('musicVolume', value)
@@ -144,6 +149,7 @@ export default class BaseScene extends Phaser.Scene {
             },
             input: 'drag',
         })
+        .setValue(UserSettings._get('musicVolume'))
         .setOrigin(0, 0.5)
         .layout()
 
@@ -151,13 +157,12 @@ export default class BaseScene extends Phaser.Scene {
         y += 90
         let txtSpeedHint = this.add.text(x, y, 'Speed:', Style.announcement).setOrigin(0, 0.5)
 
-		this.sliderAnimationSpeed = this['rexUI'].add.slider({
+		this.sliderAnimationSpeed = this.rexUI.add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-			value: UserSettings._get('animationSpeed'),
 
-            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('animationSpeed', value)
@@ -168,6 +173,7 @@ export default class BaseScene extends Phaser.Scene {
             },
             input: 'drag',
         })
+        .setValue(UserSettings._get('animationSpeed'))
         .setOrigin(0, 0.5)
         .layout()
 
