@@ -10,9 +10,9 @@ import Button from "../lib/button"
 export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
 	rulebookContainer: Phaser.GameObjects.Container
-	sliderVolume: any
-	sliderMusic: any
-	sliderAnimationSpeed: any
+	sliderVolume: RexUIPlugin.Slider
+	sliderMusic: RexUIPlugin.Slider
+	sliderAnimationSpeed: RexUIPlugin.Slider
 	private btnMenu: Button
 	private btnDebug: Button
 
@@ -20,7 +20,7 @@ export default class BaseScene extends Phaser.Scene {
 	rexUI: RexUIPlugin
 
 	// Message explaining to user what they did wrong
-	txtError: Phaser.GameObjects.Text
+	txtError: RexUIPlugin.BBCodeText
 
 	// A menu is closing currently, so the main menu should not open with this esc event
 	static menuClosing: boolean = false
@@ -53,7 +53,7 @@ export default class BaseScene extends Phaser.Scene {
 		this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
 
 	    // Error text, for when the user does something wrong they get an explanation
-	    this.txtError = this.add['rexBBCodeText'](Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
+	    this.txtError = this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
 	    	.setOrigin(0.5)
 	    	.setDepth(50)
 	    	.setVisible(false)
@@ -93,7 +93,7 @@ export default class BaseScene extends Phaser.Scene {
 		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, Color.menuBackground).setAlpha(0.95)
+		let visibleBackground = this.rexUI.add.roundRectangle(Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, Color.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
 		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 
