@@ -29,9 +29,8 @@ export default class BaseScene extends Phaser.Scene {
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		esc.removeListener('down')
 
-		this.scene.launch('MenuScene', {
-			title: 'Hello World'
-		})
+		// TODO Implement Menu scene
+		// this.scene.launch('MenuScene', {menu: 'options'})
 	}
 
 	create(params = {}): void {

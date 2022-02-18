@@ -2,6 +2,7 @@ import "phaser"
 import { Space, Color } from '../settings/settings'
 import BaseScene from '../scene/baseScene'
 
+// TODO Remove and convert all to the new menus implementation
 
 export default class Menu {
 	container: Phaser.GameObjects.Container

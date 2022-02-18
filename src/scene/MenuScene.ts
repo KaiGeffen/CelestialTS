@@ -1,11 +1,10 @@
 import "phaser"
 
 import { Style, Color, Space } from "../settings/settings"
-import OptionsMenu from "./menus/optionsMenu"
+import { createMenu } from "../menus/menu"
 
-// TODO Describe
-
-// If active, the menu that is visible atop any other scene
+// The scene which shows whichever menu is open, if any
+// on top of the other scenes
 export default class MenuScene extends Phaser.Scene {
 	constructor() {
 		super({
@@ -16,11 +15,11 @@ export default class MenuScene extends Phaser.Scene {
 	create(params): void {
 		this.addBackground()
 
-		this.addTitle(params.title)
+		// this.addTitle(params.title)
 
-		this.addMessage(params.message)
+		// this.addMessage(params.message)
 
-		this.addContents()
+		this.addContents(params.menu)
 
 		this.scene.bringToTop()
 	}
@@ -42,8 +41,8 @@ export default class MenuScene extends Phaser.Scene {
 	}
 
 	private addBackground() {
-		const x = Space.windowWidth/2
-		const y = Space.windowHeight/2
+		const x = Space.windowWidth / 2
+		const y = Space.windowHeight / 2
 
 		// Invisible background rectangles, stops other containers from being clicked
 		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.2)
@@ -57,7 +56,7 @@ export default class MenuScene extends Phaser.Scene {
 		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 	}
 
-	private addContents() {
-		new OptionsMenu(this)
+	private addContents(menuTitle: string) {
+		createMenu(this, menuTitle)
 	}
 }
