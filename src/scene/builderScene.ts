@@ -249,8 +249,8 @@ class BuilderSceneShell extends BaseScene {
         25)
 
       let txtTitle = this.add.text(0, -110, 'Welcome!', Style.announcement).setOrigin(0.5)
-      let txtMessage = this.add.rexBBCodeText(0, -50, msgText, Style.basic).setOrigin(0.5, 0)
-      
+      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, Style.basic).setOrigin(0.5, 0)
+
       menu.add([txtTitle, txtMessage])
     }
   }
