@@ -1,6 +1,7 @@
 import "phaser"
 
 import { Style, Color, Space } from "../settings/settings"
+import OptionsMenu from "./menus/optionsMenu"
 
 // TODO Describe
 
@@ -18,6 +19,8 @@ export default class MenuScene extends Phaser.Scene {
 		this.addTitle(params.title)
 
 		this.addMessage(params.message)
+
+		this.addContents()
 
 		this.scene.bringToTop()
 	}
@@ -38,7 +41,6 @@ export default class MenuScene extends Phaser.Scene {
 			Style.basic).setOrigin(0.5)
 	}
 
-
 	private addBackground() {
 		const x = Space.windowWidth/2
 		const y = Space.windowHeight/2
@@ -53,5 +55,9 @@ export default class MenuScene extends Phaser.Scene {
 		).setAlpha(0.95)
 		visibleBackground.setInteractive()
 		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
+	}
+
+	private addContents() {
+		new OptionsMenu(this)
 	}
 }
