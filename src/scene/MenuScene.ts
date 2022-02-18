@@ -13,11 +13,11 @@ export default class MenuScene extends Phaser.Scene {
 	}
 
 	create(params): void {
+		this.addBackground()
+
 		this.addTitle(params.title)
 
 		this.addMessage(params.message)
-
-		this.addBackground()
 
 		this.scene.bringToTop()
 	}
@@ -35,19 +35,22 @@ export default class MenuScene extends Phaser.Scene {
 			Space.windowWidth / 2,
 			Space.windowHeight / 2,
 			s,
-			Style.title).setOrigin(0.5)
+			Style.basic).setOrigin(0.5)
 	}
 
 
 	private addBackground() {
+		const x = Space.windowWidth/2
+		const y = Space.windowHeight/2
+
 		// Invisible background rectangles, stops other containers from being clicked
-		let invisBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0.5)
+		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.2)
 		invisBackground.setInteractive()
 		invisBackground.on('pointerdown', () => this.scene.stop())
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](0, 0, 300, 200, 30, Color.menuBackground,
-		).setAlpha(0.95).setOrigin(0.5)
+		let visibleBackground = this.add['rexRoundRectangle'](x, y, 1000, 600, 30, Color.menuBackground,
+		).setAlpha(0.95)
 		visibleBackground.setInteractive()
 		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 	}
