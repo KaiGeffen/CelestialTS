@@ -12,6 +12,8 @@ import BaseScene from "./baseScene"
 import PrebuiltDeck from "../catalog/prebuiltDecks"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
+import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
+
 
 const maxCostFilter: number = 7
 
@@ -247,7 +249,7 @@ class BuilderSceneShell extends BaseScene {
         25)
 
       let txtTitle = this.add.text(0, -110, 'Welcome!', Style.announcement).setOrigin(0.5)
-      let txtMessage = this.add['rexBBCodeText'](0, -50, msgText, Style.basic).setOrigin(0.5, 0)
+      let txtMessage = this.add.rexBBCodeText(0, -50, msgText, Style.basic).setOrigin(0.5, 0)
       
       menu.add([txtTitle, txtMessage])
     }
@@ -310,7 +312,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
   }
 
   // Create and return the scrollable panel where premade decks go
-  private createDeckpanel() {
+  private createDeckpanel() { // TODO Type
     const scene = this.scene
     const width = Space.iconSeparation + Space.pad
 
