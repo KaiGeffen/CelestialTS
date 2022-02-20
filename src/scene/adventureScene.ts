@@ -211,5 +211,10 @@ export default class AdventureScene extends BaseScene {
 				that.scene.start("AdventureScene", params)
 			}
 		}
+		// else if (mission.type === 'tutorial') {
+		// 	return function() {
+		// 		that.scene.start("AdventureBuilderScene", mission)
+		// 	}
+		// }
 	}
 }
