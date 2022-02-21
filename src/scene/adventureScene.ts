@@ -14,6 +14,7 @@ const MAP_WIDTH = 3900
 const MAP_HEIGHT = 2700
 
 export default class AdventureScene extends BaseScene {
+	params = {}
 	constructor() {
 		super({
 			key: "AdventureScene"
@@ -22,6 +23,8 @@ export default class AdventureScene extends BaseScene {
 
 	create(params): void {
 		super.create()
+
+		this.params = params
 
 		// Create the background
 		let background = this.add.image(0, 0, 'map-Birds')
@@ -46,8 +49,6 @@ export default class AdventureScene extends BaseScene {
 			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0)
 			let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
 			let textBox = this['rexUI'].add['textBox']({
-				x: 0,
-				y: 0,
 				width: width,
 				height: height,
 				icon: icon,
@@ -70,9 +71,10 @@ export default class AdventureScene extends BaseScene {
 		}
 
 		// Scroll to the given position
-		// if (params.scroll) {
-		// 	this.panel.childOY = params.scroll
-		// }
+		if (params.scrollX) {
+			this.cameras.main.scrollX = params.scrollX
+			this.cameras.main.scrollY = params.scrollY
+		}
 	}
 
 	// Add all of the missions to the panel
@@ -98,7 +100,7 @@ export default class AdventureScene extends BaseScene {
 			// If it has been completed, filled in star, otherwise empty star
 			let name = completed[id] ? '★' : '☆'
 			name += mission.type === 'card' ? '🂡' : ''
-			name += mission.name
+			// name += mission.name
 
 			let btn = new Button(that,
 				Math.random() * MAP_WIDTH,
@@ -114,6 +116,8 @@ export default class AdventureScene extends BaseScene {
 
 		if (mission.type === 'mission') {
 			return function() {
+				that.params.scrollX = that.cameras.main.scrollX
+				that.params.scrollY = that.cameras.main.scrollY
 				that.scene.start("AdventureBuilderScene", mission)
 			}
 		}
@@ -129,7 +133,8 @@ export default class AdventureScene extends BaseScene {
 
 				// TODO Clean this impl
 				let params = {
-					// scroll: that.panel.childOY,
+					scrollX: that.cameras.main.scrollX,
+					scrollY: that.cameras.main.scrollY,
 					txt: '',
 					card: undefined
 				}
@@ -151,7 +156,7 @@ export default class AdventureScene extends BaseScene {
 	}
 
 	private enableScrolling(background: Phaser.GameObjects.GameObject): void {
-		let camera: Phaser.Cameras.Scene2D.Camera = this.cameras.main
+		let camera = this.cameras.main
 
 		this.input.on('gameobjectwheel', function(pointer, gameObject, dx, dy, dz, event) {
 			camera.scrollX = Math.min(
