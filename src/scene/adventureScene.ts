@@ -153,9 +153,15 @@ export default class AdventureScene extends BaseScene {
 	private enableScrolling(background: Phaser.GameObjects.GameObject): void {
 		let camera: Phaser.Cameras.Scene2D.Camera = this.cameras.main
 
-		background.on('wheel', function(pointer, dx, dy, dz, event) {
-			console.log(pointer)
-			camera.scrollX += pointer.deltaX
+		this.input.on('gameobjectwheel', function(pointer, gameObject, dx, dy, dz, event) {
+			camera.scrollX = Math.min(
+				MAP_WIDTH - Space.windowWidth,
+				Math.max(0, camera.scrollX + dx)
+				)
+			camera.scrollY = Math.min(
+				MAP_HEIGHT - Space.windowHeight,
+				Math.max(0, camera.scrollY + dy)
+				)
 		})
 	}
 }
