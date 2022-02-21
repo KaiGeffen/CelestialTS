@@ -70,6 +70,9 @@ export default class PreloadClass extends Phaser.Scene {
 		// Load the background images
 		this.loadBackgrounds()
 
+		// Load the map images
+		this.loadMap()
+
 		// Load all audio
 		SOUNDS.forEach( (sound) => {
 			this.load.audio(sound, `sfx/${sound}.mp3`)
@@ -149,6 +152,17 @@ export default class PreloadClass extends Phaser.Scene {
 
 		backgroundNames.forEach( (s) => {
 			this.load.image(`bg-${s}`, `backgrounds/${s}.png`)
+		})
+	}
+
+	// Loads all map images (Journey mode)
+	private loadMap(): void {
+		let backgroundNames = [
+			'Birds',
+		]
+
+		backgroundNames.forEach( (s) => {
+			this.load.image(`map-${s}`, `maps/${s}.png`)
 		})
 	}
 

@@ -10,10 +10,10 @@ import adventureData from "../adventure.json"
 adventureData.reverse()
 
 
-export default class AdventureScene extends BaseScene {
-	// The scrollable panel that adventures are listed on
-	panel: any
+const MAP_WIDTH = 3900
+const MAP_HEIGHT = 2700
 
+export default class AdventureScene extends BaseScene {
 	constructor() {
 		super({
 			key: "AdventureScene"
@@ -23,17 +23,25 @@ export default class AdventureScene extends BaseScene {
 	create(params): void {
 		super.create()
 
-		// Create the panel that displays all of the available adventures
-		this.createPanel()
+		// Create the background
+		let background = this.add.image(0, 0, 'map-Birds')
+			.setOrigin(0)
+			.setInteractive()
+
+		// Add all of the available nodes
+		this.addAdventureData()
+
+		// Add scroll functionality
+		this.enableScrolling(background)
 
 		// Make up pop-up for the card you just received, if there is one
 		if (params.card) {
 			const width = 1000
 			const height = 250
 			let menu = new Menu(
-		      this,
-		      width,
-		      height)
+				this,
+				width,
+				height)
 
 			let txt = this.add.text(0, 0, params.txt, Style.basic).setOrigin(0)
 			let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
@@ -52,9 +60,9 @@ export default class AdventureScene extends BaseScene {
 				},
 				text: txt
 			}).setOrigin(0.5)
-			
+
 			textBox.start(params.txt, Time.vignetteSpeed())
-			
+
 			menu.add([txt, icon, textBox])
 
 			params.txt = ''
@@ -62,97 +70,19 @@ export default class AdventureScene extends BaseScene {
 		}
 
 		// Scroll to the given position
-		if (params.scroll) {
-			this.panel.childOY = params.scroll
-		}
-	}
-
-	// Create the panel containing the missions
-	private createPanel(): void {
-		let that = this
-
-		let x = Space.pad
-		let y = Space.pad
-		let width = Space.windowWidth - Space.pad*2
-		let height = Space.windowHeight - Space.pad*2
-
-		let fullPanel = this['rexUI'].add.scrollablePanel({
-			x: x,
-			y: y,
-			width: width,
-			height: height,
-
-			scrollMode: 0,
-
-			background: this['rexUI'].add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
-
-			panel: {
-				child: this['rexUI'].add.fixWidthSizer({
-					space: {
-						// left: Space.pad,
-						right: Space.pad - 10,
-						top: Space.pad - 10,
-						bottom: Space.pad - 10,
-						// item: Space.pad,
-						line: Space.pad,
-					}
-				})
-			},
-
-			slider: {
-				input: 'drag',
-				track: this['rexUI'].add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-				thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
-			},
-
-			mouseWheelScroller: {
-				  focus: false,
-				  speed: 1
-				},
-
-				header: this['rexUI'].add.fixWidthSizer({
-					height: 100,
-					align: 'center',
-					space: {
-						left: Space.pad,
-						right: Space.pad,
-						top: Space.pad,
-						bottom: Space.pad,
-						item: Space.pad,
-						line: Space.pad
-					}
-				}).addBackground(
-				this['rexUI'].add.roundRectangle(0, 0, 0, 0,
-					{tl: 0, tr: 16, bl: 0, br: 16},
-					Color.menuHeader),
-				{right: 10, bottom: 10}
-				),
-
-				space: {
-					right: 10,
-					left: 10,
-					top: 10,
-					bottom: 10,
-				}
-			}).setOrigin(0)
-		.layout()
-		let panel = fullPanel.getElement('panel')
-
-		this.addAdventureData(panel)
-
-		fullPanel.layout()
-
-		this.panel = fullPanel
+		// if (params.scroll) {
+		// 	this.panel.childOY = params.scroll
+		// }
 	}
 
 	// Add all of the missions to the panel
-	private addAdventureData(panel): void {
+	private addAdventureData(): void {
 		let that = this
 		let completed = UserSettings._get('completedMissions')
 
 		let unlockedMissions = adventureData.filter(function(mission) {
 			// Return whether any of the necessary conditions have been met
-			// Prereqs are in CNF (Or of sets of ands)
+			// Prereqs are in CNF (Or of sets of Ands)
 			return mission.prereq.some(function(prereqs, _) {
 				return prereqs.every(function(id, _) {
 					return completed[id]
@@ -170,9 +100,11 @@ export default class AdventureScene extends BaseScene {
 			name += mission.type === 'card' ? '🂡' : ''
 			name += mission.name
 
-			let btn = new Button(that, 0, 0, `${name}`, that.missionOnClick(mission))
-			panel.add(btn)
-			panel.addNewLine()
+			let btn = new Button(that,
+				Math.random() * MAP_WIDTH,
+				Math.random() * MAP_HEIGHT,
+				`${name}`,
+				that.missionOnClick(mission))
 		})
 	}
 
@@ -197,7 +129,7 @@ export default class AdventureScene extends BaseScene {
 
 				// TODO Clean this impl
 				let params = {
-					scroll: that.panel.childOY,
+					// scroll: that.panel.childOY,
 					txt: '',
 					card: undefined
 				}
@@ -216,5 +148,14 @@ export default class AdventureScene extends BaseScene {
 		// 		that.scene.start("AdventureBuilderScene", mission)
 		// 	}
 		// }
+	}
+
+	private enableScrolling(background: Phaser.GameObjects.GameObject): void {
+		let camera: Phaser.Cameras.Scene2D.Camera = this.cameras.main
+
+		background.on('wheel', function(pointer, dx, dy, dz, event) {
+			console.log(pointer)
+			camera.scrollX += pointer.deltaX
+		})
 	}
 }
