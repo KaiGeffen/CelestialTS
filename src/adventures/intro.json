@@ -2,6 +2,8 @@
   {
     "name": "Dove",
     "id": 0,
+    "x": 100,
+    "y": 50,
     "prereq": [[]],
     "type": "card",
     "card": 4
@@ -9,6 +11,8 @@
   {
     "name": "Dash",
     "id": 1,
+    "x": 100,
+    "y": 100,
     "prereq": [[0]],
     "type": "card",
     "card": 6
@@ -16,6 +20,8 @@
   {
     "name": "Mercy",
     "id": 2,
+    "x": 100,
+    "y": 150,
     "prereq": [[1]],
     "type": "card",
     "card": 12
@@ -23,6 +29,8 @@
   {
     "name": "Intro",
     "id": 3,
+    "x": 100,
+    "y": 200,
     "prereq": [[2]],
     "type": "mission",
     "deck": "12:12:12:6:6:6:4:4:4:4:4:4:4:4:4",
@@ -31,6 +39,8 @@
   {
     "name": "Stars",
     "id": 4,
+    "x": 100,
+    "y": 250,
     "prereq": [[3]],
     "type": "card",
     "card": 0
@@ -38,6 +48,8 @@
   {
     "name": "Uprising",
     "id": 5,
+    "x": 100,
+    "y": 300,
     "prereq": [[4]],
     "type": "card",
     "card": 18
@@ -45,6 +57,8 @@
   {
     "name": "Intro 2",
     "id": 6,
+    "x": 100,
+    "y": 350,
     "prereq": [[5]],
     "type": "mission",
     "deck": "18:12:12:12:6:6:4:4:4:4:4:4:0:0:0",
@@ -53,6 +67,8 @@
   {
     "name": "Cosmos",
     "id": 7,
+    "x": 100,
+    "y": 400,
     "prereq": [[6]],
     "type": "card",
     "card": 9
@@ -60,6 +76,8 @@
   {
     "name": "Fruiting",
     "id": 8,
+    "x": 100,
+    "y": 450,
     "prereq": [[7]],
     "type": "card",
     "card": 11
@@ -67,6 +85,8 @@
   {
     "name": "Intro 3",
     "id": 9,
+    "x": 100,
+    "y": 500,
     "prereq": [[8]],
     "type": "mission",
     "deck": "18:11:11:11:12:9:6:6:4:4:4:4:4:0:0",
@@ -75,6 +95,8 @@
   {
     "name": "Hurricane",
     "id": 10,
+    "x": 100,
+    "y": 550,
     "prereq": [[9]],
     "type": "card",
     "card": 13

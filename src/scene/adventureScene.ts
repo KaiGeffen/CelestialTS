@@ -8,8 +8,7 @@ import { CardImage } from "../lib/cardImage"
 import { getCard } from "../catalog/catalog"
 // import adventureData from "../adventure.json"
 // adventureData.reverse()
-import { adventures } from "../adventures/adventure"
-let adventureData = adventures.reverse()
+import { adventureData } from "../adventures/adventure"
 
 const MAP_WIDTH = 3900
 const MAP_HEIGHT = 2700
@@ -107,11 +106,11 @@ export default class AdventureScene extends BaseScene {
 			// If it has been completed, filled in star, otherwise empty star
 			let name = completed[id] ? '★' : '☆'
 			name += mission.type === 'card' ? '🂡' : ''
-			name += mission.name.slice(0, 6)
+			name += mission.name
 
 			let btn = new Button(that,
-				Math.random() * MAP_WIDTH,
-				Math.random() * MAP_HEIGHT,
+				mission.x,
+				mission.y,
 				`${name}`,
 				that.missionOnClick(mission))
 		})
