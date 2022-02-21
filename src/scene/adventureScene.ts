@@ -38,6 +38,7 @@ export default class AdventureScene extends BaseScene {
 		this.enableScrolling(background)
 
 		// Make up pop-up for the card you just received, if there is one
+		let menu
 		if (params.card) {
 			const width = 1000
 			const height = 250
@@ -65,6 +66,11 @@ export default class AdventureScene extends BaseScene {
 			textBox.start(params.txt, Time.vignetteSpeed())
 
 			menu.add([txt, icon, textBox])
+
+			// Reposition the menu to be visible to the camera
+			menu.container.setPosition(
+				params.scrollX + Space.windowWidth/2,
+				params.scrollY + Space.windowHeight/2)
 
 			params.txt = ''
 			params.card = undefined
