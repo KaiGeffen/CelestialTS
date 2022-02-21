@@ -1,0 +1,153 @@
+[
+  {
+    "name": "Ashes 1",
+    "id": 200,
+    "x": 150,
+    "y": 1300,
+    "prereq": [[10]],
+    "type": "mission",
+    "deck": "17:17:14:14:14:6:3:3:3:3:0:0",
+    "opponent": "11:11:11:11:7:7:7:4:4:4:4:4:4:0:0"
+  },
+  {
+    "name": "Impulse",
+    "id": 201,
+    "x": 150,
+    "y": 1350,
+    "prereq": [[200]],
+    "type": "card",
+    "card": 3
+  },
+  {
+    "name": "Arsonist",
+    "id": 202,
+    "x": 150,
+    "y": 1400,
+    "prereq": [[201]],
+    "type": "card",
+    "card": 14
+  },
+  {
+    "name": "Veteran",
+    "id": 203,
+    "x": 150,
+    "y": 1450,
+    "prereq": [[202]],
+    "type": "card",
+    "card": 17
+  },
+  {
+    "name": "Ashes 2",
+    "id": 204,
+    "x": 150,
+    "y": 1500,
+    "prereq": [[203]],
+    "type": "mission",
+    "deck": "21:17:14:14:6:3:3:3:0:0",
+    "opponent": "17:17:17:14:13:13:12:6:3:3:3:5:5:5"
+  },
+  {
+    "name": "Death",
+    "id": 205,
+    "x": 150,
+    "y": 1550,
+    "prereq": [[204]],
+    "type": "card",
+    "card": 21
+  },
+  {
+    "name": "Ashes 3",
+    "id": 206,
+    "x": 150,
+    "y": 1600,
+    "prereq": [[205]],
+    "type": "mission",
+    "deck": "21:20:20:17:17",
+    "opponent": "56:51:51:11:12:7:7:7:4:4:4:4:4:0:0"
+  },
+  {
+    "name": "Cling",
+    "id": 207,
+    "x": 150,
+    "y": 1650,
+    "prereq": [[206]],
+    "type": "card",
+    "card": 20
+  },
+  {
+    "name": "Ashes Bonus 1 - Drown, after 2",
+    "id": 208,
+    "x": 450,
+    "y": 1500,
+    "prereq": [[205]],
+    "type": "mission",
+    "deck": "21:17:17:5:5:5:0:0",
+    "opponent": "56:65:65:51:12:12:7:7:7:4:4:4:4:4:4"
+  },
+  {
+    "name": "Drown",
+    "id": 209,
+    "x": 450,
+    "y": 1550,
+    "prereq": [[208]],
+    "type": "card",
+    "card": 5
+  },
+  {
+    "name": "Ashes Bonus 2 - Mine, after 3",
+    "id": 210,
+    "x": 300,
+    "y": 2000,
+    "prereq": [[207]],
+    "type": "mission",
+    "deck": "15:15:3:3:0:0",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Mine",
+    "id": 211,
+    "x": 300,
+    "y": 2050,
+    "prereq": [[210]],
+    "type": "card",
+    "card": 15
+  },
+  {
+    "name": "Ashes Bonus 3 - Parch, after Mia",
+    "id": 212,
+    "x": 400,
+    "y": 2200,
+    "prereq": [[207, 306]],
+    "type": "mission",
+    "deck": "21:68:68:64:64",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Parch",
+    "id": 213,
+    "x": 400,
+    "y": 2250,
+    "prereq": [[212]],
+    "type": "card",
+    "card": 64
+  },
+  {
+    "name": "Ashes Bonus 4 - Jude",
+    "id": 214,
+    "x": 700,
+    "y": 2500,
+    "prereq": [[202, 406]],
+    "type": "mission",
+    "deck": "34:74:74:3:3:3",
+    "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
+  },
+  {
+    "name": "Sprout from Ashes",
+    "id": 215,
+    "x": 700,
+    "y": 2550,
+    "prereq": [[214]],
+    "type": "card",
+    "card": 74
+  }
+]

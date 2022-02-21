@@ -1,0 +1,144 @@
+[
+  {
+    "name": "Pet 1",
+    "id": 400,
+    "x": 1600,
+    "y": 1950,
+    "prereq": [[105], [207]],
+    "type": "mission",
+    "deck": "11:11:11:34:34:33:33:33:4:0:0:0",
+    "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
+  },
+  {
+    "name": "Pet",
+    "id": 401,
+    "x": 1600,
+    "y": 2000,
+    "prereq": [[400]],
+    "type": "card",
+    "card": 34
+  },
+  {
+    "name": "Hold Tight",
+    "id": 402,
+    "x": 1600,
+    "y": 2050,
+    "prereq": [[401]],
+    "type": "card",
+    "card": 33
+  },
+  {
+    "name": "Pet 2 - Oak",
+    "id": 403,
+    "x": 1600,
+    "y": 2100,
+    "prereq": [[402]],
+    "type": "mission",
+    "deck": "23:34",
+    "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
+  },
+  {
+    "name": "Oak",
+    "id": 404,
+    "x": 1600,
+    "y": 2150,
+    "prereq": [[403]],
+    "type": "card",
+    "card": 23
+  },
+  {
+    "name": "Pet 3 - Gentle Rain",
+    "id": 405,
+    "x": 1600,
+    "y": 2200,
+    "prereq": [[404]],
+    "type": "mission",
+    "deck": "71:71:32",
+    "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
+  },
+  {
+    "name": "Gentle Rain",
+    "id": 406,
+    "x": 1600,
+    "y": 2250,
+    "prereq": [[405]],
+    "type": "card",
+    "card": 71
+  },
+  {
+    "name": "Pet Bonus 1 - Bounty, after 1",
+    "id": 407,
+    "x": 2000,
+    "y": 2100,
+    "prereq": [[402]],
+    "type": "mission",
+    "deck": "48:48:48",
+    "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
+  },
+  {
+    "name": "Bounty",
+    "id": 408,
+    "x": 2000,
+    "y": 2150,
+    "prereq": [[407]],
+    "type": "card",
+    "card": 48
+  },
+  {
+    "name": "Pet Bonus 2 - Hollow, after 2",
+    "id": 409,
+    "x": 2200,
+    "y": 2300,
+    "prereq": [[404]],
+    "type": "mission",
+    "deck": "76:76",
+    "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
+  },
+  {
+    "name": "Hollow",
+    "id": 410,
+    "x": 2200,
+    "y": 2350,
+    "prereq": [[409]],
+    "type": "card",
+    "card": 76
+  },
+  {
+    "name": "Pet Bonus 3 - Night Vision, after 3",
+    "id": 411,
+    "x": 1900,
+    "y": 2500,
+    "prereq": [[406]],
+    "type": "mission",
+    "deck": "34:33:33:28:28:28",
+    "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
+  },
+  {
+    "name": "Night Vision",
+    "id": 412,
+    "x": 1900,
+    "y": 2550,
+    "prereq": [[411]],
+    "type": "card",
+    "card": 28
+  },
+  {
+    "name": "Pet Bonus 4 - Sunflower, after Sun",
+    "id": 413,
+    "x": 2500,
+    "y": 1950,
+    "prereq": [[404, 121]],
+    "type": "mission",
+    "deck": "56:11:11:69:69",
+    "opponent": "21:20:20:17:14:14:14:6:3:3:3:3:0:0:0"
+  },
+  {
+    "name": "Sunflower",
+    "id": 414,
+    "x": 2500,
+    "y": 2000,
+    "prereq": [[413]],
+    "type": "card",
+    "card": 69
+  }
+]
