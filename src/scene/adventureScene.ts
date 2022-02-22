@@ -68,9 +68,11 @@ export default class AdventureScene extends BaseScene {
 			menu.add([txt, icon, textBox])
 
 			// Reposition the menu to be visible to the camera
-			menu.container.setPosition(
-				params.scrollX + Space.windowWidth/2,
-				params.scrollY + Space.windowHeight/2)
+			if (params.scrollX && params.scrollY) {
+				menu.container.setPosition(
+					params.scrollX + Space.windowWidth / 2,
+					params.scrollY + Space.windowHeight / 2)
+			}
 
 			params.txt = ''
 			params.card = undefined
@@ -168,11 +170,11 @@ export default class AdventureScene extends BaseScene {
 			camera.scrollX = Math.min(
 				MAP_WIDTH - Space.windowWidth,
 				Math.max(0, camera.scrollX + dx)
-				)
+			)
 			camera.scrollY = Math.min(
 				MAP_HEIGHT - Space.windowHeight,
 				Math.max(0, camera.scrollY + dy)
-				)
+			)
 		})
 	}
 }
