@@ -28,7 +28,7 @@ export default class Menu {
 		this.container = scene.add.container(x, y).setVisible(visible).setDepth(depth)
 
 		// Invisible background rectangles, stops other containers from being clicked
-		let invisBackground = scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0.5)
+		let invisBackground = scene.add.rectangle(0, 0, Space.windowWidth * 30, Space.windowHeight * 30, 0x000000, 0.2).setOrigin(0.5)
 		invisBackground.setInteractive()
 
 		invisBackground.on('pointerdown', () => this.close())

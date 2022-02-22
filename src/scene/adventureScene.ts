@@ -69,7 +69,7 @@ export default class AdventureScene extends BaseScene {
 			menu.add([txt, icon, textBox])
 
 			// Reposition the menu to be visible to the camera
-			if (params.scrollX && params.scrollY) {
+			if (params.scrollX !== undefined && params.scrollY !== undefined) {
 				menu.container.setPosition(
 					params.scrollX + Space.windowWidth / 2,
 					params.scrollY + Space.windowHeight / 2)
@@ -80,7 +80,7 @@ export default class AdventureScene extends BaseScene {
 		}
 
 		// Scroll to the given position
-		if (params.scrollX) {
+		if (params.scrollX !== undefined) {
 			this.cameras.main.scrollX = params.scrollX
 			this.cameras.main.scrollY = params.scrollY
 		}
