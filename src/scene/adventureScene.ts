@@ -14,7 +14,8 @@ const MAP_WIDTH = 3900
 const MAP_HEIGHT = 2700
 
 export default class AdventureScene extends BaseScene {
-	params = {}
+	params = {scrollX: 0, scrollY: 0};
+
 	constructor() {
 		super({
 			key: "AdventureScene"
