@@ -1421,7 +1421,7 @@ export default class GameScene extends BaseScene {
 					true)
 			}
 
-			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory! +15☆', Style.announcement).setOrigin(0.5, 1)
+			let txtTitle = this.add.text(0, -(width/2 + 50), 'Victory!', Style.announcement).setOrigin(0.5, 1)
 			menu.add(txtTitle)
 
 			let bgVictory = this.add.image(0, -50, 'bg-Victory')
