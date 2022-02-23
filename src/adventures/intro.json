@@ -32,9 +32,8 @@
     "x": 100,
     "y": 200,
     "prereq": [[2]],
-    "type": "mission",
-    "deck": "12:12:12:6:6:6:4:4:4:4:4:4:4:4:4",
-    "opponent": "t0"
+    "type": "tutorial",
+    "tutorial": "0"
   },
   {
     "name": "Stars",
@@ -60,9 +59,8 @@
     "x": 100,
     "y": 350,
     "prereq": [[5]],
-    "type": "mission",
-    "deck": "18:12:12:12:6:6:4:4:4:4:4:4:0:0:0",
-    "opponent": "t1"
+    "type": "tutorial",
+    "tutorial": "1"
   },
   {
     "name": "Cosmos",
@@ -88,9 +86,8 @@
     "x": 100,
     "y": 500,
     "prereq": [[8]],
-    "type": "mission",
-    "deck": "18:11:11:11:12:9:6:6:4:4:4:4:4:0:0",
-    "opponent": "t2"
+    "type": "tutorial",
+    "tutorial": "2"
   },
   {
     "name": "Hurricane",

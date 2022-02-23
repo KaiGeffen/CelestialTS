@@ -20,4 +20,11 @@ export interface Adventure {
   id: number,
   prereq: number[][],
   type: string,
+
+  tutorial?: string,
+
+  card?: number,
+
+  deck?: string,
+  opponent?: string,
 }

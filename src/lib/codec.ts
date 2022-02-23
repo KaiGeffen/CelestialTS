@@ -44,6 +44,7 @@ function decodeCard(s: string): Card {
 }
 
 function encodeDeck(deck: Card[]): string {
+	if (deck === undefined) { return '' }
 	return deck.map(encodeCard).join(delims[1])
 }
 
@@ -65,7 +66,7 @@ function decodeStory(s: string): Story {
 	let story = new Story()
 	if (s === '') return story
 
-	s.split(delims[0]).forEach( function(act) {
+	s.split(delims[0]).forEach(function(act) {
 		let l = act.split(delims[1])
 
 		let card = decodeCard(l[0])
@@ -73,7 +74,7 @@ function decodeStory(s: string): Story {
 
 		story.addAct(card, owner, -1)
 	})
-	
+
 	return story
 }
 
@@ -82,7 +83,7 @@ const allStatuses = ['Inspired', 'Inspire', 'Nourish', 'Starve', 'Restricted']
 
 function decodeStatuses(s: string): Status[] {
 	let result: Status[] = []
-	
+
 	// Split the string into substrings
 	s.split(delims[0]).forEach(function(ss) {
 
@@ -144,4 +145,4 @@ function decodeRecap(s: string): Recap {
 	return new Recap(sums, wins, safety, playList, stateList)
 }
 
-export {encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses, decodeRecap}
+export { encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses, decodeRecap }
