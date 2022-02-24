@@ -147,7 +147,7 @@
 
   {"name": "AI", "id": 22,
     "cost": 8, "points": 5,
-    "text": "8:5, draw 1.\nCosts X less, where X is the total point value of all robots in your hand.",
+    "text": "8:5, draw 1 card.\nCosts X less, where X is the total point value of all robots in your hand.",
     "catalogText": "AI costs 8 mana for 5 points and also draws you a card, but its cost is reduced by the total point value of all robots in your hand. So if you have a 0:3 robot and a 0:1 robot, AI ends up costing 8 - 3 - 1 = 4 mana.\n\nTry to build a big robot so that you can play multiple copies of AI in a single round for very little mana.\n\nOnly play the robot once you can replace it with a new one.",
     "rarity": 3
   },
@@ -218,7 +218,7 @@
   },
   {"name": "Fish Bones", "id": 64,
     "cost": 2, "points": 0,
-    "text": "2:0, Fleeting, draw 2, create 3 ${1002}s in your discard pile.",
+    "text": "2:0, Fleeting, draw 2 cards, create 3 ${1002}s in your discard pile.",
     "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips",
     "rarity": 0
   },
@@ -230,7 +230,7 @@
   },
   {"name": "Fishing Boat", "id": 32,
     "cost": 2, "points": 0,
-    "text": "2:0, draw up to 3 cards that cost 1.",
+    "text": "2:0, draw up to 3 cards that each cost 1.",
     "catalogText": "Fishing Boat costs 2, and tutors for a 1-cost card 3 times.\n\nTutor will draw any card meeting the condition (Costing 1) from either your deck or your discard pile, prioritizing first cards in your deck, then cards from the top of your discard pile to the bottom.\n\nUse this to surge ahead on card advantage, and be able to stall for a huge reset.",
     "rarity": 1
   },
@@ -300,7 +300,7 @@
   },
   {"name": "Pocket Watch", "id": 54,
     "cost": 4, "points": 2,
-    "text": "4:2, draw 2.\nCosts X less, where X is the number of times you've passed this round.",
+    "text": "4:2, draw 2 cards.\nCosts X less, where X is the number of times you've passed this round.",
     "rarity": 1
   },
 
