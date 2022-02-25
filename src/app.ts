@@ -11,7 +11,6 @@ import StoreScene from "./scene/storeScene"
 import ChoiceScene from "./scene/choiceScene"
 import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
 import { TutorialScene1, TutorialScene2 } from "./scene/tutorialScene"
-import DraftMatchScene from "./scene/draftMatchScene"
 import AdventureScene from "./scene/adventureScene"
 
 import { Color, Space } from "./settings/settings"
@@ -40,7 +39,7 @@ const config: Phaser.Types.Core.GameConfig = {
   CreditsScene, StoreScene,
   ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
-  GameScene, DraftMatchScene, AdventureBuilderScene,
+  GameScene, AdventureBuilderScene,
   BuilderScene, TutorialBuilderScene,
   TutorialScene1, TutorialScene2,
   AdventureScene],
