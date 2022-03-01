@@ -30,6 +30,7 @@
     "cost": 1, "points": 1,
     "text": "1:1, Visible, Fleeting.",
     "catalogText": "Dove costs 1 mana for 1 point, and it is both Fleeting and Visible. \n\nCards with Fleeting are removed from the game permanently after they resolve, which means you won't end up drawing it again after you've shuffled your deck.\n\nCards with Visible can be seen by your opponent while in the story, so you won't be able to bluff with them.",
+    "story": "Look at my eyes.\nSurrender\nTo the one thing you want",
     "rarity": 0
   },
   {"name": "Drown", "id": 5,
@@ -48,6 +49,7 @@
   {"name": "Swift", "id": 7,
     "cost": 2, "points": 2,
     "text": "2:2, Visible, Fleeting, worth +1 point if the next card in the story costs 1.",
+    "story": "Making headway\nDefying the headwind\nHeading out and through",
     "rarity": 0
   },
   {"name": "Gears", "id": 8,
@@ -179,6 +181,7 @@
     "cost": 1, "points": 1,
     "text": "1:1.\nAt the start of each round, if this is the top of your discard pile, create an Axolotl in your hand.",
     "catalogText": "Axolotl costs 1 mana for 1 point, and will also create a new Axolotl in your hand if it's on top of your discard pile when the round starts.\n\nIf you want this ability to activate, be sure to play Axolotl last in a round so that it's on top of your other cards. This can give you lots of card-advantage and consistency.\n\nSometimes, creating an Axolotl could force you to not draw another card from your deck, which might be bad. Additionally, you'll end up with lots of the little guys after you shuffle, so watch out!",
+    "story": "I return\nOver and over again\nSwelling the future",
     "rarity": 0
   },
   {"name": "Night Vision", "id": 28,
@@ -285,6 +288,7 @@
   {"name": "Pelican", "id": 40,
     "cost": 4, "points": 4,
     "text": "4:4, Visible, remove from the game each card in your hand that costs 0 or 1. Worth +1 point for each card removed.",
+    "story": "I will I will I will\nBecome me become me become me\nAt your peril",
     "rarity": 0
   },
   {"name": "Generator", "id": 53,
@@ -307,6 +311,7 @@
   {"name": "Heron", "id": 65,
     "cost": 5, "points": 0,
     "text": "5:0, Visible, set both player's points to 0.\nCosts X, where X is the number of cards in your discard pile.",
+    "story": "How you see me\nIs of no importance to me\nI am playing with being here, there, every where",
     "rarity": 1
   },
   {"name": "Conquer", "id": 67,
@@ -317,6 +322,7 @@
   {"name": "Phoenix", "id": 51,
     "cost": 5, "points": 5,
     "text": "5:5, Visible, Fleeting, create a ${4} in your hand.",
+    "story": "Cracks in the shell\nShell falls away\nI stretch into wide possibilities",
     "rarity": 0
   },
 
@@ -349,6 +355,7 @@
   {"name": "Sun", "id": 56,
     "cost": 8, "points": 8,
     "text": "8:8, Visible.\nAt the start of each round, if this is the top of your discard pile, gain Inspired 1.",
+    "story": "I raise my head over the horizon\nI begin\nJust like you",
     "rarity": 2
   },
   {"name": "Occupation", "id": 75,
