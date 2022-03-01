@@ -22,6 +22,7 @@ const SOUNDS = [
 'win',
 'lose',
 'tie',
+'hover',
 
 'build',
 'inspire',

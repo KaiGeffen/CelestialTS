@@ -22,7 +22,10 @@ export default class Button extends Phaser.GameObjects.Text {
 			this.on('pointerdown', f, scene)
 		}
 
-		this.on('pointerover', () => this.setTint(Color.buttonHighlight), this)
+		this.on('pointerover', () => {
+			this.setTint(Color.buttonHighlight)
+			scene.sound.play('hover')
+		}, this)
 		this.on('pointerout', () => this.clearTint(), this)
 		this.scene.input.on('gameout', () => this.clearTint(), this)
 

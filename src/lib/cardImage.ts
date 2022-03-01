@@ -294,6 +294,7 @@ export class CardImage {
       cardInfo.setVisible(true)
 
       if (!that.unplayable) {
+        that.image.scene.sound.play('hover')
         doHighlight()
       }
 
