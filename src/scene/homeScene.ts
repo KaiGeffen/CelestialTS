@@ -7,12 +7,12 @@ import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 
 
-export default class WelcomeScene extends BaseScene {
+export default class HomeScene extends BaseScene {
   tutorialRegion
 
   constructor() {
     super({
-      key: "WelcomeScene"
+      key: "HomeScene"
     })
   }
 
