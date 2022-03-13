@@ -19,7 +19,29 @@ import { Animation, Zone } from '../lib/animation'
 
 var storyHiddenLock: boolean = false
 
+// TODO Rename to Match
 export default class GameScene extends BaseScene {
+	constructor (args = {key: "GameScene"}) {
+		super(args)
+	}
+
+	create (params: any) {
+		super.precreate()
+
+		// TODO use params
+
+		// Create the view
+		new View(this)
+		
+		// Create the controller
+		// This is the model
+
+		// TODO Fix create / precreate, bad smell
+		super.create()
+	}
+}
+
+class OldGameScene extends BaseScene {
 	net: Network
 
 	// The params used to instantiate this scene
@@ -1810,4 +1832,66 @@ export default class GameScene extends BaseScene {
   			}
   		}
   	}
+}
+
+// The View of MVC - What is presented to the user
+class View {
+	scene: Phaser.Scene
+
+	// Has the phaser objects
+	// Handles layout, animation
+	// Divided into regions
+
+	constructor (scene: Phaser.Scene) {
+		this.scene = scene
+
+		// Create each of the regions
+		this.createOurHand()
+		// this.createTheirHand()
+
+		// this.createOurDeck()
+		// this.createTheirDeck()
+		// this.createOurDiscard()
+		// this.createTheirDiscard()
+
+		// this.createStory()
+
+		// // Count of rounds won, our current/max mana
+		// this.createWins()
+	}
+
+	private createOurHand() {
+		const height = 200
+
+		// Avatar, status, hand, recap, pass buttons
+
+		let container = this.scene.add.container(0, Space.windowHeight - height)
+
+		// Make a container
+		// Add background rectangle
+		let background = this.scene.add.rectangle(
+			0, 0,
+			Space.windowWidth, height,
+			Color.menuBackground, 1
+			).setOrigin(0)
+
+		let avatar = this.scene.add.image(Space.pad, Space.pad, 'avatar-Jules').setOrigin(0)
+
+		// Add each of these objects to container
+		container.add([
+			background,
+			avatar
+			])
+	}
+}
+
+// The Controller of MVC - What the user or websocket can do
+class Controller {
+	// Listens for websocket updates
+	// Manages user decisions (What card to play, when to pass)
+}
+
+// The Model of MVC - What state is stored. This controls View and Controller
+class Model {
+	// Holds onto game state, 
 }

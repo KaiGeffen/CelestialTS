@@ -74,6 +74,9 @@ export default class PreloadClass extends Phaser.Scene {
 		// Load the map images
 		this.loadMap()
 
+		// Load the avatar images
+		this.loadAvatars()
+
 		// Load all audio
 		SOUNDS.forEach( (sound) => {
 			this.load.audio(sound, `sfx/${sound}.mp3`)
@@ -164,6 +167,17 @@ export default class PreloadClass extends Phaser.Scene {
 
 		backgroundNames.forEach( (s) => {
 			this.load.image(`map-${s}`, `maps/${s}.png`)
+		})
+	}
+
+	// Loads all map images (Journey mode)
+	private loadAvatars(): void {
+		let avatarsNames = [
+			'Jules',
+		]
+
+		avatarsNames.forEach( (s) => {
+			this.load.image(`avatar-${s}`, `avatars/${s}.png`)
 		})
 	}
 
