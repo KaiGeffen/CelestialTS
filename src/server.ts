@@ -51,10 +51,10 @@ export default class Server {
 				case 'send_user_data':
 					that.loadUserData(msg.value)
 
-					// Reload the welcome scene if we just loaded
+					// Reload the home scene if we just loaded
 					// TODO Call onExit for the current scene?
-					if (scene.scene.isActive('WelcomeScene')) {
-						scene.scene.start('WelcomeScene')
+					if (scene.scene.isActive('HomeScene')) {
+						scene.scene.start('HomeScene')
 					}
 
 					break

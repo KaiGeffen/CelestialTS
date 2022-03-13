@@ -17,7 +17,7 @@ export default class CreditsScene extends Phaser.Scene {
 
     this.add.text(Space.windowWidth/2, 80, "Credits", Style.title).setOrigin(0.5)
 
-    let btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight - 40, "Exit", this.doWelcome).setOrigin(0.5)
+    let btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight - 40, "Exit", this.doHome).setOrigin(0.5)
   }
 
   private createCreditsTextbox(): void {
@@ -57,7 +57,7 @@ export default class CreditsScene extends Phaser.Scene {
      this.add.container(0, 0, credits)
   }
 
-  private doWelcome(): void {
-    this.scene.start("WelcomeScene")
+  private doHome(): void {
+    this.scene.start("HomeScene")
   }
 }

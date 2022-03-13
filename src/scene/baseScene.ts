@@ -394,6 +394,6 @@ They do not; you can have both Nourish and Starve at the same time.`
 
 	private doExit(): void {
 		this.beforeExit()
-		this.scene.start("WelcomeScene")
+		this.scene.start("HomeScene")
 	}
 }

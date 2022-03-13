@@ -58,7 +58,7 @@ export default class StoreScene extends BaseScene {
       .setOrigin(0.5)
       .setVisible(false)
 
-    this.btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight - 40, "Exit", this.doWelcome).setOrigin(0.5)
+    this.btnExit = new Button(this, Space.windowWidth/2, Space.windowHeight - 40, "Exit", this.doHome).setOrigin(0.5)
 
     // Manage any messages that are displayed
     this.manageMessages()
@@ -88,8 +88,8 @@ export default class StoreScene extends BaseScene {
     }
   }
 
-  private doWelcome(): void {
-    this.scene.start("WelcomeScene")
+  private doHome(): void {
+    this.scene.start("HomeScene")
   }
 
   private addCard(card: Card, index: number): void {

@@ -198,7 +198,7 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 
 		let startWhenLoginComplete = function() {
-			that.scene.start('WelcomeScene')
+			that.scene.start('HomeScene')
 		}
 		this.load.on('complete', function () {
 			startWhenLoginComplete()
