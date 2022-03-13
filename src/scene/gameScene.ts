@@ -1847,14 +1847,14 @@ class View {
 
 		// Create each of the regions
 		this.createOurHand()
-		// this.createTheirHand()
+		this.createTheirHand()
 
 		// this.createOurDeck()
 		// this.createTheirDeck()
 		// this.createOurDiscard()
 		// this.createTheirDiscard()
 
-		// this.createStory()
+		this.createStory()
 
 		// // Count of rounds won, our current/max mana
 		// this.createWins()
@@ -1877,11 +1877,69 @@ class View {
 
 		let avatar = this.scene.add.image(Space.pad, Space.pad, 'avatar-Jules').setOrigin(0)
 
+		// Recap button
+		let btnRecap = new Button(this.scene,
+			Space.windowWidth - Space.pad,
+			height / 3,
+			'Recap'
+			).setOrigin(1, 0.5)
+
+		// Pass button
+		let btnPass = new Button(this.scene,
+			Space.windowWidth - Space.pad,
+			height * 2 / 3,
+			'Pass'
+			).setOrigin(1, 0.5)
+
 		// Add each of these objects to container
 		container.add([
 			background,
-			avatar
+			avatar,
+			btnRecap,
+			btnPass,
 			])
+	}
+
+	private createTheirHand() {
+		const height = 200
+
+		// Avatar, status, hand, recap, pass buttons
+
+		let container = this.scene.add.container(0, 0)
+
+		// Make a container
+		// Add background rectangle
+		let background = this.scene.add.rectangle(
+			0, 0,
+			Space.windowWidth, height,
+			Color.menuBackground, 1
+			).setOrigin(0)
+
+		let avatar = this.scene.add.image(Space.pad, Space.pad, 'avatar-Jules').setOrigin(0)
+
+
+		// Add each of these objects to container
+		container.add([
+			background,
+			avatar,
+			])
+
+		// TEMP
+		let cardImage = new CardImage(cardback, container)
+		cardImage.setPosition([200, 50])
+	}
+
+	private createStory() {
+		// TODO 200 is the height for their hand, but generalize
+		let container = this.scene.add.container(100, 200)
+
+		let cardImage = new CardImage(cardback, container)
+		cardImage.setPosition([Space.pad, 150 + Space.pad])
+
+		// Add each of these objects to container
+		// container.add([
+			
+		// 	])
 	}
 }
 
