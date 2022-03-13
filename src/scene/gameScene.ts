@@ -1861,7 +1861,7 @@ class View {
 	}
 
 	private createOurHand() {
-		const height = 200
+		const height = 150
 
 		// Avatar, status, hand, recap, pass buttons
 
@@ -1898,10 +1898,19 @@ class View {
 			btnRecap,
 			btnPass,
 			])
+
+		// TEMP
+		let cardImage = new CardImage(cardback, container)
+		cardImage.setPosition([300, 150])
+		new CardImage(cardback, container).setPosition([450, 150])
+		new CardImage(cardback, container).setPosition([600, 150])
+		new CardImage(cardback, container).setPosition([750, 150])
+		new CardImage(cardback, container).setPosition([900, 150])
+		new CardImage(cardback, container).setPosition([1050, 150])
 	}
 
 	private createTheirHand() {
-		const height = 200
+		const height = 150
 
 		// Avatar, status, hand, recap, pass buttons
 
@@ -1926,15 +1935,22 @@ class View {
 
 		// TEMP
 		let cardImage = new CardImage(cardback, container)
-		cardImage.setPosition([200, 50])
+		cardImage.setPosition([500, 0])
 	}
 
 	private createStory() {
 		// TODO 200 is the height for their hand, but generalize
-		let container = this.scene.add.container(100, 200)
+		let container = this.scene.add.container(100 + 140/2, 150)
 
 		let cardImage = new CardImage(cardback, container)
-		cardImage.setPosition([Space.pad, 150 + Space.pad])
+		cardImage.setPosition([0, 150 + Space.pad])
+
+		let c2 = new CardImage(cardback, container)
+		c2.setPosition([80, 280 + Space.pad])
+
+		new CardImage(cardback, container).setPosition([160, 280 + Space.pad])
+
+		new CardImage(cardback, container).setPosition([240, 150 + Space.pad])
 
 		// Add each of these objects to container
 		// container.add([
