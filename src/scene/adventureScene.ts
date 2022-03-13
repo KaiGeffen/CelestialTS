@@ -13,6 +13,7 @@ import { adventureData } from "../adventures/adventure"
 const MAP_WIDTH = 3900
 const MAP_HEIGHT = 2700
 
+// TODO Make consistent with Journey (Change adventure to journey or vice verca)
 export default class AdventureScene extends BaseScene {
 	params = {scrollX: 0, scrollY: 0};
 
