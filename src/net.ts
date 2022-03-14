@@ -81,10 +81,6 @@ export class Network {
 					
 					if (state.versionNumber > versionNumber) {
 						scene.queueState(state)
-
-
-						// TODO Implement this such that version number is the version number of the last shown state
-						versionNumber = state.versionNumber
 					}
 
 					// TODO Implement mulligan

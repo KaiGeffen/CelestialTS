@@ -23,67 +23,6 @@ import Region from './matchRegions/baseRegion'
 
 var storyHiddenLock: boolean = false
 
-// TODO Rename to Match
-export default class GameScene extends BaseScene {
-	view: View
-
-	constructor (args = {key: "GameScene"}) {
-		super(args)
-	}
-
-	init (params: any) {
-		super.precreate()
-
-		// TODO use params
-
-		// This is the model
-		
-		// Create the controller
-		// new Controller() THis is the controller
-		let mmCode = 'ai'
-
-		// Connect with the server
-		let net = new Network(params.deck, this, mmCode)
-
-		// Create the view
-		this.view = new View(this)
-
-		this.setCallbacks(this.view, net)
-
-
-
-		// TODO Fix create / precreate, bad smell
-		super.create()
-	}
-	// Listens for websocket updates
-	// Manages user decisions (What card to play, when to pass)
-
-	// Methods called by the websocket
-
-	// Display searching for opponent if still looking
-	displaySearchingStatus(searching: boolean): void {
-
-	}
-
-	// TODO
-	queueState(state: ClientState): void {
-		console.log(state)
-		this.view.displayState(state)
-	}
-
-	signalDC(): void {
-		// TODO Replace this with menu impl
-		console.log('opp disconnected')
-	}
-
-	// Set all of the callback functions for the regions in the view
-	setCallbacks(view, net): void {
-		// Hand region
-		view.ourHand.setCallback((i: number) => {
-			net.playCard(i)
-		})
-	}
-}
 
 class OldGameScene extends BaseScene {
 	net: Network
@@ -1878,6 +1817,134 @@ class OldGameScene extends BaseScene {
   	}
 }
 
+// TODO Rename to Match
+export default class GameScene extends BaseScene {
+	view: View
+	net: Network
+
+	// The states which are queued up and have not yet been seen, with key being their version number
+	queuedStates: { [key: number]: ClientState}
+
+	constructor (args = {key: "GameScene"}) {
+		super(args)
+	}
+
+	init (params: any) {
+		super.precreate()
+
+		this.queuedStates = {}
+
+		// TODO use params
+
+		// This is the model
+		
+		// Create the controller
+		// new Controller() THis is the controller
+		let mmCode = 'ai'
+
+		// Connect with the server
+		this.net = new Network(params.deck, this, mmCode)
+
+		// Create the view
+		this.view = new View(this)
+
+		this.setCallbacks(this.view, this.net)
+
+
+		// TODO Fix create / precreate, bad smell
+		super.create()
+	}
+	// Listens for websocket updates
+	// Manages user decisions (What card to play, when to pass)
+
+	// Methods called by the websocket
+
+	// Display searching for opponent if still looking
+	displaySearchingStatus(searching: boolean): void {
+
+	}
+
+	// Queue up the given state, to be displayed when correct to do so
+	queueState(state: ClientState): void {
+		// If a state with this version isn't in the queued states, add it
+		if (!(state.versionNumber in this.queuedStates)) {
+			this.queuedStates[state.versionNumber] = state
+		}
+	}
+
+	signalDC(): void {
+		// TODO Replace this with menu impl
+		console.log('opp disconnected')
+	}
+
+	// Set all of the callback functions for the regions in the view
+	private setCallbacks(view, net): void {
+		// Hand region
+		view.ourHand.setCallback((i: number) => {
+			net.playCard(i)
+		})
+	}
+
+	// Try to display the next queued state TODO Recovery if we've been waiting too long
+	private update(time, delta): void {
+		// Prioritize showing the recap, if there is one
+		// if (this.queuedRecap.length > 0) {
+		// 	let wasShown = this.displayState(this.queuedRecap[0], true)
+
+		// 	if (wasShown) {
+		// 		this.queuedRecap.shift()
+
+		// 		if (this.queuedRecap.length === 0) {
+		// 			this.recapPlaying = false
+		// 		}
+
+		// 		return
+		// 	}
+		// }
+
+		// Otherwise, show a non-recap state, as determined by its version number
+		let nextVersionNumber = versionNumber + 1
+
+		// When a recap replay finishes, return to the current state
+		// if (this.currentState !== undefined) {
+		// 	nextVersionNumber = Math.max(this.currentState.versionNumber, nextVersionNumber)
+		// }
+		
+		console.log(nextVersionNumber)
+		if (nextVersionNumber in this.queuedStates) {
+			console.log('have next version number')
+			let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber])
+
+			// If the state was just shown, delete it
+			if (isDisplayed) {
+				// this.currentState = this.queuedStates[nextVersionNumber]
+				delete this.queuedStates[nextVersionNumber]
+			}
+		}
+	}
+
+	// Display the given game state, returns false if the state isn't shown immediately
+	private displayState(state: ClientState): boolean {
+		let that = this
+		// If any tweens are not almost done, queue and wait for them to finish
+		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
+		if (anyTweenPlaying) {
+			return false
+		}
+
+		// Remember what version of the game state this is, for use when communicating with server
+		console.log(state)
+		this.net.setVersionNumber(state.versionNumber)
+		// TODO
+
+		this.view.displayState(state)
+
+		// State was displayed
+		return true
+	}
+}
+
+
 // The View of MVC - What is presented to the user
 class View {
 	scene: Phaser.Scene
@@ -1922,38 +1989,3 @@ class View {
 	}
 }
 
-// The Controller of MVC - What the user or websocket can do
-class Controller {
-	// Listens for websocket updates
-	// Manages user decisions (What card to play, when to pass)
-
-	constructor () {
-		let mmCode = 'ai'
-		let deck = undefined
-
-		// Connect with the server
-		let net = new Network(deck, this, mmCode)
-	}
-
-	// Methods called by the websocket
-
-	// Display searching for opponent if still looking
-	displaySearchingStatus(searching: boolean): void {
-
-	}
-
-	// TODO
-	queueState(state: ClientState): void {
-		console.log(state)
-	}
-
-	signalDC(): void {
-		// TODO Replace this with menu impl
-		console.log('opp disconnected')
-	}
-}
-
-// The Model of MVC - What state is stored. This controls View and Controller
-class Model {
-	// Holds onto game state, 
-}
