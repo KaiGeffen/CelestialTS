@@ -18,6 +18,7 @@ import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
 import { OurHandRegion } from "./matchRegions/matchRegions"
+import Region from './matchRegions/baseRegion'
 
 
 var storyHiddenLock: boolean = false
@@ -28,29 +29,26 @@ export default class GameScene extends BaseScene {
 
 	constructor (args = {key: "GameScene"}) {
 		super(args)
-
 	}
 
-	create (params: any) {
+	init (params: any) {
 		super.precreate()
 
 		// TODO use params
 
 		// This is the model
-
-		// Create the view
-		this.view = new View(this)
 		
 		// Create the controller
 		// new Controller() THis is the controller
 		let mmCode = 'ai'
-		let deck = undefined
 
 		// Connect with the server
-		let net = new Network(deck, this, mmCode)
+		let net = new Network(params.deck, this, mmCode)
 
+		// Create the view
+		this.view = new View(this)
 
-
+		this.setCallbacks(this.view, net)
 
 
 
@@ -76,6 +74,14 @@ export default class GameScene extends BaseScene {
 	signalDC(): void {
 		// TODO Replace this with menu impl
 		console.log('opp disconnected')
+	}
+
+	// Set all of the callback functions for the regions in the view
+	setCallbacks(view, net): void {
+		// Hand region
+		view.handRegion.setCallback((i: number) => {
+			net.playCard(i)
+		})
 	}
 }
 
@@ -1358,7 +1364,7 @@ class OldGameScene extends BaseScene {
 
 			if (isRecap) {
 				// Click to jump to that position in the recap
-				card.setOnClick(this.jumpToRecapAct(i + numActsCompleted))
+				// card.set(this.jumpToRecapAct(i + numActsCompleted)) TODO Broke
 			}
 
 			// TODO Make this an animation from server instead of figuring out which cases it's being played
@@ -1876,7 +1882,7 @@ class OldGameScene extends BaseScene {
 class View {
 	scene: Phaser.Scene
 
-	handRegion // TODO
+	handRegion: Region // TODO Don't access this directly from gamescene
 
 	// Has the phaser objects
 	// Handles layout, animation
@@ -1900,6 +1906,8 @@ class View {
 
 		// // Count of rounds won, our current/max mana
 		// this.createWins()
+
+		// Set all of the callbacks
 	}
 
 	displayState(state: ClientState) {

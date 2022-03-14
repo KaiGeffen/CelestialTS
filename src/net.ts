@@ -31,6 +31,8 @@ export class Network {
 	socket: WebSocket
 	
 	constructor(deck, newScene, mmCode) {
+		let that = this
+
 		// Must be set each time constructed so that it doesn't persist and cause weird behavior
 		// (States from previous match shown at the beginning)
 		versionNumber = -1
@@ -79,7 +81,17 @@ export class Network {
 					
 					if (state.versionNumber > versionNumber) {
 						scene.queueState(state)
+
+
+						// TODO Implement this such that version number is the version number of the last shown state
+						versionNumber = state.versionNumber
 					}
+
+					// TODO Implement mulligan
+					if (state.versionNumber === 0) {
+						that.doMulligan('000')
+					}
+
 					break
 
 					// Signal to the user that they chose an illegal action
