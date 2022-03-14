@@ -17,7 +17,7 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { OurHandRegion } from "./matchRegions/matchRegions"
+import { OurHandRegion, StoryRegion } from "./matchRegions/matchRegions"
 import Region from './matchRegions/baseRegion'
 
 
@@ -1883,6 +1883,7 @@ class View {
 	scene: Phaser.Scene
 
 	handRegion: Region // TODO Don't access this directly from gamescene
+	storyRegion: Region
 
 	// Has the phaser objects
 	// Handles layout, animation
@@ -1897,12 +1898,12 @@ class View {
 		this.handRegion = new OurHandRegion().create(scene)
 		this.createTheirHand()
 
+		this.storyRegion = new StoryRegion().create(scene)
+
 		// this.createOurDeck()
 		// this.createTheirDeck()
 		// this.createOurDiscard()
 		// this.createTheirDiscard()
-
-		this.createStory()
 
 		// // Count of rounds won, our current/max mana
 		// this.createWins()
@@ -1912,6 +1913,8 @@ class View {
 
 	displayState(state: ClientState) {
 		this.handRegion.displayState(state)
+		this.storyRegion.displayState(state)
+
 	}
 
 	private createTheirHand() {
@@ -1943,6 +1946,7 @@ class View {
 		cardImage.setPosition([500, 0])
 	}
 
+	// TODO Remove
 	private createStory() {
 		// TODO 200 is the height for their hand, but generalize
 		let container = this.scene.add.container(100 + 140/2, 150)

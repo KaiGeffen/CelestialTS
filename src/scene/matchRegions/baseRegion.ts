@@ -9,6 +9,9 @@ import ClientState from '../../lib/clientState'
 export default class Region {
 	container: Phaser.GameObjects.Container
 
+	// All gameobjects that should be deleted before new state is shown
+	temp: any[] = []
+
 	// Function called when elements in this region are interacted with
 	callback: (args: any) => () => void
 
@@ -20,4 +23,10 @@ export default class Region {
 	displayState(state: ClientState): void {}
 
 	setCallback(f: (args: any) => () => void) {}
+
+	protected deleteTemp(): void {
+		for (let i = 0; i < this.temp.length; i++) {
+			this.temp[i].destroy()
+		}
+	}
 }

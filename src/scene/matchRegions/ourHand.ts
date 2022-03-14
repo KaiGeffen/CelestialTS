@@ -11,6 +11,7 @@ import ClientState from '../../lib/clientState'
 
 export default class OurHandRegion extends Region {
 	create (scene: Phaser.Scene): OurHandRegion {
+		let that = this
 		const height = 150
 
 		// Avatar, status, hand, recap, pass buttons
@@ -38,7 +39,9 @@ export default class OurHandRegion extends Region {
 		let btnPass = new Button(scene,
 			Space.windowWidth - Space.pad,
 			height * 2 / 3,
-			'Pass'
+			'Pass',
+			// TODO Bad smell (Must curry each time this is called)
+			() => {that.callback(10)()}
 			).setOrigin(1, 0.5)
 
 		// Add each of these objects to container
@@ -53,16 +56,20 @@ export default class OurHandRegion extends Region {
 	}
 
 	displayState(state: ClientState): void {
+		this.deleteTemp()
+
 		let that = this
 
 		for (let i = 0; i < state.hand.length; i++) {
 			const x = 300 + (140 + Space.pad) * i
 			
-			this.addCard(state.hand[i], [x, 200/2])
-			.setOnClick(
+			let card = this.addCard(state.hand[i], [x, 200/2])
+			card.setOnClick(
 				// Callback is based on the index of this card in the hand
 				() => {that.callback(i)}
 				)
+
+			this.temp.push(card)
 		}
 
 		// TODO Statuses
