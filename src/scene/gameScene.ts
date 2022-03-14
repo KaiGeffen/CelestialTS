@@ -17,15 +17,18 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { HandRegion } from "./matchRegions/matchRegions"
+import { OurHandRegion } from "./matchRegions/matchRegions"
 
 
 var storyHiddenLock: boolean = false
 
 // TODO Rename to Match
 export default class GameScene extends BaseScene {
+	view: View
+
 	constructor (args = {key: "GameScene"}) {
 		super(args)
+
 	}
 
 	create (params: any) {
@@ -36,13 +39,43 @@ export default class GameScene extends BaseScene {
 		// This is the model
 
 		// Create the view
-		new View(this)
+		this.view = new View(this)
 		
 		// Create the controller
-		new Controller()
+		// new Controller() THis is the controller
+		let mmCode = 'ai'
+		let deck = undefined
+
+		// Connect with the server
+		let net = new Network(deck, this, mmCode)
+
+
+
+
+
 
 		// TODO Fix create / precreate, bad smell
 		super.create()
+	}
+	// Listens for websocket updates
+	// Manages user decisions (What card to play, when to pass)
+
+	// Methods called by the websocket
+
+	// Display searching for opponent if still looking
+	displaySearchingStatus(searching: boolean): void {
+
+	}
+
+	// TODO
+	queueState(state: ClientState): void {
+		console.log(state)
+		this.view.displayState(state)
+	}
+
+	signalDC(): void {
+		// TODO Replace this with menu impl
+		console.log('opp disconnected')
 	}
 }
 
@@ -1843,6 +1876,8 @@ class OldGameScene extends BaseScene {
 class View {
 	scene: Phaser.Scene
 
+	handRegion // TODO
+
 	// Has the phaser objects
 	// Handles layout, animation
 	// Divided into regions
@@ -1853,7 +1888,7 @@ class View {
 		// Create each of the regions
 		// this.createOurHand()
 		// new HandRegion()//.create(scene)
-		new HandRegion().create(scene)
+		this.handRegion = new OurHandRegion().create(scene)
 		this.createTheirHand()
 
 		// this.createOurDeck()
@@ -1865,6 +1900,10 @@ class View {
 
 		// // Count of rounds won, our current/max mana
 		// this.createWins()
+	}
+
+	displayState(state: ClientState) {
+		this.handRegion.displayState(state)
 	}
 
 	private createTheirHand() {

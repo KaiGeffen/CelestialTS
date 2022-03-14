@@ -204,8 +204,10 @@ export class CardImage {
     return this
   }
 
-  setPosition(position: [number, number]): void {
+  setPosition(position: [number, number]): CardImage {
     this.container.setPosition(position[0], position[1])
+
+    return this
   }
 
   // Set the displayed cost of this card, don't change the cost if cost is null
