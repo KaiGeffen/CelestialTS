@@ -9,9 +9,12 @@ import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 
 
+// TODO
+const middle = (Space.windowHeight)/2 - 150
+
 export default class StoryRegion extends Region {
 	create (scene: Phaser.Scene): Region {
-		// TODO 200 is the height for their hand, but generalize
+		// TODO 150 is the height for their hand, but generalize
 		this.container = scene.add.container(100 + 140/2, 150)
 
 		return this
@@ -23,12 +26,11 @@ export default class StoryRegion extends Region {
 		let that = this
 
 		for (let i = 0; i < state.story.acts.length; i++) {
-			const x = 50 + (90) * i
+			const x = (90) * i
 
-			
 			const act = state.story.acts[i]
 
-			const y = act.owner === 0 ? 200 : 100
+			const y = act.owner === 0 ? middle + 80 : middle - 80
 
 			let card = this.addCard(act.card, [x, y])
 			// TODO Add a callback to jump around in recap

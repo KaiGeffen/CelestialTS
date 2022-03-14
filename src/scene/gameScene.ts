@@ -17,7 +17,7 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { OurHandRegion, StoryRegion } from "./matchRegions/matchRegions"
+import { OurHandRegion, TheirHandRegion, StoryRegion, ScoreRegion } from "./matchRegions/matchRegions"
 import Region from './matchRegions/baseRegion'
 
 
@@ -79,7 +79,7 @@ export default class GameScene extends BaseScene {
 	// Set all of the callback functions for the regions in the view
 	setCallbacks(view, net): void {
 		// Hand region
-		view.handRegion.setCallback((i: number) => {
+		view.ourHand.setCallback((i: number) => {
 			net.playCard(i)
 		})
 	}
@@ -1882,8 +1882,10 @@ class OldGameScene extends BaseScene {
 class View {
 	scene: Phaser.Scene
 
-	handRegion: Region // TODO Don't access this directly from gamescene
-	storyRegion: Region
+	ourHand: Region // TODO Don't access this directly from gamescene
+	theirHand: Region
+	story: Region
+	score: Region
 
 	// Has the phaser objects
 	// Handles layout, animation
@@ -1895,10 +1897,11 @@ class View {
 		// Create each of the regions
 		// this.createOurHand()
 		// new HandRegion()//.create(scene)
-		this.handRegion = new OurHandRegion().create(scene)
-		this.createTheirHand()
+		this.ourHand = new OurHandRegion().create(scene)
+		this.theirHand = new TheirHandRegion().create(scene)
 
-		this.storyRegion = new StoryRegion().create(scene)
+		this.story = new StoryRegion().create(scene)
+		this.score = new ScoreRegion().create(scene)
 
 		// this.createOurDeck()
 		// this.createTheirDeck()
@@ -1912,59 +1915,10 @@ class View {
 	}
 
 	displayState(state: ClientState) {
-		this.handRegion.displayState(state)
-		this.storyRegion.displayState(state)
-
-	}
-
-	private createTheirHand() {
-		const height = 150
-
-		// Avatar, status, hand, recap, pass buttons
-
-		let container = this.scene.add.container(0, 0)
-
-		// Make a container
-		// Add background rectangle
-		let background = this.scene.add.rectangle(
-			0, 0,
-			Space.windowWidth, height,
-			Color.menuBackground, 1
-			).setOrigin(0)
-
-		let avatar = this.scene.add.image(Space.pad, Space.pad, 'avatar-Jules').setOrigin(0)
-
-
-		// Add each of these objects to container
-		container.add([
-			background,
-			avatar,
-			])
-
-		// TEMP
-		let cardImage = new CardImage(cardback, container)
-		cardImage.setPosition([500, 0])
-	}
-
-	// TODO Remove
-	private createStory() {
-		// TODO 200 is the height for their hand, but generalize
-		let container = this.scene.add.container(100 + 140/2, 150)
-
-		let cardImage = new CardImage(cardback, container)
-		cardImage.setPosition([0, 150 + Space.pad])
-
-		let c2 = new CardImage(cardback, container)
-		c2.setPosition([100, 280 + Space.pad])
-
-		new CardImage(cardback, container).setPosition([200, 280 + Space.pad])
-
-		new CardImage(cardback, container).setPosition([300, 150 + Space.pad])
-
-		// Add each of these objects to container
-		// container.add([
-			
-		// 	])
+		this.ourHand.displayState(state)
+		this.theirHand.displayState(state)
+		this.story.displayState(state)
+		this.score.displayState(state)
 	}
 }
 
