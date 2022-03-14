@@ -1223,13 +1223,8 @@ export class TutorialBuilderScene extends BuilderSceneShell {
       return cardImage.card
     })
 
-    this.scene.start("TutorialScene2", {
-      isTutorial: true,
-      tutorialNumber: 2,
-      deck: deck,
-      tutorialName: this.tutorialName,
-      opponentDeck: this.opponentDeck
-    })
+    // TODO Remove
+
   }
 
   private createDescriptionText(): void {

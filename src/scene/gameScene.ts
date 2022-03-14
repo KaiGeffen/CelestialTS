@@ -15,6 +15,9 @@ import Button from '../lib/button'
 import Icon from '../lib/icon'
 import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
+// TODO Remove unused
+
+import { HandRegion } from "./matchRegions/matchRegions"
 
 
 var storyHiddenLock: boolean = false
@@ -30,11 +33,13 @@ export default class GameScene extends BaseScene {
 
 		// TODO use params
 
+		// This is the model
+
 		// Create the view
 		new View(this)
 		
 		// Create the controller
-		// This is the model
+		new Controller()
 
 		// TODO Fix create / precreate, bad smell
 		super.create()
@@ -1846,7 +1851,9 @@ class View {
 		this.scene = scene
 
 		// Create each of the regions
-		this.createOurHand()
+		// this.createOurHand()
+		// new HandRegion()//.create(scene)
+		new HandRegion().create(scene)
 		this.createTheirHand()
 
 		// this.createOurDeck()
@@ -1858,55 +1865,6 @@ class View {
 
 		// // Count of rounds won, our current/max mana
 		// this.createWins()
-	}
-
-	private createOurHand() {
-		const height = 150
-
-		// Avatar, status, hand, recap, pass buttons
-
-		let container = this.scene.add.container(0, Space.windowHeight - height)
-
-		// Make a container
-		// Add background rectangle
-		let background = this.scene.add.rectangle(
-			0, 0,
-			Space.windowWidth, height,
-			Color.menuBackground, 1
-			).setOrigin(0)
-
-		let avatar = this.scene.add.image(Space.pad, Space.pad, 'avatar-Jules').setOrigin(0)
-
-		// Recap button
-		let btnRecap = new Button(this.scene,
-			Space.windowWidth - Space.pad,
-			height / 3,
-			'Recap'
-			).setOrigin(1, 0.5)
-
-		// Pass button
-		let btnPass = new Button(this.scene,
-			Space.windowWidth - Space.pad,
-			height * 2 / 3,
-			'Pass'
-			).setOrigin(1, 0.5)
-
-		// Add each of these objects to container
-		container.add([
-			background,
-			avatar,
-			btnRecap,
-			btnPass,
-			])
-
-		// TEMP
-		let cardImage = new CardImage(cardback, container)
-		cardImage.setPosition([300, 150])
-		new CardImage(cardback, container).setPosition([450, 150])
-		new CardImage(cardback, container).setPosition([600, 150])
-		new CardImage(cardback, container).setPosition([750, 150])
-		new CardImage(cardback, container).setPosition([900, 150])
-		new CardImage(cardback, container).setPosition([1050, 150])
 	}
 
 	private createTheirHand() {
@@ -1946,11 +1904,11 @@ class View {
 		cardImage.setPosition([0, 150 + Space.pad])
 
 		let c2 = new CardImage(cardback, container)
-		c2.setPosition([80, 280 + Space.pad])
+		c2.setPosition([100, 280 + Space.pad])
 
-		new CardImage(cardback, container).setPosition([160, 280 + Space.pad])
+		new CardImage(cardback, container).setPosition([200, 280 + Space.pad])
 
-		new CardImage(cardback, container).setPosition([240, 150 + Space.pad])
+		new CardImage(cardback, container).setPosition([300, 150 + Space.pad])
 
 		// Add each of these objects to container
 		// container.add([
@@ -1963,6 +1921,31 @@ class View {
 class Controller {
 	// Listens for websocket updates
 	// Manages user decisions (What card to play, when to pass)
+
+	constructor () {
+		let mmCode = 'ai'
+		let deck = undefined
+
+		// Connect with the server
+		let net = new Network(deck, this, mmCode)
+	}
+
+	// Methods called by the websocket
+
+	// Display searching for opponent if still looking
+	displaySearchingStatus(searching: boolean): void {
+
+	}
+
+	// TODO
+	queueState(state: ClientState): void {
+		console.log(state)
+	}
+
+	signalDC(): void {
+		// TODO Replace this with menu impl
+		console.log('opp disconnected')
+	}
 }
 
 // The Model of MVC - What state is stored. This controls View and Controller
