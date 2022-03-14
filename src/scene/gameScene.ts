@@ -1909,10 +1909,8 @@ export default class GameScene extends BaseScene {
 		// if (this.currentState !== undefined) {
 		// 	nextVersionNumber = Math.max(this.currentState.versionNumber, nextVersionNumber)
 		// }
-		
-		console.log(nextVersionNumber)
+
 		if (nextVersionNumber in this.queuedStates) {
-			console.log('have next version number')
 			let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber])
 
 			// If the state was just shown, delete it
@@ -1925,21 +1923,17 @@ export default class GameScene extends BaseScene {
 
 	// Display the given game state, returns false if the state isn't shown immediately
 	private displayState(state: ClientState): boolean {
-		let that = this
-		// If any tweens are not almost done, queue and wait for them to finish
+		// If any tweens are playing, don't display yet
 		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
 		if (anyTweenPlaying) {
 			return false
 		}
 
 		// Remember what version of the game state this is, for use when communicating with server
-		console.log(state)
 		this.net.setVersionNumber(state.versionNumber)
-		// TODO
 
 		this.view.displayState(state)
 
-		// State was displayed
 		return true
 	}
 }

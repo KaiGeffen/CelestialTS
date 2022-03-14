@@ -15,6 +15,9 @@ export default class OurHandRegion extends Region {
 	// TODO Add this to base class
 	scene: Phaser.Scene
 
+	// Function called when elements in this region are interacted with
+	callback: (i: number) =>  void
+
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
 		this.scene = scene // TODO
@@ -46,8 +49,7 @@ export default class OurHandRegion extends Region {
 			Space.windowWidth - Space.pad,
 			height * 2 / 3,
 			'Pass',
-			// TODO Bad smell (Must curry each time this is called)
-			() => {that.callback(10)()}
+			() => { that.callback(10) }
 			).setOrigin(1, 0.5)
 
 		// Add each of these objects to container
@@ -66,15 +68,14 @@ export default class OurHandRegion extends Region {
 
 		let that = this
 
+		// Go in reverse order so that cards to the right are animated
+		// filling in the hole left when card is played
 		let cardsInHand = []
 		for (let i = 0; i < state.hand.length; i++) {
 			const x = 300 + (140 + Space.pad) * i
 			
 			let card = this.addCard(state.hand[i], [x, 200/2])
-			card.setOnClick(
-				// Callback is based on the index of this card in the hand
-				() => {that.callback(i)}
-				)
+			card.setOnClick(that.onCardClick(i, card, cardsInHand))
 
 			cardsInHand.push(card)
 			this.temp.push(card)
@@ -124,8 +125,46 @@ export default class OurHandRegion extends Region {
 		}
 	}
 
+	// Return the function that runs when card with given index is clicked on
+	private onCardClick(i: number, card: CardImage, hand: CardImage[]): () => void {
+		let that = this
+
+		// TODO position in story
+		const end = [66, -277]
+
+		return function() {
+			// Send this card to its place in the story
+			that.scene.tweens.add({
+				targets: card.container,
+				x: end[0],
+				y: end[1],
+				duration: Time.recapTween(),
+				ease: "Sine.easeInOut",
+				// After brief delay, tell network, hide info, shift cards to fill its spot
+				onStart: function () {setTimeout(function() {
+					// Fill in the hole where the card was
+					// For every card later than i, move to the right
+					for (let j = i + 1; j < hand.length; j++) {
+						let adjustedCard = hand[j]
+
+						that.scene.tweens.add({
+							targets: adjustedCard.container,
+							x: adjustedCard.container.x - 140 - Space.pad,
+							duration: Time.recapTween() - 10,
+							ease: "Sine.easeInOut"
+						})
+					}
+
+					// Trigger the callback function for this card
+					that.callback(i)
+				}, 10)}
+			})
+		}
+		
+	}
+
 	// Set the callback for when a card in this region is clicked on
-	setCallback(f: (x: number) => () => void): Region {
+	setCallback(f: (x: number) => void): Region {
 		this.callback = f
 		return this
 	}
