@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color } from '../../settings/settings'
+import { Space, Color, Time } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -14,7 +14,9 @@ const middle = (Space.windowHeight)/2 - 150
 
 export default class StoryRegion extends Region {
 	create (scene: Phaser.Scene): Region {
-		// TODO 150 is the height for their hand, but generalize
+		this.scene = scene
+
+		// TODO 150 is the height for their hand, generalize this
 		this.container = scene.add.container(100 + 140/2, 150)
 
 		return this
@@ -25,6 +27,7 @@ export default class StoryRegion extends Region {
 
 		let that = this
 
+		let cards = []
 		for (let i = 0; i < state.story.acts.length; i++) {
 			const x = (90) * i
 
@@ -35,9 +38,51 @@ export default class StoryRegion extends Region {
 			let card = this.addCard(act.card, [x, y])
 			// TODO Add a callback to jump around in recap
 
+			cards.push(card)
 			this.temp.push(card)
 		}
 
-		// TODO Statuses
+		this.animate(state, cards)
+	}
+
+	private animate(state: ClientState, cards: CardImage[]): void {
+		let that = this
+
+		// If the last card was just played by the opponent,
+		// animate it from their hand
+		if (state.story.acts.length === 0) {
+			return
+		}
+
+		const lastAct = state.story.acts[state.story.acts.length - 1]
+		const lastCardTheirs = lastAct.owner === 1
+		const noPasses = state.passes === 0
+
+		if (lastCardTheirs && noPasses) {
+			// Animate the last card moving from their hand
+			const card = cards[cards.length - 1]
+
+			const x = card.container.x
+			const y = card.container.y
+
+			// TODO Generalize to 1 past the last card in their hand
+			card.setPosition([
+				300 + (140 + Space.pad) * state.opponentHandSize - 170, // 170 from above
+				-100
+				])
+
+			// Animate moving x direction, appearing at start
+			this.scene.tweens.add({
+				targets: card.container,
+				x: x,
+				y: y,
+				duration: Time.recapTweenWithPause(),
+				onStart: function (tween, targets, _)
+				{
+					card.show()
+					that.scene.sound.play('play')
+				}
+			})
+		}
 	}
 }

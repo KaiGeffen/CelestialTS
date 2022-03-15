@@ -9,6 +9,8 @@ import ClientState from '../../lib/clientState'
 export default class Region {
 	container: Phaser.GameObjects.Container
 
+	scene: Phaser.Scene
+
 	// All gameobjects that should be deleted before new state is shown
 	temp: any[] = []
 

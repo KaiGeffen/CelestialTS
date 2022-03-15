@@ -12,9 +12,6 @@ import { Animation, Zone } from '../../lib/animation'
 
 
 export default class OurHandRegion extends Region {
-	// TODO Add this to base class
-	scene: Phaser.Scene
-
 	// Function called when elements in this region are interacted with
 	callback: (i: number) =>  void
 
