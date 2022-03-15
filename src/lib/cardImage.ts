@@ -168,6 +168,12 @@ export class CardImage {
     this.image.removeAllListeners('pointerdown')
   }
 
+  // Set the callback to fire when this card's image is hovered, and one for when exited
+  setOnHover(f: () => void, g: () => void): void {
+    this.image.on('pointerover', f)
+    this.image.on('pointerout', g)
+  }
+
   // Set whether this card is playable
   setPlayable(isPlayable: Boolean): void {
     this.unplayable = !isPlayable

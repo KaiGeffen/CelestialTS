@@ -81,6 +81,7 @@ export default class OurHandRegion extends Region {
 			const x = 300 + (140 + Space.pad) * i
 
 			let card = this.addCard(state.hand[i], [x, 200/2])
+			card.setOnHover(that.onCardHover(card), that.onCardExit(card))
 
 			if (state.cardsPlayable[i]) {
 				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
@@ -169,7 +170,20 @@ export default class OurHandRegion extends Region {
 				}, 10)}
 			})
 		}
-		
+	}
+
+	// Return the function that runs when given card is hovered
+	private onCardHover(card: CardImage): () => void {
+		return () => {
+			card.container.setY(50)
+		}
+	}
+
+	// Return the function that runs when given card hover is exited
+	private onCardExit(card: CardImage): () => void {
+		return () => {
+			card.container.setY(100)
+		}
 	}
 
 	// Set the callback for when a card in this region is clicked on

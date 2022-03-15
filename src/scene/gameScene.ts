@@ -1849,11 +1849,15 @@ export default class GameScene extends BaseScene {
 		this.view = new View(this)
 
 		this.setCallbacks(this.view, this.net)
+	}
 
-
+	create(): void {
 		// TODO Fix create / precreate, bad smell
+		super.precreate()
+		
 		super.create()
 	}
+
 	// Listens for websocket updates
 	// Manages user decisions (What card to play, when to pass)
 
