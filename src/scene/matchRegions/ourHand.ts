@@ -25,7 +25,7 @@ export default class OurHandRegion extends Region {
 
 		// Avatar, status, hand, recap, pass buttons
 
-		this.container = scene.add.container(0, Space.windowHeight - height)
+		this.container = scene.add.container(0, Space.windowHeight - height).setDepth(1)
 
 		// Make a container
 		// Add background rectangle
@@ -68,6 +68,12 @@ export default class OurHandRegion extends Region {
 
 		let that = this
 
+		// TODO
+		const nextStoryPosition = [
+		170 + 90 * state.story.acts.length,
+		-(Space.windowHeight/2 - 150 - 200/2 + 20)
+		]
+
 		// Go in reverse order so that cards to the right are animated
 		// filling in the hole left when card is played
 		let cardsInHand = []
@@ -77,7 +83,7 @@ export default class OurHandRegion extends Region {
 			let card = this.addCard(state.hand[i], [x, 200/2])
 
 			if (state.cardsPlayable[i]) {
-				card.setOnClick(that.onCardClick(i, card, cardsInHand))
+				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
 			}
 			else {
 				card.setPlayable(false)
@@ -132,18 +138,15 @@ export default class OurHandRegion extends Region {
 	}
 
 	// Return the function that runs when card with given index is clicked on
-	private onCardClick(i: number, card: CardImage, hand: CardImage[]): () => void {
+	private onCardClick(i: number, card: CardImage, hand: CardImage[], endPosition: [number, number]): () => void {
 		let that = this
-
-		// TODO position in story
-		const end = [66, -277]
 
 		return function() {
 			// Send this card to its place in the story
 			that.scene.tweens.add({
 				targets: card.container,
-				x: end[0],
-				y: end[1],
+				x: endPosition[0],
+				y: endPosition[1],
 				duration: Time.recapTween(),
 				ease: "Sine.easeInOut",
 				// After brief delay, tell network, hide info, shift cards to fill its spot

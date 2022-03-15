@@ -40,10 +40,4 @@ export default class StoryRegion extends Region {
 
 		// TODO Statuses
 	}
-
-	// Set the callback for when a card in this region is clicked on
-	setCallback(f: (x: number) => () => void): Region {
-		this.callback = f
-		return this
-	}
 }
