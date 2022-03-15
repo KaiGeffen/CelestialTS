@@ -73,9 +73,15 @@ export default class OurHandRegion extends Region {
 		let cardsInHand = []
 		for (let i = 0; i < state.hand.length; i++) {
 			const x = 300 + (140 + Space.pad) * i
-			
+
 			let card = this.addCard(state.hand[i], [x, 200/2])
-			card.setOnClick(that.onCardClick(i, card, cardsInHand))
+
+			if (state.cardsPlayable[i]) {
+				card.setOnClick(that.onCardClick(i, card, cardsInHand))
+			}
+			else {
+				card.setPlayable(false)
+			}
 
 			cardsInHand.push(card)
 			this.temp.push(card)
