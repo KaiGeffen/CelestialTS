@@ -15,8 +15,11 @@ const middle = (Space.windowHeight)/2 - 150
 export default class StoryRegion extends Region {
 	txtScores: Phaser.GameObjects.Text
 
+	lastScores: [number, number]
+
 	create (scene: Phaser.Scene): StoryRegion {
 		this.scene = scene
+		this.lastScores = [0, 0]
 
 		// TODO 150 is the height for their hand, generalize this
 		this.container = scene.add.container(100 + 140/2, 150)
@@ -36,7 +39,7 @@ export default class StoryRegion extends Region {
 	// Display either current state or a recap state
 	displayStateOrRecap(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
-
+		
 		let that = this
 
 		// If this is a recap, add the already played cards greyed out
@@ -69,12 +72,66 @@ export default class StoryRegion extends Region {
 
 		// Scores
 		if (isRecap) {
-			this.txtScores.setText(`${state.score[0]}\n\n${state.score[1]}`)
-		} else {
+			this.displayScores(state)
+		}
+		else {
 			this.txtScores.setText('')
 		}
 
 		this.animate(state, cards, isRecap)
+	}
+
+	// Display the current score totals and change in scores
+	private displayScores(state: ClientState): void {
+		let index = state.recap.playList.length - 1
+		let remainingActs = state.recap.stateList.length
+		if (index >= 0 && remainingActs >= 0) {
+			this.animateScoreGains(index, state.score)
+		}
+
+		// Display current total
+		this.txtScores.setText(`${state.score[1]}\n\n${state.score[0]}`)
+		this.lastScores = state.score
+	}
+
+	// Animate each player gaining or losing points for the act at this index
+	private animateScoreGains(index: number, scores: [number, number]): void {
+		const x = 90 * index
+
+
+
+		// Form the string for the gain of the given player
+		let that = this
+		console.log([scores, that.lastScores])
+  		function getGain(i: number): string {
+  			let amt = scores[i] - that.lastScores[i]
+  			if (amt < 0) {
+  				return amt.toString()
+  			} else if (amt === 0) {
+  				return ''
+  			} else {
+  				return `+${amt}`
+  			}
+  		}
+		const txtGain = this.scene.add.text(
+			x, middle,
+			`${getGain(1)}\n\n${getGain(0)}`,
+			Style.announcement)
+			.setOrigin(0.5)
+
+		this.container.add(txtGain)
+		this.scene.add.tween({
+  			targets: txtGain,
+  			scale: 1.5,
+  			duration: Time.recapTween(),
+  			ease: "Sine.easeInOut",
+  			yoyo: true,
+  			onComplete: 
+	  			function (tween, targets, _)
+	  			{
+	  				txtGain.destroy()
+	  			}
+  				})
 	}
 
 	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {

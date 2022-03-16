@@ -2026,6 +2026,11 @@ class View {
 		this.score.displayState(state)
 		this.decks.displayState(state)
 		this.discardPiles.displayState(state)
+
+		// Play whatever sound this new state brings
+		if (state.soundEffect !== null) {
+			this.scene.sound.play(state.soundEffect)
+		}
 	}
 }
 
