@@ -13,7 +13,7 @@ import ClientState from '../../lib/clientState'
 const middle = (Space.windowHeight)/2 - 150
 
 export default class StoryRegion extends Region {
-	create (scene: Phaser.Scene): Region {
+	create (scene: Phaser.Scene): StoryRegion {
 		this.scene = scene
 
 		// TODO 150 is the height for their hand, generalize this
@@ -23,13 +23,30 @@ export default class StoryRegion extends Region {
 	}
 
 	displayState(state: ClientState): void {
+		this.displayStateOrRecap(state, false)
+	}
+
+	displayStateOrRecap(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
 		let that = this
 
+		// If this is a recap, add the already played cards greyed out
+		let resolvedI = 0
+		for (; isRecap && resolvedI < state.recap.playList.length; resolvedI++) {
+			const play = state.recap.playList[resolvedI]
+			
+			const x = 90 * resolvedI
+			const y = play[1] === 0 ? middle + 80 : middle - 80
+
+			let card = this.addCard(play[0], [x, y]).setTransparent(true)
+
+			this.temp.push(card)
+		}
+
 		let cards = []
 		for (let i = 0; i < state.story.acts.length; i++) {
-			const x = (90) * i
+			const x = (90) * (i + resolvedI)
 
 			const act = state.story.acts[i]
 
@@ -42,10 +59,10 @@ export default class StoryRegion extends Region {
 			this.temp.push(card)
 		}
 
-		this.animate(state, cards)
+		this.animate(state, cards, isRecap)
 	}
 
-	private animate(state: ClientState, cards: CardImage[]): void {
+	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
 		let that = this
 
 		// If the last card was just played by the opponent,
@@ -58,7 +75,7 @@ export default class StoryRegion extends Region {
 		const lastCardTheirs = lastAct.owner === 1
 		const noPasses = state.passes === 0
 
-		if (lastCardTheirs && noPasses) {
+		if (lastCardTheirs && noPasses && !isRecap) {
 			// Animate the last card moving from their hand
 			const card = cards[cards.length - 1]
 

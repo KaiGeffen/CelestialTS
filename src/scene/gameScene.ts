@@ -1830,16 +1830,11 @@ export default class GameScene extends BaseScene {
 	}
 
 	init (params: any) {
-		super.precreate()
-
 		this.queuedStates = {}
 
 		// TODO use params
 
-		// This is the model
-		
-		// Create the controller
-		// new Controller() THis is the controller
+		// This is the Controller
 		let mmCode = 'ai'
 
 		// Connect with the server
@@ -1876,6 +1871,13 @@ export default class GameScene extends BaseScene {
 		}
 	}
 
+	// Queue up the given recap, which is each state seen as the story resolves
+	private queueRecap(stateList: ClientState[]): void {
+		this.recapPlaying = true
+		this.queuedRecap = stateList
+		this.lastRecap = [...stateList]
+	}
+
 	signalDC(): void {
 		// TODO Replace this with menu impl
 		console.log('opp disconnected')
@@ -1890,21 +1892,22 @@ export default class GameScene extends BaseScene {
 	}
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
-	private update(time, delta): void {
-		// Prioritize showing the recap, if there is one
-		// if (this.queuedRecap.length > 0) {
-		// 	let wasShown = this.displayState(this.queuedRecap[0], true)
+	queuedRecap: ClientState[] = []
+	recapPlaying = false
+	lastRecap
+	update(time, delta): void {
+		// Play the recap if one is queued
+		if (this.queuedRecap.length > 0) {
+			if (this.displayState(this.queuedRecap[0], true)) {
+				this.queuedRecap.shift()
 
-		// 	if (wasShown) {
-		// 		this.queuedRecap.shift()
+				if (this.queuedRecap.length === 0) {
+					this.recapPlaying = false
+				}
 
-		// 		if (this.queuedRecap.length === 0) {
-		// 			this.recapPlaying = false
-		// 		}
-
-		// 		return
-		// 	}
-		// }
+				return
+			}
+		}
 
 		// Otherwise, show a non-recap state, as determined by its version number
 		let nextVersionNumber = versionNumber + 1
@@ -1915,7 +1918,7 @@ export default class GameScene extends BaseScene {
 		// }
 
 		if (nextVersionNumber in this.queuedStates) {
-			let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber])
+			let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber], false)
 
 			// If the state was just shown, delete it
 			if (isDisplayed) {
@@ -1926,19 +1929,48 @@ export default class GameScene extends BaseScene {
 	}
 
 	// Display the given game state, returns false if the state isn't shown immediately
-	private displayState(state: ClientState): boolean {
+	private displayState(state: ClientState, isRecap: boolean): boolean {
+		// If there is a new recap, queue that instead and don't show this state yet
+		if (this.queueNewRecap(state)) {
+			return false
+		}
+
 		// If any tweens are playing, don't display yet
 		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
 		if (anyTweenPlaying) {
 			return false
 		}
 
-		// Remember what version of the game state this is, for use when communicating with server
-		this.net.setVersionNumber(state.versionNumber)
+		if (!isRecap) {
+			// Remember what version of the game state this is, for use when communicating with server
+			this.net.setVersionNumber(state.versionNumber)
+		}
 
-		this.view.displayState(state)
+		this.view.displayState(state, isRecap)
 
 		return true
+	}
+
+	// Queue up this scene's yet-unseen recap, return false if there is none
+	private queueNewRecap(state: ClientState): boolean {
+		// If a round just ended, we might have a recap to queue up
+		const isRoundStart = state.story.acts.length === 0 && state.passes === 0
+		const numberStates = state.recap.stateList.length
+		if (isRoundStart && numberStates > 0) {
+			// Queue the recap to play
+			this.queueRecap(state.recap.stateList)
+
+			// Remove the recap from this state (So it won't be added again)
+			state.recap.stateList = []
+
+			// Add this state to the queue
+			this.queueState(state)
+
+			// Return true, that a recap was queued
+			return true
+		}
+
+		return false
 	}
 }
 
@@ -1949,7 +1981,7 @@ class View {
 
 	ourHand: Region // TODO Don't access this directly from gamescene
 	theirHand: Region
-	story: Region
+	story: StoryRegion
 	score: Region
 	decks: Region
 	discardPiles: Region
@@ -1972,22 +2004,12 @@ class View {
 
 		this.decks = new DecksRegion().create(scene)
 		this.discardPiles = new DiscardPilesRegion().create(scene)
-
-		// this.createOurDeck()
-		// this.createTheirDeck()
-		// this.createOurDiscard()
-		// this.createTheirDiscard()
-
-		// // Count of rounds won, our current/max mana
-		// this.createWins()
-
-		// Set all of the callbacks
 	}
 
-	displayState(state: ClientState) {
+	displayState(state: ClientState, isRecap: boolean) {
 		this.ourHand.displayState(state)
 		this.theirHand.displayState(state)
-		this.story.displayState(state)
+		this.story.displayStateOrRecap(state, isRecap)
 		this.score.displayState(state)
 		this.decks.displayState(state)
 		this.discardPiles.displayState(state)

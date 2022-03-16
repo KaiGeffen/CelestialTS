@@ -7,6 +7,7 @@ export default class Recap {
 	sums: number[]
 	wins: number[]
 	safety: number[]
+	// The card, owner, and text (deprecated) for each play before this point
 	playList: [Card, number, string][]
 	stateList: ClientState[]
 

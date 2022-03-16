@@ -133,8 +133,10 @@ function decodeRecap(s: string): Recap {
 	function decodePlay(play: string): [Card, number, string] {
 		let l = play.split(delims[1])
 
+		// TODO Make this a class, not a 3-tuple
 		let card = decodeCard(l[0])
 		let owner = +l[1]
+		// Text isn't used anymore
 		let text = l[2]
 
 		return [card, owner, text]

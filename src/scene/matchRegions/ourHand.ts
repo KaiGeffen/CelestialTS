@@ -10,7 +10,6 @@ import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
 
 
-
 export default class OurHandRegion extends Region {
 	// Function called when elements in this region are interacted with
 	callback: (i: number) =>  void
@@ -38,14 +37,7 @@ export default class OurHandRegion extends Region {
 		// Highlight visible when we have priority
 		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
 		.setOrigin(0)
-		.setAlpha(0.4)
-		.play()
-
-		// scene.add.rectangle(
-		// 	0, 0,
-		// 	Space.windowWidth, height,
-		// 	0xaaaaaa, 0.4
-		// 	).setOrigin(0)
+		.play(true)
 
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 
@@ -82,7 +74,7 @@ export default class OurHandRegion extends Region {
 		let that = this
 
 		// TODO
-		const nextStoryPosition = [
+		const nextStoryPosition: [number, number] = [
 		170 + 90 * state.story.acts.length,
 		-(Space.windowHeight/2 - 150 - 200/2 + 20)
 		]
