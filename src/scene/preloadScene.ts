@@ -77,6 +77,9 @@ export default class PreloadClass extends Phaser.Scene {
 		// Load the avatar images
 		this.loadAvatars()
 
+		// Load in texture videos
+		this.loadVideos()
+
 		// Load all audio
 		SOUNDS.forEach( (sound) => {
 			this.load.audio(sound, `sfx/${sound}.mp3`)
@@ -170,7 +173,7 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 	}
 
-	// Loads all map images (Journey mode)
+	// Loads all avatar images
 	private loadAvatars(): void {
 		let avatarsNames = [
 			'Jules',
@@ -179,6 +182,11 @@ export default class PreloadClass extends Phaser.Scene {
 		avatarsNames.forEach( (s) => {
 			this.load.image(`avatar-${s}`, `avatars/${s}.png`)
 		})
+	}
+
+	// Loads all video textures
+	private loadVideos(): void {
+		this.load.video('priorityHighlight', 'foo.mp4')
 	}
 
 	// Create the which show user how much has loaded

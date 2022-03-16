@@ -15,6 +15,9 @@ export default class OurHandRegion extends Region {
 	// Function called when elements in this region are interacted with
 	callback: (i: number) =>  void
 
+	// Effect showing that we have priority
+	priorityHighlight: Phaser.GameObjects.Video
+
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
 		this.scene = scene // TODO
@@ -32,7 +35,19 @@ export default class OurHandRegion extends Region {
 			Color.menuBackground, 1
 			).setOrigin(0)
 
-		let avatar = scene.add.image(Space.pad, Space.pad, 'avatar-Jules').setOrigin(0)
+		// Highlight visible when we have priority
+		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
+		.setOrigin(0)
+		.setAlpha(0.4)
+		.play()
+
+		// scene.add.rectangle(
+		// 	0, 0,
+		// 	Space.windowWidth, height,
+		// 	0xaaaaaa, 0.4
+		// 	).setOrigin(0)
+
+		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 
 		// Recap button
 		let btnRecap = new Button(scene,
@@ -52,6 +67,7 @@ export default class OurHandRegion extends Region {
 		// Add each of these objects to container
 		this.container.add([
 			background,
+			this.priorityHighlight,
 			avatar,
 			btnRecap,
 			btnPass,
@@ -99,6 +115,8 @@ export default class OurHandRegion extends Region {
 	// Animate any cards ending in the hand
 	private animate(state: ClientState, cards: CardImage[]): void {
 		let scene = this.scene
+
+		this.animatePriority(state)
 		
 		let delay = 0
 		for (let i = 0; i < state.animations[0].length; i++) {
@@ -133,6 +151,17 @@ export default class OurHandRegion extends Region {
 			// Delay occurs for each animation even if not going to hand
 			delay += Time.recapTween()
 		}
+	}
+
+	// Animate us getting or losing priority
+	private animatePriority(state: ClientState): void {
+		const targetAlpha = state.priority === 0 ? 1 : 0
+
+		this.scene.tweens.add({
+				targets: this.priorityHighlight,
+				alpha: targetAlpha,
+				duration: Time.recapTweenWithPause()
+			})
 	}
 
 	// Return the function that runs when card with given index is clicked on

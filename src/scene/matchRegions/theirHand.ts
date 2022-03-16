@@ -10,7 +10,10 @@ import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
 
 
-export default class OurHandRegion extends Region {
+export default class OurHandRegion extends Region {	
+	// Effect showing that they have priority
+	priorityHighlight: Phaser.GameObjects.Rectangle
+
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
 		this.scene = scene
@@ -28,11 +31,19 @@ export default class OurHandRegion extends Region {
 			Color.menuBackground, 1
 			).setOrigin(0)
 
-		let avatar = scene.add.image(Space.pad, Space.pad, 'avatar-Jules').setOrigin(0)
+		// Highlight visible when they have priority
+		this.priorityHighlight = scene.add.rectangle(
+			0, 0,
+			Space.windowWidth, height,
+			0xaaaaaa, 0.4
+			).setOrigin(0)
+
+		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 
 		// Add each of these objects to container
 		this.container.add([
 			background,
+			this.priorityHighlight,
 			avatar,
 			])
 
@@ -66,9 +77,22 @@ export default class OurHandRegion extends Region {
 
 	// Animate any cards leaving the hand
 	private animate(state: ClientState, hand: CardImage[]): void {
+		this.animatePriority(state)
+
 		this.animateCardsLeavingHand(state, hand)
 		// Status
 		// Priority bar
+	}
+
+	// Animate them getting or losing priority
+	private animatePriority(state: ClientState): void {
+		const targetAlpha = state.priority === 1 ? 1 : 0
+
+		this.scene.tweens.add({
+				targets: this.priorityHighlight,
+				alpha: targetAlpha,
+				duration: Time.recapTweenWithPause()
+			})
 	}
 
 	private animateCardsLeavingHand(state:ClientState, hand: CardImage[]): void {
