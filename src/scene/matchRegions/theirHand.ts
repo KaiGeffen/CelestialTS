@@ -44,30 +44,41 @@ export default class OurHandRegion extends Region {
 
 		let that = this
 
-		let cardsInHand = []
+		let hand = []
 		for (let i = 0; i < state.opponentHandSize; i++) {
 			const x = 300 + (140 + Space.pad) * i
 			
 			let card = this.addCard(cardback, [x, 50])
 
-			cardsInHand.push(card)
+			hand.push(card)
 			this.temp.push(card)
 		}
 
 		// TODO Statuses
 
-		this.animate(state, cardsInHand)
+		this.animate(state, hand)
+
+		// Priority TODO temp
+		if (state.priority === 0) {
+			this.scene.add.rectangle(0, 0, Space.windowWidth, 60)
+		}
 	}
 
 	// Animate any cards leaving the hand
-	private animate(state: ClientState, cards: CardImage[]): void {
+	private animate(state: ClientState, hand: CardImage[]): void {
+		this.animateCardsLeavingHand(state, hand)
+		// Status
+		// Priority bar
+	}
+
+	private animateCardsLeavingHand(state:ClientState, hand: CardImage[]): void {
 		let scene = this.scene
 		
 		let delay = 0
 		for (let i = 0; i < state.animations[1].length; i++) {
 			let animation = state.animations[1][i]
 			if (animation.to === Zone.Hand) {
-				let card = cards[animation.index]
+				let card = hand[animation.index]
 
 				// Animate the card coming from given zone
 				// Remember where to end, then move to starting position

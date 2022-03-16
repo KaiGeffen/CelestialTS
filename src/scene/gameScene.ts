@@ -17,7 +17,7 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { OurHandRegion, TheirHandRegion, StoryRegion, ScoreRegion } from "./matchRegions/matchRegions"
+import { OurHandRegion, TheirHandRegion, StoryRegion, ScoreRegion, DecksRegion, DiscardPilesRegion } from "./matchRegions/matchRegions"
 import Region from './matchRegions/baseRegion'
 
 
@@ -1951,6 +1951,8 @@ class View {
 	theirHand: Region
 	story: Region
 	score: Region
+	decks: Region
+	discardPiles: Region
 
 	// Has the phaser objects
 	// Handles layout, animation
@@ -1968,6 +1970,9 @@ class View {
 		this.story = new StoryRegion().create(scene)
 		this.score = new ScoreRegion().create(scene)
 
+		this.decks = new DecksRegion().create(scene)
+		this.discardPiles = new DiscardPilesRegion().create(scene)
+
 		// this.createOurDeck()
 		// this.createTheirDeck()
 		// this.createOurDiscard()
@@ -1984,6 +1989,8 @@ class View {
 		this.theirHand.displayState(state)
 		this.story.displayState(state)
 		this.score.displayState(state)
+		this.decks.displayState(state)
+		this.discardPiles.displayState(state)
 	}
 }
 
