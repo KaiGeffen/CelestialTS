@@ -26,6 +26,7 @@ export default class StoryRegion extends Region {
 		this.displayStateOrRecap(state, false)
 	}
 
+	// Display either current state or a recap state
 	displayStateOrRecap(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 

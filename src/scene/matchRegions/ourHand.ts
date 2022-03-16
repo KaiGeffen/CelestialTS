@@ -86,6 +86,7 @@ export default class OurHandRegion extends Region {
 			const x = 300 + (140 + Space.pad) * i
 
 			let card = this.addCard(state.hand[i], [x, 200/2])
+			card.setCost(state.costs[i])
 			card.setOnHover(that.onCardHover(card), that.onCardExit(card))
 
 			if (state.cardsPlayable[i]) {
