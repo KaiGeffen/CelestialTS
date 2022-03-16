@@ -1825,12 +1825,22 @@ export default class GameScene extends BaseScene {
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates: { [key: number]: ClientState}
 
+	// Recap handling
+	queuedRecap: ClientState[] = []
+	recapPlaying: boolean // TODO Redundant with above?
+	lastRecap: ClientState[]
+	currentState: ClientState
 	constructor (args = {key: "GameScene"}) {
 		super(args)
 	}
 
 	init (params: any) {
+		// Reset variables
 		this.queuedStates = {}
+		this.queuedRecap = []
+		this.recapPlaying = false
+		this.lastRecap = []
+		this.currentState = undefined
 
 		// TODO use params
 
@@ -1885,16 +1895,21 @@ export default class GameScene extends BaseScene {
 
 	// Set all of the callback functions for the regions in the view
 	private setCallbacks(view, net): void {
+		let that = this
+
 		// Hand region
 		view.ourHand.setCallback((i: number) => {
 			net.playCard(i)
 		})
+
+		view.ourHand.setRecapCallback(() => {
+			that.recapPlaying = true
+			that.queuedRecap = [...that.lastRecap]
+			that.queueState(that.currentState)
+		})
 	}
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
-	queuedRecap: ClientState[] = []
-	recapPlaying = false
-	lastRecap
 	update(time, delta): void {
 		// Play the recap if one is queued
 		if (this.queuedRecap.length > 0) {
@@ -1904,25 +1919,25 @@ export default class GameScene extends BaseScene {
 				if (this.queuedRecap.length === 0) {
 					this.recapPlaying = false
 				}
-
-				return
 			}
+
+			return
 		}
 
 		// Otherwise, show a non-recap state, as determined by its version number
 		let nextVersionNumber = versionNumber + 1
 
 		// When a recap replay finishes, return to the current state
-		// if (this.currentState !== undefined) {
-		// 	nextVersionNumber = Math.max(this.currentState.versionNumber, nextVersionNumber)
-		// }
+		if (this.currentState !== undefined) {
+			nextVersionNumber = Math.max(this.currentState.versionNumber, nextVersionNumber)
+		}
 
 		if (nextVersionNumber in this.queuedStates) {
 			let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber], false)
 
 			// If the state was just shown, delete it
 			if (isDisplayed) {
-				// this.currentState = this.queuedStates[nextVersionNumber]
+				this.currentState = this.queuedStates[nextVersionNumber]
 				delete this.queuedStates[nextVersionNumber]
 			}
 		}
@@ -1941,10 +1956,8 @@ export default class GameScene extends BaseScene {
 			return false
 		}
 
-		if (!isRecap) {
-			// Remember what version of the game state this is, for use when communicating with server
-			this.net.setVersionNumber(state.versionNumber)
-		}
+		// Remember what version of the game state this is, for use when communicating with server
+		this.net.setVersionNumber(state.versionNumber)
 
 		this.view.displayState(state, isRecap)
 

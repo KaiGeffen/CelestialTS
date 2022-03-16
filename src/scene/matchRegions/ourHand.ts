@@ -17,6 +17,8 @@ export default class OurHandRegion extends Region {
 	// Effect showing that we have priority
 	priorityHighlight: Phaser.GameObjects.Video
 
+	btnRecap: Button
+
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
 		this.scene = scene // TODO
@@ -42,7 +44,7 @@ export default class OurHandRegion extends Region {
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 
 		// Recap button
-		let btnRecap = new Button(scene,
+		this.btnRecap = new Button(scene,
 			Space.windowWidth - Space.pad,
 			height / 3,
 			'Recap'
@@ -61,7 +63,7 @@ export default class OurHandRegion extends Region {
 			background,
 			this.priorityHighlight,
 			avatar,
-			btnRecap,
+			this.btnRecap,
 			btnPass,
 			])
 
@@ -209,5 +211,10 @@ export default class OurHandRegion extends Region {
 	setCallback(f: (x: number) => void): Region {
 		this.callback = f
 		return this
+	}
+
+	// Set the callback that plays when Recap button is pressed
+	setRecapCallback(f: () => void): void {
+		this.btnRecap.setOnClick(f)
 	}
 }
