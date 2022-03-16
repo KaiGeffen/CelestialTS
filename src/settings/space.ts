@@ -2,13 +2,15 @@
 // 1100 x 650 is the size of the background
 let heightIsLimiting = window.innerHeight < (650 / 1100) * window.innerWidth 
 let height, width
-if (heightIsLimiting) {
-  height = Math.floor(window.innerHeight) - 10
-  width = Math.floor(height * (1100 / 650))
-} else {
-  width = Math.floor(window.innerWidth)
-  height = Math.floor(width * (650 / 1100) - 10)
-}
+// if (heightIsLimiting) {
+//   height = Math.floor(window.innerHeight) - 10
+//   width = Math.floor(height * (1100 / 650))
+// } else {
+//   width = Math.floor(window.innerWidth)
+//   height = Math.floor(width * (650 / 1100) - 10)
+// }
+width = Math.floor(window.innerWidth)
+height = Math.floor(window.innerHeight)
 console.log(`Screen dimensions: ${width} x ${height}`)
 
 export const Space = {
