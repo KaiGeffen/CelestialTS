@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Time } from '../../settings/settings'
+import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -13,11 +13,18 @@ import ClientState from '../../lib/clientState'
 const middle = (Space.windowHeight)/2 - 150
 
 export default class StoryRegion extends Region {
+	txtScores: Phaser.GameObjects.Text
+
 	create (scene: Phaser.Scene): StoryRegion {
 		this.scene = scene
 
 		// TODO 150 is the height for their hand, generalize this
 		this.container = scene.add.container(100 + 140/2, 150)
+
+		this.txtScores = scene.add.text(
+			Space.windowWidth - 300, middle, '', Style.announcement
+			).setOrigin(1, 0.5)
+		this.container.add(this.txtScores)
 
 		return this
 	}
@@ -58,6 +65,13 @@ export default class StoryRegion extends Region {
 
 			cards.push(card)
 			this.temp.push(card)
+		}
+
+		// Scores
+		if (isRecap) {
+			this.txtScores.setText(`${state.score[0]}\n\n${state.score[1]}`)
+		} else {
+			this.txtScores.setText('')
 		}
 
 		this.animate(state, cards, isRecap)
