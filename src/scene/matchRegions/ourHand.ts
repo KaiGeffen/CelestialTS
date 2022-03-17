@@ -105,14 +105,14 @@ export default class OurHandRegion extends Region {
 
 		// TODO Statuses
 
-		this.animate(state, cardsInHand)
+		this.animate(state, cardsInHand, isRecap)
 	}
 
 	// Animate any cards ending in the hand
-	private animate(state: ClientState, cards: CardImage[]): void {
+	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
 		let scene = this.scene
 
-		this.animatePriority(state)
+		this.animatePriority(state, isRecap)
 		
 		let delay = 0
 		for (let i = 0; i < state.animations[0].length; i++) {
@@ -150,8 +150,8 @@ export default class OurHandRegion extends Region {
 	}
 
 	// Animate us getting or losing priority
-	private animatePriority(state: ClientState): void {
-		const targetAlpha = state.priority === 0 ? 1 : 0
+	private animatePriority(state: ClientState, isRecap: boolean): void {
+		const targetAlpha = state.priority === 0 && !isRecap ? 1 : 0
 
 		this.scene.tweens.add({
 				targets: this.priorityHighlight,
