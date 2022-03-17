@@ -2,12 +2,14 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Time } from '../../settings/settings'
+import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+
+import { Status } from '../../lib/status'
 
 
 export default class OurHandRegion extends Region {
@@ -103,7 +105,8 @@ export default class OurHandRegion extends Region {
 			this.temp.push(card)
 		}
 
-		// TODO Statuses
+		// Statuses
+		this.displayStatuses(state)
 
 		this.animate(state, cardsInHand, isRecap)
 	}
@@ -212,5 +215,32 @@ export default class OurHandRegion extends Region {
 	setCallback(f: (x: number) => void): Region {
 		this.callback = f
 		return this
+	}
+
+	private displayStatuses(state: ClientState): void {
+		// Specific to 4 TODO
+		let amts = [0, 0, 0, 0]
+		const length = 4
+
+		state.status.forEach(function(status, index, array) {
+			amts[status]++
+		})
+
+		let points = '0 60 0 0 70 10 70 70'
+		let y = 10
+		for (let i = 0; i < length; i++) {
+  			if (amts[i] > 0) {
+  				let s = Status[i][0] + ' ' + amts[i]
+  				
+  				var randomColor = Math.floor(Math.random()*16777215)
+  				let shape = this.scene.add.polygon(140, y, points, randomColor, 1).setOrigin(0)
+  				let txt = this.scene.add.text(150, y + 35, s, Style.basic).setOrigin(0, 0.5)
+  				
+  				this.container.add([shape, txt])
+  				this.temp.push(shape, txt)
+
+  				y += 60
+  			}
+  		}
 	}
 }

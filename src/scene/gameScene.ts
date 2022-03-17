@@ -23,6 +23,7 @@ import Region from './matchRegions/baseRegion'
 
 var storyHiddenLock: boolean = false
 
+// TODO Remove status bar file
 
 class OldGameScene extends BaseScene {
 	net: Network
