@@ -12,7 +12,7 @@ import { Animation, Zone } from '../../lib/animation'
 
 export default class OurHandRegion extends Region {	
 	// Effect showing that they have priority
-	priorityHighlight: Phaser.GameObjects.Rectangle
+	priorityHighlight: Phaser.GameObjects.Video
 
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
@@ -28,15 +28,13 @@ export default class OurHandRegion extends Region {
 		let background = scene.add.rectangle(
 			0, 0,
 			Space.windowWidth, height,
-			Color.menuBackground, 1
+			Color.background, 1
 			).setOrigin(0)
 
 		// Highlight visible when they have priority
-		this.priorityHighlight = scene.add.rectangle(
-			0, 0,
-			Space.windowWidth, height,
-			0xaaaaaa, 0.4
-			).setOrigin(0)
+		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
+		.setOrigin(0)
+		.play(true)
 
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 
@@ -50,7 +48,7 @@ export default class OurHandRegion extends Region {
 		return this
 	}
 
-	displayState(state: ClientState): void {
+	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
 		let that = this
@@ -68,11 +66,6 @@ export default class OurHandRegion extends Region {
 		// TODO Statuses
 
 		this.animate(state, hand)
-
-		// Priority TODO temp
-		if (state.priority === 0) {
-			this.scene.add.rectangle(0, 0, Space.windowWidth, 60)
-		}
 	}
 
 	// Animate any cards leaving the hand
@@ -81,7 +74,6 @@ export default class OurHandRegion extends Region {
 
 		this.animateCardsLeavingHand(state, hand)
 		// Status
-		// Priority bar
 	}
 
 	// Animate them getting or losing priority

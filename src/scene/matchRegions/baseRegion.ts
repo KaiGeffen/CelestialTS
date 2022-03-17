@@ -19,7 +19,7 @@ export default class Region {
 	}
 
 	// Display parts of the given state relevant to this region
-	displayState(state: ClientState): void {}
+	displayState(state: ClientState, isRecap: boolean): void {}
 
 	protected deleteTemp(): void {
 		for (let i = 0; i < this.temp.length; i++) {

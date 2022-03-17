@@ -182,7 +182,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 	// Loads all video textures
 	private loadVideos(): void {
-		this.load.video('priorityHighlight', 'foo.mp4')
+		this.load.video('priorityHighlight', 'priority.mp4')
 	}
 
 	// Create the which show user how much has loaded

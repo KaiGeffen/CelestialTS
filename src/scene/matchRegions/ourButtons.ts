@@ -13,6 +13,8 @@ import { Animation, Zone } from '../../lib/animation'
 export default class OurHandRegion extends Region {
 	btnRecap: Button
 	btnPass: Button
+	btnSkip: Button
+	btnPlay: Button
 
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
@@ -39,51 +41,48 @@ export default class OurHandRegion extends Region {
 			'Pass'
 			).setOrigin(0.5)
 
+		// Skip button
+		this.btnSkip = new Button(scene,
+			width/2 + 15,
+			height / 3 + 20/2,
+			'Skip',
+			() => {
+				that.btnPlay.stopGlow()
+			}
+			).setOrigin(0.5)
+
+		// Play button
+		this.btnPlay = new Button(scene,
+			width/2 + 15,
+			height * 2 / 3 + 20/2,
+			'Play'
+			).setOrigin(0.5)
+
 		// Add each of these objects to container
 		this.container.add([
 			background,
 			this.btnRecap,
 			this.btnPass,
+			this.btnSkip,
+			this.btnPlay,
 			])
 
 		return this
 	}
 
-	displayState(state: ClientState): void {
+	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
-		let that = this
+		// Make buttons visible/invisible as appropriate
+		this.btnRecap.setVisible(!isRecap)
+		this.btnPass.setVisible(!isRecap)
+		this.btnSkip.setVisible(isRecap)
+		this.btnPlay.setVisible(isRecap)
 
-		// TODO
-		const nextStoryPosition: [number, number] = [
-		170 + 90 * state.story.acts.length,
-		-(Space.windowHeight/2 - 150 - 200/2 + 20)
-		]
-
-		// Go in reverse order so that cards to the right are animated
-		// filling in the hole left when card is played
-		let cardsInHand = []
-		for (let i = 0; i < state.hand.length; i++) {
-			const x = 300 + (140 + Space.pad) * i
-
-			let card = this.addCard(state.hand[i], [x, 200/2])
-			card.setCost(state.costs[i])
-			card.setOnHover(that.onCardHover(card), that.onCardExit(card))
-
-			if (state.cardsPlayable[i]) {
-				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
-			}
-			else {
-				card.setPlayable(false)
-			}
-
-			cardsInHand.push(card)
-			this.temp.push(card)
+		// Play button glows before at the start of the recap
+		if (isRecap && state.recap.playList.length === 0) {
+			this.btnPlay.glowUntilClicked()
 		}
-
-		// TODO Statuses
-
-		this.animate(state, cardsInHand)
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Polygon {
@@ -92,7 +91,7 @@ export default class OurHandRegion extends Region {
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
         let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin.add(background, {
+        postFxPlugin['add'](background, {
         	thickness: 1,
         	outlineColor: Color.border,
         })
@@ -108,5 +107,10 @@ export default class OurHandRegion extends Region {
 	// Set the callback for when the pass button is pressed
 	setPassCallback(f: () => void): void {
 		this.btnPass.setOnClick(f)
+	}
+
+	// Set the callback for when the skip button is pressed
+	setSkipCallback(f: () => void): void {
+		this.btnSkip.setOnClick(f)
 	}
 }

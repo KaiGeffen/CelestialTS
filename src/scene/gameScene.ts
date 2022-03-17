@@ -1911,6 +1911,16 @@ export default class GameScene extends BaseScene {
 		view.ourButtons.setPassCallback(() => {
 			net.playCard(10)
 		})
+
+		view.ourButtons.setSkipCallback(() => {
+			that.tweens.getAllTweens().forEach((tween) => {
+				tween.complete()
+			})
+
+			// Set variables to a state where a recap isn't playing
+			that.queuedRecap = []
+			that.recapPlaying = false
+		})
 	}
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
@@ -2026,12 +2036,13 @@ class View {
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
-		this.ourHand.displayState(state)
-		this.theirHand.displayState(state)
-		this.story.displayStateOrRecap(state, isRecap)
-		this.score.displayState(state)
-		this.decks.displayState(state)
-		this.discardPiles.displayState(state)
+		this.ourHand.displayState(state, isRecap)
+		this.theirHand.displayState(state, isRecap)
+		this.story.displayState(state, isRecap)
+		this.score.displayState(state, isRecap)
+		this.ourButtons.displayState(state, isRecap)
+		this.decks.displayState(state, isRecap)
+		this.discardPiles.displayState(state, isRecap)
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {

@@ -57,7 +57,7 @@ export default class ScoreRegion extends Region {
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
         let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin.add(background, {
+        postFxPlugin['add'](background, {
         	thickness: 1,
         	outlineColor: Color.border,
         })
@@ -65,7 +65,7 @@ export default class ScoreRegion extends Region {
         return background
 	}
 
-	displayState(state: ClientState): void {
+	displayState(state: ClientState, isRecap: boolean): void {
 		const s = `${state.mana}/${state.maxMana[0]}`//\nWins: ${state.wins[0]} to ${state.wins[1]}
 		this.txtBreath.setText(s)
 

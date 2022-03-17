@@ -19,7 +19,7 @@ export default class DecksRegion extends Region {
 		return this
 	}
 
-	displayState(state: ClientState): void {
+	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
 		let that = this

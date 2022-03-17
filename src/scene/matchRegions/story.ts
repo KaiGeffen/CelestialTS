@@ -32,12 +32,7 @@ export default class StoryRegion extends Region {
 		return this
 	}
 
-	displayState(state: ClientState): void {
-		this.displayStateOrRecap(state, false)
-	}
-
-	// Display either current state or a recap state
-	displayStateOrRecap(state: ClientState, isRecap: boolean): void {
+	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
 		let that = this

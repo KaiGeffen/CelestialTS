@@ -33,7 +33,7 @@ export default class OurHandRegion extends Region {
 		let background = scene.add.rectangle(
 			0, 0,
 			Space.windowWidth, height,
-			Color.menuBackground, 1
+			Color.background, 1
 			).setOrigin(0)
 
 		// Highlight visible when we have priority
@@ -70,7 +70,7 @@ export default class OurHandRegion extends Region {
 		return this
 	}
 
-	displayState(state: ClientState): void {
+	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
 		let that = this
@@ -89,6 +89,7 @@ export default class OurHandRegion extends Region {
 
 			let card = this.addCard(state.hand[i], [x, 200/2])
 			card.setCost(state.costs[i])
+			card.setPlayable(state.cardsPlayable[i])
 			card.setOnHover(that.onCardHover(card), that.onCardExit(card))
 
 			if (state.cardsPlayable[i]) {
