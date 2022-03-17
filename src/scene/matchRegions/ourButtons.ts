@@ -80,7 +80,8 @@ export default class OurHandRegion extends Region {
 		this.btnPlay.setVisible(isRecap)
 
 		// Play button glows before at the start of the recap
-		if (isRecap && state.recap.playList.length === 0) {
+		let isRoundEnd = ['win', 'lose', 'tie'].includes(state.soundEffect)
+		if (isRecap && (state.recap.playList.length === 0 && !isRoundEnd)) {
 			this.btnPlay.glowUntilClicked()
 		}
 	}
