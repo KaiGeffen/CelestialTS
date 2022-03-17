@@ -15,13 +15,31 @@ const CoreColors: Record<string, any> = {
   greenS: '#070',
 
   black: 0x000000,
-  white: 0xffffff
+  white: 0xffffff,
+
+
+  // Trial colors
+  background: 0xF5F2EB,
+
+  c1: 0x664930,
+  c1s: '#664930',
+  c2: 0xAE9E8D,
+  c2s: '#ae9e8d',
+
+
 }
+
 
 // The colors for each component of the app (Ex: Slider)
 export const Color: Record<string, any> = {
+  // TODO Trial
+  smallText: CoreColors.c2s,
+  basicText: CoreColors.c1s,
+  border: CoreColors.c1,
+
+
   // Background of the webpage
-  background: CoreColors.primary,
+  background: CoreColors.background, //CoreColors.primary,
 
   // Fill color of progress bar in loading screen
   progressBackground: CoreColors.secondary,

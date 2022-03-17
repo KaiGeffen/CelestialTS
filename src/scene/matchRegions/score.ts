@@ -10,39 +10,64 @@ import ClientState from '../../lib/clientState'
 
 
 export default class ScoreRegion extends Region {
-	mana: Phaser.GameObjects.Text
+	txtBreath: Phaser.GameObjects.Text
+	txtWins: Phaser.GameObjects.Text
 
 	create (scene: Phaser.Scene): ScoreRegion {
-		const width = 240
-		const height = 120
+		const width = 300
+		const height = 90
 		// TODO Our hand height = 150
 		
 		this.container = scene.add.container(Space.windowWidth - width,
 			Space.windowHeight - 150 - height)
+			.setDepth(3)
 
 		// Add background rectangle
-		let background = scene.add.rectangle(
-			0, 0,
-			width, height,
-			Color.background, 1
-			).setOrigin(0)
+		// TODO user variables
+		const background = this.createBackground(scene)
 
-		this.mana = scene.add.text(Space.pad, Space.pad, '', Style.basic).setOrigin(0)
+		const breathIcon = scene.add.image(30, height/2, 'icon-Breath').setOrigin(0, 0.5)
+		let txtBreathReminder = scene.add.text(breathIcon.x + breathIcon.width + Space.pad, height/2 - 13, 'Breath:', Style.small).setOrigin(0, 0.5)
+		this.txtBreath = scene.add.text(txtBreathReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
+
+		// Wins
+		const winsIcon = scene.add.image(180, height/2, 'icon-Wins').setOrigin(0, 0.5)
+		let txtWinsReminder = scene.add.text(winsIcon.x + winsIcon.width + Space.pad, height/2 - 13, 'Wins:', Style.small).setOrigin(0, 0.5)
+		this.txtWins = scene.add.text(txtWinsReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
 
 		// Add each of these objects to container
 		this.container.add([
 			background,
-			this.mana,
+			breathIcon,
+			txtBreathReminder,
+			this.txtBreath,
 
+			winsIcon,
+			txtWinsReminder,
+			this.txtWins,
 			])
 
 		return this
 	}
 
-	displayState(state: ClientState): void {
-		const s = `Mana: ${state.mana}/${state.maxMana[0]}\nWins: ${state.wins[0]} to ${state.wins[1]}`
-		this.mana.setText(s)
+	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
+		const points = '20 0 300 0 300 90 0 90'
+		let background = scene.add.polygon(0, 0, points, Color.background, 1).setOrigin(0)
 
-		// Mana, wins
+		// Add a border around the shape TODO Make a class for this to keep it dry
+        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+        postFxPlugin.add(background, {
+        	thickness: 1,
+        	outlineColor: Color.border,
+        })
+
+        return background
+	}
+
+	displayState(state: ClientState): void {
+		const s = `${state.mana}/${state.maxMana[0]}`//\nWins: ${state.wins[0]} to ${state.wins[1]}
+		this.txtBreath.setText(s)
+
+		this.txtWins.setText(`${state.wins[0]}`)
 	}
 }

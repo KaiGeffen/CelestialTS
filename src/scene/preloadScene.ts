@@ -138,12 +138,8 @@ export default class PreloadClass extends Phaser.Scene {
 	// Loads all images that are used as icons in ux
 	private loadIcons(): void {
 		let iconNames = [
-			'AI', 'PWD', 'PVP',
-			'Basics',
-			'Anubis', 'Robots', 'Stalker',
-			'Lord', 'Bastet', 'Horus',
-			'Exit', 'Retry', 'Review',
-			'Draft'
+			'Breath',
+			'Wins',
 		]
 
 		iconNames.forEach( (s) => {
@@ -220,7 +216,7 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 
 		let startWhenLoginComplete = function() {
-			that.scene.start('HomeScene')
+			that.scene.start('AdventureScene')
 		}
 		this.load.on('complete', function () {
 			startWhenLoginComplete()

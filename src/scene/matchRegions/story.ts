@@ -39,7 +39,7 @@ export default class StoryRegion extends Region {
 	// Display either current state or a recap state
 	displayStateOrRecap(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
-		
+
 		let that = this
 
 		// If this is a recap, add the already played cards greyed out
@@ -102,7 +102,6 @@ export default class StoryRegion extends Region {
 
 		// Form the string for the gain of the given player
 		let that = this
-		console.log([scores, that.lastScores])
   		function getGain(i: number): string {
   			let amt = scores[i] - that.lastScores[i]
   			if (amt < 0) {

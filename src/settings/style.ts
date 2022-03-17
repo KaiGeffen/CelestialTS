@@ -7,13 +7,13 @@ const fontFamily = 'Mulish'
 
 // Settings for the font sizes
 const FontSettings: Record<string, Record<string, string>> = {
-  standard: {size: '36px'},
-  small: {size: '14px'},
+  standard: {size: '24px'}, // TODO trial
+  small: {size: '12px'},
   large: {size: '44px'},
   huge: {size: '50px'},
   stack: {size: '85px'},
   title: {size: '128px'},
-  credits: {size: '19px'}
+  credits: {size: '19px'},
 }
 
 export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
@@ -21,8 +21,8 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,
     // fontStyle: "Bold",
-    color: '#fff',
-    stroke: '#000',
+    color: Color.basicText,
+    // stroke: '#000',
     strokeThickness: 2,
     wordWrap: { width: Space.windowWidth - Space.pad * 4 }
   },
@@ -36,7 +36,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   small: {
     fontFamily: fontFamily,
     fontSize: FontSettings.small.size,
-    color: '#000',
+    color: Color.smallText,
     wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: false }
   },
   announcement: {
