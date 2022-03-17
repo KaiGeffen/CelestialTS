@@ -138,6 +138,7 @@ export default class PreloadClass extends Phaser.Scene {
 	// Loads all images that are used as icons in ux
 	private loadIcons(): void {
 		let iconNames = [
+			'AI', 'PWD', 'PVP',
 			'Breath',
 			'Wins',
 		]
