@@ -4,7 +4,7 @@ import StoryRegion from "./story"
 import ScoreRegion from "./score"
 import DecksRegion from "./decks"
 import DiscardPilesRegion from "./discardPiles"
-
+import OurButtonsRegion from "./ourButtons"
 
 
 // Export each of the regions within the match scene
@@ -18,6 +18,7 @@ export {
 	TheirHandRegion,
 	StoryRegion,
 	ScoreRegion,
+	OurButtonsRegion,
 	DecksRegion,
 	DiscardPilesRegion,
 }

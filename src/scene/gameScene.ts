@@ -17,7 +17,7 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { OurHandRegion, TheirHandRegion, StoryRegion, ScoreRegion, DecksRegion, DiscardPilesRegion } from "./matchRegions/matchRegions"
+import { OurHandRegion, TheirHandRegion, StoryRegion, ScoreRegion, OurButtonsRegion, DecksRegion, DiscardPilesRegion } from "./matchRegions/matchRegions"
 import Region from './matchRegions/baseRegion'
 
 
@@ -1902,10 +1902,14 @@ export default class GameScene extends BaseScene {
 			net.playCard(i)
 		})
 
-		view.ourHand.setRecapCallback(() => {
+		view.ourButtons.setRecapCallback(() => {
 			that.recapPlaying = true
 			that.queuedRecap = [...that.lastRecap]
 			that.queueState(that.currentState)
+		})
+
+		view.ourButtons.setPassCallback(() => {
+			net.playCard(10)
 		})
 	}
 
@@ -1992,7 +1996,8 @@ export default class GameScene extends BaseScene {
 class View {
 	scene: Phaser.Scene
 
-	ourHand: Region // TODO Don't access this directly from gamescene
+	ourHand: Region
+	ourButtons: Region
 	theirHand: Region
 	story: StoryRegion
 	score: Region
@@ -2014,6 +2019,7 @@ class View {
 
 		this.story = new StoryRegion().create(scene)
 		this.score = new ScoreRegion().create(scene)
+		this.ourButtons = new OurButtonsRegion().create(scene)
 
 		this.decks = new DecksRegion().create(scene)
 		this.discardPiles = new DiscardPilesRegion().create(scene)

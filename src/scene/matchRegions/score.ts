@@ -16,10 +16,11 @@ export default class ScoreRegion extends Region {
 	create (scene: Phaser.Scene): ScoreRegion {
 		const width = 300
 		const height = 90
+		const overlap = 20
 		// TODO Our hand height = 150
 		
 		this.container = scene.add.container(Space.windowWidth - width,
-			Space.windowHeight - 150 - height)
+			Space.windowHeight - 150 - height + overlap)
 			.setDepth(3)
 
 		// Add background rectangle

@@ -42,7 +42,7 @@ export default class OurHandRegion extends Region {
 		.play(true)
 
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
-
+		
 		// Recap button
 		this.btnRecap = new Button(scene,
 			Space.windowWidth - Space.pad,
@@ -211,10 +211,5 @@ export default class OurHandRegion extends Region {
 	setCallback(f: (x: number) => void): Region {
 		this.callback = f
 		return this
-	}
-
-	// Set the callback that plays when Recap button is pressed
-	setRecapCallback(f: () => void): void {
-		this.btnRecap.setOnClick(f)
 	}
 }
