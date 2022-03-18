@@ -1,6 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
+import { cardLocationOurHand } from './cardSpacing'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -89,7 +90,7 @@ export default class OurHandRegion extends Region {
 		for (let i = 0; i < state.hand.length; i++) {
 			const x = 300 + (140 + Space.pad) * i
 
-			let card = this.addCard(state.hand[i], [x, 200/2])
+			let card = this.addCard(state.hand[i], cardLocationOurHand(state, i, this.container))
 			card.setCost(state.costs[i])
 			card.setPlayable(state.cardsPlayable[i])
 			card.setOnHover(that.onCardHover(card), that.onCardExit(card))

@@ -13,6 +13,8 @@ width = Math.floor(window.innerWidth)
 height = Math.floor(window.innerHeight)
 console.log(`Screen dimensions: ${width} x ${height}`)
 
+// TODO Most of this needs to change since the gui update
+
 export const Space = {
   windowWidth: width,
   windowHeight: height,
@@ -31,4 +33,8 @@ export const Space = {
   // The maximum height that something can be and still fit within the standard 780 browser height
   maxHeight: 750,
   textAreaHeight: 60,
+
+  // These values are experimental and related to the 3/15 gui pass
+  cardWidth: 140,
+  cardHeight: 200,
 }

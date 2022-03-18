@@ -1,6 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
+import { cardLocationTheirHand } from './cardSpacing'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -12,11 +13,11 @@ import { Animation, Zone } from '../../lib/animation'
 import { Status } from '../../lib/status'
 
 
-export default class OurHandRegion extends Region {	
+export default class TheirHandRegion extends Region {	
 	// Effect showing that they have priority
 	priorityHighlight: Phaser.GameObjects.Video
 
-	create (scene: Phaser.Scene): OurHandRegion {
+	create (scene: Phaser.Scene): TheirHandRegion {
 		let that = this
 		this.scene = scene
 
@@ -57,9 +58,7 @@ export default class OurHandRegion extends Region {
 
 		let hand = []
 		for (let i = 0; i < state.opponentHandSize; i++) {
-			const x = 300 + (140 + Space.pad) * i
-			
-			let card = this.addCard(cardback, [x, 50])
+			let card = this.addCard(cardback, cardLocationTheirHand(state, i))
 
 			hand.push(card)
 			this.temp.push(card)

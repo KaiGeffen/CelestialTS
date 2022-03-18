@@ -2022,6 +2022,8 @@ class View {
 	constructor (scene: Phaser.Scene) {
 		this.scene = scene
 
+		let background = scene.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
+
 		// Create each of the regions
 		// this.createOurHand()
 		// new HandRegion()//.create(scene)

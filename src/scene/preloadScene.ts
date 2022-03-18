@@ -152,6 +152,7 @@ export default class PreloadClass extends Phaser.Scene {
 	private loadBackgrounds(): void {
 		let backgroundNames = [
 			'Defeat', 'Victory',
+			'Match',
 		]
 
 		backgroundNames.forEach( (s) => {
@@ -217,7 +218,7 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 
 		let startWhenLoginComplete = function() {
-			that.scene.start('AdventureScene')
+			that.scene.start('HomeScene')
 		}
 		this.load.on('complete', function () {
 			startWhenLoginComplete()

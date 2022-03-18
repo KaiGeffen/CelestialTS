@@ -27,7 +27,10 @@ export default class StoryRegion extends Region {
 		this.txtScores = scene.add.text(
 			Space.windowWidth - 300, middle, '', Style.announcement
 			).setOrigin(1, 0.5)
-		this.container.add(this.txtScores)
+		
+		this.container.add([
+			this.txtScores,
+			])
 
 		return this
 	}
