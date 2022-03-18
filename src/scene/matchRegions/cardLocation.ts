@@ -3,8 +3,8 @@ import 'phaser'
 import ClientState from '../../lib/clientState'
 import { Space } from '../../settings/settings'
 
-// Amount of room to leave to the right of the last card
-const minRoom = 300 + Space.cardWidth/2
+// Amount of room to leave to the right of the last card in either hand
+const minRoom = 300 + Space.cardWidth
 
 // This describes where on screen each card in each region should appear
 // so that regions can move their cards to the appropriate locations for
@@ -23,7 +23,7 @@ export default class CardLocation {
 		// Find the amount that we must scale down by
 		// offset of last card <= maxOffset
 		// This may be multiplied by a constant to fit within the max
-		const lastCardOffset = dx * state.hand.length
+		const lastCardOffset = dx * (state.hand.length - 1)
 		if (lastCardOffset > maxOffset) {
 			dx *= maxOffset / lastCardOffset
 		}
@@ -66,15 +66,33 @@ export default class CardLocation {
 		return [x - container.x, y - container.y]
 	}
 
+	static story(state:ClientState, i: number, container: Phaser.GameObjects.Container, owner: number): [number, number] {
+		const x0 = 300
+		const dx = Space.cardWidth - Space.storyOverlap
+		const x = x0 + dx * i
+		// TODO Squishing
+
+		let y
+		if (owner === undefined) {
+			y = Space.windowHeight/2
+		} else {
+			y = owner === 0 ? Space.windowHeight/2 + 80 : Space.windowHeight/2 - 80			
+		}
+
+		return [x - container.x, y - container.y]
+	}
+
 	static ourDeck(container: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
 		const x = 30 - dx
-		return [x - container.x, 550 - container.y]
+		const y = Space.windowHeight/2 + Space.cardHeight/2 + Space.pad
+		return [x - container.x, y - container.y]
 	}
 
 	static theirDeck(container: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
 		const x = 30 - dx
-		return [x - container.x, 250 - container.y]
+		const y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
+		return [x - container.x, y - container.y]
 	}
 }

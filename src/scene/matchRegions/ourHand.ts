@@ -1,7 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
-import CardLocation from './cardSpacing'
+import CardLocation from './cardLocation'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -46,28 +46,14 @@ export default class OurHandRegion extends Region {
 
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 		
-		// Recap button
-		this.btnRecap = new Button(scene,
-			Space.windowWidth - Space.pad,
-			height / 3,
-			'Recap'
-			).setOrigin(1, 0.5)
-
-		// Pass button
-		let btnPass = new Button(scene,
-			Space.windowWidth - Space.pad,
-			height * 2 / 3,
-			'Pass',
-			() => { that.callback(10) }
-			).setOrigin(1, 0.5)
+		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, height/2, 'icon-Divide')
 
 		// Add each of these objects to container
 		this.container.add([
 			background,
 			this.priorityHighlight,
 			avatar,
-			this.btnRecap,
-			btnPass,
+			divide,
 			])
 
 		return this
@@ -79,15 +65,10 @@ export default class OurHandRegion extends Region {
 		let that = this
 
 		// TODO
-		const nextStoryPosition: [number, number] = [
-		170 + 90 * state.story.acts.length,
-		-(Space.windowHeight/2 - 150 - 200/2 + 20)
-		]
-
+		const nextStoryPosition: [number, number] = CardLocation.story(state, state.story.acts.length, this.container, 0)
+		
 		let cardsInHand = []
 		for (let i = 0; i < state.hand.length; i++) {
-			const x = 300 + (140 + Space.pad) * i
-
 			let card = this.addCard(state.hand[i], CardLocation.ourHand(state, i, this.container))
 			card.setCost(state.costs[i])
 			card.setPlayable(state.cardsPlayable[i])

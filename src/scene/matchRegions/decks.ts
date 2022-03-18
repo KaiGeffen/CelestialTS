@@ -1,7 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
-import CardLocation from './cardSpacing'
+import CardLocation from './cardLocation'
 
 import { Space, Color, Time } from '../../settings/settings'
 import Button from '../../lib/button'

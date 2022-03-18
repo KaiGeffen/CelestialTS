@@ -1,6 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
+import CardLocation from './cardLocation'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -45,23 +46,19 @@ export default class StoryRegion extends Region {
 		for (; isRecap && resolvedI < state.recap.playList.length; resolvedI++) {
 			const play = state.recap.playList[resolvedI]
 			
-			const x = 90 * resolvedI
-			const y = play[1] === 0 ? middle + 80 : middle - 80
-
-			let card = this.addCard(play[0], [x, y]).setTransparent(true)
+			let card = this.addCard(play[0],
+				CardLocation.story(state, resolvedI, this.container, play[1]))
+			.setTransparent(true)
 
 			this.temp.push(card)
 		}
 
 		let cards = []
 		for (let i = 0; i < state.story.acts.length; i++) {
-			const x = (90) * (i + resolvedI)
-
 			const act = state.story.acts[i]
 
-			const y = act.owner === 0 ? middle + 80 : middle - 80
-
-			let card = this.addCard(act.card, [x, y])
+			let card = this.addCard(act.card,
+				CardLocation.story(state, resolvedI + i, this.container, act.owner))
 			// TODO Add a callback to jump around in recap
 
 			cards.push(card)
@@ -94,9 +91,9 @@ export default class StoryRegion extends Region {
 
 	// Animate each player gaining or losing points for the act at this index
 	private animateScoreGains(index: number, scores: [number, number]): void {
-		const x = 90 * index
-
-
+		
+		// TODO Undefined for state?
+		const loc = CardLocation.story(undefined, index, this.container, undefined)
 
 		// Form the string for the gain of the given player
 		let that = this
@@ -111,7 +108,7 @@ export default class StoryRegion extends Region {
   			}
   		}
 		const txtGain = this.scene.add.text(
-			x, middle,
+			...loc,
 			`${getGain(1)}\n\n${getGain(0)}`,
 			Style.announcement)
 			.setOrigin(0.5)
@@ -151,12 +148,9 @@ export default class StoryRegion extends Region {
 			const x = card.container.x
 			const y = card.container.y
 
-			// TODO Generalize to 1 past the last card in their hand
-			card.setPosition([
-				300 + (140 + Space.pad) * state.opponentHandSize - 170, // 170 from above
-				-100
-				])
-
+			card.setPosition(
+				CardLocation.theirHand(state, state.opponentHandSize + 1, this.container))
+			
 			// Animate moving x direction, appearing at start
 			this.scene.tweens.add({
 				targets: card.container,

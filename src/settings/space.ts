@@ -37,4 +37,5 @@ export const Space = {
   // These values are experimental and related to the 3/15 gui pass
   cardWidth: 140,
   cardHeight: 200,
+  storyOverlap: 50,
 }
