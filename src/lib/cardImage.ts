@@ -81,6 +81,9 @@ export class CardImage {
   // A container just for this cardImage / objects related to it
   container: Phaser.GameObjects.Container
 
+  // The index of this container within its parent container before it was brought to top
+  renderIndex: number = undefined
+
   constructor(card: Card, container: any, interactive: Boolean = true) {
     this.init(card, container, interactive)
   }
@@ -218,14 +221,6 @@ export class CardImage {
     return this
   }
 
-  setDepth(depth: number): CardImage {
-    this.container.setDepth(depth)
-    this.image.setDepth(depth)
-    this.txtStats.setDepth(depth)
-
-    return this
-  }
-
   // Set the displayed cost of this card, don't change the cost if cost is null
   setCost(cost: number): void {
     if (cost !== null) {
@@ -309,48 +304,60 @@ export class CardImage {
     }
 
     return function() {
-      cardInfo.setVisible(true)
+      // cardInfo.setVisible(true)
 
       if (!that.unplayable) {
         that.image.scene.sound.play('hover')
         doHighlight()
       }
 
-      cardInfo.text = that.card.getCardText()
-
-      // TODO Adjust for extra container
-      // Copy the position of the card in its local space
       let outerContainer = that.container.parentContainer
-      let x = that.image.x + that.container.x + outerContainer.x + Space.cardSize/2 + Space.highlightWidth * 2
-      let y = that.image.y + that.container.y + outerContainer.y + Space.cardSize/2
+      this.renderIndex = outerContainer.getIndex(that.container)
+      outerContainer.bringToTop(that.container)
 
-      // Change alignment of text based on horizontal position on screen
-      if (x + cardInfo.width > Space.windowWidth) // Going off right side
-      {
-        // Try it on the left side
-        x -= Space.cardSize + Space.highlightWidth*4 + cardInfo.width
+      // cardInfo.text = that.card.getCardText()
 
-        // If it's now going of the left side, instead put it as far right as possible
-        if (x < 0) {
-          x = Space.windowWidth - cardInfo.width
-        }
-      }
+      // // TODO Adjust for extra container
+      // // Copy the position of the card in its local space
+      // let outerContainer = that.container.parentContainer
 
-      // Adjust y
-      if (y - cardInfo.height < 0) // Going over the top
-      {
-        y = cardInfo.height
-      }
-      else if (y > Space.windowHeight) {
-        y = Space.windowHeight
-      }
+      // // Adj
+      // let x = that.image.x + that.container.x + outerContainer.x + Space.cardSize/2 + Space.highlightWidth * 2
+      // let y = that.image.y + that.container.y + outerContainer.y + Space.cardSize/2
+
+      // // Change alignment of text based on horizontal position on screen
+      // if (x + cardInfo.width > Space.windowWidth) // Going off right side
+      // {
+      //   // Try it on the left side
+      //   x -= Space.cardSize + Space.highlightWidth*4 + cardInfo.width
+
+      //   // If it's now going of the left side, instead put it as far right as possible
+      //   if (x < 0) {
+      //     x = Space.windowWidth - cardInfo.width
+      //   }
+      // }
+
+      // // Adjust y
+      // if (y - cardInfo.height < 0) // Going over the top
+      // {
+      //   y = cardInfo.height
+      // }
+      // else if (y > Space.windowHeight) {
+      //   y = Space.windowHeight
+      // }
       
-      cardInfo.setX(x)
-      cardInfo.setY(y)
+      // cardInfo.setX(x)
+      // cardInfo.setY(y)
     }
   }
 
   private onHoverExit(): () => void {
-    return this.removeHighlight()
+    let that = this
+    return () => {
+      that.removeHighlight()()
+
+      let outerContainer = that.container.parentContainer
+      outerContainer.moveTo(that.container, that.renderIndex)
+    }
   }
 }

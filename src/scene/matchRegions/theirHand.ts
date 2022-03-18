@@ -41,11 +41,14 @@ export default class TheirHandRegion extends Region {
 
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 
+		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, height/2, 'icon-Divide')
+
 		// Add each of these objects to container
 		this.container.add([
 			background,
 			this.priorityHighlight,
 			avatar,
+			divide,
 			])
 
 		return this

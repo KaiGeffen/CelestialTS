@@ -179,25 +179,16 @@ export default class OurHandRegion extends Region {
 
 	// Return the function that runs when given card is hovered
 	private onCardHover(card: CardImage): () => void {
-		let container = this.container
 		return () => {
 			// TODO This height card must be to be flush with edge
 			card.container.setY(50)
-
-			container.bringToTop(card.container)
 		}
 	}
 
 	// Return the function that runs when given card hover is exited
 	private onCardExit(card: CardImage, cards: CardImage[], index: number): () => void {
-		let container = this.container
 		return () => {
 			card.container.setY(Space.cardHeight/2)
-
-			// Bring everything to the right to top
-			for (let i = index; i < cards.length; i++) {
-				container.bringToTop(cards[i].container)
-			}
 		}
 	}
 
