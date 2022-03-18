@@ -218,6 +218,14 @@ export class CardImage {
     return this
   }
 
+  setDepth(depth: number): CardImage {
+    this.container.setDepth(depth)
+    this.image.setDepth(depth)
+    this.txtStats.setDepth(depth)
+
+    return this
+  }
+
   // Set the displayed cost of this card, don't change the cost if cost is null
   setCost(cost: number): void {
     if (cost !== null) {
