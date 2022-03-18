@@ -1,7 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
-import { cardLocationOurHand } from './cardSpacing'
+import CardLocation from './cardSpacing'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -84,13 +84,11 @@ export default class OurHandRegion extends Region {
 		-(Space.windowHeight/2 - 150 - 200/2 + 20)
 		]
 
-		// Go in reverse order so that cards to the right are animated
-		// filling in the hole left when card is played
 		let cardsInHand = []
 		for (let i = 0; i < state.hand.length; i++) {
 			const x = 300 + (140 + Space.pad) * i
 
-			let card = this.addCard(state.hand[i], cardLocationOurHand(state, i, this.container))
+			let card = this.addCard(state.hand[i], CardLocation.ourHand(state, i, this.container))
 			card.setCost(state.costs[i])
 			card.setPlayable(state.cardsPlayable[i])
 			card.setOnHover(that.onCardHover(card), that.onCardExit(card))
@@ -130,7 +128,7 @@ export default class OurHandRegion extends Region {
 				let y = card.container.y
 
 				// TODO Based on animation.from
-				card.setPosition([0, -200])
+				card.setPosition(CardLocation.ourDeck(this.container))
 				card.hide()
 
 				// Animate moving x direction, appearing at start
@@ -185,6 +183,7 @@ export default class OurHandRegion extends Region {
 
 						that.scene.tweens.add({
 							targets: adjustedCard.container,
+							// TODO Fix this to be in general (Space to move might be smaller if cards squished)
 							x: adjustedCard.container.x - 140 - Space.pad,
 							duration: Time.recapTween() - 10,
 							ease: "Sine.easeInOut"
@@ -201,6 +200,7 @@ export default class OurHandRegion extends Region {
 	// Return the function that runs when given card is hovered
 	private onCardHover(card: CardImage): () => void {
 		return () => {
+			// TODO This height card must be to be flush with edge
 			card.container.setY(50)
 		}
 	}
@@ -208,7 +208,7 @@ export default class OurHandRegion extends Region {
 	// Return the function that runs when given card hover is exited
 	private onCardExit(card: CardImage): () => void {
 		return () => {
-			card.container.setY(100)
+			card.container.setY(Space.cardHeight/2)
 		}
 	}
 

@@ -1,7 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
-import { cardLocationTheirHand } from './cardSpacing'
+import CardLocation from './cardSpacing'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -58,7 +58,7 @@ export default class TheirHandRegion extends Region {
 
 		let hand = []
 		for (let i = 0; i < state.opponentHandSize; i++) {
-			let card = this.addCard(cardback, cardLocationTheirHand(state, i))
+			let card = this.addCard(cardback, CardLocation.theirHand(state, i, this.container))
 
 			hand.push(card)
 			this.temp.push(card)

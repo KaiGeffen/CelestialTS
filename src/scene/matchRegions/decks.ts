@@ -1,6 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
+import CardLocation from './cardSpacing'
 
 import { Space, Color, Time } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -25,11 +26,11 @@ export default class DecksRegion extends Region {
 		let that = this
 
 		for (let i = 0; i < state.deck.length; i++) {
-			this.temp.push(this.addCard(cardback, [30 - 3 * i, 400]))
+			this.temp.push(this.addCard(cardback, CardLocation.ourDeck(this.container, i)))
 		}
 
 		for (let i = 0; i < state.opponentDeckSize; i++) {
-			this.temp.push(this.addCard(cardback, [30 - 3 * i, 100]))
+			this.temp.push(this.addCard(cardback, CardLocation.theirDeck(this.container, i)))
 		}
 	}
 }
