@@ -84,10 +84,9 @@ export default class OurHandRegion extends Region {
 		for (let i = 0; i < state.hand.length; i++) {
 			let card = this.addCard(state.hand[i], CardLocation.ourHand(state, i, this.container))
 			card.setCost(state.costs[i])
-			card.setPlayable(state.cardsPlayable[i])
 			card.setOnHover(that.onCardHover(card), that.onCardExit(card, cardsInHand, i))
 
-			if (state.cardsPlayable[i]) {
+			if (state.cardsPlayable[i] && state.winner === null) {
 				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
 			}
 			else {
