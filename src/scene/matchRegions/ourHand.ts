@@ -20,7 +20,8 @@ export default class OurHandRegion extends Region {
 	// Effect showing that we have priority
 	priorityHighlight: Phaser.GameObjects.Video
 
-	btnRecap: Button
+	txtDeckCount: Phaser.GameObjects.Text
+	txtDiscardCount: Phaser.GameObjects.Text
 
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
@@ -40,7 +41,7 @@ export default class OurHandRegion extends Region {
 			).setOrigin(0)
 
 		// Highlight visible when we have priority
-		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
+		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight').setVisible(false)
 		.setOrigin(0)
 		.play(true)
 
@@ -48,12 +49,25 @@ export default class OurHandRegion extends Region {
 		
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, height/2, 'icon-Divide')
 
+		// Deck and discard pile totals
+		// TODO Font size as a part of a style
+		const x = divide.x + 80
+		this.txtDeckCount = scene.add.text(x, 35, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		let iconDeck = scene.add.image(x, this.txtDeckCount.y + 25, 'icon-Deck')
+
+		this.txtDiscardCount = scene.add.text(x, 95, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
+
 		// Add each of these objects to container
 		this.container.add([
 			background,
 			this.priorityHighlight,
 			avatar,
 			divide,
+			this.txtDeckCount,
+			iconDeck,
+			this.txtDiscardCount,
+			iconDiscard,
 			])
 
 		return this
@@ -86,6 +100,10 @@ export default class OurHandRegion extends Region {
 
 		// Statuses
 		this.displayStatuses(state)
+
+		// Pile sizes
+		this.txtDeckCount.setText(`${state.deck.length}`)
+		this.txtDiscardCount.setText(`${state.discard[0].length}`)
 
 		this.animate(state, cardsInHand, isRecap)
 	}

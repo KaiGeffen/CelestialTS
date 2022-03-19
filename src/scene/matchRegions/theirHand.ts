@@ -17,6 +17,9 @@ export default class TheirHandRegion extends Region {
 	// Effect showing that they have priority
 	priorityHighlight: Phaser.GameObjects.Video
 
+	txtDeckCount: Phaser.GameObjects.Text
+	txtDiscardCount: Phaser.GameObjects.Text
+
 	txtWins: Phaser.GameObjects.Text
 
 	create (scene: Phaser.Scene): TheirHandRegion {
@@ -45,8 +48,16 @@ export default class TheirHandRegion extends Region {
 
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, height/2, 'icon-Divide')
 
+		// TODO Font size as a part of a style
+		const x = divide.x + 80
+		this.txtDeckCount = scene.add.text(x, 35, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		let iconDeck = scene.add.image(x, this.txtDeckCount.y + 25, 'icon-Deck')
+
+		this.txtDiscardCount = scene.add.text(x, 95, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
+
 		// Wins
-		const winsIcon = scene.add.image(divide.x + 30, height/2, 'icon-Wins').setOrigin(0, 0.5)
+		const winsIcon = scene.add.image(x + 100, height/2, 'icon-Wins').setOrigin(0, 0.5)
 		let txtWinsReminder = scene.add.text(winsIcon.x + winsIcon.width + Space.pad, height/2 - 13, 'Wins:', Style.small).setOrigin(0, 0.5)
 		this.txtWins = scene.add.text(txtWinsReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
 
@@ -57,6 +68,10 @@ export default class TheirHandRegion extends Region {
 			avatar,
 			divide,
 			winsIcon,
+			this.txtDeckCount,
+			iconDeck,
+			this.txtDiscardCount,
+			iconDiscard,
 			txtWinsReminder,
 			this.txtWins,
 			])
@@ -79,6 +94,10 @@ export default class TheirHandRegion extends Region {
 
 		// Statuses
 		this.displayStatuses(state)
+
+		// Pile sizes
+		this.txtDeckCount.setText(`${state.opponentDeckSize}`)
+		this.txtDiscardCount.setText(`${state.discard[1].length}`)
 
 		// Wins
 		this.txtWins.setText(`${state.wins[1]}`)
