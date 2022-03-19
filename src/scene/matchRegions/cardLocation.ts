@@ -44,14 +44,13 @@ export default class CardLocation {
 
 		let dx = (Space.cardWidth + Space.pad)
 
-
 		// If their hand has too many cards for the screen size, scale down
 		const maxOffset = Space.windowWidth - x0 - minRoom
 
 		// Find the amount that we must scale down by
 		// offset of last card <= maxOffset
 		// This may be multiplied by a constant to fit within the max
-		const lastCardOffset = dx * state.opponentHandSize
+		const lastCardOffset = dx * (state.opponentHandSize - 1)
 		if (lastCardOffset > maxOffset) {
 			dx *= maxOffset / lastCardOffset
 		}
@@ -92,6 +91,22 @@ export default class CardLocation {
 	static theirDeck(container: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
 		const x = 30 - dx
+		const y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
+		return [x - container.x, y - container.y]
+	}
+
+	static ourDiscard(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+		const dx = 3 * i
+		const x0 = Space.windowWidth - 30
+		const x = x0 + dx
+		const y = Space.windowHeight/2 + Space.cardHeight/2 + Space.pad
+		return [x - container.x, y - container.y]
+	}
+
+	static theirDiscard(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+		const dx = 3 * i
+		const x0 = Space.windowWidth - 30
+		const x = x0 + dx
 		const y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
 		return [x - container.x, y - container.y]
 	}

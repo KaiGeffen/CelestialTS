@@ -1,6 +1,7 @@
 import "phaser"
 
 import Region from './baseRegion'
+import CardLocation from './cardLocation'
 
 import { Space, Color, Time } from '../../settings/settings'
 import Button from '../../lib/button'
@@ -25,11 +26,11 @@ export default class DiscardPilesRegion extends Region {
 		let that = this
 
 		for (let i = 0; i < state.discard[0].length; i++) {
-			this.temp.push(this.addCard(state.discard[0][i], [-30 + 3 * i, 150]))
+			this.temp.push(this.addCard(state.discard[0][i], CardLocation.ourDiscard(this.container, i)))
 		}
 
 		for (let i = 0; i < state.discard[1].length; i++) {
-			this.temp.push(this.addCard(state.discard[1][i], [-30 + 3 * i, -150]))
+			this.temp.push(this.addCard(state.discard[1][i], CardLocation.theirDiscard(this.container, i)))
 		}
 	}
 }
