@@ -17,6 +17,8 @@ export default class TheirHandRegion extends Region {
 	// Effect showing that they have priority
 	priorityHighlight: Phaser.GameObjects.Video
 
+	txtWins: Phaser.GameObjects.Text
+
 	create (scene: Phaser.Scene): TheirHandRegion {
 		let that = this
 		this.scene = scene
@@ -43,12 +45,20 @@ export default class TheirHandRegion extends Region {
 
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, height/2, 'icon-Divide')
 
+		// Wins
+		const winsIcon = scene.add.image(divide.x + 30, height/2, 'icon-Wins').setOrigin(0, 0.5)
+		let txtWinsReminder = scene.add.text(winsIcon.x + winsIcon.width + Space.pad, height/2 - 13, 'Wins:', Style.small).setOrigin(0, 0.5)
+		this.txtWins = scene.add.text(txtWinsReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
+
 		// Add each of these objects to container
 		this.container.add([
 			background,
 			this.priorityHighlight,
 			avatar,
 			divide,
+			winsIcon,
+			txtWinsReminder,
+			this.txtWins,
 			])
 
 		return this
@@ -69,6 +79,9 @@ export default class TheirHandRegion extends Region {
 
 		// Statuses
 		this.displayStatuses(state)
+
+		// Wins
+		this.txtWins.setText(`${state.wins[1]}`)
 
 		this.animate(state, hand, isRecap)
 	}
