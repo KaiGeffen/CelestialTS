@@ -160,12 +160,14 @@ export class CardImage {
   }
 
   // Set the callback to fire when this card's image is clicked
-  setOnClick(f: () => void, removeListeners = false): void {
+  setOnClick(f: () => void, removeListeners = false): CardImage {
     if (removeListeners) {
       this.removeOnClick()
     }
 
     this.image.on('pointerdown', f)
+
+    return this
   }
 
   // Remove all callbacks that fire when this card's image is clicked
@@ -363,17 +365,23 @@ export class CardImage {
     let container = this.container
     let parentContainer = container.parentContainer
 
+    // Reverse the order of everything from this objects index on
+    // This makes this appear above everything, and things to the right to be in reverse order
     this.image.on('pointerover', () => {
       // Remember the index that this was at
       this.renderIndex = parentContainer.getIndex(container)
 
-      // Move this to the top of the container
-      parentContainer.bringToTop(container)
+      // From the top of the list until this cardImage, reverse the order
+      for (let i = parentContainer.length - 1; i >= this.renderIndex; i--) {
+        parentContainer.bringToTop(parentContainer.getAt(i))
+      }
     }, this)
 
     this.image.on('pointerout', () => {
-      // Move back to the position in the render list we were at before
-      parentContainer.moveTo(container, this.renderIndex)
+      // From INDEX to the top is reversed, flip it back
+      for (let i = parentContainer.length - 1; i >= this.renderIndex; i--) {
+        parentContainer.bringToTop(parentContainer.getAt(i))
+      }
     }, this)
     
     return this

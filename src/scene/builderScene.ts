@@ -113,8 +113,9 @@ class BuilderSceneShell extends BaseScene {
     let index = this.deck.length
 
     let cardImage = new CardImage(card, this.deckContainer)
-    cardImage.setPosition(this.getDeckCardPosition(index))
-    cardImage.setOnClick(this.removeCardFromDeck(index))
+    .setPosition(this.getDeckCardPosition(index))
+    .moveToTopOnHover()
+    .setOnClick(this.removeCardFromDeck(index))
 
     // Add this to the deck
     this.deck.push(cardImage)
