@@ -87,6 +87,7 @@ export default class TheirHandRegion extends Region {
 		let hand = []
 		for (let i = 0; i < state.opponentHandSize; i++) {
 			let card = this.addCard(cardback, CardLocation.theirHand(state, i, this.container))
+			.moveToTopOnHover()
 
 			hand.push(card)
 			this.temp.push(card)

@@ -49,6 +49,7 @@ export default class StoryRegion extends Region {
 			let card = this.addCard(play[0],
 				CardLocation.story(state, resolvedI, this.container, play[1]))
 			.setTransparent(true)
+			.moveToTopOnHover()
 
 			this.temp.push(card)
 		}
@@ -57,8 +58,11 @@ export default class StoryRegion extends Region {
 		for (let i = 0; i < state.story.acts.length; i++) {
 			const act = state.story.acts[i]
 
-			let card = this.addCard(act.card,
-				CardLocation.story(state, resolvedI + i, this.container, act.owner))
+			let card = this.addCard(
+				act.card,
+				CardLocation.story(state, resolvedI + i, this.container, act.owner)
+				)
+			.moveToTopOnHover()
 			// TODO Add a callback to jump around in recap
 
 			cards.push(card)

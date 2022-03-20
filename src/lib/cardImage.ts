@@ -174,9 +174,11 @@ export class CardImage {
   }
 
   // Set the callback to fire when this card's image is hovered, and one for when exited
-  setOnHover(f: () => void, g: () => void): void {
+  setOnHover(f: () => void, g: () => void): CardImage {
     this.image.on('pointerover', f)
     this.image.on('pointerout', g)
+
+    return this
   }
 
   // Set whether this card is playable
@@ -222,12 +224,14 @@ export class CardImage {
   }
 
   // Set the displayed cost of this card, don't change the cost if cost is null
-  setCost(cost: number): void {
+  setCost(cost: number): CardImage {
     if (cost !== null) {
       // If the cost is reduced, change the color of cost
       let costTxt = cost < this.card.cost ? `[stroke=${Color.cardCostReduced}]${cost}[/stroke]` : `${cost}`
       this.txtStats.setText(`${costTxt}:${this.card.points}`)
     }
+
+    return this
   }
 
   // Remove the highlight from this card
@@ -311,10 +315,6 @@ export class CardImage {
         doHighlight()
       }
 
-      let outerContainer = that.container.parentContainer
-      this.renderIndex = outerContainer.getIndex(that.container)
-      outerContainer.bringToTop(that.container)
-
       // cardInfo.text = that.card.getCardText()
 
       // // TODO Adjust for extra container
@@ -355,9 +355,27 @@ export class CardImage {
     let that = this
     return () => {
       that.removeHighlight()()
-
-      let outerContainer = that.container.parentContainer
-      outerContainer.moveTo(that.container, that.renderIndex)
     }
+  }
+
+  // Move this cardImage above everything else in its container when it's hovered
+  moveToTopOnHover(): CardImage {
+    let container = this.container
+    let parentContainer = container.parentContainer
+
+    this.image.on('pointerover', () => {
+      // Remember the index that this was at
+      this.renderIndex = parentContainer.getIndex(container)
+
+      // Move this to the top of the container
+      parentContainer.bringToTop(container)
+    }, this)
+
+    this.image.on('pointerout', () => {
+      // Move back to the position in the render list we were at before
+      parentContainer.moveTo(container, this.renderIndex)
+    }, this)
+    
+    return this
   }
 }
