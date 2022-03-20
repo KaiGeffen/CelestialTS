@@ -1846,10 +1846,7 @@ export default class GameScene extends BaseScene {
 		// TODO use params
 
 		// This is the Controller
-		let mmCode = 'ai'
-		if (params.mmCode !== undefined) {
-			let mmCode = params.mmCode			
-		}
+		let mmCode = ''
 
 		// Connect with the server
 		this.net = new Network(params.deck, this, mmCode)
