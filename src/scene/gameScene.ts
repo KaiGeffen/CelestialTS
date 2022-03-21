@@ -127,6 +127,7 @@ export default class GameScene extends BaseScene {
 			net.playCard(i)
 		})
 
+		// Buttons
 		view.ourButtons.setRecapCallback(() => {
 			that.recapPlaying = true
 			that.queuedRecap = [...that.lastRecap]
@@ -145,6 +146,27 @@ export default class GameScene extends BaseScene {
 			// Set variables to a state where a recap isn't playing
 			that.queuedRecap = []
 			that.recapPlaying = false
+		})
+
+		// Story
+		view.story.setCallback((i: number) => {
+			return function() {
+				// Get the series of states for this recap starting from the given index
+				let recap = that.lastRecap.slice(i + 1)
+
+				// Set that a recap is playing, queue the correct recap
+				that.recapPlaying = true
+				that.queuedRecap = recap
+
+				// To correctly display point changes, set the current scores to the last recaps totals
+				// that.lastScore = that.lastRecap[i].score TODO
+
+				// Skip all tweens playing currently
+				// TODO Some text stays enlarged if it doesn't finish
+				that.tweens.getAllTweens().forEach((tween) => {
+					tween.complete()
+				})
+			}
 		})
 	}
 

@@ -18,6 +18,9 @@ export default class StoryRegion extends Region {
 
 	lastScores: [number, number]
 
+	// Callback that plays when ith card in recap is clicked on
+	callback: (i: number) => () => void
+
 	create (scene: Phaser.Scene): StoryRegion {
 		this.scene = scene
 		this.lastScores = [0, 0]
@@ -50,6 +53,7 @@ export default class StoryRegion extends Region {
 				CardLocation.story(state, resolvedI, this.container, play[1]))
 			.setTransparent(true)
 			.moveToTopOnHover()
+			.setOnClick(that.callback(resolvedI))
 
 			this.temp.push(card)
 		}
@@ -63,7 +67,7 @@ export default class StoryRegion extends Region {
 				CardLocation.story(state, resolvedI + i, this.container, act.owner)
 				)
 			.moveToTopOnHover()
-			// TODO Add a callback to jump around in recap
+			.setOnClick(that.callback(i))
 
 			cards.push(card)
 			this.temp.push(card)
@@ -78,6 +82,11 @@ export default class StoryRegion extends Region {
 		}
 
 		this.animate(state, cards, isRecap)
+	}
+
+	// Set the callback for when an act in the story is clicked on
+	setCallback(callback: (i: number) => () => void): void {
+		this.callback = callback
 	}
 
 	// Display the current score totals and change in scores
