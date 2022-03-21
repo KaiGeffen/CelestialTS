@@ -35,7 +35,7 @@ export default class OurHandRegion extends Region {
 		let background = this.createBackground(scene)
 
 		// Highlight visible when we have priority
-		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight').setVisible(false)
+		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
 		.setOrigin(0)
 		.play(true)
 
