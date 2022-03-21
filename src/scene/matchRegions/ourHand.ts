@@ -32,13 +32,7 @@ export default class OurHandRegion extends Region {
 
 		this.container = scene.add.container(0, Space.windowHeight - height).setDepth(1)
 
-		// Make a container
-		// Add background rectangle
-		let background = scene.add.rectangle(
-			0, 0,
-			Space.windowWidth, height,
-			Color.background, 1
-			).setOrigin(0)
+		let background = this.createBackground(scene)
 
 		// Highlight visible when we have priority
 		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight').setVisible(false)
@@ -78,8 +72,13 @@ export default class OurHandRegion extends Region {
 
 		let that = this
 
+		// Statuses
+		this.displayStatuses(state)
+
+		// The position these cards will move to if played
 		const nextStoryPosition = CardLocation.story(state, state.story.acts.length, this.container, 0)
 		
+		// Add each of the cards in our hand
 		let cardsInHand = []
 		for (let i = 0; i < state.hand.length; i++) {
 			let card = this.addCard(state.hand[i], CardLocation.ourHand(state, i, this.container))
@@ -99,14 +98,29 @@ export default class OurHandRegion extends Region {
 			this.temp.push(card)
 		}
 
-		// Statuses
-		this.displayStatuses(state)
-
 		// Pile sizes
 		this.txtDeckCount.setText(`${state.deck.length}`)
 		this.txtDiscardCount.setText(`${state.discard[0].length}`)
 
 		this.animate(state, cardsInHand, isRecap)
+	}
+
+	// TODO 150
+	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
+		let background = scene.add.rectangle(
+			0, 0,
+			Space.windowWidth, 150,
+			Color.background, 1
+			).setOrigin(0)
+
+		// Add a border around the shape TODO Make a class for this to keep it dry
+        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+        postFxPlugin['add'](background, {
+        	thickness: 1,
+        	outlineColor: Color.border,
+        })
+
+        return background
 	}
 
 	// Animate any cards ending in the hand

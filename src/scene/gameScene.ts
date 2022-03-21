@@ -17,7 +17,7 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { OurHandRegion, TheirHandRegion, StoryRegion, ScoreRegion, OurButtonsRegion, DecksRegion, DiscardPilesRegion } from "./matchRegions/matchRegions"
+import { OurHandRegion, TheirHandRegion, StoryRegion, OurScoreRegion, TheirScoreRegion, OurButtonsRegion, DecksRegion, DiscardPilesRegion } from "./matchRegions/matchRegions"
 import Region from './matchRegions/baseRegion'
 
 
@@ -235,7 +235,8 @@ class View {
 	ourButtons: Region
 	theirHand: Region
 	story: StoryRegion
-	score: Region
+	ourScore: Region
+	theirScore: Region
 	decks: Region
 	discardPiles: Region
 
@@ -255,7 +256,8 @@ class View {
 		this.theirHand = new TheirHandRegion().create(scene)
 
 		this.story = new StoryRegion().create(scene)
-		this.score = new ScoreRegion().create(scene)
+		this.ourScore = new OurScoreRegion().create(scene)
+		this.theirScore = new TheirScoreRegion().create(scene)
 		this.ourButtons = new OurButtonsRegion().create(scene)
 
 		this.decks = new DecksRegion().create(scene)
@@ -266,7 +268,8 @@ class View {
 		this.ourHand.displayState(state, isRecap)
 		this.theirHand.displayState(state, isRecap)
 		this.story.displayState(state, isRecap)
-		this.score.displayState(state, isRecap)
+		this.ourScore.displayState(state, isRecap)
+		this.theirScore.displayState(state, isRecap)
 		this.ourButtons.displayState(state, isRecap)
 		this.decks.displayState(state, isRecap)
 		this.discardPiles.displayState(state, isRecap)

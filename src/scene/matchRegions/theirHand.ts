@@ -20,8 +20,6 @@ export default class TheirHandRegion extends Region {
 	txtDeckCount: Phaser.GameObjects.Text
 	txtDiscardCount: Phaser.GameObjects.Text
 
-	txtWins: Phaser.GameObjects.Text
-
 	create (scene: Phaser.Scene): TheirHandRegion {
 		let that = this
 		this.scene = scene
@@ -33,12 +31,8 @@ export default class TheirHandRegion extends Region {
 		this.container = scene.add.container(0, 0)
 
 		// Add background rectangle
-		let background = scene.add.rectangle(
-			0, 0,
-			Space.windowWidth, height,
-			Color.background, 1
-			).setOrigin(0)
-
+		let background = this.createBackground(scene)
+		
 		// Highlight visible when they have priority
 		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
 		.setOrigin(0)
@@ -56,24 +50,16 @@ export default class TheirHandRegion extends Region {
 		this.txtDiscardCount = scene.add.text(x, 95, '', Style.basic).setOrigin(0.5).setFontSize(20)
 		let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
 
-		// Wins
-		const winsIcon = scene.add.image(x + 100, height/2, 'icon-Wins').setOrigin(0, 0.5)
-		let txtWinsReminder = scene.add.text(winsIcon.x + winsIcon.width + Space.pad, height/2 - 13, 'Wins:', Style.small).setOrigin(0, 0.5)
-		this.txtWins = scene.add.text(txtWinsReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
-
 		// Add each of these objects to container
 		this.container.add([
 			background,
 			this.priorityHighlight,
 			avatar,
 			divide,
-			winsIcon,
 			this.txtDeckCount,
 			iconDeck,
 			this.txtDiscardCount,
 			iconDiscard,
-			txtWinsReminder,
-			this.txtWins,
 			])
 
 		return this
@@ -84,6 +70,9 @@ export default class TheirHandRegion extends Region {
 
 		let that = this
 
+		// Statuses
+		this.displayStatuses(state)
+
 		let hand = []
 		for (let i = 0; i < state.opponentHandSize; i++) {
 			let card = this.addCard(cardback, CardLocation.theirHand(state, i, this.container))
@@ -93,17 +82,26 @@ export default class TheirHandRegion extends Region {
 			this.temp.push(card)
 		}
 
-		// Statuses
-		this.displayStatuses(state)
-
 		// Pile sizes
 		this.txtDeckCount.setText(`${state.opponentDeckSize}`)
 		this.txtDiscardCount.setText(`${state.discard[1].length}`)
 
-		// Wins
-		this.txtWins.setText(`${state.wins[1]}`)
-
 		this.animate(state, hand, isRecap)
+	}
+
+	// GENERALIZE 280, 250
+	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
+		const points = `0 0 ${Space.windowWidth - 180} 0 ${Space.windowWidth - 230} 150 0 150`
+		let background = scene.add.polygon(0, 0, points, Color.background, 1).setOrigin(0)
+
+		// Add a border around the shape TODO Make a class for this to keep it dry
+        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+        postFxPlugin['add'](background, {
+        	thickness: 1,
+        	outlineColor: Color.border,
+        })
+
+        return background
 	}
 
 	// Animate any cards leaving the hand
