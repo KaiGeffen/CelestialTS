@@ -222,6 +222,17 @@ export default class GameScene extends BaseScene {
 
 		this.view.displayState(state, isRecap)
 
+		// Autopass
+		let haveNoCards = state.hand.length === 0
+		let haveNoPlayableCards = !state.cardsPlayable.includes(true)
+		// If not a recap and it is your turn, pass if either we have no cards, or autopass is on and we have no available plays
+		if (!isRecap && state.priority === 0 && !state.mulligansComplete.includes(false) &&
+			((haveNoCards) ||
+			(UserSettings._get('autopass') && haveNoPlayableCards))) {
+			this.net.passTurn()
+		}
+
+		// State was displayed
 		return true
 	}
 
