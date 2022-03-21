@@ -67,7 +67,11 @@ export default class StoryRegion extends Region {
 				CardLocation.story(state, resolvedI + i, this.container, act.owner)
 				)
 			.moveToTopOnHover()
-			.setOnClick(that.callback(i))
+
+			// Only allow jumping around in the recap if we are playing a recap
+			if (isRecap) {
+				card.setOnClick(that.callback(i))
+			}
 
 			cards.push(card)
 			this.temp.push(card)
