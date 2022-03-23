@@ -28,7 +28,7 @@ export default class TheirHandRegion extends Region {
 
 		// Avatar, status, hand, recap, pass buttons
 
-		this.container = scene.add.container(0, 0)
+		this.container = scene.add.container(0, 0).setDepth(1)
 
 		// Add background rectangle
 		let background = this.createBackground(scene)

@@ -17,7 +17,7 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { OurHandRegion, TheirHandRegion, StoryRegion, OurScoreRegion, TheirScoreRegion, OurButtonsRegion, DecksRegion, DiscardPilesRegion } from "./matchRegions/matchRegions"
+import { OurHandRegion, TheirHandRegion, StoryRegion, OurScoreRegion, TheirScoreRegion, OurButtonsRegion, DecksRegion, DiscardPilesRegion, OurDeckOverlay, TheirDeckOverlay, OurDiscardOverlay, TheirDiscardOverlay } from "./matchRegions/matchRegions"
 import Region from './matchRegions/baseRegion'
 
 
@@ -168,6 +168,22 @@ export default class GameScene extends BaseScene {
 				})
 			}
 		})
+
+		// Piles (Show overlay when clicked)
+		view.decks.setCallback(() => {
+			that.view.ourDeckOverlay.show()
+		},
+		() => {
+			that.view.theirDeckOverlay.show()
+		})
+		
+		view.discardPiles.setCallback(() => {
+			that.view.ourDiscardOverlay.show()
+		}, 
+		() => {
+			that.view.theirDiscardOverlay.show()
+		}
+		)
 	}
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
@@ -273,6 +289,11 @@ class View {
 	decks: Region
 	discardPiles: Region
 
+	ourDeckOverlay: Region
+	theirDeckOverlay: Region
+	ourDiscardOverlay: Region
+	theirDiscardOverlay: Region
+
 	// Has the phaser objects
 	// Handles layout, animation
 	// Divided into regions
@@ -295,6 +316,12 @@ class View {
 
 		this.decks = new DecksRegion().create(scene)
 		this.discardPiles = new DiscardPilesRegion().create(scene)
+
+		this.ourDeckOverlay = new OurDeckOverlay().create(scene)
+		this.theirDeckOverlay = new TheirDeckOverlay().create(scene)
+		this.ourDiscardOverlay = new OurDiscardOverlay().create(scene)
+		this.theirDiscardOverlay = new TheirDiscardOverlay().create(scene)
+
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
@@ -306,6 +333,12 @@ class View {
 		this.ourButtons.displayState(state, isRecap)
 		this.decks.displayState(state, isRecap)
 		this.discardPiles.displayState(state, isRecap)
+
+		this.ourDeckOverlay.displayState(state, isRecap)
+		this.theirDeckOverlay.displayState(state, isRecap)
+		this.ourDiscardOverlay.displayState(state, isRecap)
+		this.theirDiscardOverlay.displayState(state, isRecap)
+
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {

@@ -26,6 +26,8 @@ const CoreColors: Record<string, any> = {
   c2: 0xAE9E8D,
   c2s: '#ae9e8d',
 
+  darken: 0x333333,
+
 
 }
 
@@ -36,6 +38,7 @@ export const Color: Record<string, any> = {
   smallText: CoreColors.c2s,
   basicText: CoreColors.c1s,
   border: CoreColors.c1,
+  darken: CoreColors.darken,
 
 
   // Background of the webpage

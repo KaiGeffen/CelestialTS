@@ -110,4 +110,11 @@ export default class CardLocation {
 		const y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
 		return [x - container.x, y - container.y]
 	}
+
+	static overlay(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+		const dx = 60 * i
+		const x = 200 + dx
+		const y = Space.windowHeight/2
+		return [x - container.x, y - container.y]
+	}
 }
