@@ -46,7 +46,7 @@ class OverlayRegion extends Region {
 
 		let cardImage = this.addCard(card, position).moveToTopOnHover()
 
-		this.temp.push(card)
+		this.temp.push(cardImage)
 
 		return cardImage
 	}
