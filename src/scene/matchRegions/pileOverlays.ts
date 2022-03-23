@@ -54,6 +54,8 @@ class OverlayRegion extends Region {
 
 export class OurDeckOverlay extends OverlayRegion {
 	displayState(state: ClientState, isRecap: boolean): void {
+		this.deleteTemp()
+
 		for (let i = 0; i < state.deck.length; i++) {
 			this.addOverlayCard(state.deck[i], i)
 		}
@@ -62,6 +64,8 @@ export class OurDeckOverlay extends OverlayRegion {
 
 export class TheirDeckOverlay extends OverlayRegion {
 	displayState(state: ClientState, isRecap: boolean): void {
+		this.deleteTemp()
+
 		for (let i = 0; i < state.lastShuffle[1].length; i++) {
 			this.addOverlayCard(state.lastShuffle[1][i], i)
 		}
@@ -70,6 +74,8 @@ export class TheirDeckOverlay extends OverlayRegion {
 
 export class OurDiscardOverlay extends OverlayRegion {
 	displayState(state: ClientState, isRecap: boolean): void {
+		this.deleteTemp()
+
 		for (let i = 0; i < state.discard[0].length; i++) {
 			this.addOverlayCard(state.discard[0][i], i)
 		}
@@ -78,6 +84,8 @@ export class OurDiscardOverlay extends OverlayRegion {
 
 export class TheirDiscardOverlay extends OverlayRegion {
 	displayState(state: ClientState, isRecap: boolean): void {
+		this.deleteTemp()
+
 		for (let i = 0; i < state.discard[1].length; i++) {
 			this.addOverlayCard(state.discard[1][i], i)
 		}
