@@ -20,10 +20,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   basic: {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,
-    // fontStyle: "Bold",
     color: Color.basicText,
-    // stroke: '#000',
-    strokeThickness: 2,
     wordWrap: { width: Space.windowWidth - Space.pad * 4 }
   },
   button: {
