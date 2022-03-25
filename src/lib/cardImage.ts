@@ -176,9 +176,9 @@ export class CardImage {
   }
 
   // Set the callback to fire when this card's image is hovered, and one for when exited
-  setOnHover(f: () => void, g: () => void): CardImage {
-    this.image.on('pointerover', f)
-    this.image.on('pointerout', g)
+  setOnHover(fHover: () => void, fExit: () => void): CardImage {
+    this.image.on('pointerover', fHover)
+    this.image.on('pointerout', fExit)
 
     return this
   }

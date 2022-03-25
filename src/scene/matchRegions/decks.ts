@@ -45,7 +45,6 @@ export default class DecksRegion extends Region {
 		}
 	}
 
-	// TODO Our deck callback
 	setCallback(ourCallback: () => void, theirCallback: () => void): void {
 		this.ourCallback = ourCallback
 

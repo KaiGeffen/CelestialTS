@@ -16,13 +16,11 @@ export default class TheirScoreRegion extends Region {
 		const width = 150
 		const height = 100
 		const overlap = 20
-		// TODO Our hand height = 150
 		
 		this.container = scene.add.container(Space.windowWidth - 250, 0)
 		.setDepth(3)
 
 		// Add background rectangle
-		// TODO user variables
 		const background = this.createBackground(scene)
 
 		// Wins

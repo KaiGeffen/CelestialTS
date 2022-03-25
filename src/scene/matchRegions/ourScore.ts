@@ -17,14 +17,12 @@ export default class ScoreRegion extends Region {
 		const width = 300
 		const height = 90
 		const overlap = 20
-		// TODO Our hand height = 150
 		
 		this.container = scene.add.container(Space.windowWidth - width,
-			Space.windowHeight - 150 - height + overlap)
+			Space.windowHeight - Space.handHeight - height + overlap)
 			.setDepth(3)
 
 		// Add background rectangle
-		// TODO user variables
 		const background = this.createBackground(scene)
 
 		const breathIcon = scene.add.image(30, height/2, 'icon-Breath').setOrigin(0, 0.5)

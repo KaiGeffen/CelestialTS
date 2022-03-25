@@ -38,4 +38,6 @@ export const Space = {
   cardWidth: 140,
   cardHeight: 200,
   storyOverlap: 50,
+  // Height of the hand regions
+  handHeight: 150,
 }

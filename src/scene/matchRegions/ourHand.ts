@@ -25,12 +25,11 @@ export default class OurHandRegion extends Region {
 
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
-		this.scene = scene // TODO
-		const height = 150
+		this.scene = scene
 
 		// Avatar, status, hand, recap, pass buttons
 
-		this.container = scene.add.container(0, Space.windowHeight - height).setDepth(1)
+		this.container = scene.add.container(0, Space.windowHeight - Space.handHeight).setDepth(1)
 
 		let background = this.createBackground(scene)
 
@@ -41,7 +40,7 @@ export default class OurHandRegion extends Region {
 
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 		
-		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, height/2, 'icon-Divide')
+		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
 		// Deck and discard pile totals
 		// TODO Font size as a part of a style
@@ -105,11 +104,10 @@ export default class OurHandRegion extends Region {
 		this.animate(state, cardsInHand, isRecap)
 	}
 
-	// TODO 150
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
 		let background = scene.add.rectangle(
 			0, 0,
-			Space.windowWidth, 150,
+			Space.windowWidth, Space.handHeight,
 			Color.background, 1
 			).setOrigin(0)
 
@@ -141,6 +139,9 @@ export default class OurHandRegion extends Region {
 				let y = card.container.y
 
 				// TODO Based on animation.from
+				// switch (animation.from) {
+				// 	case Zone.Deck
+				// }
 				card.setPosition(CardLocation.ourDeck(this.container))
 				card.hide()
 
@@ -213,8 +214,7 @@ export default class OurHandRegion extends Region {
 	// Return the function that runs when given card is hovered
 	private onCardHover(card: CardImage): () => void {
 		return () => {
-			// TODO This height card must be to be flush with edge
-			card.container.setY(50)
+			card.container.setY(Space.handHeight - Space.cardHeight/2)
 		}
 	}
 

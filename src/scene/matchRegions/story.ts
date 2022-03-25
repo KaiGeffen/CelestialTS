@@ -10,8 +10,7 @@ import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 
 
-// TODO
-const middle = (Space.windowHeight)/2 - 150
+const middle = (Space.windowHeight)/2 - Space.handHeight
 
 export default class StoryRegion extends Region {
 	txtScores: Phaser.GameObjects.Text
@@ -25,8 +24,7 @@ export default class StoryRegion extends Region {
 		this.scene = scene
 		this.lastScores = [0, 0]
 
-		// TODO 150 is the height for their hand, generalize this
-		this.container = scene.add.container(100 + 140/2, 150)
+		this.container = scene.add.container(100 + 140/2, Space.handHeight)
 
 		this.txtScores = scene.add.text(
 			Space.windowWidth - 300, middle, '', Style.announcement
@@ -109,7 +107,7 @@ export default class StoryRegion extends Region {
 	// Animate each player gaining or losing points for the act at this index
 	private animateScoreGains(index: number, scores: [number, number]): void {
 		
-		// TODO Undefined for state?
+		// TODO The first arg (state) should have a variable if squishing is possible
 		const loc = CardLocation.story(undefined, index, this.container, undefined)
 
 		// Form the string for the gain of the given player
