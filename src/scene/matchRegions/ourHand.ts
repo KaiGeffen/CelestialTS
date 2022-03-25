@@ -256,9 +256,6 @@ export default class OurHandRegion extends Region {
     color: '#031022'
   }).setOrigin(0, 0.5)
   				
-  				// this.container.add([shape, txt])
-  				// this.temp.push(shape, txt)
-
   				this.container.add([img, txt])
   				this.temp.push(img, txt)
 

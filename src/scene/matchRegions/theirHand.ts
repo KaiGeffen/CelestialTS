@@ -174,16 +174,22 @@ export default class TheirHandRegion extends Region {
 		let y = 10
 		for (let i = 0; i < length; i++) {
 			if (amts[i] > 0) {
-				let s = Status[i][0] + ' ' + amts[i]
+				let img = this.scene.add.image(140, y, 'icon-Nourish').setOrigin(0)
+  				
+  				var randomColor = Math.floor(Math.random()*16777215)
+  				img.setTint(randomColor)
 
-				var randomColor = Math.floor(Math.random()*16777215)
-				let shape = this.scene.add.polygon(140, y, points, randomColor, 1).setOrigin(0)
-				let txt = this.scene.add.text(150, y + 35, s, Style.basic).setOrigin(0, 0.5)
+  				// TODO Make this style standard
+  				let s = `${Status[i]} ${amts[i]}`
+  				let txt = this.scene.add.text(145, y + 45, s, {
+    fontSize: '10px',
+    color: '#031022'
+  }).setOrigin(0, 0.5)
+  				
+  				this.container.add([img, txt])
+  				this.temp.push(img, txt)
 
-				this.container.add([shape, txt])
-				this.temp.push(shape, txt)
-
-				y += 60
+  				y += 50
 			}
 		}
 	}
