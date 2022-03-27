@@ -791,7 +791,9 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       btns.push(btn)
     }
 
-    let btn = scene.add.text(0, 0, 'X', this.onClearFilters(btns))
+    let btn = scene.add.image(0, 0, 'icon-X')
+    .setInteractive()
+    .on('pointerdown', this.onClearFilters(btns))
     .setDepth(4)
     header.add(btn)
   }
