@@ -4,7 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
-
+import { IButtonOptions } from '../lib/buttons/icon'
 
 
 export default class BaseScene extends Phaser.Scene {
@@ -13,7 +13,7 @@ export default class BaseScene extends Phaser.Scene {
 	sliderVolume: RexUIPlugin.Slider
 	sliderMusic: RexUIPlugin.Slider
 	sliderAnimationSpeed: RexUIPlugin.Slider
-	private btnMenu: Button
+	private btnOptions: IButtonOptions
 	private btnDebug: Button
 
 	// Allows for typing objects in RexUI library
@@ -50,10 +50,11 @@ export default class BaseScene extends Phaser.Scene {
 		addCardInfoToScene(this).setDepth(15)
 
 		// Menu button
-		this.btnMenu = new Button(this, Space.windowWidth - Space.pad/2, 0, '⚙', this.openMenu).setOrigin(1, 0)
+		this.btnOptions = new IButtonOptions(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu).setOrigin(1, 0).setDepth(5)
 
 		// Sound debug menu
 		this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
+		this.btnDebug.background.setAlpha(0) // TODO
 
 	    // Error text, for when the user does something wrong they get an explanation
 	    this.txtError = this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
@@ -363,7 +364,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 	private openMenu(): void {
       	this.sound.play('open')
 
-      	this.btnMenu.glow()
+      	// this.btnOptions.glow()TODO
 
 		this.confirmationContainer.setVisible(true)
 		this.sliderVolume.setVisible(true)
@@ -388,7 +389,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 	private closeMenu(): void {
 		this.sound.play('close')
 
-		this.btnMenu.stopGlow()
+		// this.btnOptions.stopGlow()TODO
 
 		this.confirmationContainer.setVisible(false)
 		this.rulebookContainer.setVisible(false)
