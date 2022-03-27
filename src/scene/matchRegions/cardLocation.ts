@@ -113,11 +113,19 @@ export default class CardLocation {
 		return [x - container.x, y - container.y]
 	}
 
-	static overlay(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+	static overlay(container: Phaser.GameObjects.Container, i = 0, total: number): [number, number] {
+		const cardsPerRow = 15
+
 		// TODO Center this horizontally, wrap vertically if we hit ~20 cards
-		const dx = 60 * i
-		const x = 200 + dx
-		const y = Space.windowHeight/2
+		const iFromMiddle = Math.min(cardsPerRow, total)
+		const x0 = Space.windowWidth/2 - Math.min(cardsPerRow - 1, total - 1) * 60/2
+		const dx = 60 * (i % cardsPerRow)
+		const x = x0 + dx
+		
+		const extraRows = Math.floor(total / cardsPerRow)
+		const y0 = Space.windowHeight/2 - extraRows * (Space.cardHeight + Space.pad)/2
+		const dy = (Space.cardHeight + Space.pad) * Math.floor(i / cardsPerRow)
+		const y = y0 + dy
 		return [x - container.x, y - container.y]
 	}
 

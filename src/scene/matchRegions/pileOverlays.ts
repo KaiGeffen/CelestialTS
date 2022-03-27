@@ -39,8 +39,8 @@ class OverlayRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {}
 
 	// Add a card to this overlay
-	protected addOverlayCard(card: Card, i: number): CardImage {
-		let position = CardLocation.overlay(this.container, i)
+	protected addOverlayCard(card: Card, i: number, total: number): CardImage {
+		let position = CardLocation.overlay(this.container, i, total)
 
 		let cardImage = this.addCard(card, position).moveToTopOnHover()
 
@@ -55,7 +55,7 @@ export class OurDeckOverlay extends OverlayRegion {
 		this.deleteTemp()
 
 		for (let i = 0; i < state.deck.length; i++) {
-			this.addOverlayCard(state.deck[i], i)
+			this.addOverlayCard(state.deck[i], i, state.deck.length)
 		}
 	}
 }
@@ -65,7 +65,7 @@ export class TheirDeckOverlay extends OverlayRegion {
 		this.deleteTemp()
 
 		for (let i = 0; i < state.lastShuffle[1].length; i++) {
-			this.addOverlayCard(state.lastShuffle[1][i], i)
+			this.addOverlayCard(state.lastShuffle[1][i], i, state.lastShuffle[1].length)
 		}
 	}
 }
@@ -75,7 +75,7 @@ export class OurDiscardOverlay extends OverlayRegion {
 		this.deleteTemp()
 
 		for (let i = 0; i < state.discard[0].length; i++) {
-			this.addOverlayCard(state.discard[0][i], i)
+			this.addOverlayCard(state.discard[0][i], i, state.discard[0].length)
 		}
 	}
 }
@@ -85,7 +85,7 @@ export class TheirDiscardOverlay extends OverlayRegion {
 		this.deleteTemp()
 
 		for (let i = 0; i < state.discard[1].length; i++) {
-			this.addOverlayCard(state.discard[1][i], i)
+			this.addOverlayCard(state.discard[1][i], i, state.discard[1].length)
 		}
 	}
 }
