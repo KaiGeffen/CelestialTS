@@ -205,7 +205,7 @@ export default class BaseScene extends Phaser.Scene {
         	this.rulebookContainer.setVisible(true)
 	    	this.sound.play('open')
         })
-        	.setStyle(Style.announcement)
+        	// .setStyle(Style.announcement)
         	.setOrigin(0, 0.5)
 
 		// Prompt asking users if they want to exit

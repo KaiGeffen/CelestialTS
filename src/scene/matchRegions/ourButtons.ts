@@ -28,21 +28,21 @@ export default class OurHandRegion extends Region {
 		const background = this.createBackground(scene)
 
 		// Recap button
-		this.btnRecap = new Button(scene,
+		this.btnRecap = new Button(this.container,
 			width/2 + 15,
 			height / 3 + 20/2,
 			'Recap'
 			).setOrigin(0.5)
 
 		// Pass button
-		this.btnPass = new Button(scene,
+		this.btnPass = new Button(this.container,
 			width/2 + 15,
 			height * 2 / 3 + 20/2,
 			'Pass'
 			).setOrigin(0.5)
 
 		// Skip button
-		this.btnSkip = new Button(scene,
+		this.btnSkip = new Button(this.container,
 			width/2 + 15,
 			height / 3 + 20/2,
 			'Skip',
@@ -52,7 +52,7 @@ export default class OurHandRegion extends Region {
 			).setOrigin(0.5)
 
 		// Play button
-		this.btnPlay = new Button(scene,
+		this.btnPlay = new Button(this.container,
 			width/2 + 15,
 			height * 2 / 3 + 20/2,
 			'Play'
@@ -61,10 +61,6 @@ export default class OurHandRegion extends Region {
 		// Add each of these objects to container
 		this.container.add([
 			background,
-			this.btnRecap,
-			this.btnPass,
-			this.btnSkip,
-			this.btnPlay,
 			])
 
 		return this

@@ -40,14 +40,14 @@ export default class MulliganRegion extends Region {
 			'Starting Hand',
 			Style.announcement).setOrigin(0.5, 1)
 
-		let btn = new Button(scene,
+		let btn = new Button(this.container,
 			Space.windowWidth/2,
 			Space.windowHeight/2 + Space.cardHeight/2 + Space.pad,
 			'Ready',
 			() => this.onButtonClick())
 		.setOrigin(0.5, 0)
 		
-		this.container.add([txtTitle, txtHint, btn])
+		this.container.add([txtTitle, txtHint])
 
 		return this
 	}

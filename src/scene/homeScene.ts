@@ -60,7 +60,7 @@ export default class HomeScene extends BaseScene {
     let btnAdventure = new Button(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", this.doAdventure).setOrigin(0.5)
 
     // Start Button
-    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5).setStyle(Style.announcement)
+    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5)//.setStyle(Style.announcement)
 
     let msgText = UserProgress.getMessage('welcome')
     if (msgText !== undefined) {

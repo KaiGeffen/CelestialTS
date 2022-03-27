@@ -1068,7 +1068,7 @@ class OldGameScene extends BaseScene {
 		let txt = 'Your opponent disconnected, you win!'
 		let btn = new Button(this, Space.windowWidth/2, Space.windowHeight/2, txt, this.exitScene())
 			.setOrigin(0.5)
-			.setStyle(Style.announcement)
+			//.setStyle(Style.announcement)
 
 		this.storyContainer.add(btn)
 	}

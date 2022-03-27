@@ -4,48 +4,67 @@ import { Space, Style, Color } from '../settings/settings'
 
 // TODO There is a better way to do this where the object is defined within the Phaser Game Factor and can be added from that
 
-export default class Button extends Phaser.GameObjects.Text {
+export default class Button {
+	scene: Phaser.Scene
+	txt: Phaser.GameObjects.Text
+	background: Phaser.GameObjects.Image
+
 	// If this button is currently selected
 	isSelected = false
 
-	constructor(scene: Phaser.Scene, x: number, y: number, text: string,
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+		x: number, y: number, text: string,
 		f: () => void = function() { },
 		playSound: boolean = true) {
-		super(scene, x, y, text, Style.button)
+		
+		if (within instanceof Phaser.Scene) {
+			this.scene = within
+		}
+		else if (within instanceof Phaser.GameObjects.Container) {
+			this.scene = within.scene
+		}
+		
 
-		this.setInteractive()
+		// Create the objects that make up the button
+		this.txt = this.scene.add.text(x, y, text, Style.button)
+		this.background = this.scene.add.image(x, y, 'icon-Button')
+
+		this.background.setInteractive()
 
 		// Call the function, either with a sound or not
 		if (playSound) {
-			this.on('pointerdown', this.sfxThenDo(f))
+			this.background.on('pointerdown', this.sfxThenDo(f))
 		} else {
-			this.on('pointerdown', f, scene)
+			this.background.on('pointerdown', f, this.scene)
 		}
 
-		this.on('pointerover', () => {
-			this.setTint(Color.buttonHighlight)
-			scene.sound.play('hover')
+		this.background.on('pointerover', () => {
+			this.background.setTint(Color.buttonHighlight)
+			this.scene.sound.play('hover')
 		}, this)
-		this.on('pointerout', () => this.clearTint(), this)
-		this.scene.input.on('gameout', () => this.clearTint(), this)
+		this.background.on('pointerout', () => this.background.clearTint(), this)
+		this.scene.input.on('gameout', () => this.background.clearTint(), this)
 
-		this.scene.add.existing(this)
+		// If within a container, add the objects to that container
+		if (within instanceof Phaser.GameObjects.Container) {
+			within.add([this.background, this.txt])
+		}
 	}
 
 	// Set the on click function for this button, removing any previous functions
 	setOnClick(f: () => void, removeListeners = false): Button {
 		if (removeListeners) {
-      		this.removeAllListeners('pointerdown')
+      		this.background.removeAllListeners('pointerdown')
       	}
 
-		this.on('pointerdown', f)
+		this.background.on('pointerdown', f)
 
 		return this
 	}
 
-	onHover(f: () => void, fExit: () => void = () => {}): Button {
-	    this.on('pointerover', f)
-	    this.on('pointerout', fExit)
+	setOnHover(f: () => void, fExit: () => void = () => {}): Button {
+	    this.background.on('pointerover', f)
+	    this.background.on('pointerout', fExit)
 
 	    return this
 	}
@@ -56,7 +75,7 @@ export default class Button extends Phaser.GameObjects.Text {
 
 		this.isSelected = true
 
-		this.scene.plugins.get('rexOutlinePipeline')['add'](this,
+		this.scene.plugins.get('rexOutlinePipeline')['add'](this.background,
         	{thickness: 3,
           	outlineColor: Color.buttonBorder})
 
@@ -75,13 +94,15 @@ export default class Button extends Phaser.GameObjects.Text {
 		// First stop any glow that's already happening to not amplify
 		this.stopGlow()
 
-		this.outline = this.scene.add.text(this.x, this.y, this.text, this.style)
-			.setOrigin(this.originX, this.originY)
-			.setDepth(this.depth - 1)
+		let txt = this.txt
+
+		this.outline = this.scene.add.text(txt.x, txt.y, txt.text, txt.style)
+			.setOrigin(txt.originX, txt.originY)
+			.setDepth(txt.depth - 1) // TODO issue wiht background
 
 		// Add to parent container if it exists
-		if (this.parentContainer !== null) {
-			this.parentContainer.add(this.outline)
+		if (txt.parentContainer !== null) {
+			txt.parentContainer.add(this.outline)
 		}
 		
 		var postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
@@ -129,8 +150,8 @@ export default class Button extends Phaser.GameObjects.Text {
 		this.isSelected = false
 
 		// Remove this object's highlight, if it has one
-		if (this.scene.plugins.get('rexOutlinePipeline')['get'](this).length > 0) {
-			this.scene.plugins.get('rexOutlinePipeline')['remove'](this)		
+		if (this.scene.plugins.get('rexOutlinePipeline')['get'](this.txt).length > 0) {
+			this.scene.plugins.get('rexOutlinePipeline')['remove'](this.txt)		
 		}
 	}
 
@@ -153,5 +174,20 @@ export default class Button extends Phaser.GameObjects.Text {
 			// Call the function with this scene as the context
 			f.call(scene)
 		}
+	}
+
+	// Some functions emulating phaser functions
+	setOrigin(...args): Button {
+		this.txt.setOrigin(...args)
+		this.background.setOrigin(...args)
+
+		return this
+	}
+
+	setVisible(value): Button {
+		this.txt.setVisible(value)
+		this.background.setVisible(value)
+
+		return this
 	}
 }
