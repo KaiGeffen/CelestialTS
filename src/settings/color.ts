@@ -16,6 +16,7 @@ const CoreColors: Record<string, any> = {
 
   black: 0x000000,
   white: 0xffffff,
+  whiteS: '#ffffff',
 
 
   // Trial colors
@@ -56,7 +57,7 @@ export const Color: Record<string, any> = {
   menuHeader: CoreColors.primary,
 
   // Button components
-  button: CoreColors.variantS,
+  button: CoreColors.whiteS,//CoreColors.variantS,
   buttonHighlight: 0xaaaaaa,
   buttonBorder: CoreColors.white,
 
