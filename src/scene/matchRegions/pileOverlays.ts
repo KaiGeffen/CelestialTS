@@ -27,7 +27,7 @@ class OverlayRegion extends Region {
 		// Create the background
 		let background = scene.add.rectangle(0, 0,
 			Space.windowWidth, Space.windowHeight,
-			Color.darken, 0.5
+			Color.darken, 0.8
 			)
 		.setOrigin(0)
 		.setInteractive()
@@ -37,7 +37,7 @@ class OverlayRegion extends Region {
 		this.txtTitle = scene.add.text(Space.windowWidth/2,
 			Space.windowHeight/2 + Space.cardHeight/2 + Space.pad,
 			title,
-			Style.announcement).setOrigin(0.5, 0)
+			Style.announcement).setOrigin(0.5, 1)
 
 		this.container.add([background, this.txtTitle])
 
@@ -48,7 +48,8 @@ class OverlayRegion extends Region {
 
 	// Add a card to this overlay
 	protected addOverlayCard(card: Card, i: number, total: number): CardImage {
-		let position = CardLocation.overlay(this.container, i, total)
+		const titleHeight = this.txtTitle.height
+		let position = CardLocation.overlay(this.container, i, total, titleHeight)
 
 		let cardImage = this.addCard(card, position).moveToTopOnHover()
 

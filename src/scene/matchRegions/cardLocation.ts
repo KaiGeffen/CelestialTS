@@ -118,7 +118,7 @@ export default class CardLocation {
 		return [x - container.x, y - container.y]
 	}
 
-	static overlay(container: Phaser.GameObjects.Container, i = 0, total: number): [number, number] {
+	static overlay(container: Phaser.GameObjects.Container, i = 0, total: number, titleHeight = 0): [number, number] {
 		const cardsPerRow = 15
 
 		// TODO Center this horizontally, wrap vertically if we hit ~20 cards
@@ -130,7 +130,11 @@ export default class CardLocation {
 		const extraRows = Math.floor((total - 1) / cardsPerRow)
 		const y0 = Space.windowHeight/2 - extraRows * (Space.cardHeight + Space.pad)/2
 		const dy = (Space.cardHeight + Space.pad) * Math.floor(i / cardsPerRow)
-		const y = y0 + dy
+		let y = y0 + dy
+		// This is to reposition closer to the center when the title is visible
+		if (extraRows === 0) {
+			y -= titleHeight
+		}
 		return [x - container.x, y - container.y]
 	}
 
