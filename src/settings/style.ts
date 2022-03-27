@@ -17,6 +17,13 @@ const FontSettings: Record<string, Record<string, string>> = {
 }
 
 export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
+  filter: {
+    fontFamily: fontFamily,
+    fontSize: '16px',
+    color: '#B6B9C5',
+  },
+
+
   basic: {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,

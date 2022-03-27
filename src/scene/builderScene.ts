@@ -412,7 +412,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
         setTimeout(() => btn.glow(false), 4)
       }
 
-      panel.add(btn)
+      panel.add(btn.txt)
       panel.addNewLine()
     }
   }
@@ -443,7 +443,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
           // Open up a new deck menu to input the deck's name
           this.createNewDeckMenu(newBtn, panel)
         }
-      }))
+      }).txt)
   }
 
   // Create the "Delete" button which deletes the currently selected deck
@@ -462,7 +462,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
           this.deckPanel.destroy()
           this.create()
         }
-      }))
+      }).txt)
   }
 
   // Create the "Code" button which prompts user to copy/paste a deck-code
@@ -471,7 +471,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     footer.add(
       new Button(this.scene, 0, 0, 'CODE', function() {
         that.createNewCodeMenu()
-      }))
+      }).txt)
   }
 
   // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
@@ -778,27 +778,25 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     header.add(txtHint)
 
     // Add each of the number buttons and the X button
-    let btns: Button[] = []
+    let btns: Phaser.GameObjects.Text[] = []
     for (var i = 0; i <= maxCostFilter; i++) {
       this.filterCostAry[i] = false
       let s = i === maxCostFilter ? `${i}+` : i.toString()
-      let btn = new Button(scene, 0, 0, s)
-
-      btn.setOnClick(this.onClickFilterButton(i, btns))
-        .setFontSize(parseInt(Style.announcement.fontSize))
-        .setDepth(4)
+      let btn = scene.add.text(0, 0, s, Style.filter)
+      .setInteractive()
+      .on('pointerdown', this.onClickFilterButton(i, btns))
+      .setDepth(4)
 
       header.add(btn)
       btns.push(btn)
     }
 
-    let btn = new Button(scene, 0, 0, 'X', this.onClearFilters(btns))
-      .setFontSize(parseInt(Style.announcement.fontSize))
-      .setDepth(4)
+    let btn = scene.add.text(0, 0, 'X', this.onClearFilters(btns))
+    .setDepth(4)
     header.add(btn)
   }
 
-  private onClickFilterButton(i: number, btns: Button[]): () => void {
+  private onClickFilterButton(i: number, btns: Phaser.GameObjects.Text[]): () => void {
     let that = this
 
     return function() {
@@ -806,18 +804,19 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       that.onClearFilters(btns)()
 
       // Highlight this one
-      btns[i].glow(false)
+      // btns[i].glow(false) TODO
+      btns[i].setTint(141414)
       that.filterCostAry[i] = true
 
       that.filter()
     }   
   }
 
-  private onClearFilters(btns: Button[]): () => void {
+  private onClearFilters(btns: Phaser.GameObjects.Text[]): () => void {
     let that = this
 
     return function() {
-      btns.forEach( (btn) => btn.stopGlow())
+      btns.forEach( (btn) => btn.clearTint())
 
       for (var i = 0; i < that.filterCostAry.length; i++) {
         that.filterCostAry[i] = false
