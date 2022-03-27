@@ -68,15 +68,21 @@ export default class CardLocation {
 
 	static story(state:ClientState, i: number, container: Phaser.GameObjects.Container, owner: number): [number, number] {
 		const x0 = 300
-		const dx = Space.cardWidth - Space.storyOverlap
+		const dx = Space.cardWidth - Space.storyXOverlap
 		const x = x0 + dx * i
-		// TODO Squishing
 
+		// TODO squishing
 		let y
-		if (owner === undefined) {
-			y = Space.windowHeight/2
-		} else {
-			y = owner === 0 ? Space.windowHeight/2 + 80 : Space.windowHeight/2 - 80			
+		switch (owner) {
+			case undefined:
+				y = Space.windowHeight/2
+				break
+			case 0:
+				y = Space.windowHeight/2 + (Space.cardHeight/2 - Space.storyYOverlap)
+				break
+			case 1:
+				y = Space.windowHeight/2 - (Space.cardHeight/2 - Space.storyYOverlap)
+				break
 		}
 
 		return [x - container.x, y - container.y]

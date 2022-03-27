@@ -19,10 +19,9 @@ export default class OurHandRegion extends Region {
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
 		this.scene = scene
-		const height = 150
 		const width = 230
 
-		this.container = scene.add.container(Space.windowWidth - width, Space.windowHeight - height).setDepth(2)
+		this.container = scene.add.container(Space.windowWidth - width, Space.windowHeight - Space.handHeight).setDepth(2)
 
 		// Add the background
 		this.container.add(this.createBackground(scene))
@@ -30,21 +29,21 @@ export default class OurHandRegion extends Region {
 		// Recap button
 		this.btnRecap = new AButtonSmall(this.container,
 			width/2 + 15,
-			height / 3 + 5,
+			Space.handHeight / 3 + 5,
 			'Recap'
 			)
 
 		// Pass button
 		this.btnPass = new AButtonLarge(this.container,
 			width/2 + 15,
-			height * 2 / 3 + 15,
+			Space.handHeight * 2 / 3 + 15,
 			'Pass'
 			)
 
 		// Skip button
 		this.btnSkip = new AButtonSmall(this.container,
 			width/2 + 15,
-			height / 3 + 5,
+			Space.handHeight / 3 + 5,
 			'Skip',
 			() => {
 				that.btnPlay.stopGlow()
@@ -54,7 +53,7 @@ export default class OurHandRegion extends Region {
 		// Play button
 		this.btnPlay = new AButtonLarge(this.container,
 			width/2 + 15,
-			height * 2 / 3 + 15,
+			Space.handHeight * 2 / 3 + 15,
 			'Play'
 			)
 
@@ -78,7 +77,7 @@ export default class OurHandRegion extends Region {
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Polygon {
-		const points = '0 150 30 0 230 0 230 150'
+		const points = `0 ${Space.handHeight} 30 0 230 0 230 ${Space.handHeight}`
 		let background = scene.add.polygon(0, 0, points, Color.background, 1).setOrigin(0)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
