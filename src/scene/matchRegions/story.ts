@@ -24,7 +24,7 @@ export default class StoryRegion extends Region {
 		this.scene = scene
 		this.lastScores = [0, 0]
 
-		this.container = scene.add.container(100 + 140/2, Space.handHeight)
+		this.container = scene.add.container(0, Space.handHeight)
 
 		this.txtScores = scene.add.text(
 			Space.windowWidth - Space.cardWidth - Space.pad, middle, '', Style.announcement
