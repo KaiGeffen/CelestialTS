@@ -55,6 +55,7 @@ export default class BaseScene extends Phaser.Scene {
 		// Sound debug menu
 		this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
 		this.btnDebug.background.setAlpha(0) // TODO
+		this.btnDebug.txt.setAlpha(0)
 
 	    // Error text, for when the user does something wrong they get an explanation
 	    this.txtError = this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)

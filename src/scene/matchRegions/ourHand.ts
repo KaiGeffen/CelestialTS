@@ -37,6 +37,7 @@ export default class OurHandRegion extends Region {
 		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
 		.setOrigin(0)
 		.play(true)
+		.setVisible(false)
 
 		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
 		
