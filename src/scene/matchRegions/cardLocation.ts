@@ -122,7 +122,7 @@ export default class CardLocation {
 		const dx = 60 * (i % cardsPerRow)
 		const x = x0 + dx
 		
-		const extraRows = Math.floor(total / cardsPerRow)
+		const extraRows = Math.floor((total - 1) / cardsPerRow)
 		const y0 = Space.windowHeight/2 - extraRows * (Space.cardHeight + Space.pad)/2
 		const dy = (Space.cardHeight + Space.pad) * Math.floor(i / cardsPerRow)
 		const y = y0 + dy

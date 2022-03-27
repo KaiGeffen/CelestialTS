@@ -3,7 +3,7 @@ import "phaser"
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
-import { Space, Color, Time } from '../../settings/settings'
+import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
@@ -31,7 +31,18 @@ class OverlayRegion extends Region {
 		.setInteractive()
 		.on('pointerdown', () => {that.container.setVisible(false)})
 
-		this.container.add(background)
+		// TODO Hide during mulligan, adjust to pile sizes, text specific to each pile
+		let txtHint = scene.add.text(Space.windowWidth/2,
+			Space.windowHeight/2 - Space.cardHeight/2 - Space.pad,
+			'Click outside to exit',
+			Style.basic).setOrigin(0.5, 1)
+
+		let txtTitle = scene.add.text(Space.windowWidth/2,
+			txtHint.y - Space.pad - txtHint.height,
+			'Your Deck',
+			Style.announcement).setOrigin(0.5, 1)
+
+		this.container.add([background, txtHint, txtTitle])
 
 		return this
 	}
@@ -55,6 +66,7 @@ export class OurDeckOverlay extends OverlayRegion {
 		this.deleteTemp()
 
 		for (let i = 0; i < state.deck.length; i++) {
+
 			this.addOverlayCard(state.deck[i], i, state.deck.length)
 		}
 	}
