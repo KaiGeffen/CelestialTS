@@ -1,20 +1,26 @@
 import "phaser"
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import Button from "../lib/button"
 
 
+
 export default class BaseScene extends Phaser.Scene {
 	confirmationContainer: Phaser.GameObjects.Container
 	rulebookContainer: Phaser.GameObjects.Container
-	sliderVolume: any
-	sliderMusic: any
-	sliderAnimationSpeed: any
+	sliderVolume: RexUIPlugin.Slider
+	sliderMusic: RexUIPlugin.Slider
+	sliderAnimationSpeed: RexUIPlugin.Slider
 	private btnMenu: Button
 	private btnDebug: Button
 
+	// Allows for typing objects in RexUI library
+	rexUI: RexUIPlugin
+
 	// Message explaining to user what they did wrong
-	txtError: Phaser.GameObjects.Text
+	txtError: RexUIPlugin.BBCodeText
 
 	// A menu is closing currently, so the main menu should not open with this esc event
 	static menuClosing: boolean = false
@@ -50,7 +56,7 @@ export default class BaseScene extends Phaser.Scene {
 		this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
 
 	    // Error text, for when the user does something wrong they get an explanation
-	    this.txtError = this.add['rexBBCodeText'](Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
+	    this.txtError = this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
 	    	.setOrigin(0.5)
 	    	.setDepth(50)
 	    	.setVisible(false)
@@ -90,7 +96,7 @@ export default class BaseScene extends Phaser.Scene {
 		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, Color.menuBackground).setAlpha(0.95)
+		let visibleBackground = this.rexUI.add.roundRectangle(Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, Color.menuBackground).setAlpha(0.95)
 		visibleBackground.setInteractive()
 		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 
@@ -100,13 +106,12 @@ export default class BaseScene extends Phaser.Scene {
 
 		let txtVolumeHint = this.add.text(x, y, 'Volume:', Style.announcement).setOrigin(0, 0.5)
 
-		this.sliderVolume = this['rexUI'].add.slider({
+		this.sliderVolume = this.rexUI.add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-			value: this.sound.volume,
 
-            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('volume', value)
@@ -118,6 +123,7 @@ export default class BaseScene extends Phaser.Scene {
             },
             input: 'drag',
         })
+        .setValue(this.sound.volume)
         .setOrigin(0, 0.5)
         .layout()
         
@@ -125,13 +131,12 @@ export default class BaseScene extends Phaser.Scene {
         y += 90
         let txtMusicHint = this.add.text(x, y, 'Music:', Style.announcement).setOrigin(0, 0.5)
 
-		this.sliderMusic = this['rexUI'].add.slider({
+		this.sliderMusic = this.rexUI.add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-			value: UserSettings._get('musicVolume'),
 
-            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('musicVolume', value)
@@ -147,6 +152,7 @@ export default class BaseScene extends Phaser.Scene {
             },
             input: 'drag',
         })
+        .setValue(UserSettings._get('musicVolume'))
         .setOrigin(0, 0.5)
         .layout()
 
@@ -154,13 +160,12 @@ export default class BaseScene extends Phaser.Scene {
         y += 90
         let txtSpeedHint = this.add.text(x, y, 'Speed:', Style.announcement).setOrigin(0, 0.5)
 
-		this.sliderAnimationSpeed = this['rexUI'].add.slider({
+		this.sliderAnimationSpeed = this.rexUI.add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-			value: UserSettings._get('animationSpeed'),
 
-            track: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this['rexUI'].add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
 
             valuechangeCallback: function (value) {
             	UserSettings._set('animationSpeed', value)
@@ -171,6 +176,7 @@ export default class BaseScene extends Phaser.Scene {
             },
             input: 'drag',
         })
+        .setValue(UserSettings._get('animationSpeed'))
         .setOrigin(0, 0.5)
         .layout()
 

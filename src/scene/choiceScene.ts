@@ -37,7 +37,7 @@ Press 'esc' to open the options menu, or click on the ⚙ above.
 
 Check out some of the available starter decks!`
 		// this.add.text(Space.pad, Space.pad, s, Style.catalog)
-		let txt = this['rexUI'].add['textBox']({
+		let txt = this.rexUI.add['textBox']({
 			x: Space.pad,
 			y: Space.pad,
 			text: this.add['rexBBCodeText'](0, 0, '', Style.basic)
