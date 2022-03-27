@@ -84,9 +84,9 @@ export class Network {
 					}
 
 					// TODO Implement mulligan
-					if (state.versionNumber === 0) {
-						that.doMulligan('000')
-					}
+					// if (state.versionNumber === 0) {
+					// 	that.doMulligan('000')
+					// }
 
 					break
 

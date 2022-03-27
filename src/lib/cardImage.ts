@@ -262,6 +262,7 @@ export class CardImage {
     })
   } 
 
+  // TODO Remove, unused
   // Set the quantity of this card that is available for the user
   setQuantity(amt: number, alterText = false): void {
     if (alterText) {

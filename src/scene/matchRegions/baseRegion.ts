@@ -25,6 +25,10 @@ export default class Region {
 		this.container.setVisible(true)
 	}
 
+	hide(): void {
+		this.container.setVisible(false)
+	}
+
 	protected deleteTemp(): void {
 		for (let i = 0; i < this.temp.length; i++) {
 			this.temp[i].destroy()

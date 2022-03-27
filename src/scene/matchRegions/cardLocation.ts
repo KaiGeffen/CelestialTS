@@ -1,3 +1,5 @@
+// Locations for all of the cards on screen based on their region and index
+
 import 'phaser'
 
 import ClientState from '../../lib/clientState'
@@ -114,6 +116,13 @@ export default class CardLocation {
 	static overlay(container: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 60 * i
 		const x = 200 + dx
+		const y = Space.windowHeight/2
+		return [x - container.x, y - container.y]
+	}
+
+	static mulligan(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+		const x0 = Space.windowWidth/2 - Space.cardWidth - Space.pad
+		const x = x0 + i * (Space.cardWidth + Space.pad)
 		const y = Space.windowHeight/2
 		return [x - container.x, y - container.y]
 	}

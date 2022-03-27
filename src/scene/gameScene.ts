@@ -119,7 +119,7 @@ export default class GameScene extends BaseScene {
 	}
 
 	// Set all of the callback functions for the regions in the view
-	private setCallbacks(view, net): void {
+	private setCallbacks(view, net: Network): void {
 		let that = this
 
 		// Hand region
@@ -184,6 +184,16 @@ export default class GameScene extends BaseScene {
 			that.view.theirDiscardOverlay.show()
 		}
 		)
+
+		// Mulligan
+		view.mulligan.setCallback(() => {
+			let s = ''
+			view.mulligan.mulliganChoices.forEach(choice => {
+				s += choice ? '1' : '0'
+			})
+
+			net.doMulligan(s)
+		})
 	}
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
@@ -294,6 +304,9 @@ class View {
 	ourDiscardOverlay: Region
 	theirDiscardOverlay: Region
 
+	// Region shown during mulligan phase
+	mulligan: Region
+
 	// Has the phaser objects
 	// Handles layout, animation
 	// Divided into regions
@@ -322,6 +335,8 @@ class View {
 		this.ourDiscardOverlay = new Regions.OurDiscard().create(scene)
 		this.theirDiscardOverlay = new Regions.TheirDiscard().create(scene)
 
+		this.mulligan = new Regions.Mulligan().create(scene)
+
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
@@ -338,6 +353,18 @@ class View {
 		this.theirDeckOverlay.displayState(state, isRecap)
 		this.ourDiscardOverlay.displayState(state, isRecap)
 		this.theirDiscardOverlay.displayState(state, isRecap)
+
+		// If we haven't completed mulligan, do something different
+		if (state.mulligansComplete[0]) {
+			this.mulligan.hide()
+		}
+		else {
+			this.mulligan.displayState(state, isRecap)
+
+			// Hide the cards in our hand
+			// TODO Bad smell
+			this.ourHand['hideHand']()
+		}
 
 
 		// Play whatever sound this new state brings

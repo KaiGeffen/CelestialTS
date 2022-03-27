@@ -104,6 +104,11 @@ export default class OurHandRegion extends Region {
 		this.animate(state, cardsInHand, isRecap)
 	}
 
+	// Hide the cards in our hand, used when mulligan is visible
+	hideHand(): void {
+		this.deleteTemp()
+	}
+
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
 		let background = scene.add.rectangle(
 			0, 0,
