@@ -24,8 +24,6 @@ export default class TheirHandRegion extends Region {
 		let that = this
 		this.scene = scene
 
-		const height = 150
-
 		// Avatar, status, hand, recap, pass buttons
 
 		this.container = scene.add.container(0, 0).setDepth(1)
@@ -39,9 +37,9 @@ export default class TheirHandRegion extends Region {
 		.play(true)
 		.setVisible(false)
 
-		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
+		let avatar = scene.add.image(6, 6, 'avatar-Jules').setOrigin(0)
 
-		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, height/2, 'icon-Divide')
+		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
 		// TODO Font size as a part of a style
 		const x = divide.x + 80

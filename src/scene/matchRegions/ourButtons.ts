@@ -32,14 +32,14 @@ export default class OurHandRegion extends Region {
 			width/2 + 15,
 			height / 3 + 5,
 			'Recap'
-			).setOrigin(0.5)
+			)
 
 		// Pass button
 		this.btnPass = new AButtonLarge(this.container,
 			width/2 + 15,
 			height * 2 / 3 + 15,
 			'Pass'
-			).setOrigin(0.5)
+			)
 
 		// Skip button
 		this.btnSkip = new AButtonSmall(this.container,
@@ -49,14 +49,14 @@ export default class OurHandRegion extends Region {
 			() => {
 				that.btnPlay.stopGlow()
 			}
-			).setOrigin(0.5)
+			)
 
 		// Play button
 		this.btnPlay = new AButtonLarge(this.container,
 			width/2 + 15,
 			height * 2 / 3 + 15,
 			'Play'
-			).setOrigin(0.5)
+			)
 
 		return this
 	}

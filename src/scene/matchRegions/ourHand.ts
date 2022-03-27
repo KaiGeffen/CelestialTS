@@ -39,7 +39,7 @@ export default class OurHandRegion extends Region {
 		.play(true)
 		.setVisible(false)
 
-		let avatar = scene.add.image(10, 10, 'avatar-Jules').setOrigin(0)
+		let avatar = scene.add.image(6, 6, 'avatar-Jules').setOrigin(0)
 		
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 

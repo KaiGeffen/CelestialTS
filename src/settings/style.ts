@@ -67,10 +67,10 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fixedHeight: Space.cardSize,
     align: 'center'
   },
-  filter: {
-    fontFamily: fontFamily,
-    fontSize: FontSettings.standard.size
-  },
+  // filter: {
+  //   fontFamily: fontFamily,
+  //   fontSize: FontSettings.standard.size
+  // },
   title: {
     fontFamily: fontFamily,
     fontSize: FontSettings.title.size,

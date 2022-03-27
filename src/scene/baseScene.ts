@@ -50,7 +50,7 @@ export default class BaseScene extends Phaser.Scene {
 		addCardInfoToScene(this).setDepth(15)
 
 		// Menu button
-		this.btnOptions = new IButtonOptions(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu).setOrigin(1, 0).setDepth(5)
+		this.btnOptions = new IButtonOptions(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu).setOrigin(1, 0)
 
 		// Sound debug menu
 		this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
