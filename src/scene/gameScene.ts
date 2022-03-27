@@ -17,7 +17,7 @@ import Menu from '../lib/menu'
 import { Animation, Zone } from '../lib/animation'
 // TODO Remove unused
 
-import { OurHandRegion, TheirHandRegion, StoryRegion, OurScoreRegion, TheirScoreRegion, OurButtonsRegion, DecksRegion, DiscardPilesRegion, OurDeckOverlay, TheirDeckOverlay, OurDiscardOverlay, TheirDiscardOverlay } from "./matchRegions/matchRegions"
+import Regions from "./matchRegions/matchRegions"
 import Region from './matchRegions/baseRegion'
 
 
@@ -283,7 +283,7 @@ class View {
 	ourHand: Region
 	ourButtons: Region
 	theirHand: Region
-	story: StoryRegion
+	story: Region
 	ourScore: Region
 	theirScore: Region
 	decks: Region
@@ -306,21 +306,21 @@ class View {
 		// Create each of the regions
 		// this.createOurHand()
 		// new HandRegion()//.create(scene)
-		this.ourHand = new OurHandRegion().create(scene)
-		this.theirHand = new TheirHandRegion().create(scene)
+		this.ourHand = new Regions.OurHand().create(scene)
+		this.theirHand = new Regions.TheirHand().create(scene)
 
-		this.story = new StoryRegion().create(scene)
-		this.ourScore = new OurScoreRegion().create(scene)
-		this.theirScore = new TheirScoreRegion().create(scene)
-		this.ourButtons = new OurButtonsRegion().create(scene)
+		this.story = new Regions.Story().create(scene)
+		this.ourScore = new Regions.OurScore().create(scene)
+		this.theirScore = new Regions.TheirScore().create(scene)
+		this.ourButtons = new Regions.OurButtons().create(scene)
 
-		this.decks = new DecksRegion().create(scene)
-		this.discardPiles = new DiscardPilesRegion().create(scene)
+		this.decks = new Regions.Decks().create(scene)
+		this.discardPiles = new Regions.DiscardPiles().create(scene)
 
-		this.ourDeckOverlay = new OurDeckOverlay().create(scene)
-		this.theirDeckOverlay = new TheirDeckOverlay().create(scene)
-		this.ourDiscardOverlay = new OurDiscardOverlay().create(scene)
-		this.theirDiscardOverlay = new TheirDiscardOverlay().create(scene)
+		this.ourDeckOverlay = new Regions.OurDeck().create(scene)
+		this.theirDeckOverlay = new Regions.TheirDeck().create(scene)
+		this.ourDiscardOverlay = new Regions.OurDiscard().create(scene)
+		this.theirDiscardOverlay = new Regions.TheirDiscard().create(scene)
 
 	}
 

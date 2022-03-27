@@ -8,24 +8,21 @@ import OurButtonsRegion from "./ourButtons"
 import TheirScoreRegion from "./theirScore"
 import { OurDeckOverlay, TheirDeckOverlay, OurDiscardOverlay, TheirDiscardOverlay } from "./pileOverlays"
 
+import MulliganRegion from "./mulliganRegion"
 
-// Export each of the regions within the match scene
+export default class Regions {
+	static OurHand = OurHandRegion
+	static TheirHand = TheirHandRegion
+	static Story = StoryRegion
+	static OurScore = OurScoreRegion
+	static TheirScore = TheirScoreRegion
+	static OurButtons = OurButtonsRegion
+	static Decks = DecksRegion
+	static DiscardPiles = DiscardPilesRegion
+	static OurDeck = OurDeckOverlay
+	static TheirDeck = TheirDeckOverlay
+	static OurDiscard = OurDiscardOverlay
+	static TheirDiscard = TheirDiscardOverlay
 
-// export interface Region {
-	
-// }
-
-export {
-	OurHandRegion,
-	TheirHandRegion,
-	StoryRegion,
-	OurScoreRegion,
-	TheirScoreRegion,
-	OurButtonsRegion,
-	DecksRegion,
-	DiscardPilesRegion,
-	OurDeckOverlay,
-	TheirDeckOverlay,
-	OurDiscardOverlay,
-	TheirDiscardOverlay,
+	static Mulligan = MulliganRegion
 }
