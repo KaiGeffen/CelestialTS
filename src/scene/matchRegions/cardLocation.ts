@@ -34,8 +34,7 @@ export default class CardLocation {
 		const xOffset = dx * i
 		const x = x0 + xOffset
 
-		// y = regionHeight - h/2
-		const y = Space.windowHeight - 150 + Space.cardHeight/2
+		const y = Space.windowHeight - Space.handHeight + Space.cardHeight/2
 
 		return [x - container.x, y - container.y]
 	}
