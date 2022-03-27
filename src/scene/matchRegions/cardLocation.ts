@@ -114,6 +114,7 @@ export default class CardLocation {
 	}
 
 	static overlay(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+		// TODO Center this horizontally, wrap vertically if we hit ~20 cards
 		const dx = 60 * i
 		const x = 200 + dx
 		const y = Space.windowHeight/2

@@ -30,7 +30,6 @@ export default class MulliganRegion extends Region {
 		this.mulliganChoices = [false, false, false]
 
 		this.container = scene.add.container(0, 0)
-		.setDepth(5)
 
 		let txtHint = scene.add.text(Space.windowWidth/2,
 			Space.windowHeight/2 - Space.cardHeight/2 - Space.pad,

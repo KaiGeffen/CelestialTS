@@ -16,11 +16,11 @@ class OverlayRegion extends Region {
 	create (scene: Phaser.Scene): OverlayRegion {
 		this.scene = scene
 
-		this.container = scene.add.container(0, 0).setVisible(false)
+		this.container = scene.add.container(0, 0)
+		.setDepth(0.5)
+		.setVisible(false)
 
 		let that = this
-
-		// Create icons / reminder text
 
 		// Create the background
 		let background = scene.add.rectangle(0, 0,
@@ -30,8 +30,6 @@ class OverlayRegion extends Region {
 		.setOrigin(0)
 		.setInteractive()
 		.on('pointerdown', () => {that.container.setVisible(false)})
-
-		// Add in the cards themselves
 
 		this.container.add(background)
 
