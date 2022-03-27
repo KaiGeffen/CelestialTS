@@ -160,11 +160,9 @@ export default class AdventureScene extends BaseScene {
 		.layout()
 		let panel = fullPanel.getElement('panel')
 
-		this.addAdventureData(panel)
+		this.addAdventureData()
 
 		fullPanel.layout()
-
-		this.panel = fullPanel
 	}
 
 	// Add all of the missions to the panel

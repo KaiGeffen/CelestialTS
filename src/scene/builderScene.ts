@@ -168,19 +168,19 @@ class BuilderSceneShell extends BaseScene {
   // Update the card count and deck button texts
   private updateText(): void {
     if (this.deck.length === Mechanics.deckSize) {
-      this.btnStart.text = 'Start'
-      this.btnStart.input.enabled = true
+      this.btnStart.setText('Start')
+      this.btnStart.enable()
       this.btnStart.glow()
     }
     else
     {
-      this.btnStart.text = `${this.deck.length}/${Mechanics.deckSize}`
+      this.btnStart.setText(`${this.deck.length}/${Mechanics.deckSize}`)
       this.btnStart.stopGlow()
 
       // TODO Grey out the button, have a disable method for button class
       // For debugging, allow sub-15 card decks locally
       if (location.port !== '4949') {
-        this.btnStart.input.enabled = false
+        this.btnStart.disable()
       }
     }
 

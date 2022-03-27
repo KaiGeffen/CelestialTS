@@ -91,6 +91,9 @@ export default class BaseScene extends Phaser.Scene {
 	private createMenu(): void {
 		let that = this
 
+		// Menu container which is toggled visible/not
+		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
+
 		// Invisible background, which closes menu when clicked
 		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
 		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
@@ -201,7 +204,7 @@ export default class BaseScene extends Phaser.Scene {
         // Link to rulebook
         this.rulebookContainer = this.createRulebook()
         y += 90
-        let btnRulebook = new Button(this, x, y, "Read Rulebook", function() {
+        let btnRulebook = new Button(this.confirmationContainer, x, y, "Read Rulebook", function() {
         	this.rulebookContainer.setVisible(true)
 	    	this.sound.play('open')
         })
@@ -214,23 +217,19 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Yes/No buttons
 		y += 80
-		let btnYes = new Button(this, Space.windowWidth/2 - 50, y, 'Yes', this.doExit).setOrigin(1, 0.5)
-		let btnNo = new Button(this, Space.windowWidth/2 + 50, y, 'No', this.closeMenu, false).setOrigin(0, 0.5)
+		let btnYes = new Button(this.confirmationContainer, Space.windowWidth/2 - 50, y, 'Yes', this.doExit).setOrigin(1, 0.5)
+		let btnNo = new Button(this.confirmationContainer, Space.windowWidth/2 + 50, y, 'No', this.closeMenu, false).setOrigin(0, 0.5)
 
 		// Custom rexUI sliders don't work in containers
 		this.sliderVolume.setDepth(21).setVisible(false)
 		this.sliderMusic.setDepth(21).setVisible(false)
 		this.sliderAnimationSpeed.setDepth(21).setVisible(false)
 
-		// Menu container which is toggled visible/not
-		this.confirmationContainer = this.add.container(0, 0).setDepth(20).setVisible(false)
-
 		this.confirmationContainer.add([invisibleBackground, visibleBackground,
 			// txtKeywordHint, radio,
 			txtVolumeHint, txtMusicHint, txtSpeedHint,
 			txtAutopassHint, radioAutopass,
-			btnRulebook,
-			txtExitHint, btnYes, btnNo
+			txtExitHint,
 			])
 	}
 

@@ -70,24 +70,6 @@ export default class HomeScene extends BaseScene {
     super.create()
   }
 
-  private createTutorialPrompt(btnTutorial: Button): void {
-    let menu = new Menu(
-      this,
-      800,
-      200,
-      true,
-      25)
-
-    let txtHint = this.add.text(0, -40, 'Would you like to try the tutorial?', Style.announcement).setOrigin(0.5, 0.5)
-
-    // Yes button exits this menu and opens the tutorial menu
-    let btnYes = new Button(this, -50, 40, 'Yes', () => menu.close()).setOrigin(1, 0.5)
-    btnYes.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
-    let btnNo = new Button(this, 50, 40, 'No', this.doDeckbuilder).setOrigin(0, 0.5)
-
-    menu.add([txtHint, btnYes, btnNo])
-  }
-
   private displayMessage(message: string): void {
     let menu = new Menu(
       this,
@@ -109,7 +91,6 @@ export default class HomeScene extends BaseScene {
     return function() {
       // Guide user to Tutorial if this is their first time here
       if (UserProgress.addAchievement('tutorialKnown')) {
-        that.createTutorialPrompt(btnTutorial)
       }
       else {
         that.doDeckbuilder()

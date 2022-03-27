@@ -165,6 +165,13 @@ export default class Button {
 		return this.isSelected
 	}
 
+	enable() {
+		this.background.input.enabled = true
+	}
+	
+	disable() {
+		this.background.input.enabled = true
+	}
 	private sfxThenDo(f: () => void): () => void {
 		let scene = this.scene
 
@@ -175,6 +182,13 @@ export default class Button {
 			f.call(scene)
 		}
 	}
+
+
+
+
+
+
+
 
 	// Some functions emulating phaser functions
 	setOrigin(...args): Button {
@@ -187,6 +201,31 @@ export default class Button {
 	setVisible(value): Button {
 		this.txt.setVisible(value)
 		this.background.setVisible(value)
+
+		return this
+	}
+
+	setDepth(value): Button {
+		this.txt.setDepth(value)
+		this.background.setDepth(value)
+
+		return this
+	}
+
+	emit(value): Button {
+		this.background.emit(value)
+
+		return this
+	}
+
+	setFontSize(value: number): Button {
+		this.txt.setFontSize(value)
+
+		return this
+	}
+
+	setText(value: string): Button {
+		this.txt.setText(value)
 
 		return this
 	}
