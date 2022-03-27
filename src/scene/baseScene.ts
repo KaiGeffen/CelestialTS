@@ -200,6 +200,12 @@ export default class BaseScene extends Phaser.Scene {
 
 			radioAutopass.setFillStyle((UserSettings._get('autopass')) ? Color.cardHighlight : undefined)
 		})
+
+		this.confirmationContainer.add([invisibleBackground, visibleBackground,
+			// txtKeywordHint, radio,
+			txtVolumeHint, txtMusicHint, txtSpeedHint,
+			txtAutopassHint, radioAutopass,
+			])
         
         // Link to rulebook
         this.rulebookContainer = this.createRulebook()
@@ -214,6 +220,7 @@ export default class BaseScene extends Phaser.Scene {
 		// Prompt asking users if they want to exit
 		y += 90
 		let txtExitHint = this.add.text(x, y, 'Exit to main menu?', Style.announcement).setOrigin(0, 0.5)
+		this.confirmationContainer.add(txtExitHint)
 
 		// Yes/No buttons
 		y += 80
@@ -224,13 +231,6 @@ export default class BaseScene extends Phaser.Scene {
 		this.sliderVolume.setDepth(21).setVisible(false)
 		this.sliderMusic.setDepth(21).setVisible(false)
 		this.sliderAnimationSpeed.setDepth(21).setVisible(false)
-
-		this.confirmationContainer.add([invisibleBackground, visibleBackground,
-			// txtKeywordHint, radio,
-			txtVolumeHint, txtMusicHint, txtSpeedHint,
-			txtAutopassHint, radioAutopass,
-			txtExitHint,
-			])
 	}
 
 	private createRulebook(): any {

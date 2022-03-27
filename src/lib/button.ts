@@ -26,8 +26,8 @@ export default class Button {
 		
 
 		// Create the objects that make up the button
-		this.txt = this.scene.add.text(x, y, text, Style.button)
 		this.background = this.scene.add.image(x, y, 'icon-Button')
+		this.txt = this.scene.add.text(x, y, text, Style.button)
 
 		this.background.setInteractive()
 

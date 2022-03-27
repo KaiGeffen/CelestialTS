@@ -24,8 +24,8 @@ export default class OurHandRegion extends Region {
 
 		this.container = scene.add.container(Space.windowWidth - width, Space.windowHeight - height).setDepth(2)
 
-		// Add background rectangle
-		const background = this.createBackground(scene)
+		// Add the background
+		this.container.add(this.createBackground(scene))
 
 		// Recap button
 		this.btnRecap = new Button(this.container,
@@ -57,11 +57,6 @@ export default class OurHandRegion extends Region {
 			height * 2 / 3 + 20/2,
 			'Play'
 			).setOrigin(0.5)
-
-		// Add each of these objects to container
-		this.container.add([
-			background,
-			])
 
 		return this
 	}
