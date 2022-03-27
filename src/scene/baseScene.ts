@@ -3,7 +3,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
-import Button from "../lib/button"
+import Button from "../lib/button" // TODO Stop using
 import { IButtonOptions } from '../lib/buttons/icon'
 
 
@@ -13,7 +13,7 @@ export default class BaseScene extends Phaser.Scene {
 	sliderVolume: RexUIPlugin.Slider
 	sliderMusic: RexUIPlugin.Slider
 	sliderAnimationSpeed: RexUIPlugin.Slider
-	private btnOptions: IButtonOptions
+	private btnOptions
 	private btnDebug: Button
 
 	// Allows for typing objects in RexUI library
