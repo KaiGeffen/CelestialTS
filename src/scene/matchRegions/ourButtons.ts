@@ -30,21 +30,21 @@ export default class OurHandRegion extends Region {
 		// Recap button
 		this.btnRecap = new Button(this.container,
 			width/2 + 15,
-			height / 3 + 20/2,
+			height / 3 + 5,
 			'Recap'
 			).setOrigin(0.5)
 
 		// Pass button
 		this.btnPass = new Button(this.container,
 			width/2 + 15,
-			height * 2 / 3 + 20/2,
+			height * 2 / 3 + 15,
 			'Pass'
 			).setOrigin(0.5)
 
 		// Skip button
 		this.btnSkip = new Button(this.container,
 			width/2 + 15,
-			height / 3 + 20/2,
+			height / 3 + 5,
 			'Skip',
 			() => {
 				that.btnPlay.stopGlow()
@@ -54,7 +54,7 @@ export default class OurHandRegion extends Region {
 		// Play button
 		this.btnPlay = new Button(this.container,
 			width/2 + 15,
-			height * 2 / 3 + 20/2,
+			height * 2 / 3 + 15,
 			'Play'
 			).setOrigin(0.5)
 
