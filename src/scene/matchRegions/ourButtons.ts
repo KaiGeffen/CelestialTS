@@ -3,7 +3,7 @@ import "phaser"
 import Region from './baseRegion'
 
 import { Space, Color, Time } from '../../settings/settings'
-import Button from '../../lib/button'
+import { AButtonSmall, AButtonLarge } from '../../lib/buttons/backed'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
@@ -11,10 +11,10 @@ import { Animation, Zone } from '../../lib/animation'
 
 
 export default class OurHandRegion extends Region {
-	btnRecap: Button
-	btnPass: Button
-	btnSkip: Button
-	btnPlay: Button
+	btnRecap: AButtonSmall
+	btnPass: AButtonLarge
+	btnSkip: AButtonSmall
+	btnPlay: AButtonLarge
 
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
@@ -28,21 +28,21 @@ export default class OurHandRegion extends Region {
 		this.container.add(this.createBackground(scene))
 
 		// Recap button
-		this.btnRecap = new Button(this.container,
+		this.btnRecap = new AButtonSmall(this.container,
 			width/2 + 15,
 			height / 3 + 5,
 			'Recap'
 			).setOrigin(0.5)
 
 		// Pass button
-		this.btnPass = new Button(this.container,
+		this.btnPass = new AButtonLarge(this.container,
 			width/2 + 15,
 			height * 2 / 3 + 15,
 			'Pass'
 			).setOrigin(0.5)
 
 		// Skip button
-		this.btnSkip = new Button(this.container,
+		this.btnSkip = new AButtonSmall(this.container,
 			width/2 + 15,
 			height / 3 + 5,
 			'Skip',
@@ -52,7 +52,7 @@ export default class OurHandRegion extends Region {
 			).setOrigin(0.5)
 
 		// Play button
-		this.btnPlay = new Button(this.container,
+		this.btnPlay = new AButtonLarge(this.container,
 			width/2 + 15,
 			height * 2 / 3 + 15,
 			'Play'

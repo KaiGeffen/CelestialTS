@@ -142,7 +142,8 @@ export default class PreloadClass extends Phaser.Scene {
 			'Breath', 'Wins',
 			'Divide',
 			'Deck', 'Discard',
-			'Nourish', 'Button',
+			'Nourish', 'Button', // TODO No Button
+			'Button1', 'Button2', 'ButtonA1', 'ButtonA2', 
 		]
 
 		iconNames.forEach( (s) => {
