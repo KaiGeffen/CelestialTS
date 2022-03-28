@@ -1,4 +1,5 @@
 import "phaser"
+import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -29,20 +30,23 @@ export default class MulliganRegion extends Region {
 		this.cards = []
 		this.mulliganChoices = [false, false, false]
 
-		this.container = scene.add.container(0, 0)
+		this.container = scene.add.container(0, 0).setDepth(4)
+
+		// Add the background
+		this.container.add(this.createBackground(scene))
 
 		let txtHint = scene.add.text(Space.windowWidth/2,
-			Space.windowHeight/2 - Space.cardHeight/2 - Space.pad,
+			Space.windowHeight/2 - Space.cardHeight/2 - Space.pad/2,
 			'Click cards to replace',
 			Style.basic).setOrigin(0.5, 1)
 		let txtTitle = scene.add.text(Space.windowWidth/2,
-			txtHint.y - Space.pad - txtHint.height,
+			txtHint.y - Space.pad/2 - txtHint.height,
 			'Starting Hand',
 			Style.announcement).setOrigin(0.5, 1)
 
 		let btn = new SymmetricButtonSmall(this.container,
 			Space.windowWidth/2,
-			Space.windowHeight/2 + Space.cardHeight/2 + Space.pad * 2,
+			Space.windowHeight/2 + Space.cardHeight/2 + Space.pad * 3,
 			'Ready',
 			() => this.onButtonClick())
 		
@@ -73,5 +77,25 @@ export default class MulliganRegion extends Region {
 			that.mulliganChoices[i] = !that.mulliganChoices[i]
 			that.cards[i].setTransparent(that.mulliganChoices[i])
 		}
+	}
+
+	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
+		const points = `0 ${Space.handHeight} 30 0 230 0 230 ${Space.handHeight}`
+		let background = new RoundRectangle(
+			scene, Space.windowWidth/2, Space.windowHeight/2,
+			3 * Space.cardWidth + 4 * Space.pad,
+			Space.cardHeight + 2 * Space.pad + 200,
+			10,
+			Color.background
+			)
+
+		// Add a border around the shape TODO Make a class for this to keep it dry
+        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+        postFxPlugin['add'](background, {
+        	thickness: 1,
+        	outlineColor: Color.border,
+        })
+
+        return background
 	}
 }
