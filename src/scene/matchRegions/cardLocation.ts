@@ -133,7 +133,7 @@ export default class CardLocation {
 		let y = y0 + dy
 		// This is to reposition closer to the center when the title is visible
 		if (extraRows === 0) {
-			y -= titleHeight
+			y -= titleHeight/2
 		}
 		return [x - container.x, y - container.y]
 	}

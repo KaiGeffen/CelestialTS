@@ -35,12 +35,12 @@ export const Space = {
   textAreaHeight: 60,
 
   // These values are experimental and related to the 3/15 gui pass
-  cardWidth: 210,
-  cardHeight: 300,
-  storyXOverlap: 50,
-  storyYOverlap: 100, // If this is more than half of cardHeight, mistake
+  cardWidth: 154,
+  cardHeight: 220,
+  storyXOverlap: 30,
+  storyYOverlap: 70, // If this is more than half of cardHeight, mistake
   // Height of the hand regions
-  handHeight: 180,
+  handHeight: 160,
   // Standard corner width for rounded rectangles
   corner: 10,
 }
