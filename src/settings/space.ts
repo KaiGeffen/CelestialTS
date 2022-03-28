@@ -41,4 +41,6 @@ export const Space = {
   storyYOverlap: 100, // If this is more than half of cardHeight, mistake
   // Height of the hand regions
   handHeight: 180,
+  // Standard corner width for rounded rectangles
+  corner: 10,
 }

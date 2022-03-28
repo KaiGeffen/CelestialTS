@@ -1,4 +1,5 @@
 import "phaser"
+import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -10,10 +11,12 @@ import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 
 
+// This is slightly wrong, because the top hand is smaller than this hand height
 const middle = (Space.windowHeight)/2 - Space.handHeight
 
 export default class StoryRegion extends Region {
 	txtScores: Phaser.GameObjects.Text
+	scoresBackground: RoundRectangle
 
 	lastScores: [number, number]
 
@@ -26,9 +29,13 @@ export default class StoryRegion extends Region {
 
 		this.container = scene.add.container(0, Space.handHeight)
 
+		// Add the background
+		this.scoresBackground = this.createBackground(scene)
+		this.container.add(this.scoresBackground)
+
 		this.txtScores = scene.add.text(
-			Space.windowWidth - Space.cardWidth - Space.pad, middle, '', Style.announcement
-			).setOrigin(1, 0.5)
+			this.scoresBackground.x, middle, '', Style.announcement
+			).setOrigin(0.5)
 		
 		this.container.add([
 			this.txtScores,
@@ -78,9 +85,11 @@ export default class StoryRegion extends Region {
 		// Scores
 		if (isRecap) {
 			this.displayScores(state)
+			this.scoresBackground.setVisible(true)
 		}
 		else {
 			this.txtScores.setText('')
+			this.scoresBackground.setVisible(false)
 		}
 
 		this.animate(state, cards, isRecap)
@@ -89,6 +98,28 @@ export default class StoryRegion extends Region {
 	// Set the callback for when an act in the story is clicked on
 	setCallback(callback: (i: number) => () => void): void {
 		this.callback = callback
+	}
+
+	private createBackground(scene: Phaser.Scene): RoundRectangle {
+		const points = `0 ${Space.handHeight} 30 0 230 0 230 ${Space.handHeight}`
+		let background = new RoundRectangle(
+			scene,
+			Space.windowWidth - Space.cardWidth - Space.pad,
+			middle,
+			50,
+			200,
+			Space.corner,
+			Color.background
+			).setVisible(false)
+
+		// Add a border around the shape TODO Make a class for this to keep it dry
+        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+        postFxPlugin['add'](background, {
+        	thickness: 1,
+        	outlineColor: Color.border,
+        })
+
+        return background
 	}
 
 	// Display the current score totals and change in scores

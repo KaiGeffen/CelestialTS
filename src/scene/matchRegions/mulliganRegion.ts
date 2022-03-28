@@ -85,7 +85,7 @@ export default class MulliganRegion extends Region {
 			scene, Space.windowWidth/2, Space.windowHeight/2,
 			3 * Space.cardWidth + 4 * Space.pad,
 			Space.cardHeight + 2 * Space.pad + 200,
-			10,
+			Space.corner,
 			Color.background
 			)
 
