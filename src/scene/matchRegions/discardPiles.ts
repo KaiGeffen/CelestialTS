@@ -41,7 +41,7 @@ export default class DiscardPilesRegion extends Region {
 
 			card.setOnClick(that.theirCallback)
 
-			this.temp.push()
+			this.temp.push(card)
 		}
 	}
 

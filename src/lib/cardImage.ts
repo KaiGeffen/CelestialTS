@@ -5,8 +5,6 @@ import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
 
-const WIDTH = 140
-const HEIGHT = 200
 
 export var cardInfo: any // BBCodeText
 
@@ -94,12 +92,12 @@ export class CardImage {
     let scene: Phaser.Scene = outerContainer.scene
     // Card image
     this.image = scene.add.image(0, 0, card.name)
-    this.image.setDisplaySize(WIDTH, HEIGHT)
+    this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
     let s = `${card.cost}:${card.points}`
     
-    this.txtStats = scene.add['rexBBCodeText'](-WIDTH/2, -HEIGHT/2, s, BBStyle.cardStats).setOrigin(0)
+    this.txtStats = scene.add['rexBBCodeText'](-Space.cardWidth/2, -Space.cardHeight/2, s, BBStyle.cardStats).setOrigin(0)
     if (card === cardback) {
       this.txtStats.setAlpha(0)
     }

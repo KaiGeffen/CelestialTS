@@ -34,8 +34,7 @@ export default class CardLocation {
 		const xOffset = dx * i
 		const x = x0 + xOffset
 
-		// y = regionHeight - h/2
-		const y = Space.windowHeight - 150 + Space.cardHeight/2
+		const y = Space.windowHeight - Space.handHeight + Space.cardHeight/2
 
 		return [x - container.x, y - container.y]
 	}
@@ -69,15 +68,21 @@ export default class CardLocation {
 
 	static story(state:ClientState, i: number, container: Phaser.GameObjects.Container, owner: number): [number, number] {
 		const x0 = 300
-		const dx = Space.cardWidth - Space.storyOverlap
+		const dx = Space.cardWidth - Space.storyXOverlap
 		const x = x0 + dx * i
-		// TODO Squishing
 
+		// TODO squishing
 		let y
-		if (owner === undefined) {
-			y = Space.windowHeight/2
-		} else {
-			y = owner === 0 ? Space.windowHeight/2 + 80 : Space.windowHeight/2 - 80			
+		switch (owner) {
+			case undefined:
+				y = Space.windowHeight/2
+				break
+			case 0:
+				y = Space.windowHeight/2 + (Space.cardHeight/2 - Space.storyYOverlap)
+				break
+			case 1:
+				y = Space.windowHeight/2 - (Space.cardHeight/2 - Space.storyYOverlap)
+				break
 		}
 
 		return [x - container.x, y - container.y]
@@ -113,7 +118,7 @@ export default class CardLocation {
 		return [x - container.x, y - container.y]
 	}
 
-	static overlay(container: Phaser.GameObjects.Container, i = 0, total: number): [number, number] {
+	static overlay(container: Phaser.GameObjects.Container, i = 0, total: number, titleHeight = 0): [number, number] {
 		const cardsPerRow = 15
 
 		// TODO Center this horizontally, wrap vertically if we hit ~20 cards
@@ -125,7 +130,11 @@ export default class CardLocation {
 		const extraRows = Math.floor((total - 1) / cardsPerRow)
 		const y0 = Space.windowHeight/2 - extraRows * (Space.cardHeight + Space.pad)/2
 		const dy = (Space.cardHeight + Space.pad) * Math.floor(i / cardsPerRow)
-		const y = y0 + dy
+		let y = y0 + dy
+		// This is to reposition closer to the center when the title is visible
+		if (extraRows === 0) {
+			y -= titleHeight/2
+		}
 		return [x - container.x, y - container.y]
 	}
 
