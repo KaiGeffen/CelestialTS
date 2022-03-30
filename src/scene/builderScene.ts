@@ -5,10 +5,13 @@ import { CardImage, cardInfo } from "../lib/cardImage"
 import { Style, Color, UserSettings, UserProgress, Space, Mechanics } from "../settings/settings"
 import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
+
+// TODO Bundle these into a single import
 import Button from "../lib/button"
-import { IButtonX } from '../lib/buttons/icon'
+import { IButtonX, IButtonPremade } from '../lib/buttons/icon'
 import { UButton } from '../lib/buttons/underlined'
 import { TextButton } from '../lib/buttons/text'
+
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
@@ -277,6 +280,19 @@ class DeckRegion extends Phaser.GameObjects.Container {
   // Create the are where player can manipulate their decks
   create(): number {
     let deckPanel = this.createDeckpanel()
+
+    
+
+    // Add the Premade deck button
+    // let btn = new IButtonPremade(this.scene, Space.pad, 140).setOrigin(0, 0.5)
+    // // TODO Open a menu with the 6 characters
+    // deckPanel.getElement('header')['add'](btn.icon).layout()
+
+
+
+    return 245
+
+    
     this.deckPanel = deckPanel
 
     let panel = deckPanel.getElement('panel')
@@ -286,7 +302,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     this.updateOnScroll(panel)
 
     // Add each of the decks
-    this.createDeckButtons(panel)
+    // this.createDeckButtons(panel)
 
     // Add a NEW, DELETE, CODE buttons after this
     this.createNewButton(panel, footer)
@@ -322,21 +338,18 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
     return scene.rexUI.add.scrollablePanel({
       x: 0,
-      y: 10,
+      y: 0,
       width: width,
       height: Space.windowHeight,
 
-      background: scene.add.rectangle(0, 0, width, Space.windowHeight, Color.menuHeader),
+      background: scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background),
 
       panel: {
         child: scene.rexUI.add.fixWidthSizer().addBackground(
-        scene.add.rectangle(0, 0, width, Space.windowHeight, Color.menuBackground)
+        scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
       )},
 
-      header: scene.rexUI.add.label({
-                orientation: 0,
-                text: scene.add.text(0, 0, '  Decks:', Style.announcement),
-            }),
+      header: this.createHeader(),
 
       footer: scene.rexUI.add.fixWidthSizer(),
 
@@ -345,6 +358,27 @@ class DeckRegion extends Phaser.GameObjects.Container {
         bottom: 10,
       }
     }).setOrigin(0).layout()
+  }
+
+  private createHeader(): Phaser.GameObjects.GameObject {
+    let scene = this.scene
+
+    let sizer = scene.rexUI.add.fixWidthSizer({
+      space: {
+          left: Space.pad,
+          right: Space.pad,
+          top: 90,
+          bottom: Space.pad,
+          line: Space.pad,
+          }
+    })
+    // TODO Make this constant and use throughout?
+    let btn = new IButtonPremade(this.scene, Space.pad, 140).setOrigin(0, 0.5)
+    sizer.add(btn.icon)
+    let txtHint = this.scene.add.text(0, 0, 'My Decks:', Style.header)
+    sizer.add(txtHint)
+
+    return sizer.layout()    
   }
 
   // Update the panel when user scrolls with their mouse wheel
@@ -750,7 +784,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
     // Add search field
     let textboxSearch = scene.add['rexInputText'](
-      220, 40, 350, 40, {
+      220, 40, 340, 40, {
       type: 'text',
       text: this.searchText,
       placeholder: 'Search',
@@ -762,7 +796,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       // border: 3,
       // borderColor: '#0005',
       // backgroundColor: "#fff3",
-      maxLength: 30,
+      maxLength: 40,
       selectAll: true,
       id: 'search-field'
     })

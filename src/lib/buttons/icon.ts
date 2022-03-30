@@ -42,3 +42,22 @@ export class IButtonX extends Button {
 		})
 	}
 }
+
+export class IButtonPremade extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Premade',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}

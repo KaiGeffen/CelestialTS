@@ -146,6 +146,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Button1', 'Button2', 'ButtonA1', 'ButtonA2', 
 			'Options', 'X',
 			'Search', 'Underline',
+			'Premade',
 		]
 
 		iconNames.forEach( (s) => {

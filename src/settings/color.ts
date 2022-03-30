@@ -48,7 +48,7 @@ export const Color: Record<string, any> = {
 
   buttonSelected: CoreColors.buttonSelected,
   textboxText: CoreColors.c1,
-
+  header: CoreColors.c1,
 
 
   // Background of the webpage
