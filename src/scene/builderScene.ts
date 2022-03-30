@@ -339,7 +339,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       width: width,
       height: Space.windowHeight,
 
-      background: scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background),
+      background: scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF),
 
       panel: {// TODO Create panel method
         child: scene.rexUI.add.fixWidthSizer({space: {
@@ -348,21 +348,22 @@ class DeckRegion extends Phaser.GameObjects.Container {
                 bottom: Space.pad,
                 line: 10,
               }}).addBackground(
-          scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
+          scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
           )
       },
+      slider: {
+                track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
+                thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
+            },
 
         header: this.createHeader(),
 
         footer: scene.rexUI.add.fixWidthSizer(), // TODO Remove?
 
-        // space: {
-        //   left: Space.pad,
-        //   right: Space.pad,
-        //   top: Space.pad,
-        //   bottom: Space.pad,
-        //   panel: Space.pad,
-        // }
+        space: {
+          right: 10,
+          bottom: Space.pad,
+        }
       }).setOrigin(0)
   }
 
