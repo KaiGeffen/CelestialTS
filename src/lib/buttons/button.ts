@@ -15,11 +15,12 @@ interface Config {
 	icon?: {
 		name: string,
 		interactive: boolean,
+		offset?: number,
 	},
 	callbacks?: {
-		click?: () => {},
-		hover?: () => {},		
-		exit?: () => {},
+		click?: () => void,
+		hover?: () => void,		
+		exit?: () => void,
 	}
 }
 
@@ -60,23 +61,40 @@ export default class Button {
 			// Set interactive
 			if (config.text.interactive) {
 				this.txt.setInteractive()
-				// .on('pointerdown', config.callbacks.click)
-				// .on('pointerover', config.callbacks.hover)
-				// .on('pointerout', config.callbacks.exit)
+				if (config.callbacks) {
+					if (config.callbacks.click) {
+						this.txt.on('pointerdown', config.callbacks.click)
+					}
+					if (config.callbacks.hover) {
+						this.txt.on('pointerover', config.callbacks.hover)
+					}
+					if (config.callbacks.exit) {
+						this.txt.on('pointerout', config.callbacks.exit)
+					}
+				}
 			}
-
 		}
 
 		// Create icon if it exists
 		if (config.icon !== undefined) {
-			this.icon = this.scene.add.image(x, y, `icon-${config.icon.name}`)
+			let offset = config.icon.offset === undefined ? 0 : config.icon.offset
+			this.icon = this.scene.add.image(x, y + offset, `icon-${config.icon.name}`)
 
 			// Set interactive
 			if (config.icon.interactive) {
 				this.icon.setInteractive()
-				// .on('pointerdown', config.callbacks.click)
-				// .on('pointerover', config.callbacks.hover)
-				// .on('pointerout', config.callbacks.exit)
+
+				if (config.callbacks) {
+					if (config.callbacks.click) {
+						this.icon.on('pointerdown', config.callbacks.click)
+					}
+					if (config.callbacks.hover) {
+						this.icon.on('pointerover', config.callbacks.hover)
+					}
+					if (config.callbacks.exit) {
+						this.icon.on('pointerout', config.callbacks.exit)
+					}
+				}
 			}
 		}
 	}
