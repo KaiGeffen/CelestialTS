@@ -47,6 +47,7 @@ export const Color: Record<string, any> = {
   darken: CoreColors.darken,
 
   buttonSelected: CoreColors.buttonSelected,
+  textboxText: CoreColors.c1,
 
 
 

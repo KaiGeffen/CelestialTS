@@ -744,31 +744,32 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     }
     let btnX = new IButtonX(container, 1000, 40, this.onClearFilters(btns))
 
-    return
+    // Add search field
+    let textboxSearch = scene.add['rexInputText'](
+      220, 40, 350, 40, {
+      type: 'text',
+      text: this.searchText,
+      placeholder: 'Search',
+      tooltip: 'Search for cards by text.',
+      fontFamily: 'Mulish',
+      fontSize: '20px',
+      color: Color.textboxText,
+      align: Phaser.Display.Align.BOTTOM_RIGHT,
+      // border: 3,
+      // borderColor: '#0005',
+      // backgroundColor: "#fff3",
+      maxLength: 30,
+      selectAll: true,
+      id: 'search-field'
+    })
+      .on('textchange', function(inputText) {
+        // Filter the visible cards based on the text
+        that.searchText = inputText.text
+        scene.filter()
+      }, scene)
+      .setOrigin(0, 0.5)
 
-    // // Add search field
-    // let textboxSearch = scene.add['rexInputText'](
-    //   0, 0, 350, txtHint.height, {
-    //   type: 'text',
-    //   text: this.searchText,
-    //   placeholder: 'Search',
-    //   tooltip: 'Search for cards by text.',
-    //   fontFamily: 'Mulish',
-    //   fontSize: '60px',
-    //   color: Color.button,
-    //   align: Phaser.Display.Align.BOTTOM_RIGHT,
-    //   border: 3,
-    //   borderColor: '#0005',
-    //   backgroundColor: "#fff3",
-    //   maxLength: 12,
-    //   selectAll: true,
-    //   id: 'search-field'
-    // })
-    //   .on('textchange', function(inputText) {
-    //     // Filter the visible cards based on the text
-    //     that.searchText = inputText.text
-    //     scene.filter()
-    //   }, scene)
+    container.add(textboxSearch)
 
     // header.add(textboxSearch)
     // header.addNewLine()
