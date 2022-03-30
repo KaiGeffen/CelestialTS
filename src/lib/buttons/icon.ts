@@ -124,22 +124,40 @@ class IconButton extends Button {
 
 
 // Exported buttons
-export class IButtonOptions extends IconButton {
+export class IButtonOptions extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
 		f: () => void = function() {},
 		playSound: boolean = true)
 	{
-		super(within, x, y, f, playSound, 'icon-Options')
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Options',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
 	}
 }
 
-export class IButtonX extends IconButton {
+export class IButtonX extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
 		f: () => void = function() {},
 		playSound: boolean = true)
 	{
-		super(within, x, y, f, playSound, 'icon-X')
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'X',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
 	}
 }

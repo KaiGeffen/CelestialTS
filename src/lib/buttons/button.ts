@@ -54,27 +54,6 @@ export default class Button {
 			this.scene = within.scene
 		}
 
-		// Create text if it exists
-		if (config.text !== undefined) {
-			this.txt = this.scene.add.text(x, y, config.text.text, Style.basic).setOrigin(0.5)
-
-			// Set interactive
-			if (config.text.interactive) {
-				this.txt.setInteractive()
-				if (config.callbacks) {
-					if (config.callbacks.click) {
-						this.txt.on('pointerdown', config.callbacks.click)
-					}
-					if (config.callbacks.hover) {
-						this.txt.on('pointerover', config.callbacks.hover)
-					}
-					if (config.callbacks.exit) {
-						this.txt.on('pointerout', config.callbacks.exit)
-					}
-				}
-			}
-		}
-
 		// Create icon if it exists
 		if (config.icon !== undefined) {
 			let offset = config.icon.offset === undefined ? 0 : config.icon.offset
@@ -97,6 +76,55 @@ export default class Button {
 				}
 			}
 		}
+
+		// Create text if it exists
+		if (config.text !== undefined) {
+			this.txt = this.scene.add.text(x, y, config.text.text, Style.basic).setOrigin(0.5)
+
+			// Set interactive
+			if (config.text.interactive) {
+				this.txt.setInteractive()
+				if (config.callbacks) {
+					if (config.callbacks.click) {
+						this.txt.on('pointerdown', config.callbacks.click)
+					}
+					if (config.callbacks.hover) {
+						this.txt.on('pointerover', config.callbacks.hover)
+					}
+					if (config.callbacks.exit) {
+						this.txt.on('pointerout', config.callbacks.exit)
+					}
+				}
+			}
+		}
+
+		// If within a container, add the objects to that container
+		if (within instanceof Phaser.GameObjects.Container) {
+			within.add([this.icon, this.txt])
+		}
+	}
+
+	// Emulating phaser gameobject functions
+	setOrigin(...args): Button {
+		if (this.txt) {
+			this.txt.setOrigin(...args)
+		}
+		if (this.icon) {
+			this.icon.setOrigin(...args)
+		}
+
+		return this
+	}
+
+	setVisible(value): Button {
+		if (this.txt) {
+			this.txt.setVisible(value)
+		}
+		if (this.icon) {
+			this.icon.setVisible(value)
+		}
+
+		return this
 	}
 
 
