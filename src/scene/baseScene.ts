@@ -3,8 +3,9 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
-import Button from "../lib/button" // TODO Stop using
 import { IButtonOptions } from '../lib/buttons/icon'
+import { AButtonLarge } from '../lib/buttons/backed'
+
 
 
 export default class BaseScene extends Phaser.Scene {
@@ -13,8 +14,8 @@ export default class BaseScene extends Phaser.Scene {
 	sliderVolume: RexUIPlugin.Slider
 	sliderMusic: RexUIPlugin.Slider
 	sliderAnimationSpeed: RexUIPlugin.Slider
-	private btnOptions
-	private btnDebug: Button
+	private btnOptions: IButtonOptions
+	private btnDebug // TODO
 
 	// Allows for typing objects in RexUI library
 	rexUI: RexUIPlugin
@@ -50,12 +51,12 @@ export default class BaseScene extends Phaser.Scene {
 		addCardInfoToScene(this).setDepth(15)
 
 		// Menu button
-		this.btnOptions = new IButtonOptions(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu).setOrigin(1, 0)
+		this.btnOptions = new IButtonOptions(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu()).setOrigin(1, 0)
 
 		// Sound debug menu
-		this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
-		this.btnDebug.background.setAlpha(0) // TODO
-		this.btnDebug.txt.setAlpha(0)
+		// this.btnDebug = new Button(this, Space.windowWidth - Space.pad/2, 50, '♫', this.openDebugMenu).setOrigin(1, 0)
+		// this.btnDebug.background.setAlpha(0) // TODO
+		// this.btnDebug.txt.setAlpha(0)
 
 	    // Error text, for when the user does something wrong they get an explanation
 	    this.txtError = this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
@@ -98,7 +99,7 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Invisible background, which closes menu when clicked
 		let invisibleBackground = this.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, 0x000000, 0.2).setOrigin(0, 0)
-		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu, this)
+		invisibleBackground.setInteractive().on('pointerdown', this.closeMenu())
 
 		// Visible background, which does nothing when clicked
 		let visibleBackground = this.rexUI.add.roundRectangle(Space.windowWidth/2, Space.windowHeight/2, 500, 630, 30, Color.menuBackground).setAlpha(0.95)
@@ -212,11 +213,10 @@ export default class BaseScene extends Phaser.Scene {
         // Link to rulebook
         this.rulebookContainer = this.createRulebook()
         y += 90
-        let btnRulebook = new Button(this.confirmationContainer, x, y, "Read Rulebook", function() {
-        	this.rulebookContainer.setVisible(true)
-	    	this.sound.play('open')
+        let btnRulebook = new AButtonLarge(this.confirmationContainer, x, y, "Read Rulebook", function() {
+        	that.rulebookContainer.setVisible(true)
+	    	that.sound.play('open')
         })
-        	// .setStyle(Style.announcement)
         	.setOrigin(0, 0.5)
 
 		// Prompt asking users if they want to exit
@@ -226,8 +226,8 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Yes/No buttons
 		y += 80
-		let btnYes = new Button(this.confirmationContainer, Space.windowWidth/2 - 50, y, 'Yes', this.doExit).setOrigin(1, 0.5)
-		let btnNo = new Button(this.confirmationContainer, Space.windowWidth/2 + 50, y, 'No', this.closeMenu, false).setOrigin(0, 0.5)
+		let btnYes = new AButtonLarge(this.confirmationContainer, Space.windowWidth/2 - 50, y, 'Yes', this.doExit()).setOrigin(1, 0.5)
+		let btnNo = new AButtonLarge(this.confirmationContainer, Space.windowWidth/2 + 50, y, 'No', this.closeMenu()).setOrigin(0, 0.5)
 
 		// Custom rexUI sliders don't work in containers
 		this.sliderVolume.setDepth(21).setVisible(false)
@@ -362,15 +362,19 @@ They do not; you can have both Nourish and Starve at the same time.`
 		}
 	}
 
-	private openMenu(): void {
-      	this.sound.play('open')
+	private openMenu(): () => void {
+		let that = this
 
-      	// this.btnOptions.glow()TODO
+		return function() {
+			that.sound.play('open')
 
-		this.confirmationContainer.setVisible(true)
-		this.sliderVolume.setVisible(true)
-		this.sliderMusic.setVisible(true)
-		this.sliderAnimationSpeed.setVisible(true)
+	      	// that.btnOptions.glow()TODO
+
+			that.confirmationContainer.setVisible(true)
+			that.sliderVolume.setVisible(true)
+			that.sliderMusic.setVisible(true)
+			that.sliderAnimationSpeed.setVisible(true)
+		}
 	}
 
 	private openDebugMenu(): void {
@@ -387,20 +391,28 @@ They do not; you can have both Nourish and Starve at the same time.`
       	// console.log(sound)
 	}
 
-	private closeMenu(): void {
-		this.sound.play('close')
+	private closeMenu(): () => void {
+		let that = this
 
-		// this.btnOptions.stopGlow()TODO
+		return function() {
+			that.sound.play('close')
 
-		this.confirmationContainer.setVisible(false)
-		this.rulebookContainer.setVisible(false)
-		this.sliderVolume.setVisible(false)
-		this.sliderMusic.setVisible(false)
-		this.sliderAnimationSpeed.setVisible(false)
+			// that.btnOptions.stopGlow()TODO
+
+			that.confirmationContainer.setVisible(false)
+			that.rulebookContainer.setVisible(false)
+			that.sliderVolume.setVisible(false)
+			that.sliderMusic.setVisible(false)
+			that.sliderAnimationSpeed.setVisible(false)
+		}
 	}
 
-	private doExit(): void {
-		this.beforeExit()
-		this.scene.start("HomeScene")
+	private doExit(): () => void {
+		let that = this
+
+		return function() {
+			that.beforeExit()
+			that.scene.start("HomeScene")
+		}
 	}
 }

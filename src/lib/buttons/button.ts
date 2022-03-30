@@ -57,7 +57,10 @@ export default class Button {
 		// Create icon if it exists
 		if (config.icon !== undefined) {
 			let offset = config.icon.offset === undefined ? 0 : config.icon.offset
+			
 			this.icon = this.scene.add.image(x, y + offset, `icon-${config.icon.name}`)
+			.on('pointerover', () => this.icon.setTint(Color.buttonHighlight), this)
+			.on('pointerout', () => this.icon.clearTint(), this)
 
 			// Set interactive
 			if (config.icon.interactive) {
@@ -67,9 +70,11 @@ export default class Button {
 					if (config.callbacks.click) {
 						this.icon.on('pointerdown', config.callbacks.click)
 					}
+
 					if (config.callbacks.hover) {
 						this.icon.on('pointerover', config.callbacks.hover)
 					}
+					
 					if (config.callbacks.exit) {
 						this.icon.on('pointerout', config.callbacks.exit)
 					}
@@ -84,6 +89,9 @@ export default class Button {
 			// Set interactive
 			if (config.text.interactive) {
 				this.txt.setInteractive()
+				.on('pointerover', () => this.txt.setTint(Color.buttonHighlight), this)
+				.on('pointerout', () => this.txt.clearTint(), this)
+
 				if (config.callbacks) {
 					if (config.callbacks.click) {
 						this.txt.on('pointerdown', config.callbacks.click)
@@ -126,6 +134,13 @@ export default class Button {
 
 		return this
 	}
+
+
+
+
+	// TODO Remove or change
+	glowUntilClicked() {}
+	stopGlow() {}
 
 
 
