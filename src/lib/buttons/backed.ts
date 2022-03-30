@@ -326,3 +326,27 @@ export class SymmetricButtonLarge extends Button {
 		})
 	}
 }
+
+// TODO Temporary
+export class ButtonCustomDeck extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+		x: number, y: number, text: string,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			// text: {
+			// 	text: text,
+			// 	interactive: false
+			// },
+			icon: {
+				name: 'CustomDeck',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}
