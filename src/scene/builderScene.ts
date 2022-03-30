@@ -57,7 +57,7 @@ class BuilderSceneShell extends BaseScene {
 
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-    this.deckContainer = this.add.container(Space.windowWidth - 150, Space.windowHeight).setDepth(2)
+    this.deckContainer = this.add.container(Space.windowWidth - Space.cardWidth, Space.windowHeight).setDepth(2)
   }
 
   postcreate(): void {    
@@ -201,7 +201,7 @@ class BuilderSceneShell extends BaseScene {
     let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
     let x = index * (Space.cardSize - overlap) + xPad + Space.cardSize/2
 
-    let y = Space.pad/2 + Space.cardSize/2 + (index%2) * Space.stackOffset
+    let y = Space.cardHeight/2 - 60// + (index%2) * Space.stackOffset
 
     return [-x, -y]
   }
@@ -670,7 +670,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       width -= innerWidth % (Space.cardSize + Space.pad)
       this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
 
-      let height = Space.windowHeight - 150
+      let height = Space.windowHeight - (Space.cardHeight - 60 + Space.pad)
 
       this.panel = this.createPanel(x, width, height)
 
@@ -732,7 +732,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
         scrollMode: 0,
 
-        background: scene.rexUI.add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
+        // background: scene.rexUI.add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
 
         panel: {
           child: scene.rexUI.add.fixWidthSizer({
@@ -748,10 +748,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
         },
 
         slider: {
-          input: 'drag',
-          track: scene.rexUI.add.roundRectangle(0, 0, 20, 10, 10, 0xffffff),
-          thumb: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
-        },
+                track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
+                thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
+            },
 
         // mouseWheelScroller: {
           //   focus: false,
@@ -1047,6 +1046,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
       create(): void {
         super.precreate()
+
+        // Add a background image
+        this.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
 
         // Create decks region, return the width
         this.deckRegion = new DeckRegion(this)
