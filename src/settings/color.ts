@@ -31,6 +31,8 @@ const CoreColors: Record<string, any> = {
 
   darken: 0x333333,
 
+  buttonSelected: 0x3C67FF,
+
 
 }
 
@@ -43,6 +45,8 @@ export const Color: Record<string, any> = {
   altText: CoreColors.alts,
   border: CoreColors.c1,
   darken: CoreColors.darken,
+
+  buttonSelected: CoreColors.buttonSelected,
 
 
 

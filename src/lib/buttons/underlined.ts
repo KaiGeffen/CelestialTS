@@ -1,8 +1,12 @@
 import "phaser"
 import Button from './button'
 
+import { Style, Color } from '../../settings/settings'
+
 
 export class UButton extends Button {
+	selected: boolean = false
+
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number, text: string,
 		f: () => void = function() {},
@@ -12,7 +16,8 @@ export class UButton extends Button {
 		{
 			text: {
 				text: text,
-				interactive: true
+				interactive: true,
+				style: Style.filterButton
 			},
 			icon: {
 				name: 'Underline',
@@ -23,5 +28,27 @@ export class UButton extends Button {
 				click: f
 			}
 		})
+
+		// 
+		this.txt.on('pointerdown', () => {this.icon.setTint(0x323278)})
+	}
+
+	// Toggle this button on or off and return its new value
+	toggle(): boolean {
+		this.selected = !this.selected
+
+		if (this.selected) {
+			this.icon.setTint(Color.buttonSelected)
+		}
+		else {
+			this.icon.clearTint()
+		}
+
+		return this.selected
+	}
+
+	toggleOff(): void {
+		this.selected = false
+		this.icon.clearTint()
 	}
 }

@@ -633,7 +633,6 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
     // Add buttons and fields to the header
     this.populateHeader(this.panel.getElement('header'))
-    return
 
     // Update panel when mousewheel scrolls
     let panel = this.panel.getElement('panel')
@@ -672,10 +671,10 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       .setInteractive()
 
     // TODO this.invisBackgroundTop = 
-    scene.add
-      .rectangle(this.panel._x, this.panel.getElement('header').height, Space.windowWidth, Space.cardSize, 0x000000, 0)
-      .setOrigin(0, 1)
-      .setInteractive()
+    // scene.add
+    //   .rectangle(this.panel._x, this.panel.getElement('header').height, Space.windowWidth, Space.cardSize, 0x000000, 0)
+    //   .setOrigin(0, 1)
+    //   .setInteractive()
   }
 
   private createPanel(x, width, height) {
@@ -752,14 +751,15 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     let txtHint = scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5)
     
     // Add the number buttons
+    let btns = []
     for (let i = 0; i <= 7; i++) {
       let s = i === 7 ? '7+' : i.toString()
-      new UButton(scene, 670 + i * 41, 40, s, function() {
-        console.log(i)
-      })
-    }
+      let btn = new UButton(scene, 670 + i * 41, 40, s)
+      btn.setOnClick(that.onClickFilterButton(i, btns))
 
-    let btnX = new IButtonX(scene, 1000, 40)
+      btns.push(btn)
+    }
+    let btnX = new IButtonX(scene, 1000, 40, this.onClearFilters(btns))
     
 
     return
@@ -815,29 +815,33 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     // header.add(btn)
   }
 
-  private onClickFilterButton(i: number, btns: Phaser.GameObjects.Text[]): () => void {
+  private onClickFilterButton(thisI: number, btns: UButton[]): () => void {
     let that = this
 
     return function() {
       // Clear out all buttons
-      that.onClearFilters(btns)()
-
-      // Highlight this one
-      // btns[i].glow(false) TODO
-      btns[i].setTint(141414)
-      that.filterCostAry[i] = true
+      for (let i = 0; i < btns.length; i++) {
+        // Toggle this one, clear all others
+        if (i === thisI) {
+          btns[i].toggle()
+          that.filterCostAry[i] = !that.filterCostAry[i]
+        }
+        else {
+          btns[i].toggleOff()
+          that.filterCostAry[i] = false
+        }
+      }
 
       that.filter()
-    }   
+    }
   }
 
-  private onClearFilters(btns: Phaser.GameObjects.Text[]): () => void {
+  private onClearFilters(btns: UButton[]): () => void {
     let that = this
 
     return function() {
-      btns.forEach( (btn) => btn.clearTint())
-
-      for (var i = 0; i < that.filterCostAry.length; i++) {
+      for (let i = 0; i < btns.length; i++) {
+        btns[i].toggleOff()
         that.filterCostAry[i] = false
       }
 

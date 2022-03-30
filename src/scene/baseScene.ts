@@ -4,7 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import { addCardInfoToScene, cardInfo } from "../lib/cardImage"
 import { IButtonOptions } from '../lib/buttons/icon'
-import { AButtonLarge } from '../lib/buttons/backed'
+import { SymmetricButtonSmall } from '../lib/buttons/backed'
 
 
 
@@ -213,7 +213,7 @@ export default class BaseScene extends Phaser.Scene {
         // Link to rulebook
         this.rulebookContainer = this.createRulebook()
         y += 90
-        let btnRulebook = new AButtonLarge(this.confirmationContainer, x, y, "Read Rulebook", function() {
+        let btnRulebook = new SymmetricButtonSmall(this.confirmationContainer, x, y, "Read Rulebook", function() {
         	that.rulebookContainer.setVisible(true)
 	    	that.sound.play('open')
         })
@@ -226,8 +226,8 @@ export default class BaseScene extends Phaser.Scene {
 
 		// Yes/No buttons
 		y += 80
-		let btnYes = new AButtonLarge(this.confirmationContainer, Space.windowWidth/2 - 50, y, 'Yes', this.doExit()).setOrigin(1, 0.5)
-		let btnNo = new AButtonLarge(this.confirmationContainer, Space.windowWidth/2 + 50, y, 'No', this.closeMenu()).setOrigin(0, 0.5)
+		let btnYes = new SymmetricButtonSmall(this.confirmationContainer, Space.windowWidth/2 - 50, y, 'Yes', this.doExit()).setOrigin(1, 0.5)
+		let btnNo = new SymmetricButtonSmall(this.confirmationContainer, Space.windowWidth/2 + 50, y, 'No', this.closeMenu()).setOrigin(0, 0.5)
 
 		// Custom rexUI sliders don't work in containers
 		this.sliderVolume.setDepth(21).setVisible(false)

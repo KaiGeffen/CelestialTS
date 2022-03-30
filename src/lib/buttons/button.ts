@@ -11,6 +11,7 @@ interface Config {
 	text?: {
 		text: string,
 		interactive: boolean,
+		style?: Phaser.Types.GameObjects.Text.TextStyle
 	},
 	icon?: {
 		name: string,
@@ -84,7 +85,8 @@ export default class Button {
 
 		// Create text if it exists
 		if (config.text !== undefined) {
-			this.txt = this.scene.add.text(x, y, config.text.text, Style.basic).setOrigin(0.5)
+			let style = config.text.style ? config.text.style : Style.button
+			this.txt = this.scene.add.text(x, y, config.text.text, style).setOrigin(0.5)
 
 			// Set interactive
 			if (config.text.interactive) {
@@ -151,7 +153,17 @@ export default class Button {
 
 
 	// TODO
-	setOnClick(f) {}
+	setOnClick(f): Button {
+		if (this.txt) {
+			this.txt.on('pointerdown', f)
+		}
+
+		if (this.icon) {
+			this.icon.on('pointerdown', f)
+		}
+
+		return this
+	}
 	setOnHover(hoverCallback, exitCallback) {} // TODO It might be that each subtype handles this in their own way
 	// For example, maybe the map nodes 'dance' or until exited, but this function doesnt need to be exposed
 
