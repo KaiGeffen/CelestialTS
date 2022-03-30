@@ -27,6 +27,8 @@ const CoreColors: Record<string, any> = {
   c2: 0xAE9E8D,
   c2s: '#ae9e8d',
 
+  alts: '#817467',
+
   darken: 0x333333,
 
 
@@ -38,8 +40,10 @@ export const Color: Record<string, any> = {
   // TODO Trial
   smallText: CoreColors.c2s,
   basicText: CoreColors.c1s,
+  altText: CoreColors.alts,
   border: CoreColors.c1,
   darken: CoreColors.darken,
+
 
 
   // Background of the webpage

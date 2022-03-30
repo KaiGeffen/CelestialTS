@@ -7,6 +7,7 @@ import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 import Button from "../lib/button"
 import { IButtonX } from '../lib/buttons/icon'
+import { UButton } from '../lib/buttons/underlined'
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
@@ -747,10 +748,18 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     let scene = this.scene
 
     let foo = scene.add.image(0, 0, 'icon-Search').setOrigin(0)
-    let txtHint = scene.add.text(660, 40, 'Cost:', Style.builder).setOrigin(1, 0.5)
-    let btnX = new IButtonX(scene, 1000, 40, function() {
-      console.log(foo)
-    }).setDepth(10)
+    let txtHint = scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5)
+    
+    // Add the number buttons
+    for (let i = 0; i <= 7; i++) {
+      let s = i === 7 ? '7+' : i.toString()
+      new UButton(scene, 670 + i * 41, 40, s, function() {
+        console.log(i)
+      })
+    }
+
+    let btnX = new IButtonX(scene, 1000, 40)
+    
 
     return
 

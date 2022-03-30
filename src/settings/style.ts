@@ -29,6 +29,12 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     color: Color.basicText,
     fontStyle: "Bold",
   },
+  // Cost numbers in filter
+  filterButton: {
+    fontFamily: fontFamily,
+    fontSize: '20px',
+    color: Color.altText,
+  },
 
 
   basic: {
