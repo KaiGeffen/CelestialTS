@@ -680,11 +680,12 @@ class CatalogRegion extends Phaser.GameObjects.Container {
   private createPanel(x, width, height) {
     let scene = this.scene
 
+    const y = 70
     return scene.rexUI.add.scrollablePanel({
       x: x,
-      y: 0,
+      y: y,
       width: width,
-      height: height,
+      height: height - y,
 
       scrollMode: 0,
 
@@ -714,25 +715,6 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       //   speed: 1
       // },
 
-      header: scene.rexUI.add.fixWidthSizer({
-        height: 100,
-        align: 'center',
-        space: {
-          left: Space.pad,
-          right: Space.pad,
-          top: Space.pad,
-          bottom: Space.pad,
-          item: Space.pad,
-          line: Space.pad
-        }
-        }).addBackground(
-          scene.rexUI.add.roundRectangle(0, 0, 0, 0,
-            {tl: 0, tr: 16, bl: 0, br: 16},
-            Color.menuHeader),
-          {right: 10, bottom: 10}
-          ),
-      
-
       space: {
         right: 10,
         top: 10,
@@ -746,21 +728,21 @@ class CatalogRegion extends Phaser.GameObjects.Container {
   private populateHeader(header: any): void {
     let that = this
     let scene = this.scene
+    let container = scene.add.container().setDepth(2)
 
-    let foo = scene.add.image(0, 0, 'icon-Search').setOrigin(0)
-    let txtHint = scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5)
+    container.add(scene.add.image(0, 0, 'icon-Search').setOrigin(0).setInteractive())
+    container.add(scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
     
     // Add the number buttons
     let btns = []
     for (let i = 0; i <= 7; i++) {
       let s = i === 7 ? '7+' : i.toString()
-      let btn = new UButton(scene, 670 + i * 41, 40, s)
+      let btn = new UButton(container, 670 + i * 41, 40, s)
       btn.setOnClick(that.onClickFilterButton(i, btns))
 
       btns.push(btn)
     }
-    let btnX = new IButtonX(scene, 1000, 40, this.onClearFilters(btns))
-    
+    let btnX = new IButtonX(container, 1000, 40, this.onClearFilters(btns))
 
     return
 

@@ -110,7 +110,12 @@ export default class Button {
 
 		// If within a container, add the objects to that container
 		if (within instanceof Phaser.GameObjects.Container) {
-			within.add([this.icon, this.txt])
+			if (this.icon) {
+				within.add(this.icon)
+			}
+			if (this.txt) {
+				within.add(this.txt)
+			}
 		}
 	}
 
