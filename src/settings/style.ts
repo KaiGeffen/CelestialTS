@@ -34,6 +34,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: fontFamily,
     fontSize: '20px',
     color: Color.altText,
+    
   },
 
 

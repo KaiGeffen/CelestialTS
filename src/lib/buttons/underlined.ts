@@ -92,19 +92,22 @@ class UnderlinedButton extends Button {
 
 
 // Exported buttons
-export class UButton extends UnderlinedButton {
+export class UButton extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number, text: string,
 		f: () => void = function() {},
 		playSound: boolean = true)
 	{
-		super(within, x, y, text, f, playSound)
-	}
-
-	create(): void {
-		this.setOnClick(() => {
-			console.log('clicked on underline button')
-			this.txt.setTint(Color.basicText)
+		super(within, x, y, 
+		{
+			text: {
+				text: text,
+				interactive: true
+			},
+			icon: {
+				name: 'Underline',
+				interactive: false
+			}
 		})
 	}
 }

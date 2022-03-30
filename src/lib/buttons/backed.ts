@@ -5,7 +5,7 @@ import Button from './button'
 
 
 
-class BackedButton extends Button {
+class BackedButton {
 	scene: Phaser.Scene
 	txt: Phaser.GameObjects.Text
 	background: Phaser.GameObjects.Image
@@ -18,7 +18,7 @@ class BackedButton extends Button {
 		f: () => void = function() {},
 		playSound: boolean = true,
 		imageName: string) {
-		super(within, x, y, text, f, playSound)
+		// super(within, x, y, text, f, playSound)
 		
 		if (within instanceof Phaser.Scene) {
 			this.scene = within
@@ -55,7 +55,7 @@ class BackedButton extends Button {
 	}
 
 	// Set the on click function for this button, removing any previous functions
-	setOnClick(f: () => void, removeListeners = false): Button {
+	setOnClick(f: () => void, removeListeners = false): BackedButton {
 		if (removeListeners) {
       		this.background.removeAllListeners('pointerdown')
       	}
@@ -65,7 +65,7 @@ class BackedButton extends Button {
 		return this
 	}
 
-	setOnHover(f: () => void, fExit: () => void = () => {}): Button {
+	setOnHover(f: () => void, fExit: () => void = () => {}): BackedButton {
 	    this.background.on('pointerover', f)
 	    this.background.on('pointerout', fExit)
 
@@ -73,7 +73,7 @@ class BackedButton extends Button {
 	}
 
 	// Highlight this button
-	highlight(): Button {
+	highlight(): BackedButton {
 		this.stopGlow()
 
 		this.isSelected = true
@@ -88,7 +88,7 @@ class BackedButton extends Button {
 	// Causes the button to glow until stopped, if doAnimate, it will fade in/out
 	outline: Phaser.GameObjects.Text
 	outlineTween: Phaser.Tweens.Tween
-	glow(doAnimate = true): Button {
+	glow(doAnimate = true): BackedButton {
 		// TODO Clarify what a button does and how it displays visually that it's selected, be consistent to that
 		if (!doAnimate) {
 			return this.highlight()
@@ -194,40 +194,40 @@ class BackedButton extends Button {
 
 
 	// Some functions emulating phaser functions
-	setOrigin(...args): Button {
+	setOrigin(...args): BackedButton {
 		// this.txt.setOrigin(...args)
 		// this.background.setOrigin(...args)
 
 		return this
 	}
 
-	setVisible(value): Button {
+	setVisible(value): BackedButton {
 		this.txt.setVisible(value)
 		this.background.setVisible(value)
 
 		return this
 	}
 
-	setDepth(value): Button {
+	setDepth(value): BackedButton {
 		this.txt.setDepth(value)
 		this.background.setDepth(value)
 
 		return this
 	}
 
-	emit(value): Button {
+	emit(value): BackedButton {
 		this.background.emit(value)
 
 		return this
 	}
 
-	setFontSize(value: number): Button {
+	setFontSize(value: number): BackedButton {
 		this.txt.setFontSize(value)
 
 		return this
 	}
 
-	setText(value: string): Button {
+	setText(value: string): BackedButton {
 		this.txt.setText(value)
 
 		return this

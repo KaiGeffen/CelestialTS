@@ -633,6 +633,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
     // Add buttons and fields to the header
     this.populateHeader(this.panel.getElement('header'))
+    return
 
     // Update panel when mousewheel scrolls
     let panel = this.panel.getElement('panel')
