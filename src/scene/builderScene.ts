@@ -8,6 +8,7 @@ import Card from "../lib/card"
 import Button from "../lib/button"
 import { IButtonX } from '../lib/buttons/icon'
 import { UButton } from '../lib/buttons/underlined'
+import { TextButton } from '../lib/buttons/text'
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
@@ -731,9 +732,12 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     let container = scene.add.container().setDepth(2)
 
     container.add(scene.add.image(0, 0, 'icon-Search').setOrigin(0).setInteractive())
-    container.add(scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
     
-    // Add the number buttons
+    let backButton = new TextButton(container, Space.pad, 40, '<   Back', this.scene.doExit()).setOrigin(0, 0.5)
+    
+    // Cost filters
+    container.add(scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
+
     let btns = []
     for (let i = 0; i <= 7; i++) {
       let s = i === 7 ? '7+' : i.toString()

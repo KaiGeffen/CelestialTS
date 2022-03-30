@@ -17,7 +17,7 @@ export class UButton extends Button {
 			text: {
 				text: text,
 				interactive: true,
-				style: Style.filterButton
+				style: Style.textButton
 			},
 			icon: {
 				name: 'Underline',
@@ -28,9 +28,6 @@ export class UButton extends Button {
 				click: f
 			}
 		})
-
-		// 
-		this.txt.on('pointerdown', () => {this.icon.setTint(0x323278)})
 	}
 
 	// Toggle this button on or off and return its new value

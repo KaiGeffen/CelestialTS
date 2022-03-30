@@ -407,7 +407,7 @@ They do not; you can have both Nourish and Starve at the same time.`
 		}
 	}
 
-	private doExit(): () => void {
+	doExit(): () => void {
 		let that = this
 
 		return function() {
