@@ -15,7 +15,8 @@ import ClientState from '../../lib/clientState'
 const middle = (Space.windowHeight)/2 - Space.handHeight
 
 export default class StoryRegion extends Region {
-	txtScores: Phaser.GameObjects.Text
+	txtOurScore: Phaser.GameObjects.Text
+	txtTheirScore: Phaser.GameObjects.Text
 	scoresBackground: RoundRectangle
 
 	lastScores: [number, number]
@@ -33,12 +34,16 @@ export default class StoryRegion extends Region {
 		this.scoresBackground = this.createBackground(scene)
 		this.container.add(this.scoresBackground)
 
-		this.txtScores = scene.add.text(
-			this.scoresBackground.x, middle, '', Style.announcement
+		this.txtOurScore = scene.add.text(
+			this.scoresBackground.x, middle + 50, '', Style.announcement
+			).setOrigin(0.5)
+		this.txtTheirScore = scene.add.text(
+			this.scoresBackground.x, middle - 50, '', Style.announcement
 			).setOrigin(0.5)
 		
 		this.container.add([
-			this.txtScores,
+			this.txtOurScore,
+			this.txtTheirScore,
 			])
 
 		return this
@@ -88,7 +93,8 @@ export default class StoryRegion extends Region {
 			this.scoresBackground.setVisible(true)
 		}
 		else {
-			this.txtScores.setText('')
+			this.txtOurScore.setText('')
+			this.txtTheirScore.setText('')
 			this.scoresBackground.setVisible(false)
 		}
 
@@ -106,7 +112,7 @@ export default class StoryRegion extends Region {
 			scene,
 			Space.windowWidth - Space.cardWidth - Space.pad,
 			middle,
-			50,
+			70,
 			200,
 			Space.corner,
 			Color.background
@@ -131,7 +137,8 @@ export default class StoryRegion extends Region {
 		}
 
 		// Display current total
-		this.txtScores.setText(`${state.score[1]}\n\n${state.score[0]}`)
+		this.txtOurScore.setText(`${state.score[0]}`)
+		this.txtTheirScore.setText(`${state.score[1]}`)
 		this.lastScores = state.score
 	}
 
