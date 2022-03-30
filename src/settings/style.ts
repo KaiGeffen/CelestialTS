@@ -22,6 +22,13 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '16px',
     color: '#B6B9C5',
   },
+  // Cost hint text
+  builder: {
+    fontFamily: fontFamily,
+    fontSize: '18px',
+    color: Color.basicText,
+    fontStyle: "Bold",
+  },
 
 
   basic: {

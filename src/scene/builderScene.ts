@@ -6,6 +6,7 @@ import { Style, Color, UserSettings, UserProgress, Space, Mechanics } from "../s
 import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 import Button from "../lib/button"
+import { IButtonX } from '../lib/buttons/icon'
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import BaseScene from "./baseScene"
@@ -745,57 +746,63 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     let that = this
     let scene = this.scene
 
-    let txtHint = scene.add.text(0, 0, 'Cost:', Style.announcement)
+    let foo = scene.add.image(0, 0, 'icon-Search').setOrigin(0)
+    let txtHint = scene.add.text(660, 40, 'Cost:', Style.builder).setOrigin(1, 0.5)
+    let btnX = new IButtonX(scene, 1000, 40, function() {
+      console.log(foo)
+    }).setDepth(10)
 
-    // Add search field
-    let textboxSearch = scene.add['rexInputText'](
-      0, 0, 350, txtHint.height, {
-      type: 'text',
-      text: this.searchText,
-      placeholder: 'Search',
-      tooltip: 'Search for cards by text.',
-      fontFamily: 'Mulish',
-      fontSize: '60px',
-      color: Color.button,
-      align: Phaser.Display.Align.BOTTOM_RIGHT,
-      border: 3,
-      borderColor: '#0005',
-      backgroundColor: "#fff3",
-      maxLength: 12,
-      selectAll: true,
-      id: 'search-field'
-    })
-      .on('textchange', function(inputText) {
-        // Filter the visible cards based on the text
-        that.searchText = inputText.text
-        scene.filter()
-      }, scene)
+    return
 
-    header.add(textboxSearch)
-    header.addNewLine()
+    // // Add search field
+    // let textboxSearch = scene.add['rexInputText'](
+    //   0, 0, 350, txtHint.height, {
+    //   type: 'text',
+    //   text: this.searchText,
+    //   placeholder: 'Search',
+    //   tooltip: 'Search for cards by text.',
+    //   fontFamily: 'Mulish',
+    //   fontSize: '60px',
+    //   color: Color.button,
+    //   align: Phaser.Display.Align.BOTTOM_RIGHT,
+    //   border: 3,
+    //   borderColor: '#0005',
+    //   backgroundColor: "#fff3",
+    //   maxLength: 12,
+    //   selectAll: true,
+    //   id: 'search-field'
+    // })
+    //   .on('textchange', function(inputText) {
+    //     // Filter the visible cards based on the text
+    //     that.searchText = inputText.text
+    //     scene.filter()
+    //   }, scene)
 
-    // Add a hint
-    header.add(txtHint)
+    // header.add(textboxSearch)
+    // header.addNewLine()
 
-    // Add each of the number buttons and the X button
-    let btns: Phaser.GameObjects.Text[] = []
-    for (var i = 0; i <= maxCostFilter; i++) {
-      this.filterCostAry[i] = false
-      let s = i === maxCostFilter ? `${i}+` : i.toString()
-      let btn = scene.add.text(0, 0, s, Style.filter)
-      .setInteractive()
-      .on('pointerdown', this.onClickFilterButton(i, btns))
-      .setDepth(4)
+    // // Add a hint
+    // header.add(txtHint)
 
-      header.add(btn)
-      btns.push(btn)
-    }
+    // // Add each of the number buttons and the X button
+    // let btns: Phaser.GameObjects.Text[] = []
+    // for (var i = 0; i <= maxCostFilter; i++) {
+    //   this.filterCostAry[i] = false
+    //   let s = i === maxCostFilter ? `${i}+` : i.toString()
+    //   let btn = scene.add.text(0, 0, s, Style.filter)
+    //   .setInteractive()
+    //   .on('pointerdown', this.onClickFilterButton(i, btns))
+    //   .setDepth(4)
 
-    let btn = scene.add.image(0, 0, 'icon-X')
-    .setInteractive()
-    .on('pointerdown', this.onClearFilters(btns))
-    .setDepth(4)
-    header.add(btn)
+    //   header.add(btn)
+    //   btns.push(btn)
+    // }
+
+    // let btn = scene.add.image(0, 0, 'icon-X')
+    // .setInteractive()
+    // .on('pointerdown', this.onClearFilters(btns))
+    // .setDepth(4)
+    // header.add(btn)
   }
 
   private onClickFilterButton(i: number, btns: Phaser.GameObjects.Text[]): () => void {

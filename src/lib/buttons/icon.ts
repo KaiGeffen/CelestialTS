@@ -31,7 +31,6 @@ class IconButton extends Button {
 
 		// Create the objects that make up the button
 		this.icon = this.scene.add.image(x, y, imageName)
-		.setOrigin(1, 0)
 		.setInteractive()
 
 		// Call the function, either with a sound or not
@@ -132,5 +131,15 @@ export class IButtonOptions extends IconButton {
 		playSound: boolean = true)
 	{
 		super(within, x, y, f, playSound, 'icon-Options')
+	}
+}
+
+export class IButtonX extends IconButton {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, f, playSound, 'icon-X')
 	}
 }
