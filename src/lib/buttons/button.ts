@@ -182,6 +182,17 @@ export default class Button {
 		return this
 	}
 
+	setDepth(value: number): Button {
+		if (this.txt !== undefined) {
+			this.txt.setDepth(value)
+		}
+		if (this.icon !== undefined) {
+			this.icon.setDepth(value)
+		}
+
+		return this
+	}
+
 	enable() {}
 	disable() {}
 

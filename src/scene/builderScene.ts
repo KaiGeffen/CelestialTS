@@ -52,9 +52,9 @@ class BuilderSceneShell extends BaseScene {
 
     // Start button - Show how many cards are in deck, and enable user to start if deck is full
     this.btnStart = new SymmetricButtonSmall(this, 
-      Space.windowWidth - 80,
+      Space.windowWidth - 70,
       Space.windowHeight - 80,
-      '')
+      '').setDepth(2)
 
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
@@ -719,17 +719,13 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
       // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
       // their bottom parts, which cannot be seen and are below the scroller
-      // TODO let invisBackgroundBottom = 
+      // TODO Top part
       scene.add
-      .rectangle(this.panel._x, this.panel.height, Space.windowWidth, Space.cardSize, 0x000000, 0)
-      .setOrigin(0)
-      .setInteractive()
-
-      // TODO this.invisBackgroundTop = 
-      // scene.add
-      //   .rectangle(this.panel._x, this.panel.getElement('header').height, Space.windowWidth, Space.cardSize, 0x000000, 0)
-      //   .setOrigin(0, 1)
-      //   .setInteractive()
+        .rectangle(this.panel._x,
+          this.panel.y + this.panel.height,
+          Space.windowWidth, Space.windowHeight, 0x989898, 1)
+        .setOrigin(0)
+        .setInteractive()
     }
 
     private createPanel(x, width, height) {
