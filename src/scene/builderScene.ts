@@ -427,7 +427,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     let name = deck === undefined ? '' : deck['name']
 
     let container = new ContainerLite(this.scene, 0, 0, 200, 50)
-    let btn = new ButtonDecklist(container, 0, 0, 'Anubis ' + i.toString(), () => {}, this.deleteDeck(i, container))
+    let btn = new ButtonDecklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
 
     // // Highlight this deck, if it's selected
     // if (this.savedDeckIndex === i) {
