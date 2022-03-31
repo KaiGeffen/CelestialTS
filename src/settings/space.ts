@@ -10,7 +10,7 @@ let height, width
 //   height = Math.floor(width * (650 / 1100) - 10)
 // }
 width = Math.floor(window.innerWidth)
-height = Math.floor(window.innerHeight)
+height = Math.floor(window.innerHeight) - 10 // TODO Fit better
 console.log(`Screen dimensions: ${width} x ${height}`)
 
 // TODO Most of this needs to change since the gui update

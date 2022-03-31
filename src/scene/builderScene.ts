@@ -343,28 +343,28 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
       panel: {// TODO Create panel method
         child: scene.rexUI.add.fixWidthSizer({space: {
-                left: Space.pad,
-                right: Space.pad,
-                bottom: Space.pad,
-                line: 10,
-              }}).addBackground(
-          scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
-          )
+          left: Space.pad,
+          right: Space.pad,
+          bottom: Space.pad,
+          line: 10,
+        }}).addBackground(
+        scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
+        )
       },
       slider: {
-                track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
-                thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
-            },
+        track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
+        thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
+      },
 
-        header: this.createHeader(),
+      header: this.createHeader(),
 
-        footer: scene.rexUI.add.fixWidthSizer(), // TODO Remove?
+      footer: scene.rexUI.add.fixWidthSizer(), // TODO Remove?
 
-        space: {
-          right: 10,
-          bottom: Space.pad,
-        }
-      }).setOrigin(0)
+      space: {
+        right: 10,
+        bottom: Space.pad,
+      }
+    }).setOrigin(0)
   }
 
   private createHeader(): Phaser.GameObjects.GameObject {
@@ -667,7 +667,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       // Width must be rounded down so as to contain some number of cards tighly
       let occupiedWidth = Space.pad * 2 + 10
       let innerWidth = width - occupiedWidth
-      width -= innerWidth % (Space.cardSize + Space.pad)
+      // width -= innerWidth % (Space.cardSize + Space.pad) TODO
       this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
 
       let height = Space.windowHeight - (Space.cardHeight - 60 + Space.pad)
@@ -748,9 +748,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
         },
 
         slider: {
-                track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
-                thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
-            },
+          track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
+          thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
+        },
 
         // mouseWheelScroller: {
           //   focus: false,
@@ -900,15 +900,6 @@ class DeckRegion extends Phaser.GameObjects.Container {
             cardCount++
 
             cardImage.image.setVisible(true)
-            cardImage.txtStats.setVisible(true)
-
-            // Add the stats text first, size down to overlap with image, resize later
-            sizer.add(cardImage.txtStats, {
-              padding: {
-                left: leftPadding
-              }
-            })
-            cardImage.txtStats.setSize(0, 100)
 
             // Add the image next, with padding between it and the next card
             sizer.add(cardImage.image, {
@@ -1089,6 +1080,16 @@ class DeckRegion extends Phaser.GameObjects.Container {
           let that = this
           // CorrectIndices breaks this TODO
           cardImage.setOnClick(() => {console.log('fooo')})
+
+          // When hovered, move up 100. When exiting, return to old y
+          let y0 = cardImage.container.y
+          cardImage.setOnHover(() => {
+            let y = Space.windowHeight - Space.cardHeight/2 - cardImage.container.parentContainer.y
+            cardImage.container.setY(y)
+          },
+          () => {
+            cardImage.container.setY(y0)
+          })
 
           if (updateSavedDeck) {
             this.updateSavedDeck()
