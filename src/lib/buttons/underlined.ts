@@ -29,11 +29,6 @@ export class UButton extends Button {
 				click: f
 			}
 		})
-
-		console.log('here')
-
-		// this.txt.removeInteractive()
-		// this.txt.setInteractive()
 	}
 
 	// Toggle this button on or off and return its new value

@@ -21,6 +21,7 @@ import BBCodeTextPlugin from 'phaser3-rex-plugins/plugins/bbcodetext-plugin.js'
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js'
 import DissolvePipelinePlugin from 'phaser3-rex-plugins/plugins/dissolvepipeline-plugin.js'
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js'
+import ContainerLitePlugin from 'phaser3-rex-plugins/plugins/containerlite-plugin.js';
 // import UIComponent from 'phaser3-rex-plugins/templates/ui/ui-components.js'
 
 
@@ -79,6 +80,11 @@ const config: Phaser.Types.Core.GameConfig = {
     {
       key: 'rexOutlinePipeline',
       plugin: OutlinePipelinePlugin,
+      start: true
+    },
+    {
+      key: 'rexContainerLitePlugin',
+      plugin: ContainerLitePlugin,
       start: true
     },
     ]

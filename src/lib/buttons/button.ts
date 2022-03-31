@@ -1,3 +1,5 @@
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+
 import { Style, Color } from '../../settings/settings'
 
 
@@ -42,7 +44,7 @@ export default class Button {
 
 	constructor(
 		// The scene or container that this button is located within
-		within: Phaser.Scene | Phaser.GameObjects.Container,
+		within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number,
 		y: number,
 		config: Config,
@@ -52,7 +54,7 @@ export default class Button {
 		if (within instanceof Phaser.Scene) {
 			this.scene = within
 		}
-		else if (within instanceof Phaser.GameObjects.Container) {
+		else if (within instanceof Phaser.GameObjects.Container || within instanceof ContainerLite) {
 			this.scene = within.scene
 		}
 
@@ -91,7 +93,6 @@ export default class Button {
 
 			// Set interactive
 			if (config.text.interactive) {
-				console.log(config.text.hitArea)
 				this.txt.setInteractive(...config.text.hitArea)
 				.on('pointerover', () => this.txt.setTint(Color.buttonHighlight), this)
 				.on('pointerout', () => this.txt.clearTint(), this)
@@ -111,7 +112,7 @@ export default class Button {
 		}
 
 		// If within a container, add the objects to that container
-		if (within instanceof Phaser.GameObjects.Container) {
+		if (within instanceof Phaser.GameObjects.Container || within instanceof ContainerLite) {
 			if (this.icon) {
 				within.add(this.icon)
 			}

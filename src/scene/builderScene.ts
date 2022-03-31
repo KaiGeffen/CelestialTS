@@ -13,6 +13,7 @@ import { IButtonX, IButtonPremade } from '../lib/buttons/icon'
 import { UButton } from '../lib/buttons/underlined'
 import { TextButton } from '../lib/buttons/text'
 import { ButtonCustomDeck } from '../lib/buttons/backed'
+import { ButtonDecklist } from '../lib/buttons/decklist'
 
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
@@ -21,7 +22,7 @@ import PrebuiltDeck from "../catalog/prebuiltDecks"
 
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js'
 import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
-
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 const maxCostFilter: number = 7
 
@@ -460,7 +461,8 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
     // Create the preexisting decks
     for (var i = 0; i < UserSettings._get('decks').length; i++) {
-      let btn = new ButtonCustomDeck(this.scene, 0, 0, 'TODO Unused text')
+      let container = new ContainerLite(this.scene, 0, 0, 200, 50)
+      let btn = new ButtonDecklist(container, 0, 0, 'Anubis')
       // let btn = this.createDeckBtn(i)
 
       // // Highlight this deck, if it's selected
@@ -469,7 +471,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
         //   setTimeout(() => btn.glow(false), 4)
         // }
 
-        panel.add(btn.icon)
+        panel.add(container)
         panel.addNewLine()
       }
     }
@@ -1190,124 +1192,6 @@ class DeckRegion extends Phaser.GameObjects.Container {
           return cardImage.card
         })
         this.scene.start("GameScene", {isTutorial: false, deck: deck})
-      }
-    }
-
-    export class TutorialBuilderScene extends BuilderSceneShell {
-      // Dictionary from tutorial name to the code for the deck the user used for that tutorial
-      tutorialDeckCodes: Record<string, string> = {}
-
-      cardpool: Card[]
-      defaultDeck: string
-      lastScene: string
-      deckDescription: string
-      tutorialName: string
-      opponentDeck: string
-
-      constructor(params) {
-        super({
-          key: "TutorialBuilderScene"
-        })
-
-        if (params !== undefined) {
-          this.init(params)
-        }
-      }
-
-      init(params): void {
-        this.cardpool = params.cardpool
-        this.defaultDeck = params.defaultDeck
-        this.lastScene = params.lastScene
-        this.deckDescription = params.deckDescription
-        this.tutorialName = params.tutorialName
-        this.opponentDeck = params.opponentDeck
-      }
-
-      create(): void {
-        super.precreate()
-
-        // Create decks region, return the width
-        let deckRegion = new DeckRegion(this)
-        let width = deckRegion.create()
-
-        // Create catalog region
-        let catalogRegion = new CatalogRegion(this)
-        catalogRegion.create(width, false)
-
-        // Change the start button to start a match vs ai
-        let that = this
-        this.btnStart.setOnClick(function() {that.startTutorialMatch()}, true)
-
-        this.createDescriptionText()
-
-        // Add a Back button
-        new Button(this,
-          Space.windowWidth - Space.pad,
-          Space.windowHeight - 150,
-          'Back',
-          this.onBack()).setOrigin(1, 0)
-
-        // Add a Reset button
-        new Button(this,
-          Space.windowWidth - Space.pad,
-          Space.windowHeight - 100,
-          'Reset',
-          this.onReset()).setOrigin(1, 0)
-
-        // If the user has made a deck for this tutorial, use it
-        let usersCustomDeck = this.tutorialDeckCodes[this.tutorialName]
-        if (usersCustomDeck !== undefined) {
-          this.setDeck(usersCustomDeck)
-        }
-        else {
-          this.setDeck(this.defaultDeck)
-        }
-
-        super.postcreate()
-      }
-
-      // Filter the cards shown in the catalog based on the existing filter states
-      filter() {
-        // Shouldn't exist in tutorial
-      }
-
-      // Start the game, exit from this scene and move to gameScene
-      private startTutorialMatch(): void {
-        this.beforeExit()
-
-        let deck = this.deck.map(function(cardImage, index, array) {
-          return cardImage.card
-        })
-
-        // TODO Remove
-
-      }
-
-      private createDescriptionText(): void {
-        let s = "Now try winning a full match against a computer opponent.\n\nThe deck provided below "
-        s += this.deckDescription + "\n\n"
-        s += `If you want to make changes, click any of the cards in the
-        deck to remove them, then add cards from the choices above.`
-      }
-
-      private onBack(): () => void {
-        let that = this
-        return function() {
-          that.beforeExit()
-          that.scene.start(that.lastScene)
-        }
-      }
-
-      private onReset(): () => void {
-        let that = this
-        return function() {
-          that.setDeck(that.defaultDeck)
-        }
-      }
-
-      beforeExit(): void {
-        // Save user's current deck to this tutorials custom deck
-        this.tutorialDeckCodes[this.tutorialName] = this.getDeckCode()
       }
     }
 

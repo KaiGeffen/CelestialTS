@@ -1,4 +1,6 @@
 import "phaser"
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+
 import { Space, Style, Color } from '../../settings/settings'
 
 import Button from './button'
@@ -34,6 +36,24 @@ export class IButtonX extends Button {
 		{
 			icon: {
 				name: 'X',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}
+
+export class IButtonSmallX extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		f: () => void = function() {})
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'SmallX',
 				interactive: true
 			},
 			callbacks: {
