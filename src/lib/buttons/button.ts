@@ -11,7 +11,8 @@ interface Config {
 	text?: {
 		text: string,
 		interactive: boolean,
-		style?: Phaser.Types.GameObjects.Text.TextStyle
+		style?: Phaser.Types.GameObjects.Text.TextStyle,
+		hitArea?: any // TODO
 	},
 	icon?: {
 		name: string,
@@ -90,7 +91,8 @@ export default class Button {
 
 			// Set interactive
 			if (config.text.interactive) {
-				this.txt.setInteractive()
+				console.log(config.text.hitArea)
+				this.txt.setInteractive(...config.text.hitArea)
 				.on('pointerover', () => this.txt.setTint(Color.buttonHighlight), this)
 				.on('pointerout', () => this.txt.clearTint(), this)
 

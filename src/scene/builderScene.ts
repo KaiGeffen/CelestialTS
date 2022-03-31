@@ -719,7 +719,14 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
       // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
       // their bottom parts, which cannot be seen and are below the scroller
-      // TODO Top part
+      let invisibleTop = scene.add
+        .rectangle(this.panel._x,
+          this.panel.y + this.panel.height,
+          Space.windowWidth, Space.windowHeight, 0x989898, 1)
+        .setOrigin(0)
+        .setInteractive()
+
+        // TODO Move this to the deck container
       scene.add
         .rectangle(this.panel._x,
           this.panel.y + this.panel.height,

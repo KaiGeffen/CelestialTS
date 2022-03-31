@@ -17,7 +17,8 @@ export class UButton extends Button {
 			text: {
 				text: text,
 				interactive: true,
-				style: Style.textButton
+				style: Style.textButton,
+				hitArea: [new Phaser.Geom.Rectangle(-10, -5, 35, 40), Phaser.Geom.Rectangle.Contains]
 			},
 			icon: {
 				name: 'Underline',
@@ -28,6 +29,11 @@ export class UButton extends Button {
 				click: f
 			}
 		})
+
+		console.log('here')
+
+		// this.txt.removeInteractive()
+		// this.txt.setInteractive()
 	}
 
 	// Toggle this button on or off and return its new value
