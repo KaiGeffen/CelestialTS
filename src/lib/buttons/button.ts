@@ -146,6 +146,7 @@ export default class Button {
 
 
 	// TODO Remove or change
+	glow() {}
 	glowUntilClicked() {}
 	stopGlow() {}
 
@@ -169,8 +170,17 @@ export default class Button {
 
 		return this
 	}
+
 	setOnHover(hoverCallback, exitCallback) {} // TODO It might be that each subtype handles this in their own way
 	// For example, maybe the map nodes 'dance' or until exited, but this function doesnt need to be exposed
+
+	setText(s: string): Button {
+		if (this.txt !== undefined) {
+			this.txt.setText(s)
+		}
+
+		return this
+	}
 
 	enable() {}
 	disable() {}

@@ -7,7 +7,8 @@ import { decodeCard, encodeCard } from "../lib/codec"
 import Card from "../lib/card"
 
 // TODO Bundle these into a single import
-import Button from "../lib/button"
+import Button from '../lib/buttons/button'
+import { SymmetricButtonSmall } from '../lib/buttons/backed'
 import { IButtonX, IButtonPremade } from '../lib/buttons/icon'
 import { UButton } from '../lib/buttons/underlined'
 import { TextButton } from '../lib/buttons/text'
@@ -30,7 +31,7 @@ class BuilderSceneShell extends BaseScene {
   txtHint: Phaser.GameObjects.Text
 
   // Button allowing user to Start, or showing the count of cards in their deck
-  btnStart: Button
+  btnStart: SymmetricButtonSmall
 
   // Deck of cards in user's current deck
   deck: CardImage[] = []
@@ -50,10 +51,10 @@ class BuilderSceneShell extends BaseScene {
     .setOrigin(0.5, 0)
 
     // Start button - Show how many cards are in deck, and enable user to start if deck is full
-    this.btnStart = new Button(this,
-      Space.windowWidth - Space.pad,
-      Space.windowHeight - 50,
-      '').setOrigin(1, 0)
+    this.btnStart = new SymmetricButtonSmall(this, 
+      Space.windowWidth - 80,
+      Space.windowHeight - 80,
+      '')
 
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
@@ -125,6 +126,17 @@ class BuilderSceneShell extends BaseScene {
     .setPosition(this.getDeckCardPosition(index))
     .moveToTopOnHover()
     .setOnClick(this.removeCardFromDeck(index))
+
+    // When hovered, move up to make this visible
+    // When exiting, return to old y
+    let y0 = cardImage.container.y
+    cardImage.setOnHover(() => {
+      let y = Space.windowHeight - Space.cardHeight/2 - cardImage.container.parentContainer.y
+      cardImage.container.setY(y)
+    },
+    () => {
+      cardImage.container.setY(y0)
+    })
 
     // Add this to the deck
     this.deck.push(cardImage)
@@ -1080,16 +1092,6 @@ class DeckRegion extends Phaser.GameObjects.Container {
           let that = this
           // CorrectIndices breaks this TODO
           cardImage.setOnClick(() => {console.log('fooo')})
-
-          // When hovered, move up 100. When exiting, return to old y
-          let y0 = cardImage.container.y
-          cardImage.setOnHover(() => {
-            let y = Space.windowHeight - Space.cardHeight/2 - cardImage.container.parentContainer.y
-            cardImage.container.setY(y)
-          },
-          () => {
-            cardImage.container.setY(y0)
-          })
 
           if (updateSavedDeck) {
             this.updateSavedDeck()
