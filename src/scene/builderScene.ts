@@ -292,23 +292,16 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
   // Create the are where player can manipulate their decks
   create(): number {
-    let deckPanel = this.createDeckpanel()
-
-    
-
-
-
-
-
-
-    
-    this.deckPanel = deckPanel
+    let deckPanel = this.deckPanel = this.createDeckpanel()
 
     let panel = deckPanel.getElement('panel')
     let footer = deckPanel.getElement('footer')
 
     // Update panel when mousewheel scrolls
     this.updateOnScroll(panel)
+
+    // Add a NEW button
+
 
     // Add each of the decks
     this.createDeckButtons(panel)
@@ -392,9 +385,14 @@ class DeckRegion extends Phaser.GameObjects.Container {
         line: Space.pad,
       }
     })
+    
     // TODO Make this constant and use throughout?
-    let btn = new IButtonPremade(this.scene, Space.pad, 140).setOrigin(0, 0.5)
+    let btn = new IButtonPremade(this.scene, 0, 0).setOrigin(0, 0.5)
     sizer.add(btn.icon)
+
+    let line = this.scene.add.line(0, 0, 0, 0, Space.iconSeparation + Space.pad, 0, Color.line)
+    sizer.add(line)
+    
     let txtHint = this.scene.add.text(0, 0, 'My Decks:', Style.header)
     sizer.add(txtHint)
 
@@ -436,7 +434,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     //   setTimeout(() => btn.glow(false), 4)
     // }
 
-    // Set as active, glow and stop others glowing, set the deck
+    // Set as active, select self and deselect other buttons, set the deck
     let that = this
     btn.setOnClick(function() {
       that.deckBtns.forEach(b => {if (b !== btn) b.deselect()})

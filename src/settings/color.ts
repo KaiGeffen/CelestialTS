@@ -57,6 +57,9 @@ export const Color: Record<string, any> = {
   // Outline plugin color
   outline: CoreColors.icon,
 
+  // Lines used throughout ui
+  line: 0xeeeeee,
+
 
   // Background of the webpage
   background: CoreColors.background, //CoreColors.primary,
