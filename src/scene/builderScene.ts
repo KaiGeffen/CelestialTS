@@ -357,7 +357,8 @@ class DeckRegion extends Phaser.GameObjects.Container {
         child: scene.rexUI.add.fixWidthSizer({space: {
           left: Space.pad,
           right: Space.pad,
-          bottom: Space.pad,
+          top: 10,
+          bottom: 10,
           line: 10,
         }}).addBackground(
         scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
@@ -720,7 +721,8 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     // Add each of the cards to the catalog
     let pool = collectibleCards
     for (var i = 0; i < pool.length; i++) {
-      let cardImage = this.addCardToCatalog(pool[i], i)
+      // TODO Switch back to i
+      let cardImage = this.addCardToCatalog(pool[6], i)
 
       this.panel.getElement('panel').add(cardImage.image)
 
@@ -731,12 +733,12 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
     // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
     // their bottom parts, which cannot be seen and are below the scroller
-    let invisibleTop = scene.add
-    .rectangle(this.panel._x,
-      this.panel.y + this.panel.height,
-      Space.windowWidth, Space.windowHeight, 0x989898, 1)
-    .setOrigin(0)
-    .setInteractive()
+    // let invisibleTop = scene.add
+    // .rectangle(this.panel._x,
+    //   this.panel.y + this.panel.height,
+    //   Space.windowWidth, Space.windowHeight, 0x989898, 1)
+    // .setOrigin(0)
+    // .setInteractive()
 
     // TODO Move this to the deck container
     scene.add
@@ -764,7 +766,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
       panel: {
         child: scene.rexUI.add.fixWidthSizer({
           space: {
-            // left: Space.pad,
+            left: Space.pad,
             right: Space.pad - 10,
             top: Space.pad - 10,
             bottom: Space.pad - 10,
@@ -799,7 +801,11 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     let scene = this.scene
     let container = scene.add.container().setDepth(2)
 
-    container.add(scene.add.image(0, 0, 'icon-Search').setOrigin(0).setInteractive())
+    let background = scene.add.image(0, 0, 'icon-Search')
+    .setOrigin(0) // TODO 80 Search height
+    .setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, 80), Phaser.Geom.Rectangle.Contains)
+    
+    container.add(background)
 
     let backButton = new TextButton(container, Space.pad, 40, '<   Back', this.scene.doExit()).setOrigin(0, 0.5)
 
@@ -818,7 +824,7 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
     // Add search field
     let textboxSearch = scene.add['rexInputText'](
-      220, 40, 340, 40, {
+      215, 40, 308, 40, {
         type: 'text',
         text: this.searchText,
         placeholder: 'Search',
@@ -826,10 +832,6 @@ class CatalogRegion extends Phaser.GameObjects.Container {
         fontFamily: 'Mulish',
         fontSize: '20px',
         color: Color.textboxText,
-        align: Phaser.Display.Align.BOTTOM_RIGHT,
-        // border: 3,
-        // borderColor: '#0005',
-        // backgroundColor: "#fff3",
         maxLength: 40,
         selectAll: true,
         id: 'search-field'
