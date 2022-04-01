@@ -114,6 +114,13 @@ export default class Button {
 			}
 		}
 
+		// Set the callbacks separate from the objects
+		if (config.callbacks) {
+			this.onClick = config.callbacks.click
+			this.onHover = config.callbacks.hover
+			this.onExit = config.callbacks.exit
+		}
+
 		// If within a container, add the objects to that container
 		if (within instanceof Phaser.GameObjects.Container || within instanceof ContainerLite) {
 			if (this.icon) {
@@ -161,7 +168,7 @@ export default class Button {
 		
 		return this
 	}
-	
+
 	deselect(): Button {
 		let plugin = this.scene.plugins.get('rexOutlinePipeline')
 		plugin['remove'](this.icon)
@@ -189,6 +196,8 @@ export default class Button {
 
 	// TODO
 	setOnClick(f): Button {
+		this.onClick = f
+		
 		if (this.txt) {
 			this.txt.on('pointerdown', f)
 		}

@@ -1,6 +1,7 @@
 import "phaser"
-import { Space, Style, Color } from '../../settings/settings'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
+import { Space, Style, Color } from '../../settings/settings'
 import Button from './button'
 
 
@@ -97,21 +98,20 @@ export class SymmetricButtonLarge extends Button {
 	}
 }
 
-// TODO Temporary
-export class ButtonCustomDeck extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+export class ButtonNewDeck extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = function() {})
 	{
 		super(within, x, y, 
 		{
-			// text: {
-			// 	text: text,
-			// 	interactive: false
-			// },
+			text: {
+				text: text,
+				style: Style.basic,
+				interactive: false
+			},
 			icon: {
-				name: 'CustomDeck',
+				name: 'CustomDeck', // TODO Temporary, make and use a different icon
 				interactive: true
 			},
 			callbacks: {

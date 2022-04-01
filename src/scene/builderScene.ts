@@ -8,11 +8,10 @@ import Card from "../lib/card"
 
 // TODO Bundle these into a single import
 import Button from '../lib/buttons/button'
-import { SymmetricButtonSmall } from '../lib/buttons/backed'
+import { SymmetricButtonSmall, ButtonNewDeck } from '../lib/buttons/backed'
 import { IButtonX, IButtonPremade } from '../lib/buttons/icon'
 import { UButton } from '../lib/buttons/underlined'
 import { TextButton } from '../lib/buttons/text'
-import { ButtonCustomDeck } from '../lib/buttons/backed'
 import { ButtonDecklist } from '../lib/buttons/decklist'
 
 import Icon from "../lib/icon"
@@ -301,7 +300,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     this.updateOnScroll(panel)
 
     // Add a NEW button
-
+    panel.add(this.createNewButton(panel))
 
     // Add each of the decks
     this.createDeckButtons(panel)
@@ -430,411 +429,412 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
     // // Highlight this deck, if it's selected
     // if (this.savedDeckIndex === i) {
-    //   // So that layout happens correctly
-    //   setTimeout(() => btn.glow(false), 4)
-    // }
+    //     // So that layout happens correctly
+    //     setTimeout(() => btn.select(), 4)
+    //   }
 
-    // Set as active, select self and deselect other buttons, set the deck
-    let that = this
-    btn.setOnClick(function() {
-      that.deckBtns.forEach(b => {if (b !== btn) b.deselect()})
+      // Set as active, select self and deselect other buttons, set the deck
+      let that = this
+      btn.setOnClick(function() {
+        that.deckBtns.forEach(b => {if (b !== btn) b.deselect()})
 
-      // If it's already selected, deselect it
-      if (btn.selected) {
-        that.savedDeckIndex = undefined
-        that.scene.setDeck([])
-        btn.deselect()
-      }
-      // Otherwise select this button
-      else {
-        that.savedDeckIndex = i
-        btn.select()
+        // If it's already selected, deselect it
+        if (btn.selected) {
+          that.savedDeckIndex = undefined
+          that.scene.setDeck([])
+          btn.deselect()
+        }
+        // Otherwise select this button
+        else {
+          that.savedDeckIndex = i
+          btn.select()
 
-        that.scene.setDeck(UserSettings._get('decks')[i]['value'])
-      }
-    })
+          that.scene.setDeck(UserSettings._get('decks')[i]['value'])
+        }
+      })
 
-    this.deckBtns.push(btn)
+      this.deckBtns.push(btn)
 
-    return container
-  }
-
-  // Create a button for each deck that user has created
-  private createDeckButtons(panel) {
-    // Instantiate list of deck buttons
-    this.deckBtns = []
-
-    // Create the preexisting decks
-    for (var i = 0; i < UserSettings._get('decks').length; i++) {
-      panel.add(this.createDeckBtn(i))
+      return container
     }
-  }
 
-  // Create the "New" button which prompts user to make a new deck
-  private createNewButton(panel, footer) {
-    footer.add(
-      new Button(this.scene, 0, 0, 'NEW', function() {
+    // Create a button for each deck that user has created
+    private createDeckButtons(panel) {
+      // Instantiate list of deck buttons
+      this.deckBtns = []
 
-        let maxDecks = 20
+      // Create the preexisting decks
+      for (var i = 0; i < UserSettings._get('decks').length; i++) {
+        panel.add(this.createDeckBtn(i))
+      }
+    }
+
+    // Create the "New" button which prompts user to make a new deck
+    private createNewButton(panel): ContainerLite {
+      let that = this
+      let scene = this.scene
+      let f = function() {
+        const maxDecks = 20
 
         // If user already has 9 decks, signal error instead
         if (UserSettings._get('decks').length >= maxDecks) {
-          this.signalError(`Reached max number of decks (${maxDecks}).`)
+          scene.signalError(`Reached max number of decks (${maxDecks}).`)
         }
         else {
+          // Open up a new deck menu to input the deck's name
+          // that.createNewDeckMenu(newBtn, panel)
+          // TODO
+          UserSettings._push('decks', {name: 'fooo', value: scene.getDeckCode()})
+
           // Create a new button
-          let newBtn = this.createDeckBtn(this.deckBtns.length).setOrigin(0, 0.5)
+          let newBtn = that.createDeckBtn(that.deckBtns.length)
+          panel.add(newBtn)
+          that.deckPanel.layout()
 
-          // Add the button, followed by a new line
-          panel.add(newBtn).addNewLine()
+          // Select that deck
+          let index = that.deckBtns.length - 1
+          console.log(that.deckBtns[index].onClick())
 
-          this.deckPanel.layout()
+          // TODO Deselect other decks
 
           // Scroll down to show the new deck
-          this.deckPanel.t = 1
-
-          // Open up a new deck menu to input the deck's name
-          this.createNewDeckMenu(newBtn, panel)
+          that.deckPanel.t = 1
+          
         }
-      }).txt)
-  }
-
-  // Callback for deleting deck with given index
-  private deleteDeck(i: number, container: ContainerLite): () => void {
-    let that = this
-
-    return function() {
-      UserSettings._pop('decks', i)
-
-      that.savedDeckIndex = undefined
-      that.scene.setDeck([])
-
-      container.destroy()
-      that.deckPanel.layout()
-    }
-  }
-  
-  // Create the "Delete" button which deletes the currently selected deck
-  private createDeleteButton(panel, footer) {
-    footer.add(
-      new Button(this.scene, 0, 0, 'DELETE', function() {
-        if (this.savedDeckIndex === undefined) {
-          this.signalError('No deck selected')
-        } else {
-          UserSettings._pop('decks', this.savedDeckIndex)
-
-          this.savedDeckIndex = undefined
-          this.setDeck([])
-
-          panel.destroy()
-          this.deckPanel.destroy()
-          this.create()
-        }
-      }).txt)
-  }
-
-  // Create the "Code" button which prompts user to copy/paste a deck-code
-  private createCodeButton(panel, footer) {
-    let that = this
-    footer.add(
-      new Button(this.scene, 0, 0, 'CODE', function() {
-        that.createNewCodeMenu()
-      }).txt)
-  }
-
-  // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
-  private createNewDeckMenu(btn: Button, panel): void {
-    let scene = this.scene
-    let height = 250
-
-    let menu = new Menu(
-      scene,
-      450,
-      height,
-      true,
-      20)
-
-    let txtTitle = scene.add.text(0, -height/2, 'Deck Name:', Style.announcement).setOrigin(0.5, 0)
-    menu.add(txtTitle)
-
-    let textArea = scene.add['rexInputText'](
-      0, 0, 350, Space.textAreaHeight, {
-        type: 'text',
-        text: '',
-        placeholder: 'Name',
-        tooltip: 'The name for your new deck.',
-        fontFamily: 'Mulish',
-        fontSize: '60px',
-        color: Color.button,
-        align: Phaser.Display.Align.BOTTOM_RIGHT,
-        border: 3,
-        borderColor: '#000',
-        backgroundColor: Color.textAreaBackground,
-        maxLength: 8,
-        selectAll: true,
-        id: 'search-field'
-      })
-    .on('textchange', function(inputText) {
-      btn.setText(inputText.text)
-    }, scene)
-    menu.add(textArea)
-
-    // When menu is exited, add the deck to saved decks
-    let that = this
-    menu.setOnClose(function() {
-      let name = textArea.text
-
-      // If name is not empty, add it to the list of decks
-      if (name !== '') {
-        UserSettings._push('decks', {name: name, value: scene.getDeckCode()})
-        btn.emit('pointerdown')
-      } else {
-        // Destroy the panel and recreate it
-        // NOTE Panel is the sizer containing the deck buttons
-        panel.destroy()
-        that.deckPanel.destroy()
-        that.create()
       }
 
-      menu.destroy()
-    })
-  }
+      // TODO Width and height constants
+      let container = new ContainerLite(this.scene, 0, 0, 200, 50)
 
-  // Create a new code menu which shows the current decks code, and allows for pasting in a new code
-  private createNewCodeMenu(): void {
-    let scene = this.scene
-    let that = this
-    let height = 250
-    let width = 600
+      let btn = new ButtonNewDeck(container, 0, 0, 'New Deck', f)
 
-    let menu = new Menu(
-      scene,
-      width,
-      height,
-      true,
-      20)
-
-    let txtTitle = scene.add.text(0, -height / 2, 'Deck Code:', Style.announcement).setOrigin(0.5, 0)
-    menu.add(txtTitle)
-
-    let textArea = scene.add['rexInputText'](
-      0, 0, width - Space.pad * 2, Space.textAreaHeight, {
-        type: 'text',
-        text: scene.getDeckCode(),
-        placeholder: '',
-        tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
-        fontFamily: 'Mulish',
-        fontSize: '60px',
-        color: Color.button,
-        align: Phaser.Display.Align.BOTTOM_RIGHT,
-        border: 3,
-        borderColor: '#000',
-        backgroundColor: Color.textAreaBackground,
-        maxLength: 4 * Mechanics.deckSize,
-        selectAll: true,
-        id: 'search-field'
-      })
-    .on('textchange', function(inputText) {
-      scene.setDeck(inputText.text)
-    })
-    menu.add(textArea)
-
-    // When menu is exited, destroy this menu
-    menu.setOnClose(function() {
-      if (!scene.setDeck(textArea.text)) {
-        scene.signalError('Deck code invalid.')
-      }
-      menu.destroy()
-    })
-  }
-}
-
-// Region in builder scene where filters and selectable cards live
-class CatalogRegion extends Phaser.GameObjects.Container {  
-  // Overwrite the 'scene' property of container to specifically be a BuilderScene
-  scene: BuilderSceneShell
-
-  // The scrollable panel on which the catalog and filters are displayed
-  panel
-
-  // Full list of all cards in the catalog (Even those invisible)
-  cardCatalog: CardImage[]
-
-  // How many cards fit on each row in the catalog
-  cardsPerRow: number
-
-  // The costs and string that cards in the catalog are filtered for
-  filterCostAry: boolean[] = []
-  searchText: string = ""
-  filterUnowned: boolean
-
-  // Create this region, offset by the given width
-  create(xOffset: number, filterUnowned) {
-    this.cardCatalog = []
-    this.filterUnowned = filterUnowned
-
-    this.createCatalog(xOffset)
-
-    // Create filters
-    this.filter()
-  }
-
-  private createCatalog(x: number): void {
-    let that = this
-    let scene = this.scene
-
-    // let width = Space.cardSize * 8 + Space.pad * 10 + 10
-    // let height = Space.cardSize * 4 + Space.pad * 5
-    // TODO Explain the 100 & 150
-    let width = Space.windowWidth - x
-    // Width must be rounded down so as to contain some number of cards tighly
-    let occupiedWidth = Space.pad * 2 + 10
-    let innerWidth = width - occupiedWidth
-    // width -= innerWidth % (Space.cardSize + Space.pad) TODO
-    this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
-
-    let height = Space.windowHeight - (Space.cardHeight - 60 + Space.pad)
-
-    this.panel = this.createPanel(x, width, height)
-
-    // Add buttons and fields to the header
-    this.populateHeader(this.panel.getElement('header'))
-
-    // Update panel when mousewheel scrolls
-    let panel = this.panel.getElement('panel')
-    scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-      // Return if the pointer is outside of the panel
-      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
-        return
-      }
-
-      // Scroll panel down by amount wheel moved
-      that.panel.childOY -= dy
-
-      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-      that.panel.t = Math.max(0, that.panel.t)
-      that.panel.t = Math.min(0.999999, that.panel.t)
-    })
-
-    // Add each of the cards to the catalog
-    let pool = collectibleCards
-    for (var i = 0; i < pool.length; i++) {
-      // TODO Switch back to i
-      let cardImage = this.addCardToCatalog(pool[6], i)
-
-      this.panel.getElement('panel').add(cardImage.image)
-
-      cardImage.setScrollable(height, 10)
+      return container
     }
 
-    this.panel.layout()
+    // Callback for deleting deck with given index
+    private deleteDeck(i: number, container: ContainerLite): () => void {
+      let that = this
 
-    // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
-    // their bottom parts, which cannot be seen and are below the scroller
-    // TODO Move this to the deck container
-    scene.add
-    .rectangle(this.panel._x,
-      this.panel.y + this.panel.height,
-      Space.windowWidth, Space.windowHeight, 0x989898, 1)
-    .setOrigin(0)
-    .setInteractive()
-  }
+      return function() {
+        // Adjusted the saved user data
+        UserSettings._pop('decks', i)
 
-  private createPanel(x, width, height) {
-    let scene = this.scene
+        // Adjust values stored in this deck region
+        that.deckBtns.splice(i)
+        that.savedDeckIndex = undefined
+        that.scene.setDeck([])
 
-    const y = 70
-    return scene.rexUI.add.scrollablePanel({
-      x: x,
-      y: y,
-      width: width,
-      height: height - y,
+        // Destroy the object itself
+        container.destroy()
 
-      scrollMode: 0,
+        // Format panel, then ensure we aren't below the panel
+        that.deckPanel.layout()
+        that.deckPanel.t = Math.min(1, that.deckPanel.t)
+      }
+    }
 
-      // background: scene.rexUI.add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
+    // Create the "Code" button which prompts user to copy/paste a deck-code
+    private createCodeButton(panel, footer) {
+      let that = this
+      footer.add(
+        new Button(this.scene, 0, 0, 'CODE', function() {
+          that.createNewCodeMenu()
+        }).txt)
+    }
 
-      panel: {
-        child: scene.rexUI.add.fixWidthSizer({
-          space: {
-            left: Space.pad,
-            right: Space.pad - 10,
-            top: Space.pad - 10,
-            bottom: Space.pad - 10,
-            // item: Space.pad,
-            line: Space.pad,
-          }
+    // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
+    private createNewDeckMenu(btn: Button, panel): void {
+      let scene = this.scene
+      let height = 250
+
+      let menu = new Menu(
+        scene,
+        450,
+        height,
+        true,
+        20)
+
+      let txtTitle = scene.add.text(0, -height/2, 'Deck Name:', Style.announcement).setOrigin(0.5, 0)
+      menu.add(txtTitle)
+
+      let textArea = scene.add['rexInputText'](
+        0, 0, 350, Space.textAreaHeight, {
+          type: 'text',
+          text: '',
+          placeholder: 'Name',
+          tooltip: 'The name for your new deck.',
+          fontFamily: 'Mulish',
+          fontSize: '60px',
+          color: Color.button,
+          align: Phaser.Display.Align.BOTTOM_RIGHT,
+          border: 3,
+          borderColor: '#000',
+          backgroundColor: Color.textAreaBackground,
+          maxLength: 8,
+          selectAll: true,
+          id: 'search-field'
         })
-      },
+      .on('textchange', function(inputText) {
+        btn.setText(inputText.text)
+      }, scene)
+      menu.add(textArea)
 
-      slider: {
-        track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
-        thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
-      },
+      // When menu is exited, add the deck to saved decks
+      let that = this
+      menu.setOnClose(function() {
+        let name = textArea.text
 
-      // mouseWheelScroller: {
-        //   focus: false,
-        //   speed: 1
-        // },
-
-        space: {
-          right: 10,
-          top: 10,
-          bottom: 10,
+        // If name is not empty, add it to the list of decks
+        if (name !== '') {
+          UserSettings._push('decks', {name: name, value: scene.getDeckCode()})
+          btn.emit('pointerdown')
+        } else {
+          // Destroy the panel and recreate it
+          // NOTE Panel is the sizer containing the deck buttons
+          panel.destroy()
+          that.deckPanel.destroy()
+          that.create()
         }
-      }).setOrigin(0)
-    .layout()
+
+        menu.destroy()
+      })
+    }
+
+    // Create a new code menu which shows the current decks code, and allows for pasting in a new code
+    private createNewCodeMenu(): void {
+      let scene = this.scene
+      let that = this
+      let height = 250
+      let width = 600
+
+      let menu = new Menu(
+        scene,
+        width,
+        height,
+        true,
+        20)
+
+      let txtTitle = scene.add.text(0, -height / 2, 'Deck Code:', Style.announcement).setOrigin(0.5, 0)
+      menu.add(txtTitle)
+
+      let textArea = scene.add['rexInputText'](
+        0, 0, width - Space.pad * 2, Space.textAreaHeight, {
+          type: 'text',
+          text: scene.getDeckCode(),
+          placeholder: '',
+          tooltip: "Copy the code for your current deck, or paste in another deck's code to create that deck.",
+          fontFamily: 'Mulish',
+          fontSize: '60px',
+          color: Color.button,
+          align: Phaser.Display.Align.BOTTOM_RIGHT,
+          border: 3,
+          borderColor: '#000',
+          backgroundColor: Color.textAreaBackground,
+          maxLength: 4 * Mechanics.deckSize,
+          selectAll: true,
+          id: 'search-field'
+        })
+      .on('textchange', function(inputText) {
+        scene.setDeck(inputText.text)
+      })
+      menu.add(textArea)
+
+      // When menu is exited, destroy this menu
+      menu.setOnClose(function() {
+        if (!scene.setDeck(textArea.text)) {
+          scene.signalError('Deck code invalid.')
+        }
+        menu.destroy()
+      })
+    }
   }
 
-  // Populate the catalog header with filter buttons, text, fields
-  private populateHeader(header: any): void {
-    let that = this
-    let scene = this.scene
-    let container = scene.add.container().setDepth(2)
+  // Region in builder scene where filters and selectable cards live
+  class CatalogRegion extends Phaser.GameObjects.Container {  
+    // Overwrite the 'scene' property of container to specifically be a BuilderScene
+    scene: BuilderSceneShell
 
-    let background = scene.add.image(0, 0, 'icon-Search')
-    .setOrigin(0) // TODO 80 Search height
-    .setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, 80), Phaser.Geom.Rectangle.Contains)
-    
-    container.add(background)
+    // The scrollable panel on which the catalog and filters are displayed
+    panel
 
-    let backButton = new TextButton(container, Space.pad, 40, '<   Back', this.scene.doExit()).setOrigin(0, 0.5)
+    // Full list of all cards in the catalog (Even those invisible)
+    cardCatalog: CardImage[]
 
-    // Cost filters
-    container.add(scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
+    // How many cards fit on each row in the catalog
+    cardsPerRow: number
 
-    let btns = []
-    for (let i = 0; i <= 7; i++) {
-      let s = i === 7 ? '7+' : i.toString()
-      let btn = new UButton(container, 670 + i * 41, 40, s)
-      btn.setOnClick(that.onClickFilterButton(i, btns))
+    // The costs and string that cards in the catalog are filtered for
+    filterCostAry: boolean[] = []
+    searchText: string = ""
+    filterUnowned: boolean
 
-      btns.push(btn)
+    // Create this region, offset by the given width
+    create(xOffset: number, filterUnowned) {
+      this.cardCatalog = []
+      this.filterUnowned = filterUnowned
+
+      this.createCatalog(xOffset)
+
+      // Create filters
+      this.filter()
     }
-    let btnX = new IButtonX(container, 1000, 40, this.onClearFilters(btns))
 
-    // Add search field
-    let textboxSearch = scene.add['rexInputText'](
-      215, 40, 308, 40, {
-        type: 'text',
-        text: this.searchText,
-        placeholder: 'Search',
-        tooltip: 'Search for cards by text.',
-        fontFamily: 'Mulish',
-        fontSize: '20px',
-        color: Color.textboxText,
-        maxLength: 40,
-        selectAll: true,
-        id: 'search-field'
+    private createCatalog(x: number): void {
+      let that = this
+      let scene = this.scene
+
+      // let width = Space.cardSize * 8 + Space.pad * 10 + 10
+      // let height = Space.cardSize * 4 + Space.pad * 5
+      // TODO Explain the 100 & 150
+      let width = Space.windowWidth - x
+      // Width must be rounded down so as to contain some number of cards tighly
+      let occupiedWidth = Space.pad * 2 + 10
+      let innerWidth = width - occupiedWidth
+      // width -= innerWidth % (Space.cardSize + Space.pad) TODO
+      this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
+
+      let height = Space.windowHeight - (Space.cardHeight - 60 + Space.pad)
+
+      this.panel = this.createPanel(x, width, height)
+
+      // Add buttons and fields to the header
+      this.populateHeader(this.panel.getElement('header'))
+
+      // Update panel when mousewheel scrolls
+      let panel = this.panel.getElement('panel')
+      scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+        // Return if the pointer is outside of the panel
+        if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+          return
+        }
+
+        // Scroll panel down by amount wheel moved
+        that.panel.childOY -= dy
+
+        // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+        that.panel.t = Math.max(0, that.panel.t)
+        that.panel.t = Math.min(0.999999, that.panel.t)
       })
-    .on('textchange', function(inputText) {
-      // Filter the visible cards based on the text
-      that.searchText = inputText.text
-      scene.filter()
-    }, scene)
-    .setOrigin(0, 0.5)
 
-    container.add(textboxSearch)
+      // Add each of the cards to the catalog
+      let pool = collectibleCards
+      for (var i = 0; i < pool.length; i++) {
+        // TODO Switch back to i
+        let cardImage = this.addCardToCatalog(pool[6], i)
+
+        this.panel.getElement('panel').add(cardImage.image)
+
+        cardImage.setScrollable(height, 10)
+      }
+
+      this.panel.layout()
+
+      // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
+      // their bottom parts, which cannot be seen and are below the scroller
+      // TODO Move this to the deck container
+      scene.add
+      .rectangle(this.panel._x,
+        this.panel.y + this.panel.height,
+        Space.windowWidth, Space.windowHeight, 0x989898, 1)
+      .setOrigin(0)
+      .setInteractive()
+    }
+
+    private createPanel(x, width, height) {
+      let scene = this.scene
+
+      const y = 70
+      return scene.rexUI.add.scrollablePanel({
+        x: x,
+        y: y,
+        width: width,
+        height: height - y,
+
+        scrollMode: 0,
+
+        // background: scene.rexUI.add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
+
+        panel: {
+          child: scene.rexUI.add.fixWidthSizer({
+            space: {
+              left: Space.pad,
+              right: Space.pad - 10,
+              top: Space.pad - 10,
+              bottom: Space.pad - 10,
+              // item: Space.pad,
+              line: Space.pad,
+            }
+          })
+        },
+
+        slider: {
+          track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
+          thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
+        },
+
+        // mouseWheelScroller: {
+          //   focus: false,
+          //   speed: 1
+          // },
+
+          space: {
+            right: 10,
+            top: 10,
+            bottom: 10,
+          }
+        }).setOrigin(0)
+      .layout()
+    }
+
+    // Populate the catalog header with filter buttons, text, fields
+    private populateHeader(header: any): void {
+      let that = this
+      let scene = this.scene
+      let container = scene.add.container().setDepth(2)
+
+      let background = scene.add.image(0, 0, 'icon-Search')
+      .setOrigin(0) // TODO 80 Search height
+      .setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, 80), Phaser.Geom.Rectangle.Contains)
+
+      container.add(background)
+
+      let backButton = new TextButton(container, Space.pad, 40, '<   Back', this.scene.doExit()).setOrigin(0, 0.5)
+
+      // Cost filters
+      container.add(scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
+
+      let btns = []
+      for (let i = 0; i <= 7; i++) {
+        let s = i === 7 ? '7+' : i.toString()
+        let btn = new UButton(container, 670 + i * 41, 40, s)
+        btn.setOnClick(that.onClickFilterButton(i, btns))
+
+        btns.push(btn)
+      }
+      let btnX = new IButtonX(container, 1000, 40, this.onClearFilters(btns))
+
+      // Add search field
+      let textboxSearch = scene.add['rexInputText'](
+        215, 40, 308, 40, {
+          type: 'text',
+          text: this.searchText,
+          placeholder: 'Search',
+          tooltip: 'Search for cards by text.',
+          fontFamily: 'Mulish',
+          fontSize: '20px',
+          color: Color.textboxText,
+          maxLength: 40,
+          selectAll: true,
+          id: 'search-field'
+        })
+      .on('textchange', function(inputText) {
+        // Filter the visible cards based on the text
+        that.searchText = inputText.text
+        scene.filter()
+      }, scene)
+      .setOrigin(0, 0.5)
+
+      container.add(textboxSearch)
     }
 
     private onClickFilterButton(thisI: number, btns: UButton[]): () => void {
