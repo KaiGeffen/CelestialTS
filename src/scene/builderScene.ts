@@ -115,7 +115,7 @@ class BuilderSceneShell extends BaseScene {
   }
 
   // Add card to the existing deck
-  addCardToDeck(card: Card, updateSavedDeck=false): CardImage {
+  addCardToDeck(card: Card): CardImage {
     if (this.deck.length >= Mechanics.deckSize) {
       return undefined
     }
@@ -179,7 +179,7 @@ class BuilderSceneShell extends BaseScene {
         that.txtHint.setVisible(true)
       }
 
-      // TODO Update saved deck
+      // TODO Update saved deck 1234
 
     }
   }
@@ -429,9 +429,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
     // // Highlight this deck, if it's selected
     // if (this.savedDeckIndex === i) {
-    //     // So that layout happens correctly
-    //     setTimeout(() => btn.select(), 4)
-    //   }
+      //     // So that layout happens correctly
+      //     setTimeout(() => btn.select(), 4)
+      //   }
 
       // Set as active, select self and deselect other buttons, set the deck
       let that = this
@@ -493,9 +493,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
           // Select that deck
           let index = that.deckBtns.length - 1
-          console.log(that.deckBtns[index].onClick())
-
-          // TODO Deselect other decks
+          that.deckBtns[index].onClick()
 
           // Scroll down to show the new deck
           that.deckPanel.t = 1
@@ -720,7 +718,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       let pool = collectibleCards
       for (var i = 0; i < pool.length; i++) {
         // TODO Switch back to i
-        let cardImage = this.addCardToCatalog(pool[6], i)
+        let cardImage = this.addCardToCatalog(pool[i], i)
 
         this.panel.getElement('panel').add(cardImage.image)
 
@@ -743,7 +741,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     private createPanel(x, width, height) {
       let scene = this.scene
 
-      const y = 70
+      const y = 0
       return scene.rexUI.add.scrollablePanel({
         x: x,
         y: y,
@@ -759,7 +757,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
             space: {
               left: Space.pad,
               right: Space.pad - 10,
-              top: Space.pad - 10,
+              top: 70 + Space.pad,
               bottom: Space.pad - 10,
               // item: Space.pad,
               line: Space.pad,
@@ -768,8 +766,8 @@ class DeckRegion extends Phaser.GameObjects.Container {
         },
 
         slider: {
-          track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
-          thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
+        //   track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
+        //   thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
         },
 
         // mouseWheelScroller: {
@@ -779,7 +777,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
           space: {
             right: 10,
-            top: 10,
+            // top: 10,
             bottom: 10,
           }
         }).setOrigin(0)
@@ -965,7 +963,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       let scene = this.scene
 
       return function() {
-        if (scene.addCardToDeck(card, true)) {
+        if (scene.addCardToDeck(card)) {
           scene.sound.play('click')
         }
         else {
@@ -1066,18 +1064,18 @@ class DeckRegion extends Phaser.GameObjects.Container {
     // Add the given card to users current deck, return whether it can be added
     // NOTE Don't always save the result because we might be doing this 15 times
     // and it's better to just save once
-    addCardToDeck(card: Card, updateSavedDeck): CardImage {
+    // TODO We aren't paying attention to update, and are always updating
+    addCardToDeck(card: Card): CardImage {
+      console.log(card)
       let cardImage = super.addCardToDeck(card)
 
       if (cardImage) {
         // Add an on-click that updates the saved deck
         let that = this
         // CorrectIndices breaks this TODO
-        cardImage.setOnClick(() => {console.log('fooo')})
-
-        if (updateSavedDeck) {
-          this.updateSavedDeck()
-        }
+        cardImage.setOnClick(() => {
+          that.updateSavedDeck()
+        })
       }
 
       return cardImage
