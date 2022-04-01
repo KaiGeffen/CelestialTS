@@ -34,6 +34,10 @@ const CoreColors: Record<string, any> = {
   buttonSelected: 0x3C67FF,
 
 
+  // Golden icon, for trophy
+  icon: 0xFFAB2E,
+
+
 }
 
 
@@ -49,6 +53,9 @@ export const Color: Record<string, any> = {
   buttonSelected: CoreColors.buttonSelected,
   textboxText: CoreColors.c1,
   header: CoreColors.c1,
+
+  // Outline plugin color
+  outline: CoreColors.icon,
 
 
   // Background of the webpage

@@ -1,4 +1,5 @@
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
 
 import { Style, Color } from '../../settings/settings'
 
@@ -34,6 +35,8 @@ export default class Button {
 
 	txt: Phaser.GameObjects.Text
 	icon: Phaser.GameObjects.Image
+
+	selected = false
 
 	// Enabled, Selected, Highlighted, etc
 	// Callbacks
@@ -141,6 +144,29 @@ export default class Button {
 		if (this.icon) {
 			this.icon.setVisible(value)
 		}
+
+		return this
+	}
+
+
+	// TODO
+	select(): Button {
+		let plugin = this.scene.plugins.get('rexOutlinePipeline')
+		plugin['add'](this.icon, {
+			thickness: 3,
+			outlineColor: Color.outline,
+		})
+
+		this.selected = true
+		
+		return this
+	}
+	
+	deselect(): Button {
+		let plugin = this.scene.plugins.get('rexOutlinePipeline')
+		plugin['remove'](this.icon)
+
+		this.selected = false
 
 		return this
 	}

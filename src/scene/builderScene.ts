@@ -439,18 +439,18 @@ class DeckRegion extends Phaser.GameObjects.Container {
     // Set as active, glow and stop others glowing, set the deck
     let that = this
     btn.setOnClick(function() {
-      that.deckBtns.forEach(b => {if (b !== btn) b.stopGlow()})
+      that.deckBtns.forEach(b => {if (b !== btn) b.deselect()})
 
       // If it's already selected, deselect it
-      if (false) {//(btn.isHighlighted()) {
+      if (btn.selected) {
         that.savedDeckIndex = undefined
         that.scene.setDeck([])
-        // btn.stopGlow()
+        btn.deselect()
       }
       // Otherwise select this button
       else {
         that.savedDeckIndex = i
-        // btn.glow(false)
+        btn.select()
 
         that.scene.setDeck(UserSettings._get('decks')[i]['value'])
       }
@@ -733,13 +733,6 @@ class CatalogRegion extends Phaser.GameObjects.Container {
 
     // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
     // their bottom parts, which cannot be seen and are below the scroller
-    // let invisibleTop = scene.add
-    // .rectangle(this.panel._x,
-    //   this.panel.y + this.panel.height,
-    //   Space.windowWidth, Space.windowHeight, 0x989898, 1)
-    // .setOrigin(0)
-    // .setInteractive()
-
     // TODO Move this to the deck container
     scene.add
     .rectangle(this.panel._x,
@@ -844,32 +837,6 @@ class CatalogRegion extends Phaser.GameObjects.Container {
     .setOrigin(0, 0.5)
 
     container.add(textboxSearch)
-
-    // header.add(textboxSearch)
-    // header.addNewLine()
-
-    // // Add a hint
-    // header.add(txtHint)
-
-    // // Add each of the number buttons and the X button
-    // let btns: Phaser.GameObjects.Text[] = []
-    // for (var i = 0; i <= maxCostFilter; i++) {
-      //   this.filterCostAry[i] = false
-      //   let s = i === maxCostFilter ? `${i}+` : i.toString()
-      //   let btn = scene.add.text(0, 0, s, Style.filter)
-      //   .setInteractive()
-      //   .on('pointerdown', this.onClickFilterButton(i, btns))
-      //   .setDepth(4)
-
-      //   header.add(btn)
-      //   btns.push(btn)
-      // }
-
-      // let btn = scene.add.image(0, 0, 'icon-X')
-      // .setInteractive()
-      // .on('pointerdown', this.onClearFilters(btns))
-      // .setDepth(4)
-      // header.add(btn)
     }
 
     private onClickFilterButton(thisI: number, btns: UButton[]): () => void {
