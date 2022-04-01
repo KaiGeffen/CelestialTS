@@ -4,7 +4,7 @@ import MenuScene from "./scene/menuScene"
 import PreloadScene from "./scene/preloadScene"
 import HomeScene from "./scene/homeScene"
 import GameScene from "./scene/gameScene"
-import { BuilderScene, TutorialBuilderScene, AdventureBuilderScene } from "./scene/builderScene"
+import { BuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 
 import CreditsScene from "./scene/creditsScene"
 import StoreScene from "./scene/storeScene"
@@ -40,7 +40,7 @@ const config: Phaser.Types.Core.GameConfig = {
   ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
   GameScene, AdventureBuilderScene,
-  BuilderScene, TutorialBuilderScene,
+  BuilderScene,
   AdventureScene],
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH

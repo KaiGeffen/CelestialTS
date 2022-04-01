@@ -776,9 +776,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
           // },
 
           space: {
-            right: 10,
+            // right: 10,
             // top: 10,
-            bottom: 10,
+            // bottom: 10,
           }
         }).setOrigin(0)
       .layout()
