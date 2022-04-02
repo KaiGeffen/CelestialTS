@@ -11,7 +11,8 @@ import { Space, Color } from '../../settings/settings'
 
 
 export default class ChoosePremade extends Menu {
-	constructor(scene: Phaser.Scene, callback: (number) => () => void) {
+	constructor(scene: Phaser.Scene, params) {
+		let callback: (number) => () => void = params.callback
 		super(scene)
 		// this.createBackground(width, height)
 
@@ -27,7 +28,7 @@ export default class ChoosePremade extends Menu {
 			subpanel.add(this.createCharacter(scene, names[i], callback(i)))
 		}
 
-		panel[0].layout()
+		panel.layout()
 	}
 
 	onClose(): void {

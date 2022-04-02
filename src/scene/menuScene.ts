@@ -27,7 +27,7 @@ export default class MenuScene extends Phaser.Scene {
 	create(params): void {
 		this.addBackground()
 
-		createMenu(this, params.menu)
+		createMenu(this, params.menu, params)
 
 		// this.addTitle(params.title)
 

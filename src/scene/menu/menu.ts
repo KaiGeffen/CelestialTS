@@ -15,13 +15,13 @@ const menus = {
 
 // Allows for the creation and storing of custom menus not specified 
 // in separate ts files
-export function createMenu(scene: Phaser.Scene, title: string) {
+export function createMenu(scene: Phaser.Scene, title: string, params) {
 	// Check if the given menu exists, if not throw
 	if (!(title in menus)) {
 		throw `Given menu ${title} is not in list of implemented menus.`
 	}
 
-	new menus[title](scene)
+	new menus[title](scene, params)
 }
 
 
