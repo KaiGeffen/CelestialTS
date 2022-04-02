@@ -386,7 +386,16 @@ class DeckRegion extends Phaser.GameObjects.Container {
     })
     
     // TODO Make this constant and use throughout?
-    let btn = new IButtonPremade(this.scene, 0, 0).setOrigin(0, 0.5)
+    let callback = this.premadeCallback()
+    let btn = new IButtonPremade(this.scene, 0, 0,
+      () => {
+        // TODO Hand this to a class instead of calling ourselves
+        scene.scene.launch('MenuScene', {
+          menu: 'choosePremade',
+          callback: callback
+        })
+      }
+      ).setOrigin(0, 0.5)
     sizer.add(btn.icon)
 
     let line = this.scene.add.line(0, 0, 0, 0, Space.iconSeparation + Space.pad, 0, Color.line)
@@ -396,6 +405,17 @@ class DeckRegion extends Phaser.GameObjects.Container {
     sizer.add(txtHint)
 
     return sizer
+  }
+
+  // TODO Callback for when a premade avatar is clicked on
+  private premadeCallback(): (i: number) => () => void {
+    let that = this
+    return function(i: number) {
+      return function() {
+        that.savedDeckIndex = undefined
+        console.log(i)
+      }
+    }
   }
 
   // Update the panel when user scrolls with their mouse wheel

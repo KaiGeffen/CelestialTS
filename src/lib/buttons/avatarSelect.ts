@@ -25,5 +25,7 @@ export class ButtonAvatarFull extends Button {
 				click: f
 			}
 		})
+
+		this.txt.setY(-400)
 	}
 }
