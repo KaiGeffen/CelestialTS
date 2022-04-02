@@ -69,8 +69,4 @@ export default class MenuScene extends Phaser.Scene {
 		// visibleBackground.setInteractive()
 		// visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 	}
-
-	private addContents(menuTitle: string) {
-		createMenu(this, menuTitle)
-	}
 }

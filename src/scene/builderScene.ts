@@ -300,7 +300,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     this.updateOnScroll(panel)
 
     // Add a NEW button
-    panel.add(this.createNewButton(panel))
+    panel['add'](this.createNewButton(panel))
 
     // Add each of the decks
     this.createDeckButtons(panel)
@@ -554,10 +554,10 @@ class DeckRegion extends Phaser.GameObjects.Container {
     // Create the "Code" button which prompts user to copy/paste a deck-code
     private createCodeButton(panel, footer) {
       let that = this
-      footer.add(
-        new Button(this.scene, 0, 0, 'CODE', function() {
-          that.createNewCodeMenu()
-        }).txt)
+      // footer.add(
+      //   new Button(this.scene, 0, 0, 'CODE', function() {
+      //     that.createNewCodeMenu()
+      //   }).txt)
     }
 
     // Create a new deck menu naming a new deck, pass in that deck's button to update text dynamically
@@ -605,7 +605,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
         // If name is not empty, add it to the list of decks
         if (name !== '') {
           UserSettings._push('decks', {name: name, value: scene.getDeckCode()})
-          btn.emit('pointerdown')
+          // btn.emit('pointerdown')
         } else {
           // Destroy the panel and recreate it
           // NOTE Panel is the sizer containing the deck buttons
@@ -1213,10 +1213,10 @@ class DeckRegion extends Phaser.GameObjects.Container {
       let that = this
       this.btnStart.setOnClick(function() {
         that.startAIMatch(params.opponent, params.id)
-      }, true)
+      })
 
       // Add a back button to return to the adventure scene
-      let btnBack = new Button(this, Space.pad, Space.pad, 'Back', this.doBack)
+      // let btnBack = new Button(this, Space.pad, Space.pad, 'Back', this.doBack)
 
       super.postcreate()
     }

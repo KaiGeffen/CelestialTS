@@ -39,7 +39,7 @@ export default class ChoosePremade extends Menu {
 		const width = 400 * 3 + Space.pad * 4
 		const height = 600 + Space.pad * 2
 
-		let subpanel = scene.rexUI.add.fixWidthSizer(
+		let subpanel = scene['rexUI'].add.fixWidthSizer(
 			{width: 400 * 3 + Space.pad * 4,
 				space: {
 					left: Space.pad,
@@ -51,7 +51,7 @@ export default class ChoosePremade extends Menu {
 				}
 			}
 			)
-		let panel = scene.rexUI.add.scrollablePanel({
+		let panel = scene['rexUI'].add.scrollablePanel({
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			width: width,
