@@ -38,6 +38,8 @@ export default class BaseScene extends Phaser.Scene {
 
 		// TODO Implement Menu scene
 		// this.scene.launch('MenuScene', {menu: 'options'})
+		// TODO Hand this to a class instead of calling ourselves
+		this.scene.launch('MenuScene', {menu: 'choosePremade'})
 	}
 
 	create(params = {}): void {

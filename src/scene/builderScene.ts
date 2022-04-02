@@ -357,8 +357,8 @@ class DeckRegion extends Phaser.GameObjects.Container {
         )
       },
       slider: {
-        track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
-        thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
+        // track: this.scene.rexUI.add.roundRectangle(0, 0, 8, 100, 1, 0xE0E3EE),
+        // thumb: this.scene.rexUI.add.roundRectangle(0, 0, 0, 200, 3, 0x9F9999),
       },
 
       header: this.createHeader(),

@@ -65,7 +65,8 @@ export default class Button {
 		if (config.icon !== undefined) {
 			let offset = config.icon.offset === undefined ? 0 : config.icon.offset
 			
-			this.icon = this.scene.add.image(x, y + offset, `icon-${config.icon.name}`)
+			let filename = config.icon.name.includes('-') ? config.icon.name : `icon-${config.icon.name}`
+			this.icon = this.scene.add.image(x, y + offset, filename)
 			.on('pointerover', () => this.icon.setTint(Color.buttonHighlight), this)
 			.on('pointerout', () => this.icon.clearTint(), this)
 

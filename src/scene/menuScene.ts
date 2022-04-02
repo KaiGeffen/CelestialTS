@@ -1,7 +1,8 @@
 import "phaser"
 
 import { Style, Color, Space } from "../settings/settings"
-import { createMenu } from "../menus/menu"
+import { createMenu } from "./menu/menu"
+
 
 // The scene which shows whichever menu is open, if any
 // on top of the other scenes
@@ -12,14 +13,27 @@ export default class MenuScene extends Phaser.Scene {
 		})
 	}
 
+	// Open the menu specified by string
+	static open(s: string): void {
+		// TODO if (s not in names) ....
+		// Check if the specified menu exists, if not, throw
+
+		// If a menu is already open, call its onClose
+		
+		// Open the given menu
+
+	}
+
 	create(params): void {
 		this.addBackground()
+
+		createMenu(this, params.menu)
 
 		// this.addTitle(params.title)
 
 		// this.addMessage(params.message)
 
-		this.addContents(params.menu)
+		// this.addContents(params.menu)
 
 		this.scene.bringToTop()
 	}
@@ -50,10 +64,10 @@ export default class MenuScene extends Phaser.Scene {
 		invisBackground.on('pointerdown', () => this.scene.stop())
 
 		// Visible background, which does nothing when clicked
-		let visibleBackground = this.add['rexRoundRectangle'](x, y, 1000, 600, 30, Color.menuBackground,
-		).setAlpha(0.95)
-		visibleBackground.setInteractive()
-		visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
+		// let visibleBackground = this.add['rexRoundRectangle'](x, y, 1000, 600, 30, Color.menuBackground,
+		// ).setAlpha(0.95)
+		// visibleBackground.setInteractive()
+		// visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 	}
 
 	private addContents(menuTitle: string) {

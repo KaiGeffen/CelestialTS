@@ -180,7 +180,12 @@ export default class PreloadClass extends Phaser.Scene {
 	// Loads all avatar images
 	private loadAvatars(): void {
 		let avatarsNames = [
-			'Jules',
+			'Jules', 'JulesFull',
+			'AdonisFull',
+			'MiaFull',
+			'KitzFull',
+			'ImaniFull',
+			'MonaFull',
 		]
 
 		avatarsNames.forEach( (s) => {
