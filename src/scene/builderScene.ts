@@ -56,10 +56,6 @@ class BuilderSceneShell extends BaseScene {
       Space.windowHeight - 80,
       '').setDepth(2)
 
-    let avatar = this.add.image(Space.pad,
-      Space.windowHeight - 85,
-      'avatar-Jules').setOrigin(0, 0.5).setDepth(2)
-
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
     this.deckContainer = this.add.container(Space.windowWidth - Space.cardWidth, Space.windowHeight).setDepth(2)
@@ -215,7 +211,6 @@ class BuilderSceneShell extends BaseScene {
 
     // For resolutions below a threshold, make the overlap more intense to fit 15 cards
     let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
-    overlap -= 8
     let x = index * (Space.cardSize - overlap) + xPad + Space.cardSize/2
 
     let y = Space.cardHeight/2 - 60// + (index%2) * Space.stackOffset
@@ -342,13 +337,15 @@ class DeckRegion extends Phaser.GameObjects.Container {
     const scene = this.scene
     const width = Space.iconSeparation + Space.pad
 
-    return scene.rexUI.add.scrollablePanel({
+    let background = scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
+
+    let panel = scene.rexUI.add.scrollablePanel({
       x: 0,
       y: 0,
       width: width,
-      height: Space.windowHeight - 180,
+      height: Space.windowHeight,
 
-      background: scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF),
+      background: background,
 
       panel: {// TODO Create panel method
         child: scene.rexUI.add.fixWidthSizer({space: {
@@ -375,6 +372,13 @@ class DeckRegion extends Phaser.GameObjects.Container {
         // bottom: Space.pad,
       }
     }).setOrigin(0)
+
+    scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+        distance: 3,
+        shadowColor: 0x000000,
+      })
+
+    return panel
   }
 
   private createHeader(): Phaser.GameObjects.GameObject {
@@ -389,6 +393,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
         line: Space.pad,
       }
     })
+
+    let avatar = this.scene.add.image(0, 0, 'avatar-Jules')
+    sizer.add(avatar, {padding:{left: 35}})
     
     // TODO Make this constant and use throughout?
     let callback = this.premadeCallback()
@@ -755,12 +762,17 @@ class DeckRegion extends Phaser.GameObjects.Container {
       // Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
       // their bottom parts, which cannot be seen and are below the scroller
       // TODO Move this to the deck container
-      scene.add
-      .rectangle(0,//this.panel._x,
+      let background = scene.add
+      .rectangle(this.panel._x,
         this.panel.y + this.panel.height,
         Space.windowWidth, Space.windowHeight, 0x989898, 1)
       .setOrigin(0)
       .setInteractive()
+
+      scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+        distance: 3,
+        shadowColor: 0x000000,
+      })
     }
 
     private createPanel(x, width, height) {
