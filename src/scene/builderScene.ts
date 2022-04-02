@@ -56,6 +56,10 @@ class BuilderSceneShell extends BaseScene {
       Space.windowHeight - 80,
       '').setDepth(2)
 
+    let avatar = this.add.image(Space.pad,
+      Space.windowHeight - 85,
+      'avatar-Jules').setOrigin(0, 0.5).setDepth(2)
+
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
     this.deckContainer = this.add.container(Space.windowWidth - Space.cardWidth, Space.windowHeight).setDepth(2)
@@ -211,6 +215,7 @@ class BuilderSceneShell extends BaseScene {
 
     // For resolutions below a threshold, make the overlap more intense to fit 15 cards
     let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
+    overlap -= 8
     let x = index * (Space.cardSize - overlap) + xPad + Space.cardSize/2
 
     let y = Space.cardHeight/2 - 60// + (index%2) * Space.stackOffset
@@ -341,7 +346,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       x: 0,
       y: 0,
       width: width,
-      height: Space.windowHeight,
+      height: Space.windowHeight - 180,
 
       background: scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF),
 
@@ -367,7 +372,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
       space: {
         right: 10,
-        bottom: Space.pad,
+        // bottom: Space.pad,
       }
     }).setOrigin(0)
   }
@@ -751,7 +756,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       // their bottom parts, which cannot be seen and are below the scroller
       // TODO Move this to the deck container
       scene.add
-      .rectangle(this.panel._x,
+      .rectangle(0,//this.panel._x,
         this.panel.y + this.panel.height,
         Space.windowWidth, Space.windowHeight, 0x989898, 1)
       .setOrigin(0)

@@ -59,7 +59,7 @@ export default class MenuScene extends Phaser.Scene {
 		const y = Space.windowHeight / 2
 
 		// Invisible background rectangles, stops other containers from being clicked
-		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.2)
+		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.7)
 		invisBackground.setInteractive()
 		invisBackground.on('pointerdown', () => this.scene.stop())
 

@@ -54,6 +54,8 @@ export const Color: Record<string, any> = {
   textboxText: CoreColors.c1,
   header: CoreColors.c1,
 
+  backgroundAlt: CoreColors.c2,
+
   // Outline plugin color
   outline: CoreColors.icon,
 
