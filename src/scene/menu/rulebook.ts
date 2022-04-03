@@ -9,8 +9,6 @@ import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 
 
-const width = 400
-
 export default class RulebookMenu extends Menu {
 	constructor(scene: Phaser.Scene, params) {
 		super(scene)
@@ -20,7 +18,9 @@ export default class RulebookMenu extends Menu {
 
 		this.createContent(scene, panel)
 
-		panel.layout()
+		// Add panel to a scrollable panel
+		let scrollable = this.createScrollablePanel(scene, panel)
+		scrollable.layout()
 	}
 
 	private createSizer(scene: Phaser.Scene)  {
@@ -28,8 +28,6 @@ export default class RulebookMenu extends Menu {
 		{
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
-			// width: width,
-			// height: 500,
 			space: {
 				left: Space.pad/2,
 				right: Space.pad/2,
@@ -41,16 +39,36 @@ export default class RulebookMenu extends Menu {
 		}
 		)
 
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
-
 		return panel
 	}
 
 	private createContent(scene: Phaser.Scene, panel) {
 		let txt = scene.add.text(0, 0, rulebookString, Style.basic)
 		panel.add(txt)
+	}
+
+	private createScrollablePanel(scene: Phaser.Scene, panel) {
+		let background = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background)
+		.setInteractive()
+
+		let scrollable = scene['rexUI'].add.scrollablePanel({
+			x: Space.windowWidth/2,
+			y: Space.windowHeight/2,
+			width: 50,
+			height: Space.windowHeight - Space.pad * 2,
+			
+			panel: {
+				child: panel.setDepth(1)
+			},
+			background: background,
+
+			mouseWheelScroller: true,
+		})
+
+		// NOTE This is a fix for sizer objects not deleting properly in all cases
+		scrollable.name = 'top'
+
+		return scrollable
 	}
 }
 

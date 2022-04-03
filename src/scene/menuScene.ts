@@ -62,7 +62,13 @@ export default class MenuScene extends Phaser.Scene {
 		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.7)
 		invisBackground.setInteractive()
 		invisBackground.on('pointerdown', () => {
-			// this.children.destroy()
+			
+			// NOTE This is a fix for sizer objects not deleting properly in all cases
+			let top = this.children.getByName('top')
+			if (top !== null) {
+				top.destroy()
+			}
+
 			this.scene.stop()
 		})
 

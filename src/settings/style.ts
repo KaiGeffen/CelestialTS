@@ -47,7 +47,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
-    wordWrap: { width: Space.windowWidth - Space.pad * 4 }
+    wordWrap: { width: Space.maxTextWidth }
   },
   button: {
     fontFamily: fontFamily,

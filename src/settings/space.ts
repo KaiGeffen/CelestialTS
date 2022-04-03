@@ -43,4 +43,5 @@ export const Space = {
   handHeight: 160,
   // Standard corner width for rounded rectangles
   corner: 10,
+  maxTextWidth: 800,
 }

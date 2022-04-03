@@ -9,8 +9,6 @@ import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 
 
-const width = 400
-
 export default class CreditsMenu extends Menu {
 	// TODO This is a fix to an issue with GetAllChildrenSizers not working
 	// in the sizer child of scrollable panel, which is called when trying to destroy
@@ -56,6 +54,7 @@ export default class CreditsMenu extends Menu {
 
 	private createContent(scene: Phaser.Scene, panel) {
 		let txt = scene.add.text(0, 0, creditsString, Style.basic)
+
 		panel.add(txt)
 	}
 
@@ -76,6 +75,9 @@ export default class CreditsMenu extends Menu {
 
 			mouseWheelScroller: true,
 		})
+
+		// NOTE This is a fix for sizer objects not deleting properly in all cases
+		scrollable.name = 'top'
 
 		return scrollable
 	}
