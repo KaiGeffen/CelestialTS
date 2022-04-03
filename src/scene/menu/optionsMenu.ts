@@ -46,6 +46,7 @@ export default class OptionsMenu extends Menu {
 		}
 		)
 
+		// Add background
 		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
 		panel.addBackground(rect)
 
@@ -53,6 +54,9 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createContent(scene: Phaser.Scene, panel) {
+		panel.add(this.createTitle(scene))
+		.addNewLine()
+
 		panel.add(this.createVolume(scene))
 		.addNewLine()
 
@@ -65,11 +69,18 @@ export default class OptionsMenu extends Menu {
 		panel.add(this.createAutopass(scene))
 		.addNewLine()
 
-		panel.add(this.createReadRulebook(scene))
-		.addNewLine()
+		panel.add(this.createButtons(scene))
+	}
 
-		panel.add(this.createQuit(scene))
-		// .addNewLine()
+	private createTitle(scene: Phaser.Scene) {
+		let sizer = scene['rexUI'].add.sizer({width: width})
+
+		let txt = scene.add.text(0, 0, 'Options', Style.announcement)
+		sizer.addSpace()
+		.add(txt)
+		.addSpace()
+
+		return sizer
 	}
 
 	private createVolume(scene: Phaser.Scene) {
@@ -180,40 +191,52 @@ export default class OptionsMenu extends Menu {
 		return sizer
 	}
 
-	private createReadRulebook(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	// Create the buttons at the bottom which navigate to other scenes/menus
+	private createButtons(scene: Phaser.Scene) {
+		let sizer = scene['rexUI'].add.sizer({
+			width: width,
+			space: {
+				item: Space.pad
+			}
+		})
 
-		let txtRulebook = scene.add.text(0, 0, 'Read the Rulebook', Style.basic)
-		sizer.addSpace()
-		sizer.add(txtRulebook)
-		sizer.addSpace()
-		// let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
-		// sizer.add(txt)
+		sizer
+		.add(this.createReadRulebook(scene))
+		.addSpace()
+		.add(this.createCredits(scene))
+		.addSpace()
+		.add(this.createQuit(scene))
 
 		return sizer
 	}
 
-	private createQuit(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createReadRulebook(scene: Phaser.Scene) {
+		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		let container = new ContainerLite(scene, 0, 0, 50, 100)
-		let btn = new SymmetricButtonSmall(container, 0, 0, 'Quit', () => {
-			console.log('heyo')
-
-			scene.scene.stop()
-			// scene.scene.start("HomeScene")
+		new SymmetricButtonSmall(container, 0, 0, 'Rulebook', () => {
+			console.log('Open the rulebook')
 		})
 
-		// let txtExitHint = scene.add.text(0, 0, 'Exit to main menu?', Style.basic)
-		// sizer.add(txtExitHint)
-		// sizer.addSpace()
-		// let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
-		// sizer.add(txt)
+		return container
+	}
 
-		sizer.addSpace()
-		.add(container)
-		.addSpace()
+	private createCredits(scene: Phaser.Scene) {
+		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		return sizer
+		new SymmetricButtonSmall(container, 0, 0, 'Credits', () => {
+			console.log('Open the credits')
+		})
+
+		return container
+	}
+
+	private createQuit(scene: Phaser.Scene) {
+		let container = new ContainerLite(scene, 0, 0, 100, 50)
+
+		new SymmetricButtonSmall(container, 0, 0, 'Quit', () => {
+			console.log('Quit to main menu')
+		})
+
+		return container
 	}
 }
