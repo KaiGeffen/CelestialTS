@@ -24,6 +24,9 @@ export default class OurHandRegion extends Region {
 	txtDeckCount: Phaser.GameObjects.Text
 	txtDiscardCount: Phaser.GameObjects.Text
 
+	// Whether we have already clicked on a card to play it
+	cardClicked: boolean
+
 	create (scene: Phaser.Scene): OurHandRegion {
 		let that = this
 		this.scene = scene
@@ -71,6 +74,8 @@ export default class OurHandRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
+		this.cardClicked = false
+
 		let that = this
 
 		// Statuses
@@ -88,11 +93,12 @@ export default class OurHandRegion extends Region {
 
 			card.setOnHover(that.onCardHover(card), that.onCardExit(card, cardsInHand, i))
 
-			if (state.cardsPlayable[i] && state.winner === null) {
-				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
-			}
-			else {
+			// Set whether card shows up as playable, and also whether we can click to play a card in this state
+			if (!state.cardsPlayable[i]) {
 				card.setPlayable(false)
+			}
+			else if (state.priority === 0 && state.winner === null) {
+				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
 			}
 
 			cardsInHand.push(card)
@@ -212,33 +218,39 @@ export default class OurHandRegion extends Region {
 		let that = this
 
 		return function() {
-			// Send this card to its place in the story
-			that.scene.tweens.add({
-				targets: card.container,
-				x: endPosition[0],
-				y: endPosition[1],
-				duration: Time.recapTween(),
-				ease: "Sine.easeInOut",
-				// After brief delay, tell network, hide info, shift cards to fill its spot
-				onStart: function () {setTimeout(function() {
-					// Fill in the hole where the card was
-					// For every card later than i, move to the right
-					for (let j = i + 1; j < hand.length; j++) {
-						let adjustedCard = hand[j]
+			// If we have already played a card, do nothing when clicking on another
+			if (that.cardClicked === false) {
+				// Remember that we have clicked a card already
+				that.cardClicked = true
 
-						that.scene.tweens.add({
-							targets: adjustedCard.container,
-							// TODO Fix this to be in general (Space to move might be smaller if cards squished)
-							x: adjustedCard.container.x - 140 - Space.pad,
-							duration: Time.recapTween() - 10,
-							ease: "Sine.easeInOut"
-						})
-					}
+				// Send this card to its place in the story
+				that.scene.tweens.add({
+					targets: card.container,
+					x: endPosition[0],
+					y: endPosition[1],
+					duration: Time.recapTween(),
+					ease: "Sine.easeInOut",
+					// After brief delay, tell network, hide info, shift cards to fill its spot
+					onStart: function () {setTimeout(function() {
+						// Fill in the hole where the card was
+						// For every card later than i, move to the right
+						for (let j = i + 1; j < hand.length; j++) {
+							let adjustedCard = hand[j]
 
-					// Trigger the callback function for this card
-					that.callback(i)
-				}, 10)}
-			})
+							that.scene.tweens.add({
+								targets: adjustedCard.container,
+								// TODO Fix this to be in general (Space to move might be smaller if cards squished)
+								x: adjustedCard.container.x - 140 - Space.pad,
+								duration: Time.recapTween() - 10,
+								ease: "Sine.easeInOut"
+							})
+						}
+
+						// Trigger the callback function for this card
+						that.callback(i)
+					}, 10)}
+				})
+			}
 		}
 	}
 
