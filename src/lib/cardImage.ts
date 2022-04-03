@@ -125,12 +125,16 @@ export class CardImage {
     this.container.destroy()
   }
 
-  show(): void {
+  show(): CardImage {
     this.container.setVisible(true)
+
+    return this
   }
 
-  hide(): void {
+  hide(): CardImage {
     this.container.setVisible(false)
+
+    return this
   }
 
   dissolve(): void {
