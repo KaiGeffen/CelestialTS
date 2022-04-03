@@ -5,6 +5,7 @@ import CardLocation from './cardLocation'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
+import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
@@ -118,13 +119,13 @@ export default class OurHandRegion extends Region {
 			).setOrigin(0)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
-        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin['add'](background, {
-        	thickness: 1,
-        	outlineColor: Color.border,
-        })
+		let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+		postFxPlugin['add'](background, {
+			thickness: 1,
+			outlineColor: Color.border,
+		})
 
-        return background
+		return background
 	}
 
 	// Animate any cards ending in the hand
@@ -144,50 +145,50 @@ export default class OurHandRegion extends Region {
 				let x = card.container.x
 				let y = card.container.y
 
-				// Set the starting position based on zone it's coming from
-				let position
-				switch (animation.from) {
-					case Zone.Hand:
-						// TODO
-						// This is the card having an effect in the player's hand
-						position = CardLocation.ourDiscard(this.container)
-						break
-
-					case Zone.Deck:
+				if (animation.from === Zone.Hand) {
+					// This is the card having an effect in the player's hand
+					this.animateEmphasis(animation.card, [x,y], delay)
+				}
+				else {
+					// Set the starting position based on zone it's coming from
+					let position
+					switch (animation.from) {
+						case Zone.Deck:
 						position = CardLocation.ourDeck(this.container)
 						break
 
-					case Zone.Discard:
+						case Zone.Discard:
 						position = CardLocation.ourDiscard(this.container)
 						break
 
-					case Zone.Story:
+						case Zone.Story:
 						position = CardLocation.story(undefined, animation.index, this.container, 0)
 						break
 
-					case Zone.Gone:
+						case Zone.Gone:
 						position = CardLocation.gone(this.container)
 						break
-				}
-				card.setPosition(position)
-				
-				// Hide the card until it starts animating
-				card.hide()
-
-				// Animate moving x direction, becoming visible when animation starts
-				this.scene.tweens.add({
-					targets: card.container,
-					x: x,
-					y: y,
-					delay: delay,
-					duration: Time.recapTweenWithPause(),
-					onStart: function (tween, targets, _)
-					{
-						card.show()
-						// TODO Different for create?
-						scene.sound.play('draw')
 					}
-				})
+					card.setPosition(position)
+
+					// Hide the card until it starts animating
+					card.hide()
+
+					// Animate moving x direction, becoming visible when animation starts
+					this.scene.tweens.add({
+						targets: card.container,
+						x: x,
+						y: y,
+						delay: delay,
+						duration: Time.recapTweenWithPause(),
+						onStart: function (tween, targets, _)
+						{
+							card.show()
+							// TODO Different for create?
+							scene.sound.play('draw')
+						}
+					})
+				}
 			}
 
 			// Delay occurs for each animation even if not going to hand
@@ -195,15 +196,37 @@ export default class OurHandRegion extends Region {
 		}
 	}
 
+	// Animate the given card being focused starting at the given time
+	private animateEmphasis(card: Card, position: [number, number], delay: number): void {
+		// Create a new image of the card
+		let cardImage = this.addCard(card, position).hide()
+
+		// Animate moving x direction, appearing at start
+		this.scene.tweens.add({
+			targets: cardImage.container,
+			alpha: 0,
+			scale: 2,
+			delay: delay,
+			duration: Time.recapTweenWithPause(),
+			onStart: function (tween, targets, _)
+			{
+				cardImage.show()
+			},
+			onComplete: function (tween, targets, _) {
+				cardImage.destroy()
+			}
+		})
+	}
+
 	// Animate us getting or losing priority
 	private animatePriority(state: ClientState, isRecap: boolean): void {
 		const targetAlpha = state.priority === 0 && !isRecap ? 1 : 0
 
 		this.scene.tweens.add({
-				targets: this.priorityHighlight,
-				alpha: targetAlpha,
-				duration: Time.recapTweenWithPause()
-			})
+			targets: this.priorityHighlight,
+			alpha: targetAlpha,
+			duration: Time.recapTweenWithPause()
+		})
 	}
 
 	// Return the function that runs when card with given index is clicked on
@@ -273,24 +296,24 @@ export default class OurHandRegion extends Region {
 		let points = '0 60 0 0 70 10 70 70'
 		let y = 10
 		for (let i = 0; i < length; i++) {
-  			if (amts[i] > 0) {
-  				let img = this.scene.add.image(140, y, 'icon-Nourish').setOrigin(0)
-  				
-  				var randomColor = Math.floor(Math.random()*16777215)
-  				img.setTint(randomColor)
+			if (amts[i] > 0) {
+				let img = this.scene.add.image(140, y, 'icon-Nourish').setOrigin(0)
 
-  				// TODO Make this style standard
-  				let s = `${Status[i]} ${amts[i]}`
-  				let txt = this.scene.add.text(145, y + 45, s, {
-    fontSize: '10px',
-    color: '#031022'
-  }).setOrigin(0, 0.5)
-  				
-  				this.container.add([img, txt])
-  				this.temp.push(img, txt)
+				var randomColor = Math.floor(Math.random()*16777215)
+				img.setTint(randomColor)
 
-  				y += 50
-  			}
-  		}
+				// TODO Make this style standard
+				let s = `${Status[i]} ${amts[i]}`
+				let txt = this.scene.add.text(145, y + 45, s, {
+					fontSize: '10px',
+					color: '#031022'
+				}).setOrigin(0, 0.5)
+
+				this.container.add([img, txt])
+				this.temp.push(img, txt)
+
+				y += 50
+			}
+		}
 	}
 }

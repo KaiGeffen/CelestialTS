@@ -131,6 +131,9 @@ export default class TheirHandRegion extends Region {
 			let animation = state.animations[1][i]
 			if (animation.to === Zone.Hand) {
 				let card = hand[animation.index]
+
+									// Animate the card coming from given zone
+					// Remember where to end, then move to starting position
 				let x = card.container.x
 				let y = card.container.y
 
@@ -138,11 +141,7 @@ export default class TheirHandRegion extends Region {
 					// This is the card having an effect in the player's hand
 					this.animateEmphasis(animation.card, [x,y], delay)
 				}
-				else
-				{
-					// Animate the card coming from given zone
-					// Remember where to end, then move to starting position
-
+				else {
 					// Set the starting position based on zone it's coming from
 					let position
 					switch (animation.from) {
