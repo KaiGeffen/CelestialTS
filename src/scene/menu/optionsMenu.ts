@@ -1,8 +1,14 @@
 import 'phaser'
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+
 import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+
 
 import Menu from './menu'
-import { Space, Color, Style } from '../../settings/settings'
+import { Space, Color, Style, UserSettings } from '../../settings/settings'
+import { SymmetricButtonSmall } from '../../lib/buttons/backed'
+
 
 const width = 400
 
@@ -30,22 +36,18 @@ export default class OptionsMenu extends Menu {
 			// width: width,
 			// height: 500,
 			space: {
-				left: Space.pad,
-				right: Space.pad,
-				top: Space.pad,
-				bottom: Space.pad,
-				item: Space.pad,
-				line: Space.pad,
+				left: Space.pad/2,
+				right: Space.pad/2,
+				top: Space.pad/2,
+				bottom: Space.pad/2,
+				item: Space.pad/2,
+				line: Space.pad/2,
 			},
 		}
 		)
 
 		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-
-		console.log(rect)
-		panel.addBackground(
-			rect
-			)
+		panel.addBackground(rect)
 
 		return panel
 	}
@@ -66,7 +68,7 @@ export default class OptionsMenu extends Menu {
 		panel.add(this.createReadRulebook(scene))
 		.addNewLine()
 
-		panel.add(this.createExit(scene))
+		panel.add(this.createQuit(scene))
 		// .addNewLine()
 	}
 
@@ -76,8 +78,30 @@ export default class OptionsMenu extends Menu {
 		let txtVolumeHint = scene.add.text(0, 0, 'Volume:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'eeeaaaa', Style.basic)
-		sizer.add(txt)
+
+		// NOTE This keeps the callback from overwriting the volume setting
+		let volume = scene.sound.volume
+		console.log(volume)
+		let slider = scene['rexUI'].add.slider({
+			width: 200,
+			height: 20,
+			orientation: 'x',
+
+            track: scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
+            indicator: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
+            space: {
+                right: 10
+            },
+            input: 'drag',
+
+            valuechangeCallback: function (value) {
+            	UserSettings._set('volume', value)
+                scene.sound.volume = value
+            },
+        })
+        .setValue(volume)
+		sizer.add(slider)
 
 		return sizer
 	}
@@ -131,14 +155,26 @@ export default class OptionsMenu extends Menu {
 		return sizer
 	}
 
-	private createExit(scene: Phaser.Scene) {
+	private createQuit(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txtExitHint = scene.add.text(0, 0, 'Exit to main menu?', Style.basic)
-		sizer.add(txtExitHint)
+		let container = new ContainerLite(scene, 0, 0, 50, 100)
+		let btn = new SymmetricButtonSmall(container, 0, 0, 'Quit', () => {
+			console.log('heyo')
+
+			scene.scene.stop()
+			// scene.scene.start("HomeScene")
+		})
+
+		// let txtExitHint = scene.add.text(0, 0, 'Exit to main menu?', Style.basic)
+		// sizer.add(txtExitHint)
+		// sizer.addSpace()
+		// let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
+		// sizer.add(txt)
+
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
-		sizer.add(txt)
+		.add(container)
+		.addSpace()
 
 		return sizer
 	}

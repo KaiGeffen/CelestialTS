@@ -56,6 +56,11 @@ export const Color: Record<string, any> = {
 
   backgroundAlt: CoreColors.c2,
 
+  sliderTrack: 0xE0E3EE,
+  sliderIndicator: 0x5F5555,
+  sliderThumb: 0x9F9999,
+
+
   // Outline plugin color
   outline: CoreColors.icon,
 
@@ -86,8 +91,8 @@ export const Color: Record<string, any> = {
   iconHighlight: CoreColors.variant,
 
   // Slider components
-  sliderIndicator: CoreColors.primary,
-  sliderThumb: CoreColors.primary,
+  // sliderIndicator: CoreColors.primary,
+  // sliderThumb: CoreColors.primary,
 
   // Radio button components
   radioOutline: CoreColors.primary,

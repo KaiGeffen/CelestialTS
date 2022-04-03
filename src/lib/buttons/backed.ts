@@ -7,7 +7,7 @@ import Button from './button'
 
 // Exported buttons
 export class AButtonSmall extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
 		f: () => void = function() {},
 		playSound: boolean = true)
@@ -30,7 +30,7 @@ export class AButtonSmall extends Button {
 }
 
 export class AButtonLarge extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
 		f: () => void = function() {},
 		playSound: boolean = true)
@@ -53,7 +53,7 @@ export class AButtonLarge extends Button {
 }
 
 export class SymmetricButtonSmall extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
 		f: () => void = function() {},
 		playSound: boolean = true)
@@ -76,7 +76,7 @@ export class SymmetricButtonSmall extends Button {
 }
 
 export class SymmetricButtonLarge extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
 		f: () => void = function() {},
 		playSound: boolean = true)

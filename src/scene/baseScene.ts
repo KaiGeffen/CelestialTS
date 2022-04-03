@@ -114,6 +114,7 @@ export default class BaseScene extends Phaser.Scene {
 
 		let txtVolumeHint = this.add.text(x, y, 'Volume:', Style.announcement).setOrigin(0, 0.5)
 
+		let volume = this.sound.volume
 		this.sliderVolume = this.rexUI.add.slider({
 			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
 
@@ -131,7 +132,7 @@ export default class BaseScene extends Phaser.Scene {
             },
             input: 'drag',
         })
-        .setValue(this.sound.volume)
+        .setValue(volume)
         .setOrigin(0, 0.5)
         .layout()
         
