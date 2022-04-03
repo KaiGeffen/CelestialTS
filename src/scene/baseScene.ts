@@ -112,83 +112,6 @@ export default class BaseScene extends Phaser.Scene {
 		let x = Space.windowWidth/2 - 210
 		let y = Space.windowHeight/2 - 265
 
-		let txtVolumeHint = this.add.text(x, y, 'Volume:', Style.announcement).setOrigin(0, 0.5)
-
-		let volume = this.sound.volume
-		this.sliderVolume = this.rexUI.add.slider({
-			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
-
-            valuechangeCallback: function (value) {
-            	UserSettings._set('volume', value)
-                that.sound.volume = value
-            },
-            space: {
-                top: 4,
-                bottom: 4
-            },
-            input: 'drag',
-        })
-        .setValue(volume)
-        .setOrigin(0, 0.5)
-        .layout()
-        
-        // Slider for Music
-        y += 90
-        let txtMusicHint = this.add.text(x, y, 'Music:', Style.announcement).setOrigin(0, 0.5)
-
-		this.sliderMusic = this.rexUI.add.slider({
-			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
-
-            valuechangeCallback: function (value) {
-            	UserSettings._set('musicVolume', value)
-
-            	let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
-
-            	music.volume = value
-            	music.play()
-            },
-            space: {
-                top: 4,
-                bottom: 4
-            },
-            input: 'drag',
-        })
-        .setValue(UserSettings._get('musicVolume'))
-        .setOrigin(0, 0.5)
-        .layout()
-
-        // Slider for Animation Speed
-        y += 90
-        let txtSpeedHint = this.add.text(x, y, 'Speed:', Style.announcement).setOrigin(0, 0.5)
-
-		this.sliderAnimationSpeed = this.rexUI.add.slider({
-			x: Space.windowWidth/2, y: y + 5, width: 200, height: 20, orientation: 'x',
-
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0xffffff),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 16, Color.sliderThumb),
-
-            valuechangeCallback: function (value) {
-            	UserSettings._set('animationSpeed', value)
-            },
-            space: {
-                top: 4,
-                bottom: 4
-            },
-            input: 'drag',
-        })
-        .setValue(UserSettings._get('animationSpeed'))
-        .setOrigin(0, 0.5)
-        .layout()
-
         // Radio button for auto-pass
         y += 90
         let txtAutopassHint = this.add.text(x, y, 'Autopass:', Style.announcement).setOrigin(0, 0.5)
@@ -208,8 +131,6 @@ export default class BaseScene extends Phaser.Scene {
 		})
 
 		this.confirmationContainer.add([invisibleBackground, visibleBackground,
-			// txtKeywordHint, radio,
-			txtVolumeHint, txtMusicHint, txtSpeedHint,
 			txtAutopassHint, radioAutopass,
 			])
         
@@ -231,11 +152,6 @@ export default class BaseScene extends Phaser.Scene {
 		y += 80
 		let btnYes = new SymmetricButtonSmall(this.confirmationContainer, Space.windowWidth/2 - 50, y, 'Yes', this.doExit()).setOrigin(1, 0.5)
 		let btnNo = new SymmetricButtonSmall(this.confirmationContainer, Space.windowWidth/2 + 50, y, 'No', this.closeMenu()).setOrigin(0, 0.5)
-
-		// Custom rexUI sliders don't work in containers
-		this.sliderVolume.setDepth(21).setVisible(false)
-		this.sliderMusic.setDepth(21).setVisible(false)
-		this.sliderAnimationSpeed.setDepth(21).setVisible(false)
 	}
 
 	private createRulebook(): any {

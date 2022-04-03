@@ -79,9 +79,6 @@ export default class OptionsMenu extends Menu {
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
 
-		// NOTE This keeps the callback from overwriting the volume setting
-		let volume = scene.sound.volume
-		console.log(volume)
 		let slider = scene['rexUI'].add.slider({
 			width: 200,
 			height: 20,
@@ -95,12 +92,12 @@ export default class OptionsMenu extends Menu {
             },
             input: 'drag',
 
+            value: UserSettings._get('volume'),
             valuechangeCallback: function (value) {
             	UserSettings._set('volume', value)
                 scene.sound.volume = value
             },
         })
-        .setValue(volume)
 		sizer.add(slider)
 
 		return sizer
@@ -112,8 +109,31 @@ export default class OptionsMenu extends Menu {
 		let txtVolumeHint = scene.add.text(0, 0, 'Music:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'ii', Style.basic)
-		sizer.add(txt)
+
+		let slider = scene['rexUI'].add.slider({
+			width: 200,
+			height: 20,
+			orientation: 'x',
+
+            track: scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
+            indicator: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
+            space: {
+                right: 10
+            },
+            input: 'drag',
+
+            value: UserSettings._get('musicVolume'),
+            valuechangeCallback: function (value) {
+            	UserSettings._set('musicVolume', value)
+
+            	let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
+
+            	music.volume = value
+            	music.play()
+            },
+        })
+		sizer.add(slider)
 
 		return sizer
 	}
@@ -124,8 +144,26 @@ export default class OptionsMenu extends Menu {
 		let txtSpeedHint = scene.add.text(0, 0, 'Speed:', Style.basic)
 		sizer.add(txtSpeedHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'ii', Style.basic)
-		sizer.add(txt)
+		
+		let slider = scene['rexUI'].add.slider({
+			width: 200,
+			height: 20,
+			orientation: 'x',
+
+            track: scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
+            indicator: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
+            space: {
+                right: 10
+            },
+            input: 'drag',
+
+            value: UserSettings._get('animationSpeed'),
+            valuechangeCallback: function (value) {
+            	UserSettings._set('animationSpeed', value)
+            },
+        })
+		sizer.add(slider)
 
 		return sizer
 	}
