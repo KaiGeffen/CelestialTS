@@ -35,11 +35,6 @@ export default class BaseScene extends Phaser.Scene {
 		// Remove any lingering esc event listeners for menus
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		esc.removeListener('down')
-
-		// TODO Implement Menu scene
-		this.scene.launch('MenuScene', {menu: 'options'})
-		// TODO Hand this to a class instead of calling ourselves
-		// this.scene.launch('MenuScene', {menu: 'choosePremade'})
 	}
 
 	create(params = {}): void {
@@ -287,12 +282,14 @@ They do not; you can have both Nourish and Starve at the same time.`
 		return function() {
 			that.sound.play('open')
 
+			that.scene.launch('MenuScene', {menu: 'options'})
+
 	      	// that.btnOptions.glow()TODO
 
-			that.confirmationContainer.setVisible(true)
-			that.sliderVolume.setVisible(true)
-			that.sliderMusic.setVisible(true)
-			that.sliderAnimationSpeed.setVisible(true)
+			// that.confirmationContainer.setVisible(true)
+			// that.sliderVolume.setVisible(true)
+			// that.sliderMusic.setVisible(true)
+			// that.sliderAnimationSpeed.setVisible(true)
 		}
 	}
 

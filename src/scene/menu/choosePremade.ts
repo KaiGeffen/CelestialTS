@@ -63,10 +63,10 @@ export default class ChoosePremade extends Menu {
 				child: subpanel
 			},
 
+			mouseWheelScroller: {
+				speed: 1
+			},
 		})
-
-		// Allow panel to scroll
-		this.updateOnScroll(scene, panel)
 
 		return [panel, subpanel]
 	}
@@ -84,25 +84,4 @@ export default class ChoosePremade extends Menu {
 
 		return container
 	}
-
-	// Update the panel when user scrolls with their mouse wheel
-  private updateOnScroll(scene, panel) {
-    let that = this
-
-    scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-      // Return if the pointer is outside of the panel
-      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
-        return
-      }
-
-      // Scroll panel down by amount wheel moved
-      panel.childOY -= dy
-
-      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-      panel.t = Math.max(0, panel.t)
-      panel.t = Math.min(0.999999, panel.t)
-    })
-  }
-
-
 }

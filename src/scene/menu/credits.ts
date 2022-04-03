@@ -73,7 +73,9 @@ export default class CreditsMenu extends Menu {
 			},
 			background: background,
 
-			mouseWheelScroller: true,
+			mouseWheelScroller: {
+				speed: 1
+			},
 		})
 
 		// NOTE This is a fix for sizer objects not deleting properly in all cases
