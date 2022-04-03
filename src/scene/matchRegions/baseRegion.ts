@@ -3,6 +3,7 @@ import 'phaser'
 import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
 import ClientState from '../../lib/clientState'
+import { Time } from '../../settings/settings'
 
 
 // Base region
@@ -33,5 +34,27 @@ export default class Region {
 		for (let i = 0; i < this.temp.length; i++) {
 			this.temp[i].destroy()
 		}
+	}
+
+	// Animate the given card being emphasized
+	protected animateEmphasis(card: Card, position: [number, number], delay: number): void {
+		// Create a new image of the card
+		let cardImage = this.addCard(card, position).hide()
+
+		// Animate moving x direction, appearing at start
+		this.scene.tweens.add({
+			targets: cardImage.container,
+			alpha: 0,
+			scale: 2,
+			delay: delay,
+			duration: Time.recapTweenWithPause(),
+			onStart: function (tween, targets, _)
+			{
+				cardImage.show()
+			},
+			onComplete: function (tween, targets, _) {
+				cardImage.destroy()
+			}
+		})
 	}
 }

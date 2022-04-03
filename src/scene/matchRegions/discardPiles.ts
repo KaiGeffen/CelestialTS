@@ -83,10 +83,8 @@ export default class DiscardPilesRegion extends Region {
 				let y = card.container.y
 
 				if (animation.from === Zone.Discard) {
-					// TODO Discard pile emphasis
-
-					// This is the card having an effect in the player's hand
-					// this.animateEmphasis(animation.card, [x,y], delay)
+					// This is the card having an effect in the player's discard pile
+					this.animateEmphasis(animation.card, [x,y], delay)
 				}
 				else {
 					// Set the starting position based on zone it's coming from
