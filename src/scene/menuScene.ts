@@ -13,6 +13,7 @@ export default class MenuScene extends Phaser.Scene {
 		})
 	}
 
+	// TODO Create this api? See if what we have works
 	// Open the menu specified by string
 	static open(s: string): void {
 		// TODO if (s not in names) ....
@@ -29,11 +30,9 @@ export default class MenuScene extends Phaser.Scene {
 
 		createMenu(this, params.menu, params)
 
-		// this.addTitle(params.title)
-
-		// this.addMessage(params.message)
-
-		// this.addContents(params.menu)
+		// When esc is pressed, close this scene
+		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+		esc.on('down', this.endScene())
 
 		this.scene.bringToTop()
 	}
@@ -61,21 +60,27 @@ export default class MenuScene extends Phaser.Scene {
 		// Invisible background rectangles, stops other containers from being clicked
 		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.7)
 		invisBackground.setInteractive()
-		invisBackground.on('pointerdown', () => {
-			
-			// NOTE This is a fix for sizer objects not deleting properly in all cases
-			let top = this.children.getByName('top')
-			if (top !== null) {
-				top.destroy()
-			}
-
-			this.scene.stop()
-		})
+		invisBackground.on('pointerdown', this.endScene())
 
 		// Visible background, which does nothing when clicked
 		// let visibleBackground = this.add['rexRoundRectangle'](x, y, 1000, 600, 30, Color.menuBackground,
 		// ).setAlpha(0.95)
 		// visibleBackground.setInteractive()
 		// visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
+	}
+
+	// NOTE This is a fix for sizer objects not deleting properly in all cases
+	private endScene(): () => void {
+		let that = this
+
+		return function() {
+			let top = that.children.getByName('top')
+			if (top !== null) {
+				top.destroy()
+			}
+
+			that.scene.stop()
+		}
+			
 	}
 }
