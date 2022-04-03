@@ -282,7 +282,10 @@ They do not; you can have both Nourish and Starve at the same time.`
 		return function() {
 			that.sound.play('open')
 
-			that.scene.launch('MenuScene', {menu: 'options'})
+			that.scene.launch('MenuScene', {
+				menu: 'options', 
+				activeScene: that
+			})
 
 	      	// that.btnOptions.glow()TODO
 

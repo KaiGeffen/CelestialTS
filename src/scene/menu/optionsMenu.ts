@@ -19,7 +19,9 @@ export default class OptionsMenu extends Menu {
 		// Make a fixed height sizer
 		let panel = this.createSizer(scene)
 
-		this.createContent(scene, panel)
+		// The non-menu scene which is active, used for changing scenes
+		let activeScene = params.activeScene
+		this.createContent(scene, panel, activeScene)
 
 		panel.layout()
 	}
@@ -53,7 +55,7 @@ export default class OptionsMenu extends Menu {
 		return panel
 	}
 
-	private createContent(scene: Phaser.Scene, panel) {
+	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene) {
 		panel.add(this.createTitle(scene))
 		.addNewLine()
 
@@ -69,7 +71,7 @@ export default class OptionsMenu extends Menu {
 		panel.add(this.createAutopass(scene))
 		.addNewLine()
 
-		panel.add(this.createButtons(scene))
+		panel.add(this.createButtons(scene, activeScene))
 	}
 
 	private createTitle(scene: Phaser.Scene) {
@@ -192,7 +194,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	// Create the buttons at the bottom which navigate to other scenes/menus
-	private createButtons(scene: Phaser.Scene) {
+	private createButtons(scene: Phaser.Scene, activeScene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({
 			width: width,
 			space: {
@@ -205,7 +207,7 @@ export default class OptionsMenu extends Menu {
 		.addSpace()
 		.add(this.createCredits(scene))
 		.addSpace()
-		.add(this.createQuit(scene))
+		.add(this.createQuit(scene, activeScene))
 
 		return sizer
 	}
@@ -230,11 +232,15 @@ export default class OptionsMenu extends Menu {
 		return container
 	}
 
-	private createQuit(scene: Phaser.Scene) {
+	private createQuit(scene: Phaser.Scene, activeScene: Phaser.Scene) {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
 		new SymmetricButtonSmall(container, 0, 0, 'Quit', () => {
-			console.log('Quit to main menu')
+			// Stop the other active scene
+			activeScene.scene.stop()
+
+			// Stop this scene and start the home scene
+			scene.scene.start("HomeScene")
 		})
 
 		return container
