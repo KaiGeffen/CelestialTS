@@ -1,9 +1,10 @@
 import 'phaser'
+import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js'
 
 import Menu from './menu'
 import { Space, Color, Style } from '../../settings/settings'
 
-const width = 600
+const width = 400
 
 export default class OptionsMenu extends Menu {
 	constructor(scene: Phaser.Scene, params) {
@@ -28,19 +29,22 @@ export default class OptionsMenu extends Menu {
 			y: Space.windowHeight/2,
 			// width: width,
 			// height: 500,
-			// space: {
-			// 	left: Space.pad,
-			// 	right: Space.pad,
-			// 	top: Space.pad,
-			// 	bottom: Space.pad,
-			// 	item: Space.pad,
-			// 	line: Space.pad,
-			// },
+			space: {
+				left: Space.pad,
+				right: Space.pad,
+				top: Space.pad,
+				bottom: Space.pad,
+				item: Space.pad,
+				line: Space.pad,
+			},
 		}
 		)
 
+		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+
+		console.log(rect)
 		panel.addBackground(
-			scene.add.rectangle(0, 0, panel.width, panel.height, Color.background, 1).setInteractive()
+			rect
 			)
 
 		return panel
@@ -63,16 +67,16 @@ export default class OptionsMenu extends Menu {
 		.addNewLine()
 
 		panel.add(this.createExit(scene))
-		.addNewLine()
+		// .addNewLine()
 	}
 
 	private createVolume(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txtVolumeHint = scene.add.text(0, 0, 'Volume:', Style.announcement)
+		let txtVolumeHint = scene.add.text(0, 0, 'Volume:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'eeeaaaa', Style.announcement)
+		let txt = scene.add.text(0, 0, 'eeeaaaa', Style.basic)
 		sizer.add(txt)
 
 		return sizer
@@ -81,10 +85,10 @@ export default class OptionsMenu extends Menu {
 	private createMusic(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txtVolumeHint = scene.add.text(0, 0, 'Music:', Style.announcement)
+		let txtVolumeHint = scene.add.text(0, 0, 'Music:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'ii', Style.announcement)
+		let txt = scene.add.text(0, 0, 'ii', Style.basic)
 		sizer.add(txt)
 
 		return sizer
@@ -93,10 +97,10 @@ export default class OptionsMenu extends Menu {
 	private createSpeed(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txtSpeedHint = scene.add.text(0, 0, 'Speed:', Style.announcement)
+		let txtSpeedHint = scene.add.text(0, 0, 'Speed:', Style.basic)
 		sizer.add(txtSpeedHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'ii', Style.announcement)
+		let txt = scene.add.text(0, 0, 'ii', Style.basic)
 		sizer.add(txt)
 
 		return sizer
@@ -105,10 +109,10 @@ export default class OptionsMenu extends Menu {
 	private createAutopass(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txtVolumeHint = scene.add.text(0, 0, 'Autopass:', Style.announcement)
+		let txtVolumeHint = scene.add.text(0, 0, 'Autopass:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'Yes!', Style.announcement)
+		let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
 		sizer.add(txt)
 
 		return sizer
@@ -117,11 +121,11 @@ export default class OptionsMenu extends Menu {
 	private createReadRulebook(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txtRulebook = scene.add.text(0, 0, 'Read the Rulebook', Style.announcement)
+		let txtRulebook = scene.add.text(0, 0, 'Read the Rulebook', Style.basic)
 		sizer.addSpace()
 		sizer.add(txtRulebook)
 		sizer.addSpace()
-		// let txt = scene.add.text(0, 0, 'Yes!', Style.announcement)
+		// let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
 		// sizer.add(txt)
 
 		return sizer
@@ -130,10 +134,10 @@ export default class OptionsMenu extends Menu {
 	private createExit(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txtExitHint = scene.add.text(0, 0, 'Exit to main menu?', Style.announcement)
+		let txtExitHint = scene.add.text(0, 0, 'Exit to main menu?', Style.basic)
 		sizer.add(txtExitHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'Yes!', Style.announcement)
+		let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
 		sizer.add(txt)
 
 		return sizer
