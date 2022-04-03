@@ -337,7 +337,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     const scene = this.scene
     const width = Space.iconSeparation + Space.pad
 
-    let background = scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
+    let background = scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF).setInteractive()
 
     let panel = scene.rexUI.add.scrollablePanel({
       x: 0,

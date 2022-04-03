@@ -5,11 +5,12 @@ export default class Menu {
 }
 
 
-// import OptionsMenu from "./optionsMenu"
+import OptionsMenu from "./optionsMenu"
 import ChoosePremade from "./choosePremade"
 
+
 const menus = {
-	// 'options': OptionsMenu,
+	'options': OptionsMenu,
 	'choosePremade': ChoosePremade
 }
 
