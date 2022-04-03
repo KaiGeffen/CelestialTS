@@ -144,4 +144,11 @@ export default class CardLocation {
 		const y = Space.windowHeight/2
 		return [x - container.x, y - container.y]
 	}
+
+	// Removed from the game cards
+	static gone(container: Phaser.GameObjects.Container): [number, number] {
+		const x = Space.windowWidth/2
+		const y = Space.windowHeight/2
+		return [x - container.x, y - container.y]
+	}
 }

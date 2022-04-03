@@ -144,14 +144,37 @@ export default class OurHandRegion extends Region {
 				let x = card.container.x
 				let y = card.container.y
 
-				// TODO Based on animation.from
-				// switch (animation.from) {
-				// 	case Zone.Deck
-				// }
-				card.setPosition(CardLocation.ourDeck(this.container))
+				// Set the starting position based on zone it's coming from
+				let position
+				switch (animation.from) {
+					case Zone.Hand:
+						// TODO
+						// This is the card having an effect in the player's hand
+						position = CardLocation.ourDiscard(this.container)
+						break
+
+					case Zone.Deck:
+						position = CardLocation.ourDeck(this.container)
+						break
+
+					case Zone.Discard:
+						position = CardLocation.ourDiscard(this.container)
+						break
+
+					case Zone.Story:
+						position = CardLocation.story(undefined, animation.index, this.container, 0)
+						break
+
+					case Zone.Gone:
+						position = CardLocation.gone(this.container)
+						break
+				}
+				card.setPosition(position)
+				
+				// Hide the card until it starts animating
 				card.hide()
 
-				// Animate moving x direction, appearing at start
+				// Animate moving x direction, becoming visible when animation starts
 				this.scene.tweens.add({
 					targets: card.container,
 					x: x,
@@ -161,6 +184,7 @@ export default class OurHandRegion extends Region {
 					onStart: function (tween, targets, _)
 					{
 						card.show()
+						// TODO Different for create?
 						scene.sound.play('draw')
 					}
 				})
