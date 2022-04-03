@@ -1103,7 +1103,6 @@ class DeckRegion extends Phaser.GameObjects.Container {
     // and it's better to just save once
     // TODO We aren't paying attention to update, and are always updating
     addCardToDeck(card: Card): CardImage {
-      console.log(card)
       let cardImage = super.addCardToDeck(card)
 
       if (cardImage) {

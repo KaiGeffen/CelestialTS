@@ -63,12 +63,16 @@ export default class DiscardPilesRegion extends Region {
 	private animate(state: ClientState, cards: CardImage[], player: number, isRecap: boolean): void {
 		let scene = this.scene
 		
-		let delay = 0
-		for (let i = 0; i < state.animations[player].length; i++) {
+		// Keep a count of how many cards have gone to the discard already
+		// in order to hide the right card
+		let count = 0
+
+		for (let i = state.animations[player].length - 1; i >= 0; i--) {
+			let delay = i * Time.recapTween()
+
 			let animation = state.animations[player][i]
 			if (animation.to === Zone.Discard) {
-				console.log(animation)
-				
+				// Create an image for the card in flight, hide the real copy until animation has completed
 				let card = this.addCard(animation.card, 
 					player === 0 ? CardLocation.ourDiscard(this.container) : CardLocation.theirDiscard(this.container)
 					)
@@ -108,7 +112,10 @@ export default class DiscardPilesRegion extends Region {
 
 					// Hide the card until it starts animating
 					card.hide()
-					cards[cards.length - 1].hide()
+
+					// Hide the existing card in the discard pile
+					count += 1
+					cards[cards.length - count].hide()
 
 					// Animate moving x direction, becoming visible when animation starts
 					this.scene.tweens.add({
@@ -123,15 +130,12 @@ export default class DiscardPilesRegion extends Region {
 							scene.sound.play('discard')
 						},
 						onComplete: () => {
-							cards[cards.length - 1].show()
+							cards[cards.length - count].show()
 							card.destroy()
 						}
 					})
 				}
 			}
-
-			// Delay occurs for each animation even if not going to hand
-			delay += Time.recapTween()
 		}
 	}
 }
