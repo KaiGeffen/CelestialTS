@@ -36,13 +36,6 @@ export default class HomeScene extends BaseScene {
     //   let btnLogin = new Button(this, Space.pad/2, 0, "Login", this.doLogin).setOrigin(0)
     // }
 
-    // Tutorial button (Do first tutorial if they haven't started it, otherwise open the tutorial selection)
-    let btnTutorial = new Button(this, Space.windowWidth/2 - 300, Space.windowHeight - 50, "Tutorial").setOrigin(0.5)
-    btnTutorial.setOnClick(this.tutorialRegion.onOpenMenu(btnTutorial))
-
-    // Credits button
-    let btnCredits = new Button(this, Space.windowWidth/2 - 100, Space.windowHeight - 50, "Credits", this.doCredits).setOrigin(0.5)
-
     // Discord button
     let btnDiscord = new Button(this, Space.windowWidth/2 + 100, Space.windowHeight - 50, "Discord").setOrigin(0.5)
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
@@ -60,7 +53,7 @@ export default class HomeScene extends BaseScene {
     let btnAdventure = new Button(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", this.doAdventure).setOrigin(0.5)
 
     // Start Button
-    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart(btnTutorial)).setOrigin(0.5)//.setStyle(Style.announcement)
+    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart()).setOrigin(0.5)//.setStyle(Style.announcement)
 
     let msgText = UserProgress.getMessage('welcome')
     if (msgText !== undefined) {
@@ -71,6 +64,9 @@ export default class HomeScene extends BaseScene {
   }
 
   private displayMessage(message: string): void {
+    return
+
+    // TODO Rework all this
     let menu = new Menu(
       this,
       1000,
@@ -86,7 +82,7 @@ export default class HomeScene extends BaseScene {
   }
 
   // Do everything that occurs when the start button is pressed - either start, or prompt tutorial
-  private doStart(btnTutorial: Button): () => void {
+  private doStart(): () => void {
     let that = this
     return function() {
       // Guide user to Tutorial if this is their first time here
