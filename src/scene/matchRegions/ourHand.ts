@@ -162,7 +162,7 @@ export default class OurHandRegion extends Region {
 						break
 
 						case Zone.Story:
-						position = CardLocation.story(undefined, animation.index, this.container, 0)
+						position = CardLocation.story(undefined, animation.index2, this.container, 0)
 						break
 
 						case Zone.Gone:
