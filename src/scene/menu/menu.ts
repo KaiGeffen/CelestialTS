@@ -7,11 +7,14 @@ export default class Menu {
 
 import OptionsMenu from "./optionsMenu"
 import ChoosePremade from "./choosePremade"
-
+import CreditsMenu from "./credits"
+import RulebookMenu from "./rulebook"
 
 const menus = {
 	'options': OptionsMenu,
-	'choosePremade': ChoosePremade
+	'choosePremade': ChoosePremade,
+	'credits': CreditsMenu,
+	'rulebook': RulebookMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 

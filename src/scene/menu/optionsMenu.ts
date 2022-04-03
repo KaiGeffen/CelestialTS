@@ -214,7 +214,7 @@ export default class OptionsMenu extends Menu {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
 		new SymmetricButtonSmall(container, 0, 0, 'Rulebook', () => {
-			console.log('Open the rulebook')
+			scene.scene.start('MenuScene', {menu: 'rulebook'})
 		})
 
 		return container
@@ -224,7 +224,7 @@ export default class OptionsMenu extends Menu {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
 		new SymmetricButtonSmall(container, 0, 0, 'Credits', () => {
-			console.log('Open the credits')
+			scene.scene.start('MenuScene', {menu: 'credits'})
 		})
 
 		return container
