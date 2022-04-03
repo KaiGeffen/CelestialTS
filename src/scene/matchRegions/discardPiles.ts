@@ -28,25 +28,110 @@ export default class DiscardPilesRegion extends Region {
 
 		let that = this
 
+		// Ours
+		let ourDiscard = []
 		for (let i = 0; i < state.discard[0].length; i++) {
 			let card = this.addCard(state.discard[0][i], CardLocation.ourDiscard(this.container, i))
 			
 			card.setOnClick(that.ourCallback)
 
 			this.temp.push(card)
+			ourDiscard.push(card)
 		}
+		this.animate(state, ourDiscard, 0, isRecap)
 
+		// Theirs
+		let theirDiscard = []
 		for (let i = 0; i < state.discard[1].length; i++) {
 			let card = this.addCard(state.discard[1][i], CardLocation.theirDiscard(this.container, i))
 
 			card.setOnClick(that.theirCallback)
 
 			this.temp.push(card)
+			theirDiscard.push(card)
 		}
+		this.animate(state, theirDiscard, 1, isRecap)
 	}
 
 	setCallback(ourCallback: () => void, theirCallback: () => void): void {
 		this.ourCallback = ourCallback
 		this.theirCallback = theirCallback
+	}
+
+	// TODO Go backwards so that cards are hidden that haven't yet reached the discard pile
+	// Animate any cards ending in the hand
+	private animate(state: ClientState, cards: CardImage[], player: number, isRecap: boolean): void {
+		let scene = this.scene
+		
+		let delay = 0
+		for (let i = 0; i < state.animations[player].length; i++) {
+			let animation = state.animations[player][i]
+			if (animation.to === Zone.Discard) {
+				console.log(animation)
+				
+				let card = this.addCard(animation.card, 
+					player === 0 ? CardLocation.ourDiscard(this.container) : CardLocation.theirDiscard(this.container)
+					)
+
+				// Animate the card coming from given zone
+				// Remember where to end, then move to starting position
+				let x = card.container.x
+				let y = card.container.y
+
+				if (animation.from === Zone.Discard) {
+					// TODO Discard pile emphasis
+
+					// This is the card having an effect in the player's hand
+					// this.animateEmphasis(animation.card, [x,y], delay)
+				}
+				else {
+					// Set the starting position based on zone it's coming from
+					let position
+					switch (animation.from) {
+						case Zone.Hand:
+						position = player === 0 ? CardLocation.ourHand(undefined, 0, this.container) : CardLocation.theirHand(undefined, 0, this.container)
+						break
+
+						case Zone.Deck:
+						position = player === 0 ? CardLocation.ourDeck(this.container) : CardLocation.theirDeck(this.container)
+						break
+
+						case Zone.Story:
+						position = CardLocation.story(undefined, animation.index, this.container, player)
+						break
+
+						case Zone.Gone:
+						position = CardLocation.gone(this.container)
+						break
+					}
+					card.setPosition(position)
+
+					// Hide the card until it starts animating
+					card.hide()
+					cards[cards.length - 1].hide()
+
+					// Animate moving x direction, becoming visible when animation starts
+					this.scene.tweens.add({
+						targets: card.container,
+						x: x,
+						y: y,
+						delay: delay,
+						duration: Time.recapTweenWithPause(),
+						onStart: function (tween, targets, _)
+						{
+							card.show()
+							scene.sound.play('discard')
+						},
+						onComplete: () => {
+							cards[cards.length - 1].show()
+							card.destroy()
+						}
+					})
+				}
+			}
+
+			// Delay occurs for each animation even if not going to hand
+			delay += Time.recapTween()
+		}
 	}
 }

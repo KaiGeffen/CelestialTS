@@ -22,12 +22,15 @@ export default class CardLocation {
 		// Amount of room to leave to the right of the last card
 		const maxOffset = Space.windowWidth - x0 - minRoom
 
-		// Find the amount that we must scale down by
-		// offset of last card <= maxOffset
-		// This may be multiplied by a constant to fit within the max
-		const lastCardOffset = dx * (state.hand.length - 1)
-		if (lastCardOffset > maxOffset) {
-			dx *= maxOffset / lastCardOffset
+		
+		if (state !== undefined) {
+			// Find the amount that we must scale down by
+			// offset of last card <= maxOffset
+			// This may be multiplied by a constant to fit within the max
+			const lastCardOffset = dx * (state.hand.length - 1)
+			if (lastCardOffset > maxOffset) {
+				dx *= maxOffset / lastCardOffset
+			}
 		}
 
 		// Offset from the first card
@@ -48,12 +51,14 @@ export default class CardLocation {
 		// If their hand has too many cards for the screen size, scale down
 		const maxOffset = Space.windowWidth - x0 - minRoom
 
-		// Find the amount that we must scale down by
-		// offset of last card <= maxOffset
-		// This may be multiplied by a constant to fit within the max
-		const lastCardOffset = dx * (state.opponentHandSize - 1)
-		if (lastCardOffset > maxOffset) {
-			dx *= maxOffset / lastCardOffset
+		if (state !== undefined) {
+			// Find the amount that we must scale down by
+			// offset of last card <= maxOffset
+			// This may be multiplied by a constant to fit within the max
+			const lastCardOffset = dx * (state.opponentHandSize - 1)
+			if (lastCardOffset > maxOffset) {
+				dx *= maxOffset / lastCardOffset
+			}
 		}
 
 		// Offset from the first card
@@ -75,14 +80,14 @@ export default class CardLocation {
 		let y
 		switch (owner) {
 			case undefined:
-				y = Space.windowHeight/2
-				break
+			y = Space.windowHeight/2
+			break
 			case 0:
-				y = Space.windowHeight/2 + (Space.cardHeight/2 - Space.storyYOverlap)
-				break
+			y = Space.windowHeight/2 + (Space.cardHeight/2 - Space.storyYOverlap)
+			break
 			case 1:
-				y = Space.windowHeight/2 - (Space.cardHeight/2 - Space.storyYOverlap)
-				break
+			y = Space.windowHeight/2 - (Space.cardHeight/2 - Space.storyYOverlap)
+			break
 		}
 
 		return [x - container.x, y - container.y]
