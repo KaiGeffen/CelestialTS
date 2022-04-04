@@ -391,4 +391,19 @@ export class CardImage {
     
     return this
   }
+
+  // Toggle whether this card appears as being set to mulligan or not
+  icon: Phaser.GameObjects.Image
+  toggleSelectedForMulligan(): CardImage {
+    if (this.icon !== undefined) {
+      this.icon.destroy()
+      this.icon = undefined
+    }
+    else {
+      this.icon = this.container.scene.add.image(0, 0, 'icon-XOut')
+      this.container.add(this.icon)
+    }
+
+    return this
+  }
 }

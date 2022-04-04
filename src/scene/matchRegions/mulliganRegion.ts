@@ -75,7 +75,7 @@ export default class MulliganRegion extends Region {
 
 		return function() {
 			that.mulliganChoices[i] = !that.mulliganChoices[i]
-			that.cards[i].setTransparent(that.mulliganChoices[i])
+			that.cards[i].toggleSelectedForMulligan()
 		}
 	}
 

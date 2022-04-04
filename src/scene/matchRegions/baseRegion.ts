@@ -4,13 +4,14 @@ import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
 import ClientState from '../../lib/clientState'
 import { Time } from '../../settings/settings'
+import BaseScene from '../baseScene'
 
 
 // Base region
 export default class Region {
 	container: Phaser.GameObjects.Container
 
-	scene: Phaser.Scene
+	scene: BaseScene
 
 	// All gameobjects that should be deleted before new state is shown
 	temp: any[] = []

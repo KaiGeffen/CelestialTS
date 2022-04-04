@@ -12,6 +12,7 @@ import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
 
 import { Status } from '../../lib/status'
+import BaseScene from '../baseScene'
 
 
 export default class OurHandRegion extends Region {
@@ -27,7 +28,7 @@ export default class OurHandRegion extends Region {
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
 
-	create (scene: Phaser.Scene): OurHandRegion {
+	create (scene: BaseScene): OurHandRegion {
 		let that = this
 		this.scene = scene
 
@@ -96,9 +97,17 @@ export default class OurHandRegion extends Region {
 			// Set whether card shows up as playable, and also whether we can click to play a card in this state
 			if (!state.cardsPlayable[i]) {
 				card.setPlayable(false)
+				card.setOnClick(() => {
+					that.scene.signalError("You don't have enough mana.")
+				})
 			}
 			else if (state.priority === 0 && state.winner === null) {
 				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
+			} else {
+				card.setOnClick(() => {
+					// TODO Signal errors in a variety of ways (Not enough mana, replay playing, etc)
+					that.scene.signalError("It's not your turn.")
+				})
 			}
 
 			cardsInHand.push(card)

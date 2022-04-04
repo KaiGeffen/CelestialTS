@@ -149,6 +149,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Options', 'X', 'SmallX',
 			'Search', 'Underline',
 			'Premade', 'CustomDeck',
+			'XOut',
 		]
 
 		iconNames.forEach( (s) => {
