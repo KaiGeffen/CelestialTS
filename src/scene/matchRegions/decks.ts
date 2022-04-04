@@ -9,13 +9,14 @@ import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+import BaseScene from '../baseScene'
 
 
 export default class DecksRegion extends Region {
 	ourCallback: () => void
 	theirCallback: () => void
 
-	create (scene: Phaser.Scene): DecksRegion {
+	create (scene: BaseScene): DecksRegion {
 		this.scene = scene
 
 		this.container = scene.add.container(0, 150)

@@ -9,10 +9,11 @@ import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+import BaseScene from '../baseScene'
 
 
 export default class ResultsRegion extends Region {
-	create (scene: Phaser.Scene, winner): ResultsRegion {
+	create (scene: BaseScene, winner): ResultsRegion {
 		this.scene = scene
 
 		this.container = scene.add.container(0, 0)

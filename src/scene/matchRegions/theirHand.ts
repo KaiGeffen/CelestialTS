@@ -10,6 +10,7 @@ import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+import BaseScene from '../baseScene'
 
 import { Status } from '../../lib/status'
 
@@ -21,7 +22,7 @@ export default class TheirHandRegion extends Region {
 	txtDeckCount: Phaser.GameObjects.Text
 	txtDiscardCount: Phaser.GameObjects.Text
 
-	create (scene: Phaser.Scene): TheirHandRegion {
+	create (scene: BaseScene): TheirHandRegion {
 		let that = this
 		this.scene = scene
 

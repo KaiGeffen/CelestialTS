@@ -8,6 +8,7 @@ import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+import BaseScene from '../baseScene'
 
 
 export default class OurHandRegion extends Region {
@@ -16,7 +17,7 @@ export default class OurHandRegion extends Region {
 	btnSkip: AButtonSmall
 	btnPlay: AButtonLarge
 
-	create (scene: Phaser.Scene): OurHandRegion {
+	create (scene: BaseScene): OurHandRegion {
 		let that = this
 		this.scene = scene
 		const width = 230

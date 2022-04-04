@@ -10,12 +10,13 @@ import Card from '../../lib/card'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+import BaseScene from '../baseScene'
 
 
 class OverlayRegion extends Region {
 	txtTitle: Phaser.GameObjects.Text
 
-	create (scene: Phaser.Scene, title: string): OverlayRegion {
+	create (scene: BaseScene, title: string): OverlayRegion {
 		this.scene = scene
 
 		this.container = scene.add.container(0, 0)

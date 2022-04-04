@@ -12,6 +12,7 @@ import Card from '../../lib/card'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+import BaseScene from '../baseScene'
 
 
 export default class MulliganRegion extends Region {
@@ -24,7 +25,7 @@ export default class MulliganRegion extends Region {
 	// The callback for when the button is clicked
 	onButtonClick: () => void
 
-	create (scene: Phaser.Scene): MulliganRegion {
+	create (scene: BaseScene): MulliganRegion {
 		this.scene = scene
 
 		this.cards = []

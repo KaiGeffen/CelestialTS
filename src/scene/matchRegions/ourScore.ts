@@ -7,13 +7,14 @@ import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
+import BaseScene from '../baseScene'
 
 
 export default class ScoreRegion extends Region {
 	txtBreath: Phaser.GameObjects.Text
 	txtWins: Phaser.GameObjects.Text
 
-	create (scene: Phaser.Scene): ScoreRegion {
+	create (scene: BaseScene): ScoreRegion {
 		const width = 300
 		const height = 90
 		const overlap = 20

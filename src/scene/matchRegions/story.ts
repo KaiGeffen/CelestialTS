@@ -9,6 +9,7 @@ import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
+import BaseScene from '../baseScene'
 
 
 // This is slightly wrong, because the top hand is smaller than this hand height
@@ -24,7 +25,7 @@ export default class StoryRegion extends Region {
 	// Callback that plays when ith card in recap is clicked on
 	callback: (i: number) => () => void
 
-	create (scene: Phaser.Scene): StoryRegion {
+	create (scene: BaseScene): StoryRegion {
 		this.scene = scene
 		this.lastScores = [0, 0]
 

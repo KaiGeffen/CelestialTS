@@ -9,13 +9,14 @@ import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import { Animation, Zone } from '../../lib/animation'
+import BaseScene from '../baseScene'
 
 
 export default class DiscardPilesRegion extends Region {
 	ourCallback: () => void
 	theirCallback: () => void
 
-	create (scene: Phaser.Scene): DiscardPilesRegion {
+	create (scene: BaseScene): DiscardPilesRegion {
 		this.scene = scene
 
 		this.container = scene.add.container(Space.windowWidth, Space.windowHeight/2).setDepth(-1)
