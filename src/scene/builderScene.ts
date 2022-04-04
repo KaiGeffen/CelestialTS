@@ -16,6 +16,7 @@ import { ButtonDecklist } from '../lib/buttons/decklist'
 
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
+import avatarNames from '../lib/avatarNames'
 import BaseScene from "./baseScene"
 import PrebuiltDeck from "../catalog/prebuiltDecks"
 
@@ -289,6 +290,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
   // List of buttons for user-defined decks
   deckBtns: Button[]
 
+  // Image of the current avatar
+  avatar: Phaser.GameObjects.Image
+
   // Create the are where player can manipulate their decks
   create(): number {
     let deckPanel = this.deckPanel = this.createDeckpanel()
@@ -325,7 +329,8 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
       let newDeck = {
         name: name,
-        value: deckCode
+        value: deckCode,
+        avatar: deck['avatar']
       }
 
       UserSettings._setIndex('decks', index, newDeck)
@@ -394,8 +399,8 @@ class DeckRegion extends Phaser.GameObjects.Container {
       }
     })
 
-    let avatar = this.scene.add.image(0, 0, 'avatar-Jules')
-    sizer.add(avatar, {padding:{left: 35}})
+    this.avatar = this.scene.add.image(0, 0, 'avatar-Jules')
+    sizer.add(this.avatar, {padding:{left: 35}})
     
     // TODO Make this constant and use throughout?
     let callback = this.premadeCallback()
@@ -455,7 +460,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
     let deck = UserSettings._get('decks')[i]
 
     let name = deck === undefined ? '' : deck['name']
-
+    
     let container = new ContainerLite(this.scene, 0, 0, 200, 50)
     let btn = new ButtonDecklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
 
@@ -468,6 +473,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       // Set as active, select self and deselect other buttons, set the deck
       let that = this
       btn.setOnClick(function() {
+        // Deselect all other buttons
         that.deckBtns.forEach(b => {if (b !== btn) b.deselect()})
 
         // If it's already selected, deselect it
@@ -482,6 +488,9 @@ class DeckRegion extends Phaser.GameObjects.Container {
           btn.select()
 
           that.scene.setDeck(UserSettings._get('decks')[i]['value'])
+
+          // Set the displayed avatar to this deck's avatar
+          that.setAvatar(UserSettings._get('decks')[i]['avatar'])
         }
       })
 
@@ -508,12 +517,11 @@ class DeckRegion extends Phaser.GameObjects.Container {
 
       // Callback for when 'Create' is hit in the menu
       function createCallback(name: string, avatar: number): void {
-        // TODO Use the selected avatar in the stored deck
-
         // Create the deck in storage
         UserSettings._push('decks', {
           name: name,
-          value: scene.getDeckCode()
+          value: scene.getDeckCode(),
+          avatar: avatar,
         })
 
         // Create a new button
@@ -686,6 +694,14 @@ class DeckRegion extends Phaser.GameObjects.Container {
         }
         menu.destroy()
       })
+    }
+
+    // Change the displayed avatar to the given avatar
+    private setAvatar(id: number) {
+      // TODO Require all decks to have an avatar
+      id = id === undefined ? 0 : id
+
+      this.avatar.setTexture(`avatar-${avatarNames[id]}`)
     }
   }
 

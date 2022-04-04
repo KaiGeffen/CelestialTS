@@ -184,11 +184,11 @@ export default class PreloadClass extends Phaser.Scene {
 	private loadAvatars(): void {
 		let avatarsNames = [
 			'Jules', 'JulesFull',
-			'AdonisFull',
-			'MiaFull',
-			'KitzFull',
-			'ImaniFull',
-			'MonaFull',
+			'Adonis', 'AdonisFull',
+			'Mia', 'MiaFull',
+			'Kitz', 'KitzFull',
+			'Imani', 'ImaniFull',
+			'Mona', 'MonaFull',
 		]
 
 		avatarsNames.forEach( (s) => {

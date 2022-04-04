@@ -8,6 +8,7 @@ import Menu from './menu'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 import { ButtonAvatarSmall } from '../../lib/buttons/avatarSelect'
+import avatarNames from '../../lib/avatarNames'
 
 
 const width = 430
@@ -128,7 +129,6 @@ export default class NewDeckMenu extends Menu {
 			let txtHint = scene.add.text(0, 0, 'Avatar:', Style.basic)
 			fixSizer.add(txtHint)
 
-			// TODO One for each character with callbacks
 			let sizer
 			let avatars = []
 			for (let i = 0; i < 6; i++) {
@@ -150,7 +150,8 @@ export default class NewDeckMenu extends Menu {
 					that.selectedAvatar = i
 				}
 
-				let avatar = new ButtonAvatarSmall(sizer, 0, 0, 'Jules', callback)
+				let name = avatarNames[i]
+				let avatar = new ButtonAvatarSmall(sizer, 0, 0, name, callback)
 				avatars.push(avatar)
 
 				// Select the first avatar, as a default
