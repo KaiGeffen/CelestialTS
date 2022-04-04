@@ -28,6 +28,9 @@ export default class OurHandRegion extends Region {
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
 
+	// Avatar image
+	avatar: Phaser.GameObjects.Image
+
 	create (scene: BaseScene): OurHandRegion {
 		let that = this
 		this.scene = scene
@@ -44,7 +47,7 @@ export default class OurHandRegion extends Region {
 		.play(true)
 		.setVisible(false)
 
-		let avatar = scene.add.image(6, 6, 'avatar-Jules').setOrigin(0)
+		this.avatar = scene.add.image(6, 6, 'avatar-Jules').setOrigin(0)
 		
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
@@ -61,7 +64,7 @@ export default class OurHandRegion extends Region {
 		this.container.add([
 			background,
 			this.priorityHighlight,
-			avatar,
+			this.avatar,
 			divide,
 			this.txtDeckCount,
 			iconDeck,
@@ -293,17 +296,14 @@ export default class OurHandRegion extends Region {
 		})
 
 		let points = '0 60 0 0 70 10 70 70'
-		let y = 10
+		let y = this.avatar.y
 		for (let i = 0; i < length; i++) {
 			if (amts[i] > 0) {
-				let img = this.scene.add.image(140, y, 'icon-Nourish').setOrigin(0)
-
-				var randomColor = Math.floor(Math.random()*16777215)
-				img.setTint(randomColor)
+				let img = this.scene.add.image(100, y, 'icon-Nourish').setOrigin(0)
 
 				// TODO Make this style standard
 				let s = `${Status[i]} ${amts[i]}`
-				let txt = this.scene.add.text(145, y + 45, s, {
+				let txt = this.scene.add.text(145, y + this.avatar.height/4, s, {
 					fontSize: '10px',
 					color: '#031022'
 				}).setOrigin(0, 0.5)
@@ -311,8 +311,10 @@ export default class OurHandRegion extends Region {
 				this.container.add([img, txt])
 				this.temp.push(img, txt)
 
-				y += 50
+				y += this.avatar.height/2
 			}
 		}
+
+		this.container.bringToTop(this.avatar)
 	}
 }
