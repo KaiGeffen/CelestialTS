@@ -7,6 +7,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Menu from './menu'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
+import { ButtonAvatarSmall } from '../../lib/buttons/avatarSelect'
 
 
 const width = 430
@@ -15,6 +16,9 @@ const inputTextWidth = 200
 export default class NewDeckMenu extends Menu {
 	// The user inputted name for the deck
 	name = ''
+
+	// The user selected avatar number
+	selectedAvatar: number
 
 	constructor(scene: Phaser.Scene, params) {
 		super(scene)
@@ -55,7 +59,7 @@ export default class NewDeckMenu extends Menu {
 		return panel
 	}
 
-	private createContent(scene: Phaser.Scene, panel, createCallback: (name: string) => void) {
+	private createContent(scene: Phaser.Scene, panel, createCallback: (name: string, avatar: number) => void) {
 		panel.add(this.createTitle(scene))
 		.addNewLine()
 
@@ -114,6 +118,8 @@ export default class NewDeckMenu extends Menu {
 		}
 
 		private createAvatar(scene: Phaser.Scene) {
+			let that = this
+
 			let fixSizer = scene['rexUI'].add.fixWidthSizer({
 				width: width,
 				space: { line: Space.pad },
@@ -124,6 +130,7 @@ export default class NewDeckMenu extends Menu {
 
 			// TODO One for each character with callbacks
 			let sizer
+			let avatars = []
 			for (let i = 0; i < 6; i++) {
 				if (i % 3 === 0) {
 					sizer = scene['rexUI'].add.sizer({
@@ -134,8 +141,22 @@ export default class NewDeckMenu extends Menu {
 					.addNewLine()
 				}
 
-				let image = scene.add.image(0, 0, 'avatar-Jules')
-				sizer.add(image)
+				// Callback for when an avatar is clicked on
+				// let name = ['Jules', 'Adonis', ] ...
+				function callback() {
+					avatars.forEach(a => a.deselect())
+					avatar.select()
+
+					that.selectedAvatar = i
+				}
+
+				let avatar = new ButtonAvatarSmall(sizer, 0, 0, 'Jules', callback)
+				avatars.push(avatar)
+
+				// Select the first avatar, as a default
+				if (i === 0) {
+					avatar.select()
+				}
 			}
 
 			return fixSizer
@@ -143,7 +164,7 @@ export default class NewDeckMenu extends Menu {
 
 
 		// Create the buttons at the bottom which navigate to other scenes/menus
-		private createButtons(scene: Phaser.Scene, createCallback: (name: string) => void) {
+		private createButtons(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
 			let sizer = scene['rexUI'].add.sizer({
 				width: width,
 				space: {
@@ -169,13 +190,13 @@ export default class NewDeckMenu extends Menu {
 			return container
 		}
 
-		private createCreate(scene: Phaser.Scene, createCallback: (name: string) => void) {
+		private createCreate(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
 			let that = this
 
 			let container = new ContainerLite(scene, 0, 0, 100, 50)
 
 			new SymmetricButtonSmall(container, 0, 0, 'Create', () => {
-				createCallback(that.name)
+				createCallback(that.name, that.selectedAvatar)
 
 				// Close this scene
 				scene.scene.stop()

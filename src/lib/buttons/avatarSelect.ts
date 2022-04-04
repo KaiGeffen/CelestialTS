@@ -29,3 +29,22 @@ export class ButtonAvatarFull extends Button {
 		this.txt.setY(-400)
 	}
 }
+
+export class ButtonAvatarSmall extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		name: string,
+		f: () => void = function() {})
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: `avatar-${name}`,
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}

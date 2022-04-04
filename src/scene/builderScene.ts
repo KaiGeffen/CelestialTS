@@ -507,8 +507,8 @@ class DeckRegion extends Phaser.GameObjects.Container {
       let scene = this.scene
 
       // Callback for when 'Create' is hit in the menu
-      function createCallback(name: string): void {
-        // TODO Use the selected avatar
+      function createCallback(name: string, avatar: number): void {
+        // TODO Use the selected avatar in the stored deck
 
         // Create the deck in storage
         UserSettings._push('decks', {
