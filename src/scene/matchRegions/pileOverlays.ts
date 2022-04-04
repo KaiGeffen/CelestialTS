@@ -61,7 +61,7 @@ class OverlayRegion extends Region {
 }
 
 export class OurDeckOverlay extends OverlayRegion {
-	create(scene: Phaser.Scene): OverlayRegion {
+	create(scene: BaseScene): OverlayRegion {
 		return super.create(scene, 'Your Deck')
 	}
 
@@ -78,7 +78,7 @@ export class OurDeckOverlay extends OverlayRegion {
 }
 
 export class TheirDeckOverlay extends OverlayRegion {
-	create(scene: Phaser.Scene): OverlayRegion {
+	create(scene: BaseScene): OverlayRegion {
 		return super.create(scene, 'Their Last Shuffle')
 	}
 
@@ -95,7 +95,7 @@ export class TheirDeckOverlay extends OverlayRegion {
 }
 
 export class OurDiscardOverlay extends OverlayRegion {
-	create(scene: Phaser.Scene): OverlayRegion {
+	create(scene: BaseScene): OverlayRegion {
 		return super.create(scene, 'Your Discard Pile')
 	}
 
@@ -112,7 +112,7 @@ export class OurDiscardOverlay extends OverlayRegion {
 }
 
 export class TheirDiscardOverlay extends OverlayRegion {
-	create(scene: Phaser.Scene): OverlayRegion {
+	create(scene: BaseScene): OverlayRegion {
 		return super.create(scene, 'Their Discard Pile')
 	}
 
