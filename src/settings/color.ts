@@ -52,6 +52,7 @@ export const Color: Record<string, any> = {
 
   buttonSelected: CoreColors.buttonSelected,
   textboxText: CoreColors.c1,
+  textboxBackground: CoreColors.c2s,
   header: CoreColors.c1,
 
   backgroundAlt: CoreColors.c2,
