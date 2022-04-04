@@ -141,17 +141,14 @@ export default class NewDeckMenu extends Menu {
 					.addNewLine()
 				}
 
-				// Callback for when an avatar is clicked on
-				// let name = ['Jules', 'Adonis', ] ...
-				function callback() {
+				let name = avatarNames[i]
+				let avatar = new ButtonAvatarSmall(sizer, 0, 0, name, () => {
+					// Deselect all avatars, then select this one, remember which is selected
 					avatars.forEach(a => a.deselect())
 					avatar.select()
 
 					that.selectedAvatar = i
-				}
-
-				let name = avatarNames[i]
-				let avatar = new ButtonAvatarSmall(sizer, 0, 0, name, callback)
+				})
 				avatars.push(avatar)
 
 				// Select the first avatar, as a default

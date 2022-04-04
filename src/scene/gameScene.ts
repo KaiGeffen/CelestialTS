@@ -288,7 +288,7 @@ export default class GameScene extends BaseScene {
 
 // The View of MVC - What is presented to the user
 class View {
-	scene: Phaser.Scene
+	scene: BaseScene
 
 	ourHand: Region
 	ourButtons: Region
@@ -311,7 +311,7 @@ class View {
 	// Handles layout, animation
 	// Divided into regions
 
-	constructor (scene: Phaser.Scene) {
+	constructor (scene: BaseScene) {
 		this.scene = scene
 
 		let background = scene.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
