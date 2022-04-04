@@ -117,7 +117,7 @@ export default class BaseScene extends Phaser.Scene {
 			that.sound.play('open')
 
 			that.scene.launch('MenuScene', {
-				menu: 'newDeck', // TODO Testing this out, normally 'options'
+				menu: 'options',
 				activeScene: that
 			})
 

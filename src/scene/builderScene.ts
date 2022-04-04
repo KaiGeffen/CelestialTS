@@ -505,38 +505,48 @@ class DeckRegion extends Phaser.GameObjects.Container {
     private createNewButton(panel): ContainerLite {
       let that = this
       let scene = this.scene
-      let f = function() {
-        const maxDecks = 20
 
+      // Callback for when 'Create' is hit in the menu
+      function createCallback(name: string): void {
+        // TODO Use the selected avatar
+
+        // Create the deck in storage
+        UserSettings._push('decks', {
+          name: name,
+          value: scene.getDeckCode()
+        })
+
+        // Create a new button
+        let newBtn = that.createDeckBtn(that.deckBtns.length)
+        panel.add(newBtn)
+        that.deckPanel.layout()
+
+        // Select that deck
+        let index = that.deckBtns.length - 1
+        that.deckBtns[index].onClick()
+
+        // Scroll down to show the new deck
+        that.deckPanel.t = 1
+      }
+
+      const maxDecks = 20
+      function openNewDeckMenuCallback() {
         // If user already has 9 decks, signal error instead
         if (UserSettings._get('decks').length >= maxDecks) {
           scene.signalError(`Reached max number of decks (${maxDecks}).`)
         }
         else {
-          // Open up a new deck menu to input the deck's name
-          // that.createNewDeckMenu(newBtn, panel)
-          // TODO
-          UserSettings._push('decks', {name: 'fooo', value: scene.getDeckCode()})
-
-          // Create a new button
-          let newBtn = that.createDeckBtn(that.deckBtns.length)
-          panel.add(newBtn)
-          that.deckPanel.layout()
-
-          // Select that deck
-          let index = that.deckBtns.length - 1
-          that.deckBtns[index].onClick()
-
-          // Scroll down to show the new deck
-          that.deckPanel.t = 1
-          
+          scene.scene.launch('MenuScene', {
+            menu: 'newDeck',
+            callback: createCallback,
+          })
         }
       }
 
       // TODO Width and height constants
       let container = new ContainerLite(this.scene, 0, 0, 200, 50)
 
-      let btn = new ButtonNewDeck(container, 0, 0, 'New Deck', f)
+      let btn = new ButtonNewDeck(container, 0, 0, 'New Deck', openNewDeckMenuCallback)
 
       return container
     }

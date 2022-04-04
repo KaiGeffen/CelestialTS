@@ -13,13 +13,16 @@ const width = 430
 const inputTextWidth = 200
 
 export default class NewDeckMenu extends Menu {
+	// The user inputted name for the deck
+	name = ''
+
 	constructor(scene: Phaser.Scene, params) {
 		super(scene)
 
 		// Make a fixed height sizer
 		let panel = this.createSizer(scene)
 
-		this.createContent(scene, panel)
+		this.createContent(scene, panel, params.callback)
 
 		panel.layout()
 	}
@@ -52,7 +55,7 @@ export default class NewDeckMenu extends Menu {
 		return panel
 	}
 
-	private createContent(scene: Phaser.Scene, panel) {
+	private createContent(scene: Phaser.Scene, panel, createCallback: (name: string) => void) {
 		panel.add(this.createTitle(scene))
 		.addNewLine()
 
@@ -62,7 +65,7 @@ export default class NewDeckMenu extends Menu {
 		panel.add(this.createAvatar(scene))
 		.addNewLine()
 
-		panel.add(this.createButtons(scene))
+		panel.add(this.createButtons(scene, createCallback))
 	}
 
 	private createTitle(scene: Phaser.Scene) {
@@ -77,6 +80,8 @@ export default class NewDeckMenu extends Menu {
 	}
 
 	private createName(scene: Phaser.Scene) {
+		let that = this
+
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
 		// let txtHint = scene.add.text(0, 0, 'Name:', Style.basic)
@@ -85,88 +90,97 @@ export default class NewDeckMenu extends Menu {
 		sizer.addSpace()
 
 		let inputText = scene.add['rexInputText'](
-        0, 0, inputTextWidth, 40, {
-          type: 'text',
-          text: '',
-          placeholder: 'Name',
-          tooltip: 'Name for the new deck.',
-          fontFamily: 'Mulish',
-          fontSize: '20px',
-          color: Color.textboxText,
-          backgroundColor: Color.textboxBackground,
-          maxLength: 10,
-          selectAll: true,
-          id: 'search-field'
-        })
-		sizer.add(inputText)
-		.addSpace()
+			0, 0, inputTextWidth, 40, {
+				type: 'text',
+				text: '',
+				placeholder: 'Name',
+				tooltip: 'Name for the new deck.',
+				fontFamily: 'Mulish',
+				fontSize: '20px',
+				color: Color.textboxText,
+				backgroundColor: Color.textboxBackground,
+				maxLength: 10,
+				selectAll: true,
+				id: 'search-field'
+			}).on('textchange', function(inputText) {
+				that.name = inputText.text
+			})
 
-		return sizer
-	}
 
-	private createAvatar(scene: Phaser.Scene) {
-		let fixSizer = scene['rexUI'].add.fixWidthSizer({
-			width: width,
-			space: { line: Space.pad },
-		})
+			sizer.add(inputText)
+			.addSpace()
 
-		let txtHint = scene.add.text(0, 0, 'Avatar:', Style.basic)
-		fixSizer.add(txtHint)
-
-		// TODO One for each character with callbacks
-		let sizer
-		for (let i = 0; i < 6; i++) {
-			if (i % 3 === 0) {
-				sizer = scene['rexUI'].add.sizer({
-					space: {item: Space.pad}
-				})
-				
-				fixSizer.add(sizer)
-				.addNewLine()
-			}
-
-			let image = scene.add.image(0, 0, 'avatar-Jules')
-			sizer.add(image)
+			return sizer
 		}
 
-		return fixSizer
-	}
+		private createAvatar(scene: Phaser.Scene) {
+			let fixSizer = scene['rexUI'].add.fixWidthSizer({
+				width: width,
+				space: { line: Space.pad },
+			})
 
+			let txtHint = scene.add.text(0, 0, 'Avatar:', Style.basic)
+			fixSizer.add(txtHint)
 
-	// Create the buttons at the bottom which navigate to other scenes/menus
-	private createButtons(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({
-			width: width,
-			space: {
-				item: Space.pad
+			// TODO One for each character with callbacks
+			let sizer
+			for (let i = 0; i < 6; i++) {
+				if (i % 3 === 0) {
+					sizer = scene['rexUI'].add.sizer({
+						space: {item: Space.pad}
+					})
+
+					fixSizer.add(sizer)
+					.addNewLine()
+				}
+
+				let image = scene.add.image(0, 0, 'avatar-Jules')
+				sizer.add(image)
 			}
-		})
 
-		sizer
-		.add(this.createCancel(scene))
-		.addSpace()
-		.add(this.createCreate(scene))
+			return fixSizer
+		}
 
-		return sizer
+
+		// Create the buttons at the bottom which navigate to other scenes/menus
+		private createButtons(scene: Phaser.Scene, createCallback: (name: string) => void) {
+			let sizer = scene['rexUI'].add.sizer({
+				width: width,
+				space: {
+					item: Space.pad
+				}
+			})
+
+			sizer
+			.add(this.createCancel(scene))
+			.addSpace()
+			.add(this.createCreate(scene, createCallback))
+
+			return sizer
+		}
+
+		private createCancel(scene: Phaser.Scene) {
+			let container = new ContainerLite(scene, 0, 0, 100, 50)
+
+			new SymmetricButtonSmall(container, 0, 0, 'Cancel', () => {
+				scene.scene.stop()
+			})
+
+			return container
+		}
+
+		private createCreate(scene: Phaser.Scene, createCallback: (name: string) => void) {
+			let that = this
+
+			let container = new ContainerLite(scene, 0, 0, 100, 50)
+
+			new SymmetricButtonSmall(container, 0, 0, 'Create', () => {
+				createCallback(that.name)
+
+				// Close this scene
+				scene.scene.stop()
+			})
+
+			return container
+		}
 	}
-
-	private createCancel(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
-
-		new SymmetricButtonSmall(container, 0, 0, 'Cancel', () => {
-			scene.scene.stop()
-		})
-
-		return container
-	}
-
-	private createCreate(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
-
-		new SymmetricButtonSmall(container, 0, 0, 'Create', () => {
-			scene.scene.start('MenuScene', {menu: 'credits'})
-		})
-
-		return container
-	}
-}
