@@ -56,6 +56,7 @@ class BuilderSceneShell extends BaseScene {
       Space.windowWidth - 70,
       Space.windowHeight - 80,
       '').setDepth(2)
+    // TODO Add the above somewhere that they have access to the current deck panel's height
 
     // Deck container
     // NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
@@ -212,9 +213,9 @@ class BuilderSceneShell extends BaseScene {
 
     // For resolutions below a threshold, make the overlap more intense to fit 15 cards
     let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
-    let x = index * (Space.cardSize - overlap) + xPad + Space.cardSize/2
+    let x = index * (Space.cardSize - overlap) + 0 + Space.cardSize/2
 
-    let y = Space.cardHeight/2 - 60// + (index%2) * Space.stackOffset
+    let y = Space.cardHeight/2 - Space.cardHeight/3
 
     return [-x, -y]
   }
@@ -749,7 +750,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       // width -= innerWidth % (Space.cardSize + Space.pad) TODO
       this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
 
-      let height = Space.windowHeight - (Space.cardHeight - 60 + Space.pad)
+      let height = Space.windowHeight - (Space.cardHeight * 2/3 + Space.pad)
 
       this.panel = this.createPanel(x, width, height)
 

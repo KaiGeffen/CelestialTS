@@ -35,8 +35,8 @@ export const Space = {
   textAreaHeight: 60,
 
   // These values are experimental and related to the 3/15 gui pass
-  cardWidth: 154,
-  cardHeight: 220,
+  cardWidth: 154*1.3,
+  cardHeight: 220*1.3,
   storyXOverlap: 30,
   storyYOverlap: 70, // If this is more than half of cardHeight, mistake
   // Height of the hand regions
