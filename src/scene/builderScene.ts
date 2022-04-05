@@ -215,7 +215,7 @@ class BuilderSceneShell extends BaseScene {
     let overlap = Space.windowWidth > 1300 ? Space.stackOverlap : Space.cardSize/2
     let x = index * (Space.cardSize - overlap) + 0 + Space.cardSize/2
 
-    let y = Space.cardHeight/2 - Space.cardHeight/3
+    let y = 0//Space.cardHeight/2 - Space.cardHeight/3
 
     return [-x, -y]
   }
@@ -750,7 +750,7 @@ class DeckRegion extends Phaser.GameObjects.Container {
       // width -= innerWidth % (Space.cardSize + Space.pad) TODO
       this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
 
-      let height = Space.windowHeight - (Space.cardHeight * 2/3 + Space.pad)
+      let height = Space.windowHeight - (Space.cardHeight/2 + Space.pad)
 
       this.panel = this.createPanel(x, width, height)
 
