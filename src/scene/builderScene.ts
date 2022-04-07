@@ -26,6 +26,20 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 const maxCostFilter: number = 7
 
+
+
+
+
+class Foo extends BaseScene {
+  create(): void {
+    // Make each region
+  }
+
+  addCardToDeck(card: Card): boolean {
+    return false
+  }
+}
+
 // TODO Take in-deck cards region out of shell and make it its own region
 class BuilderSceneShell extends BaseScene {
   // Hint telling users how to add cards
