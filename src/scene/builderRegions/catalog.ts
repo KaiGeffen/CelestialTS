@@ -47,17 +47,15 @@ export default class CatalogRegion {
   }
 
   private createPanel(scene: Phaser.Scene, x: number) {
-    // Determine the dimensions
-    this.cardsPerRow = Math.floor(innerWidth / (Space.cardSize + Space.pad))
-
     // TODO This is specific to the deck region impl
     let height = Space.windowHeight - (Space.cardHeight/2 + Space.pad)
 
     // Make the object
+    let width = Space.windowWidth - x // TODO Center
     let superPanel = scene['rexUI'].add.scrollablePanel({
-      x: x,
-      y: 0,
-      width: Space.windowWidth - x,
+      x: x + width/2,
+      y: height/2,
+      width: width,
       height: height,
 
       scrollMode: 0,
@@ -68,14 +66,14 @@ export default class CatalogRegion {
         child: scene['rexUI'].add.fixWidthSizer({
           space: {
             left: Space.pad,
-            right: Space.pad - 10,
-            top: 70 + Space.pad,
+            right: Space.pad,
+            top: 70 + Space.pad, // TODO 70 is the filter height
             bottom: Space.pad - 10,
-            // item: Space.pad,
+            item: Space.pad,
             line: Space.pad,
           }
         })
-      }}).setOrigin(0)
+      }})
 
     // Update panel when mousewheel scrolls
     let panel = superPanel.getElement('panel')

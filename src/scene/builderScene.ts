@@ -45,6 +45,8 @@ class BuilderBase extends BaseScene {
   
 
   create(): void {
+    super.create()
+    
     // TODO Only do for non-Journey
     // this.decklistsRegions = new DecklistsRegion().create(scene)
 
@@ -54,7 +56,7 @@ class BuilderBase extends BaseScene {
     this.deckRegion = new DeckRegion().create(this)
     
     // TODO X = 100 based on above width
-    this.catalogRegion = new CatalogRegion().create(this, 100)
+    this.catalogRegion = new CatalogRegion().create(this, 0)
   }
 
   addCardToDeck(card: Card): boolean {
