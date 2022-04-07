@@ -119,6 +119,9 @@ export default class CatalogRegion {
       }
     }
 
+    // Reset the scroll
+    this.panel.t = 0
+
     this.panel.layout()
   }
 

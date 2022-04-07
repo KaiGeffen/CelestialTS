@@ -47,7 +47,7 @@ export default class DeckRegion {
 		this.btnStart = new SymmetricButtonSmall(this.container, 
 			Space.windowWidth - 70, // TODO
 			Space.windowHeight - 80, // TODO
-			'').setDepth(2)
+			'0/15')
 		// TODO Add the above somewhere that they have access to the current deck panel's height
 
 		return this
@@ -164,7 +164,7 @@ export default class DeckRegion {
 
 		// For resolutions below a threshold, make the overlap more intense to fit 15 cards
 		let overlap = Space.cardWidth - 70 // TODO
-		const x0 = Space.windowWidth - (Space.largeButtonWidth + 2*Space.pad + Space.cardWidth/2)
+		const x0 = Space.windowWidth - (Space.smallButtonWidth + 2*Space.pad + Space.cardWidth/2)
 		let x = x0 - index * (Space.cardWidth - overlap)
 
 		let y = Space.windowHeight
