@@ -7,6 +7,7 @@ import ClientState from "../lib/clientState"
 import BaseScene from "./baseScene"
 import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib/cardImage"
 import { StatusBar } from "../lib/status"
+import { SymmetricButtonLarge } from '../lib/buttons/backed'
 
 // Import Settings itself 
 import { Color, Style, UserSettings, Time, Space, Mechanics } from "../settings/settings"
@@ -313,6 +314,9 @@ class View {
 	// Region shown when the game has been won / lost
 	results: Region
 
+	// Button to show the results, once the game is over
+	btnResults: SymmetricButtonLarge
+
 	constructor (scene: BaseScene) {
 		this.scene = scene
 
@@ -339,7 +343,20 @@ class View {
 
 		// These regions are only visible during certain times
 		this.mulligan = new Regions.Mulligan().create(scene)
+
+		// Results are visible after the game is over
 		this.results = new Regions.Results().create(scene)
+		this.results.hide()
+
+		// Create a button to show the results once the game is over
+		this.btnResults = new SymmetricButtonLarge(scene,
+			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
+			Space.windowHeight/2,
+			'Show Results',
+			() => {
+				this.results.show()
+			})
+		.setVisible(false)
 
 	}
 
@@ -370,13 +387,13 @@ class View {
 			this.ourHand['hideHand']()
 		}
 
-		// If the game has been won, show the results scene
-		if (state.winner === undefined) {
-			// this.results.hide()
-		}
-		else {
-			// this.results.displayState(state, isRecap)
-			// this.results.show()
+		// If this is the first time the game has been won, show it and a 'Results' button
+		if (state.winner !== null && !this.btnResults.isVisible()) {
+			this.results.displayState(state, isRecap)
+			this.results.show()
+			
+			// Add in a 'Results' button to bring up the results screen
+			this.btnResults.setVisible(true)
 		}
 
 		// Play whatever sound this new state brings

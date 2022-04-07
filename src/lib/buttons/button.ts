@@ -156,6 +156,15 @@ export default class Button {
 		return this
 	}
 
+	isVisible(): boolean {
+		if (this.txt) {
+			return this.txt.visible
+		}
+		if (this.icon) {
+			this.icon.visible
+		}
+	}
+
 
 	// TODO
 	select(): Button {

@@ -33,11 +33,11 @@ export default class ResultsRegion extends Region {
 		.on('pointerdown', () => {that.container.setVisible(false)})
 		this.container.add(background)
 
-		// Buttons 
-		this.createButtons()
-
 		// Images
 		this.createImages(scene)
+
+		// Buttons 
+		this.createButtons()
 
 		return this
 	}
