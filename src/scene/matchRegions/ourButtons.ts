@@ -16,6 +16,7 @@ export default class OurHandRegion extends Region {
 	btnPass: AButtonLarge
 	btnSkip: AButtonSmall
 	btnPlay: AButtonLarge
+	btnPause: AButtonLarge
 
 	create (scene: BaseScene): OurHandRegion {
 		let that = this
@@ -58,6 +59,13 @@ export default class OurHandRegion extends Region {
 			'Play'
 			)
 
+		// Pause button
+		this.btnPause = new AButtonLarge(this.container,
+			width/2 + 15,
+			Space.handHeight * 2 / 3 + 15,
+			'Pause'
+			)
+
 		return this
 	}
 
@@ -68,12 +76,18 @@ export default class OurHandRegion extends Region {
 		this.btnRecap.setVisible(!isRecap)
 		this.btnPass.setVisible(!isRecap)
 		this.btnSkip.setVisible(isRecap)
-		this.btnPlay.setVisible(isRecap)
 
-		// Play button glows before at the start of the recap
+		// Pause when a round starts
 		let isRoundEnd = ['win', 'lose', 'tie'].includes(state.soundEffect)
 		if (isRecap && (state.recap.playList.length === 0 && !isRoundEnd)) {
-			this.btnPlay.glowUntilClicked()
+			// NOTE Switches back and forth to pause button based on callbacks
+			this.btnPause.onClick()
+		}
+
+		// Pause and play buttons are invisible when not in recap
+		if (!isRecap) {
+			this.btnPause.setVisible(false)
+			this.btnPlay.setVisible(false)
 		}
 	}
 
@@ -104,5 +118,28 @@ export default class OurHandRegion extends Region {
 	// Set the callback for when the skip button is pressed
 	setSkipCallback(f: () => void): void {
 		this.btnSkip.setOnClick(f)
+	}
+
+	// Set the callback for when the play button is pressed
+	setPlayCallback(f: () => void): void {
+		let that = this
+
+		this.btnPlay.setOnClick(() => {
+			that.btnPlay.setVisible(false)
+			that.btnPause.setVisible(true)
+			f()
+		})
+	}
+
+
+	// Set the callback for when the pause button is pressed
+	setPauseCallback(f: () => void): void {
+		let that = this
+
+		this.btnPause.setOnClick(() => {
+			that.btnPause.setVisible(false)
+			that.btnPlay.setVisible(true)
+			f()
+		})
 	}
 }

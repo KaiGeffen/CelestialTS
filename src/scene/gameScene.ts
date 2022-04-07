@@ -148,6 +148,8 @@ export default class GameScene extends BaseScene {
 			that.queuedRecap = []
 			that.recapPlaying = false
 		})
+		view.ourButtons.setPlayCallback(() => {that.view.paused = false})
+		view.ourButtons.setPauseCallback(() => {that.view.paused = true})
 
 		// Story
 		view.story.setCallback((i: number) => {
@@ -247,6 +249,10 @@ export default class GameScene extends BaseScene {
 			return false
 		}
 
+		if (this.view.paused) {
+			return false
+		}
+
 		// Remember what version of the game state this is, for use when communicating with server
 		this.net.setVersionNumber(state.versionNumber)
 
@@ -293,6 +299,9 @@ export default class GameScene extends BaseScene {
 // The View of MVC - What is presented to the user
 class View {
 	scene: BaseScene
+
+	// Whether the recap is playing or is paused
+	paused: boolean
 
 	ourHand: Region
 	ourButtons: Region
