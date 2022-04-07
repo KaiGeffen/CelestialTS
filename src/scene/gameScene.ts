@@ -194,6 +194,9 @@ export default class GameScene extends BaseScene {
 
 			net.doMulligan(s)
 		})
+
+		// Results
+		// TODO
 	}
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
@@ -307,9 +310,8 @@ class View {
 	// Region shown during mulligan phase
 	mulligan: Region
 
-	// Has the phaser objects
-	// Handles layout, animation
-	// Divided into regions
+	// Region shown when the game has been won / lost
+	results: Region
 
 	constructor (scene: BaseScene) {
 		this.scene = scene
@@ -335,7 +337,9 @@ class View {
 		this.ourDiscardOverlay = new Regions.OurDiscard().create(scene)
 		this.theirDiscardOverlay = new Regions.TheirDiscard().create(scene)
 
+		// These regions are only visible during certain times
 		this.mulligan = new Regions.Mulligan().create(scene)
+		this.results = new Regions.Results().create(scene)
 
 	}
 
@@ -366,6 +370,14 @@ class View {
 			this.ourHand['hideHand']()
 		}
 
+		// If the game has been won, show the results scene
+		if (state.winner === undefined) {
+			// this.results.hide()
+		}
+		else {
+			// this.results.displayState(state, isRecap)
+			// this.results.show()
+		}
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {

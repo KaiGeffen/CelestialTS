@@ -150,6 +150,8 @@ export default class PreloadClass extends Phaser.Scene {
 			'Search', 'Underline',
 			'Premade', 'CustomDeck',
 			'XOut',
+			'Winner', 'Loser', 'ResultStats',
+
 		]
 
 		iconNames.forEach( (s) => {

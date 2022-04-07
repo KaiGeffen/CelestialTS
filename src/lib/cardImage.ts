@@ -100,9 +100,9 @@ export class CardImage {
     this.txtStats = scene.add['rexBBCodeText'](-Space.cardWidth/2, -Space.cardHeight/2, s, BBStyle.cardStats).setOrigin(0)
     // TODO Include stats in the image of the card itself
     // this.txtStats.setAlpha(0)
-    if (card === cardback) {
+    // if (card === cardback) {
       this.txtStats.setAlpha(0)
-    }
+    // }
 
     // This container
     this.container = scene.add.container(0, 0)

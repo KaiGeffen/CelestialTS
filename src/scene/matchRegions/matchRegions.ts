@@ -9,6 +9,8 @@ import TheirScoreRegion from "./theirScore"
 import { OurDeckOverlay, TheirDeckOverlay, OurDiscardOverlay, TheirDiscardOverlay } from "./pileOverlays"
 
 import MulliganRegion from "./mulliganRegion"
+import ResultsRegion from "./results"
+
 
 export default class Regions {
 	static OurHand = OurHandRegion
@@ -25,4 +27,5 @@ export default class Regions {
 	static TheirDiscard = TheirDiscardOverlay
 
 	static Mulligan = MulliganRegion
+	static Results = ResultsRegion
 }
