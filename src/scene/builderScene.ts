@@ -58,9 +58,9 @@ class BuilderBase extends BaseScene {
   }
 
   addCardToDeck(card: Card): boolean {
-    this.deckRegion.addCardToDeck(card)
-    // TODO
-    return false
+    let cardImage = this.deckRegion.addCardToDeck(card)
+
+    return cardImage !== undefined
   }
 
   // Filter which cards are visible and selectable in the catalog

@@ -26,6 +26,7 @@ export default class CatalogRegion {
 
   // Create this region, offset by the given width
   create(scene: Phaser.Scene, x: number) {
+    this.scene = scene
     this.container = new ContainerLite(scene)
 
     this.panel = this.createPanel(scene, x)
@@ -136,7 +137,6 @@ export default class CatalogRegion {
     let scene = this.scene
 
     return function() {
-      console.log('gonna add that card~!')
       if (scene.addCardToDeck(card)) {
         scene.sound.play('click')
       }
