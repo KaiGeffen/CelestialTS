@@ -9,8 +9,10 @@ import { UButton } from '../../lib/buttons/underlined'
 import { IButtonX } from '../../lib/buttons/icon'
 
 
+const maxCostFilter: number = 7
+
 // Filter region of the deck builder scene
-class FilterRegion {  
+export default class FilterRegion {  
 	// Overwrite the 'scene' property of container to specifically be a BuilderScene
 	scene// TODO: BuilderSceneShell
 
@@ -23,14 +25,15 @@ class FilterRegion {
 	filterUnowned: boolean
 
 	// Create this region, offset by the given width
-	create(scene, x: number) { // TODO scene is BaseScene
+	create(scene, filterUnowned) { // TODO scene is BaseScene
+		this.filterUnowned = filterUnowned
+
 		let that = this
 		let container = scene.add.container().setDepth(2)
 
 		this.createBackground(container)
 
-		let backButton = new TextButton(container, Space.pad, 40, '<   Back', this.scene.doExit()).setOrigin(0, 0.5)
-		container.add(backButton)
+		new TextButton(container, Space.pad, 40, '<   Back', scene.doExit()).setOrigin(0, 0.5)
 
 		this.createFilterButtons(container)
 
@@ -122,112 +125,8 @@ class FilterRegion {
       }
     }
 
-
-
-
-
-	// TODO Move
-	// Filter which cards can be selected in the catalog based on current filtering parameters
-	filter(): void {
-		let filterFunction: (card: Card) => boolean = this.getFilterFunction()
-		let sizer = this.panel.getElement('panel')
-		sizer.clear()
-
-		let cardCount = 0
-		for (var i = 0; i < this.cardCatalog.length; i++) {
-
-			// The first card on each line should have padding from the left side
-			// This is done here instead of in padding options so that stats text doesn't overflow 
-			let leftPadding = 0
-			if (cardCount % this.cardsPerRow === 0) {
-				leftPadding = Space.pad
-			}
-
-			let cardImage = this.cardCatalog[i]
-
-			// Check if this card is present
-			if (filterFunction(cardImage.card)) {
-				cardCount++
-
-				cardImage.image.setVisible(true)
-
-				// Add the image next, with padding between it and the next card
-				sizer.add(cardImage.image, {
-					padding: {
-						right: Space.pad - 2
-					}
-				})
-
-			}
-			else
-			{
-				cardImage.image.setVisible(false)
-				cardImage.txtStats.setVisible(false)
-			}
-		}
-
-		this.panel.layout()
-
-		// Hide the slider if all cards fit in panel
-		let slider = this.panel.getElement('slider')
-
-		// Taken from['RexUI'] implementation of overflow for scrollable panel
-		let isOverflow = function(panel: any): boolean {
-			let t = panel.childrenMap.child
-			return t.topChildOY!==t.bottomChildOY;
-		}
-
-		if (!isOverflow(this.panel)) {
-			slider.setVisible(false)
-		} else {
-			slider.setVisible(true)
-		}
-
-		// Resize each stats text back to original size
-		this.cardCatalog.forEach((cardImage) => {
-			cardImage.txtStats.setSize(100, 100)
-
-			// Move up to be atop image
-			cardImage.txtStats.setDepth(1)
-		})
-	}
-
-
-
-
-
-	private addCardToCatalog(card: Card, index: number): CardImage {
-		let cardImage = new CardImage(card, this)
-		.setOnClick(this.onClickCatalogCard(card))
-
-		// Add this cardImage to the maintained list of cardImages in the catalog
-		this.cardCatalog.push(cardImage)
-
-		return cardImage
-	}
-
-	// Event when a card in the catalog is clicked
-	private onClickCatalogCard(card: Card): () => void {
-		let scene = this.scene
-
-		return function() {
-			if (scene.addCardToDeck(card)) {
-				scene.sound.play('click')
-			}
-			else {
-				scene.signalError('Deck is full')
-			}
-		}
-	}
-
-
-
-
-
-
-	// TODO Move
 	// Returns a function which filters cards to see which are selectable
-	private getFilterFunction(): (card: Card) => boolean {
+	getFilterFunction(): (card: Card) => boolean {
 		let that = this
 
 		// Filter cards based on their cost

@@ -6,7 +6,7 @@ import { Space, Style } from '../../settings/settings'
 import Card from '../../lib/card'
 
 
-class DeckRegion {
+export default class DeckRegion {
 	// Hint telling users how to add cards
 	private txtHint: Phaser.GameObjects.Text
 
@@ -20,7 +20,11 @@ class DeckRegion {
 	container: Phaser.GameObjects.Container
 
 	create(scene: Phaser.Scene) {
-		this.createBackground(scene)
+		// Deck container
+		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
+		this.container = scene.add.container(0, Space.windowHeight).setDepth(2)
+
+		let background = this.createBackground(scene)
 
 		// Hint text - Tell user to click cards to add
 		this.txtHint = scene.add.text(
@@ -31,27 +35,22 @@ class DeckRegion {
 		.setOrigin(0.5, 0)
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
-		this.btnStart = new SymmetricButtonSmall(scene, 
+		this.btnStart = new SymmetricButtonSmall(this.container, 
 			Space.windowWidth - 70, // TODO
 			Space.windowHeight - 80, // TODO
 			'').setDepth(2)
 		// TODO Add the above somewhere that they have access to the current deck panel's height
 
-		// Deck container
-		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-		// this.container = this.add.container(Space.windowWidth - Space.cardWidth, Space.windowHeight).setDepth(2)
+		// Add each object to this container
+		this.container.add([background, this.txtHint])
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Rectangle {
-		// Must add an invisible region below and above the scroller or else partially visible cards will be clickable on
-      // their bottom parts, which cannot be seen and are below the scroller
-      // TODO determine the y and x
-      let y = 600 // this.panel.y + this.panel.height
       let background = scene.add
       .rectangle(0,
-        y,
-        Space.windowWidth, Space.windowHeight, 0x989898, 1)
-      .setOrigin(0)
+        0,
+        Space.windowWidth, Space.cardHeight/2 + Space.pad, 0x989898, 1)
+      .setOrigin(0, 1)
       .setInteractive()
 
       scene.plugins.get('rexDropShadowPipeline')['add'](background, {

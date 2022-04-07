@@ -1,0 +1,166 @@
+import 'phaser'
+
+import { Color } from "../../settings/settings"
+import Card from '../../lib/card'
+import { CardImage } from '../../lib/cardImage'
+import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
+import { TextButton } from '../../lib/buttons/text'
+import { UButton } from '../../lib/buttons/underlined'
+import { IButtonX } from '../../lib/buttons/icon'
+
+
+const maxCostFilter: number = 7
+
+// Filter region of the deck builder scene
+export default class DecklistsRegion {  
+	// // Overwrite the 'scene' property of container to specifically be a BuilderScene
+	// scene// TODO: BuilderSceneShell
+
+	// // Full list of all cards in the catalog (Even those invisible)
+	// cardCatalog: CardImage[]
+
+	// // The costs and string that cards in the catalog are filtered for
+	// filterCostAry: boolean[] = []
+	// searchText: string = ""
+	// filterUnowned: boolean
+
+	// // Create this region, offset by the given width
+	// create(scene, filterUnowned) { // TODO scene is BaseScene
+	// 	this.filterUnowned = filterUnowned
+
+	// 	let that = this
+	// 	let container = scene.add.container().setDepth(2)
+
+	// 	this.createBackground(container)
+
+	// 	let backButton = new TextButton(container, Space.pad, 40, '<   Back', this.scene.doExit()).setOrigin(0, 0.5)
+	// 	container.add(backButton)
+
+	// 	this.createFilterButtons(container)
+
+	// 	this.createTextSearch(container)
+	// }
+
+	// private createBackground(container: Phaser.GameObjects.Container) {
+	// 	let background = container.scene.add.image(0, 0, 'icon-Search')
+	// 	.setOrigin(0) // TODO 80 Search height
+	// 	.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, 80), Phaser.Geom.Rectangle.Contains)
+
+	// 	container.add(background)
+	// }
+
+	// private createFilterButtons(container: Phaser.GameObjects.Container) {
+	// 	let scene = container.scene
+
+	// 	// Cost filters
+	// 	container.add(scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
+
+	// 	let btns = []
+	// 	for (let i = 0; i <= 7; i++) {
+	// 		let s = i === 7 ? '7+' : i.toString()
+	// 		let btn = new UButton(container, 670 + i * 41, 40, s)
+	// 		btn.setOnClick(this.onClickFilterButton(i, btns))
+
+	// 		btns.push(btn)
+	// 	}
+	// 	let btnX = new IButtonX(container, 1000, 40, this.onClearFilters(btns))
+	// }
+
+	// private createTextSearch(container: Phaser.GameObjects.Container) {
+	// 	let scene = container.scene
+
+	// 	let textboxSearch = scene.add['rexInputText'](
+	// 		215, 40, 308, 40, {
+	// 			type: 'text',
+	// 			text: this.searchText,
+	// 			placeholder: 'Search',
+	// 			tooltip: 'Search for cards by text.',
+	// 			fontFamily: 'Mulish',
+	// 			fontSize: '20px',
+	// 			color: Color.textboxText,
+	// 			maxLength: 40,
+	// 			selectAll: true,
+	// 			id: 'search-field'
+	// 		})
+	// 	.on('textchange', function(inputText) {
+	// 		// Filter the visible cards based on the text
+	// 		this.searchText = inputText.text
+	// 		scene['filter']() // TODO Smell
+	// 	}, this)
+	// 	.setOrigin(0, 0.5)
+
+	// 	container.add(textboxSearch)
+	// }
+
+	// private onClickFilterButton(thisI: number, btns: UButton[]): () => void {
+ //      let that = this
+
+ //      return function() {
+ //        // Clear out all buttons
+ //        for (let i = 0; i < btns.length; i++) {
+ //          // Toggle this one, clear all others
+ //          if (i === thisI) {
+ //            btns[i].toggle()
+ //            that.filterCostAry[i] = !that.filterCostAry[i]
+ //          }
+ //          else {
+ //            btns[i].toggleOff()
+ //            that.filterCostAry[i] = false
+ //          }
+ //        }
+
+ //        that.filter()
+ //      }
+ //    }
+
+ //    private onClearFilters(btns: UButton[]): () => void {
+ //      let that = this
+
+ //      return function() {
+ //        for (let i = 0; i < btns.length; i++) {
+ //          btns[i].toggleOff()
+ //          that.filterCostAry[i] = false
+ //        }
+
+ //        that.filter()
+ //      }
+ //    }
+
+	// // Returns a function which filters cards to see which are selectable
+	// getFilterFunction(): (card: Card) => boolean {
+	// 	let that = this
+
+	// 	// Filter cards based on their cost
+	// 	let costFilter = function(card: Card): boolean {
+	// 		// If no number are selected, all cards are fine
+	// 		if (!that.filterCostAry.includes(true)) {
+	// 			return true
+	// 		}
+	// 		else {
+	// 			// The last filtered cost includes everything more than it
+	// 			return that.filterCostAry[Math.min(card.cost, maxCostFilter)]
+	// 		}
+	// 	}
+
+	// 	// Filter cards based on if they contain the string being searched
+	// 	let searchTextFilter = function(card: Card): boolean {
+	// 		// If searching for 'common', return false to uncommon cards
+	// 		if (that.searchText.toLowerCase() === 'common' && card.getCardText().toLowerCase().includes('uncommon')) {
+	// 			return false
+	// 		}
+	// 		return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
+	// 	}
+
+	// 	// Filter cards based on whether you have unlocked them
+	// 	let ownershipFilter = function(card: Card): boolean {
+	// 		return !that.filterUnowned || UserSettings._get('inventory')[card.id]
+	// 	}
+
+	// 	// Filter based on the overlap of all above filters
+	// 	let andFilter = function(card: Card): boolean {
+	// 		return costFilter(card) && searchTextFilter(card) && ownershipFilter(card)
+	// 	}
+
+	// 	return andFilter
+	// }
+}

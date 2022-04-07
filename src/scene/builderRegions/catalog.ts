@@ -8,9 +8,10 @@ import { collectibleCards } from "../../catalog/catalog"
 
 
 // Region where all of the available cards can be scrolled through
-class CatalogRegion {  
+export default class CatalogRegion {  
   // Overwrite the 'scene' property of container to specifically be a BuilderScene
   scene// TODO: BuilderSceneShell
+  container: Phaser.GameObjects.Container
 
   // The scrollable panel on which the catalog exists
   panel
@@ -23,7 +24,11 @@ class CatalogRegion {
 
   // Create this region, offset by the given width
   create(scene: Phaser.Scene, x: number) {
+    this.container = scene.add.container(0, 0)
+
     this.panel = this.createPanel(scene, x)
+
+    this.cardCatalog = []
 
     // Add each card
     let pool = collectibleCards
@@ -86,73 +91,30 @@ class CatalogRegion {
     return superPanel
   }
 
-
-
-
-  // TODO Move
   // Filter which cards can be selected in the catalog based on current filtering parameters
-  filter(): void {
-    let filterFunction: (card: Card) => boolean = this.getFilterFunction()
+  filter(filterFunction: (card: Card) => boolean): void {
     let sizer = this.panel.getElement('panel')
     sizer.clear()
 
-    let cardCount = 0
-    for (var i = 0; i < this.cardCatalog.length; i++) {
-
-      // The first card on each line should have padding from the left side
-      // This is done here instead of in padding options so that stats text doesn't overflow 
-      let leftPadding = 0
-      if (cardCount % this.cardsPerRow === 0) {
-        leftPadding = Space.pad
-      }
-
+    // For each card in the catalog, add it to the sizer if it satisfies
+    // Otherwise make it invisible
+    for (let i = 0; i < this.cardCatalog.length; i++) {
       let cardImage = this.cardCatalog[i]
 
       // Check if this card is present
       if (filterFunction(cardImage.card)) {
-        cardCount++
-
         cardImage.image.setVisible(true)
 
         // Add the image next, with padding between it and the next card
-        sizer.add(cardImage.image, {
-          padding: {
-            right: Space.pad - 2
-          }
-        })
-
+        sizer.add(cardImage.image)
       }
       else
       {
         cardImage.image.setVisible(false)
-        cardImage.txtStats.setVisible(false)
       }
     }
 
     this.panel.layout()
-
-    // Hide the slider if all cards fit in panel
-    let slider = this.panel.getElement('slider')
-
-    // Taken from['RexUI'] implementation of overflow for scrollable panel
-    let isOverflow = function(panel: any): boolean {
-      let t = panel.childrenMap.child
-      return t.topChildOY!==t.bottomChildOY;
-    }
-
-    if (!isOverflow(this.panel)) {
-      slider.setVisible(false)
-    } else {
-      slider.setVisible(true)
-    }
-
-    // Resize each stats text back to original size
-    this.cardCatalog.forEach((cardImage) => {
-      cardImage.txtStats.setSize(100, 100)
-
-      // Move up to be atop image
-      cardImage.txtStats.setDepth(1)
-    })
   }
 
 
@@ -160,7 +122,7 @@ class CatalogRegion {
 
 
   private addCardToCatalog(card: Card, index: number): CardImage {
-    let cardImage = new CardImage(card, this)
+    let cardImage = new CardImage(card, this.container)
     .setOnClick(this.onClickCatalogCard(card))
 
     // Add this cardImage to the maintained list of cardImages in the catalog
