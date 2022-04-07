@@ -68,7 +68,7 @@ class BuilderBase extends BaseScene {
   filter() {
     let filterFunction: (card: Card) => boolean = this.filterRegion.getFilterFunction()
     
-    this.filterRegion.filter(filterFunction)
+    this.catalogRegion.filter(filterFunction)
   }
 }
 

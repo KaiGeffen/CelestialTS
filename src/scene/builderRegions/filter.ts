@@ -26,6 +26,7 @@ export default class FilterRegion {
 
 	// Create this region, offset by the given width
 	create(scene, filterUnowned) { // TODO scene is BaseScene
+		this.scene = scene
 		this.filterUnowned = filterUnowned
 
 		let that = this
@@ -38,6 +39,8 @@ export default class FilterRegion {
 		this.createFilterButtons(container)
 
 		this.createTextSearch(container)
+
+		return this
 	}
 
 	private createBackground(container: Phaser.GameObjects.Container) {
@@ -108,7 +111,7 @@ export default class FilterRegion {
           }
         }
 
-        that.filter()
+        that.scene.filter()
       }
     }
 
@@ -121,7 +124,7 @@ export default class FilterRegion {
           that.filterCostAry[i] = false
         }
 
-        that.filter()
+        that.scene.filter()
       }
     }
 

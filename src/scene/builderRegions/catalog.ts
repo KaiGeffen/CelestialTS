@@ -1,5 +1,7 @@
 import 'phaser'
 
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
 import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
@@ -11,7 +13,7 @@ import { collectibleCards } from "../../catalog/catalog"
 export default class CatalogRegion {  
   // Overwrite the 'scene' property of container to specifically be a BuilderScene
   scene// TODO: BuilderSceneShell
-  container: Phaser.GameObjects.Container
+  container: ContainerLite
 
   // The scrollable panel on which the catalog exists
   panel
@@ -24,7 +26,7 @@ export default class CatalogRegion {
 
   // Create this region, offset by the given width
   create(scene: Phaser.Scene, x: number) {
-    this.container = scene.add.container(0, 0)
+    this.container = new ContainerLite(scene)
 
     this.panel = this.createPanel(scene, x)
 
@@ -39,6 +41,8 @@ export default class CatalogRegion {
     }
 
     this.panel.layout()
+
+    return this
   }
 
   private createPanel(scene: Phaser.Scene, x: number) {
@@ -117,10 +121,6 @@ export default class CatalogRegion {
     this.panel.layout()
   }
 
-
-
-
-
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.container)
     .setOnClick(this.onClickCatalogCard(card))
@@ -136,6 +136,7 @@ export default class CatalogRegion {
     let scene = this.scene
 
     return function() {
+      console.log('gonna add that card~!')
       if (scene.addCardToDeck(card)) {
         scene.sound.play('click')
       }
@@ -143,49 +144,5 @@ export default class CatalogRegion {
         scene.signalError('Deck is full')
       }
     }
-  }
-
-
-
-
-
-
-  // TODO Move
-  // Returns a function which filters cards to see which are selectable
-  private getFilterFunction(): (card: Card) => boolean {
-    let that = this
-
-    // Filter cards based on their cost
-    let costFilter = function(card: Card): boolean {
-      // If no number are selected, all cards are fine
-      if (!that.filterCostAry.includes(true)) {
-        return true
-      }
-      else {
-        // The last filtered cost includes everything more than it
-        return that.filterCostAry[Math.min(card.cost, maxCostFilter)]
-      }
-    }
-
-    // Filter cards based on if they contain the string being searched
-    let searchTextFilter = function(card: Card): boolean {
-      // If searching for 'common', return false to uncommon cards
-      if (that.searchText.toLowerCase() === 'common' && card.getCardText().toLowerCase().includes('uncommon')) {
-        return false
-      }
-      return (card.getCardText()).toLowerCase().includes(that.searchText.toLowerCase())
-    }
-
-    // Filter cards based on whether you have unlocked them
-    let ownershipFilter = function(card: Card): boolean {
-      return !that.filterUnowned || UserSettings._get('inventory')[card.id]
-    }
-
-    // Filter based on the overlap of all above filters
-    let andFilter = function(card: Card): boolean {
-      return costFilter(card) && searchTextFilter(card) && ownershipFilter(card)
-    }
-
-    return andFilter
   }
 }

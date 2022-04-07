@@ -43,6 +43,8 @@ export default class DeckRegion {
 
 		// Add each object to this container
 		this.container.add([background, this.txtHint])
+
+		return this
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Rectangle {
