@@ -8,6 +8,7 @@ import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon'
 import { ButtonNewDeck } from '../../lib/buttons/backed'
 import { ButtonDecklist } from '../../lib/buttons/decklist'
 import avatarNames from '../../lib/avatarNames'
+import premadeDecklists from '../../catalog/premadeDecklists'
 
 
 const width = Space.iconSeparation + Space.pad
@@ -157,13 +158,14 @@ export default class DecklistsRegion {
 		return sizer
 	}
 
-	// TODO Callback for when a premade avatar is clicked on
+	// Callback for when a premade avatar is clicked on
 	private premadeCallback(): (i: number) => () => void {
 		let that = this
 		return function(i: number) {
 			return function() {
 				that.savedDeckIndex = undefined
-				console.log(i)
+				
+				that.scene.setDeck(premadeDecklists[i])
 			}
 		}
 	}

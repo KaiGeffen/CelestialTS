@@ -1,31 +1,23 @@
 import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+
 import { ButtonAvatarFull } from '../../lib/buttons/avatarSelect'
-
-
-// Menu which shows player the different characters to choose their
-// premade deck
-
 import Menu from './menu'
 import { Space, Color } from '../../settings/settings'
+import avatarNames from '../../lib/avatarNames'
 
 
 export default class ChoosePremade extends Menu {
 	constructor(scene: Phaser.Scene, params) {
 		let callback: (number) => () => void = params.callback
 		super(scene)
-		// this.createBackground(width, height)
 
 		// Make a fixed height sizer
 		let [panel, subpanel] = this.createSizer(scene)
 
-		// Add characters to it
-
-		// 6 times, create the given character
-		const names = ['Jules', 'Adonis', 'Mia', 'Kitz', 'Imani', 'Mona']
-		for (let i = 0; i < names.length; i++) {
-			// TODO Dont use indexes like this
-			subpanel.add(this.createCharacter(scene, names[i], callback(i)))
+		// Create each avatar
+		for (let i = 0; i < avatarNames.length; i++) {
+			subpanel.add(this.createCharacter(scene, avatarNames[i], callback(i)))
 		}
 
 		panel.layout()
