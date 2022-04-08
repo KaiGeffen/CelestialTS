@@ -4,11 +4,13 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import { Space, Style, Color, UserSettings, Mechanics } from "../../settings/settings"
 import Button from '../../lib/buttons/button'
-import { IButtonPremade } from '../../lib/buttons/icon'
+import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon'
 import { ButtonNewDeck } from '../../lib/buttons/backed'
 import { ButtonDecklist } from '../../lib/buttons/decklist'
 import avatarNames from '../../lib/avatarNames'
 
+
+const width = Space.iconSeparation + Space.pad
 
 // Region of the deck builder which contains all the decklists
 export default class DecklistsRegion {  
@@ -75,8 +77,6 @@ export default class DecklistsRegion {
 
 	// Create and return the scrollable panel where premade decks go
 	private createDeckpanel() { // TODO Return type
-		const width = Space.iconSeparation + Space.pad
-
 		let background = this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF).setInteractive()
 
 		let panel = this.scene.rexUI.add.scrollablePanel({
@@ -120,16 +120,15 @@ export default class DecklistsRegion {
 			space: {
 				left: Space.pad,
 				right: Space.pad,
-				top: 90,
+				top: Space.filterBarHeight + Space.pad,
 				bottom: Space.pad,
 				line: Space.pad,
 			}
 		})
 
 		this.avatar = this.scene.add.image(0, 0, 'avatar-Jules')
-		sizer.add(this.avatar, {padding:{left: 35}})
+		sizer.add(this.avatar, {padding: {left: 35}}) // TODO
 
-		// TODO Make this constant and use throughout?
 		let callback = this.premadeCallback()
 		let btn = new IButtonPremade(this.scene, 0, 0,
 			() => {
@@ -145,8 +144,15 @@ export default class DecklistsRegion {
 		let line = this.scene.add.line(0, 0, 0, 0, Space.iconSeparation + Space.pad, 0, Color.line)
 		sizer.add(line)
 
+		let hintSizer = this.scene['rexUI'].add.sizer({width: width})
+		sizer.add(hintSizer)
+
 		let txtHint = this.scene.add.text(0, 0, 'My Decks:', Style.header)
-		sizer.add(txtHint)
+		hintSizer.add(txtHint)
+		.addSpace()
+
+		// Add a share button that allows user to copy/paste their deck code
+		new IButtonShare(hintSizer, 0, 0, this.shareCallback())
 
 		return sizer
 	}
@@ -159,6 +165,21 @@ export default class DecklistsRegion {
 				that.savedDeckIndex = undefined
 				console.log(i)
 			}
+		}
+	}
+
+	private shareCallback(): () => void {
+		let that = this
+
+		return function() {
+			that.scene.scene.launch('MenuScene', {
+				menu: 'shareDeck',
+				// Called when the text changes in the menu
+				currentDeck: that.scene.getDeckCode(),
+				callback: function(inputText) {
+					that.scene.setDeck(inputText.text)
+				}
+			})
 		}
 	}
 
@@ -261,11 +282,10 @@ export default class DecklistsRegion {
 			that.deckPanel.t = 1
 		}
 
-		const maxDecks = 20
 		function openNewDeckMenuCallback() {
 			// If user already has 9 decks, signal error instead
-			if (UserSettings._get('decks').length >= maxDecks) {
-				scene.signalError(`Reached max number of decks (${maxDecks}).`)
+			if (UserSettings._get('decks').length >= Mechanics.maxDecks) {
+				scene.signalError(`Reached max number of decks (${Mechanics.maxDecks}).`)
 			}
 			else {
 				scene.scene.launch('MenuScene', {

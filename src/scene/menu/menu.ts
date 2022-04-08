@@ -10,6 +10,8 @@ import ChoosePremade from "./choosePremade"
 import CreditsMenu from "./credits"
 import RulebookMenu from "./rulebook"
 import NewDeckMenu from "./newDeck"
+import ShareDeckMenu from "./shareDeck"
+
 
 const menus = {
 	'options': OptionsMenu,
@@ -17,6 +19,7 @@ const menus = {
 	'credits': CreditsMenu,
 	'rulebook': RulebookMenu,
 	'newDeck': NewDeckMenu,
+	'shareDeck': ShareDeckMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 

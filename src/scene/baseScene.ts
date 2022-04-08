@@ -109,6 +109,8 @@ export default class BaseScene extends Phaser.Scene {
 		let that = this
 
 		return function() {
+			// TODO This check for multiple open menus should be handled in menuScene.ts
+
 			// Don't open the menu if it's open already
 			if (that.scene.isActive('MenuScene')) {
 				return

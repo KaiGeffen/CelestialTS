@@ -1,14 +1,10 @@
-import 'phaser'
-import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-
-import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js'
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
-
-import Menu from './menu'
-import { Space, Color, Style, UserSettings } from '../../settings/settings'
-import { SymmetricButtonSmall } from '../../lib/buttons/backed'
-import { ButtonAvatarSmall } from '../../lib/buttons/avatarSelect'
-import avatarNames from '../../lib/avatarNames'
+import 'phaser';
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import avatarNames from '../../lib/avatarNames';
+import { ButtonAvatarSmall } from '../../lib/buttons/avatarSelect';
+import { SymmetricButtonSmall } from '../../lib/buttons/backed';
+import { Color, Space, Style } from '../../settings/settings';
+import Menu from './menu';
 
 
 const width = 430

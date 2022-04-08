@@ -81,3 +81,22 @@ export class IButtonPremade extends Button {
 		})
 	}
 }
+
+export class IButtonShare extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Share',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}

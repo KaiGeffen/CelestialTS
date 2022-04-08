@@ -150,6 +150,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Premade', 'CustomDeck',
 			'XOut',
 			'Winner', 'Loser', 'ResultStats',
+			'Share',
 
 		]
 

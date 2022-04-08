@@ -45,6 +45,8 @@ export const Space = {
   corner: 10,
   maxTextWidth: 800,
 
+  filterBarHeight: 70,
+
   // Dimensions for common buttons
   smallButtonWidth: 100,
   smallButtonHeight: 50,
