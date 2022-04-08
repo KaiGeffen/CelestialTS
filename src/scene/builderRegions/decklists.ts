@@ -164,8 +164,14 @@ export default class DecklistsRegion {
 		return function(i: number) {
 			return function() {
 				that.savedDeckIndex = undefined
+
+				// Deselect decklist buttons
+				that.decklistBtns.forEach(btn => btn.deselect())
 				
+				// Set the current deck to premade list
 				that.scene.setDeck(premadeDecklists[i])
+
+				// Load the approriate avatar TODO
 			}
 		}
 	}
