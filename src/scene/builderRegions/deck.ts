@@ -25,7 +25,7 @@ export default class DeckRegion {
 	private container: Phaser.GameObjects.Container
 	private cardContainer: Phaser.GameObjects.Container
 
-	create(scene: Phaser.Scene, x = 0) {
+	create(scene: Phaser.Scene, startCallback: () => void, x = 0) {
 		this.scene = scene
 
 		// Deck container
@@ -50,7 +50,8 @@ export default class DeckRegion {
 		this.btnStart = new SymmetricButtonSmall(this.container, 
 			Space.windowWidth - x - Space.smallButtonWidth/2 - Space.pad, // TODO
 			Space.windowHeight - height/2,
-			'0/15')
+			'0/15',
+			startCallback)
 
 		return this
 	}

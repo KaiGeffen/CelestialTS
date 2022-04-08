@@ -15,6 +15,13 @@ class BuilderBase extends BaseScene {
   catalogRegion
   deckRegion
 
+  // The params with which this class was invoked
+  params
+
+  create(params) {
+    this.params = params
+  }
+
   addCardToDeck(card: Card): boolean {
     let cardImage = this.deckRegion.addCardToDeck(card)
 
@@ -47,15 +54,32 @@ export class AdventureBuilderScene extends BuilderBase {
     })
   }
 
-  create(): void {
-    super.create()
+  create(params): void {
+    super.create(params)
 
     this.filterRegion = new FilterRegion().create(this, true)
 
-    this.deckRegion = new DeckRegion().create(this)
+    this.deckRegion = new DeckRegion().create(this, this.startCallback())
     
     this.catalogRegion = new CatalogRegion().create(this)
   }
+
+  updateSavedDeck(deck: string): void {}
+
+  private startCallback(): () => void {
+    let that = this
+
+    return function() {
+      // Start a match against an ai opponent with the specified deck
+      that.scene.start("GameScene",
+        {isTutorial: false,
+          deck: that.getDeckCode(),
+          mmCode: `ai:${that.params.opponent}`,
+          missionID: that.params.id}
+          )
+    }
+  }
+}
 }
 
 export class BuilderScene extends BuilderBase {
@@ -65,14 +89,14 @@ export class BuilderScene extends BuilderBase {
     })
   }
   
-  create(): void {
-    super.create()
+  create(params): void {
+    super.create(params)
 
     this.decklistsRegion = new DecklistsRegion().create(this)
 
     this.filterRegion = new FilterRegion().create(this, false)
 
-    this.deckRegion = new DeckRegion().create(this, this.decklistsRegion.width)
+    this.deckRegion = new DeckRegion().create(this, this.decklistsRegion.width) // TODO Function
     
     this.catalogRegion = new CatalogRegion().create(this, this.decklistsRegion.width)
   }

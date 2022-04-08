@@ -1,4 +1,4 @@
-import { allCards } from "../catalog/catalog"
+import { allCards, getCard } from "../catalog/catalog"
 import Card from './card'
 import Story from './story'
 import Recap from './recap'
@@ -43,9 +43,16 @@ function decodeCard(s: string): Card {
 	}
 }
 
-function encodeDeck(deck: Card[]): string {
+function encodeDeck(deck: Card[] | string): string {
+	let cards = []
+	if (typeof deck === 'string') {
+		cards = deck.split(':').map((id) => {return getCard(parseInt(id))})
+	} else {
+		cards = deck
+	}
+
 	if (deck === undefined) { return '' }
-	return deck.map(encodeCard).join(delims[1])
+	return cards.map(encodeCard).join(delims[1])
 }
 
 function decodeDeck(s: string): Card[] {
