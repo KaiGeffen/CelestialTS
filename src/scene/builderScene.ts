@@ -96,12 +96,26 @@ export class BuilderScene extends BuilderBase {
 
     this.filterRegion = new FilterRegion().create(this, false)
 
-    this.deckRegion = new DeckRegion().create(this, this.decklistsRegion.width) // TODO Function
+    this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.decklistsRegion.width) // TODO Function
     
     this.catalogRegion = new CatalogRegion().create(this, this.decklistsRegion.width)
   }
 
   updateSavedDeck(deck: string): void {
     this.decklistsRegion.updateSavedDeck(deck)
+  }
+
+  private startCallback(): () => void {
+    let that = this
+
+    return function() {
+      // Start a match against an ai opponent with the specified deck
+      // TODO Open a menu giving the option of pvp
+      that.scene.start("GameScene",
+        {isTutorial: false,
+          deck: that.getDeckCode(),
+          mmCode: `ai`}
+          )
+    }
   }
 }
