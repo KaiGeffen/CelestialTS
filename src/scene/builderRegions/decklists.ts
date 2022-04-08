@@ -215,25 +215,27 @@ export default class DecklistsRegion {
 		let name = deck === undefined ? '' : deck['name']
 
 		let container = new ContainerLite(this.scene, 0, 0, 200, 50)
-		let btn = new ButtonDecklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
+		let btn = new ButtonDecklist(container, 0, 0, name, () => {console.log('hi')}, this.deleteDeck(i, container))
 
 		// Highlight this deck, if it's selected
 		// if (this.savedDeckIndex === i) {So that layout happens correctly setTimeout(() => btn.select(), 4)}
 
 		// Set as active, select self and deselect other buttons, set the deck
 		let that = this
-		btn.setOnClick(function() {
+		btn.setOnClick(() => {
 			// Deselect all other buttons
 			that.decklistBtns.forEach(b => {if (b !== btn) b.deselect()})
 
 			// If it's already selected, deselect it
 			if (btn.selected) {
+				console.log('Deselecting')
 				that.savedDeckIndex = undefined
 				that.scene.setDeck([])
 				btn.deselect()
 			}
 			// Otherwise select this button
 			else {
+				console.log('Selecting')
 				that.savedDeckIndex = i
 				btn.select()
 

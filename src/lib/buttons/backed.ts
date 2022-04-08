@@ -160,11 +160,19 @@ export class ButtonInspire extends Button {
 			},
 			icon: {
 				name: `Inspire`,
-				interactive: true
+				interactive: true,
 			},
 			callbacks: {
-				click: f
+				click: f,
 			}
+		})
+
+		let that = this
+		this.setOnHover(() => {
+			this.txt.setText('oooooooo')
+		},
+		() => {
+			this.txt.setText('eeee')
 		})
 
 		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)
@@ -189,7 +197,7 @@ export class ButtonNourish extends Button {
 				interactive: true
 			},
 			callbacks: {
-				click: f
+				click: f,
 			}
 		})
 

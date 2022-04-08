@@ -29,6 +29,25 @@ interface Config {
 	}
 }
 
+const ConfigDefaults = {
+	text: {
+		text: '',
+		interactive: false,
+		style: Style.basic,
+		hitArea: undefined,
+	},
+	icon: {
+		name: '',
+		interactive: false,
+		offset: 0,
+	},
+	callbacks: {
+		click: () => {},
+		hover: () => {},		
+		exit: () => {},
+	}
+}
+
 
 export default class Button {
 	scene: Phaser.Scene
@@ -53,6 +72,8 @@ export default class Button {
 		config: Config,
 		)
 	{
+		let that = this
+
 		// Define scene
 		if (within instanceof Phaser.Scene) {
 			this.scene = within
@@ -75,17 +96,9 @@ export default class Button {
 				this.icon.setInteractive()
 
 				if (config.callbacks) {
-					if (config.callbacks.click) {
-						this.icon.on('pointerdown', config.callbacks.click)
-					}
-
-					if (config.callbacks.hover) {
-						this.icon.on('pointerover', config.callbacks.hover)
-					}
-					
-					if (config.callbacks.exit) {
-						this.icon.on('pointerout', config.callbacks.exit)
-					}
+					this.icon.on('pointerdown', () => {that.onClick()})
+					this.icon.on('pointerover', () => {that.onHover()})
+					this.icon.on('pointerout', () => {that.onExit()})
 				}
 			}
 		}
@@ -102,24 +115,19 @@ export default class Button {
 				.on('pointerout', () => this.txt.clearTint(), this)
 
 				if (config.callbacks) {
-					if (config.callbacks.click) {
-						this.txt.on('pointerdown', config.callbacks.click)
-					}
-					if (config.callbacks.hover) {
-						this.txt.on('pointerover', config.callbacks.hover)
-					}
-					if (config.callbacks.exit) {
-						this.txt.on('pointerout', config.callbacks.exit)
-					}
+					this.txt.on('pointerdown', () => {that.onClick()})
+					this.txt.on('pointerover', () => {that.onHover()})
+					this.txt.on('pointerout', () => {that.onExit()})
 				}
 			}
 		}
 
 		// Set the callbacks separate from the objects
 		if (config.callbacks) {
-			this.onClick = config.callbacks.click
-			this.onHover = config.callbacks.hover
-			this.onExit = config.callbacks.exit
+			// Add default callbacks if not specified
+			this.onClick = config.callbacks.click ? config.callbacks.click : () => {}
+			this.onHover = config.callbacks.hover ? config.callbacks.hover : () => {}
+			this.onExit = config.callbacks.exit ? config.callbacks.exit : () => {}
 		}
 
 		// If within a container, add the objects to that container
@@ -204,23 +212,18 @@ export default class Button {
 
 
 
-	// TODO
 	setOnClick(f): Button {
 		this.onClick = f
-		
-		if (this.txt) {
-			this.txt.on('pointerdown', f)
-		}
-
-		if (this.icon) {
-			this.icon.on('pointerdown', f)
-		}
 
 		return this
 	}
 
-	setOnHover(hoverCallback, exitCallback) {} // TODO It might be that each subtype handles this in their own way
-	// For example, maybe the map nodes 'dance' or until exited, but this function doesnt need to be exposed
+	setOnHover(hoverCallback, exitCallback): Button {
+		this.onHover = hoverCallback
+		this.onExit = exitCallback
+
+		return this
+	}
 
 	setText(s: string): Button {
 		if (this.txt !== undefined) {
