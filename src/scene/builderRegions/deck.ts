@@ -28,7 +28,7 @@ export default class DeckRegion {
 		// Deck container
 		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
 		this.container = scene.add.container(x, 0).setDepth(2)
-		this.cardContainer = scene.add.container(x, 0).setDepth(3)
+		this.cardContainer = scene.add.container(0, 0).setDepth(3)
 
 		let background = this.createBackground(scene)
 
@@ -45,7 +45,7 @@ export default class DeckRegion {
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		this.btnStart = new SymmetricButtonSmall(this.container, 
-			Space.windowWidth - 70, // TODO
+			Space.windowWidth - 70 - x, // TODO
 			Space.windowHeight - 80, // TODO
 			'0/15')
 		// TODO Add the above somewhere that they have access to the current deck panel's height
@@ -81,8 +81,6 @@ export default class DeckRegion {
 		.setPosition(this.getDeckCardPosition(index))
 		.moveToTopOnHover()
 		.setOnClick(this.removeCardFromDeck(index))
-
-		console.log(cardImage)
 
 		// When hovered, move up to make this visible
 		// When exiting, return to old y
