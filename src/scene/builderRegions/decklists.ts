@@ -1,14 +1,14 @@
-import 'phaser'
-
+import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import premadeDecklists from '../../catalog/premadeDecklists';
+import avatarNames from '../../lib/avatarNames';
+import { ButtonNewDeck } from '../../lib/buttons/backed';
+import Button from '../../lib/buttons/button';
+import { ButtonDecklist } from '../../lib/buttons/decklist';
+import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon';
+import { Color, Mechanics, Space, Style, UserSettings } from "../../settings/settings";
 
-import { Space, Style, Color, UserSettings, Mechanics } from "../../settings/settings"
-import Button from '../../lib/buttons/button'
-import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon'
-import { ButtonNewDeck } from '../../lib/buttons/backed'
-import { ButtonDecklist } from '../../lib/buttons/decklist'
-import avatarNames from '../../lib/avatarNames'
-import premadeDecklists from '../../catalog/premadeDecklists'
+
 
 
 const width = Space.iconSeparation + Space.pad
@@ -57,17 +57,14 @@ export default class DecklistsRegion {
 		return this
 	}
 
-	// TODO
 	// Update the currently selected deck
-	updateSavedDeck(): void {
+	updateSavedDeck(deckCode: string): void {
 		let index = this.savedDeckIndex
 		if (index !== undefined) {
 			let deck = UserSettings._get('decks')[index]
-			let name = deck['name']
-			let deckCode = this.scene.getDeckCode()
 
 			let newDeck = {
-				name: name,
+				name: deck['name'],
 				value: deckCode,
 				avatar: deck['avatar']
 			}

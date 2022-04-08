@@ -106,6 +106,9 @@ export default class DeckRegion {
 		// Sort the deck, now done automatically after each card added
 		this.sort()
 
+		// Update the saved deck data
+		this.scene.updateSavedDeck(this.getDeckCode())
+
 		return cardImage
 	}
 
@@ -175,8 +178,7 @@ export default class DeckRegion {
 				that.txtHint.setVisible(true)
 			}
 
-			// TODO Update saved deck
-
+			that.scene.updateSavedDeck(that.getDeckCode())
 		}
 	}
 
