@@ -95,7 +95,6 @@ export default class PreloadClass extends Phaser.Scene {
 
 
 		this.sound.volume = UserSettings._get('volume')
-		console.log(this.sound.volume)
 
 		// If the user is using mobile, ensure that the see the mobile message
 		if (mobile()) {

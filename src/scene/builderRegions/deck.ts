@@ -4,6 +4,7 @@ import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Style, Mechanics } from '../../settings/settings'
 import Card from '../../lib/card'
+import { decodeCard, encodeCard } from '../../lib/codec'
 
 
 export default class DeckRegion {
@@ -107,8 +108,47 @@ export default class DeckRegion {
 
 	// Set the current deck, and return whether the given deck was valid
 	setDeck(deckCode: string | Card[]): boolean {
-		console.log('Setting the deck')
-		return false
+		let deck: Card[]
+		if (typeof deckCode === "string") {
+			// Get the deck from this code
+			let cardCodes: string[] = deckCode.split(':')
+
+			deck = cardCodes.map( (cardCode) => decodeCard(cardCode))
+
+			if (deckCode === '') {
+				deck = []
+			}
+		}
+		else {
+			deck = deckCode
+		}
+
+		// Check if the deck is valid, then create it if so
+		if (deck.includes(undefined))
+		{
+			return false
+		}
+		else
+		{
+			// Remove the current deck
+			this.deck.forEach( (cardImage) => cardImage.destroy())
+			this.deck = []
+			this.updateText()
+
+			// Add the new deck
+			deck.forEach( (card) => this.addCardToDeck(card))
+
+			return true
+		}
+	}
+
+	// Get the deck code for player's current deck
+	getDeckCode(): string {
+		let txt = ''
+		this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+		txt = txt.slice(0, -1)
+
+		return txt
 	}
 
 	// Remove the card from deck which has given index

@@ -203,7 +203,7 @@ export default class DecklistsRegion {
 			// If it's already selected, deselect it
 			if (btn.selected) {
 				that.savedDeckIndex = undefined
-				// that.scene.setDeck([])TODO
+				that.scene.setDeck([])
 				btn.deselect()
 			}
 			// Otherwise select this button
@@ -211,7 +211,7 @@ export default class DecklistsRegion {
 				that.savedDeckIndex = i
 				btn.select()
 
-				// that.scene.setDeck(UserSettings._get('decks')[i]['value'])TODO
+				that.scene.setDeck(UserSettings._get('decks')[i]['value'])
 
 				// Set the displayed avatar to this deck's avatar
 				that.setAvatar(UserSettings._get('decks')[i]['avatar'])
@@ -294,7 +294,7 @@ export default class DecklistsRegion {
 			// Adjust values stored in this deck region
 			that.decklistBtns.splice(i)
 			that.savedDeckIndex = undefined
-			// that.scene.setDeck([])TODO
+			that.scene.setDeck([])
 
 			// Destroy the object itself
 			container.destroy()

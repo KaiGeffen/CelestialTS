@@ -26,9 +26,6 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 
 
-
-const maxCostFilter: number = 7
-
 import DecklistsRegion from './builderRegions/decklists'
 import FilterRegion from './builderRegions/filter'
 import CatalogRegion from './builderRegions/catalog'
@@ -55,6 +52,16 @@ class BuilderBase extends BaseScene {
     let filterFunction: (card: Card) => boolean = this.filterRegion.getFilterFunction()
     
     this.catalogRegion.filter(filterFunction)
+  }
+
+  // Set the current deck, returns true if deck was valid
+  setDeck(deckCode: string | Card[]): boolean {
+    return this.deckRegion.setDeck(deckCode)
+  }
+
+  // Get the deck code for player's current deck
+  getDeckCode(): string {
+    return this.deckRegion.getDeckCode()
   }
 }
 
