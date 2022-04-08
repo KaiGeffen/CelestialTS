@@ -46,11 +46,7 @@ export default class OurHandRegion extends Region {
 		this.btnSkip = new AButtonSmall(this.container,
 			width/2 + 15,
 			Space.handHeight / 3 + 5,
-			'Skip',
-			() => {
-				that.btnPlay.stopGlow()
-			}
-			)
+			'Skip')
 
 		// Play button
 		this.btnPlay = new AButtonLarge(this.container,

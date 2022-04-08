@@ -147,6 +147,7 @@ export default class GameScene extends BaseScene {
 			// Set variables to a state where a recap isn't playing
 			that.queuedRecap = []
 			that.recapPlaying = false
+			that.view.paused = false
 		})
 		view.ourButtons.setPlayCallback(() => {that.view.paused = false})
 		view.ourButtons.setPauseCallback(() => {that.view.paused = true})
