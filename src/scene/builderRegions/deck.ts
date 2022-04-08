@@ -57,7 +57,7 @@ export default class DeckRegion {
 		let background = scene.add
 		.rectangle(0,
 			Space.windowHeight,
-			Space.windowWidth, Space.cardHeight/2 + Space.pad, 0x989898, .1)
+			Space.windowWidth, Space.cardHeight/2 + Space.pad, 0x989898, 1)
 		.setOrigin(0, 1)
 		.setInteractive()
 
