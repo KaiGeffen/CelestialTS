@@ -1,15 +1,20 @@
 import 'phaser'
 
-import { Space, UserSettings } from "../../settings/settings"
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
+import { Space, Style, Color, UserSettings } from "../../settings/settings"
 import Button from '../../lib/buttons/button'
 import { IButtonPremade } from '../../lib/buttons/icon'
+import { ButtonNewDeck } from '../../lib/buttons/backed'
+import { ButtonDecklist } from '../../lib/buttons/decklist'
+
 
 // Region of the deck builder which contains all the decklists
 export default class DecklistsRegion {  
   scene
 
   deckPanel
+  width: number
 
   // The index of the currently selected deck
   savedDeckIndex: number
@@ -21,7 +26,9 @@ export default class DecklistsRegion {
   avatar: Phaser.GameObjects.Image
 
   // Create the are where player can manipulate their decks
-  create(): number {
+  create(scene) {
+  	this.scene = scene
+
     let deckPanel = this.deckPanel = this.createDeckpanel()
 
     let panel = deckPanel.getElement('panel')
@@ -37,7 +44,9 @@ export default class DecklistsRegion {
 
     this.deckPanel.layout()
 
-    return this.deckPanel.width
+    this.width = this.deckPanel.width
+
+    return this
   }
 
   // TODO
@@ -60,13 +69,12 @@ export default class DecklistsRegion {
   }
 
   // Create and return the scrollable panel where premade decks go
-  private createDeckpanel() { // TODO Type
-    const scene = this.scene
+  private createDeckpanel() { // TODO Return type
     const width = Space.iconSeparation + Space.pad
 
-    let background = scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF).setInteractive()
+    let background = this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF).setInteractive()
 
-    let panel = scene.rexUI.add.scrollablePanel({
+    let panel = this.scene.rexUI.add.scrollablePanel({
       x: 0,
       y: 0,
       width: width,
@@ -75,14 +83,14 @@ export default class DecklistsRegion {
       background: background,
 
       panel: {// TODO Create panel method
-        child: scene.rexUI.add.fixWidthSizer({space: {
+        child: this.scene.rexUI.add.fixWidthSizer({space: {
           left: Space.pad,
           right: Space.pad,
           top: 10,
           bottom: 10,
           line: 10,
         }}).addBackground(
-        scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
+        	this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
         )
       },
 
@@ -94,7 +102,7 @@ export default class DecklistsRegion {
       }
     }).setOrigin(0)
 
-    scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+    this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
       distance: 3,
       shadowColor: 0x000000,
     })
@@ -103,9 +111,7 @@ export default class DecklistsRegion {
   }
 
   private createHeader(): Phaser.GameObjects.GameObject {
-    let scene = this.scene
-
-    let sizer = scene.rexUI.add.fixWidthSizer({
+    let sizer = this.scene.rexUI.add.fixWidthSizer({
       space: {
         left: Space.pad,
         right: Space.pad,
@@ -123,7 +129,7 @@ export default class DecklistsRegion {
     let btn = new IButtonPremade(this.scene, 0, 0,
       () => {
         // TODO Hand this to a class instead of calling ourselves
-        scene.scene.launch('MenuScene', {
+        this.scene.scene.launch('MenuScene', {
           menu: 'choosePremade',
           callback: callback
         })

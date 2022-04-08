@@ -22,13 +22,13 @@ export default class DeckRegion {
 	private container: Phaser.GameObjects.Container
 	private cardContainer: Phaser.GameObjects.Container
 
-	create(scene: Phaser.Scene) {
+	create(scene: Phaser.Scene, x = 0) {
 		this.scene = scene
 
 		// Deck container
 		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-		this.container = scene.add.container(0, 0).setDepth(2)
-		this.cardContainer = scene.add.container(0, 0).setDepth(3)
+		this.container = scene.add.container(x, 0).setDepth(2)
+		this.cardContainer = scene.add.container(x, 0).setDepth(3)
 
 		let background = this.createBackground(scene)
 
