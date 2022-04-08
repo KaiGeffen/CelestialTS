@@ -123,7 +123,8 @@ export class ButtonNewDeck extends Button {
 
 export class AvatarSmall extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
-		x: number, y: number, text: string,
+		x: number, y: number,
+		text: string,
 		name: string,
 		f: () => void = function() {})
 	{
@@ -141,5 +142,57 @@ export class AvatarSmall extends Button {
 				click: f
 			}
 		})
+	}
+}
+
+export class ButtonInspire extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		text: string = '',
+		f: () => void = function() {})
+	{
+		super(within, x, y, 
+		{
+			text: {
+				text: text,
+				interactive: false,
+				style: Style.basic,
+			},
+			icon: {
+				name: `Inspire`,
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+
+		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)
+	}
+}
+
+export class ButtonNourish extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		text: string = '',
+		f: () => void = function() {})
+	{
+		super(within, x, y, 
+		{
+			text: {
+				text: text,
+				interactive: false,
+				style: Style.basic,
+			},
+			icon: {
+				name: `Nourish`,
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+
+		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)
 	}
 }

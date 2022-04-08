@@ -5,6 +5,7 @@ import CardLocation from './cardLocation'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
 import Button from '../../lib/button'
+import { AvatarSmall, ButtonInspire, ButtonNourish } from '../../lib/buttons/backed'
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -25,11 +26,14 @@ export default class OurHandRegion extends Region {
 	txtDeckCount: Phaser.GameObjects.Text
 	txtDiscardCount: Phaser.GameObjects.Text
 
+	btnInspire: ButtonInspire
+	btnNourish: ButtonNourish
+
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
 
 	// Avatar image
-	avatar: Phaser.GameObjects.Image
+	avatar: AvatarSmall
 
 	create (scene: BaseScene): OurHandRegion {
 		let that = this
@@ -39,7 +43,7 @@ export default class OurHandRegion extends Region {
 
 		this.container = scene.add.container(0, Space.windowHeight - Space.handHeight).setDepth(1)
 
-		let background = this.createBackground(scene)
+		this.container.add(this.createBackground(scene))
 
 		// Highlight visible when we have priority
 		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
@@ -47,8 +51,13 @@ export default class OurHandRegion extends Region {
 		.play(true)
 		.setVisible(false)
 
-		this.avatar = scene.add.image(6, 6, 'avatar-Jules').setOrigin(0)
+		// Create the status visuals
+		this.createStatusDisplay()
+
+		// Create our avatar
+		this.avatar = this.createAvatar()
 		
+		// Create a visual divider
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
 		// Deck and discard pile totals
@@ -62,9 +71,7 @@ export default class OurHandRegion extends Region {
 
 		// Add each of these objects to container
 		this.container.add([
-			background,
 			this.priorityHighlight,
-			this.avatar,
 			divide,
 			this.txtDeckCount,
 			iconDeck,
@@ -144,6 +151,28 @@ export default class OurHandRegion extends Region {
 		})
 
 		return background
+	}
+
+	private createAvatar(): AvatarSmall {
+		// TODO Custom avatar
+		return new AvatarSmall(this.container, 6, 6, '', 'Jules').setOrigin(0)
+	}
+
+	private createStatusDisplay(): void {
+		// TODO 6
+		let x = 6 + Space.avatarSize - 10
+
+		// Inspire
+		let y = 6
+		this.btnInspire = new ButtonInspire(this.container, x - 15, y)
+		.setOrigin(0)
+		.setVisible(false)
+
+		// Nourish
+		y += Space.avatarSize/2
+		this.btnNourish = new ButtonNourish(this.container, x - 15, y)
+		.setOrigin(0)
+		.setVisible(false)
 	}
 
 	// Animate any cards ending in the hand
@@ -287,7 +316,7 @@ export default class OurHandRegion extends Region {
 	}
 
 	private displayStatuses(state: ClientState): void {
-		// Specific to 4 TODO
+		// // Specific to 4 TODO
 		let amts = [0, 0, 0, 0]
 		const length = 4
 
@@ -295,43 +324,10 @@ export default class OurHandRegion extends Region {
 			amts[status]++
 		})
 
-		let x = this.avatar.x + Space.avatarSize - 10
-		// Inspire
-		if (amts[0] > 0 || amts[1] > 0) {
-			let y = this.avatar.y
-			let img = this.scene.add.image(x - 15, y, 'icon-Inspire').setOrigin(0)
+		this.btnInspire.setVisible(amts[1] > 0)
+		.setText(`${amts[1]}`)
 
-			// 65 is the width of the status object
-			// let s = amts[0] > 0 ? `${amts[1]}(${amts[0]})` : `${amts[1]}`
-			let s = `${amts[1]}`
-			let txt = this.scene.add.text(
-				x + 65/2,
-				y + Space.avatarSize/8,
-				s, Style.basic)
-			.setOrigin(0.5)
-
-			this.container.add([img, txt])
-			this.temp.push(img, txt)
-		}
-
-		// Nourish
-		if (amts[2] > 0) {
-			let y = this.avatar.y + Space.avatarSize/2
-			let img = this.scene.add.image(x - 15, y, 'icon-Nourish').setOrigin(0)
-
-			// 65 is the width of the status object
-			let s = `${amts[2]}`// - ${amts[3]}`
-			let txt = this.scene.add.text(
-				x + 65/2,
-				y + Space.avatarSize/8,
-				s, Style.basic)
-			.setOrigin(0.5)
-
-			this.container.add([img, txt])
-			this.temp.push(img, txt)
-		}
-
-		// Bring the avatar on top of the status objects
-		this.container.bringToTop(this.avatar)
+		this.btnNourish.setVisible(amts[2] > 0)
+		.setText(`${amts[2]}`)
 	}
 }
