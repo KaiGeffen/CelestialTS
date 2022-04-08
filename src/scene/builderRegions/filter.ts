@@ -7,14 +7,14 @@ import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
 import { TextButton } from '../../lib/buttons/text'
 import { UButton } from '../../lib/buttons/underlined'
 import { IButtonX } from '../../lib/buttons/icon'
-import BaseScene from '../baseScene'
+import { BuilderBase } from '../builderScene'
 
 
 const maxCostFilter: number = 7
 
 // Filter region of the deck builder scene
 export default class FilterRegion {  
-	scene: BaseScene
+	scene: BuilderBase
 
 	// Full list of all cards in the catalog (Even those invisible)
 	cardCatalog: CardImage[]
@@ -25,7 +25,7 @@ export default class FilterRegion {
 	filterUnowned: boolean
 
 	// Create this region, offset by the given width
-	create(scene: BaseScene, filterUnowned) {
+	create(scene: BuilderBase, filterUnowned) {
 		this.scene = scene
 		this.filterUnowned = filterUnowned
 

@@ -9,7 +9,7 @@ import FilterRegion from './builderRegions/filter'
 
 
 // Features common between all builders
-class BuilderBase extends BaseScene {
+export class BuilderBase extends BaseScene {
   decklistsRegion
   filterRegion
   catalogRegion
@@ -81,7 +81,6 @@ export class AdventureBuilderScene extends BuilderBase {
           )
     }
   }
-}
 }
 
 export class BuilderScene extends BuilderBase {
