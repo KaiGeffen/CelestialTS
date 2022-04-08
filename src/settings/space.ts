@@ -53,4 +53,6 @@ export const Space = {
 
   largeButtonWidth: 150,
   largeButtonHeight: 45,
+
+  avatarSize: 130,
 }

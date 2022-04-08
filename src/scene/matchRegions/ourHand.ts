@@ -295,26 +295,43 @@ export default class OurHandRegion extends Region {
 			amts[status]++
 		})
 
-		let points = '0 60 0 0 70 10 70 70'
-		let y = this.avatar.y
-		for (let i = 0; i < length; i++) {
-			if (amts[i] > 0) {
-				let img = this.scene.add.image(100, y, 'icon-Nourish').setOrigin(0)
+		let x = this.avatar.x + Space.avatarSize - 10
+		// Inspire
+		if (amts[0] > 0 || amts[1] > 0) {
+			let y = this.avatar.y
+			let img = this.scene.add.image(x - 15, y, 'icon-Inspire').setOrigin(0)
 
-				// TODO Make this style standard
-				let s = `${Status[i]} ${amts[i]}`
-				let txt = this.scene.add.text(145, y + this.avatar.height/4, s, {
-					fontSize: '10px',
-					color: '#031022'
-				}).setOrigin(0, 0.5)
+			// 65 is the width of the status object
+			// let s = amts[0] > 0 ? `${amts[1]}(${amts[0]})` : `${amts[1]}`
+			let s = `${amts[1]}`
+			let txt = this.scene.add.text(
+				x + 65/2,
+				y + Space.avatarSize/8,
+				s, Style.basic)
+			.setOrigin(0.5)
 
-				this.container.add([img, txt])
-				this.temp.push(img, txt)
-
-				y += this.avatar.height/2
-			}
+			this.container.add([img, txt])
+			this.temp.push(img, txt)
 		}
 
+		// Nourish
+		if (amts[2] > 0) {
+			let y = this.avatar.y + Space.avatarSize/2
+			let img = this.scene.add.image(x - 15, y, 'icon-Nourish').setOrigin(0)
+
+			// 65 is the width of the status object
+			let s = `${amts[2]}`// - ${amts[3]}`
+			let txt = this.scene.add.text(
+				x + 65/2,
+				y + Space.avatarSize/8,
+				s, Style.basic)
+			.setOrigin(0.5)
+
+			this.container.add([img, txt])
+			this.temp.push(img, txt)
+		}
+
+		// Bring the avatar on top of the status objects
 		this.container.bringToTop(this.avatar)
 	}
 }
