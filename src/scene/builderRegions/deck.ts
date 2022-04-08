@@ -7,6 +7,8 @@ import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
 
 
+const height = Space.cardHeight/2 + Space.pad
+
 export default class DeckRegion {
 	private scene
 
@@ -35,21 +37,20 @@ export default class DeckRegion {
 
 		// Hint text - Tell user to click cards to add
 		this.txtHint = scene.add.text(
-			Space.windowWidth/2,
-			Space.windowHeight - 120, // TODO
+			(Space.windowWidth - x)/2,
+			Space.windowHeight - height/2,
 			'Click a card to add it to your deck',
 			Style.announcement)
-		.setOrigin(0.5, 0)
+		.setOrigin(0.5)
 
 		// Add each object to this container
-		this.container.add([this.txtHint, background])
+		this.container.add([background, this.txtHint])
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		this.btnStart = new SymmetricButtonSmall(this.container, 
-			Space.windowWidth - 70 - x, // TODO
-			Space.windowHeight - 80, // TODO
+			Space.windowWidth - x - Space.smallButtonWidth/2 - Space.pad, // TODO
+			Space.windowHeight - height/2,
 			'0/15')
-		// TODO Add the above somewhere that they have access to the current deck panel's height
 
 		return this
 	}
@@ -58,7 +59,9 @@ export default class DeckRegion {
 		let background = scene.add
 		.rectangle(0,
 			Space.windowHeight,
-			Space.windowWidth, Space.cardHeight/2 + Space.pad, 0x989898, 1)
+			Space.windowWidth,
+			height,
+			0x989898, 1)
 		.setOrigin(0, 1)
 		.setInteractive()
 
@@ -201,7 +204,7 @@ export default class DeckRegion {
 		let xPad = Space.pad
 
 		// For resolutions below a threshold, make the overlap more intense to fit 15 cards
-		let overlap = Space.cardWidth - 70 // TODO
+		let overlap = Space.cardWidth - 60 // TODO
 		const x0 = Space.windowWidth - (Space.smallButtonWidth + 2*Space.pad + Space.cardWidth/2)
 		let x = x0 - index * (Space.cardWidth - overlap)
 
