@@ -7,14 +7,14 @@ import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
 import { TextButton } from '../../lib/buttons/text'
 import { UButton } from '../../lib/buttons/underlined'
 import { IButtonX } from '../../lib/buttons/icon'
+import BaseScene from '../baseScene'
 
 
 const maxCostFilter: number = 7
 
 // Filter region of the deck builder scene
 export default class FilterRegion {  
-	// Overwrite the 'scene' property of container to specifically be a BuilderScene
-	scene// TODO: BuilderSceneShell
+	scene: BaseScene
 
 	// Full list of all cards in the catalog (Even those invisible)
 	cardCatalog: CardImage[]
@@ -25,7 +25,7 @@ export default class FilterRegion {
 	filterUnowned: boolean
 
 	// Create this region, offset by the given width
-	create(scene, filterUnowned) { // TODO scene is BaseScene
+	create(scene: BaseScene, filterUnowned) {
 		this.scene = scene
 		this.filterUnowned = filterUnowned
 
@@ -44,18 +44,16 @@ export default class FilterRegion {
 	}
 
 	private createBackground(container: Phaser.GameObjects.Container) {
-		let background = container.scene.add.image(0, 0, 'icon-Search')
-		.setOrigin(0) // TODO 80 Search height
-		.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, 80), Phaser.Geom.Rectangle.Contains)
+		let background = this.scene.add.image(0, 0, 'icon-Search')
+		.setOrigin(0)
+		.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
 
 		container.add(background)
 	}
 
 	private createFilterButtons(container: Phaser.GameObjects.Container) {
-		let scene = container.scene
-
 		// Cost filters
-		container.add(scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
+		container.add(this.scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
 
 		let btns = []
 		for (let i = 0; i <= 7; i++) {
@@ -69,9 +67,7 @@ export default class FilterRegion {
 	}
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {
-		let scene = container.scene
-
-		let textboxSearch = scene.add['rexInputText'](
+		let textboxSearch = this.scene.add['rexInputText'](
 			215, 40, 308, 40, {
 				type: 'text',
 				text: this.searchText,
@@ -87,7 +83,7 @@ export default class FilterRegion {
 		.on('textchange', function(inputText) {
 			// Filter the visible cards based on the text
 			this.searchText = inputText.text
-			scene['filter']() // TODO Smell
+			this.scene.filter()
 		}, this)
 		.setOrigin(0, 0.5)
 
