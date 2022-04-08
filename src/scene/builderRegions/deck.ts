@@ -206,7 +206,7 @@ export default class DeckRegion {
 		let xPad = Space.pad
 
 		// For resolutions below a threshold, make the overlap more intense to fit 15 cards
-		let overlap = Space.cardWidth - 60 // TODO
+		let overlap = Space.cardWidth - 60 // TODO Use an overlap sizer
 		const x0 = Space.windowWidth - (Space.smallButtonWidth + 2*Space.pad + Space.cardWidth/2)
 		let x = x0 - index * (Space.cardWidth - overlap)
 
