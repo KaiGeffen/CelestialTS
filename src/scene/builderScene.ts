@@ -19,6 +19,8 @@ class BuilderBase extends BaseScene {
   params
 
   create(params) {
+    super.create()
+
     this.params = params
   }
 
