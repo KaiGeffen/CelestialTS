@@ -11,6 +11,7 @@ import BaseScene from '../baseScene'
 
 
 export default class ScoreRegion extends Region {
+	breathIcon: Phaser.GameObjects.Sprite
 	txtBreath: Phaser.GameObjects.Text
 	txtWins: Phaser.GameObjects.Text
 
@@ -26,8 +27,8 @@ export default class ScoreRegion extends Region {
 		// Add background rectangle
 		const background = this.createBackground(scene)
 
-		const breathIcon = scene.add.image(30, height/2, 'icon-Breath').setOrigin(0, 0.5)
-		let txtBreathReminder = scene.add.text(breathIcon.x + breathIcon.width + Space.pad, height/2 - 13, 'Breath:', Style.small).setOrigin(0, 0.5)
+		this.breathIcon = scene.add.sprite(30, height/2, 'icon-Breath').setOrigin(0, 0.5)
+		let txtBreathReminder = scene.add.text(this.breathIcon.x + this.breathIcon.width + Space.pad, height/2 - 13, 'Breath:', Style.small).setOrigin(0, 0.5)
 		this.txtBreath = scene.add.text(txtBreathReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
 
 		// Wins
@@ -38,7 +39,7 @@ export default class ScoreRegion extends Region {
 		// Add each of these objects to container
 		this.container.add([
 			background,
-			breathIcon,
+			this.breathIcon,
 			txtBreathReminder,
 			this.txtBreath,
 
@@ -65,7 +66,9 @@ export default class ScoreRegion extends Region {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
-		const s = `${state.mana}/${state.maxMana[0]}`//\nWins: ${state.wins[0]} to ${state.wins[1]}
+		this.breathIcon.setFrame(Math.min(10, state.mana))
+
+		const s = `${state.mana}/${state.maxMana[0]}`
 		this.txtBreath.setText(s)
 
 		this.txtWins.setText(`${state.wins[0]}`)

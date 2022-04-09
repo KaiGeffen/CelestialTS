@@ -140,7 +140,8 @@ export default class PreloadClass extends Phaser.Scene {
 	private loadIcons(): void {
 		let iconNames = [
 			'AI', 'PWD', 'PVP',
-			'Breath', 'Wins',
+			//'Breath',
+			'Wins',
 			'Divide',
 			'Deck', 'Discard',
 			'Nourish', 'Inspire',
@@ -158,6 +159,11 @@ export default class PreloadClass extends Phaser.Scene {
 		iconNames.forEach( (s) => {
 			this.load.image(`icon-${s}`, `icons/${s}.png`)
 		})
+
+		// Load any spritesheets
+		this.load.spritesheet(`icon-Breath`,
+			`icons/Breath.png`,
+			{frameWidth: 54, frameHeight: 54})
 	}
 
 	// Loads all background images
