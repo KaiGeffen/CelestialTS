@@ -310,7 +310,7 @@ export default class OurHandRegion extends Region {
 							that.scene.tweens.add({
 								targets: adjustedCard.container,
 								// TODO Fix this to be in general (Space to move might be smaller if cards squished)
-								x: adjustedCard.container.x - 140 - Space.pad,
+								x: adjustedCard.container.x - 120,
 								duration: Time.recapTween() - 10,
 								ease: "Sine.easeInOut"
 							})
