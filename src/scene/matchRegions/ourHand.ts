@@ -93,9 +93,6 @@ export default class OurHandRegion extends Region {
 
 		// Statuses
 		this.displayStatuses(state)
-
-		// The position these cards will move to if played
-		const nextStoryPosition = CardLocation.story(state, isRecap, state.story.acts.length, this.container, 0)
 		
 		// Add each of the cards in our hand
 		let cardsInHand = []
@@ -114,7 +111,7 @@ export default class OurHandRegion extends Region {
 				})
 			}
 			else if (state.priority === 0 && state.winner === null) {
-				card.setOnClick(that.onCardClick(i, card, cardsInHand, nextStoryPosition))
+				card.setOnClick(that.onCardClick(i, card, cardsInHand, state, isRecap))
 			} else {
 				card.setOnClick(() => {
 					// TODO Signal errors in a variety of ways (Not enough mana, replay playing, etc)
@@ -284,8 +281,11 @@ export default class OurHandRegion extends Region {
 	}
 
 	// Return the function that runs when card with given index is clicked on
-	private onCardClick(i: number, card: CardImage, hand: CardImage[], endPosition: [number, number]): () => void {
+	private onCardClick(i: number, card: CardImage, hand: CardImage[], state: ClientState, isRecap: boolean): () => void {
 		let that = this
+
+		// The position these cards will move to if played
+		const nextStoryPosition = CardLocation.story(state, isRecap, state.story.acts.length, this.container, 0)
 
 		return function() {
 			// If we have already played a card, do nothing when clicking on another
@@ -296,8 +296,8 @@ export default class OurHandRegion extends Region {
 				// Send this card to its place in the story
 				that.scene.tweens.add({
 					targets: card.container,
-					x: endPosition[0],
-					y: endPosition[1],
+					x: nextStoryPosition[0],
+					y: nextStoryPosition[1],
 					duration: Time.recapTween(),
 					ease: "Sine.easeInOut",
 					// After brief delay, tell network, hide info, shift cards to fill its spot
@@ -310,7 +310,7 @@ export default class OurHandRegion extends Region {
 							that.scene.tweens.add({
 								targets: adjustedCard.container,
 								// TODO Fix this to be in general (Space to move might be smaller if cards squished)
-								x: adjustedCard.container.x - 120,
+								x: CardLocation.ourHand(state, j - 1, that.container)[0],
 								duration: Time.recapTween() - 10,
 								ease: "Sine.easeInOut"
 							})
