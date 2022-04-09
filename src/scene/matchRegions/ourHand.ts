@@ -95,7 +95,7 @@ export default class OurHandRegion extends Region {
 		this.displayStatuses(state)
 
 		// The position these cards will move to if played
-		const nextStoryPosition = CardLocation.story(state, state.story.acts.length, this.container, 0)
+		const nextStoryPosition = CardLocation.story(state, isRecap, state.story.acts.length, this.container, 0)
 		
 		// Add each of the cards in our hand
 		let cardsInHand = []
@@ -238,7 +238,7 @@ export default class OurHandRegion extends Region {
 						break
 
 						case Zone.Story:
-						position = CardLocation.story(undefined, animation.index2, this.container, 0)
+						position = CardLocation.story(state, isRecap, animation.index2, this.container, 0)
 						break
 
 						case Zone.Gone:

@@ -27,7 +27,7 @@ export default class CardLocation {
 			// Find the amount that we must scale down by
 			// offset of last card <= maxOffset
 			// This may be multiplied by a constant to fit within the max
-			const lastCardOffset = dx * (state.hand.length - 1)
+			const lastCardOffset = dx * (6 - 1)
 			if (lastCardOffset > maxOffset) {
 				dx *= maxOffset / lastCardOffset
 			}
@@ -55,7 +55,7 @@ export default class CardLocation {
 			// Find the amount that we must scale down by
 			// offset of last card <= maxOffset
 			// This may be multiplied by a constant to fit within the max
-			const lastCardOffset = dx * (state.opponentHandSize - 1)
+			const lastCardOffset = dx * 5 //(state.opponentHandSize - 1)
 			if (lastCardOffset > maxOffset) {
 				dx *= maxOffset / lastCardOffset
 			}
@@ -71,12 +71,29 @@ export default class CardLocation {
 		return [x - container.x, y - container.y]
 	}
 
-	static story(state:ClientState, i: number, container: Phaser.GameObjects.Container, owner: number): [number, number] {
+	static story(state: ClientState, isRecap: boolean, i: number, container: Phaser.GameObjects.Container, owner: number): [number, number] {
 		const x0 = 300
-		const dx = Space.cardWidth - Space.storyXOverlap
+		let dx = Space.cardWidth - Space.storyXOverlap
+		
+		const maxOffset = Space.windowWidth - x0 - 350 // Space to the right of the last card
+		if (state !== undefined) {
+			// Find the amount that we must scale down by
+			// This may be multiplied by a constant to fit within the max
+			// Length of cards displayed in the story
+			let length = state.story.acts.length
+			if (isRecap) {
+				length += state.recap.playList.length
+			}
+
+			const lastCardOffset = dx * (length - 1)
+			if (lastCardOffset > maxOffset) {
+				dx *= maxOffset / lastCardOffset
+			}
+		}
+
 		const x = x0 + dx * i
 
-		// TODO squishing
+		// Y
 		let y
 		switch (owner) {
 			case undefined:

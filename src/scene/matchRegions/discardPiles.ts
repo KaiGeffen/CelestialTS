@@ -100,7 +100,7 @@ export default class DiscardPilesRegion extends Region {
 						break
 
 						case Zone.Story:
-						position = CardLocation.story(undefined, animation.index, this.container, player)
+						position = CardLocation.story(state, isRecap, animation.index, this.container, player)
 						break
 
 						case Zone.Gone:

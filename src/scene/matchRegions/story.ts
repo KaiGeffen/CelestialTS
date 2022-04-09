@@ -61,7 +61,7 @@ export default class StoryRegion extends Region {
 			const play = state.recap.playList[resolvedI]
 			
 			let card = this.addCard(play[0],
-				CardLocation.story(state, resolvedI, this.container, play[1]))
+				CardLocation.story(state, isRecap, resolvedI, this.container, play[1]))
 			.setTransparent(true)
 			.moveToTopOnHover()
 			.setOnClick(that.callback(resolvedI))
@@ -75,7 +75,7 @@ export default class StoryRegion extends Region {
 
 			let card = this.addCard(
 				act.card,
-				CardLocation.story(state, resolvedI + i, this.container, act.owner)
+				CardLocation.story(state, isRecap, resolvedI + i, this.container, act.owner)
 				)
 			.moveToTopOnHover()
 
@@ -90,7 +90,7 @@ export default class StoryRegion extends Region {
 
 		// Scores
 		if (isRecap) {
-			this.displayScores(state)
+			this.displayScores(state, isRecap)
 			this.scoresBackground.setVisible(true)
 		}
 		else {
@@ -130,11 +130,11 @@ export default class StoryRegion extends Region {
 	}
 
 	// Display the current score totals and change in scores
-	private displayScores(state: ClientState): void {
+	private displayScores(state: ClientState, isRecap: boolean): void {
 		let index = state.recap.playList.length - 1
 		let remainingActs = state.recap.stateList.length
 		if (index >= 0 && remainingActs >= 0) {
-			this.animateScoreGains(index, state.score)
+			this.animateScoreGains(index, state.score, state, isRecap)
 		}
 
 		// Display current total
@@ -144,10 +144,10 @@ export default class StoryRegion extends Region {
 	}
 
 	// Animate each player gaining or losing points for the act at this index
-	private animateScoreGains(index: number, scores: [number, number]): void {
+	private animateScoreGains(index: number, scores: [number, number], state: ClientState, isRecap: boolean): void {
 		
 		// TODO The first arg (state) should have a variable if squishing is possible
-		const loc = CardLocation.story(undefined, index, this.container, undefined)
+		const loc = CardLocation.story(state, isRecap, index, this.container, undefined)
 
 		// Form the string for the gain of the given player
 		let that = this

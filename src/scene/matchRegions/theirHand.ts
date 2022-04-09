@@ -109,7 +109,7 @@ export default class TheirHandRegion extends Region {
 	private animate(state: ClientState, hand: CardImage[], isRecap: boolean): void {
 		this.animatePriority(state, isRecap)
 
-		this.animateCardsLeavingHand(state, hand)
+		this.animateCardsLeavingHand(state, isRecap, hand)
 		// Status
 	}
 
@@ -124,7 +124,7 @@ export default class TheirHandRegion extends Region {
 		})
 	}
 
-	private animateCardsLeavingHand(state:ClientState, hand: CardImage[]): void {
+	private animateCardsLeavingHand(state:ClientState, isRecap: boolean, hand: CardImage[]): void {
 		let scene = this.scene
 		
 		let delay = 0
@@ -155,7 +155,7 @@ export default class TheirHandRegion extends Region {
 						break
 
 						case Zone.Story:
-						position = CardLocation.story(undefined, animation.index2, this.container, 1)
+						position = CardLocation.story(state, isRecap, animation.index2, this.container, 1)
 						break
 
 						case Zone.Gone:
