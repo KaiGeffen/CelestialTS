@@ -146,7 +146,7 @@ export class AvatarSmall extends Button {
 }
 
 export class ButtonInspire extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+	constructor(within: Phaser.GameObjects.Container,
 		x: number, y: number,
 		text: string = '',
 		f: () => void = function() {})
@@ -165,14 +165,6 @@ export class ButtonInspire extends Button {
 			callbacks: {
 				click: f,
 			}
-		})
-
-		let that = this
-		this.setOnHover(() => {
-			this.txt.setText('oooooooo')
-		},
-		() => {
-			this.txt.setText('eeee')
 		})
 
 		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)

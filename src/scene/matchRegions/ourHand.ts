@@ -4,7 +4,7 @@ import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
 import { Space, Color, Time, Style } from '../../settings/settings'
-import Button from '../../lib/button'
+import Button from '../../lib/buttons/button'
 import { AvatarSmall, ButtonInspire, ButtonNourish } from '../../lib/buttons/backed'
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
@@ -14,6 +14,7 @@ import { Animation, Zone } from '../../lib/animation'
 
 import { Status } from '../../lib/status'
 import BaseScene from '../baseScene'
+import { keywords } from "../../catalog/keywords"
 
 
 export default class OurHandRegion extends Region {
@@ -28,6 +29,7 @@ export default class OurHandRegion extends Region {
 
 	btnInspire: ButtonInspire
 	btnNourish: ButtonNourish
+	txtStatusExplanation: Phaser.GameObjects.Text
 
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
@@ -167,12 +169,39 @@ export default class OurHandRegion extends Region {
 		this.btnInspire = new ButtonInspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
+		this.btnInspire.setOnHover(...this.onHoverStatus('Inspired', this.btnInspire))
 
 		// Nourish
 		y += Space.avatarSize/2
 		this.btnNourish = new ButtonNourish(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
+		this.btnNourish.setOnHover(...this.onHoverStatus('Nourish', this.btnNourish))
+
+		this.txtStatusExplanation = this.scene.add.text(Space.cardWidth, this.container.y, '', Style.basic)
+		.setOrigin(0, 1)
+	}
+
+	private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
+		let that = this
+		let keyword = keywords.find((value) => {
+			return value.key === status
+		})
+
+		let onHover = () => {
+			let s = keyword.text
+
+			// Get the value from the given status button
+			s = s.split(/\bX\b/).join(btn.getText())
+			
+			that.txtStatusExplanation.setText(s)
+		}
+
+		let onExit = () => {
+			that.txtStatusExplanation.setText('')
+		}
+
+		return [onHover, onExit]
 	}
 
 	// Animate any cards ending in the hand

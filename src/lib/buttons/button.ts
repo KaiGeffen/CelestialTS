@@ -196,6 +196,15 @@ export default class Button {
 		return this
 	}
 
+	getText(): string {
+		if (this.txt === undefined) {
+			return ''
+		}
+		else {
+			return this.txt.text
+		}
+	}
+
 
 
 
