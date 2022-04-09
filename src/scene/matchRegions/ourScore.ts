@@ -12,6 +12,8 @@ import BaseScene from '../baseScene'
 
 export default class ScoreRegion extends Region {
 	breathIcon: Phaser.GameObjects.Sprite
+	costIcon: Phaser.GameObjects.Sprite
+
 	txtBreath: Phaser.GameObjects.Text
 	txtWins: Phaser.GameObjects.Text
 
@@ -28,6 +30,7 @@ export default class ScoreRegion extends Region {
 		const background = this.createBackground(scene)
 
 		this.breathIcon = scene.add.sprite(30, height/2, 'icon-Breath').setOrigin(0, 0.5)
+		this.costIcon = scene.add.sprite(30, height/2, 'icon-Cost').setOrigin(0, 0.5).setVisible(false)
 		let txtBreathReminder = scene.add.text(this.breathIcon.x + this.breathIcon.width + Space.pad, height/2 - 13, 'Breath:', Style.small).setOrigin(0, 0.5)
 		this.txtBreath = scene.add.text(txtBreathReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
 
@@ -40,6 +43,7 @@ export default class ScoreRegion extends Region {
 		this.container.add([
 			background,
 			this.breathIcon,
+			this.costIcon,
 			txtBreathReminder,
 			this.txtBreath,
 
@@ -66,11 +70,19 @@ export default class ScoreRegion extends Region {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
+		// Reset the displayed cost
+		this.displayCost(0)
 		this.breathIcon.setFrame(Math.min(10, state.mana))
 
 		const s = `${state.mana}/${state.maxMana[0]}`
 		this.txtBreath.setText(s)
 
 		this.txtWins.setText(`${state.wins[0]}`)
+	}
+
+	// Display a given breath cost
+	displayCost(cost: number): void {
+		this.costIcon.setVisible(cost > 0)
+		this.costIcon.setFrame(Math.min(10, cost))
 	}
 }

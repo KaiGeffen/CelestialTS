@@ -20,6 +20,7 @@ import { keywords } from "../../catalog/keywords"
 export default class OurHandRegion extends Region {
 	// Function called when elements in this region are interacted with
 	callback: (i: number) =>  void
+	displayCostCallback: (cost: number) => void
 
 	// Effect showing that we have priority
 	priorityHighlight: Phaser.GameObjects.Video
@@ -101,7 +102,8 @@ export default class OurHandRegion extends Region {
 			.setCost(state.costs[i])
 			.moveToTopOnHover()
 
-			card.setOnHover(that.onCardHover(card), that.onCardExit(card, cardsInHand, i))
+			const cost = state.costs[i]
+			card.setOnHover(that.onCardHover(card, cost), that.onCardExit(card, cardsInHand, i))
 
 			// Set whether card shows up as playable, and also whether we can click to play a card in this state
 			if (!state.cardsPlayable[i]) {
@@ -325,16 +327,24 @@ export default class OurHandRegion extends Region {
 	}
 
 	// Return the function that runs when given card is hovered
-	private onCardHover(card: CardImage): () => void {
+	private onCardHover(card: CardImage, cost: number): () => void {
+		let that = this
 		return () => {
 			card.container.setY(Space.handHeight - Space.cardHeight/2)
+
+			// Show the card's cost in the breath icon
+			that.displayCostCallback(cost)
 		}
 	}
 
 	// Return the function that runs when given card hover is exited
 	private onCardExit(card: CardImage, cards: CardImage[], index: number): () => void {
+		let that = this
 		return () => {
 			card.container.setY(Space.cardHeight/2)
+
+			// Stop showing a positive card cost
+			that.displayCostCallback(0)
 		}
 	}
 
@@ -342,6 +352,11 @@ export default class OurHandRegion extends Region {
 	setCallback(f: (x: number) => void): Region {
 		this.callback = f
 		return this
+	}
+
+	// Set the callback for showing how much breath a card costs
+	setDisplayCostCallback(f: (cost: number) => void): void {
+		this.displayCostCallback = f
 	}
 
 	private displayStatuses(state: ClientState): void {

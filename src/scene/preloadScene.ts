@@ -164,6 +164,9 @@ export default class PreloadClass extends Phaser.Scene {
 		this.load.spritesheet(`icon-Breath`,
 			`icons/Breath.png`,
 			{frameWidth: 54, frameHeight: 54})
+		this.load.spritesheet(`icon-Cost`,
+			`icons/Cost.png`,
+			{frameWidth: 54, frameHeight: 54})
 	}
 
 	// Loads all background images

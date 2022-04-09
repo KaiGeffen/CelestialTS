@@ -127,6 +127,9 @@ export default class GameScene extends BaseScene {
 		view.ourHand.setCallback((i: number) => {
 			net.playCard(i)
 		})
+		view.ourHand.setDisplayCostCallback((cost: number) => {
+			that.view.ourScore.displayCost(cost)
+		})
 
 		// Buttons
 		view.ourButtons.setRecapCallback(() => {
@@ -294,6 +297,8 @@ export default class GameScene extends BaseScene {
 
 		return false
 	}
+
+	// Display a given breath cost
 }
 
 
@@ -308,7 +313,7 @@ class View {
 	ourButtons: Region
 	theirHand: Region
 	story: Region
-	ourScore: Region
+	ourScore
 	theirScore: Region
 	decks: Region
 	discardPiles: Region
