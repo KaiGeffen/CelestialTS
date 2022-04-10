@@ -5,21 +5,21 @@
     "catalogText": "Stars costs no mana and gives you no points, but on the next round you will have 1 extra mana.\n\nThe line at the bottom describes what the Inspire keyword means.\n\nIt's best if you have a plan for how to spend that mana next round, otherwise it could go to waste.",
     "rarity": 0
   },
-  {"name": "Bone Knife", "id": 1,
+  {"name": "Dagger", "id": 1,
     "cost": 1, "points": 0,
     "text": "1:0, your opponent discards the leftmost card of their hand.",
     "story": "I have a point now\nI am no longer alone, scattered \nBut trained wholly on the promise\nOf your body, squirming",
     "catalogText": "Bone Knife costs 1 mana and forces your opponent to discard the leftmost card from their hand.\n\nPlayed early, this can hit the low-cost cards your opponent kept during their mulligan. Later on it can break up combos like robots or Anubis.\n\nBe careful that your opponent can't empty their hand before the round ends, or else they may have no cards left to discard.",
     "rarity": 1
   },
-  {"name": "Cog", "id": 2,
+  {"name": "Nascence", "id": 2,
     "cost": 0, "points": 0,
     "text": "0:0, Build 1.",
     "catalogText": "Cog costs no mana and will either add 1 point to the leftmost robot in your hand, or create a new 0:1 robot if you don't have one already.\n\nYou can use Cog to bluff, or utilize its low cost to keep your hand from being overfull, which can be a problem when playing robots.\n\nAdditionally, Cog can synergize with cards like Factory to make a very large robot all at once.",
     "rarity": 0
   },
 
-  {"name": "Crossed Bones", "id": 3,
+  {"name": "Impulse", "id": 3,
     "cost": 1, "points": 1,
     "text": "1:1, Fleeting, create 2 ${1002}s in your discard pile.",
     "story": "Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me",
@@ -46,13 +46,13 @@
     "catalogText": "Dash costs 2 mana for 3 points, which means it beats most other 2 mana cards.\n\nHowever, because of its ability, it will be worth 1 less point for every card that was played before it in a round.\n\nIf you have more wins than your opponent, you will start the round with priority, and can play Dash as your first card for maximum points.",
     "rarity": 0
   },
-  {"name": "Swift", "id": 7,
+  {"name": "Starling", "id": 7,
     "cost": 2, "points": 2,
     "text": "2:2, Visible, Fleeting, worth +1 point if the next card in the story costs 1.",
     "story": "Making headway\nDefying the headwind\nHeading out and through",
     "rarity": 0
   },
-  {"name": "Gears", "id": 8,
+  {"name": "Birth", "id": 8,
     "cost": 2, "points": 0,
     "text": "2:0, Build 2.",
     "catalogText": "Gears costs 2 mana and will either add 2 points to the leftmost robot in your hand, or create a new 0:2 robot if you don't have one already.\n\nWhile you probably lose the round you play Gears on, the robot it creates effectively gives you carryover that you can play for free at a later time.\n\nGears can also accelerate you towards playing AI for cheap.",
@@ -64,19 +64,19 @@
     "rarity": 1
   },
 
-  {"name": "Factory", "id": 10,
+  {"name": "Ancestry", "id": 10,
     "cost": 3, "points": 0,
     "text": "3:0, Build X, where X is the number of cards later in the story.",
     "catalogText": "Factory costs 3 mana, and will increase the point-value of the leftmost robot in your hand by the number of cards later in the story. If you don't have a robot in hand, it creates a 0:0 robot first.\n\nWhile it can be tempting to play Factory as soon as possible, it ends up being much stronger in later rounds when you can follow it up with multiple other cards for maximum value.",
     "rarity": 2
   },
-  {"name": "Fruiting", "id": 11,
+  {"name": "Fruit", "id": 11,
     "cost": 3, "points": 0,
     "text": "3:0, Nourish 3.",
     "catalogText": "Fruiting costs 3 mana and gives no points, but the next card you resolve will give an extra 3 points.\n\nThat means if you have a card later in the story, that card will be boosted by 3. Otherwise you'll get to spend the boost on a future round.\n\nIf you think you're going to lose a round, you might as well end with some Nourish for the next round.",
     "rarity": 0
   },
-  {"name": "Gift", "id": 12,
+  {"name": "Mercy", "id": 12,
     "cost": 3, "points": 3,
     "text": "3:3, each player draws a card.",
     "catalogText": "Gift costs 3 mana for 3 points, and also makes both players draw 1.\n\nIf your opponent doesn't have enough room in their hand, they won't end up drawing a card, and Gift becomes extra efficient.\n\nAgainst certain combo decks, gift can also break up what they are trying to do by drawing them a card at the wrong time.",
@@ -89,7 +89,7 @@
     "catalogText": "Hurricane costs 4 mana, gives no points, and resets both player's point totals to 0.\n\nThis means as long as it's the last card in the story, you can't lose. And if you play any card worth points after it, you'll win the round.\n\nNote that any boosts from things like Nourish will happen before the points are reset, essentially nullifying those effects.",
     "rarity": 2
   },
-  {"name": "Dinosaur Bones", "id": 14,
+  {"name": "Arsonist", "id": 14,
     "cost": 4, "points": 4,
     "text": "4:4, Fleeting, create 3 ${1002}s in your discard pile.",
     "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
@@ -103,14 +103,14 @@
     "rarity": 1
   },
 
-  {"name": "Chimney", "id": 16,
+  {"name": "Clip Your Wings", "id": 16,
     "cost": 5, "points": 3,
     "text": "5:3, your opponent puts the leftmost card of their hand on top of their deck.",
     "story": "We walked and ran and played then\nYou leave me behind\nI gasp as the space between us grows",
     "catalogText": "Chimney costs 5 mana for just 2 points, but it also forces your opponent to put the leftmost card of their hand on top of their deck.\n\nThis is even better than Bone Knife for only 5 extra mana.\n\nIf the 2 points are enough to win you a round, this can get you card advantage. Maybe.",
     "rarity": 1
   },
-  {"name": "Tumulus", "id": 17,
+  {"name": "Veteran", "id": 17,
     "cost": 5, "points": 4,
     "text": "5:4, worth +2 points if your discard pile has at least 8 cards in it.",
     "story": "The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat there was to know",
@@ -124,14 +124,14 @@
     "catalogText": "Uprising costs 6 mana for 3 points, but is also worth an extra point for each card before it in the story.\n\nTry to pass at strategic times, like when your opponent thinks they need to play more to catch up to you, so that this card can be played as late in the round as possible.\n\nResolving Uprising at the end of a round is hard to beat.",
     "rarity": 1
   },
-  {"name": "Stalker", "id": 19,
+  {"name": "Shadow", "id": 19,
     "cost": 6, "points": 3,
     "text": "6:3.\nCosts X, where X is the number of cards in your opponent's hand.",
     "story": "Your pain blooms like flowers on a misty day.\nI breathe it in.\nPerhaps I can rest now.",
     "catalogText": "Stalker's cost is equal to the number of cards in your opponent's hand, and it's worth 3 points.\n\nIf you can force your opponent to discard some of their hand, Stalker could come out as early as round 2, beating just about anything.\n\nUnfortunately, your opponent can play around this by passing more frequently.",
     "rarity": 2
   },
-  {"name": "Sarcophagus", "id": 20,
+  {"name": "Cling", "id": 20,
     "cost": 6, "points": 0,
     "text": "6:0, put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost.",
     "story": "Reaching back with the back of the eyes\nTo that moment when\nI see myself – not as I am – but as I was - clearly",
@@ -139,7 +139,7 @@
     "rarity": 2
   },
 
-  {"name": "Anubis", "id": 21,
+  {"name": "Death", "id": 21,
     "cost": 7, "points": 7,
     "text": "7:7.\nCosts 0 if you have at least 12 cards in your discard pile.",
     "story": "I knew you were coming, I just didn’t know when.\nGo easy on me.\nI am tired, sated, and looking for new life.",
@@ -147,7 +147,7 @@
     "rarity": 3
   },
 
-  {"name": "AI", "id": 22,
+  {"name": "The Future", "id": 22,
     "cost": 8, "points": 5,
     "text": "8:5, draw 1 card.\nCosts X less, where X is the total point value of all robots in your hand.",
     "catalogText": "AI costs 8 mana for 5 points and also draws you a card, but its cost is reduced by the total point value of all robots in your hand. So if you have a 0:3 robot and a 0:1 robot, AI ends up costing 8 - 3 - 1 = 4 mana.\n\nTry to build a big robot so that you can play multiple copies of AI in a single round for very little mana.\n\nOnly play the robot once you can replace it with a new one.",
@@ -160,7 +160,7 @@
     "rarity": 2
   },
 
-  {"name": "Scarab", "id": 50,
+  {"name": "Morning Light", "id": 50,
     "cost": 0, "points": 0,
     "text": "0:0.\nWhen played, gain Sight 4.\nAt the start of each round, if this is the top of your discard pile, gain Sight 1.",
     "rarity": 0
@@ -172,12 +172,12 @@
     "catalogText": "Nectar costs 1 mana and provides you with 1 Nourish.\n\nThis can be flexibly used for carryover, to dodge resets, or to permanently boost Bastet.\n\nA good use of this card is to play it, then if the opponent passes, play another utility card to gain the boost and win the round.",
     "rarity": 0
   },
-  {"name": "Bandit", "id": 26,
+  {"name": "Prey", "id": 26,
     "cost": 1, "points": 2,
     "text": "1:2, create a ${1004} in your opponent's hand.",
     "rarity": 0
   },
-  {"name": "Axolotl", "id": 63,
+  {"name": "Morning Dew", "id": 63,
     "cost": 1, "points": 1,
     "text": "1:1.\nAt the start of each round, if this is the top of your discard pile, create an Axolotl in your hand.",
     "catalogText": "Axolotl costs 1 mana for 1 point, and will also create a new Axolotl in your hand if it's on top of your discard pile when the round starts.\n\nIf you want this ability to activate, be sure to play Axolotl last in a round so that it's on top of your other cards. This can give you lots of card-advantage and consistency.\n\nSometimes, creating an Axolotl could force you to not draw another card from your deck, which might be bad. Additionally, you'll end up with lots of the little guys after you shuffle, so watch out!",
@@ -190,19 +190,19 @@
     "catalogText": "Night Vision costs 1 mana, provides you with 3 Sight immediately when play, and tutors any 2-cost card out of your deck or discard pile.\n\nThe 3 Sight makes the first 3 cards of the story visible to you, and accumulates with other Sight gain. This could let you see what your opponent is up to before committing to a round.\n\nTutor prioritizes deck, then discard pile, and not cards in the story.",
     "rarity": 0
   },
-  {"name": "Spy", "id": 27,
+  {"name": "Clear View", "id": 27,
     "cost": 1, "points": 0,
     "text": "1:0, create a ${1001} in your opponent's hand.",
     "catalogText": "Spy costs 1 mana, and creates a Camera in the opponent's hand.\n\nAt the start of each round, the Camera provides you with 4 Sight if it's still in the opponent's hand, allowing you to see the first 4 cards played in the story. \n\nUse this to overfill their hand and tax their mana, while also gaining information about the cards they play.",
     "rarity": 1
   },
-  {"name": "Become Machine", "id": 55,
+  {"name": "Born Anew", "id": 55,
     "cost": 1, "points": 0,
     "text": "1:0, Fleeting, transform each of your cards later in the story into an 0:X Fleeting ${1003}, where X is its cost.",
     "rarity": 1
   },
 
-  {"name": "Sine", "id": 31,
+  {"name": "Hungry Ghost", "id": 31,
     "cost": 2, "points": 4,
     "text": "2:4, Starve 4.",
     "catalogText": "Sine costs 2 mana for 4 points, but causes the next card you resolve to be worth 4 less points.\n\nIf you play a card after Sine in the same round, it won't net you any points.\n\nBut it can be effective at trading rounds, taking a final win, or setting up resets.",
@@ -219,13 +219,13 @@
     "text": "2:0, worth +3 points if this is the last card in the story. Otherwise, return the last card in the story to its owner's hand.",
     "rarity": 0
   },
-  {"name": "Fish Bones", "id": 64,
+  {"name": "Parch", "id": 64,
     "cost": 2, "points": 0,
     "text": "2:0, Fleeting, draw 2 cards, create 3 ${1002}s in your discard pile.",
     "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips",
     "rarity": 0
   },
-  {"name": "Unearth", "id": 33,
+  {"name": "Hold Tight", "id": 33,
     "cost": 2, "points": 2,
     "text": "2:2, put the top card of your discard pile on top of your deck.",
     "catalogText": "Unearth costs 2 mana for 2 points, and puts the top card of your discard pile on top of your deck.\n\nBe aware that any cards which resolve before Unearth in the story will be in the discard pile by the time it happens.\n\nUse this to get back powerful cards like Oak or Bastet, or keep Bandits out of your discard pile to deny your opponent points.",
@@ -244,13 +244,13 @@
     "catalogText": "Imprison costs 2 mana, resets both player's points, then gives the opponent 1 point for each card in their hand.\n\nWhile Imprison is weak early on, in the late game or paired with discard, it can answer your opponent's plays for very little mana.\n\nBe careful if your opponent runs card draw in their deck, because they might end up getting more points than you're bargaining for.",
     "rarity": 1
   },
-  {"name": "Carrion", "id": 74,
+  {"name": "Sprout from Ashes", "id": 74,
     "cost": 2, "points": 1,
     "text": "2:1, remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
     "story": "Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning",
     "rarity": 2
   },
-  {"name": "Bastet", "id": 34,
+  {"name": "Pet", "id": 34,
     "cost": 2, "points": 1,
     "text": "2:1, this card retains all changes to points as it resolves.\n(For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)",
     "catalogText": "Bastet costs 2 mana for 1 point, but also keeps any changes to its points permanently.\n\nThis means that if you have any Nourish when Bastet resolves, it will keep that boost and can be developed into a win-condition.\n\nOnce boosted, try to draw Bastet as quickly as possible with cards like Unearth, tutors, and by thinning cards out of your deck.",
@@ -262,7 +262,7 @@
     "text": "3:3, both players Nourish 2.",
     "rarity": 0
   },
-  {"name": "Anvil", "id": 60,
+  {"name": "Cradle", "id": 60,
     "cost": 3, "points": 2,
     "text": "3:2, Build 2.",
     "rarity": 0
@@ -278,20 +278,20 @@
     "text": "3:0, Fleeting, give your opponent Starve 4, create a Sickness in their hand.",
     "rarity": 1
   },
-  {"name": "Paranoia", "id": 39,
+  {"name": "Awakening", "id": 39,
     "cost": 3, "points": 3,
     "text": "3:3.\nWhen played, gain Sight X, where X is the number of cards before this in the story.",
     "catalogText": "Paranoia costs 3 for 3 points, and grants you Sight X, where X is the number of cards before it in the story.\n\nMost of the time, this means that everything up to Paranoia will be visible to you, and if you have additional Sight, you can see future cards as well.\n\nTry to stall long enough for your opponent to play 3 cards, then drop this and be able to play Horus for free.",
     "rarity": 1
   },
 
-  {"name": "Pelican", "id": 40,
+  {"name": "Gamecock", "id": 40,
     "cost": 4, "points": 4,
     "text": "4:4, Visible, remove from the game each card in your hand that costs 0 or 1. Worth +1 point for each card removed.",
     "story": "I will I will I will\nBecome me become me become me\nAt your peril",
     "rarity": 0
   },
-  {"name": "Generator", "id": 53,
+  {"name": "Posterity", "id": 53,
     "cost": 4, "points": 4,
     "text": "4:4.\nAt the start of each round, if this is the top of your discard pile, Build 1.",
     "rarity": 1
@@ -302,7 +302,7 @@
     "catalogText": "Gentle Rain costs 4 mana for 1 point, but will also Nourish you equal to the number of cards you drew this round.\n\nThis includes the 2 cards that you drew at the start of the round, assuming your hand wasn't full.\n\nIt also includes any cards that you drew or tutored because of cards that resolved before it in the current round, so try to land a full Fishing Boat to get the most out of this effect.",
     "rarity": 3
   },
-  {"name": "Pocket Watch", "id": 54,
+  {"name": "Iceberg", "id": 54,
     "cost": 4, "points": 2,
     "text": "4:2, draw 2 cards.\nCosts X less, where X is the number of times you've passed this round.",
     "rarity": 1
@@ -326,7 +326,7 @@
     "rarity": 0
   },
 
-  {"name": "Symbiosis", "id": 57,
+  {"name": "Boa", "id": 57,
     "cost": 6, "points": 6,
     "text": "6:6, if this is nourished, your opponent discards the leftmost card of their hand.",
     "story": "I reach I win I have it.\nIt is all mine now!\nCan I make it me?",
@@ -340,13 +340,13 @@
     "catalogText": "Ecology costs 7 mana for 0 points, but will also provide you 10 mana when played. Effectively netting you +3 mana the round it's played.\n\nYour opponent won't know about this burst of mana, and can be caught off guard by your more expensive cards.\n\nThe high mana cost of 7 also can be used to your advantage with cards like Sarcophagus or Become Machine, which care about a card's cost.",
     "rarity": 1
   },
-  {"name": "Horus", "id": 45,
+  {"name": "Enlightenment", "id": 45,
     "cost": 7, "points": 7,
     "text": "7:7.\nCosts 0 if you can see at least 3 of your opponent's cards in the story.",
     "catalogText": "Horus costs 7 mana for 7 points, but can be played for free if at least 3 of the opponent's cards in the story are visible to you.\n\nIt can be tricky to pull off, because your opponent needs to play at least 3 cards, and you need enough Sight to reveal them all.\n\nHowever, you can force them into a situation where either they aren't playing enough points, or they risk you getting a free Horus.",
     "rarity": 3
   },
-  {"name": "Icarus", "id": 46,
+  {"name": "Excess", "id": 46,
     "cost": 7, "points": 7,
     "text": "7:7.\nCosts 0 if you have 5 cards in the story.",
     "rarity": 3
@@ -358,7 +358,7 @@
     "story": "I raise my head over the horizon\nI begin\nJust like you",
     "rarity": 2
   },
-  {"name": "Occupation", "id": 75,
+  {"name": "Clear Mind", "id": 75,
     "cost": 7, "points": 7,
     "text": "7:7, create a ${1001} in your opponent's hand.",
     "rarity": 2
