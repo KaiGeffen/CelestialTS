@@ -62,6 +62,7 @@ export class AdventureBuilderScene extends BuilderBase {
     this.filterRegion = new FilterRegion().create(this, true)
 
     this.deckRegion = new DeckRegion().create(this, this.startCallback())
+    this.deckRegion.addRequiredCards(params.deck)
     
     this.catalogRegion = new CatalogRegion().create(this)
   }

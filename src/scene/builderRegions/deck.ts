@@ -158,6 +158,16 @@ export default class DeckRegion {
 		return txt
 	}
 
+	// Add cards to the deck that must be in the deck
+	addRequiredCards(cards: string): void {
+		this.setDeck(cards)
+
+		// Set each card in the deck to be required
+		this.deck.forEach(card => {
+			card.setRequired()
+		})
+	}
+
 	// Remove the card from deck which has given index
 	private removeCardFromDeck(index: number): () => void {
 		let that = this
