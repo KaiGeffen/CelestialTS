@@ -44,6 +44,8 @@ function decodeCard(s: string): Card {
 }
 
 function encodeDeck(deck: Card[] | string): string {
+	if (deck === undefined || deck === '') { return '' }
+
 	let cards = []
 	if (typeof deck === 'string') {
 		cards = deck.split(':').map((id) => {return getCard(parseInt(id))})
@@ -51,7 +53,6 @@ function encodeDeck(deck: Card[] | string): string {
 		cards = deck
 	}
 
-	if (deck === undefined) { return '' }
 	return cards.map(encodeCard).join(delims[1])
 }
 
