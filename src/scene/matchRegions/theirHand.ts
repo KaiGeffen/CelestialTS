@@ -1,18 +1,16 @@
 import "phaser"
-
+import { cardback } from '../../catalog/catalog'
+import { keywords } from "../../catalog/keywords"
+import { Zone } from '../../lib/animation'
+import { AvatarSmall, ButtonInspire, ButtonNourish } from '../../lib/buttons/backed'
+import Button from '../../lib/buttons/button'
+import { CardImage } from '../../lib/cardImage'
+import ClientState from '../../lib/clientState'
+import { Status } from '../../lib/status'
+import { Color, Space, Style, Time } from '../../settings/settings'
+import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
-
-import { Space, Color, Time, Style } from '../../settings/settings'
-import Button from '../../lib/button'
-import Card from '../../lib/card'
-import { CardImage } from '../../lib/cardImage'
-import { cardback } from '../../catalog/catalog'
-import ClientState from '../../lib/clientState'
-import { Animation, Zone } from '../../lib/animation'
-import BaseScene from '../baseScene'
-
-import { Status } from '../../lib/status'
 
 
 export default class TheirHandRegion extends Region {	
@@ -21,6 +19,13 @@ export default class TheirHandRegion extends Region {
 
 	txtDeckCount: Phaser.GameObjects.Text
 	txtDiscardCount: Phaser.GameObjects.Text
+
+	btnInspire: ButtonInspire
+	btnNourish: ButtonNourish
+	txtStatusExplanation: Phaser.GameObjects.Text
+
+	// Avatar image
+	avatar: AvatarSmall
 
 	create (scene: BaseScene): TheirHandRegion {
 		let that = this
@@ -32,6 +37,7 @@ export default class TheirHandRegion extends Region {
 
 		// Add background rectangle
 		let background = this.createBackground(scene)
+		this.container.add(background)
 		
 		// Highlight visible when they have priority
 		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
@@ -39,7 +45,11 @@ export default class TheirHandRegion extends Region {
 		.play(true)
 		.setVisible(false)
 
-		let avatar = scene.add.image(6, 6, 'avatar-Jules').setOrigin(0)
+		// Create the status visuals
+		this.createStatusDisplay()
+
+		// Create our avatar
+		this.avatar = this.createAvatar()
 
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
@@ -53,9 +63,7 @@ export default class TheirHandRegion extends Region {
 
 		// Add each of these objects to container
 		this.container.add([
-			background,
 			this.priorityHighlight,
-			avatar,
 			divide,
 			this.txtDeckCount,
 			iconDeck,
@@ -103,6 +111,56 @@ export default class TheirHandRegion extends Region {
 		})
 
 		return background
+	}
+
+	private createAvatar(): AvatarSmall {
+		// TODO Custom avatar
+		return new AvatarSmall(this.container, 6, 6, '', 'Jules').setOrigin(0)
+	}
+
+	private createStatusDisplay(): void {
+		// TODO 6
+		let x = 6 + Space.avatarSize - 10
+
+		// Inspire
+		let y = 6
+		this.btnInspire = new ButtonInspire(this.container, x - 15, y)
+		.setOrigin(0)
+		.setVisible(false)
+		this.btnInspire.setOnHover(...this.onHoverStatus('Inspired', this.btnInspire))
+
+		// Nourish
+		y += Space.avatarSize/2
+		this.btnNourish = new ButtonNourish(this.container, x - 15, y)
+		.setOrigin(0)
+		.setVisible(false)
+		this.btnNourish.setOnHover(...this.onHoverStatus('Nourish', this.btnNourish))
+
+		this.txtStatusExplanation = this.scene.add.text(Space.cardWidth, Space.handHeight, '', Style.basic)
+		.setOrigin(0)
+	}
+
+	private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
+		let that = this
+		let keyword = keywords.find((value) => {
+			return value.key === status
+		})
+
+		let onHover = () => {
+			let s = keyword.text
+
+			// Get the value from the given status button
+			s = s.split(/\bX\b/).join(btn.getText())
+			s = s.replace('you', 'they')
+			
+			that.txtStatusExplanation.setText(s)
+		}
+
+		let onExit = () => {
+			that.txtStatusExplanation.setText('')
+		}
+
+		return [onHover, onExit]
 	}
 
 	// Animate any cards leaving the hand
@@ -189,35 +247,18 @@ export default class TheirHandRegion extends Region {
 	}
 
 	private displayStatuses(state: ClientState): void {
-		// Specific to 4 TODO
+		// // Specific to 4 TODO
 		let amts = [0, 0, 0, 0]
 		const length = 4
 
-		state.opponentStatus.forEach(function(status, index, array) {
+		state.status.forEach(function(status, index, array) {
 			amts[status]++
 		})
 
-		let points = '0 60 0 0 70 10 70 70'
-		let y = 10
-		for (let i = 0; i < length; i++) {
-			if (amts[i] > 0) {
-				let img = this.scene.add.image(140, y, 'icon-Nourish').setOrigin(0)
+		this.btnInspire.setVisible(amts[1] > 0)
+		.setText(`${amts[1]}`)
 
-				var randomColor = Math.floor(Math.random()*16777215)
-				img.setTint(randomColor)
-
-				// TODO Make this style standard
-				let s = `${Status[i]} ${amts[i]}`
-				let txt = this.scene.add.text(145, y + 45, s, {
-					fontSize: '10px',
-					color: '#031022'
-				}).setOrigin(0, 0.5)
-
-				this.container.add([img, txt])
-				this.temp.push(img, txt)
-
-				y += 50
-			}
-		}
+		this.btnNourish.setVisible(amts[2] > 0)
+		.setText(`${amts[2]}`)
 	}
 }
