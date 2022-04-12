@@ -251,7 +251,7 @@ export default class TheirHandRegion extends Region {
 		let amts = [0, 0, 0, 0]
 		const length = 4
 
-		state.status.forEach(function(status, index, array) {
+		state.opponentStatus.forEach(function(status, index, array) {
 			amts[status]++
 		})
 
