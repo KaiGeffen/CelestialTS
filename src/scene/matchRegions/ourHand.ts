@@ -222,7 +222,7 @@ export default class OurHandRegion extends Region {
 
 				if (animation.from === Zone.Hand) {
 					// This is the card having an effect in the player's hand
-					this.animateEmphasis(animation.card, [x,y], delay)
+					this.animateEmphasis(card, delay)
 				}
 				else {
 					// Set the starting position based on zone it's coming from

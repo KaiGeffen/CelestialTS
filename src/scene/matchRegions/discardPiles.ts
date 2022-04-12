@@ -85,7 +85,7 @@ export default class DiscardPilesRegion extends Region {
 
 				if (animation.from === Zone.Discard) {
 					// This is the card having an effect in the player's discard pile
-					this.animateEmphasis(animation.card, [x,y], delay)
+					this.animateEmphasis(card, delay)
 				}
 				else {
 					// Set the starting position based on zone it's coming from

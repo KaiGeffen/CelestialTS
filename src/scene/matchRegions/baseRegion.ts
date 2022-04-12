@@ -38,23 +38,22 @@ export default class Region {
 	}
 
 	// Animate the given card being emphasized
-	protected animateEmphasis(card: Card, position: [number, number], delay: number): void {
-		// Create a new image of the card
-		let cardImage = this.addCard(card, position).hide()
+	protected animateEmphasis(card: CardImage, delay: number): void {
+		card.hide()
 
 		// Animate moving x direction, appearing at start
 		this.scene.tweens.add({
-			targets: cardImage.container,
+			targets: card.container,
 			alpha: 0,
 			scale: 2,
 			delay: delay,
 			duration: Time.recapTweenWithPause(),
 			onStart: function (tween, targets, _)
 			{
-				cardImage.show()
+				card.show()
 			},
 			onComplete: function (tween, targets, _) {
-				cardImage.destroy()
+				card.destroy()
 			}
 		})
 	}
