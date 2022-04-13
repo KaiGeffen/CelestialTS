@@ -65,6 +65,9 @@ export class AdventureBuilderScene extends BuilderBase {
     this.deckRegion.addRequiredCards(params.deck)
     
     this.catalogRegion = new CatalogRegion().create(this)
+
+    // Must filter out cards that you don't have access to
+    this.filter()
   }
 
   updateSavedDeck(deck: string): void {}

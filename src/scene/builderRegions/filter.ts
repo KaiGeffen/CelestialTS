@@ -25,7 +25,7 @@ export default class FilterRegion {
 	filterUnowned: boolean
 
 	// Create this region, offset by the given width
-	create(scene: BuilderBase, filterUnowned) {
+	create(scene: BuilderBase, filterUnowned: boolean) {
 		this.scene = scene
 		this.filterUnowned = filterUnowned
 
