@@ -34,7 +34,7 @@ export default class FilterRegion {
 
 		this.createBackground(container)
 
-		new TextButton(container, Space.pad, 40, '<   Back', scene.doExit()).setOrigin(0, 0.5)
+		new TextButton(container, Space.pad, 40, '<   Back', () => {scene.doBack()}).setOrigin(0, 0.5)
 
 		this.createFilterButtons(container)
 

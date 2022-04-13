@@ -52,7 +52,8 @@ export class BuilderBase extends BaseScene {
 export class AdventureBuilderScene extends BuilderBase {
   constructor() {
     super({
-      key: "AdventureBuilderScene"
+      key: "AdventureBuilderScene",
+      lastScene: "AdventureScene"
     })
   }
 
@@ -93,7 +94,8 @@ export class BuilderScene extends BuilderBase {
 
   constructor() {
     super({
-      key: "BuilderScene"
+      key: "BuilderScene",
+      lastScene: "HomeScene"
     })
   }
   

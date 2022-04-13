@@ -26,8 +26,11 @@ export default class BaseScene extends Phaser.Scene {
 	// A menu is closing currently, so the main menu should not open with this esc event
 	static menuClosing: boolean = false
 
+	private lastScene: string
+
 	constructor(args) {
 		super(args)
+		this.lastScene = args.lastScene
 	}
 
 	// Called at the beginning of children's create methods
@@ -168,6 +171,17 @@ export default class BaseScene extends Phaser.Scene {
 		return function() {
 			that.beforeExit()
 			that.scene.start("HomeScene")
+		}
+	}
+
+	// Go back to the last scene
+	// Return whether a last scene was saved
+	doBack() {
+		if (this.lastScene === undefined) {
+			throw 'Last scene is undefined'
+		}
+		else {
+			this.scene.start(this.lastScene)
 		}
 	}
 }
