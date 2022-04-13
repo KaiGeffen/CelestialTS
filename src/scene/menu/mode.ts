@@ -13,6 +13,8 @@ import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 const width = 400
 
 export default class ModeMenu extends Menu {
+	password: string
+
 	constructor(scene: Phaser.Scene, params) {
 		super(scene)
 
@@ -53,6 +55,9 @@ export default class ModeMenu extends Menu {
 		panel.add(this.createTitle(scene))
 		.addNewLine()
 
+		panel.add(this.createPasswordEntry(scene))
+		.addNewLine()
+
 		panel.add(this.createButtons(scene, activeScene, deck))
 	}
 
@@ -65,6 +70,29 @@ export default class ModeMenu extends Menu {
 		.addSpace()
 
 		return sizer
+	}
+
+	private createPasswordEntry(scene: Phaser.Scene) {
+		let that = this
+
+		let inputText = scene.add['rexInputText'](
+			0, 0, width - Space.pad * 2, 40, {
+				type: 'text',
+				text: '',
+				placeholder: 'Password',
+				tooltip: 'Password for PWD mode.',
+				fontFamily: 'Mulish',
+				fontSize: '20px',
+				color: Color.textboxText,
+				backgroundColor: Color.textboxBackground,
+				maxLength: 10,
+				selectAll: true,
+				id: 'search-field'
+			}).on('textchange', function(inputText) {
+				that.password = inputText.text
+			})
+
+			return inputText
 	}
 
 	// Create the buttons at the bottom
@@ -124,6 +152,7 @@ export default class ModeMenu extends Menu {
 	}
 
 	private createPWD(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
+		let that = this
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
 		new SymmetricButtonSmall(container, 0, 0, 'PWD', () => {
@@ -134,7 +163,7 @@ export default class ModeMenu extends Menu {
 			{
 					isTutorial: false,
 					deck: deck,
-					// TODO Use the usersetting password, add that as a field in this sizer
+					mmCode: that.password,
 				}
 			)
 		})
