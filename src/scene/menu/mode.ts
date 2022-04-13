@@ -76,9 +76,9 @@ export default class ModeMenu extends Menu {
 		let that = this
 
 		let inputText = scene.add['rexInputText'](
-			0, 0, width - Space.pad * 2, 40, {
+			0, 0, width, 40, {
 				type: 'text',
-				text: '',
+				text: '', // Retain the last password
 				placeholder: 'Password',
 				tooltip: 'Password for PWD mode.',
 				fontFamily: 'Mulish',

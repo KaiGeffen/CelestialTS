@@ -373,12 +373,15 @@ class View {
 		this.ourDiscardOverlay.displayState(state, isRecap)
 		this.theirDiscardOverlay.displayState(state, isRecap)
 
-		// If we haven't completed mulligan, do something different
+		// If we have mulliganed, hide that region
 		if (state.mulligansComplete[0]) {
 			this.mulligan.hide()
 		}
 		else {
-			this.mulligan.displayState(state, isRecap)
+			// Display the mulligan region initially, but don't overwrite after the opponent has mulliganed
+			if (!state.mulligansComplete[1]) {
+				this.mulligan.displayState(state, isRecap)
+			}
 
 			// Hide the cards in our hand
 			// TODO Bad smell
