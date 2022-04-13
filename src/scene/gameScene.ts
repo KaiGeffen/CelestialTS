@@ -72,15 +72,14 @@ export default class GameScene extends BaseScene {
 		super.create()
 	}
 
+	beforeExit() {
+		this.net.exitMatch()
+	}
+
 	// Listens for websocket updates
 	// Manages user decisions (What card to play, when to pass)
 
 	// Methods called by the websocket
-
-	// Display searching for opponent if still looking
-	displaySearchingStatus(searching: boolean): void {
-
-	}
 
 	// Queue up the given state, to be displayed when correct to do so
 	queueState(state: ClientState): void {

@@ -2,6 +2,7 @@ import "phaser"
 import { Color, Space, Style } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
+import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 
 
 export default class SearchingRegion extends Region {	
@@ -11,6 +12,8 @@ export default class SearchingRegion extends Region {
 		this.container.add(this.createBackground(scene))
 
 		this.container.add(this.createText(scene))
+
+		this.addButtons(scene, this.container)
 
 		return this
 	}
@@ -27,5 +30,18 @@ export default class SearchingRegion extends Region {
 		.setOrigin(0.5)
 
 		return txt
+	}
+
+	private addButtons(scene: BaseScene, container: Phaser.GameObjects.Container): SymmetricButtonSmall {
+		let btn = new SymmetricButtonSmall(container, Space.windowWidth/2, Space.windowHeight/2 + 100, 'Cancel', () => {
+			// Stop the other active scene
+			scene.beforeExit()
+			scene.scene.stop()
+
+			// Stop this scene and start the home scene
+			scene.scene.start("BuilderScene")
+		})
+
+		return btn
 	}
 }

@@ -6,6 +6,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
 import Menu from './menu'
+import BaseScene from '../../scene/baseScene'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 
@@ -55,7 +56,7 @@ export default class OptionsMenu extends Menu {
 		return panel
 	}
 
-	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene) {
+	private createContent(scene: Phaser.Scene, panel, activeScene: BaseScene) {
 		panel.add(this.createTitle(scene))
 		.addNewLine()
 
@@ -194,7 +195,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	// Create the buttons at the bottom which navigate to other scenes/menus
-	private createButtons(scene: Phaser.Scene, activeScene: Phaser.Scene) {
+	private createButtons(scene: Phaser.Scene, activeScene: BaseScene) {
 		let sizer = scene['rexUI'].add.sizer({
 			width: width,
 			space: {
@@ -232,11 +233,12 @@ export default class OptionsMenu extends Menu {
 		return container
 	}
 
-	private createQuit(scene: Phaser.Scene, activeScene: Phaser.Scene) {
+	private createQuit(scene: Phaser.Scene, activeScene: BaseScene) {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
 		new SymmetricButtonSmall(container, 0, 0, 'Quit', () => {
 			// Stop the other active scene
+			activeScene.beforeExit()
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
