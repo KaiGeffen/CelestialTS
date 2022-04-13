@@ -234,14 +234,12 @@ export default class DecklistsRegion {
 
 			// If it's already selected, deselect it
 			if (btn.selected) {
-				console.log('Deselecting')
 				that.savedDeckIndex = undefined
 				that.scene.setDeck([])
 				btn.deselect()
 			}
 			// Otherwise select this button
 			else {
-				console.log('Selecting')
 				that.savedDeckIndex = i
 				btn.select()
 
