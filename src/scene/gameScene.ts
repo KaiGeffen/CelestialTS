@@ -292,6 +292,8 @@ class View {
 	// Whether the recap is playing or is paused
 	paused: boolean
 
+	searching: Region
+
 	ourHand: Region
 	ourButtons: Region
 	theirHand: Region
@@ -319,6 +321,8 @@ class View {
 		this.scene = scene
 
 		let background = scene.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
+
+		this.searching = new Regions.Searching().create(scene)
 
 		// Create each of the regions
 		// this.createOurHand()
@@ -359,6 +363,8 @@ class View {
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
+		this.searching.hide()
+		
 		this.ourHand.displayState(state, isRecap)
 		this.theirHand.displayState(state, isRecap)
 		this.story.displayState(state, isRecap)
