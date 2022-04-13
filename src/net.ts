@@ -68,11 +68,8 @@ export class Network {
 				switch (msg.type) {
 					case 'both_players_connected':
 					if (msg.value) {
+						// Send the initial message, including things like the deck we are using
 						socket.send(initMessage)
-						scene.displaySearchingStatus(false)
-					}
-					else {
-						scene.displaySearchingStatus(true)
 					}
 					break
 
@@ -82,12 +79,6 @@ export class Network {
 					if (state.versionNumber > versionNumber) {
 						scene.queueState(state)
 					}
-
-					// TODO Implement mulligan
-					// if (state.versionNumber === 0) {
-					// 	that.doMulligan('000')
-					// }
-
 					break
 
 					// Signal to the user that they chose an illegal action

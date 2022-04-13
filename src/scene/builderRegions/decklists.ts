@@ -9,8 +9,6 @@ import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon';
 import { Color, Mechanics, Space, Style, UserSettings } from "../../settings/settings";
 
 
-
-
 const width = Space.iconSeparation + Space.pad
 
 // Region of the deck builder which contains all the decklists
@@ -71,6 +69,14 @@ export default class DecklistsRegion {
 
 			UserSettings._setIndex('decks', index, newDeck)
 		}
+	}
+
+	selectDeck(index: number): void {
+		this.decklistBtns[index].onClick()
+	}
+
+	getSelectedDeckIndex(): number {
+		return this.savedDeckIndex
 	}
 
 	// Create and return the scrollable panel where premade decks go

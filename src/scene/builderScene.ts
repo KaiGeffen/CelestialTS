@@ -85,6 +85,9 @@ export class AdventureBuilderScene extends BuilderBase {
 }
 
 export class BuilderScene extends BuilderBase {
+  lastDecklist: number
+  lastDeck: string
+
   constructor() {
     super({
       key: "BuilderScene"
@@ -98,19 +101,44 @@ export class BuilderScene extends BuilderBase {
 
     this.filterRegion = new FilterRegion().create(this, false)
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.decklistsRegion.width) // TODO Function
+    this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.decklistsRegion.width)
+    if (this.lastDeck !== undefined) {
+      this.deckRegion.setDeck(this.lastDeck)
+    }
     
     this.catalogRegion = new CatalogRegion().create(this, this.decklistsRegion.width)
+
+    // Set starting deck
+    if (this.lastDecklist !== undefined) {
+      this.decklistsRegion.selectDeck(this.lastDecklist)
+    }
+    else if (this.lastDeck !== undefined) {
+      this.deckRegion.setDeck(this.lastDeck)
+    }
   }
 
   updateSavedDeck(deck: string): void {
     this.decklistsRegion.updateSavedDeck(deck)
   }
 
+  beforeExit(): void {
+    this.rememberSettings()
+  }
+
+  // Remember what deck / decklist was selected
+  private rememberSettings() {
+    // Remember the deck for when the builder is returned to
+      this.lastDecklist = this.decklistsRegion.getSelectedDeckIndex()
+      this.lastDeck = this.getDeckCode()
+  }
+
   private startCallback(): () => void {
     let that = this
 
     return function() {
+      // Remember the deck for when the builder is returned to
+      that.rememberSettings()
+
       // Open the mode menu to select what mode to play in with the given deck
       that.scene.launch('MenuScene', {
         menu: 'mode',
