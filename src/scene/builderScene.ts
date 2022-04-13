@@ -111,13 +111,12 @@ export class BuilderScene extends BuilderBase {
     let that = this
 
     return function() {
-      // Start a match against an ai opponent with the specified deck
-      // TODO Open a menu giving the option of pvp
-      that.scene.start("GameScene",
-        {isTutorial: false,
-          deck: that.getDeckCode(),
-          mmCode: `ai`}
-          )
+      // Open the mode menu to select what mode to play in with the given deck
+      that.scene.launch('MenuScene', {
+        menu: 'mode',
+        activeScene: that,
+        deck: that.getDeckCode(),
+      })
     }
   }
 }

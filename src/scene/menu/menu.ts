@@ -11,6 +11,7 @@ import CreditsMenu from "./credits"
 import RulebookMenu from "./rulebook"
 import NewDeckMenu from "./newDeck"
 import ShareDeckMenu from "./shareDeck"
+import ModeMenu from "./mode"
 
 
 const menus = {
@@ -20,6 +21,7 @@ const menus = {
 	'rulebook': RulebookMenu,
 	'newDeck': NewDeckMenu,
 	'shareDeck': ShareDeckMenu,
+	'mode': ModeMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 
