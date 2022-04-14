@@ -420,8 +420,10 @@ export class AdventureGameScene extends GameScene {
 
 	constructor (args = {key: 'AdventureGameScene', lastScene: 'AdventureScene'}) {
 		super(args)
+	}
 
-		// Must be reset each time it is instantiated
+	create() {
+		// Must be reset each time it this scene is run
 		this.winSeen = false
 	}
 
