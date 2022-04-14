@@ -3,7 +3,7 @@ import "phaser"
 import MenuScene from "./scene/menuScene"
 import PreloadScene from "./scene/preloadScene"
 import HomeScene from "./scene/homeScene"
-import GameScene from "./scene/gameScene"
+import { StandardGameScene, AdventureGameScene } from "./scene/gameScene"
 import { BuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 
 import CreditsScene from "./scene/creditsScene"
@@ -40,7 +40,8 @@ const config: Phaser.Types.Core.GameConfig = {
   CreditsScene, StoreScene,
   ChoiceScene,
   AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
-  GameScene, AdventureBuilderScene,
+  StandardGameScene, AdventureGameScene,
+  AdventureBuilderScene,
   BuilderScene,
   AdventureScene],
   scale: {

@@ -26,7 +26,9 @@ var storyHiddenLock: boolean = false
 
 // TODO Remove status bar file
 // TODO Rename to Match
-export default class GameScene extends BaseScene {
+class GameScene extends BaseScene {
+	params: any
+
 	view: View
 	net: Network
 
@@ -38,11 +40,9 @@ export default class GameScene extends BaseScene {
 	recapPlaying: boolean // TODO Redundant with above?
 	lastRecap: ClientState[]
 	currentState: ClientState
-	constructor (args = {key: "GameScene"}) {
-		super(args)
-	}
 
 	init (params: any) {
+		this.params = params
 		// Reset variables
 		this.queuedStates = {}
 		this.queuedRecap = []
@@ -250,37 +250,37 @@ export default class GameScene extends BaseScene {
 		// If not a recap and it is your turn, pass if either we have no cards, or autopass is on and we have no available plays
 		if (!isRecap && state.priority === 0 && !state.mulligansComplete.includes(false) &&
 			((haveNoCards) ||
-			(UserSettings._get('autopass') && haveNoPlayableCards))) {
+				(UserSettings._get('autopass') && haveNoPlayableCards))) {
 			this.net.passTurn()
-		}
+	}
 
-		// State was displayed
+	// State was displayed
+	return true
+}
+
+// Queue up this scene's yet-unseen recap, return false if there is none
+private queueNewRecap(state: ClientState): boolean {
+	// If a round just ended, we might have a recap to queue up
+	const isRoundStart = state.story.acts.length === 0 && state.passes === 0
+	const numberStates = state.recap.stateList.length
+	if (isRoundStart && numberStates > 0) {
+		// Queue the recap to play
+		this.queueRecap(state.recap.stateList)
+
+		// Remove the recap from this state (So it won't be added again)
+		state.recap.stateList = []
+
+		// Add this state to the queue
+		this.queueState(state)
+
+		// Return true, that a recap was queued
 		return true
 	}
 
-	// Queue up this scene's yet-unseen recap, return false if there is none
-	private queueNewRecap(state: ClientState): boolean {
-		// If a round just ended, we might have a recap to queue up
-		const isRoundStart = state.story.acts.length === 0 && state.passes === 0
-		const numberStates = state.recap.stateList.length
-		if (isRoundStart && numberStates > 0) {
-			// Queue the recap to play
-			this.queueRecap(state.recap.stateList)
+	return false
+}
 
-			// Remove the recap from this state (So it won't be added again)
-			state.recap.stateList = []
-
-			// Add this state to the queue
-			this.queueState(state)
-
-			// Return true, that a recap was queued
-			return true
-		}
-
-		return false
-	}
-
-	// Display a given breath cost
+// Display a given breath cost
 }
 
 
@@ -409,3 +409,36 @@ class View {
 	}
 }
 
+export class StandardGameScene extends GameScene {
+	constructor (args = {key: 'StandardGameScene', lastScene: 'BuilderScene'}) {
+		super(args)
+	}
+}
+
+export class AdventureGameScene extends GameScene {
+	winSeen = false
+
+	constructor (args = {key: 'AdventureGameScene', lastScene: 'AdventureScene'}) {
+		super(args)
+	}
+
+	// When the player wins for the first time, unlock appropriately
+	queueState(state: ClientState): void {
+		if (!this.winSeen && state.winner === 0) {
+			console.log('here')
+			this.winSeen = true
+			this.unlockMissionRewards()
+		}
+		super.queueState(state)
+	}
+
+	private unlockMissionRewards(): void {
+		// Set that user has completed the missions with this id
+		if (this.params.missionID !== undefined) {
+			UserSettings._setIndex(
+				'completedMissions',
+				this.params.missionID,
+				true)
+		}
+	}
+}

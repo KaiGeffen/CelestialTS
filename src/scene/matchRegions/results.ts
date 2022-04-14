@@ -51,10 +51,10 @@ export default class ResultsRegion extends Region {
 	private createButtons() {
 		let that = this
 
-		// Deck builder
+		// Exit
 		let x = Space.pad + Space.largeButtonWidth/2
 		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
-		new SymmetricButtonLarge(this.container, x, y, 'Deck Builder', this.deckBuilderCallback())
+		new SymmetricButtonLarge(this.container, x, y, 'Exit', this.exitCallback())
 
 		// New match
 		new SymmetricButtonLarge(this.container, Space.windowWidth/2, y, 'New Match', this.newMatchCallback())
@@ -96,10 +96,10 @@ export default class ResultsRegion extends Region {
 		this.container.add(stats)
 	}
 
-	private deckBuilderCallback(): () => void {
+	private exitCallback(): () => void {
 		let that = this
 		return function() {
-			that.scene.scene.start("BuilderScene")
+			that.scene.doBack()
 		}
 	}
 

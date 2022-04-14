@@ -121,7 +121,7 @@ export default class ModeMenu extends Menu {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
-			scene.scene.start("GameScene",
+			scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
 					deck: deck,
@@ -140,7 +140,7 @@ export default class ModeMenu extends Menu {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
-			scene.scene.start("GameScene",
+			scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
 					deck: deck,
@@ -159,7 +159,7 @@ export default class ModeMenu extends Menu {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
-			scene.scene.start("GameScene",
+			scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
 					deck: deck,
