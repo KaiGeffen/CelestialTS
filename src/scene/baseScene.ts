@@ -181,6 +181,7 @@ export default class BaseScene extends Phaser.Scene {
 			throw 'Last scene is undefined'
 		}
 		else {
+			this.beforeExit()
 			this.scene.start(this.lastScene)
 		}
 	}
