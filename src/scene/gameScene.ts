@@ -416,10 +416,13 @@ export class StandardGameScene extends GameScene {
 }
 
 export class AdventureGameScene extends GameScene {
-	winSeen = false
+	winSeen: boolean
 
 	constructor (args = {key: 'AdventureGameScene', lastScene: 'AdventureScene'}) {
 		super(args)
+
+		// Must be reset each time it is instantiated
+		this.winSeen = false
 	}
 
 	// When the player wins for the first time, unlock appropriately
@@ -433,6 +436,7 @@ export class AdventureGameScene extends GameScene {
 	}
 
 	private unlockMissionRewards(): void {
+		console.log(this.params)
 		// Set that user has completed the missions with this id
 		if (this.params.missionID !== undefined) {
 			UserSettings._setIndex(

@@ -243,14 +243,10 @@ export class CardImage {
   // Remove the highlight from this card
   removeHighlight(): () => void {
     let that = this
-    var postFxPlugin = this.image.scene.plugins.get('rexOutlinePipeline')
 
     return function() {
-      postFxPlugin['remove'](that.image)
-
-      cardInfo.setVisible(false)
+      that.image.scene.plugins.get('rexOutlinePipeline')['remove'](that.image)
     }
-    
   }
 
   // Set this cardImage as scrollable, effectively causing it to update the stats
