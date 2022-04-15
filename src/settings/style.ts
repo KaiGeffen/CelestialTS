@@ -41,6 +41,12 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '24px',
     color: Color.header,
   },
+  // Adventure mode flavor text
+  flavor: {
+    fontFamily: fontFamily,
+    fontSize: '28px',
+    color: '#B6B9C5',
+  },
 
 
   basic: {
