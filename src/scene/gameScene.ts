@@ -423,6 +423,8 @@ export class AdventureGameScene extends GameScene {
 	}
 
 	create() {
+		super.create()
+		
 		// Must be reset each time it this scene is run
 		this.winSeen = false
 	}
