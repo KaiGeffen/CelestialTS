@@ -42,7 +42,12 @@ export default class PassRegion extends Region {
 		// Before mulligan is complete, hide this region
 		if (state.mulligansComplete.includes(false)) {
 			this.container.setVisible(false)
-			console.log(state)
+			return
+		}
+
+		// Once the game is over, hide this region
+		if (state.winner !== null) {
+			this.container.setVisible(false)
 			return
 		}
 
