@@ -113,7 +113,7 @@ class GameScene extends BaseScene {
 			that.view.ourScore.displayCost(cost)
 		})
 
-		// Buttons
+		// Buttons TODO Rework these
 		view.ourButtons.setRecapCallback(() => {
 			that.recapPlaying = true
 			that.queuedRecap = [...that.lastRecap]
@@ -156,6 +156,11 @@ class GameScene extends BaseScene {
 					tween.complete()
 				})
 			}
+		})
+
+		// Pass button
+		view.pass.setCallback(() => {
+			net.playCard(10)
 		})
 
 		// Piles (Show overlay when clicked)
@@ -301,6 +306,8 @@ class View {
 	theirScore: Region
 	decks: Region
 	discardPiles: Region
+	pass: Region
+	scores: Region
 
 	ourDeckOverlay: Region
 	theirDeckOverlay: Region
@@ -336,6 +343,8 @@ class View {
 
 		this.decks = new Regions.Decks().create(scene)
 		this.discardPiles = new Regions.DiscardPiles().create(scene)
+		this.pass = new Regions.Pass().create(scene)
+		this.scores = new Regions.Scores().create(scene)
 
 		this.ourDeckOverlay = new Regions.OurDeck().create(scene)
 		this.theirDeckOverlay = new Regions.TheirDeck().create(scene)
@@ -372,11 +381,15 @@ class View {
 		this.ourButtons.displayState(state, isRecap)
 		this.decks.displayState(state, isRecap)
 		this.discardPiles.displayState(state, isRecap)
+		this.pass.displayState(state, isRecap)
+		this.scores.displayState(state, isRecap)
 
 		this.ourDeckOverlay.displayState(state, isRecap)
 		this.theirDeckOverlay.displayState(state, isRecap)
 		this.ourDiscardOverlay.displayState(state, isRecap)
 		this.theirDiscardOverlay.displayState(state, isRecap)
+
+		// TODO Let the regions handle the below instead of this invasion
 
 		// If we have mulliganed, hide that region
 		if (state.mulligansComplete[0]) {

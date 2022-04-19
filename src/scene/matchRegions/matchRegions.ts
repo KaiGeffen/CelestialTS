@@ -9,6 +9,8 @@ import DiscardPilesRegion from "./discardPiles"
 import OurButtonsRegion from "./ourButtons"
 import TheirScoreRegion from "./theirScore"
 import { OurDeckOverlay, TheirDeckOverlay, OurDiscardOverlay, TheirDiscardOverlay } from "./pileOverlays"
+import PassRegion from './pass'
+import ScoresRegion from './scores'
 
 import MulliganRegion from "./mulliganRegion"
 import ResultsRegion from "./results"
@@ -28,6 +30,8 @@ export default class Regions {
 	static TheirDeck = TheirDeckOverlay
 	static OurDiscard = OurDiscardOverlay
 	static TheirDiscard = TheirDiscardOverlay
+	static Pass = PassRegion
+	static Scores = ScoresRegion
 
 	static Mulligan = MulliganRegion
 	static Results = ResultsRegion
