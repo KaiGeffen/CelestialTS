@@ -51,11 +51,6 @@ export default class ScoresRegion extends Region {
 		}
 	}
 
-	// Set the callback for when an act in the story is clicked on
-	setCallback(callback: (i: number) => () => void): void {
-		this.callback = callback
-	}
-
 	private createBackground(scene: Phaser.Scene): RoundRectangle {
 		const points = `0 ${Space.handHeight} 30 0 230 0 230 ${Space.handHeight}`
 		let background = new RoundRectangle(

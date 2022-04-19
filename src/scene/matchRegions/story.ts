@@ -17,11 +17,6 @@ import { IButtonPass } from '../../lib/buttons/icon'
 const middle = (Space.windowHeight)/2 - Space.handHeight
 
 export default class StoryRegion extends Region {
-	txtHint: Phaser.GameObjects.Text
-	txtOurScore: Phaser.GameObjects.Text
-	txtTheirScore: Phaser.GameObjects.Text
-	scoresBackground: RoundRectangle
-
 	lastScores: [number, number]
 
 	// Callback that plays when ith card in recap is clicked on
@@ -32,28 +27,6 @@ export default class StoryRegion extends Region {
 		this.lastScores = [0, 0]
 
 		this.container = scene.add.container(0, Space.handHeight)
-
-		// Add the background
-		this.scoresBackground = this.createBackground(scene)
-		this.container.add(this.scoresBackground)
-
-		new IButtonPass(this.container, this.scoresBackground.x, this.scoresBackground.y)
-
-		this.txtHint = scene.add.text(
-			this.scoresBackground.x, middle, 'Points', Style.small
-			).setOrigin(0.5)
-		this.txtOurScore = scene.add.text(
-			this.scoresBackground.x, middle + 50, '', Style.announcement
-			).setOrigin(0.5)
-		this.txtTheirScore = scene.add.text(
-			this.scoresBackground.x, middle - 50, '', Style.announcement
-			).setOrigin(0.5)
-		
-		this.container.add([
-			this.txtHint,
-			this.txtOurScore,
-			this.txtTheirScore,
-			])
 
 		return this
 	}
@@ -96,47 +69,12 @@ export default class StoryRegion extends Region {
 			this.temp.push(card)
 		}
 
-		// Scores
-		if (isRecap) {
-			this.txtHint.setVisible(true)
-			this.displayScores(state, isRecap)
-			// this.scoresBackground.setVisible(true)
-		}
-		else {
-			this.txtHint.setVisible(false)
-			this.txtOurScore.setText('')
-			this.txtTheirScore.setText('')
-			// this.scoresBackground.setVisible(false)
-		}
-
 		this.animate(state, cards, isRecap)
 	}
 
 	// Set the callback for when an act in the story is clicked on
 	setCallback(callback: (i: number) => () => void): void {
 		this.callback = callback
-	}
-
-	private createBackground(scene: Phaser.Scene): RoundRectangle {
-		const points = `0 ${Space.handHeight} 30 0 230 0 230 ${Space.handHeight}`
-		let background = new RoundRectangle(
-			scene,
-			Space.windowWidth - Space.cardWidth - Space.pad,
-			middle,
-			200,
-			200,
-			100,
-			Color.background
-			)
-
-		// Add a border around the shape TODO Make a class for this to keep it dry
-        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin['add'](background, {
-        	thickness: 1,
-        	outlineColor: Color.border,
-        })
-
-        return background
 	}
 
 	// Display the current score totals and change in scores
@@ -147,9 +85,6 @@ export default class StoryRegion extends Region {
 			this.animateScoreGains(index, state.score, state, isRecap)
 		}
 
-		// Display current total
-		this.txtOurScore.setText(`${state.score[0]}`)
-		this.txtTheirScore.setText(`${state.score[1]}`)
 		this.lastScores = state.score
 	}
 

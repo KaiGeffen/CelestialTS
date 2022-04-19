@@ -39,7 +39,14 @@ export default class PassRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
-		// Show this contianer when state is not in recap
+		// Before mulligan is complete, hide this region
+		if (state.mulligansComplete.includes(false)) {
+			this.container.setVisible(false)
+			console.log(state)
+			return
+		}
+
+		// Show this container when state is not in recap
 		this.container.setVisible(!isRecap)
 
 		// Show if it's their turn
