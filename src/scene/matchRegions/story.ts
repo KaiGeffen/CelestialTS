@@ -10,6 +10,7 @@ import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
 import BaseScene from '../baseScene'
+import { IButtonPass } from '../../lib/buttons/icon'
 
 
 // This is slightly wrong, because the top hand is smaller than this hand height
@@ -35,6 +36,8 @@ export default class StoryRegion extends Region {
 		// Add the background
 		this.scoresBackground = this.createBackground(scene)
 		this.container.add(this.scoresBackground)
+
+		new IButtonPass(this.container, this.scoresBackground.x, this.scoresBackground.y)
 
 		this.txtHint = scene.add.text(
 			this.scoresBackground.x, middle, 'Points', Style.small

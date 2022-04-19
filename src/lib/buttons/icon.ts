@@ -100,3 +100,23 @@ export class IButtonShare extends Button {
 		})
 	}
 }
+
+// TODO Not really an icon, move somewhere else?
+export class IButtonPass extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Pass',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}

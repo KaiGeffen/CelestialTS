@@ -146,6 +146,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Deck', 'Discard',
 			'Nourish', 'Inspire',
 			'Button', // TODO No Button
+			'Pass',
 			'Button1', 'Button2', 'ButtonA1', 'ButtonA2', 
 			'Options', 'X', 'SmallX',
 			'Search', 'Underline',
