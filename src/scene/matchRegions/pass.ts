@@ -28,7 +28,7 @@ export default class PassRegion extends Region {
 		this.container.add(this.background)
 
 		// Pass button
-		this.createButton()
+		this.btnPass = this.createButton()
 
 		// Text for who has passed
 		this.createText()
@@ -79,7 +79,13 @@ export default class PassRegion extends Region {
 			this.txtTheyPassed.setVisible(false)
 		}
 
-		// TODO Enable/disable button based on who has priority
+		// Enable/disable button based on who has priority
+		if (state.priority === 0) {
+			this.btnPass.enable()
+		}
+		else {
+			this.btnPass.disable()
+		}
 	}
 
 	// Set the callback for when user hits the Pass button
