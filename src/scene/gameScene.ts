@@ -241,7 +241,7 @@ class GameScene extends BaseScene {
 		}
 
 		if (this.view.paused) {
-			return false
+			// return false
 		}
 
 		// Remember what version of the game state this is, for use when communicating with server
@@ -250,42 +250,71 @@ class GameScene extends BaseScene {
 		this.view.displayState(state, isRecap)
 
 		// Autopass
-		let haveNoCards = state.hand.length === 0
-		let haveNoPlayableCards = !state.cardsPlayable.includes(true)
-		// If not a recap and it is your turn, pass if either we have no cards, or autopass is on and we have no available plays
-		if (!isRecap && state.priority === 0 && !state.mulligansComplete.includes(false) &&
-			((haveNoCards) ||
-				(UserSettings._get('autopass') && haveNoPlayableCards))) {
+		if (this.shouldPass(state, isRecap)) {
 			this.net.passTurn()
-	}
+		}
 
-	// State was displayed
-	return true
-}
-
-// Queue up this scene's yet-unseen recap, return false if there is none
-private queueNewRecap(state: ClientState): boolean {
-	// If a round just ended, we might have a recap to queue up
-	const isRoundStart = state.story.acts.length === 0 && state.passes === 0
-	const numberStates = state.recap.stateList.length
-	if (isRoundStart && numberStates > 0) {
-		// Queue the recap to play
-		this.queueRecap(state.recap.stateList)
-
-		// Remove the recap from this state (So it won't be added again)
-		state.recap.stateList = []
-
-		// Add this state to the queue
-		this.queueState(state)
-
-		// Return true, that a recap was queued
+		// State was displayed
 		return true
 	}
 
-	return false
-}
+	// Return if the user should pass automatically, based on the game state and their settings
+	private shouldPass(state: ClientState, isRecap: boolean): boolean {
+		// Don't pass if mulligans aren't complete
+		if (state.mulligansComplete.includes(false)) {
+			return false
+		}
 
-// Display a given breath cost
+		// Don't pass during a recap
+		if (isRecap) {
+			return false
+		}
+
+		// Don't pass when we don't have priority
+		if (state.priority !== 0) {
+			return false
+		}
+
+		// Pass if we have no cards to play
+		let haveNoCards = state.hand.length === 0
+		if (haveNoCards) {
+			return true
+		}
+
+		// If autopass is off, don't pass
+		if (!UserSettings._get('autopass')) {
+			return false
+		}
+		// Otherwise, pass only if we have no playable cards
+		else {
+			let havePlayableCards = state.cardsPlayable.includes(true)
+			return !havePlayableCards
+		}
+	}
+
+	// Queue up this scene's yet-unseen recap, return false if there is none
+	private queueNewRecap(state: ClientState): boolean {
+		// If a round just ended, we might have a recap to queue up
+		const isRoundStart = state.story.acts.length === 0 && state.passes === 0
+		const numberStates = state.recap.stateList.length
+		if (isRoundStart && numberStates > 0) {
+			// Queue the recap to play
+			this.queueRecap(state.recap.stateList)
+
+			// Remove the recap from this state (So it won't be added again)
+			state.recap.stateList = []
+
+			// Add this state to the queue
+			this.queueState(state)
+
+			// Return true, that a recap was queued
+			return true
+		}
+
+		return false
+	}
+
+	// Display a given breath cost
 }
 
 
