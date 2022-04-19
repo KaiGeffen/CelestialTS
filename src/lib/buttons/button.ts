@@ -223,10 +223,12 @@ export default class Button {
 
 	setOnClick(f, once = false): Button {
 		let that = this
-		
+
 		this.onClick = () => {
 			f()
-			that.disable()
+			if (once) {
+				that.disable()
+			}
 		}
 
 		return this
