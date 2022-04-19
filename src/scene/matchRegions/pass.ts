@@ -117,10 +117,14 @@ export default class PassRegion extends Region {
 	private createButton(): Button {
 		let that = this
 
-		return new IButtonPass(this.container,
+		let btn = new IButtonPass(this.container,
 			this.background.x,
-			this.background.y,
-			() => {that.callback()})
+			this.background.y)
+		
+		// Set on click to be the callback, but only once
+		btn.setOnClick(() => {that.callback()}, true)
+
+		return btn
 	}
 
 	private createText(): void {

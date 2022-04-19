@@ -48,8 +48,8 @@ export default class MulliganRegion extends Region {
 		let btn = new SymmetricButtonSmall(this.container,
 			Space.windowWidth/2,
 			Space.windowHeight/2 + Space.cardHeight/2 + Space.pad * 3,
-			'Ready',
-			() => this.onButtonClick())
+			'Ready')
+		.setOnClick(() => {this.onButtonClick()}, true)
 		
 		this.container.add([txtTitle, txtHint])
 
@@ -91,12 +91,12 @@ export default class MulliganRegion extends Region {
 			)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
-        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin['add'](background, {
-        	thickness: 1,
-        	outlineColor: Color.border,
-        })
+		let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+		postFxPlugin['add'](background, {
+			thickness: 1,
+			outlineColor: Color.border,
+		})
 
-        return background
+		return background
 	}
 }

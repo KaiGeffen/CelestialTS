@@ -221,8 +221,13 @@ export default class Button {
 
 
 
-	setOnClick(f): Button {
-		this.onClick = f
+	setOnClick(f, once = false): Button {
+		let that = this
+		
+		this.onClick = () => {
+			f()
+			that.disable()
+		}
 
 		return this
 	}
@@ -253,8 +258,30 @@ export default class Button {
 		return this
 	}
 
-	enable() {}
-	disable() {}
+	enable() {
+		// TODO Don't enable the element if it isn't set as interactive in its config
+		// if (this.txt !== undefined) {
+		// 	this.txt.setInteractive()
+		// }
+		if (this.icon !== undefined) {
+			this.icon.setInteractive()
+		}
+
+		return this
+	}
+	disable() {
+		// TODO Clarify if text interaction is supported
+		if (this.txt !== undefined) {
+			this.txt.disableInteractive()
+			.emit('pointerout')
+		}
+		if (this.icon !== undefined) {
+			this.icon.disableInteractive()
+			.emit('pointerout')
+		}
+
+		return this
+	}
 
 	highlight() {}
 }
