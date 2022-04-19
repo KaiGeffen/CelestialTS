@@ -40,10 +40,8 @@ export default class TheirHandRegion extends Region {
 		this.container.add(background)
 		
 		// Highlight visible when they have priority
-		this.priorityHighlight = scene.add.video(0, 0, 'priorityHighlight')
-		.setOrigin(0)
-		.play(true)
-		.setVisible(false)
+		this.priorityHighlight = this.createPriorityHighlight()
+		this.container.add(this.priorityHighlight)
 
 		// Create the status visuals
 		this.createStatusDisplay()
@@ -63,7 +61,6 @@ export default class TheirHandRegion extends Region {
 
 		// Add each of these objects to container
 		this.container.add([
-			this.priorityHighlight,
 			divide,
 			this.txtDeckCount,
 			iconDeck,
@@ -111,6 +108,13 @@ export default class TheirHandRegion extends Region {
 		})
 
 		return background
+	}
+
+	private createPriorityHighlight(): Phaser.GameObjects.Video {
+		return this.scene.add.video(0, 0, 'priorityHighlight')
+		.setOrigin(0)
+		.play(true)
+		.setAlpha(0)
 	}
 
 	private createAvatar(): AvatarSmall {
