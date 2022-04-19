@@ -16,6 +16,7 @@ import BaseScene from '../baseScene'
 const middle = (Space.windowHeight)/2 - Space.handHeight
 
 export default class StoryRegion extends Region {
+	txtHint: Phaser.GameObjects.Text
 	txtOurScore: Phaser.GameObjects.Text
 	txtTheirScore: Phaser.GameObjects.Text
 	scoresBackground: RoundRectangle
@@ -35,6 +36,9 @@ export default class StoryRegion extends Region {
 		this.scoresBackground = this.createBackground(scene)
 		this.container.add(this.scoresBackground)
 
+		this.txtHint = scene.add.text(
+			this.scoresBackground.x, middle, 'Points', Style.small
+			).setOrigin(0.5)
 		this.txtOurScore = scene.add.text(
 			this.scoresBackground.x, middle + 50, '', Style.announcement
 			).setOrigin(0.5)
@@ -43,6 +47,7 @@ export default class StoryRegion extends Region {
 			).setOrigin(0.5)
 		
 		this.container.add([
+			this.txtHint,
 			this.txtOurScore,
 			this.txtTheirScore,
 			])
@@ -90,13 +95,15 @@ export default class StoryRegion extends Region {
 
 		// Scores
 		if (isRecap) {
+			this.txtHint.setVisible(true)
 			this.displayScores(state, isRecap)
-			this.scoresBackground.setVisible(true)
+			// this.scoresBackground.setVisible(true)
 		}
 		else {
+			this.txtHint.setVisible(false)
 			this.txtOurScore.setText('')
 			this.txtTheirScore.setText('')
-			this.scoresBackground.setVisible(false)
+			// this.scoresBackground.setVisible(false)
 		}
 
 		this.animate(state, cards, isRecap)
@@ -113,11 +120,11 @@ export default class StoryRegion extends Region {
 			scene,
 			Space.windowWidth - Space.cardWidth - Space.pad,
 			middle,
-			70,
 			200,
-			Space.corner,
+			200,
+			100,
 			Color.background
-			).setVisible(false)
+			)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
         let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
