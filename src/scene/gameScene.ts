@@ -401,6 +401,8 @@ class View {
 
 	displayState(state: ClientState, isRecap: boolean) {
 		this.searching.hide()
+
+		this.mulligan.displayState(state, isRecap)
 		
 		this.ourHand.displayState(state, isRecap)
 		this.theirHand.displayState(state, isRecap)
@@ -418,29 +420,9 @@ class View {
 		this.ourDiscardOverlay.displayState(state, isRecap)
 		this.theirDiscardOverlay.displayState(state, isRecap)
 
-		// TODO Let the regions handle the below instead of this invasion
-
-		// If we have mulliganed, hide that region
-		if (state.mulligansComplete[0]) {
-			this.mulligan.hide()
-		}
-		else {
-			// Display the mulligan region initially, but don't overwrite after the opponent has mulliganed
-			if (!state.mulligansComplete[1]) {
-				this.mulligan.displayState(state, isRecap)
-			}
-
-			// Hide the cards in our hand
-			// TODO Bad smell
-			this.ourHand['hideHand']()
-		}
-
-		// If this is the first time the game has been won, show it and a 'Results' button
-		if (state.winner !== null && !this.btnResults.isVisible()) {
-			this.results.displayState(state, isRecap)
-			this.results.show()
-			
-			// Add in a 'Results' button to bring up the results screen
+		this.results.displayState(state, isRecap)
+		// TODO Make the results button a region or part of a region
+		if (state.winner !== null) {
 			this.btnResults.setVisible(true)
 		}
 

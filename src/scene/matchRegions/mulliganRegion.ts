@@ -57,6 +57,19 @@ export default class MulliganRegion extends Region {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
+		// If we are done with our mulligan, hide this
+		if (state.mulligansComplete[0]) {
+			this.hide()
+			return
+		}
+
+		// Don't overwrite after the opponent has mulliganed
+		if (state.mulligansComplete[1]) {
+			return
+		}
+
+		this.show()
+
 		for (let i = 0; i < state.hand.length; i++) {
 			let card = this.addCard(state.hand[i], CardLocation.mulligan(this.container, i))
 			.setCost(state.costs[i])

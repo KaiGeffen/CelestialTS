@@ -85,6 +85,12 @@ export default class OurHandRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
+		// Until we have mulliganed, hide the cards in our hand
+		if (!state.mulligansComplete[0]) {
+			this.hideHand()
+			return
+		}
+
 		this.cardClicked = false
 
 		let that = this

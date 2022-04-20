@@ -12,16 +12,15 @@ import BaseScene from '../baseScene'
 
 
 export default class ResultsRegion extends Region {
-	// TODO Set these callbacks from gameScene so they have access to previous scene, etc
-	// deckBuilderCallback: () => {}
-	// newMatchCallback: () => {}
-	// reviewCallback: () => {}
+	// Whether the results have been seen already
+	seen: boolean
 
 	create (scene: BaseScene): ResultsRegion {
 		let that = this
-		this.scene = scene
 
+		this.scene = scene
 		this.container = scene.add.container(0, 0).setDepth(5)
+		this.seen = false
 
 		// Create background
 		let background = scene.add.rectangle(0, 0,
@@ -45,7 +44,26 @@ export default class ResultsRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
-		// TODO Edit the displayed avatars, stats, titles
+		// If the game isn't over, hide this
+		if (state.winner === null) {
+			this.hide()
+			return
+		}
+
+		// If we are in a recap, hide this
+		if (isRecap) {
+			this.hide()
+			return
+		}
+
+		// If the results have been shown before, hide this
+		if (this.seen) {
+			this.hide()
+			return
+		}
+
+		this.show()
+		this.seen = true
 	}
 
 	private createButtons() {
