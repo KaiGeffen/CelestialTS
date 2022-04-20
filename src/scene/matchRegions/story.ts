@@ -69,6 +69,11 @@ export default class StoryRegion extends Region {
 			this.temp.push(card)
 		}
 
+		// Show changes in score
+		if (isRecap) {
+			this.displayScores(state, isRecap)
+		}
+
 		this.animate(state, cards, isRecap)
 	}
 
@@ -84,6 +89,8 @@ export default class StoryRegion extends Region {
 		if (index >= 0 && remainingActs >= 0) {
 			this.animateScoreGains(index, state.score, state, isRecap)
 		}
+
+		console.log(state.score)
 
 		this.lastScores = state.score
 	}
