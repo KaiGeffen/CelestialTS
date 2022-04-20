@@ -110,6 +110,11 @@ export class IButtonPass extends Button {
 	{
 		super(within, x, y, 
 		{
+			text: {
+				text: 'PASS',
+				interactive: false,
+				style: Style.huge,
+			},
 			icon: {
 				name: 'Pass',
 				interactive: true
@@ -118,5 +123,19 @@ export class IButtonPass extends Button {
 				click: f
 			}
 		})
+	}
+
+	enable() {
+		this.setText('PASS')
+		super.enable()
+
+		return this
+	}
+
+	disable() {
+		this.setText('THEIR\nTURN')
+		super.disable()
+
+		return this
 	}
 }

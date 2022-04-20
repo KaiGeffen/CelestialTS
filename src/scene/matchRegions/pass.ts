@@ -15,7 +15,6 @@ export default class PassRegion extends Region {
 
 	btnPass: Button
 
-	txtTheirTurn: Phaser.GameObjects.Text
 	txtYouPassed: Phaser.GameObjects.Text
 	txtTheyPassed: Phaser.GameObjects.Text
 
@@ -53,9 +52,6 @@ export default class PassRegion extends Region {
 
 		// Show this container when state is not in recap
 		this.container.setVisible(!isRecap)
-
-		// Show if it's their turn
-		this.txtTheirTurn.setVisible(state.priority !== 0)
 
 		// Show who has passed
 		if (state.passes === 2) {
@@ -128,13 +124,6 @@ export default class PassRegion extends Region {
 	}
 
 	private createText(): void {
-		this.txtTheirTurn = this.scene.add.text(
-			this.background.x,
-			this.background.y,
-			'Their Turn',
-			Style.announcement,
-			).setOrigin(0.5)
-
 		this.txtYouPassed = this.scene.add.text(
 			this.background.x,
 			this.background.y + 120,
@@ -150,7 +139,6 @@ export default class PassRegion extends Region {
 			).setOrigin(0.5)
 
 		this.container.add([
-			this.txtTheirTurn,
 			this.txtYouPassed,
 			this.txtTheyPassed
 			])

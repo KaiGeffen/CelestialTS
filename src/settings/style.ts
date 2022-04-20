@@ -47,6 +47,12 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '28px',
     color: '#B6B9C5',
   },
+  // Pass button, other large buttons
+  huge: {
+    fontFamily: fontFamily,
+    fontSize: '48px',
+    color: Color.button,
+  },
 
 
   basic: {
