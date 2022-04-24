@@ -205,6 +205,15 @@ export default class Button {
 		}
 	}
 
+	destroy() {
+		if (this.txt) {
+			this.txt.destroy()
+		}
+		if (this.icon) {
+			this.icon.destroy()
+		}
+	}
+
 
 
 
@@ -220,7 +229,8 @@ export default class Button {
 
 
 
-
+	// Set the on click callback for this button
+	// If once, only perform this callback once, then disable the button
 	setOnClick(f, once = false): Button {
 		let that = this
 

@@ -42,11 +42,8 @@ export default class DecklistsRegion {
 		// TODO Should be a part of the above creation of deck panel
 		this.updateOnScroll(panel)
 
-		// Add a NEW button
-		panel['add'](this.createNewButton(panel))
-
-		// Add each of the decks
-		this.createDeckButtons(panel)
+		// Add the main decklist panel
+		this.createDecklistPanel()
 
 		this.deckPanel.layout()
 
@@ -239,14 +236,24 @@ export default class DecklistsRegion {
 		let name = deck === undefined ? '' : deck['name']
 
 		let container = new ContainerLite(this.scene, 0, 0, 200, 50)
-		let btn = new ButtonDecklist(container, 0, 0, name, () => {console.log('hi')}, this.deleteDeck(i, container))
+		let btn = new ButtonDecklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
 
 		// Highlight this deck, if it's selected
 		// if (this.savedDeckIndex === i) {So that layout happens correctly setTimeout(() => btn.select(), 4)}
 
-		// Set as active, select self and deselect other buttons, set the deck
+		// Set the on click for this button
+		btn.setOnClick(this.decklistOnClick(btn, i))
+
+		this.decklistBtns.push(btn)
+
+		return container
+	}
+
+	private decklistOnClick(btn: Button, i: number) {
 		let that = this
-		btn.setOnClick(() => {
+
+		// Set btn as active, select self and deselect other buttons, set the deck
+		return function() {
 			// Deselect all other buttons
 			that.decklistBtns.forEach(b => {if (b !== btn) b.deselect()})
 
@@ -266,15 +273,19 @@ export default class DecklistsRegion {
 				// Set the displayed avatar to this deck's avatar
 				that.setAvatar(UserSettings._get('decks')[i]['avatar'])
 			}
-		})
-
-		this.decklistBtns.push(btn)
-
-		return container
+		}
 	}
 
 	// Create a button for each deck that user has created
-	private createDeckButtons(panel) {
+	private createDecklistPanel() {
+		let panel = this.deckPanel.getElement('panel')
+
+		// Remove any existing content in this panel
+		panel.removeAll(true)
+
+		// Create the 'New' button
+		panel['add'](this.createNewButton(panel))
+
 		// Instantiate list of deck buttons
 		this.decklistBtns = []
 
@@ -333,20 +344,19 @@ export default class DecklistsRegion {
 	}
 
 	// Callback for deleting deck with given index
-	private deleteDeck(i: number, container: ContainerLite): () => void {
+	private deleteDeck(deckIndex: number, container: ContainerLite): () => void {
 		let that = this
 
 		return function() {
 			// Adjusted the saved user data
-			UserSettings._pop('decks', i)
+			UserSettings._pop('decks', deckIndex)
 
 			// Adjust values stored in this deck region
-			that.decklistBtns.splice(i)
 			that.savedDeckIndex = undefined
 			that.scene.setDeck([])
 
-			// Destroy the object itself
-			container.destroy()
+			// Refresh the decklist panel
+			that.createDecklistPanel()
 
 			// Format panel, then ensure we aren't below the panel
 			that.deckPanel.layout()

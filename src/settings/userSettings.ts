@@ -94,10 +94,8 @@ export class UserSettings {
     let ary = this._get(key)
 
     ary.push(value)
-    console.log(ary)
 
     this._set(key, ary)
-    console.log(ary)
   }
 
   static _pop(key: string, index: number): any {
