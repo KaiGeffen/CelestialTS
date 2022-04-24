@@ -104,6 +104,7 @@ export default class DecklistsRegion {
 			},
 
 			header: this.createHeader(),
+			footer: this.createFooter(),
 
 			space: {
 				right: 10,
@@ -130,9 +131,6 @@ export default class DecklistsRegion {
 			}
 		})
 
-		this.avatar = this.scene.add.image(0, 0, 'avatar-Jules')
-		sizer.add(this.avatar, {padding: {left: 35}}) // TODO
-
 		let callback = this.premadeCallback()
 		let btn = new IButtonPremade(this.scene, 0, 0,
 			() => {
@@ -158,6 +156,26 @@ export default class DecklistsRegion {
 		// Add a share button that allows user to copy/paste their deck code
 		new IButtonShare(hintSizer, 0, 0, this.shareCallback())
 
+		return sizer
+	}
+
+	private createFooter(): Phaser.GameObjects.GameObject {
+		let sizer = this.scene.rexUI.add.fixWidthSizer({
+			space: {
+				left: Space.pad,
+				right: Space.pad,
+				top: Space.pad,
+				bottom: Space.pad,
+				line: Space.pad,
+			}
+		})
+
+		let txtHint = this.scene.add.text(0, 0, 'Deck Avatar:', Style.header)
+		sizer.add(txtHint)
+
+		this.avatar = this.scene.add.image(0, 0, 'avatar-Jules')
+		sizer.add(this.avatar, {padding: {left: 35}}) // TODO
+		
 		return sizer
 	}
 

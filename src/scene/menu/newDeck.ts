@@ -94,7 +94,7 @@ export default class NewDeckMenu extends Menu {
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
 				text: '',
-				placeholder: 'Name',
+				placeholder: 'Deck Name',
 				tooltip: 'Name for the new deck.',
 				fontFamily: 'Mulish',
 				fontSize: '20px',
@@ -122,7 +122,7 @@ export default class NewDeckMenu extends Menu {
 				space: { line: Space.pad },
 			})
 
-			let txtHint = scene.add.text(0, 0, 'Avatar:', Style.basic)
+			let txtHint = scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
 			fixSizer.add(txtHint)
 
 			let sizer
