@@ -1,4 +1,5 @@
 import 'phaser'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 import { CardImage } from '../../lib/cardImage'
@@ -10,7 +11,11 @@ import { decodeCard, encodeCard } from '../../lib/codec'
 const height = Space.cardHeight/2 + Space.pad
 
 export default class DeckRegion {
-	private scene
+	private scene: Phaser.Scene
+
+	// The panel within which all of the cards are
+	private panel
+	private scrollablePanel
 
 	// Hint telling users how to add cards
 	private txtHint: Phaser.GameObjects.Text
@@ -23,15 +28,13 @@ export default class DeckRegion {
 
 	// Container containing all cards in the deck
 	private container: Phaser.GameObjects.Container
-	private cardContainer: Phaser.GameObjects.Container
 
 	create(scene: Phaser.Scene, startCallback: () => void, x = 0) {
 		this.scene = scene
 
 		// Deck container
 		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-		this.container = scene.add.container(x, 0).setDepth(2)
-		this.cardContainer = scene.add.container(0, 0).setDepth(3)
+		this.container = scene.add.container(x, 0).setDepth(20)
 
 		let background = this.createBackground(scene)
 
@@ -46,16 +49,88 @@ export default class DeckRegion {
 		// Add each object to this container
 		this.container.add([background, this.txtHint])
 
+		// TODO Make everything in a panel
+		this.createScrollable(startCallback, x)
+
+		return this
+	}
+
+	private createScrollable(startCallback: () => void, x: number) {
+		let width = Space.windowWidth - x
+		// let background = this.scene.add.rectangle(0, 0, width, height, 0xF77FFF, 0.5)//.setInteractive()
+
+		let subpanel = this.createPanel()
+
+		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
+			x: x,
+			y: Space.windowHeight - height,
+			width: width,
+			height: height,
+
+			scrollMode: 'horizontal',
+
+			// background: background,
+
+			panel: {
+				child: subpanel
+			},
+
+			header: this.createHeader(startCallback, x),
+
+			space: {
+				// right: 10,
+				// bottom: Space.pad,
+			}
+		}).setOrigin(0).setDepth(40)
+
+		this.scrollablePanel.layout()
+
+		// this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+		// 	distance: 3,
+		// 	shadowColor: 0x000000,
+		// })
+
+		return this.scrollablePanel
+	}
+
+	private createPanel(): Phaser.GameObjects.GameObject {
+		this.panel = this.scene['rexUI'].add.sizer({space: {
+					left: Space.pad,
+					right: Space.pad,
+					top: 10,
+					bottom: 10,
+					line: 10,
+				}})
+		.addBackground(
+				this.scene.add.rectangle(0, 0, 420, height, 0xF33F3F, 0.5)
+				)
+
+		return this.panel
+	}
+
+	private createHeader(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
+		const width = Space.smallButtonWidth + Space.pad*2
+		// let container = new ContainerLite(this.scene, 0, 0, width, height)
+		let sizer = this.scene['rexUI'].add.fixWidthSizer({
+			space: {
+				left: Space.pad,
+				right: Space.pad,
+				top: Space.pad,
+				bottom: Space.pad,
+				line: Space.pad,
+			}
+		})
+		// sizer.add(container)
+
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
-		this.btnStart = new SymmetricButtonSmall(this.container, 
+		this.btnStart = new SymmetricButtonSmall(sizer, 
 			Space.windowWidth - x - Space.smallButtonWidth/2 - Space.pad, // TODO
 			Space.windowHeight - height/2,
 			'0/15',
 			startCallback)
 
-		return this
+		return sizer
 	}
-
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Rectangle {
 		let background = scene.add
 		.rectangle(0,
@@ -64,7 +139,7 @@ export default class DeckRegion {
 			height,
 			0x989898, 1)
 		.setOrigin(0, 1)
-		.setInteractive()
+		// .setInteractive()
 
 		scene.plugins.get('rexDropShadowPipeline')['add'](background, {
 			distance: 3,
@@ -82,9 +157,9 @@ export default class DeckRegion {
 
 		let index = this.deck.length
 
-		let cardImage = new CardImage(card, this.cardContainer)
-		.setPosition(this.getDeckCardPosition(index))
-		.moveToTopOnHover()
+		let cardImage = new CardImage(card, this.container)
+		// .setPosition(this.getDeckCardPosition(index)) // TODO
+		// .moveToTopOnHover()
 		.setOnClick(this.removeCardFromDeck(index))
 
 		// When hovered, move up to make this visible
@@ -105,10 +180,28 @@ export default class DeckRegion {
 		this.updateText()
 
 		// Sort the deck, now done automatically after each card added
-		this.sort()
+		// this.sort()
 
 		// Update the saved deck data
-		this.scene.updateSavedDeck(this.getDeckCode())
+		// TODO Smell
+		this.scene['updateSavedDeck'](this.getDeckCode())
+
+		// let foo = this.scene.add.text(0, 0, card.name).setDepth(100)
+		// this.panel.add(
+		// 	foo
+		// 	).layout()
+		// // let bar = this.scene.add.text(400, 300, card.name).setDepth(100)
+		// this.panel.add(container).layout()
+
+		cardImage.image.setDepth(101).setPosition(0, 0)
+		this.panel.add(cardImage.image)
+
+		this.scrollablePanel.layout()
+
+		// cardImage.container.setX(0)
+		// cardImage.container.setY(0)
+
+		// console.log(cardImage)
 
 		return cardImage
 	}
@@ -248,6 +341,8 @@ export default class DeckRegion {
 
 	// Set each card in deck to have the right position and onClick events for its index
 	private correctDeckIndices(): void {
+		return
+
 		for (var i = 0; i < this.deck.length; i++) {
 			let cardImage = this.deck[i]
 
