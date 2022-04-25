@@ -3,7 +3,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 import { CardImage } from '../../lib/cardImage'
-import { Space, Style, Mechanics } from '../../settings/settings'
+import { Space, Style, Color, Mechanics } from '../../settings/settings'
 import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
 
@@ -30,6 +30,7 @@ export default class DeckRegion {
 	private container: ContainerLite
 
 	create(scene: Phaser.Scene, startCallback: () => void, x = 0) {
+		x = 0
 		this.scene = scene
 
 		// Deck container
@@ -57,11 +58,14 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void, x: number) {
 		let width = Space.windowWidth - x
-		let background = this.scene.add.rectangle(0, 0, width, height, 0xF77FFF, 0.5)//.setInteractive()
-	this.createHeader(startCallback, x)
+		let background = this.scene.add.rectangle(0, 0, width, height, Color.background)
+		.setInteractive()
+
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: x,
 			y: Space.windowHeight - height,
+			width: width,
+			height: height,
 
 			scrollMode: 'horizontal',
 			mouseWheelScroller: {
@@ -72,66 +76,61 @@ export default class DeckRegion {
 			background: background,
 
 			panel: {
-				child: this.createPanel()
+				child: this.createPanel(startCallback, x)
 			},
 
-			// header: this.createHeader(startCallback, x),
-
-			space: {
-				// right: 10,
-				// bottom: Space.pad,
-			}
-		}).setOrigin(0).setDepth(40)
+			header: this.createHeader(startCallback, x),
+		}).setOrigin(0)
 
 		this.scrollablePanel.layout()
 
-		// this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-		// 	distance: 3,
-		// 	shadowColor: 0x000000,
-		// })
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			shadowColor: 0x000000,
+		})
 
 		return this.scrollablePanel
 	}
 
-	private createPanel(): Phaser.GameObjects.GameObject {
+	private createPanel(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
 		this.panel = this.scene['rexUI'].add.sizer({
 			space: {
-					// left: Space.pad,
-					// right: Space.pad,
-					// top: 10,
-					bottom: 10,
-					item: Space.pad,
-					// line: 10,
-				}})
+				left: 10,
+				right: 10,
+				top: 10,
+				// item: Space.pad,
+			}})
 		.addBackground(
-				this.scene.add.rectangle(0, 0, 420, height, 0xF33F3F, 0.5)
-				)
+			this.scene.add.rectangle(0, 0, 420, height, Color.background)
+			)
+
+		let that = this
+		this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+			// Return if the pointer is outside of the panel
+			if (!that.panel.getBounds().contains(pointer.x, pointer.y)) {
+				return
+			}
+
+			// Scroll panel down by amount wheel moved
+			that.scrollablePanel.childOY -= dx
+
+			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+			that.scrollablePanel.t = Math.max(0, that.scrollablePanel.t)
+			that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
+		})
+
 
 		return this.panel
 	}
 
 	private createHeader(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
 		const width = Space.smallButtonWidth + Space.pad*2
-		// let container = new ContainerLite(this.scene, 0, 0, width, height)
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			space: {
-				left: Space.pad,
-				right: Space.pad,
-				top: Space.pad,
-				bottom: Space.pad,
-				line: Space.pad,
-			}
-		})
-		// sizer.add(container)
+		let container = new ContainerLite(this.scene, 0, 0, width, height)
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
-		this.btnStart = new SymmetricButtonSmall(sizer, 
-			Space.windowWidth - x - Space.smallButtonWidth/2 - Space.pad, // TODO
-			Space.windowHeight - height/2,
-			'0/15',
-			startCallback)
+		this.btnStart = new SymmetricButtonSmall(container, 0, 0, '0/15', startCallback)
 
-		return sizer
+		return container
 	}
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Rectangle {
 		let background = scene.add

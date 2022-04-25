@@ -84,7 +84,7 @@ export default class DecklistsRegion {
 			x: 0,
 			y: 0,
 			width: width,
-			height: Space.windowHeight,
+			height: Space.windowHeight - Space.cardHeight/2 - Space.pad ,
 
 			background: background,
 
@@ -101,7 +101,7 @@ export default class DecklistsRegion {
 			},
 
 			header: this.createHeader(),
-			footer: this.createFooter(),
+			// footer: this.createFooter(),
 
 			space: {
 				right: 10,
