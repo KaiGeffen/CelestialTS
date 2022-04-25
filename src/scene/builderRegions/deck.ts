@@ -27,16 +27,16 @@ export default class DeckRegion {
 	private deck: CardImage[] = []
 
 	// Container containing all cards in the deck
-	private container: Phaser.GameObjects.Container
+	private container: ContainerLite
 
 	create(scene: Phaser.Scene, startCallback: () => void, x = 0) {
 		this.scene = scene
 
 		// Deck container
 		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
-		this.container = scene.add.container(x, 0).setDepth(20)
+		this.container = new ContainerLite(scene)
 
-		let background = this.createBackground(scene)
+		// let background = this.createBackground(scene)
 
 		// Hint text - Tell user to click cards to add
 		this.txtHint = scene.add.text(
@@ -47,7 +47,7 @@ export default class DeckRegion {
 		.setOrigin(0.5)
 
 		// Add each object to this container
-		this.container.add([background, this.txtHint])
+		// this.container.add([background, this.txtHint])
 
 		// TODO Make everything in a panel
 		this.createScrollable(startCallback, x)
@@ -57,25 +57,25 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void, x: number) {
 		let width = Space.windowWidth - x
-		// let background = this.scene.add.rectangle(0, 0, width, height, 0xF77FFF, 0.5)//.setInteractive()
-
-		let subpanel = this.createPanel()
-
+		let background = this.scene.add.rectangle(0, 0, width, height, 0xF77FFF, 0.5)//.setInteractive()
+	this.createHeader(startCallback, x)
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: x,
 			y: Space.windowHeight - height,
-			width: width,
-			height: height,
 
 			scrollMode: 'horizontal',
-
-			// background: background,
-
-			panel: {
-				child: subpanel
+			mouseWheelScroller: {
+				focus: true,
+				speed: 1
 			},
 
-			header: this.createHeader(startCallback, x),
+			background: background,
+
+			panel: {
+				child: this.createPanel()
+			},
+
+			// header: this.createHeader(startCallback, x),
 
 			space: {
 				// right: 10,
@@ -94,12 +94,14 @@ export default class DeckRegion {
 	}
 
 	private createPanel(): Phaser.GameObjects.GameObject {
-		this.panel = this.scene['rexUI'].add.sizer({space: {
-					left: Space.pad,
-					right: Space.pad,
-					top: 10,
+		this.panel = this.scene['rexUI'].add.sizer({
+			space: {
+					// left: Space.pad,
+					// right: Space.pad,
+					// top: 10,
 					bottom: 10,
-					line: 10,
+					item: Space.pad,
+					// line: 10,
 				}})
 		.addBackground(
 				this.scene.add.rectangle(0, 0, 420, height, 0xF33F3F, 0.5)
@@ -158,19 +160,18 @@ export default class DeckRegion {
 		let index = this.deck.length
 
 		let cardImage = new CardImage(card, this.container)
-		// .setPosition(this.getDeckCardPosition(index)) // TODO
-		// .moveToTopOnHover()
 		.setOnClick(this.removeCardFromDeck(index))
+		this.panel.add(cardImage.image).layout()
 
 		// When hovered, move up to make this visible
 		// When exiting, return to old y
-		let y0 = cardImage.container.y
+		let y0 = cardImage.image.y
 		cardImage.setOnHover(() => {
-			let y = Space.windowHeight - Space.cardHeight/2 - cardImage.container.parentContainer.y
-			cardImage.container.setY(y)
+			let y = Space.windowHeight - Space.cardHeight/2
+			cardImage.image.setY(y)
 		},
 		() => {
-			cardImage.container.setY(y0)
+			cardImage.image.setY(y0)
 		})
 
 		// Add this to the deck
@@ -184,24 +185,7 @@ export default class DeckRegion {
 
 		// Update the saved deck data
 		// TODO Smell
-		this.scene['updateSavedDeck'](this.getDeckCode())
-
-		// let foo = this.scene.add.text(0, 0, card.name).setDepth(100)
-		// this.panel.add(
-		// 	foo
-		// 	).layout()
-		// // let bar = this.scene.add.text(400, 300, card.name).setDepth(100)
-		// this.panel.add(container).layout()
-
-		cardImage.image.setDepth(101).setPosition(0, 0)
-		this.panel.add(cardImage.image)
-
-		this.scrollablePanel.layout()
-
-		// cardImage.container.setX(0)
-		// cardImage.container.setY(0)
-
-		// console.log(cardImage)
+		// this.scene['updateSavedDeck'](this.getDeckCode())
 
 		return cardImage
 	}
