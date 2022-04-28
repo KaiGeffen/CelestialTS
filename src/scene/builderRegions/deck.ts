@@ -1,7 +1,7 @@
 import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
-import { SymmetricButtonSmall } from '../../lib/buttons/backed'
+import { SymmetricButtonSmall, AvatarSmall } from '../../lib/buttons/backed'
 import Cutout from '../../lib/buttons/cutout'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Style, Color, Mechanics } from '../../settings/settings'
@@ -74,7 +74,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback, x)
 			},
 
-			header: this.createFooter(startCallback, x),
+			header: this.createHeader(startCallback, x),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad
@@ -111,16 +111,20 @@ export default class DeckRegion {
 		return this.panel
 	}
 
-	private createFooter(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
+	private createHeader(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
 		let sizer = this.scene.rexUI.add.fixWidthSizer({
 			Space: {left: Space.pad, right: Space.pad}
 		})
 
-		let container = new ContainerLite(this.scene, 0, 0, width, Space.largeButtonHeight)
-		sizer.add(container)
+		// Add this deck's avatar
+		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
+		let avatar = new AvatarSmall(containerAvatar, 0, 0, '\n\n\n\nDeck Name', 'Jules')
+		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
-		this.btnStart = new SymmetricButtonSmall(container, 0, 0, '0/15', startCallback)
+		let containerButton = new ContainerLite(this.scene, 0, 0, width, Space.largeButtonHeight)
+		this.btnStart = new SymmetricButtonSmall(containerButton, 0, 0, '0/15', startCallback)
+		sizer.add(containerButton)
 
 		return sizer
 	}

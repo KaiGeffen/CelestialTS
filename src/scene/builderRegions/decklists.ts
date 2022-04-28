@@ -49,6 +49,8 @@ export default class DecklistsRegion {
 
 		this.width = this.deckPanel.width
 
+		this.container.setVisible(false)
+
 		return this
 	}
 
