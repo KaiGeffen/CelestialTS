@@ -169,7 +169,7 @@ export default class DeckRegion {
 			let container = new ContainerLite(this.scene, 0, 0, 195, 50) // TODO
 			this.panel.add(container)
 			let cutout = new Cutout(container, card)
-			cutout.setOnClick(this.removeCardFromDeck())
+			cutout.setOnClick(this.removeCardFromDeck(cutout))
 
 			this.scrollablePanel.layout()
 
@@ -259,7 +259,7 @@ export default class DeckRegion {
 			that.scene.sound.play('click')
 
 			// Decrement, if fully gone, remove from deck list
-			if (cutout.decrement()) {
+			if (cutout.decrement().count === 0) {
 
 				// Find the index of it within the deck list, remove that after
 				let index
@@ -277,8 +277,11 @@ export default class DeckRegion {
 				// Remove from the deck list
 				that.deck.splice(index, 1)
 
-				// Destroy the cutout
+				// Destroy the cutout and its container
 				cutout.destroy()
+
+				// Reformat the panel
+				that.panel.layout()
 			}
 
 			that.updateText()

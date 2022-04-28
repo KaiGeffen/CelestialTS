@@ -11,8 +11,9 @@ export default class Cutout extends Button {
 	name: string
 	id: number
 	count: number
+	container: ContainerLite
 
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+	constructor(within: ContainerLite,
 		card: Card,
 		x: number = 0, y: number = 0,
 		f: () => void = function() {},
@@ -37,6 +38,7 @@ export default class Cutout extends Button {
 		this.name = card.name
 		this.id = card.id
 		this.count = 1
+		this.container = within
 	}
 
 	// Increment the count of this card
@@ -52,12 +54,13 @@ export default class Cutout extends Button {
 	decrement(): Cutout {
 		this.count -= 1
 
-		if (this.count === 0) {
-			this.destroy()
-		}
-		else {
-			this.updateText()
-		}
+		this.updateText()
+
+		return this
+	}
+
+	destroy(): Cutout {
+		this.container.destroy()
 
 		return this
 	}
