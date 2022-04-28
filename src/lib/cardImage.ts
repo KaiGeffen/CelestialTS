@@ -74,6 +74,7 @@ export class CardImage {
   scene: Phaser.Scene
 
   txtCost: Phaser.GameObjects.Text
+  txtPoints: Phaser.GameObjects.Text
 
   // Whether the current card is required in this context (Must be in the deck)
   required = false
@@ -108,9 +109,17 @@ export class CardImage {
     .setOrigin(0.5)
     .setAlpha(0)
 
+    this.txtPoints = this.scene.add['rexBBCodeText'](
+      -Space.cardWidth/2 + 21,
+      -Space.cardHeight/2 + 62,
+      '',
+      BBStyle.cardStats)
+    .setOrigin(0.5)
+    this.setPoints(card.points)
+
     // This container
     this.container = scene.add.container(0, 0)
-    this.container.add([this.image, this.txtCost])
+    this.container.add([this.image, this.txtCost, this.txtPoints])
     outerContainer.add(this.container)
 
     if (interactive) {
@@ -215,10 +224,10 @@ export class CardImage {
 
   setTransparent(value: Boolean): CardImage {
     if (value) {
-      this.image.setAlpha(0.2)
+      this.container.setAlpha(0.2)
     }
     else {
-      this.image.setAlpha(1)
+      this.container.setAlpha(1)
     }
 
     return this
@@ -242,6 +251,20 @@ export class CardImage {
 
       this.txtCost.setText(`[stroke=${Color.cardCostReduced}]${cost}[/stroke]`)
     }
+
+    return this
+  }
+
+  // Set the displayed point value of the card, or hide it if it's equal to the default value
+  setPoints(amt: number): CardImage {
+    console.log(amt)
+    // If this is the default of the card, don't display any custom point value
+    if(this.card.dynamicText === '') {
+      this.txtPoints.setAlpha(0)
+    }
+
+    // TODO Change color name
+    this.txtPoints.setText(`[stroke=${Color.cardCostReduced}]${amt}[/stroke]`)
 
     return this
   }
