@@ -25,7 +25,7 @@ export default class DeckRegion {
 	private btnStart: SymmetricButtonSmall
 
 	// Deck of cards in user's current deck
-	private deck: CardImage[] = []
+	private deck: Cutout[] = []
 
 	// Container containing all cards in the deck
 	private container: ContainerLite
@@ -62,7 +62,7 @@ export default class DeckRegion {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
-		this.scrollablePanel = this.scene.rexUI.add.scrollablePanel({
+		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: 0,
 			y: 0,
 			width: width,
@@ -77,7 +77,7 @@ export default class DeckRegion {
 			header: this.createHeader(startCallback, x),
 
 			space: {
-				top: Space.filterBarHeight + Space.pad
+				top: Space.filterBarHeight + Space.pad,
 				item: Space.pad,
 			},
 
@@ -98,9 +98,7 @@ export default class DeckRegion {
 	}
 
 	private createPanel(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
-		this.panel = this.scene.rexUI.add.fixWidthSizer({space: {
-					// left: Space.pad,
-					// right: Space.pad,
+		this.panel = this.scene['rexUI'].add.fixWidthSizer({space: {
 					top: 10,
 					bottom: 10,
 					// line: 10,//80 - Space.cardHeight,
@@ -112,7 +110,7 @@ export default class DeckRegion {
 	}
 
 	private createHeader(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
-		let sizer = this.scene.rexUI.add.fixWidthSizer({
+		let sizer = this.scene['rexUI'].add.fixWidthSizer({
 			Space: {left: Space.pad, right: Space.pad}
 		})
 
@@ -147,50 +145,37 @@ export default class DeckRegion {
 	}
 
 	// Add the given card and return the created cardImage
-	addCardToDeck(card: Card): CardImage {
-		// TODO Change deck to be cutouts
-		// let amt = 0
-		// this.deck.forEach(cutout => {
-		// 	amt += cutout.amt
-		// })
+	addCardToDeck(card: Card): boolean {
+		let totalCount = 0
+		this.deck.forEach(cutout => {
+			totalCount += cutout.count
+		})
 
-		// if (amt  >= Mechanics.deckSize) 
-		// 	return undefined
-		// }
-
-		if (this.deck.length >= Mechanics.deckSize) {
-			return undefined
+		if (totalCount  >= Mechanics.deckSize) {
+			return false
 		}
 
-		let index = this.deck.length
+		// If this card exists in the deck already, increment it
+		let alreadyInDeck = false
+		this.deck.forEach(cutout => {
+			if (cutout.name === card.name) {
+				cutout.increment()
+				alreadyInDeck = true
+			}
+		})
 
-		// TODO Remove
-		let cardImage = new CardImage(card, this.container)
-		.setOnClick(this.removeCardFromDeck(index))
-		cardImage.hide()
+		if (!alreadyInDeck) {
+			// If it doesn't, create a new cutout
+			let container = new ContainerLite(this.scene, 0, 0, 195, 50) // TODO
+			this.panel.add(container)
+			let cutout = new Cutout(container, card)
+			cutout.setOnClick(this.removeCardFromDeck())
 
-		let container = new ContainerLite(this.scene, 0, 0, 195, 50) // TODO
-		new Cutout(container, card.name)
-		this.panel.add(container)
+			this.scrollablePanel.layout()
 
-		// TODO Callback for cutout
-
-		this.scrollablePanel.layout()
-
-		// When hovered, make this card visible
-		// When exiting, return to how it was
-		// cardImage.setOnHover(() => {
-		// 	cardImage.image.height = 400
-		// 	this.scrollablePanel.layout()
-		// },
-		// () => {
-		// 	cardImage.image.height = 40
-		// 	this.scrollablePanel.layout()
-		// })
-
-		// Add this to the deck
-		this.deck.push(cardImage)
-
+			this.deck.push(cutout)
+		}
+		
 		// Update start button to reflect new amount of cards in deck
 		this.updateText()
 
@@ -198,7 +183,7 @@ export default class DeckRegion {
 		// TODO Smell
 		this.scene['updateSavedDeck'](this.getDeckCode())
 
-		return cardImage
+		return true
 	}
 
 	// Set the current deck, and return whether the given deck was valid
@@ -226,7 +211,7 @@ export default class DeckRegion {
 		else
 		{
 			// Remove the current deck
-			this.deck.forEach( (cardImage) => cardImage.destroy())
+			this.deck.forEach( (cutout) => cutout.destroy())
 			this.deck = []
 			this.updateText()
 
@@ -240,7 +225,16 @@ export default class DeckRegion {
 	// Get the deck code for player's current deck
 	getDeckCode(): string {
 		let txt = ''
-		this.deck.forEach( (cardImage) => txt += `${encodeCard(cardImage.card)}:`)
+		for (let i = 0; i < this.deck.length; i++) {
+			let count = this.deck[i].count
+
+			for (let j = 0; j < count; j++) {
+				let s = this.deck[i].id
+				txt += `${s}:`
+			}
+		}
+
+		// Remove the last :
 		txt = txt.slice(0, -1)
 
 		return txt
@@ -252,24 +246,40 @@ export default class DeckRegion {
 
 		// Set each card in the deck to be required
 		this.deck.forEach(card => {
-			card.setRequired()
+			// TODO
+			// card.setRequired()
 		})
 	}
 
 	// Remove the card from deck which has given index
-	private removeCardFromDeck(index: number): () => void {
+	private removeCardFromDeck(cutout: Cutout): () => void {
 		let that = this
 		return function() {
 			// Play a sound
 			that.scene.sound.play('click')
 
-			// Remove the image
-			that.deck[index].destroy()
+			// Decrement, if fully gone, remove from deck list
+			if (cutout.decrement()) {
 
-			// Remove from the deck array
-			that.deck.splice(index, 1)
+				// Find the index of it within the deck list, remove that after
+				let index
 
-			that.correctDeckIndices()
+				for (let i = 0; i < that.deck.length && index === undefined; i++) {
+					if (that.deck[i].id === cutout.id) {
+						index = i
+					}
+				}
+
+				if (index === undefined) {
+					throw 'Given cutout does not exist in deck'
+				}
+
+				// Remove from the deck list
+				that.deck.splice(index, 1)
+
+				// Destroy the cutout
+				cutout.destroy()
+			}
 
 			that.updateText()
 
@@ -289,7 +299,11 @@ export default class DeckRegion {
 		}
 		else
 		{
-			this.btnStart.setText(`${this.deck.length}/${Mechanics.deckSize}`)
+			let totalCount = 0
+			this.deck.forEach(cutout => {
+				totalCount += cutout.count
+			})
+			this.btnStart.setText(`${totalCount}/${Mechanics.deckSize}`)
 
 			// TODO Grey out the button, have a disable method for button class
 			// For debugging, allow sub-15 card decks locally
@@ -300,6 +314,8 @@ export default class DeckRegion {
 
 		this.txtHint.setVisible(this.deck.length === 0)
 	}
+
+	// TODO Delete
 
 	// Sort by cost all cards in the deck
 	private sort(): void {
