@@ -8,7 +8,7 @@ import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
 
 
-const height = Space.cardHeight/2 + Space.pad
+const width = Space.cardWidth + Space.pad * 2
 
 export default class DeckRegion {
 	private scene: Phaser.Scene
@@ -42,10 +42,11 @@ export default class DeckRegion {
 		// Hint text - Tell user to click cards to add
 		this.txtHint = scene.add.text(
 			(Space.windowWidth - x)/2,
-			Space.windowHeight - height/2,
+			Space.windowHeight - 420/2,
 			'Click a card to add it to your deck',
 			Style.announcement)
 		.setOrigin(0.5)
+		.setAlpha(0)
 
 		// Add each object to this container
 		// this.container.add([background, this.txtHint])
@@ -57,21 +58,14 @@ export default class DeckRegion {
 	}
 
 	private createScrollable(startCallback: () => void, x: number) {
-		let width = Space.windowWidth - x
-		let background = this.scene.add.rectangle(0, 0, width, height, Color.background)
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
-		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: x,
-			y: Space.windowHeight - height,
+		this.scrollablePanel = this.scene.rexUI.add.scrollablePanel({
+			x: 0,
+			y: 0,
 			width: width,
-			height: height,
-
-			scrollMode: 'horizontal',
-			mouseWheelScroller: {
-				focus: true,
-				speed: 1
-			},
+			height: Space.windowHeight,
 
 			background: background,
 
@@ -79,7 +73,18 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback, x)
 			},
 
-			header: this.createHeader(startCallback, x),
+			header: this.createFooter(startCallback, x),
+
+			space: {
+				top: Space.filterBarHeight + Space.pad
+				bottom: Space.pad,
+				item: Space.pad,
+			},
+
+			mouseWheelScroller: {
+				focus: true,
+				speed: 1
+			},
 		}).setOrigin(0)
 
 		this.scrollablePanel.layout()
@@ -93,54 +98,41 @@ export default class DeckRegion {
 	}
 
 	private createPanel(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
-		this.panel = this.scene['rexUI'].add.sizer({
-			space: {
-				left: 10,
-				right: 10,
-				top: 10,
-				// item: Space.pad,
-			}})
-		.addBackground(
-			this.scene.add.rectangle(0, 0, 420, height, Color.background)
-			)
-
-		let that = this
-		this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-			// Return if the pointer is outside of the panel
-			if (!that.panel.getBounds().contains(pointer.x, pointer.y)) {
-				return
-			}
-
-			// Scroll panel down by amount wheel moved
-			that.scrollablePanel.childOY -= dx
-
-			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-			that.scrollablePanel.t = Math.max(0, that.scrollablePanel.t)
-			that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
-		})
-
+		this.panel = this.scene.rexUI.add.fixWidthSizer({space: {
+					left: Space.pad,
+					right: Space.pad,
+					top: 10,
+					bottom: 10,
+					line: 10,
+				}}).addBackground(
+				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xF44FFF)
+				)
 
 		return this.panel
 	}
 
-	private createHeader(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
-		const width = Space.smallButtonWidth + Space.pad*2
-		let container = new ContainerLite(this.scene, 0, 0, width, height)
+	private createFooter(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
+		let sizer = this.scene.rexUI.add.fixWidthSizer({
+			Space: {left: Space.pad, right: Space.pad}
+		})
+
+		let container = new ContainerLite(this.scene, 0, 0, width, Space.largeButtonHeight)
+		sizer.add(container)
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		this.btnStart = new SymmetricButtonSmall(container, 0, 0, '0/15', startCallback)
 
-		return container
+		return sizer
 	}
+
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Rectangle {
 		let background = scene.add
 		.rectangle(0,
+			0,
+			width,
 			Space.windowHeight,
-			Space.windowWidth,
-			height,
 			0x989898, 1)
-		.setOrigin(0, 1)
-		// .setInteractive()
+		.setOrigin(0)
 
 		scene.plugins.get('rexDropShadowPipeline')['add'](background, {
 			distance: 3,
@@ -160,18 +152,25 @@ export default class DeckRegion {
 
 		let cardImage = new CardImage(card, this.container)
 		.setOnClick(this.removeCardFromDeck(index))
-		this.panel.add(cardImage.image).layout()
+		// cardImage.image.setCrop(0, 0, cardImage.image.width, 50)
+		// .setInteractive([new Phaser.Geom.Rectangle(0, 0, cardImage.image.width, 50), Phaser.Geom.Rectangle.Contains])
+
+		let image = this.scene.add.image(0, 0, `cutout-${card.name}`)
+
+		this.panel.add(image)
+
+		this.scrollablePanel.layout()
 
 		// When hovered, move up to make this visible
 		// When exiting, return to old y
 		let y0 = cardImage.image.y
-		cardImage.setOnHover(() => {
-			let y = Space.windowHeight - Space.cardHeight/2
-			cardImage.image.setY(y)
-		},
-		() => {
-			cardImage.image.setY(y0)
-		})
+		// cardImage.setOnHover(() => {
+		// 	let y = Space.windowHeight - Space.cardHeight/2
+		// 	cardImage.image.setY(y)
+		// },
+		// () => {
+		// 	cardImage.image.setY(y0)
+		// })
 
 		// Add this to the deck
 		this.deck.push(cardImage)

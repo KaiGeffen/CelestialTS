@@ -47,8 +47,7 @@ export default class CatalogRegion {
   }
 
   private createPanel(scene: Phaser.Scene, x: number) {
-    // TODO This is specific to the deck region impl
-    let height = Space.windowHeight - (Space.cardHeight/2 + Space.pad)
+    let height = Space.windowHeight
 
     // Make the object
     let width = Space.windowWidth - x

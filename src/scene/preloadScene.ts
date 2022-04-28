@@ -65,6 +65,10 @@ export default class PreloadClass extends Phaser.Scene {
 			this.load.image(card.name, `images/${card.name}.png`)
 		})
 
+		allCards.forEach( (card) => {
+			this.load.image(`cutout-${card.name}`, `cutouts/Dove.png`)
+		})
+
 		// Load the icon images
 		this.loadIcons()
 
