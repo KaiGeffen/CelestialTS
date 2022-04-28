@@ -37,6 +37,9 @@ const CoreColors: Record<string, any> = {
   // Golden icon, for trophy
   icon: 0xFFAB2E,
 
+  // Breath icon, and things relating to breath
+  breath: '#5F99DC',
+
 
 }
 
@@ -60,6 +63,13 @@ export const Color: Record<string, any> = {
   sliderTrack: 0xE0E3EE,
   sliderIndicator: 0x5F5555,
   sliderThumb: 0x9F9999,
+
+  // Colors for the cost and the background for it
+  cardText: 0xFABD5D,
+  cardTextBackground: CoreColors.black,
+  // The color of the mana if cost has been reduced
+  cardCostReduced: CoreColors.breath,
+
 
 
   // Outline plugin color
@@ -110,14 +120,12 @@ export const Color: Record<string, any> = {
 
 
   // Card components
-  cardText: CoreColors.primary,
+  // cardText: CoreColors.primary,
   // Text color for the reminders in card text (References, keywords)
   cardTextSecondary: '#555',
-  cardTextBackground: '#aace',
+  // cardTextBackground: '#aace',
   cardUnplayable: 0x888888,
   cardHighlight: CoreColors.variant,
-  // The color of the mana if cost has been reduced
-  cardCostReduced: '#fff',
 
 
 
