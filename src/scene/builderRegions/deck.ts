@@ -179,12 +179,9 @@ export default class DeckRegion {
 		// Update start button to reflect new amount of cards in deck
 		this.updateText()
 
-		// Sort the deck, now done automatically after each card added
-		// this.sort()
-
 		// Update the saved deck data
 		// TODO Smell
-		// this.scene['updateSavedDeck'](this.getDeckCode())
+		this.scene['updateSavedDeck'](this.getDeckCode())
 
 		return cardImage
 	}
@@ -265,7 +262,7 @@ export default class DeckRegion {
 				that.txtHint.setVisible(true)
 			}
 
-			that.scene.updateSavedDeck(that.getDeckCode())
+			that.scene['updateSavedDeck'](that.getDeckCode())
 		}
 	}
 
@@ -287,19 +284,6 @@ export default class DeckRegion {
 		}
 
 		this.txtHint.setVisible(this.deck.length === 0)
-	}
-
-	private getDeckCardPosition(index: number): [number, number] {
-		let xPad = Space.pad
-
-		// For resolutions below a threshold, make the overlap more intense to fit 15 cards
-		let overlap = Space.cardWidth - 60 // TODO Use an overlap sizer
-		const x0 = Space.windowWidth - (Space.smallButtonWidth + 2*Space.pad + Space.cardWidth/2)
-		let x = x0 - index * (Space.cardWidth - overlap)
-
-		let y = Space.windowHeight
-
-		return [x, y]
 	}
 
 	// Sort by cost all cards in the deck
@@ -324,21 +308,6 @@ export default class DeckRegion {
 
 	// Set each card in deck to have the right position and onClick events for its index
 	private correctDeckIndices(): void {
-		return
-
-		for (var i = 0; i < this.deck.length; i++) {
-			let cardImage = this.deck[i]
-
-			cardImage.setPosition(this.getDeckCardPosition(i))
-
-			// Ensure that each card is above all cards to its left
-			cardImage.container.parentContainer.sendToBack(cardImage.container)
-
-			// Remove the previous onclick event and add one with the updated index
-			// Only do this if the card isn't required in the deck, in which case it can't be removed
-			if (!cardImage.required) {
-				cardImage.setOnClick(this.removeCardFromDeck(i), true)
-			}
-		}
+		this.setDeck(this.getDeckCode())
 	}
 }
