@@ -10,6 +10,7 @@ import Card from '../card'
 export default class Cutout extends Button {
 	name: string
 	id: number
+	card: Card
 	count: number
 	container: ContainerLite
 
@@ -37,6 +38,8 @@ export default class Cutout extends Button {
 
 		this.name = card.name
 		this.id = card.id
+		this.card = card
+		
 		this.count = 1
 		this.container = within
 

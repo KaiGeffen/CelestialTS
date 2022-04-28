@@ -85,10 +85,10 @@ export default class DeckRegion {
 			},
 
 			// mouseWheelScroller: {
-			// 	focus: true,
-			// 	speed: 1
-			// },
-		}).setOrigin(0)
+				// 	focus: true,
+				// 	speed: 1
+				// },
+			}).setOrigin(0)
 
 		this.scrollablePanel.layout()
 
@@ -102,12 +102,12 @@ export default class DeckRegion {
 
 	private createPanel(startCallback: () => void): Phaser.GameObjects.GameObject {
 		this.panel = this.scene['rexUI'].add.fixWidthSizer({space: {
-					top: 10,
-					bottom: 10,
-					// line: 10,//80 - Space.cardHeight,
-				}}).addBackground(
-				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xF44FFF)
-				)
+			top: 10,
+			bottom: 10,
+			// line: 10,//80 - Space.cardHeight,
+		}}).addBackground(
+		this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xF44FFF)
+		)
 
 		this.updateOnScroll(this.panel)
 
@@ -172,9 +172,11 @@ export default class DeckRegion {
 		if (!alreadyInDeck) {
 			// If it doesn't, create a new cutout
 			let container = new ContainerLite(this.scene, 0, 0, 195, 50) // TODO
-			this.panel.add(container)
 			let cutout = new Cutout(container, card)
 			cutout.setOnClick(this.removeCardFromDeck(cutout))
+
+			// Add the container in the right position in the panel
+			this.addToPanelSorted(container, card)
 
 			this.scrollablePanel.layout()
 
@@ -286,6 +288,7 @@ export default class DeckRegion {
 				cutout.destroy()
 
 				// Reformat the panel
+				that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
 				that.panel.layout()
 			}
 
@@ -301,16 +304,17 @@ export default class DeckRegion {
 
 	// Update the card count and deck button texts
 	private updateText(): void {
-		if (this.deck.length === Mechanics.deckSize) {
+		let totalCount = 0
+		this.deck.forEach(cutout => {
+			totalCount += cutout.count
+		})
+
+		if (totalCount === Mechanics.deckSize) {
 			this.btnStart.setText('Start')
 			this.btnStart.enable()
 		}
 		else
 		{
-			let totalCount = 0
-			this.deck.forEach(cutout => {
-				totalCount += cutout.count
-			})
 			this.btnStart.setText(`${totalCount}/${Mechanics.deckSize}`)
 
 			// TODO Grey out the button, have a disable method for button class
@@ -344,6 +348,22 @@ export default class DeckRegion {
 	}
 
 	// TODO Delete
+
+	private addToPanelSorted(child: ContainerLite, card: Card): void {
+		// Default insertion is at the end, if it's not before any existing element
+		let insertIndex = this.deck.length
+
+		for (let i = 0; i < this.deck.length; i++) {
+			if (this.deck[i].card.cost > card.cost ||
+				(this.deck[i].card.cost === card.cost &&
+								this.deck[i].card.name.localeCompare(card.name) === -1)
+				) {
+				insertIndex = i
+			}
+		}
+
+		this.panel.insert(insertIndex, child)
+	}
 
 	// Sort by cost all cards in the deck
 	private sort(): void {
