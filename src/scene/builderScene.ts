@@ -63,7 +63,7 @@ export class AdventureBuilderScene extends BuilderBase {
     this.deckRegion = new DeckRegion().create(this, this.startCallback())
     this.deckRegion.addRequiredCards(params.deck)
     
-    this.catalogRegion = new CatalogRegion().create(this)
+    this.catalogRegion = new CatalogRegion().create(this, this.deckRegion.width)
 
     // Must filter out cards that you don't have access to
     this.filter()
@@ -104,12 +104,12 @@ export class BuilderScene extends BuilderBase {
 
     this.filterRegion = new FilterRegion().create(this, false)
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.decklistsRegion.width)
+    this.deckRegion = new DeckRegion().create(this, this.startCallback())
     if (this.lastDeck !== undefined) {
       this.deckRegion.setDeck(this.lastDeck)
     }
     
-    this.catalogRegion = new CatalogRegion().create(this, this.decklistsRegion.width)
+    this.catalogRegion = new CatalogRegion().create(this, this.deckRegion.width)
 
     // Set starting deck
     if (this.lastDecklist !== undefined) {

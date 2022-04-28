@@ -12,6 +12,8 @@ import { decodeCard, encodeCard } from '../../lib/codec'
 const width = Space.cardWidth// + Space.pad * 2
 
 export default class DeckRegion {
+	width: number
+
 	private scene: Phaser.Scene
 
 	// The panel within which all of the cards are
@@ -30,8 +32,7 @@ export default class DeckRegion {
 	// Container containing all cards in the deck
 	private container: ContainerLite
 
-	create(scene: Phaser.Scene, startCallback: () => void, x = 0) {
-		x = 0
+	create(scene: Phaser.Scene, startCallback: () => void) {
 		this.scene = scene
 
 		// Deck container
@@ -42,7 +43,7 @@ export default class DeckRegion {
 
 		// Hint text - Tell user to click cards to add
 		this.txtHint = scene.add.text(
-			(Space.windowWidth - x)/2,
+			Space.windowWidth/2,
 			Space.windowHeight - 420/2,
 			'Click a card to add it to your deck',
 			Style.announcement)
@@ -53,12 +54,14 @@ export default class DeckRegion {
 		// this.container.add([background, this.txtHint])
 
 		// TODO Make everything in a panel
-		this.createScrollable(startCallback, x)
+		this.createScrollable(startCallback)
+
+		this.width = this.scrollablePanel.width
 
 		return this
 	}
 
-	private createScrollable(startCallback: () => void, x: number) {
+	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
@@ -71,10 +74,10 @@ export default class DeckRegion {
 			background: background,
 
 			panel: {
-				child: this.createPanel(startCallback, x)
+				child: this.createPanel(startCallback)
 			},
 
-			header: this.createHeader(startCallback, x),
+			header: this.createHeader(startCallback),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
@@ -97,7 +100,7 @@ export default class DeckRegion {
 		return this.scrollablePanel
 	}
 
-	private createPanel(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
+	private createPanel(startCallback: () => void): Phaser.GameObjects.GameObject {
 		this.panel = this.scene['rexUI'].add.fixWidthSizer({space: {
 					top: 10,
 					bottom: 10,
@@ -109,7 +112,7 @@ export default class DeckRegion {
 		return this.panel
 	}
 
-	private createHeader(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
+	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
 			Space: {left: Space.pad, right: Space.pad}
 		})
