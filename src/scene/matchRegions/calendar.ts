@@ -44,13 +44,13 @@ export default class CalendarRegion extends Region {
 
 		// Display that it's night time on the first state of night
 		if (isRecap && this.lastShownDay) {
-			this.txt.setText('Night falls...')
+			this.txt.setText('Nightime...')
 			this.lastShownDay = false
 
 			this.animate()
 		}
 		else if (!isRecap && !this.lastShownDay) {
-			this.txt.setText('Morning breaks...')
+			this.txt.setText('Daytime...')
 			this.lastShownDay = true
 
 			this.animate()
