@@ -29,6 +29,13 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     color: Color.basicText,
     fontStyle: "Bold",
   },
+  // Count of a card in the deck
+  cardCount: {
+    fontFamily: fontFamily,
+    fontSize: '24px',
+    color: Color.cardCount,
+    fontStyle: "Bold",
+  },
   // Cost numbers in filter
   textButton: {
     fontFamily: fontFamily,

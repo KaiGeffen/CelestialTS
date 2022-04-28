@@ -35,7 +35,8 @@ const CoreColors: Record<string, any> = {
 
 
   // Golden icon, for trophy
-  icon: 0xFFAB2E,
+  golden: 0xFFAB2E,
+  goldenS: '#FFAB2E',
 
 
 }
@@ -60,6 +61,8 @@ export const Color: Record<string, any> = {
   sliderTrack: 0xE0E3EE,
   sliderIndicator: 0x5F5555,
   sliderThumb: 0x9F9999,
+
+  cardCount: CoreColors.c1s,
 
 
   // Outline plugin color

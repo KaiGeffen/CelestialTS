@@ -2,13 +2,14 @@ import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
+import Cutout from '../../lib/buttons/cutout'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Style, Color, Mechanics } from '../../settings/settings'
 import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
 
 
-const width = Space.cardWidth + Space.pad * 2
+const width = Space.cardWidth// + Space.pad * 2
 
 export default class DeckRegion {
 	private scene: Phaser.Scene
@@ -77,7 +78,6 @@ export default class DeckRegion {
 
 			space: {
 				top: Space.filterBarHeight + Space.pad
-				bottom: Space.pad,
 				item: Space.pad,
 			},
 
@@ -99,11 +99,11 @@ export default class DeckRegion {
 
 	private createPanel(startCallback: () => void, x: number): Phaser.GameObjects.GameObject {
 		this.panel = this.scene.rexUI.add.fixWidthSizer({space: {
-					left: Space.pad,
-					right: Space.pad,
+					// left: Space.pad,
+					// right: Space.pad,
 					top: 10,
 					bottom: 10,
-					line: 10,
+					// line: 10,//80 - Space.cardHeight,
 				}}).addBackground(
 				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xF44FFF)
 				)
@@ -144,32 +144,44 @@ export default class DeckRegion {
 
 	// Add the given card and return the created cardImage
 	addCardToDeck(card: Card): CardImage {
+		// TODO Change deck to be cutouts
+		// let amt = 0
+		// this.deck.forEach(cutout => {
+		// 	amt += cutout.amt
+		// })
+
+		// if (amt  >= Mechanics.deckSize) 
+		// 	return undefined
+		// }
+
 		if (this.deck.length >= Mechanics.deckSize) {
 			return undefined
 		}
 
 		let index = this.deck.length
 
+		// TODO Remove
 		let cardImage = new CardImage(card, this.container)
 		.setOnClick(this.removeCardFromDeck(index))
-		// cardImage.image.setCrop(0, 0, cardImage.image.width, 50)
-		// .setInteractive([new Phaser.Geom.Rectangle(0, 0, cardImage.image.width, 50), Phaser.Geom.Rectangle.Contains])
+		cardImage.hide()
 
-		let image = this.scene.add.image(0, 0, `cutout-${card.name}`)
+		let container = new ContainerLite(this.scene, 0, 0, 195, 50) // TODO
+		new Cutout(container, card.name)
+		this.panel.add(container)
 
-		this.panel.add(image)
+		// TODO Callback for cutout
 
 		this.scrollablePanel.layout()
 
-		// When hovered, move up to make this visible
-		// When exiting, return to old y
-		let y0 = cardImage.image.y
+		// When hovered, make this card visible
+		// When exiting, return to how it was
 		// cardImage.setOnHover(() => {
-		// 	let y = Space.windowHeight - Space.cardHeight/2
-		// 	cardImage.image.setY(y)
+		// 	cardImage.image.height = 400
+		// 	this.scrollablePanel.layout()
 		// },
 		// () => {
-		// 	cardImage.image.setY(y0)
+		// 	cardImage.image.height = 40
+		// 	this.scrollablePanel.layout()
 		// })
 
 		// Add this to the deck
@@ -310,3 +322,4 @@ export default class DeckRegion {
 		this.setDeck(this.getDeckCode())
 	}
 }
+
