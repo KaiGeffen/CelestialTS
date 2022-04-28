@@ -62,7 +62,7 @@ export const Color: Record<string, any> = {
   sliderIndicator: 0x5F5555,
   sliderThumb: 0x9F9999,
 
-  cardCount: CoreColors.c1s,
+  cardCount: CoreColors.whiteS,
 
 
   // Outline plugin color

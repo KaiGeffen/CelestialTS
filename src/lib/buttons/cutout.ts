@@ -39,6 +39,8 @@ export default class Cutout extends Button {
 		this.id = card.id
 		this.count = 1
 		this.container = within
+
+		this.updateText()
 	}
 
 	// Increment the count of this card
@@ -66,7 +68,7 @@ export default class Cutout extends Button {
 	}
 
 	private updateText(): Cutout {
-		this.setText(`                       X${this.count}`)
+		this.setText(`${this.name} X${this.count}`)
 
 		return this
 	}

@@ -84,10 +84,10 @@ export default class DeckRegion {
 				item: Space.pad,
 			},
 
-			mouseWheelScroller: {
-				focus: true,
-				speed: 1
-			},
+			// mouseWheelScroller: {
+			// 	focus: true,
+			// 	speed: 1
+			// },
 		}).setOrigin(0)
 
 		this.scrollablePanel.layout()
@@ -108,6 +108,8 @@ export default class DeckRegion {
 				}}).addBackground(
 				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xF44FFF)
 				)
+
+		this.updateOnScroll(this.panel)
 
 		return this.panel
 	}
@@ -319,6 +321,26 @@ export default class DeckRegion {
 		}
 
 		this.txtHint.setVisible(this.deck.length === 0)
+	}
+
+	// TODO Make dry with other scenes
+	// Update the panel when user scrolls with their mouse wheel
+	private updateOnScroll(panel) {
+		let that = this
+
+		this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+			// Return if the pointer is outside of the panel
+			if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+				return
+			}
+
+			// Scroll panel down by amount wheel moved
+			that.scrollablePanel.childOY -= dy
+
+			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+			that.scrollablePanel.t = Math.max(0, that.scrollablePanel.t)
+			that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
+		})
 	}
 
 	// TODO Delete
