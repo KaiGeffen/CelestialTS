@@ -307,7 +307,7 @@ export class CardImage {
     let hint = that.image.scene['hint']
     this.setOnHover(
       () => {
-        hint.showText('FOOOOOO\nThis keyword means bar and this card provides X of it.')
+        hint.showText(that.card.getHintText())
       },
       () => {
         hint.hide()

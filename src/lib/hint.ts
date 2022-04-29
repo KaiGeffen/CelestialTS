@@ -44,7 +44,9 @@ export default class Hint {
 	}
 
 	showText(s: string): void {
-		this.show()
+		if (s !== '') {
+			this.show()			
+		}
 
 		this.txt.setText(s)
 		.setFixedSize(0, 0)

@@ -29,12 +29,12 @@
 		"text": "Starve X - The next card you resolve is worth -X points.",
 		"x": true
 	},
-	{"key": "Build",
-		"text": "Build X - If you have a Child in hand, increase its points by X. Otherwise create a 0:X Fleeting Child in hand.",
+	{"key": "Birth",
+		"text": "Birth X - If you have a Child in hand, increase its points by X. Otherwise create a 0:X Fleeting Child in hand.",
 		"x": true
 	},
 	{"key": "Morning",
-		"text": "At the start of each round, if this is the top card of your discard pile, trigger the following effect.",
+		"text": "Morning - At the start of each round, if this is the top card of your discard pile, trigger the following effect.",
 		"x": false
 	}
 ]

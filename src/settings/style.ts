@@ -202,6 +202,10 @@ export const BBStyle: Record<string, any> = {
     backgroundStrokeColor: "#0005",
     backgroundStrokeLineWidth: 2,
     backgroundCornerRadius: 5,
+    wrap: {
+      mode: 'word',
+      width: Space.maxTextWidth
+    },
     // strokeThickness: 3,
     padding: {
       left: Space.padSmall,
