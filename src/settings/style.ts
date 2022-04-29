@@ -187,22 +187,28 @@ export const BBStyle: Record<string, any> = {
       bottom: 5
     }
   },
+  basic: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size,
+    color: Color.basicText,
+    wordWrap: { width: Space.maxTextWidth }
+  },
   // Hint text shown when something onscreen is hovered
   hint: {
     fontFamily: fontFamily,
-    fontSize: '20px',
-    // color: Color.cardText,
-    // backgroundColor: Color.cardTextBackground,
-    // backgroundStrokeColor: "#0005",
-    // backgroundStrokeLineWidth: 2,
-    // backgroundCornerRadius: 5,
+    fontSize: FontSettings.standard.size,
+    color: Color.basicText,
+    backgroundColor: Color.cardTextBackground,
+    backgroundStrokeColor: "#0005",
+    backgroundStrokeLineWidth: 2,
+    backgroundCornerRadius: 5,
     // strokeThickness: 3,
-    // padding: { 
-    //   left: 5,
-    //   right: 5,
-    //   top: 5,
-    //   bottom: 5
-    // }
+    padding: { 
+      left: Space.padSmall,
+      right: Space.padSmall,
+      top: Space.padSmall,
+      bottom: Space.padSmall
+    }
   },
   // Error text that appears in the center of the screen
   error: {

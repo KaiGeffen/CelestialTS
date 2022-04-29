@@ -19,6 +19,7 @@ export const Space = {
   windowWidth: width,
   windowHeight: height,
   cardSize: 100,
+  padSmall: 10,
   pad: 20,
   rowsPerPage: 4,
   cardsPerPage: 8 * 4,
