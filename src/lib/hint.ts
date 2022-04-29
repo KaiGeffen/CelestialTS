@@ -12,13 +12,14 @@ export default class Hint {
 		this.txt = scene.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
 	    	.setOrigin(0.5)
 	    	.setDepth(40)
+	    	.setVisible(false)
+	    	.setAlign('right')
 
-	    // Create the event
+	    // Copy mouse position
 	    let that = this
 	    scene.input.on('pointermove', (pointer) => {
 	    	this.txt.copyPosition(pointer.position)
 	    })
-		
 	}
 
 	hide(): Hint {
@@ -36,22 +37,8 @@ export default class Hint {
 	showCard(card: Card): void {
 		this.show()
 
-		// this.txt.addImage(card.name, {
-		// 	key: card.name,
-		// 	// width: Space.cardWidth,
-		// 	// height: 4000,
-		// })
-
 		this.txt.setText(`[img=${card.name}]`)
-		.setFixedSize(Space.cardWidth, Space.cardHeight)
-	}
-
-	create() {
-		
-
-	}
-
-	update(time, delta) {
-		console.log(delta)
+		.setFixedSize(Space.cardWidth + Space.pad, Space.cardHeight)
+		.setOrigin(0, 0.5)
 	}
 }
