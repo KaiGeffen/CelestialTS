@@ -81,6 +81,9 @@ export default class Cutout extends Button {
 	}
 
 	destroy(): Cutout {
+		// Must do exit method so that hover doesn't persist		
+		this.onExit()
+
 		this.container.destroy()
 
 		return this
