@@ -50,6 +50,13 @@ export default class Hint {
 
 		this.txt.setText(s)
 		.setFixedSize(0, 0)
-		.setOrigin(0, 1)
+		
+		// Center the text so it stays on screen
+		if (this.txt.x < Space.windowWidth/2) {
+			this.txt.setOrigin(0, 1)
+		}
+		else {
+			this.txt.setOrigin(1, 1)
+		}
 	}
 }
