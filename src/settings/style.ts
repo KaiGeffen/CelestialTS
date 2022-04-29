@@ -187,6 +187,23 @@ export const BBStyle: Record<string, any> = {
       bottom: 5
     }
   },
+  // Hint text shown when something onscreen is hovered
+  hint: {
+    fontFamily: fontFamily,
+    fontSize: '20px',
+    // color: Color.cardText,
+    // backgroundColor: Color.cardTextBackground,
+    // backgroundStrokeColor: "#0005",
+    // backgroundStrokeLineWidth: 2,
+    // backgroundCornerRadius: 5,
+    // strokeThickness: 3,
+    // padding: { 
+    //   left: 5,
+    //   right: 5,
+    //   top: 5,
+    //   bottom: 5
+    // }
+  },
   // Error text that appears in the center of the screen
   error: {
     fontFamily: fontFamily,

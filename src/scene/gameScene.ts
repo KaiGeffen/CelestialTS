@@ -65,13 +65,6 @@ class GameScene extends BaseScene {
 		this.setCallbacks(this.view, this.net)
 	}
 
-	create(): void {
-		// TODO Fix create / precreate, bad smell
-		super.precreate()
-		
-		super.create()
-	}
-
 	beforeExit() {
 		this.net.exitMatch()
 	}

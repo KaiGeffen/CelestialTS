@@ -4,6 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import { Space, Style, Color } from '../../settings/settings'
 import Button from './button'
 import Card from '../card'
+import Hint from '../hint'
 
 
 // Exported buttons
@@ -20,6 +21,9 @@ export default class Cutout extends Button {
 		f: () => void = function() {},
 		playSound: boolean = true)
 	{
+		// The base scene's hint text object
+		let hint: Hint = within.scene['hint']
+
 		super(within, x, y, 
 		{
 			text: {
@@ -32,10 +36,18 @@ export default class Cutout extends Button {
 				interactive: true
 			},
 			callbacks: {
-				click: f
+				click: f,
+				// When hovered, show the given cards
+				hover: () => {
+					hint.showCard(card)
+				},
+				exit: () => {
+					hint.hide()
+				}
 			}
 		})
 
+		// Set variables
 		this.name = card.name
 		this.id = card.id
 		this.card = card
@@ -43,7 +55,11 @@ export default class Cutout extends Button {
 		this.count = 1
 		this.container = within
 
+		// Update the displayed text (TODO Temporary until the images show appropriate cards)
 		this.updateText()
+
+		// When hovered, show the given card
+		this.onHover
 	}
 
 	// Increment the count of this card

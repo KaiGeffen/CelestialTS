@@ -25,8 +25,6 @@ export default class StoreScene extends BaseScene {
   }
 
   create(): void {
-    super.precreate()
-    
     this.container = this.add.container(Space.windowWidth/2, Space.windowHeight/2)
     this.temporaryObjs = []
 

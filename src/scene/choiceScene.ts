@@ -16,8 +16,6 @@ export default class ChoiceScene extends BaseScene {
 	}
 
 	create(): void {
-		super.precreate()
-
 		// Create menu
 		let menu = this.createChoiceMenu()
 
