@@ -203,7 +203,7 @@ export const BBStyle: Record<string, any> = {
     backgroundStrokeLineWidth: 2,
     backgroundCornerRadius: 5,
     // strokeThickness: 3,
-    padding: { 
+    padding: {
       left: Space.padSmall,
       right: Space.padSmall,
       top: Space.padSmall,

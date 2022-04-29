@@ -14,7 +14,7 @@ export default class Hint {
 		.setOrigin(0.5)
 		.setDepth(40)
 		.setVisible(false)
-		.setAlign('right')
+		.setAlign('center')
 
 		// Copy mouse position
 		let that = this
@@ -47,6 +47,7 @@ export default class Hint {
 		this.show()
 
 		this.txt.setText(s)
+		.setFixedSize(0, 0)
 		.setOrigin(0, 1)
 	}
 }

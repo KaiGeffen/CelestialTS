@@ -5,7 +5,6 @@ import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
 
-
 export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
@@ -117,6 +116,9 @@ export class CardImage {
       // If the mouse moves outside of the game, exit the hover also
       this.image.scene.input.on('gameout', this.onHoverExit(), this)
     }
+
+    // Hint any keywords that are in the card
+    this.hintKeywords()
   }
 
   destroy(): void {
@@ -296,6 +298,21 @@ export class CardImage {
     let abovePadding = this.txtStats.y <= padding
     let belowSizer = height <= this.txtStats.y + this.txtStats.height + padding
     this.txtStats.setVisible(!abovePadding && !belowSizer)
+  }
+
+  private hintKeywords(): void {
+    let that = this
+
+    // TODO Care about locations
+    let hint = that.image.scene['hint']
+    this.setOnHover(
+      () => {
+        hint.showText('FOOOOOO\nThis keyword means bar and this card provides X of it.')
+      },
+      () => {
+        hint.hide()
+      }
+      )
   }
 
   private onHover(): () => void {

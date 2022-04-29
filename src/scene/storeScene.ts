@@ -4,7 +4,7 @@ import BaseScene from "./baseScene"
 import Button from "../lib/button"
 import Card from "../lib/card"
 import Menu from "../lib/menu"
-import {cardInfo, addCardInfoToScene, CardImage} from "../lib/cardImage"
+import {cardInfo, CardImage} from "../lib/cardImage"
 import Server from "../server"
 
 
@@ -60,9 +60,6 @@ export default class StoreScene extends BaseScene {
 
     // Manage any messages that are displayed
     this.manageMessages()
-    
-    // This scene displays card info
-    addCardInfoToScene(this)
 
     super.create()
   }

@@ -5,7 +5,7 @@ import Card from "../lib/card"
 import { Network, versionNumber } from "../net"
 import ClientState from "../lib/clientState"
 import BaseScene from "./baseScene"
-import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib/cardImage"
+import { CardImage } from "../lib/cardImage"
 import { StatusBar } from "../lib/status"
 import { SymmetricButtonLarge } from '../lib/buttons/backed'
 
