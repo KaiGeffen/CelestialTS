@@ -148,10 +148,6 @@ export default class DeckRegion {
 		// Update start button to reflect new amount of cards in deck
 		this.updateText()
 
-		// Update the saved deck data
-		// TODO Smell
-		this.scene['updateSavedDeck'](this.getDeckCode())
-
 		return true
 	}
 
@@ -185,7 +181,11 @@ export default class DeckRegion {
 			this.updateText()
 
 			// Add the new deck
-			deck.forEach( (card) => this.addCardToDeck(card))
+			for (let i = 0; i < deck.length; i++) {
+				let card = deck[i]
+				console.log(card)
+				this.addCardToDeck(card)
+			}
 
 			return true
 		}
@@ -303,19 +303,18 @@ export default class DeckRegion {
 	}
 
 	private addToPanelSorted(child: ContainerLite, card: Card): void {
-		// Default insertion is at the end, if it's not before any existing element
-		let insertIndex = this.deck.length
-
 		for (let i = 0; i < this.deck.length; i++) {
 			if (this.deck[i].card.cost > card.cost ||
 				(this.deck[i].card.cost === card.cost &&
 								this.deck[i].card.name.localeCompare(card.name) === -1)
 				) {
-				insertIndex = i
+			this.panel.insert(i, child)
+			return
 			}
 		}
 
-		this.panel.insert(insertIndex, child)
+		// Default insertion is at the end, if it's not before any existing element
+		this.panel.insert(this.deck.length, child)
 	}
 
 

@@ -120,6 +120,14 @@ export class BuilderScene extends BuilderBase {
     }
   }
 
+  addCardToDeck(card: Card): boolean {
+    let result = this.deckRegion.addCardToDeck(card)
+
+    this.updateSavedDeck(this.getDeckCode())
+
+    return result
+  }
+
   updateSavedDeck(deck: string): void {
     this.decklistsRegion.updateSavedDeck(deck)
   }
