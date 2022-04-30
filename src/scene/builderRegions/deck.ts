@@ -138,11 +138,11 @@ export default class DeckRegion {
 			cutout.setOnClick(this.removeCardFromDeck(cutout))
 
 			// Add the container in the right position in the panel
-			this.addToPanelSorted(container, card)
+			let index = this.addToPanelSorted(container, card)
 
 			this.scrollablePanel.layout()
 
-			this.deck.push(cutout)
+			this.deck.splice(index, 0, cutout)
 		}
 		
 		// Update start button to reflect new amount of cards in deck
@@ -302,19 +302,20 @@ export default class DeckRegion {
 		})
 	}
 
-	private addToPanelSorted(child: ContainerLite, card: Card): void {
+	private addToPanelSorted(child: ContainerLite, card: Card): number {
 		for (let i = 0; i < this.deck.length; i++) {
-			if (this.deck[i].card.cost > card.cost ||
-				(this.deck[i].card.cost === card.cost &&
-								this.deck[i].card.name.localeCompare(card.name) === -1)
+			if ((this.deck[i].card.cost > card.cost) ||
+				((this.deck[i].card.cost === card.cost) &&
+					(this.deck[i].card.name > card.name))
 				) {
 			this.panel.insert(i, child)
-			return
+			return i
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
 		this.panel.insert(this.deck.length, child)
+		return this.deck.length
 	}
 
 
