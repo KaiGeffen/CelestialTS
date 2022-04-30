@@ -18,9 +18,6 @@ export default class DeckRegion {
 	private panel
 	private scrollablePanel
 
-	// Hint telling users how to add cards
-	private txtHint: Phaser.GameObjects.Text
-
 	// Button allowing user to Start, or showing the count of cards in their deck
 	private btnStart: SymmetricButtonSmall
 
@@ -36,20 +33,6 @@ export default class DeckRegion {
 		// Deck container
 		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
 		this.container = new ContainerLite(scene)
-
-		// let background = this.createBackground(scene)
-
-		// Hint text - Tell user to click cards to add
-		this.txtHint = scene.add.text(
-			Space.windowWidth/2,
-			Space.windowHeight - 420/2,
-			'Click a card to add it to your deck',
-			Style.announcement)
-		.setOrigin(0.5)
-		.setAlpha(0)
-
-		// Add each object to this container
-		// this.container.add([background, this.txtHint])
 
 		// TODO Make everything in a panel
 		this.createScrollable(startCallback)
@@ -126,23 +109,6 @@ export default class DeckRegion {
 		sizer.add(containerButton)
 
 		return sizer
-	}
-
-	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.Rectangle {
-		let background = scene.add
-		.rectangle(0,
-			0,
-			width,
-			Space.windowHeight,
-			0x989898, 1)
-		.setOrigin(0)
-
-		scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-			distance: 3,
-			shadowColor: 0x000000,
-		})
-
-		return background
 	}
 
 	// Add the given card and return the created cardImage
@@ -290,10 +256,6 @@ export default class DeckRegion {
 
 			that.updateText()
 
-			if (that.deck.length === 0) {
-				that.txtHint.setVisible(true)
-			}
-
 			that.scene['updateSavedDeck'](that.getDeckCode())
 		}
 	}
@@ -319,8 +281,6 @@ export default class DeckRegion {
 				this.btnStart.disable()
 			}
 		}
-
-		this.txtHint.setVisible(this.deck.length === 0)
 	}
 
 	// TODO Make dry with other scenes
@@ -343,8 +303,6 @@ export default class DeckRegion {
 		})
 	}
 
-	// TODO Delete
-
 	private addToPanelSorted(child: ContainerLite, card: Card): void {
 		// Default insertion is at the end, if it's not before any existing element
 		let insertIndex = this.deck.length
@@ -360,6 +318,12 @@ export default class DeckRegion {
 
 		this.panel.insert(insertIndex, child)
 	}
+
+
+
+
+
+	// TODO Remove below unused methods
 
 	// Sort by cost all cards in the deck
 	private sort(): void {
