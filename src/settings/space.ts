@@ -48,6 +48,8 @@ export const Space = {
 
   filterBarHeight: 70,
 
+  deckPanelWidth: 200,
+
   // Dimensions for common buttons
   smallButtonWidth: 100,
   smallButtonHeight: 50,

@@ -9,7 +9,7 @@ import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon';
 import { Color, Mechanics, Space, Style, UserSettings } from "../../settings/settings";
 
 
-const width = Space.iconSeparation + Space.pad
+const width = Space.deckPanelWidth
 
 // Region of the deck builder which contains all the decklists
 export default class DecklistsRegion {  
@@ -17,7 +17,6 @@ export default class DecklistsRegion {
 	container: ContainerLite
 
 	deckPanel
-	width: number
 
 	// The index of the currently selected deck
 	savedDeckIndex: number
@@ -46,8 +45,6 @@ export default class DecklistsRegion {
 		this.createDecklistPanel()
 
 		this.deckPanel.layout()
-
-		this.width = this.deckPanel.width
 
 		this.container.setVisible(false)
 
@@ -338,7 +335,7 @@ export default class DecklistsRegion {
 		}
 
 		// TODO Width and height constants
-		let container = new ContainerLite(this.scene, 0, 0, 200, 50)
+		let container = new ContainerLite(this.scene, 0, 0, width, 50)
 
 		let btn = new ButtonNewDeck(container, 0, 0, 'New Deck', openNewDeckMenuCallback)
 

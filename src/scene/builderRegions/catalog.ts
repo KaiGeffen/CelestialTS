@@ -25,11 +25,11 @@ export default class CatalogRegion {
 
 
   // Create this region, offset by the given width
-  create(scene: Phaser.Scene, x = 0) {
+  create(scene: Phaser.Scene) {
     this.scene = scene
     this.container = new ContainerLite(scene)
 
-    this.panel = this.createPanel(scene, x)
+    this.panel = this.createPanel(scene)
 
     this.cardCatalog = []
 
@@ -46,13 +46,13 @@ export default class CatalogRegion {
     return this
   }
 
-  private createPanel(scene: Phaser.Scene, x: number) {
+  private createPanel(scene: Phaser.Scene) {
     let height = Space.windowHeight
 
     // Make the object
-    let width = Space.windowWidth - x
+    let width = Space.windowWidth - Space.deckPanelWidth
     let superPanel = scene['rexUI'].add.scrollablePanel({
-      x: x + width/2,
+      x: Space.deckPanelWidth + width/2,
       y: height/2,
       width: width,
       height: height,

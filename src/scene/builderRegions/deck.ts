@@ -9,11 +9,9 @@ import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
 
 
-const width = Space.cardWidth// + Space.pad * 2
+const width = Space.deckPanelWidth// + Space.pad * 2
 
 export default class DeckRegion {
-	width: number
-
 	private scene: Phaser.Scene
 
 	// The panel within which all of the cards are
@@ -55,8 +53,6 @@ export default class DeckRegion {
 
 		// TODO Make everything in a panel
 		this.createScrollable(startCallback)
-
-		this.width = this.scrollablePanel.width
 
 		return this
 	}
