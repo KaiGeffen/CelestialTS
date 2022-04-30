@@ -104,6 +104,8 @@ export default class Cutout extends Button {
 
 		let that = this
 
+		this.txt.setTint(0x00ff00)
+
 		this.onClick = () => {
 			that.scene['signalError']("Can't remove required card.")
 		}
@@ -111,8 +113,7 @@ export default class Cutout extends Button {
 	}
 
 	private updateText(): Cutout {
-		this.setText(`${this.name} X${this.count}`)
-		this.txt.setAlpha(0)
+		this.setText(`             ${this.name} X${this.count}`)
 
 		return this
 	}
