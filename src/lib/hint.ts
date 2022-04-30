@@ -52,11 +52,7 @@ export default class Hint {
 		.setFixedSize(0, 0)
 		
 		// Center the text so it stays on screen
-		if (this.txt.x < Space.windowWidth/2) {
-			this.txt.setOrigin(0, 1)
-		}
-		else {
-			this.txt.setOrigin(1, 1)
-		}
+		let ratio = this.txt.x / Space.windowWidth
+		this.txt.setOrigin(ratio, 1)
 	}
 }

@@ -204,7 +204,7 @@ export const BBStyle: Record<string, any> = {
     backgroundCornerRadius: 5,
     wrap: {
       mode: 'word',
-      width: Space.maxTextWidth
+      width: Space.maxTextWidth/2
     },
     // strokeThickness: 3,
     padding: {
