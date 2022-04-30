@@ -15,6 +15,9 @@ export default class Cutout extends Button {
 	count: number
 	container: ContainerLite
 
+	// Whether this card is required for the current mission
+	required = false
+
 	constructor(within: ContainerLite,
 		card: Card,
 		x: number = 0, y: number = 0,
@@ -64,6 +67,12 @@ export default class Cutout extends Button {
 
 	// Increment the count of this card
 	increment(): Cutout {
+		// Can't add more of this card if it's required
+		if (this.required) {
+			this.scene['signalError']("Can't add more of a required card.")
+			return
+		}
+
 		this.count += 1
 
 		this.updateText()
@@ -86,6 +95,18 @@ export default class Cutout extends Button {
 
 		this.container.destroy()
 
+		return this
+	}
+
+	// Set that this card cannot have more/fewer copies
+	setRequired(): Cutout {
+		this.required = true
+
+		let that = this
+
+		this.onClick = () => {
+			that.scene['signalError']("Can't remove required card.")
+		}
 		return this
 	}
 

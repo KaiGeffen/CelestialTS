@@ -214,9 +214,8 @@ export default class DeckRegion {
 		this.setDeck(cards)
 
 		// Set each card in the deck to be required
-		this.deck.forEach(card => {
-			// TODO
-			// card.setRequired()
+		this.deck.forEach(cutout => {
+			cutout.setRequired()
 		})
 	}
 
