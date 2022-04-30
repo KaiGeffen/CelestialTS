@@ -91,6 +91,7 @@ export default class Cutout extends Button {
 
 	private updateText(): Cutout {
 		this.setText(`${this.name} X${this.count}`)
+		this.txt.setAlpha(0)
 
 		return this
 	}
