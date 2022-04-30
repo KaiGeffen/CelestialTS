@@ -112,9 +112,10 @@ export default class DiscardPilesRegion extends Region {
 					// Hide the card until it starts animating
 					card.hide()
 
+					// TODO Has a bug if discard is shuffled in this action (Parch)
 					// Hide the existing card in the discard pile
 					count += 1
-					cards[cards.length - count].hide()
+					// cards[cards.length - count].hide()
 
 					// Animate moving x direction, becoming visible when animation starts
 					this.scene.tweens.add({
@@ -129,7 +130,7 @@ export default class DiscardPilesRegion extends Region {
 							scene.sound.play('discard')
 						},
 						onComplete: () => {
-							cards[cards.length - count].show()
+							// cards[cards.length - count].show()
 							card.destroy()
 						}
 					})
