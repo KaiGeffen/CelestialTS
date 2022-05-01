@@ -144,12 +144,6 @@ export class AvatarSmall extends Button {
 				click: f
 			}
 		})
-
-		// console.log(this.txt.y)
-
-		// this.txt.setY(this.txt.y - 50)
-
-		// console.log(this.txt.y)
 	}
 }
 

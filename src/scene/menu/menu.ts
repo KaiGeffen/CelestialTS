@@ -1,7 +1,14 @@
 import "phaser"
 
 export default class Menu {
-	constructor(scene: Phaser.Scene) {}
+	scene: Phaser.Scene
+	constructor(scene: Phaser.Scene) {
+		this.scene = scene
+	}
+
+	close() {
+		this.scene.scene.stop()
+	}
 }
 
 

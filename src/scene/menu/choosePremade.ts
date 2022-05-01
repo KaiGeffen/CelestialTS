@@ -23,10 +23,6 @@ export default class ChoosePremade extends Menu {
 		panel.layout()
 	}
 
-	onClose(): void {
-		
-	}
-
 	private createSizer(scene: Phaser.Scene)  {
 		const width = 400 * 3 + Space.pad * 4
 		const height = 600 + Space.pad * 2
@@ -72,7 +68,11 @@ export default class ChoosePremade extends Menu {
 			600,
 			)
 
-		let avatar = new ButtonAvatarFull(container, 0, 0, name, name, callback)		
+		let that = this
+		let avatar = new ButtonAvatarFull(container, 0, 0, name, name, () => {
+			callback()
+			that.close()
+		})
 
 		return container
 	}
