@@ -4,6 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { Style, BBStyle, Color, Time, UserSettings, Space } from '../settings/settings'
 import Card from './card'
 import BaseScene from '../scene/baseScene'
+import { allCards } from '../catalog/catalog'
 
 
 export default class Hint {
@@ -39,8 +40,26 @@ export default class Hint {
 	showCard(card: Card): void {
 		this.show()
 
-		this.txt.setText(`[img=${card.name}]`)
-		.setFixedSize(Space.cardWidth + Space.padSmall*2, Space.cardHeight + Space.padSmall*2)
+		// Explain any keywords within the card
+		let hintText = card.getHintText()
+		if (hintText !== '') {
+			this.showText(hintText)
+
+			// NOTE This is a hack because of a bug where card image renders with a single line's height
+			this.txt.setText(`[img=${card.name}]\n\n\n\n\n\n\n\n\n\n\n${hintText}`)
+		}
+		else {
+			this.txt.setText(`[img=${card.name}]`)
+			.setFixedSize(Space.cardWidth + Space.pad, Space.cardHeight + Space.pad)
+		}
+
+		
+
+		// 
+		// let width = Math.max(bounds.width, Space.cardWidth + Space.padSmall*2)
+		// let height = bounds.height + Space.cardHeight
+
+		// this.txt.setFixedSize(width, height)
 	}
 
 	showText(s: string): void {

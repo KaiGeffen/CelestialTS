@@ -10,13 +10,14 @@ export var cardInfo: any // BBCodeText
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1).setAlpha(0)
 
+  // TODO Do this somewhere else
   // Add image render information
   allCards.forEach( (card) => {
     cardInfo.addImage(card.name, {
       key: card.name,
-      width: 50,
-      height: 50,
-      y: -17 // Bottom of card is on line with the text
+      width: Space.cardWidth,
+      height: Space.cardHeight,
+      // y: -17 // Bottom of card is on line with the text
     })
   })
 
