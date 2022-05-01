@@ -34,7 +34,8 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: fontFamily,
     fontSize: '24px',
     color: Color.cardCount,
-    fontStyle: "Bold",
+    stroke: '#0009',
+    strokeThickness: 3,
   },
   // Cost numbers in filter
   textButton: {

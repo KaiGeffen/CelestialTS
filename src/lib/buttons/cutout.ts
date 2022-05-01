@@ -61,9 +61,6 @@ export default class Cutout extends Button {
 
 		// Update the displayed text (TODO Temporary until the images show appropriate cards)
 		this.updateText()
-
-		// When hovered, show the given card
-		this.onHover
 	}
 
 	// Increment the count of this card
@@ -115,6 +112,7 @@ export default class Cutout extends Button {
 
 	private updateText(): Cutout {
 		this.setText(`             ${this.name} X${this.count}`)
+		// this.setText(`                                        X${this.count}`)
 
 		return this
 	}
