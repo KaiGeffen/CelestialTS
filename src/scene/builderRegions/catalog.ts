@@ -50,9 +50,9 @@ export default class CatalogRegion {
     let height = Space.windowHeight
 
     // Make the object
-    let width = Space.windowWidth - Space.deckPanelWidth
+    let width = Space.windowWidth - Space.decklistPanelWidth - Space.deckPanelWidth
     let superPanel = scene['rexUI'].add.scrollablePanel({
-      x: Space.deckPanelWidth + width/2,
+      x: Space.decklistPanelWidth + Space.deckPanelWidth + width/2,
       y: height/2,
       width: width,
       height: height,

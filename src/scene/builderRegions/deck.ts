@@ -44,7 +44,7 @@ export default class DeckRegion {
 		.setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: 0,
+			x: Space.decklistPanelWidth,
 			y: 0,
 			width: width,
 			height: Space.windowHeight,

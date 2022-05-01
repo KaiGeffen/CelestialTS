@@ -9,7 +9,7 @@ import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon';
 import { Color, Mechanics, Space, Style, UserSettings } from "../../settings/settings";
 
 
-const width = Space.deckPanelWidth
+const width = Space.decklistPanelWidth
 
 // Region of the deck builder which contains all the decklists
 export default class DecklistsRegion {  
@@ -18,8 +18,6 @@ export default class DecklistsRegion {
 
 	scrollablePanel
 	panel
-
-	deckPanel
 
 	// The index of the currently selected deck
 	savedDeckIndex: number
@@ -36,22 +34,6 @@ export default class DecklistsRegion {
 		this.container = new ContainerLite(scene).setDepth(10) // TODO No depth?
 
 		this.createScrollable()
-		return this
-
-		// // Create the main panel, and get the subpanel where lists go
-		// this.deckPanel = this.createDeckpanel()
-		// this.container.add(this.deckPanel)
-		// let panel = this.deckPanel.getElement('panel')
-
-		// Update panel when mousewheel scrolls
-		// TODO Should be a part of the above creation of deck panel
-		// this.updateOnScroll(panel)
-
-		// Add the main decklist panel
-		// this.createDecklistPanel()
-
-		// this.deckPanel.layout()
-
 		return this
 	}
 
@@ -76,7 +58,6 @@ export default class DecklistsRegion {
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
-				item: Space.pad,
 			},
 			}).setOrigin(0)
 
@@ -108,6 +89,9 @@ export default class DecklistsRegion {
 				}}).addBackground(
 				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFF00F)
 				)
+
+		this.updateOnScroll(this.panel)
+		
 		return this.panel
 	}
 
@@ -218,11 +202,11 @@ export default class DecklistsRegion {
 			}
 
 			// Scroll panel down by amount wheel moved
-			that.deckPanel.childOY -= dy
+			that.scrollablePanel.childOY -= dy
 
 			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-			that.deckPanel.t = Math.max(0, that.deckPanel.t)
-			that.deckPanel.t = Math.min(0.999999, that.deckPanel.t)
+			that.scrollablePanel.t = Math.max(0, that.scrollablePanel.t)
+			that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
 		})
 	}
 
@@ -233,7 +217,7 @@ export default class DecklistsRegion {
 
 		let name = deck === undefined ? '' : deck['name']
 
-		let container = new ContainerLite(this.scene, 0, 0, 200, 50)
+		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
 		let btn = new ButtonDecklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
 
 		// Highlight this deck, if it's selected
@@ -269,7 +253,7 @@ export default class DecklistsRegion {
 				that.scene.setDeck(UserSettings._get('decks')[i]['value'])
 
 				// Set the displayed avatar to this deck's avatar
-				that.setAvatar(UserSettings._get('decks')[i]['avatar'])
+				// that.setAvatar(UserSettings._get('decks')[i]['avatar'])
 			}
 		}
 	}
@@ -310,14 +294,14 @@ export default class DecklistsRegion {
 			// Create a new button
 			let newBtn = that.createDeckBtn(that.decklistBtns.length)
 			panel.add(newBtn)
-			that.deckPanel.layout()
+			that.scrollablePanel.layout()
 
 			// Select that deck
 			let index = that.decklistBtns.length - 1
 			that.decklistBtns[index].onClick()
 
 			// Scroll down to show the new deck
-			that.deckPanel.t = 1
+			that.scrollablePanel.t = 1
 		}
 
 		function openNewDeckMenuCallback() {
@@ -334,7 +318,7 @@ export default class DecklistsRegion {
 		}
 
 		// TODO Width and height constants
-		let container = new ContainerLite(this.scene, 0, 0, width, 50)
+		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
 
 		let btn = new ButtonNewDeck(container, 0, 0, 'New Deck', openNewDeckMenuCallback)
 
@@ -357,17 +341,17 @@ export default class DecklistsRegion {
 			that.createDecklistPanel()
 
 			// Format panel, then ensure we aren't below the panel
-			that.deckPanel.layout()
-			that.deckPanel.t = Math.min(1, that.deckPanel.t)
+			that.scrollablePanel.layout()
+			that.scrollablePanel.t = Math.min(1, that.scrollablePanel.t)
 		}
 	}
 
 
-	// Change the displayed avatar to the given avatar
-	private setAvatar(id: number) {
-		// TODO Require all decks to have an avatar
-		id = id === undefined ? 0 : id
+	// // Change the displayed avatar to the given avatar
+	// private setAvatar(id: number) {
+	// 	// TODO Require all decks to have an avatar
+	// 	id = id === undefined ? 0 : id
 
-		this.avatar.setTexture(`avatar-${avatarNames[id]}`)
-	}
+	// 	this.avatar.setTexture(`avatar-${avatarNames[id]}`)
+	// }
 }
