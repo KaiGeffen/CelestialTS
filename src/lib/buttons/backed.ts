@@ -132,16 +132,24 @@ export class AvatarSmall extends Button {
 		{
 			text: {
 				text: text,
-				interactive: false
+				interactive: false,
+				style: Style.avatar,
+				offset: 40
 			},
 			icon: {
 				name: `avatar-${name}`,
-				interactive: true
+				interactive: true,
 			},
 			callbacks: {
 				click: f
 			}
 		})
+
+		// console.log(this.txt.y)
+
+		// this.txt.setY(this.txt.y - 50)
+
+		// console.log(this.txt.y)
 	}
 }
 

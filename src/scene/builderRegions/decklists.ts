@@ -250,10 +250,12 @@ export default class DecklistsRegion {
 				that.savedDeckIndex = i
 				btn.select()
 
-				that.scene.setDeck(UserSettings._get('decks')[i]['value'])
+				let deck = UserSettings._get('decks')[i]
+
+				that.scene.setDeck(deck['value'])
 
 				// Set the displayed avatar to this deck's avatar
-				that.scene.setAvatar(UserSettings._get('decks')[i]['avatar'])
+				that.scene.setAvatar(deck['avatar'], deck['name'])
 			}
 		}
 	}

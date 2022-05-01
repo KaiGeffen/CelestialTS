@@ -103,7 +103,7 @@ export default class DeckRegion {
 
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
-		this.avatar = new AvatarSmall(containerAvatar, 0, 0, '\n\n\n\nDeck Name', 'Jules')
+		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Deck Name', 'Jules')
 		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
@@ -193,11 +193,17 @@ export default class DeckRegion {
 		}
 	}
 
-	setAvatar(id: number): void {
+	setAvatar(id: number, name?: string): void {
 		// TODO Require all decks to have an avatar
 		id = id === undefined ? 0 : id
 
+		// If the name is undefined, set it to the avatar name
+		if (name === undefined) {
+			name = `${avatarNames[id]} Premade`
+		}
+
 		this.avatar.setTexture(`avatar-${avatarNames[id]}`)
+		.setText(`${name}`)
 	}
 
 	// Get the deck code for player's current deck

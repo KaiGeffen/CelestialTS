@@ -15,6 +15,7 @@ interface Config {
 		text: string,
 		interactive: boolean,
 		style?: Phaser.Types.GameObjects.Text.TextStyle,
+		offset?: number,
 		hitArea?: any // TODO
 	},
 	icon?: {
@@ -35,6 +36,7 @@ const ConfigDefaults = {
 		interactive: false,
 		style: Style.basic,
 		hitArea: undefined,
+		offset: 0,
 	},
 	icon: {
 		name: '',
@@ -105,8 +107,10 @@ export default class Button {
 
 		// Create text if it exists
 		if (config.text !== undefined) {
+			let offset = config.text.offset === undefined ? 0 : config.text.offset
+
 			let style = config.text.style ? config.text.style : Style.button
-			this.txt = this.scene.add.text(x, y, config.text.text, style).setOrigin(0.5)
+			this.txt = this.scene.add.text(x, y + offset, config.text.text, style).setOrigin(0.5)
 
 			// Set interactive
 			if (config.text.interactive) {

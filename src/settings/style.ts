@@ -60,6 +60,15 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '48px',
     color: Color.button,
   },
+  // Text for the deck title at the bottom of the avatar
+  avatar: {
+    fontFamily: fontFamily,
+    fontSize: '24px',
+    color: Color.avatar,
+    stroke: '#0009',
+    strokeThickness: 3,
+    backgroundColor: '#0009',
+  },
 
 
   basic: {

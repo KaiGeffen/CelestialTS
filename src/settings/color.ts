@@ -79,6 +79,8 @@ export const Color: Record<string, any> = {
   progressBackground: CoreColors.secondary,
   progressFill: CoreColors.white,
 
+  avatar: CoreColors.goldenS,
+
 
 
   // Menu components
