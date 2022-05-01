@@ -1,12 +1,13 @@
 import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
-import { SymmetricButtonSmall, AvatarSmall } from '../../lib/buttons/backed'
+import { SymmetricButtonLarge, AvatarSmall } from '../../lib/buttons/backed'
 import Cutout from '../../lib/buttons/cutout'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Style, Color, Mechanics } from '../../settings/settings'
 import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
+import avatarNames from '../../lib/avatarNames';
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -19,10 +20,13 @@ export default class DeckRegion {
 	private scrollablePanel
 
 	// Button allowing user to Start, or showing the count of cards in their deck
-	private btnStart: SymmetricButtonSmall
+	private btnStart: SymmetricButtonLarge
 
 	// Deck of cards in user's current deck
 	private deck: Cutout[] = []
+
+	// The avatar button
+	private avatar: AvatarSmall
 
 	// Container containing all cards in the deck
 	private container: ContainerLite
@@ -99,12 +103,12 @@ export default class DeckRegion {
 
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
-		let avatar = new AvatarSmall(containerAvatar, 0, 0, '\n\n\n\nDeck Name', 'Jules')
+		this.avatar = new AvatarSmall(containerAvatar, 0, 0, '\n\n\n\nDeck Name', 'Jules')
 		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		let containerButton = new ContainerLite(this.scene, 0, 0, width, Space.largeButtonHeight)
-		this.btnStart = new SymmetricButtonSmall(containerButton, 0, 0, '0/15', startCallback)
+		this.btnStart = new SymmetricButtonLarge(containerButton, 0, 0, '0/15', startCallback)
 		sizer.add(containerButton)
 
 		return sizer
@@ -182,12 +186,18 @@ export default class DeckRegion {
 			// Add the new deck
 			for (let i = 0; i < deck.length; i++) {
 				let card = deck[i]
-				console.log(card)
 				this.addCardToDeck(card)
 			}
 
 			return true
 		}
+	}
+
+	setAvatar(id: number): void {
+		// TODO Require all decks to have an avatar
+		id = id === undefined ? 0 : id
+
+		this.avatar.setTexture(`avatar-${avatarNames[id]}`)
 	}
 
 	// Get the deck code for player's current deck

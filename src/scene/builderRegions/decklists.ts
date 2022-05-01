@@ -1,7 +1,6 @@
 import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import premadeDecklists from '../../catalog/premadeDecklists';
-import avatarNames from '../../lib/avatarNames';
 import { ButtonNewDeck } from '../../lib/buttons/backed';
 import Button from '../../lib/buttons/button';
 import { ButtonDecklist } from '../../lib/buttons/decklist';
@@ -91,7 +90,7 @@ export default class DecklistsRegion {
 				)
 
 		this.updateOnScroll(this.panel)
-		
+
 		return this.panel
 	}
 
@@ -171,7 +170,8 @@ export default class DecklistsRegion {
 				// Set the current deck to premade list
 				that.scene.setDeck(premadeDecklists[i])
 
-				// Load the approriate avatar TODO
+				// Load the approriate avatar
+				that.scene.setAvatar(i)
 			}
 		}
 	}
@@ -253,7 +253,7 @@ export default class DecklistsRegion {
 				that.scene.setDeck(UserSettings._get('decks')[i]['value'])
 
 				// Set the displayed avatar to this deck's avatar
-				// that.setAvatar(UserSettings._get('decks')[i]['avatar'])
+				that.scene.setAvatar(UserSettings._get('decks')[i]['avatar'])
 			}
 		}
 	}
@@ -345,13 +345,4 @@ export default class DecklistsRegion {
 			that.scrollablePanel.t = Math.min(1, that.scrollablePanel.t)
 		}
 	}
-
-
-	// // Change the displayed avatar to the given avatar
-	// private setAvatar(id: number) {
-	// 	// TODO Require all decks to have an avatar
-	// 	id = id === undefined ? 0 : id
-
-	// 	this.avatar.setTexture(`avatar-${avatarNames[id]}`)
-	// }
 }

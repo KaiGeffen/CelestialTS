@@ -259,6 +259,12 @@ export default class Button {
 		return this
 	}
 
+	setTexture(texture: string): Button {
+		this.icon.setTexture(texture)
+
+		return this
+	}
+
 	setDepth(value: number): Button {
 		if (this.txt !== undefined) {
 			this.txt.setDepth(value)
