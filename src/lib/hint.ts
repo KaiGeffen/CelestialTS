@@ -11,7 +11,7 @@ export default class Hint {
 
 	constructor(scene: BaseScene) {
 		this.txt = scene.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
-		.setOrigin(0.5)
+		.setOrigin(0, 1)
 		.setDepth(40)
 		.setVisible(false)
 		.setAlign('center')
@@ -20,6 +20,7 @@ export default class Hint {
 		let that = this
 		scene.input.on('pointermove', (pointer) => {
 			this.txt.copyPosition(pointer.position)
+			this.ensureOnScreen()
 		})
 	}
 
@@ -40,7 +41,6 @@ export default class Hint {
 
 		this.txt.setText(`[img=${card.name}]`)
 		.setFixedSize(Space.cardWidth + Space.padSmall*2, Space.cardHeight + Space.padSmall*2)
-		.setOrigin(0, 0.5)
 	}
 
 	showText(s: string): void {
@@ -50,9 +50,23 @@ export default class Hint {
 
 		this.txt.setText(s)
 		.setFixedSize(0, 0)
-		
-		// Center the text so it stays on screen
-		let ratio = this.txt.x / Space.windowWidth
-		this.txt.setOrigin(ratio, 1)
+	}
+
+	// Ensure that the hint is within the screen bounds, if possible
+	private ensureOnScreen(): void {
+		let txt = this.txt
+
+		let bounds = txt.getBounds()
+
+		// Default to going left and up from the cursor
+		// If the right side of txt is beyond right side of window, move left that much
+		if (txt.x + bounds.width > Space.windowWidth) {
+			txt.setX(Space.windowWidth - bounds.width)
+		}
+
+		// If above the top of the screen, lower by that amount
+		if (txt.y - bounds.height < 0) {
+			txt.setY(bounds.height)
+		}
 	}
 }

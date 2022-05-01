@@ -24,9 +24,6 @@ export default class Cutout extends Button {
 		f: () => void = function() {},
 		playSound: boolean = true)
 	{
-		// The base scene's hint text object
-		let hint: Hint = within.scene['hint']
-
 		super(within, x, y, 
 		{
 			text: {
@@ -49,6 +46,10 @@ export default class Cutout extends Button {
 				}
 			}
 		})
+
+		// The base scene's hint text object
+		let hint: Hint = within.scene['hint']
+
 
 		// Set variables
 		this.name = card.name
