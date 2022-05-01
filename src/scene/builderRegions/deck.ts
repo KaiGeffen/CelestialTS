@@ -31,7 +31,6 @@ export default class DeckRegion {
 		this.scene = scene
 
 		// Deck container
-		// NOTE Must set depth so that this is above the catalog, which blocks its cards so that they don't appear below the panel
 		this.container = new ContainerLite(scene)
 
 		// TODO Make everything in a panel

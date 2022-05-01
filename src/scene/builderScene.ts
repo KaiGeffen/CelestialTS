@@ -10,10 +10,10 @@ import FilterRegion from './builderRegions/filter'
 
 // Features common between all builders
 export class BuilderBase extends BaseScene {
-  decklistsRegion
-  filterRegion
   catalogRegion
   deckRegion
+  decklistsRegion
+  filterRegion
 
   // The params with which this class was invoked
   params
@@ -57,13 +57,13 @@ export class AdventureBuilderScene extends BuilderBase {
 
   create(params): void {
     super.create(params)
-
-    this.filterRegion = new FilterRegion().create(this, true)
+    
+    this.catalogRegion = new CatalogRegion().create(this)
 
     this.deckRegion = new DeckRegion().create(this, this.startCallback())
     this.deckRegion.addRequiredCards(params.deck)
-    
-    this.catalogRegion = new CatalogRegion().create(this)
+
+    this.filterRegion = new FilterRegion().create(this, true)
 
     // Must filter out cards that you don't have access to
     this.filter()
@@ -100,16 +100,16 @@ export class BuilderScene extends BuilderBase {
   create(params): void {
     super.create(params)
 
-    this.decklistsRegion = new DecklistsRegion().create(this)
-
-    this.filterRegion = new FilterRegion().create(this, false)
+    this.catalogRegion = new CatalogRegion().create(this)
 
     this.deckRegion = new DeckRegion().create(this, this.startCallback())
     if (this.lastDeck !== undefined) {
       this.deckRegion.setDeck(this.lastDeck)
     }
+
+    this.decklistsRegion = new DecklistsRegion().create(this)
     
-    this.catalogRegion = new CatalogRegion().create(this)
+    this.filterRegion = new FilterRegion().create(this, false)
 
     // Set starting deck
     if (this.lastDecklist !== undefined) {

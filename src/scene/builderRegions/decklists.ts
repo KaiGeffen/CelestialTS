@@ -16,6 +16,9 @@ export default class DecklistsRegion {
 	scene
 	container: ContainerLite
 
+	scrollablePanel
+	panel
+
 	deckPanel
 
 	// The index of the currently selected deck
@@ -30,25 +33,82 @@ export default class DecklistsRegion {
 	// Create the are where player can manipulate their decks
 	create(scene) {
 		this.scene = scene
-		this.container = new ContainerLite(scene).setDepth(10)
+		this.container = new ContainerLite(scene).setDepth(10) // TODO No depth?
 
-		// Create the main panel, and get the subpanel where lists go
-		this.deckPanel = this.createDeckpanel()
-		this.container.add(this.deckPanel)
-		let panel = this.deckPanel.getElement('panel')
+		this.createScrollable()
+		return this
+
+		// // Create the main panel, and get the subpanel where lists go
+		// this.deckPanel = this.createDeckpanel()
+		// this.container.add(this.deckPanel)
+		// let panel = this.deckPanel.getElement('panel')
 
 		// Update panel when mousewheel scrolls
 		// TODO Should be a part of the above creation of deck panel
-		this.updateOnScroll(panel)
+		// this.updateOnScroll(panel)
 
 		// Add the main decklist panel
-		this.createDecklistPanel()
+		// this.createDecklistPanel()
 
-		this.deckPanel.layout()
-
-		this.container.setVisible(false)
+		// this.deckPanel.layout()
 
 		return this
+	}
+
+	// Move lower TODO
+	private createScrollable() {
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
+		.setInteractive()
+
+		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
+			x: 0,
+			y: 0,
+			width: width,
+			height: Space.windowHeight,
+
+			background: background,
+
+			panel: {
+				child: this.createPanel()
+			},
+
+			header: this.createHeader(),
+
+			space: {
+				top: Space.filterBarHeight + Space.pad,
+				item: Space.pad,
+			},
+			}).setOrigin(0)
+
+		this.scrollablePanel.layout()
+
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			shadowColor: 0x000000,
+		})
+
+		// TODO This is populating the existing panel with necessary contents
+		this.createDecklistPanel()
+
+		this.scrollablePanel.layout()
+
+		return this.scrollablePanel
+	}
+
+	private createPanel(): any {
+
+		this.panel = this.scene.rexUI.add.fixWidthSizer({
+					width: width,
+					space: {
+					left: Space.pad,
+					right: Space.pad,
+					top: 10,
+					bottom: 10,
+					line: 10,
+				}}).addBackground(
+				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFF00F)
+				)
+		return this.panel
 	}
 
 	// Update the currently selected deck
@@ -74,75 +134,34 @@ export default class DecklistsRegion {
 	getSelectedDeckIndex(): number {
 		return this.savedDeckIndex
 	}
-
-	// Create and return the scrollable panel where premade decks go
-	private createDeckpanel() { // TODO Return type
-		let background = this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF).setInteractive()
-
-		let panel = this.scene.rexUI.add.scrollablePanel({
-			x: 0,
-			y: 0,
-			width: width,
-			height: Space.windowHeight - Space.cardHeight/2 - Space.pad ,
-
-			background: background,
-
-			panel: {// TODO Create panel method
-				child: this.scene.rexUI.add.fixWidthSizer({space: {
-					left: Space.pad,
-					right: Space.pad,
-					top: 10,
-					bottom: 10,
-					line: 10,
-				}}).addBackground(
-				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFFFFF)
-				)
-			},
-
-			header: this.createHeader(),
-			// footer: this.createFooter(),
-
-			space: {
-				right: 10,
-				// bottom: Space.pad,
-			}
-		}).setOrigin(0)
-
-		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-			distance: 3,
-			shadowColor: 0x000000,
-		})
-
-		return panel
-	}
-
+	
 	private createHeader(): Phaser.GameObjects.GameObject {
 		let sizer = this.scene.rexUI.add.fixWidthSizer({
 			space: {
+				top: Space.pad,
 				left: Space.pad,
 				right: Space.pad,
-				top: Space.filterBarHeight + Space.pad,
 				bottom: Space.pad,
 				line: Space.pad,
 			}
 		})
 
-		let callback = this.premadeCallback()
-		let btn = new IButtonPremade(this.scene, 0, 0,
+		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.largeButtonHeight)
+		let btn = new IButtonPremade(container, 0, 0,
 			() => {
 				// TODO Hand this to a class instead of calling ourselves
 				this.scene.scene.launch('MenuScene', {
 					menu: 'choosePremade',
-					callback: callback
+					callback: this.premadeCallback()
 				})
 			}
-			).setOrigin(0, 0.5)
-		sizer.add(btn.icon)
+			)
+		sizer.add(container)
 
 		let line = this.scene.add.line(0, 0, 0, 0, Space.iconSeparation + Space.pad, 0, Color.line)
 		sizer.add(line)
 
-		let hintSizer = this.scene['rexUI'].add.sizer({width: width})
+		let hintSizer = this.scene['rexUI'].add.sizer({width: width - Space.pad*2})
 		sizer.add(hintSizer)
 
 		let txtHint = this.scene.add.text(0, 0, 'My Decks:', Style.header)
@@ -152,26 +171,6 @@ export default class DecklistsRegion {
 		// Add a share button that allows user to copy/paste their deck code
 		new IButtonShare(hintSizer, 0, 0, this.shareCallback())
 
-		return sizer
-	}
-
-	private createFooter(): Phaser.GameObjects.GameObject {
-		let sizer = this.scene.rexUI.add.fixWidthSizer({
-			space: {
-				left: Space.pad,
-				right: Space.pad,
-				top: Space.pad,
-				bottom: Space.pad,
-				line: Space.pad,
-			}
-		})
-
-		let txtHint = this.scene.add.text(0, 0, 'Deck Avatar:', Style.header)
-		sizer.add(txtHint)
-
-		this.avatar = this.scene.add.image(0, 0, 'avatar-Jules')
-		sizer.add(this.avatar, {padding: {left: 35}}) // TODO
-		
 		return sizer
 	}
 
@@ -277,7 +276,7 @@ export default class DecklistsRegion {
 
 	// Create a button for each deck that user has created
 	private createDecklistPanel() {
-		let panel = this.deckPanel.getElement('panel')
+		let panel = this.scrollablePanel.getElement('panel')
 
 		// Remove any existing content in this panel
 		panel.removeAll(true)

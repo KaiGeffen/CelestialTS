@@ -64,7 +64,7 @@ export class IButtonSmallX extends Button {
 }
 
 export class IButtonPremade extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
 		f: () => void = function() {},
 		playSound: boolean = true)
