@@ -31,24 +31,24 @@ export default class DeckRegion {
 	// Container containing all cards in the deck
 	private container: ContainerLite
 
-	create(scene: Phaser.Scene, startCallback: () => void) {
+	create(scene: Phaser.Scene, startCallback: () => void, x: number) {
 		this.scene = scene
 
 		// Deck container
 		this.container = new ContainerLite(scene)
 
 		// TODO Make everything in a panel
-		this.createScrollable(startCallback)
+		this.createScrollable(startCallback, x)
 
 		return this
 	}
 
-	private createScrollable(startCallback: () => void) {
+	private createScrollable(startCallback: () => void, x: number) {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: Space.decklistPanelWidth,
+			x: x,
 			y: 0,
 			width: width,
 			height: Space.windowHeight,

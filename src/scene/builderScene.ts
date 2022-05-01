@@ -6,6 +6,7 @@ import CatalogRegion from './builderRegions/catalog'
 import DeckRegion from './builderRegions/deck'
 import DecklistsRegion from './builderRegions/decklists'
 import FilterRegion from './builderRegions/filter'
+import { Space } from '../settings/settings'
 
 
 // Features common between all builders
@@ -63,9 +64,9 @@ export class AdventureBuilderScene extends BuilderBase {
   create(params): void {
     super.create(params)
     
-    this.catalogRegion = new CatalogRegion().create(this)
+    this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback())
+    this.deckRegion = new DeckRegion().create(this, this.startCallback(), 0)
     this.deckRegion.addRequiredCards(params.deck)
 
     this.filterRegion = new FilterRegion().create(this, true)
@@ -105,9 +106,9 @@ export class BuilderScene extends BuilderBase {
   create(params): void {
     super.create(params)
 
-    this.catalogRegion = new CatalogRegion().create(this)
+    this.catalogRegion = new CatalogRegion().create(this, Space.decklistPanelWidth + Space.deckPanelWidth)
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback())
+    this.deckRegion = new DeckRegion().create(this, this.startCallback(), Space.decklistPanelWidth)
     if (this.lastDeck !== undefined) {
       this.deckRegion.setDeck(this.lastDeck)
     }
