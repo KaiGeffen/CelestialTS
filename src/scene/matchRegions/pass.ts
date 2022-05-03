@@ -12,6 +12,8 @@ import Region from './baseRegion';
 export default class PassRegion extends Region {
 	background: RoundRectangle
 	callback: () => void
+	// The callback once the winner has been declared
+	showResultsCallback: () => void
 
 	btnPass: Button
 
@@ -44,10 +46,11 @@ export default class PassRegion extends Region {
 			return
 		}
 
-		// Once the game is over, hide this region
+		// Once the game is over, change the callback to instead show results of match
 		if (state.winner !== null) {
-			this.container.setVisible(false)
-			return
+			this.btnPass.setOnClick(() => {	
+				this.showResultsCallback()
+			})
 		}
 
 		// Show this container when state is not in recap
@@ -76,7 +79,13 @@ export default class PassRegion extends Region {
 		}
 
 		// Enable/disable button based on who has priority
-		if (state.priority === 0) {
+		if (state.winner !== null) {
+			this.btnPass.enable()
+
+			// This displays the correct alternate text
+			this.btnPass.setText('EXIT')
+		}
+		else if (state.priority === 0) {
 			this.btnPass.enable()
 		}
 		else {
@@ -87,6 +96,10 @@ export default class PassRegion extends Region {
 	// Set the callback for when user hits the Pass button
 	setCallback(callback: () => void): void {
 		this.callback = callback
+	}
+
+	setShowResultsCallback(callback: () => void): void {
+		this.showResultsCallback = callback
 	}
 
 	private createBackground(): RoundRectangle {
