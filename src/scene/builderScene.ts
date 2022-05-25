@@ -56,6 +56,13 @@ export class BuilderBase extends BaseScene {
     return this
   }
 
+  // Set the deck's name to be the premade for given avatar
+  setPremadeName(id: number) {
+    this.deckRegion.setPremadeName(id)
+
+    return this
+  }
+
   // Get the deck code for player's current deck
   getDeckCode(): string {
     return this.deckRegion.getDeckCode()

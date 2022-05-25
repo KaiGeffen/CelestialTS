@@ -172,7 +172,7 @@ export default class DecklistsRegion {
 
 				// Load the approriate avatar
 				that.scene.setAvatar(i)
-				.setName(`${i}`)
+				.setPremadeName(i)
 			}
 		}
 	}
