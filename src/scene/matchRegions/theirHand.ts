@@ -118,7 +118,7 @@ export default class TheirHandRegion extends Region {
 
 	private createAvatar(): AvatarSmall {
 		// TODO Custom avatar
-		return new AvatarSmall(this.container, 6, 6, '', 'Jules').setOrigin(0)
+		return new AvatarSmall(this.container, 6, 6, 'Jules').setOrigin(0)
 	}
 
 	private createStatusDisplay(): void {

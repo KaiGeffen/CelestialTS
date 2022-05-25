@@ -27,6 +27,7 @@ export default class DeckRegion {
 
 	// The avatar button
 	private avatar: AvatarSmall
+	private txtDeckName: Phaser.GameObjects.Text
 
 	// Container containing all cards in the deck
 	private container: ContainerLite
@@ -60,9 +61,11 @@ export default class DeckRegion {
 			},
 
 			header: this.createHeader(startCallback),
+			footer: this.createFooter(startCallback),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
+				bottom: Space.pad,
 				item: Space.pad,
 			},
 
@@ -103,8 +106,22 @@ export default class DeckRegion {
 
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
-		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Deck Name', 'Jules')
+		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Jules')
 		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
+
+		// Add the deck's name
+		this.txtDeckName = this.scene.add.text(0, 0, 'Deck name', Style.announcement).setOrigin(0.5)
+		let container = new ContainerLite(this.scene, 0, 0, width, this.txtDeckName.height)
+		container.add(this.txtDeckName)
+		sizer.add(container)
+
+		return sizer
+	}
+
+	private createFooter(startCallback: () => void): Phaser.GameObjects.GameObject {
+		let sizer = this.scene['rexUI'].add.fixWidthSizer({
+			Space: {left: Space.pad, right: Space.pad}
+		})
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		let containerButton = new ContainerLite(this.scene, 0, 0, width, Space.largeButtonHeight)
@@ -203,7 +220,9 @@ export default class DeckRegion {
 		}
 
 		this.avatar.setTexture(`avatar-${avatarNames[id]}`)
-		.setText(`${name}`)
+
+		// TODO Rename method if also setting the name
+		this.txtDeckName.setText(name)
 	}
 
 	// Get the deck code for player's current deck

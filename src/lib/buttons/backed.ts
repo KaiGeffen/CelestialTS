@@ -124,18 +124,17 @@ export class ButtonNewDeck extends Button {
 export class AvatarSmall extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		text: string,
 		name: string,
 		f: () => void = function() {})
 	{
 		super(within, x, y, 
 		{
-			text: {
-				text: text,
-				interactive: false,
-				style: Style.avatar,
-				offset: 40
-			},
+			// text: {
+			// 	text: text,
+			// 	interactive: false,
+			// 	style: Style.avatar,
+			// 	offset: 40
+			// },
 			icon: {
 				name: `avatar-${name}`,
 				interactive: true,
