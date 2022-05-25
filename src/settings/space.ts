@@ -19,6 +19,7 @@ export const Space = {
   windowWidth: width,
   windowHeight: height,
   cardSize: 100,
+  padSmall: 10,
   pad: 20,
   rowsPerPage: 4,
   cardsPerPage: 8 * 4,
@@ -43,9 +44,12 @@ export const Space = {
   handHeight: 160,
   // Standard corner width for rounded rectangles
   corner: 10,
-  maxTextWidth: 800,
+  maxTextWidth: 400,
 
   filterBarHeight: 70,
+
+  decklistPanelWidth: 240,
+  deckPanelWidth: 320,
 
   // Dimensions for common buttons
   smallButtonWidth: 100,

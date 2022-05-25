@@ -59,6 +59,14 @@ export default class Card {
     this.story = (data.story === undefined) ? '' : data.story
   }
 
+  getHintText(): string {
+    let fullText = this.explainKeywords(this.text)
+
+    let hintText = fullText.slice(`${this.text}\n\n`.length)
+
+    return hintText
+  }
+
   // Get the text for this card, including formatting
   getCardText(): string {
     if (this === cardback) {

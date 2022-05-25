@@ -35,7 +35,8 @@ const CoreColors: Record<string, any> = {
 
 
   // Golden icon, for trophy
-  icon: 0xFFAB2E,
+  golden: 0xFFAB2E,
+  goldenS: '#FFAB2E',
 
   // Breath icon, and things relating to breath
   breath: '#5F99DC',
@@ -64,6 +65,8 @@ export const Color: Record<string, any> = {
   sliderIndicator: 0x5F5555,
   sliderThumb: 0x9F9999,
 
+  cardCount: CoreColors.goldenS,
+
   // Colors for the cost and the background for it
   cardText: 0xFABD5D,
   cardTextBackground: CoreColors.black,
@@ -71,9 +74,8 @@ export const Color: Record<string, any> = {
   cardCostReduced: CoreColors.breath,
 
 
-
   // Outline plugin color
-  outline: CoreColors.icon,
+  outline: CoreColors.golden,
 
   // Lines used throughout ui
   line: 0xeeeeee,
@@ -85,6 +87,8 @@ export const Color: Record<string, any> = {
   // Fill color of progress bar in loading screen
   progressBackground: CoreColors.secondary,
   progressFill: CoreColors.white,
+
+  avatar: CoreColors.goldenS,
 
 
 

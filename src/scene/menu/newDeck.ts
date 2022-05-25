@@ -10,15 +10,24 @@ import Menu from './menu';
 const width = 430
 const inputTextWidth = 200
 
-export default class NewDeckMenu extends Menu {
+class AlterDeckMenu extends Menu {
 	// The user inputted name for the deck
-	name = ''
+	name: string
 
 	// The user selected avatar number
 	selectedAvatar: number
 
-	constructor(scene: Phaser.Scene, params) {
+	// The names for different elements, which differ in different menus
+	titleString: string
+	confirmString: string
+
+	constructor(scene: Phaser.Scene, params, titleString, confirmString, deckName = '') {
 		super(scene)
+
+		this.name = params.deckName
+		this.selectedAvatar = params.selectedAvatar
+		this.titleString = titleString
+		this.confirmString = confirmString
 
 		// Make a fixed height sizer
 		let panel = this.createSizer(scene)
@@ -26,10 +35,6 @@ export default class NewDeckMenu extends Menu {
 		this.createContent(scene, panel, params.callback)
 
 		panel.layout()
-	}
-
-	onClose(): void {
-		
 	}
 
 	private createSizer(scene: Phaser.Scene)  {
@@ -72,7 +77,7 @@ export default class NewDeckMenu extends Menu {
 	private createTitle(scene: Phaser.Scene) {
 		let sizer = scene['rexUI'].add.sizer({width: width})
 
-		let txt = scene.add.text(0, 0, 'New Deck', Style.announcement)
+		let txt = scene.add.text(0, 0, this.titleString, Style.announcement)
 		sizer.addSpace()
 		.add(txt)
 		.addSpace()
@@ -84,16 +89,13 @@ export default class NewDeckMenu extends Menu {
 		let that = this
 
 		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		// let txtHint = scene.add.text(0, 0, 'Name:', Style.basic)
-		// sizer.add(txtHint)
-		
 		sizer.addSpace()
 
-		let inputText = scene.add['rexInputText'](
+		let inputText = scene.add['rexInputText']
+		(
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
-				text: '',
+				text: that.name,
 				placeholder: 'Deck Name',
 				tooltip: 'Name for the new deck.',
 				fontFamily: 'Mulish',
@@ -103,99 +105,111 @@ export default class NewDeckMenu extends Menu {
 				maxLength: 10,
 				selectAll: true,
 				id: 'search-field'
-			}).on('textchange', function(inputText) {
-				that.name = inputText.text
-			})
+			}
+		).on('textchange', function(inputText) {
+			that.name = inputText.text
+		})
 
+		sizer.add(inputText)
+		.addSpace()
 
-			sizer.add(inputText)
-			.addSpace()
+		return sizer
+	}
 
-			return sizer
-		}
+	private createAvatar(scene: Phaser.Scene) {
+		let that = this
 
-		private createAvatar(scene: Phaser.Scene) {
-			let that = this
+		let fixSizer = scene['rexUI'].add.fixWidthSizer({
+			width: width,
+			space: { line: Space.pad },
+		})
 
-			let fixSizer = scene['rexUI'].add.fixWidthSizer({
-				width: width,
-				space: { line: Space.pad },
-			})
+		let txtHint = scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
+		fixSizer.add(txtHint)
 
-			let txtHint = scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
-			fixSizer.add(txtHint)
-
-			let sizer
-			let avatars = []
-			for (let i = 0; i < 6; i++) {
-				if (i % 3 === 0) {
-					sizer = scene['rexUI'].add.sizer({
-						space: {item: Space.pad}
-					})
-
-					fixSizer.add(sizer)
-					.addNewLine()
-				}
-
-				let name = avatarNames[i]
-				let avatar = new ButtonAvatarSmall(sizer, 0, 0, name, () => {
-					// Deselect all avatars, then select this one, remember which is selected
-					avatars.forEach(a => a.deselect())
-					avatar.select()
-
-					that.selectedAvatar = i
+		let sizer
+		let avatars = []
+		for (let i = 0; i < 6; i++) {
+			if (i % 3 === 0) {
+				sizer = scene['rexUI'].add.sizer({
+					space: {item: Space.pad}
 				})
-				avatars.push(avatar)
 
-				// Select the first avatar, as a default
-				if (i === 0) {
-					avatar.select()
-				}
+				fixSizer.add(sizer)
+				.addNewLine()
 			}
 
-			return fixSizer
-		}
+			let name = avatarNames[i]
+			let avatar = new ButtonAvatarSmall(sizer, 0, 0, name, () => {
+				// Deselect all avatars, then select this one, remember which is selected
+				avatars.forEach(a => a.deselect())
+				avatar.select()
 
-
-		// Create the buttons at the bottom which navigate to other scenes/menus
-		private createButtons(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
-			let sizer = scene['rexUI'].add.sizer({
-				width: width,
-				space: {
-					item: Space.pad
-				}
+				that.selectedAvatar = i
 			})
+			avatars.push(avatar)
 
-			sizer
-			.add(this.createCancel(scene))
-			.addSpace()
-			.add(this.createCreate(scene, createCallback))
-
-			return sizer
+			// Select the right avatar
+			if (i === this.selectedAvatar) {
+				avatar.select()
+			}
 		}
 
-		private createCancel(scene: Phaser.Scene) {
-			let container = new ContainerLite(scene, 0, 0, 100, 50)
-
-			new SymmetricButtonSmall(container, 0, 0, 'Cancel', () => {
-				scene.scene.stop()
-			})
-
-			return container
-		}
-
-		private createCreate(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
-			let that = this
-
-			let container = new ContainerLite(scene, 0, 0, 100, 50)
-
-			new SymmetricButtonSmall(container, 0, 0, 'Create', () => {
-				createCallback(that.name, that.selectedAvatar)
-
-				// Close this scene
-				scene.scene.stop()
-			})
-
-			return container
-		}
+		return fixSizer
 	}
+
+
+	// Create the buttons at the bottom which navigate to other scenes/menus
+	private createButtons(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
+		let sizer = scene['rexUI'].add.sizer({
+			width: width,
+			space: {
+				item: Space.pad
+			}
+		})
+
+		sizer
+		.add(this.createCancel(scene))
+		.addSpace()
+		.add(this.createOK(scene, createCallback))
+
+		return sizer
+	}
+
+	private createCancel(scene: Phaser.Scene) {
+		let container = new ContainerLite(scene, 0, 0, 100, 50)
+
+		new SymmetricButtonSmall(container, 0, 0, 'Cancel', () => {
+			scene.scene.stop()
+		})
+
+		return container
+	}
+
+	private createOK(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
+		let that = this
+
+		let container = new ContainerLite(scene, 0, 0, 100, 50)
+
+		new SymmetricButtonSmall(container, 0, 0, this.confirmString, () => {
+			createCallback(that.name, that.selectedAvatar)
+
+			// Close this scene
+			scene.scene.stop()
+		})
+
+		return container
+	}
+}
+
+export class NewDeckMenu extends AlterDeckMenu {
+	constructor(scene: Phaser.Scene, params) {
+		super(scene, params, 'New Deck', 'Create')
+	}
+}
+
+export class EditDeckMenu extends AlterDeckMenu {
+	constructor(scene: Phaser.Scene, params) {
+		super(scene, params, 'Update Deck', 'Update')
+	}
+}

@@ -1,7 +1,14 @@
 import "phaser"
 
 export default class Menu {
-	constructor(scene: Phaser.Scene) {}
+	scene: Phaser.Scene
+	constructor(scene: Phaser.Scene) {
+		this.scene = scene
+	}
+
+	close() {
+		this.scene.scene.stop()
+	}
 }
 
 
@@ -9,7 +16,8 @@ import OptionsMenu from "./optionsMenu"
 import ChoosePremade from "./choosePremade"
 import CreditsMenu from "./credits"
 import RulebookMenu from "./rulebook"
-import NewDeckMenu from "./newDeck"
+// TODO Rename since it includes both
+import { NewDeckMenu, EditDeckMenu } from "./newDeck"
 import ShareDeckMenu from "./shareDeck"
 import ModeMenu from "./mode"
 
@@ -22,6 +30,7 @@ const menus = {
 	'newDeck': NewDeckMenu,
 	'shareDeck': ShareDeckMenu,
 	'mode': ModeMenu,
+	'editDeck': EditDeckMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 

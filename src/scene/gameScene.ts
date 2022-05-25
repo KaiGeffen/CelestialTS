@@ -5,7 +5,7 @@ import Card from "../lib/card"
 import { Network, versionNumber } from "../net"
 import ClientState from "../lib/clientState"
 import BaseScene from "./baseScene"
-import { CardImage, addCardInfoToScene, cardInfo, refreshCardInfo } from "../lib/cardImage"
+import { CardImage } from "../lib/cardImage"
 import { StatusBar } from "../lib/status"
 import { SymmetricButtonLarge } from '../lib/buttons/backed'
 
@@ -63,13 +63,6 @@ class GameScene extends BaseScene {
 		this.view = new View(this)
 
 		this.setCallbacks(this.view, this.net)
-	}
-
-	create(): void {
-		// TODO Fix create / precreate, bad smell
-		super.precreate()
-		
-		super.create()
 	}
 
 	beforeExit() {
@@ -161,6 +154,9 @@ class GameScene extends BaseScene {
 		// Pass button
 		view.pass.setCallback(() => {
 			net.playCard(10)
+		})
+		view.pass.setShowResultsCallback(() => {
+			that.view.results.show()
 		})
 
 		// Piles (Show overlay when clicked)
@@ -350,9 +346,6 @@ class View {
 	// Region shown when the game has been won / lost
 	results: Region
 
-	// Button to show the results, once the game is over
-	btnResults: SymmetricButtonLarge
-
 	constructor (scene: BaseScene) {
 		this.scene = scene
 
@@ -388,17 +381,6 @@ class View {
 		// Results are visible after the game is over
 		this.results = new Regions.Results().create(scene)
 		this.results.hide()
-
-		// Create a button to show the results once the game is over
-		this.btnResults = new SymmetricButtonLarge(scene,
-			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
-			Space.windowHeight/2,
-			'Show Results',
-			() => {
-				this.results.show()
-			})
-		.setVisible(false)
-
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
@@ -424,10 +406,6 @@ class View {
 		this.theirDiscardOverlay.displayState(state, isRecap)
 
 		this.results.displayState(state, isRecap)
-		// TODO Make the results button a region or part of a region
-		if (state.winner !== null) {
-			this.btnResults.setVisible(true)
-		}
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {

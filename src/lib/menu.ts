@@ -16,8 +16,6 @@ export default class Menu {
 		let esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		esc.on('down', function() {
 			if (this.container.visible) {
-				BaseScene.menuClosing = true
-
 				this.close()
 			}
 		}, this)

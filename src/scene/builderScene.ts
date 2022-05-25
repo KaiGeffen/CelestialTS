@@ -6,14 +6,15 @@ import CatalogRegion from './builderRegions/catalog'
 import DeckRegion from './builderRegions/deck'
 import DecklistsRegion from './builderRegions/decklists'
 import FilterRegion from './builderRegions/filter'
+import { Space } from '../settings/settings'
 
 
 // Features common between all builders
 export class BuilderBase extends BaseScene {
-  decklistsRegion
-  filterRegion
   catalogRegion
   deckRegion
+  decklistsRegion
+  filterRegion
 
   // The params with which this class was invoked
   params
@@ -25,9 +26,7 @@ export class BuilderBase extends BaseScene {
   }
 
   addCardToDeck(card: Card): boolean {
-    let cardImage = this.deckRegion.addCardToDeck(card)
-
-    return cardImage !== undefined
+    return this.deckRegion.addCardToDeck(card)
   }
 
   // Filter which cards are visible and selectable in the catalog
@@ -41,6 +40,27 @@ export class BuilderBase extends BaseScene {
   // Set the current deck, returns true if deck was valid
   setDeck(deckCode: string | Card[]): boolean {
     return this.deckRegion.setDeck(deckCode)
+  }
+
+  // Change the displayed avatar to the given avatar
+  setAvatar(id: number) {
+    this.deckRegion.setAvatar(id)
+
+    return this
+  }
+
+  // Set the displayed deck name to the given name
+  setName(name: string) {
+    this.deckRegion.setName(name)
+
+    return this
+  }
+
+  // Set the deck's name to be the premade for given avatar
+  setPremadeName(id: number) {
+    this.deckRegion.setPremadeName(id)
+
+    return this
   }
 
   // Get the deck code for player's current deck
@@ -59,13 +79,13 @@ export class AdventureBuilderScene extends BuilderBase {
 
   create(params): void {
     super.create(params)
+    
+    this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
+
+    this.deckRegion = new DeckRegion().create(this, 0, this.startCallback())
+    this.deckRegion.addRequiredCards(params.deck)
 
     this.filterRegion = new FilterRegion().create(this, true)
-
-    this.deckRegion = new DeckRegion().create(this, this.startCallback())
-    this.deckRegion.addRequiredCards(params.deck)
-    
-    this.catalogRegion = new CatalogRegion().create(this)
 
     // Must filter out cards that you don't have access to
     this.filter()
@@ -102,16 +122,16 @@ export class BuilderScene extends BuilderBase {
   create(params): void {
     super.create(params)
 
-    this.decklistsRegion = new DecklistsRegion().create(this)
+    this.catalogRegion = new CatalogRegion().create(this, Space.decklistPanelWidth + Space.deckPanelWidth)
 
-    this.filterRegion = new FilterRegion().create(this, false)
-
-    this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.decklistsRegion.width)
+    this.deckRegion = new DeckRegion().create(this, Space.decklistPanelWidth, this.startCallback(), this.updateDeckCallback())
     if (this.lastDeck !== undefined) {
       this.deckRegion.setDeck(this.lastDeck)
     }
+
+    this.decklistsRegion = new DecklistsRegion().create(this)
     
-    this.catalogRegion = new CatalogRegion().create(this, this.decklistsRegion.width)
+    this.filterRegion = new FilterRegion().create(this, false)
 
     // Set starting deck
     if (this.lastDecklist !== undefined) {
@@ -122,8 +142,16 @@ export class BuilderScene extends BuilderBase {
     }
   }
 
-  updateSavedDeck(deck: string): void {
-    this.decklistsRegion.updateSavedDeck(deck)
+  addCardToDeck(card: Card): boolean {
+    let result = this.deckRegion.addCardToDeck(card)
+
+    this.updateSavedDeck(this.getDeckCode())
+
+    return result
+  }
+
+  updateSavedDeck(deck?: string, name?: string, avatar?: number): void {
+    this.decklistsRegion.updateSavedDeck(deck, name, avatar)
   }
 
   beforeExit(): void {
@@ -150,6 +178,23 @@ export class BuilderScene extends BuilderBase {
         activeScene: that,
         deck: that.getDeckCode(),
       })
+    }
+  }
+
+  // Update the avatar or name for the current deck
+  private updateDeckCallback(): (name: string, avatar: number) => void {
+    let that = this
+
+    return function(name: string, avatar: number) {
+      console.log(name)
+      // TODO Update the settings
+      that.updateSavedDeck(undefined, name, avatar)
+
+      // Update the avatar
+      that.setAvatar(avatar)
+
+      // Update the name
+      that.setName(name)
     }
   }
 }

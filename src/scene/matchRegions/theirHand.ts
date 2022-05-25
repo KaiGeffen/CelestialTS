@@ -22,7 +22,6 @@ export default class TheirHandRegion extends Region {
 
 	btnInspire: ButtonInspire
 	btnNourish: ButtonNourish
-	txtStatusExplanation: Phaser.GameObjects.Text
 
 	// Avatar image
 	avatar: AvatarSmall
@@ -119,7 +118,10 @@ export default class TheirHandRegion extends Region {
 
 	private createAvatar(): AvatarSmall {
 		// TODO Custom avatar
-		return new AvatarSmall(this.container, 6, 6, '', 'Jules').setOrigin(0)
+		let btn = new AvatarSmall(this.container, 6, 6, 'Jules')
+		btn.setOrigin(0)
+
+		return btn
 	}
 
 	private createStatusDisplay(): void {
@@ -139,9 +141,6 @@ export default class TheirHandRegion extends Region {
 		.setOrigin(0)
 		.setVisible(false)
 		this.btnNourish.setOnHover(...this.onHoverStatus('Nourish', this.btnNourish))
-
-		this.txtStatusExplanation = this.scene.add.text(Space.cardWidth, Space.handHeight, '', Style.basic)
-		.setOrigin(0)
 	}
 
 	private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
@@ -157,11 +156,12 @@ export default class TheirHandRegion extends Region {
 			s = s.split(/\bX\b/).join(btn.getText())
 			s = s.replace('you', 'they')
 			
-			that.txtStatusExplanation.setText(s)
+			// Hint shows status text
+			that.scene.hint.showText(s)
 		}
 
 		let onExit = () => {
-			that.txtStatusExplanation.setText('')
+			that.scene.hint.hide()
 		}
 
 		return [onHover, onExit]

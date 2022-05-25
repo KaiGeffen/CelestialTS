@@ -30,7 +30,6 @@ export default class OurHandRegion extends Region {
 
 	btnInspire: ButtonInspire
 	btnNourish: ButtonNourish
-	txtStatusExplanation: Phaser.GameObjects.Text
 
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
@@ -166,7 +165,10 @@ export default class OurHandRegion extends Region {
 
 	private createAvatar(): AvatarSmall {
 		// TODO Custom avatar
-		return new AvatarSmall(this.container, 6, 6, '', 'Jules').setOrigin(0)
+		let btn = new AvatarSmall(this.container, 6, 6, 'Jules')
+		btn.setOrigin(0)
+		
+		return btn
 	}
 
 	private createStatusDisplay(): void {
@@ -186,9 +188,6 @@ export default class OurHandRegion extends Region {
 		.setOrigin(0)
 		.setVisible(false)
 		this.btnNourish.setOnHover(...this.onHoverStatus('Nourish', this.btnNourish))
-
-		this.txtStatusExplanation = this.scene.add.text(Space.cardWidth, this.container.y, '', Style.basic)
-		.setOrigin(0, 1)
 	}
 
 	private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
@@ -202,12 +201,13 @@ export default class OurHandRegion extends Region {
 
 			// Get the value from the given status button
 			s = s.split(/\bX\b/).join(btn.getText())
-			
-			that.txtStatusExplanation.setText(s)
+
+			// Hint shows status text
+			that.scene.hint.showText(s)
 		}
 
 		let onExit = () => {
-			that.txtStatusExplanation.setText('')
+			that.scene.hint.hide()
 		}
 
 		return [onHover, onExit]

@@ -29,6 +29,14 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     color: Color.basicText,
     fontStyle: "Bold",
   },
+  // Count of a card in the deck
+  cardCount: {
+    fontFamily: fontFamily,
+    fontSize: '24px',
+    color: Color.cardCount,
+    stroke: '#0009',
+    strokeThickness: 3,
+  },
   // Cost numbers in filter
   textButton: {
     fontFamily: fontFamily,
@@ -52,6 +60,15 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: fontFamily,
     fontSize: '48px',
     color: Color.button,
+  },
+  // Text for the deck title at the bottom of the avatar
+  avatar: {
+    fontFamily: fontFamily,
+    fontSize: '24px',
+    color: Color.avatar,
+    stroke: '#0009',
+    strokeThickness: 3,
+    backgroundColor: '#0009',
   },
 
 
@@ -178,6 +195,33 @@ export const BBStyle: Record<string, any> = {
       // right: 5,
       top: -5,
       bottom: -5
+    }
+  },
+  basic: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size,
+    color: Color.basicText,
+    wordWrap: { width: Space.maxTextWidth }
+  },
+  // Hint text shown when something onscreen is hovered
+  hint: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size,
+    color: Color.basicText,
+    backgroundColor: Color.cardTextBackground,
+    backgroundStrokeColor: "#0005",
+    backgroundStrokeLineWidth: 2,
+    backgroundCornerRadius: 5,
+    wrap: {
+      mode: 'word',
+      width: Space.maxTextWidth
+    },
+    // strokeThickness: 3,
+    padding: {
+      left: Space.padSmall,
+      right: Space.padSmall,
+      top: Space.padSmall,
+      bottom: Space.padSmall
     }
   },
   // Error text that appears in the center of the screen

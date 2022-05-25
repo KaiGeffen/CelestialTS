@@ -5,19 +5,19 @@ import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
 
-
 export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
   cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1).setAlpha(0)
 
+  // TODO Do this somewhere else
   // Add image render information
   allCards.forEach( (card) => {
     cardInfo.addImage(card.name, {
       key: card.name,
-      width: 50,
-      height: 50,
-      y: -17 // Bottom of card is on line with the text
+      width: Space.cardWidth,
+      height: Space.cardHeight,
+      // y: -17 // Bottom of card is on line with the text
     })
   })
 
@@ -130,6 +130,9 @@ export class CardImage {
       // If the mouse moves outside of the game, exit the hover also
       this.scene.input.on('gameout', this.onHoverExit(), this)
     }
+
+    // Hint any keywords that are in the card
+    this.hintKeywords()
   }
 
   destroy(): void {
@@ -282,6 +285,21 @@ export class CardImage {
   setRequired(): void {
     this.image.setTint(Color.cardUnplayable)
     this.required = true
+  }
+
+  private hintKeywords(): void {
+    let that = this
+
+    // TODO Care about locations
+    let hint = that.image.scene['hint']
+    this.setOnHover(
+      () => {
+        hint.showText(that.card.getHintText())
+      },
+      () => {
+        hint.hide()
+      }
+      )
   }
 
   private onHover(): () => void {

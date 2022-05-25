@@ -26,8 +26,6 @@ class CatalogScene extends BaseScene {
 	}
 
 	create(): void {
-		super.precreate()
-    
 		// Instructional text
 		let txt = "Below are just a few of the cards that you can use in Celestial.\nClick on them to see explanations and advice.\nClick 'Next' to move on to the deck-builder."
 		this.add.text(Space.pad, Space.pad, txt, Style.basic)
