@@ -121,6 +121,8 @@ export class ButtonNewDeck extends Button {
 	}
 }
 
+// TODO Move to another file
+import avatarNames from '../../lib/avatarNames';
 export class AvatarSmall extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -129,12 +131,6 @@ export class AvatarSmall extends Button {
 	{
 		super(within, x, y, 
 		{
-			// text: {
-			// 	text: text,
-			// 	interactive: false,
-			// 	style: Style.avatar,
-			// 	offset: 40
-			// },
 			icon: {
 				name: `avatar-${name}`,
 				interactive: true,
@@ -143,6 +139,13 @@ export class AvatarSmall extends Button {
 				click: f
 			}
 		})
+	}
+
+	setAvatarNumber(num: number): AvatarSmall {
+		let name = avatarNames[num]
+		this.setTexture(`avatar-${name}`)
+
+		return this
 	}
 }
 

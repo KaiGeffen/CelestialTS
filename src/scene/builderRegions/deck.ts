@@ -106,7 +106,7 @@ export default class DeckRegion {
 
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
-		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Jules')
+		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Jules', this.onClickAvatar())
 		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Add the deck's name
@@ -350,6 +350,27 @@ export default class DeckRegion {
 		// Default insertion is at the end, if it's not before any existing element
 		this.panel.insert(this.deck.length, child)
 		return this.deck.length
+	}
+
+	private onClickAvatar(): () => void {
+		let that = this
+
+		let editCallback = function(name: string, avatar: number) {
+			// TODO Update the settings
+
+			// Update the avatar
+			that.avatar.setAvatarNumber(avatar)
+
+			// Update the name
+			that.txtDeckName.setText(name)
+		}
+
+		return function() {
+			that.scene.scene.launch('MenuScene', {
+					menu: 'editDeck',
+					callback: editCallback,
+				})
+		}
 	}
 
 

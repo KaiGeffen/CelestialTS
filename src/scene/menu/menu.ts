@@ -29,6 +29,7 @@ const menus = {
 	'newDeck': NewDeckMenu,
 	'shareDeck': ShareDeckMenu,
 	'mode': ModeMenu,
+	'editDeck': NewDeckMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 
