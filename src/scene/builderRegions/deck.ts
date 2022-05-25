@@ -26,6 +26,7 @@ export default class DeckRegion {
 	private deck: Cutout[] = []
 
 	// The avatar button
+	private avatarNumber: number
 	private avatar: AvatarSmall
 	private txtDeckName: Phaser.GameObjects.Text
 
@@ -219,7 +220,9 @@ export default class DeckRegion {
 			name = `${avatarNames[id]} Premade`
 		}
 
-		this.avatar.setTexture(`avatar-${avatarNames[id]}`)
+		this.avatarNumber = id
+
+		this.avatar.setAvatarNumber(id)
 
 		// TODO Rename method if also setting the name
 		this.txtDeckName.setText(name)
@@ -369,6 +372,8 @@ export default class DeckRegion {
 			that.scene.scene.launch('MenuScene', {
 					menu: 'editDeck',
 					callback: editCallback,
+					deckName: that.txtDeckName.text,
+					selectedAvatar: that.avatarNumber,
 				})
 		}
 	}
