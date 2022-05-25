@@ -15,6 +15,9 @@ const width = Space.deckPanelWidth// + Space.pad * 2
 export default class DeckRegion {
 	private scene: Phaser.Scene
 
+	// Callback for when the deck's avatar or name is edited
+	editCallback: (name: string, avatar: number) => void
+
 	// The panel within which all of the cards are
 	private panel
 	private scrollablePanel
@@ -33,8 +36,14 @@ export default class DeckRegion {
 	// Container containing all cards in the deck
 	private container: ContainerLite
 
-	create(scene: Phaser.Scene, startCallback: () => void, x: number) {
+	create(scene: Phaser.Scene,
+		x: number,
+		startCallback: () => void,
+		editCallback?: (name: string, avatar: number) => void
+		) {
 		this.scene = scene
+
+		this.editCallback = editCallback
 
 		// Deck container
 		this.container = new ContainerLite(scene)
@@ -365,20 +374,10 @@ export default class DeckRegion {
 	private onClickAvatar(): () => void {
 		let that = this
 
-		let editCallback = function(name: string, avatar: number) {
-			// TODO Update the settings
-
-			// Update the avatar
-			that.avatar.setAvatarNumber(avatar)
-
-			// Update the name
-			that.txtDeckName.setText(name)
-		}
-
 		return function() {
 			that.scene.scene.launch('MenuScene', {
 					menu: 'editDeck',
-					callback: editCallback,
+					callback: that.editCallback,
 					deckName: that.txtDeckName.text,
 					selectedAvatar: that.avatarNumber,
 				})

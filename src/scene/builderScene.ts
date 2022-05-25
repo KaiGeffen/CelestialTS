@@ -82,7 +82,7 @@ export class AdventureBuilderScene extends BuilderBase {
     
     this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback(), 0)
+    this.deckRegion = new DeckRegion().create(this, 0, this.startCallback())
     this.deckRegion.addRequiredCards(params.deck)
 
     this.filterRegion = new FilterRegion().create(this, true)
@@ -124,7 +124,7 @@ export class BuilderScene extends BuilderBase {
 
     this.catalogRegion = new CatalogRegion().create(this, Space.decklistPanelWidth + Space.deckPanelWidth)
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback(), Space.decklistPanelWidth)
+    this.deckRegion = new DeckRegion().create(this, Space.decklistPanelWidth, this.startCallback(), this.updateDeckCallback())
     if (this.lastDeck !== undefined) {
       this.deckRegion.setDeck(this.lastDeck)
     }
@@ -150,8 +150,8 @@ export class BuilderScene extends BuilderBase {
     return result
   }
 
-  updateSavedDeck(deck: string): void {
-    this.decklistsRegion.updateSavedDeck(deck)
+  updateSavedDeck(deck?: string, name?: string, avatar?: number): void {
+    this.decklistsRegion.updateSavedDeck(deck, name, avatar)
   }
 
   beforeExit(): void {
@@ -178,6 +178,23 @@ export class BuilderScene extends BuilderBase {
         activeScene: that,
         deck: that.getDeckCode(),
       })
+    }
+  }
+
+  // Update the avatar or name for the current deck
+  private updateDeckCallback(): (name: string, avatar: number) => void {
+    let that = this
+
+    return function(name: string, avatar: number) {
+      console.log(name)
+      // TODO Update the settings
+      that.updateSavedDeck(undefined, name, avatar)
+
+      // Update the avatar
+      that.setAvatar(avatar)
+
+      // Update the name
+      that.setName(name)
     }
   }
 }

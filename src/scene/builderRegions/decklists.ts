@@ -95,15 +95,19 @@ export default class DecklistsRegion {
 	}
 
 	// Update the currently selected deck
-	updateSavedDeck(deckCode: string): void {
+	updateSavedDeck(deckCode?: string, deckName?: string, deckAvatar?: number): void {
 		let index = this.savedDeckIndex
 		if (index !== undefined) {
 			let deck = UserSettings._get('decks')[index]
 
+			const value = deckCode === undefined ? deck['value'] : deckCode
+			const name = deckName === undefined ? deck['name'] : deckName
+			const avatar = deckAvatar === undefined ? deck['avatar'] : deckAvatar
+
 			let newDeck = {
-				name: deck['name'],
-				value: deckCode,
-				avatar: deck['avatar']
+				name: name,
+				value: value,
+				avatar: avatar,
 			}
 
 			UserSettings._setIndex('decks', index, newDeck)
