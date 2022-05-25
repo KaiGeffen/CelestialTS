@@ -110,8 +110,8 @@ export default class DeckRegion {
 		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Add the deck's name
-		this.txtDeckName = this.scene.add.text(0, 0, 'Deck name', Style.announcement).setOrigin(0.5)
-		let container = new ContainerLite(this.scene, 0, 0, width, this.txtDeckName.height)
+		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement).setOrigin(0.5)
+		let container = new ContainerLite(this.scene, 0, 0, width, this.txtDeckName.height - Space.pad*2)
 		container.add(this.txtDeckName)
 		sizer.add(container)
 
