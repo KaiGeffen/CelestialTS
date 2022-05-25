@@ -333,6 +333,7 @@ class View {
 	discardPiles: Region
 	pass: Region
 	scores: Region
+	calendar: Region
 
 	ourDeckOverlay: Region
 	theirDeckOverlay: Region
@@ -367,6 +368,7 @@ class View {
 		this.discardPiles = new Regions.DiscardPiles().create(scene)
 		this.pass = new Regions.Pass().create(scene)
 		this.scores = new Regions.Scores().create(scene)
+		this.calendar = new Regions.Calendar().create(scene)
 
 		this.ourDeckOverlay = new Regions.OurDeck().create(scene)
 		this.theirDeckOverlay = new Regions.TheirDeck().create(scene)
@@ -396,6 +398,7 @@ class View {
 		this.discardPiles.displayState(state, isRecap)
 		this.pass.displayState(state, isRecap)
 		this.scores.displayState(state, isRecap)
+		this.calendar.displayState(state, isRecap)
 
 		this.ourDeckOverlay.displayState(state, isRecap)
 		this.theirDeckOverlay.displayState(state, isRecap)

@@ -90,8 +90,6 @@ export default class StoryRegion extends Region {
 			this.animateScoreGains(index, state.score, state, isRecap)
 		}
 
-		console.log(state.score)
-
 		this.lastScores = state.score
 	}
 

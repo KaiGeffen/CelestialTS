@@ -153,48 +153,48 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
 
 // The styling for BBCode objects, from the rexui module
 export const BBStyle: Record<string, any> = {
-  cardText: {
-    fontFamily: fontFamily,
-    fontSize: FontSettings.standard.size,
-    color: Color.cardText,
-    backgroundColor: Color.cardTextBackground,
-    backgroundStrokeColor: "#0005",
-    backgroundStrokeLineWidth: 2,
-    backgroundCornerRadius: 5,
-    backgroundHorizontalGradient: false,
-    padding: { 
-      left: 10,
-      right: 10,
-      top: 5,
-      bottom: 5
-    },
-    underline: {
-      color: Color.cardText,
-      thickness: 2,
-      offset: 8
-    },
-    strokeThickness: 3,
-    wrap: {
-      mode: 'word',
-      width: 500
-    }
-  },
+  // cardText: {
+  //   fontFamily: fontFamily,
+  //   fontSize: '20px',
+  //   color: Color.cardText,
+  //   backgroundColor: Color.cardTextBackground,
+  //   backgroundStrokeColor: "#0005",
+  //   backgroundStrokeLineWidth: 2,
+  //   backgroundCornerRadius: 5,
+  //   backgroundHorizontalGradient: false,
+  //   padding: { 
+  //     left: 10,
+  //     right: 10,
+  //     top: 5,
+  //     bottom: 5
+  //   },
+  //   underline: {
+  //     color: Color.cardText,
+  //     thickness: 2,
+  //     offset: 8
+  //   },
+  //   strokeThickness: 3,
+  //   wrap: {
+  //     mode: 'word',
+  //     width: 500
+  //   }
+  // },
   // Cost / Points shown above each card
   cardStats: {
     fontFamily: fontFamily,
-    fontSize: '20px',
+    fontSize: '30px',
     color: Color.cardText,
     backgroundColor: Color.cardTextBackground,
-    backgroundStrokeColor: "#0005",
-    backgroundStrokeLineWidth: 2,
+    // backgroundStrokeColor: "#0005",
+    // backgroundStrokeLineWidth: 2,
     // backgroundCornerRadius: 5,
     backgroundHorizontalGradient: false,
     strokeThickness: 3,
     padding: { 
-      left: 5,
-      right: 5,
-      top: 5,
-      bottom: 5
+      // left: 5,
+      // right: 5,
+      top: -5,
+      bottom: -5
     }
   },
   basic: {

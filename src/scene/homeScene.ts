@@ -41,12 +41,6 @@ export default class HomeScene extends BaseScene {
       btnDiscord.glowUntilClicked()
     }
 
-    // Store button
-    let btnStore = new Button(this, Space.windowWidth/2 + 300, Space.windowHeight - 50, "Store", this.doStore).setOrigin(0.5)
-    if (!UserProgress.contains('store')) {
-      btnStore.glowUntilClicked()
-    }
-
     // Adventure button
     let btnAdventure = new Button(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", this.doAdventure).setOrigin(0.5)
 
@@ -104,12 +98,6 @@ export default class HomeScene extends BaseScene {
 
   private doCredits(): void {
     this.scene.start("CreditsScene")
-  }
-
-  private doStore(): void {
-    UserProgress.addAchievement('store')
-
-    this.scene.start("StoreScene")
   }
   
   private doDiscord(btnDiscord: Button): () => void {
