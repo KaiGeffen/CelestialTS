@@ -211,21 +211,21 @@ export default class DeckRegion {
 		}
 	}
 
-	setAvatar(id: number, name?: string): void {
+	setAvatar(id: number): DeckRegion {
 		// TODO Require all decks to have an avatar
 		id = id === undefined ? 0 : id
-
-		// If the name is undefined, set it to the avatar name
-		if (name === undefined) {
-			name = `${avatarNames[id]} Premade`
-		}
 
 		this.avatarNumber = id
 
 		this.avatar.setAvatarNumber(id)
 
-		// TODO Rename method if also setting the name
+		return this
+	}
+
+	setName(name: string): DeckRegion {
 		this.txtDeckName.setText(name)
+
+		return this
 	}
 
 	// Get the deck code for player's current deck
@@ -376,37 +376,6 @@ export default class DeckRegion {
 					selectedAvatar: that.avatarNumber,
 				})
 		}
-	}
-
-
-
-
-
-	// TODO Remove below unused methods
-
-	// Sort by cost all cards in the deck
-	private sort(): void {
-		this.deck.sort(function (card1, card2): number {
-			if (card1.card.cost < card2.card.cost)
-			{
-				return 1
-			}
-			else if (card1.card.cost > card2.card.cost)
-			{
-				return -1
-			}
-			else
-			{
-				return card1.card.name.localeCompare(card2.card.name)
-			}
-		})
-
-		this.correctDeckIndices()
-	}
-
-	// Set each card in deck to have the right position and onClick events for its index
-	private correctDeckIndices(): void {
-		this.setDeck(this.getDeckCode())
 	}
 }
 

@@ -172,6 +172,7 @@ export default class DecklistsRegion {
 
 				// Load the approriate avatar
 				that.scene.setAvatar(i)
+				.setName(`${i}`)
 			}
 		}
 	}
@@ -255,7 +256,8 @@ export default class DecklistsRegion {
 				that.scene.setDeck(deck['value'])
 
 				// Set the displayed avatar to this deck's avatar
-				that.scene.setAvatar(deck['avatar'], deck['name'])
+				that.scene.setAvatar(deck['avatar'])
+				.setName(deck['name'])
 			}
 		}
 	}

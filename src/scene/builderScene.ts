@@ -43,8 +43,17 @@ export class BuilderBase extends BaseScene {
   }
 
   // Change the displayed avatar to the given avatar
-  setAvatar(id: number, name?: string) {
-    this.deckRegion.setAvatar(id, name)
+  setAvatar(id: number) {
+    this.deckRegion.setAvatar(id)
+
+    return this
+  }
+
+  // Set the displayed deck name to the given name
+  setName(name: string) {
+    this.deckRegion.setName(name)
+
+    return this
   }
 
   // Get the deck code for player's current deck
