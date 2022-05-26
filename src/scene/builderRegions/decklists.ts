@@ -244,14 +244,8 @@ export default class DecklistsRegion {
 			// Deselect all other buttons
 			that.decklistBtns.forEach(b => {if (b !== btn) b.deselect()})
 
-			// If it's already selected, deselect it
-			if (btn.selected) {
-				that.savedDeckIndex = undefined
-				that.scene.setDeck([])
-				btn.deselect()
-			}
-			// Otherwise select this button
-			else {
+			// If not already selected, select
+			if (!btn.selected) {
 				that.savedDeckIndex = i
 				btn.select()
 
