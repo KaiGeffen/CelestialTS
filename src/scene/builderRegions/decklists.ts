@@ -30,9 +30,12 @@ export default class DecklistsRegion {
 	// Create the are where player can manipulate their decks
 	create(scene) {
 		this.scene = scene
-		this.container = new ContainerLite(scene).setDepth(10) // TODO No depth?
+		this.container = new ContainerLite(scene)
 
 		this.createScrollable()
+
+		// NOTE Must be set after the elements are added
+		this.scrollablePanel.setDepth(1)
 		return this
 	}
 
