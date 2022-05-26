@@ -25,4 +25,8 @@ export class Time {
   static vignetteSpeed(): number {
     return 30
   }
+
+  static builderSlide(): number {
+    return 300
+  }
 }

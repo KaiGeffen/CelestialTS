@@ -122,9 +122,9 @@ export class BuilderScene extends BuilderBase {
   create(params): void {
     super.create(params)
 
-    this.catalogRegion = new CatalogRegion().create(this, Space.decklistPanelWidth + Space.deckPanelWidth)
+    this.catalogRegion = new CatalogRegion().create(this, Space.decklistPanelWidth)
 
-    this.deckRegion = new DeckRegion().create(this, Space.decklistPanelWidth, this.startCallback(), this.updateDeckCallback())
+    this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.updateDeckCallback())
     if (this.lastDeck !== undefined) {
       this.deckRegion.setDeck(this.lastDeck)
     }
@@ -156,6 +156,14 @@ export class BuilderScene extends BuilderBase {
 
   beforeExit(): void {
     this.rememberSettings()
+  }
+
+  setDeck(deckCode: string | Card[]): boolean {
+    // Animate the deck panel sliding out to be seen
+    this.deckRegion.showPanel()
+    this.catalogRegion.shiftRight()
+
+    return super.setDeck(deckCode)
   }
 
   // Remember what deck / decklist was selected
@@ -196,5 +204,10 @@ export class BuilderScene extends BuilderBase {
       // Update the name
       that.setName(name)
     }
+  }
+
+  deselectDeck(): void {
+    this.deckRegion.hidePanel()
+    this.catalogRegion.shiftLeft()
   }
 }

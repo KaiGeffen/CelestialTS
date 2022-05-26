@@ -4,7 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
+import { Style, UserSettings, Space, Mechanics, Time } from "../../settings/settings"
 import { collectibleCards } from "../../catalog/catalog"
 
 
@@ -16,13 +16,11 @@ export default class CatalogRegion {
   container: ContainerLite
 
   // The scrollable panel on which the catalog exists
+  scrollablePanel
   panel
 
   // Full list of all cards in the catalog (Even those invisible)
   cardCatalog: CardImage[]
-
-
-
 
   // Create this region, offset by the given width
   create(scene: Phaser.Scene, x: number) {
@@ -51,9 +49,9 @@ export default class CatalogRegion {
 
     // Make the object
     let width = Space.windowWidth - x
-    let superPanel = scene['rexUI'].add.scrollablePanel({
-      x: x + width/2,
-      y: height/2,
+    let superPanel = this.scrollablePanel = scene['rexUI'].add.scrollablePanel({
+      x: x,
+      y: 0,
       width: width,
       height: height,
 
@@ -72,7 +70,7 @@ export default class CatalogRegion {
             line: Space.pad,
           }
         })
-      }})
+      }}).setOrigin(0)
 
     // Update panel when mousewheel scrolls
     let panel = superPanel.getElement('panel')
@@ -143,6 +141,43 @@ export default class CatalogRegion {
       else {
         scene.signalError('Deck is full')
       }
+    }
+  }
+
+  // Shift the catalog to the right to make room for the deck panel
+  shiftRight(): void {
+    let that = this
+
+    const x = Space.decklistPanelWidth + Space.deckPanelWidth
+    if (this.panel.x < x) {
+      this.scene.tweens.add({
+        targets: this.scrollablePanel,
+        x: x,
+        duration: Time.builderSlide(),
+        onStart: () => {
+          console.log(that.scrollablePanel)
+          that.panel.minWidth = Space.windowWidth - x
+          that.scrollablePanel.layout()
+        },
+      })
+    }
+  }
+
+  // Shift the catalog to the left to fill the absence of deck panel
+  shiftLeft(): void {
+    let that = this
+
+    const x = Space.decklistPanelWidth
+    if (this.panel.x > x) {
+      this.scene.tweens.add({
+        targets: this.scrollablePanel,
+        x: x,
+        duration: Time.builderSlide(),
+        onStart: () => {
+          that.panel.minWidth = Space.windowWidth - x
+          that.scrollablePanel.layout()
+        },
+      })
     }
   }
 }

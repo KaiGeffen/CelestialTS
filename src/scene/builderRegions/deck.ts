@@ -4,7 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import { SymmetricButtonLarge, AvatarSmall } from '../../lib/buttons/backed'
 import Cutout from '../../lib/buttons/cutout'
 import { CardImage } from '../../lib/cardImage'
-import { Space, Style, Color, Mechanics } from '../../settings/settings'
+import { Space, Style, Color, Mechanics, Time } from '../../settings/settings'
 import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
 import avatarNames from '../../lib/avatarNames';
@@ -37,7 +37,6 @@ export default class DeckRegion {
 	private container: ContainerLite
 
 	create(scene: Phaser.Scene,
-		x: number,
 		startCallback: () => void,
 		editCallback?: (name: string, avatar: number) => void
 		) {
@@ -49,17 +48,17 @@ export default class DeckRegion {
 		this.container = new ContainerLite(scene)
 
 		// TODO Make everything in a panel
-		this.createScrollable(startCallback, x)
+		this.createScrollable(startCallback)
 
 		return this
 	}
 
-	private createScrollable(startCallback: () => void, x: number) {
+	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: x,
+			x: Space.decklistPanelWidth - Space.deckPanelWidth,
 			y: 0,
 			width: width,
 			height: Space.windowHeight,
@@ -382,6 +381,22 @@ export default class DeckRegion {
 					selectedAvatar: that.avatarNumber,
 				})
 		}
+	}
+
+	hidePanel(): void {
+		this.scene.tweens.add({
+			targets: this.scrollablePanel,
+			x: Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad,
+			duration: Time.builderSlide(),
+		})
+	}
+
+	showPanel(): void {
+		this.scene.tweens.add({
+			targets: this.scrollablePanel,
+			x: Space.decklistPanelWidth,
+			duration: Time.builderSlide(),
+		})
 	}
 }
 

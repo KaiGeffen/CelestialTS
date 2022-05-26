@@ -260,7 +260,6 @@ export class CardImage {
 
   // Set the displayed point value of the card, or hide it if it's equal to the default value
   setPoints(amt: number): CardImage {
-    console.log(amt)
     // If this is the default of the card, don't display any custom point value
     if(this.card.dynamicText === '') {
       this.txtPoints.setAlpha(0)
