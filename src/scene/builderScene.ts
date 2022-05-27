@@ -143,6 +143,12 @@ export class BuilderScene extends BuilderBase {
   }
 
   addCardToDeck(card: Card): boolean {
+    // If no deck is selected, don't add the card
+    if (this.decklistsRegion.savedDeckIndex === undefined) {
+      // TODO What should happen here? Zoom up the card?
+      return false
+    }
+
     let result = this.deckRegion.addCardToDeck(card)
 
     this.updateSavedDeck(this.getDeckCode())
