@@ -274,7 +274,7 @@ export default class DeckRegion {
 		header.add(this.createRequiredCardList(cards))
 
 		// Hint for the cards user's can choose to complete the deck
-		let txtChoice = this.scene.add.text(0, 0, 'Selected Cards', Style.basic).setOrigin(0.5)
+		let txtChoice = this.scene.add.text(0, 0, 'Chosen Cards', Style.basic).setOrigin(0.5)
 		let containerChoice = new ContainerLite(this.scene, 0, 0, width, txtChoice.height)
 		header.add(containerChoice.add(txtChoice))
 
@@ -394,19 +394,29 @@ export default class DeckRegion {
 	}
 
 	private addToPanelSorted(child: ContainerLite, card: Card, panel): number {
+		// Keep track of how many of these cards are required, to insert in the right index
+		let requiredAmt = 0
+
 		for (let i = 0; i < this.deck.length; i++) {
-			if ((this.deck[i].card.cost > card.cost) ||
-				((this.deck[i].card.cost === card.cost) &&
-					(this.deck[i].card.name > card.name))
-				) {
-			panel.insert(i, child)
-			return i
+			const cutout = this.deck[i]
+			if (cutout.required) {
+				requiredAmt += 1
+				continue
+			}
+
+			if ((cutout.card.cost > card.cost) ||
+				((cutout.card.cost === card.cost) &&
+					(cutout.card.name > card.name))
+				)
+			{
+				panel.insert(i - requiredAmt, child)
+				return i - requiredAmt
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		panel.insert(this.deck.length, child)
-		return this.deck.length
+		panel.insert(this.deck.length - requiredAmt, child)
+		return this.deck.length - requiredAmt
 	}
 
 	private onClickAvatar(): () => void {
