@@ -52,7 +52,7 @@ export default class DeckRegion {
 		.setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: 0,//Space.decklistPanelWidth - Space.deckPanelWidth,
+			x: Space.decklistPanelWidth - Space.deckPanelWidth,
 			y: 0,
 			width: width,
 			height: Space.windowHeight,
@@ -266,17 +266,20 @@ export default class DeckRegion {
 		header.removeAll()
 
 		// Add in a hint and list of cards
-		let txtRequired = this.scene.add.text(0, 0, 'Required', Style.basic).setOrigin(0.5)
+		let txtRequired = this.scene.add.text(0, 0, 'Required Cards', Style.basic).setOrigin(0.5)
 		let containerRequired = new ContainerLite(this.scene, 0, 0, width, txtRequired.height)
 		header.add(containerRequired.add(txtRequired))
 
 		// Add in a scrollable panel of the required cards
 		header.add(this.createRequiredCardList(cards))
 
-		let txtChoice = this.scene.add.text(0, 0, 'Choice', Style.basic).setOrigin(0.5)
+		// Hint for the cards user's can choose to complete the deck
+		let txtChoice = this.scene.add.text(0, 0, 'Selected Cards', Style.basic).setOrigin(0.5)
 		let containerChoice = new ContainerLite(this.scene, 0, 0, width, txtChoice.height)
 		header.add(containerChoice.add(txtChoice))
 
+		// Panel should move over since decklist region doesn't exist
+		this.scrollablePanel.x = 0
 
 		this.scrollablePanel.layout()
 	}
