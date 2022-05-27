@@ -148,7 +148,7 @@ export default class DeckRegion {
 		// If this card exists in the deck already, increment it
 		let alreadyInDeck = false
 		this.deck.forEach(cutout => {
-			if (cutout.name === card.name) {
+			if (cutout.name === card.name && !cutout.required) {
 				cutout.increment()
 				alreadyInDeck = true
 			}
@@ -166,11 +166,6 @@ export default class DeckRegion {
 			this.scrollablePanel.layout()
 
 			this.deck.splice(index, 0, cutout)
-
-			// TODO Hacky, is ensuring that required cards can't be clicked
-			if (panel !== this.panel) {
-				cutout.setRequired()
-			}
 		}
 		
 		// Update start button to reflect new amount of cards in deck
@@ -294,19 +289,21 @@ export default class DeckRegion {
 		)
 		
 		// Create the scrolling panel that contains it
-		const height = Math.min(Space.windowHeight/4, 400)
-		let panel = this.scene['rexUI'].add.scrollablePanel({
-			height: height,
-			panel: {
-				child: sizer
-			},
-		})
+		// const height = Math.min(Space.windowHeight/2, 800)
+		// let panel = this.scene['rexUI'].add.scrollablePanel({
+		// 	height: height,
+		// 	panel: {
+		// 		child: sizer
+		// 	},
+		// })
 
 		this.setDeck(cards, sizer)
 
-		this.updateOnScroll(sizer, panel)
+		this.deck.forEach(cutout => {
+			cutout.setRequired()
+		})
 
-		return panel
+		return sizer
 	}
 
 	// Remove the card from deck which has given index
@@ -323,7 +320,8 @@ export default class DeckRegion {
 				let index
 
 				for (let i = 0; i < that.deck.length && index === undefined; i++) {
-					if (that.deck[i].id === cutout.id) {
+					const cutoutI = that.deck[i]
+					if (cutoutI.id === cutout.id && !cutoutI.required) {
 						index = i
 					}
 				}
