@@ -65,12 +65,6 @@ export default class Cutout extends Button {
 
 	// Increment the count of this card
 	increment(): Cutout {
-		// Can't add more of this card if it's required
-		if (this.required) {
-			this.scene['signalError']("Can't add more of a required card.")
-			return
-		}
-
 		this.count += 1
 
 		this.updateText()

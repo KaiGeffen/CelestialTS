@@ -78,6 +78,8 @@ export default class DeckRegion {
 				// },
 			}).setOrigin(0)
 
+		this.updateOnScroll(this.panel, this.scrollablePanel)
+
 		this.scrollablePanel.layout()
 
 		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
@@ -96,8 +98,6 @@ export default class DeckRegion {
 		}}).addBackground(
 		this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xF44FFF)
 		)
-
-		this.updateOnScroll(this.panel)
 
 		return this.panel
 	}
@@ -135,7 +135,7 @@ export default class DeckRegion {
 	}
 
 	// Add the given card and return the created cardImage
-	addCardToDeck(card: Card): boolean {
+	addCardToDeck(card: Card, panel = this.panel): boolean {
 		let totalCount = 0
 		this.deck.forEach(cutout => {
 			totalCount += cutout.count
@@ -161,11 +161,16 @@ export default class DeckRegion {
 			cutout.setOnClick(this.removeCardFromDeck(cutout))
 
 			// Add the container in the right position in the panel
-			let index = this.addToPanelSorted(container, card)
+			let index = this.addToPanelSorted(container, card, panel)
 
 			this.scrollablePanel.layout()
 
 			this.deck.splice(index, 0, cutout)
+
+			// TODO Hacky, is ensuring that required cards can't be clicked
+			if (panel !== this.panel) {
+				cutout.setRequired()
+			}
 		}
 		
 		// Update start button to reflect new amount of cards in deck
@@ -175,7 +180,7 @@ export default class DeckRegion {
 	}
 
 	// Set the current deck, and return whether the given deck was valid
-	setDeck(deckCode: string | Card[]): boolean {
+	setDeck(deckCode: string | Card[], panel = this.panel): boolean {
 		let deck: Card[]
 		if (typeof deckCode === "string") {
 			// Get the deck from this code
@@ -206,7 +211,7 @@ export default class DeckRegion {
 			// Add the new deck
 			for (let i = 0; i < deck.length; i++) {
 				let card = deck[i]
-				this.addCardToDeck(card)
+				this.addCardToDeck(card, panel)
 			}
 
 			return true
@@ -256,13 +261,52 @@ export default class DeckRegion {
 	}
 
 	// Add cards to the deck that must be in the deck
+	// NOTE This is implemented by removing everything from the header
+	// then populating it with the required cards
 	addRequiredCards(cards: string): void {
-		this.setDeck(cards)
+		let header = this.scrollablePanel.getElement('header')
 
-		// Set each card in the deck to be required
-		this.deck.forEach(cutout => {
-			cutout.setRequired()
+		// Remove everything from the header
+		this.avatar.destroy()
+		header.removeAll()
+
+		// Add in a hint and list of cards
+		let txtRequired = this.scene.add.text(0, 0, 'Required', Style.basic).setOrigin(0.5)
+		let containerRequired = new ContainerLite(this.scene, 0, 0, width, txtRequired.height)
+		header.add(containerRequired.add(txtRequired))
+
+		// Add in a scrollable panel of the required cards
+		header.add(this.createRequiredCardList(cards))
+
+		let txtChoice = this.scene.add.text(0, 0, 'Choice', Style.basic).setOrigin(0.5)
+		let containerChoice = new ContainerLite(this.scene, 0, 0, width, txtChoice.height)
+		header.add(containerChoice.add(txtChoice))
+
+
+		this.scrollablePanel.layout()
+	}
+
+	// Create a scrollable panel with all of the given required cards
+	private createRequiredCardList(cards: string) {
+		// Create the sizer that contains the cards
+		let sizer = this.scene['rexUI'].add.fixWidthSizer().addBackground(
+			this.scene.add.rectangle(0, 0, width, 0, 0xF44FFF)
+		)
+		
+		// Create the scrolling panel that contains it
+		const height = Math.min(Space.windowHeight/4, 400)
+		let panel = this.scene['rexUI'].add.scrollablePanel({
+			height: height,
+			panel: {
+				child: sizer
+			},
 		})
+
+		this.setDeck(cards, sizer)
+
+		this.updateOnScroll(sizer, panel)
+
+		return panel
 	}
 
 	// Remove the card from deck which has given index
@@ -330,7 +374,7 @@ export default class DeckRegion {
 
 	// TODO Make dry with other scenes
 	// Update the panel when user scrolls with their mouse wheel
-	private updateOnScroll(panel) {
+	private updateOnScroll(panel, scrollablePanel) {
 		let that = this
 
 		this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
@@ -340,27 +384,27 @@ export default class DeckRegion {
 			}
 
 			// Scroll panel down by amount wheel moved
-			that.scrollablePanel.childOY -= dy
+			scrollablePanel.childOY -= dy
 
 			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-			that.scrollablePanel.t = Math.max(0, that.scrollablePanel.t)
-			that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
+			scrollablePanel.t = Math.max(0, scrollablePanel.t)
+			scrollablePanel.t = Math.min(0.999999, scrollablePanel.t)
 		})
 	}
 
-	private addToPanelSorted(child: ContainerLite, card: Card): number {
+	private addToPanelSorted(child: ContainerLite, card: Card, panel): number {
 		for (let i = 0; i < this.deck.length; i++) {
 			if ((this.deck[i].card.cost > card.cost) ||
 				((this.deck[i].card.cost === card.cost) &&
 					(this.deck[i].card.name > card.name))
 				) {
-			this.panel.insert(i, child)
+			panel.insert(i, child)
 			return i
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		this.panel.insert(this.deck.length, child)
+		panel.insert(this.deck.length, child)
 		return this.deck.length
 	}
 
