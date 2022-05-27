@@ -33,9 +33,6 @@ export default class DeckRegion {
 	private avatar: AvatarSmall
 	private txtDeckName: Phaser.GameObjects.Text
 
-	// Container containing all cards in the deck
-	private container: ContainerLite
-
 	create(scene: Phaser.Scene,
 		startCallback: () => void,
 		editCallback?: (name: string, avatar: number) => void
@@ -43,9 +40,6 @@ export default class DeckRegion {
 		this.scene = scene
 
 		this.editCallback = editCallback
-
-		// Deck container
-		this.container = new ContainerLite(scene)
 
 		// TODO Make everything in a panel
 		this.createScrollable(startCallback)
@@ -58,7 +52,7 @@ export default class DeckRegion {
 		.setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: Space.decklistPanelWidth - Space.deckPanelWidth,
+			x: 0,//Space.decklistPanelWidth - Space.deckPanelWidth,
 			y: 0,
 			width: width,
 			height: Space.windowHeight,

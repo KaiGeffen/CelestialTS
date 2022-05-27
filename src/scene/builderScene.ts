@@ -82,7 +82,7 @@ export class AdventureBuilderScene extends BuilderBase {
     
     this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
 
-    this.deckRegion = new DeckRegion().create(this, 0, this.startCallback())
+    this.deckRegion = new DeckRegion().create(this, this.startCallback())
     this.deckRegion.addRequiredCards(params.deck)
 
     this.filterRegion = new FilterRegion().create(this, true)
