@@ -33,6 +33,9 @@ export default class DeckRegion {
 	private avatar: AvatarSmall
 	private txtDeckName: Phaser.GameObjects.Text
 
+	// Only for adventure mode
+	private txtChoice: Phaser.GameObjects.Text
+
 	create(scene: Phaser.Scene,
 		startCallback: () => void,
 		editCallback?: (name: string, avatar: number) => void
@@ -266,7 +269,8 @@ export default class DeckRegion {
 		header.removeAll()
 
 		// Add in a hint and list of cards
-		let txtRequired = this.scene.add.text(0, 0, 'Required Cards', Style.basic).setOrigin(0.5)
+		const amt = cards.match(/\:/g).length + 1
+		let txtRequired = this.scene.add.text(0, 0, `Required Cards: ${amt}`, Style.basic).setOrigin(0.5)
 		let containerRequired = new ContainerLite(this.scene, 0, 0, width, txtRequired.height)
 		header.add(containerRequired.add(txtRequired))
 
@@ -274,9 +278,9 @@ export default class DeckRegion {
 		header.add(this.createRequiredCardList(cards))
 
 		// Hint for the cards user's can choose to complete the deck
-		let txtChoice = this.scene.add.text(0, 0, 'Chosen Cards', Style.basic).setOrigin(0.5)
-		let containerChoice = new ContainerLite(this.scene, 0, 0, width, txtChoice.height)
-		header.add(containerChoice.add(txtChoice))
+		this.txtChoice = this.scene.add.text(0, 0, `Chosen Cards: 0/${Mechanics.deckSize - amt}`, Style.basic).setOrigin(0.5)
+		let containerChoice = new ContainerLite(this.scene, 0, 0, width, this.txtChoice.height)
+		header.add(containerChoice.add(this.txtChoice))
 
 		// Panel should move over since decklist region doesn't exist
 		this.scrollablePanel.x = 0
@@ -353,9 +357,20 @@ export default class DeckRegion {
 	// Update the card count and deck button texts
 	private updateText(): void {
 		let totalCount = 0
+		let choiceCount = 0
 		this.deck.forEach(cutout => {
 			totalCount += cutout.count
+
+			// This is a chosen card if not required
+			if (!cutout.required) {
+				choiceCount += cutout.count
+			}
 		})
+
+		// Display amount of chosen cards
+		if (this.txtChoice !== undefined) {
+			this.txtChoice.setText(`Chosen Cards: ${choiceCount}/${Mechanics.deckSize - totalCount + choiceCount}`)
+		}
 
 		if (totalCount === Mechanics.deckSize) {
 			this.btnStart.setText('Start')
