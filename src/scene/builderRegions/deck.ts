@@ -278,7 +278,7 @@ export default class DeckRegion {
 		header.add(this.createRequiredCardList(cards))
 
 		// Hint for the cards user's can choose to complete the deck
-		this.txtChoice = this.scene.add.text(0, 0, `Chosen Cards: 0/${Mechanics.deckSize - amt}`, Style.basic).setOrigin(0.5)
+		this.txtChoice = this.scene.add.text(0, 0, `Chosen Cards: 0/${Mechanics.deckSize - amt}`, Style.basic).setOrigin(0.5, 0)
 		let containerChoice = new ContainerLite(this.scene, 0, 0, width, this.txtChoice.height)
 		header.add(containerChoice.add(this.txtChoice))
 
