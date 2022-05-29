@@ -9,6 +9,8 @@ import { IButtonSmallX } from './icon'
 
 // TODO Temporary
 export class ButtonDecklist extends Button {
+	btnX: IButtonSmallX
+
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
 		mainCallback: () => void = function() {},
@@ -33,6 +35,15 @@ export class ButtonDecklist extends Button {
 		// Adjust the font 
 
 		// Also add an x button on top
-		new IButtonSmallX(within, x - 70, y, xCallback)
+		this.btnX = new IButtonSmallX(within, x - 70, y, xCallback)
+	}
+
+	setDepth(value: number): Button {
+		let result = super.setDepth(value)
+
+		// Ensure that the x also has depth set after the component behind it
+		this.btnX.setDepth(value)
+
+		return result
 	}
 }

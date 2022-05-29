@@ -222,9 +222,7 @@ export default class DecklistsRegion {
 
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
 		let btn = new ButtonDecklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
-
-		// Highlight this deck, if it's selected
-		// if (this.savedDeckIndex === i) {So that layout happens correctly setTimeout(() => btn.select(), 4)}
+		.setDepth(2)
 
 		// Set the on click for this button
 		btn.setOnClick(this.decklistOnClick(btn, i))
@@ -329,6 +327,7 @@ export default class DecklistsRegion {
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
 
 		let btn = new ButtonNewDeck(container, 0, 0, 'New Deck', openNewDeckMenuCallback)
+		.setDepth(2)
 
 		return container
 	}
@@ -342,8 +341,7 @@ export default class DecklistsRegion {
 			UserSettings._pop('decks', deckIndex)
 
 			// Adjust values stored in this deck region
-			that.savedDeckIndex = undefined
-			that.scene.setDeck([])
+			that.scene.deselectDeck()
 
 			// Refresh the decklist panel
 			that.createDecklistPanel()
