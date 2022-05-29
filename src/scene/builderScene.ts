@@ -60,6 +60,10 @@ export class BuilderBase extends BaseScene {
   setPremade(id: number) {
     this.deckRegion.setPremade(id)
 
+    // Animate the deck panel sliding out to be seen
+    this.deckRegion.showPanel()
+    this.catalogRegion.shiftRight()
+
     return this
   }
 
