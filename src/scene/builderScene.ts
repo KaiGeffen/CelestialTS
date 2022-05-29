@@ -57,8 +57,8 @@ export class BuilderBase extends BaseScene {
   }
 
   // Set the deck's name to be the premade for given avatar
-  setPremadeName(id: number) {
-    this.deckRegion.setPremadeName(id)
+  setPremade(id: number) {
+    this.deckRegion.setPremade(id)
 
     return this
   }
@@ -200,8 +200,6 @@ export class BuilderScene extends BuilderBase {
     let that = this
 
     return function(name: string, avatar: number) {
-      console.log(name)
-      // TODO Update the settings
       that.updateSavedDeck(undefined, name, avatar)
 
       // Update the avatar

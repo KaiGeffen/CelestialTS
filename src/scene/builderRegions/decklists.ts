@@ -1,6 +1,5 @@
 import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import premadeDecklists from '../../catalog/premadeDecklists';
 import { ButtonNewDeck } from '../../lib/buttons/backed';
 import Button from '../../lib/buttons/button';
 import { ButtonDecklist } from '../../lib/buttons/decklist';
@@ -175,11 +174,7 @@ export default class DecklistsRegion {
 				that.decklistBtns.forEach(btn => btn.deselect())
 				
 				// Set the current deck to premade list
-				that.scene.setDeck(premadeDecklists[i])
-
-				// Load the approriate avatar
-				that.scene.setAvatar(i)
-				.setPremadeName(i)
+				that.scene.setPremade(i)
 			}
 		}
 	}

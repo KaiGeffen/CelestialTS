@@ -8,6 +8,7 @@ import { Space, Style, Color, Mechanics, Time } from '../../settings/settings'
 import Card from '../../lib/card'
 import { decodeCard, encodeCard } from '../../lib/codec'
 import avatarNames from '../../lib/avatarNames';
+import premadeDecklists from '../../catalog/premadeDecklists';
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -223,6 +224,7 @@ export default class DeckRegion {
 		this.avatarNumber = id
 
 		this.avatar.setAvatarNumber(id)
+		.enable()
 
 		return this
 	}
@@ -233,9 +235,19 @@ export default class DeckRegion {
 		return this
 	}
 
-	// Set the deck's name to be the premade for given avatar
-	setPremadeName(id: number): DeckRegion {
+	// Set the deck's to be the given premade deck
+	setPremade(id: number): DeckRegion {
 		this.txtDeckName.setText(`${avatarNames[id]}`)
+		this.setAvatar(id)
+		this.setDeck(premadeDecklists[id])
+
+		// Disable cards from being removed from the deck
+		this.deck.forEach(cutout => {
+			cutout.setRequired()
+		})
+
+		// Disable the avatar from changing / changing name
+		this.avatar.disable()
 
 		return this
 	}
