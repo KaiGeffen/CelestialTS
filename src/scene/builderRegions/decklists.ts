@@ -20,6 +20,9 @@ export default class DecklistsRegion {
 	// The index of the currently selected deck
 	savedDeckIndex: number
 
+	// Button for user to select a premade deck
+	btnPremade: Button
+
 	// List of buttons for user-defined decks
 	decklistBtns: Button[]
 
@@ -136,7 +139,7 @@ export default class DecklistsRegion {
 		})
 
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.largeButtonHeight)
-		let btn = new IButtonPremade(container, 0, 0,
+		this.btnPremade = new IButtonPremade(container, 0, 0,
 			() => {
 				// TODO Hand this to a class instead of calling ourselves
 				this.scene.scene.launch('MenuScene', {
@@ -172,6 +175,9 @@ export default class DecklistsRegion {
 
 				// Deselect decklist buttons
 				that.decklistBtns.forEach(btn => btn.deselect())
+
+				// Select premade button
+				that.btnPremade.select()
 				
 				// Set the current deck to premade list
 				that.scene.setPremade(i)
@@ -238,7 +244,10 @@ export default class DecklistsRegion {
 		// Set btn as active, select self and deselect other buttons, set the deck
 		return function() {
 			// Deselect all other buttons
-			that.decklistBtns.forEach(b => {if (b !== btn) b.deselect()})
+			that.decklistBtns.forEach(b => {
+				if (b !== btn) b.deselect()
+			})
+			that.btnPremade.deselect()
 
 			// If it's already selected, deselect it
 			if (btn.selected) {
