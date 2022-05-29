@@ -91,7 +91,7 @@ export default class DecklistsRegion {
 					bottom: 10,
 					line: 10,
 				}}).addBackground(
-				this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xFFF00F)
+				this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
 				)
 
 		this.updateOnScroll(this.panel)

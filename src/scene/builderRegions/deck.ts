@@ -100,7 +100,7 @@ export default class DeckRegion {
 			bottom: 10,
 			// line: 10,//80 - Space.cardHeight,
 		}}).addBackground(
-		this.scene.add.rectangle(0, 0, width, Space.windowHeight, 0xF44FFF)
+		this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
 		)
 
 		return this.panel
