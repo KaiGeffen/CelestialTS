@@ -14,7 +14,7 @@ const minRoom = 300 + Space.cardWidth
 export default class CardLocation {
 	static ourHand(state: ClientState, i: number, container: Phaser.GameObjects.Container): [number, number] {
 		// X of the first card in their hand
-		const x0 = 300
+		const x0 = 200 + Space.cardWidth
 
 		let dx = (Space.cardWidth + Space.pad)
 
@@ -44,7 +44,7 @@ export default class CardLocation {
 
 	static theirHand(state: ClientState, i: number, container: Phaser.GameObjects.Container): [number, number] {
 		// X of the first card in their hand
-		const x0 = 300
+		const x0 = 200 + Space.cardWidth
 
 		let dx = (Space.cardWidth + Space.pad)
 
