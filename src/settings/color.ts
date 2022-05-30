@@ -18,6 +18,8 @@ const CoreColors: Record<string, any> = {
   white: 0xffffff,
   whiteS: '#ffffff',
 
+  grey: 0x333333,
+
 
   // Trial colors
   background: 0xFFFFFF,//0xF5F2EB,
@@ -72,6 +74,10 @@ export const Color: Record<string, any> = {
   cardTextBackground: CoreColors.black,
   // The color of the mana if cost has been reduced
   cardCostReduced: CoreColors.breath,
+
+  // Hint text fill and background (What shows when you hover something that has an explanation)
+  hintFill: CoreColors.white,
+  hintBackground: CoreColors.grey,
 
 
   // Outline plugin color

@@ -207,8 +207,8 @@ export const BBStyle: Record<string, any> = {
   hint: {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,
-    color: Color.basicText,
-    backgroundColor: Color.cardTextBackground,
+    color: Color.hintFill,
+    backgroundColor: Color.hintBackground,
     backgroundStrokeColor: "#0005",
     backgroundStrokeLineWidth: 2,
     backgroundCornerRadius: 5,
