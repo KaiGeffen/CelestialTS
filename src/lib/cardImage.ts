@@ -102,16 +102,16 @@ export class CardImage {
 
     // Stat text
     this.txtCost = this.scene.add['rexBBCodeText'](
-      -Space.cardWidth/2 + 21,
-      -Space.cardHeight/2 + 21,
+      -Space.cardWidth/2 + 25,
+      -Space.cardHeight/2 + 25,
       '',
       BBStyle.cardStats)
     .setOrigin(0.5)
     .setAlpha(0)
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
-      -Space.cardWidth/2 + 21,
-      -Space.cardHeight/2 + 62,
+      -Space.cardWidth/2 + 25,
+      -Space.cardHeight/2 + 77,
       '',
       BBStyle.cardStats)
     .setOrigin(0.5)
