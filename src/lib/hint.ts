@@ -46,7 +46,7 @@ export default class Hint {
 			this.showText(hintText)
 
 			// NOTE This is a hack because of a bug where card image renders with a single line's height
-			this.txt.setText(`[img=${card.name}]\n\n\n\n\n\n\n\n\n\n\n${hintText}`)
+			this.txt.setText(`[img=${card.name}]\n\n\n\n\n\n\n\n\n\n\n\n\n${hintText}`)
 			.setFixedSize(Space.maxTextWidth + Space.pad, 0)
 		}
 		else {

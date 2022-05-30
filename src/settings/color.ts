@@ -18,7 +18,7 @@ const CoreColors: Record<string, any> = {
   white: 0xffffff,
   whiteS: '#ffffff',
 
-  grey: 0x333333,
+  grey: 0x555555,
 
 
   // Trial colors
