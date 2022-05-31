@@ -5,12 +5,13 @@ import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
 import KeywordLabel from './keywordLabel'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
 export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1).setAlpha(0)
+  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1)
 
   // TODO Do this somewhere else
   // Add image render information
@@ -83,7 +84,7 @@ export class CardImage {
 
   unplayable: boolean = false
   // A container just for this cardImage / objects related to it
-  container: Phaser.GameObjects.Container
+  container: ContainerLite
 
   // The index of this container within its parent container before it was brought to top
   renderIndex: number = undefined
@@ -98,14 +99,8 @@ export class CardImage {
     let scene: Phaser.Scene = outerContainer.scene
     this.scene = scene
 
-    let foo = new KeywordLabel(scene, 'Visible')
-    foo.setDepth(5)
-    console.log(foo)
-    // new Phaser.GameObjects.Image()
-
-
     // Card image
-    this.image = scene.add.image(0, 0, card.name)
+    this.image = scene.add.image(0, 0, card.name).setAlpha(0.5)
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
@@ -126,8 +121,9 @@ export class CardImage {
     this.setPoints(card.points)
 
     // This container
-    this.container = scene.add.container(0, 0)
-    this.container.add([this.image, this.txtCost, this.txtPoints])
+    let k = new KeywordLabel(this.scene, 'Visible')
+    this.container = new ContainerLite(scene, 0, 0, Space.cardWidth, Space.cardHeight)
+    this.container.add([this.image, this.txtCost, this.txtPoints, k])
     outerContainer.add(this.container)
 
     if (interactive) {
@@ -139,8 +135,7 @@ export class CardImage {
       this.scene.input.on('gameout', this.onHoverExit(), this)
     }
 
-    // Hint any keywords that are in the card
-    this.hintKeywords()
+    
   }
 
   destroy(): void {
@@ -295,6 +290,15 @@ export class CardImage {
   }
 
   private hintKeywords(): void {
+    return
+    let keywords: KeywordLabel[] = []
+
+    let k = new KeywordLabel(this.scene, 'Visible')
+    this.container.add(k)
+    keywords.push(k)
+    k.setPosition(this.image.x, this.image.y)
+    console.log(k)
+
     return
     let that = this
 

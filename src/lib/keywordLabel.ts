@@ -7,7 +7,7 @@ export default class KeywordLabel extends Phaser.GameObjects.Image {
 	constructor(scene: Phaser.Scene, name) {
 		const s = `kw-${name}`
 
-		super(scene, 100, 100, s)
+		super(scene, 0, 0, s)
 		scene.add.existing(this)
 
 		// On hover this should show the correct hint
