@@ -4,6 +4,12 @@ import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
 import { Rarity } from "./rarity"
 
+interface KeywordTuple {
+  name: string
+  x: number
+  y: number
+}
+
 interface CardData {
   name: string
   id: number
@@ -11,9 +17,8 @@ interface CardData {
   points: number
   text: string
   dynamicText: string
-  catalogText: string
-  rarity: Rarity
   story: string
+  keywords: KeywordTuple[]
 }
 
 // For the tutorial, the card info shown will only be the mana/points
@@ -33,6 +38,7 @@ export default class Card {
   text: string
   rarity: Rarity
   story: string
+  keywords: KeywordTuple[]
   
   dynamicText: string
   catalogText: string
@@ -45,12 +51,9 @@ export default class Card {
     this.points = data.points
     this.text = data.text
 
-    this.rarity = data.rarity
-
     this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText
 
-    // TODO Take out the check once all cards have catalog text
-    this.catalogText = (data.catalogText === undefined) ? '' : data.catalogText
+    this.keywords = data.keywords === undefined ? [] : data.keywords
 
     // TODO Don't rely on card text like this
     this.fleeting = this.text.includes("Fleeting")

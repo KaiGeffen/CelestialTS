@@ -5,10 +5,10 @@ import { Keyword, keywords } from '../catalog/keywords'
 
 export default class KeywordLabel extends Phaser.GameObjects.Image {
 	keyword: Keyword
-	constructor(scene: Phaser.Scene, name) {
+	constructor(scene: Phaser.Scene, name, x, y) {
 		const s = `kw-${name}`
 
-		super(scene, 0, 60, s)
+		super(scene, x, y, s)
 		scene.add.existing(this)
 
 		// Set keyword for this

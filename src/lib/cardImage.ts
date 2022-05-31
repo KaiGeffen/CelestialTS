@@ -121,9 +121,8 @@ export class CardImage {
     this.setPoints(card.points)
 
     // This container
-    let k = new KeywordLabel(this.scene, 'Visible')
     this.container = new ContainerLite(scene, 0, 0, Space.cardWidth, Space.cardHeight)
-    this.container.add([this.image, this.txtCost, this.txtPoints, k])
+    this.container.add([this.image, this.txtCost, this.txtPoints])
     outerContainer.add(this.container)
 
     if (interactive) {
@@ -135,7 +134,8 @@ export class CardImage {
       this.scene.input.on('gameout', this.onHoverExit(), this)
     }
 
-    
+    // Add keywords
+    this.addKeywords()
   }
 
   destroy(): void {
@@ -289,48 +289,13 @@ export class CardImage {
     this.required = true
   }
 
-  private hintKeywords(): void {
-    return
-    let keywords: KeywordLabel[] = []
+  private addKeywords(): void {
+    let keywordLabels = []
 
-    let k = new KeywordLabel(this.scene, 'Visible')
-    this.container.add(k)
-    keywords.push(k)
-    k.setPosition(this.image.x, this.image.y)
-    console.log(k)
-
-    return
-    let that = this
-
-    // TODO
-    let hint = that.image.scene['hint']
-
-    // TODO Get correct areas for the hints based on some json
-    this.image.on('pointermove', function(pointer, x, y) {
-      const pointerStopped = true //Math.abs(pointer.velocity.x) < 10 && Math.abs(pointer.velocity.y) < 10
-      const pointerOverKeyword = true //that.image.getBounds().contains(260, 90)
-
-      const bounds = that.image.getBounds()
-      if (pointerStopped && pointerOverKeyword) {
-        hint.showText(that.card.getHintText())
-      }
-      else {
-        hint.hide()
-      }
-      // console.log({x:x, x2: bounds.x, y: y, y2: bounds.y})
+    this.card.keywords.forEach((keywordTuple) => {
+      let k = new KeywordLabel(this.scene, keywordTuple.name, keywordTuple.x, keywordTuple.y)
+      this.container.add(k)
     })
-
-    // // TODO Care about locations
-    // let hint = that.image.scene['hint']
-    // this.setOnHover(
-    //   () => {
-    //     // TODO Move this work to Hint module, just pass the keywords
-    //     hint.showText(that.card.getHintText())
-    //   },
-    //   () => {
-    //     hint.hide()
-    //   }
-    //   )
   }
 
   private onHover(): () => void {

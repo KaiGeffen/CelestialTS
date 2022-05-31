@@ -103,14 +103,14 @@ export default class CatalogRegion {
 
       // Check if this card is present
       if (filterFunction(cardImage.card)) {
-        cardImage.image.setVisible(true)
+        cardImage.container.setVisible(true)
 
         // Add the image next, with padding between it and the next card
         sizer.add(cardImage.container)
       }
       else
       {
-        cardImage.image.setVisible(false)
+        cardImage.container.setVisible(false)
       }
     }
 
