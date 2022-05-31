@@ -4,6 +4,8 @@ import { Color, Style, BBStyle, Time, Space } from "../settings/settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
+import KeywordLabel from './keywordLabel'
+
 
 export var cardInfo: any // BBCodeText
 
@@ -95,6 +97,12 @@ export class CardImage {
 
     let scene: Phaser.Scene = outerContainer.scene
     this.scene = scene
+
+    let foo = new KeywordLabel(scene, 'Visible')
+    foo.setDepth(5)
+    console.log(foo)
+    // new Phaser.GameObjects.Image()
+
 
     // Card image
     this.image = scene.add.image(0, 0, card.name)
@@ -287,18 +295,38 @@ export class CardImage {
   }
 
   private hintKeywords(): void {
+    return
     let that = this
 
-    // TODO Care about locations
+    // TODO
     let hint = that.image.scene['hint']
-    this.setOnHover(
-      () => {
+
+    // TODO Get correct areas for the hints based on some json
+    this.image.on('pointermove', function(pointer, x, y) {
+      const pointerStopped = true //Math.abs(pointer.velocity.x) < 10 && Math.abs(pointer.velocity.y) < 10
+      const pointerOverKeyword = true //that.image.getBounds().contains(260, 90)
+
+      const bounds = that.image.getBounds()
+      if (pointerStopped && pointerOverKeyword) {
         hint.showText(that.card.getHintText())
-      },
-      () => {
+      }
+      else {
         hint.hide()
       }
-      )
+      // console.log({x:x, x2: bounds.x, y: y, y2: bounds.y})
+    })
+
+    // // TODO Care about locations
+    // let hint = that.image.scene['hint']
+    // this.setOnHover(
+    //   () => {
+    //     // TODO Move this work to Hint module, just pass the keywords
+    //     hint.showText(that.card.getHintText())
+    //   },
+    //   () => {
+    //     hint.hide()
+    //   }
+    //   )
   }
 
   private onHover(): () => void {

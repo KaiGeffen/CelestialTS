@@ -17,9 +17,10 @@ export default class Hint {
 		.setVisible(false)
 		.setAlign('center')
 
-		// Copy mouse position
+		// Copy mouse position and show a hint when over a hinted object
 		let that = this
-		scene.input.on('pointermove', (pointer) => {
+
+		scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
 			this.txt.copyPosition(pointer.position)
 			this.ensureOnScreen()
 		})

@@ -1,14 +1,14 @@
 [
 	{"key": "Fleeting",
-		"text": "Fleeting - After resolving, this card is removed from the game.",
+		"text": "[img=kw-Fleeting] - After resolving, this card is removed from the game.",
 		"x": false
 	},
 	{"key": "Visible",
-		"text": "Visible - Both players can see this card while it is in the story.",
+		"text": "[img=kw-Visible] - Both players can see this card while it is in the story.",
 		"x": false
 	},
 	{"key": "Sight",
-		"text": "Sight X - The first X cards in the story are visible to you this round.",
+		"text": "[img=kw-Sight] - The first X cards in the story are visible to you this round.",
 		"x": true
 	},
 

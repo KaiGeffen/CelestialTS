@@ -3,7 +3,9 @@ var mobile = require('is-mobile')
 
 import { Style, Color, Space, UserSettings, UserProgress, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
+import { keywords } from '../catalog/keywords'
 import Server from "../server"
+
 
 
 const SOUNDS = [
@@ -74,6 +76,9 @@ export default class PreloadClass extends Phaser.Scene {
 				this.load.image(`cutout-${card.name}`, `cutouts/Impulse.png`)
 			}
 		})
+
+		// Load all keywords
+		this.loadKeywords()
 
 		// Load the icon images
 		this.loadIcons()
@@ -178,6 +183,23 @@ export default class PreloadClass extends Phaser.Scene {
 		this.load.spritesheet(`icon-Cost`,
 			`icons/Cost.png`,
 			{frameWidth: 54, frameHeight: 54})
+	}
+
+	// Loads all keywords
+	private loadKeywords(): void {
+		// TODO Include in bbcode also
+		keywords.forEach( (keyword) => {
+			// If the keyword has an X, load all values of 'keyword N'
+			if (!keyword.x) {
+				const s = keyword.key
+				this.load.image(`kw-${s}`, `keywords/${s}.png`)
+			}
+			else {
+				// const s = keyword.key
+				// this.load.image(`kw-${s}`, `keywords/${s}${n}.png`)
+			}
+			
+		})
 	}
 
 	// Loads all background images
