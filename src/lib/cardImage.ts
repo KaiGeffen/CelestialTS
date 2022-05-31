@@ -11,7 +11,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 export var cardInfo: any // BBCodeText
 
 export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1)
+  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1).setAlpha(0)
 
   // TODO Do this somewhere else
   // Add image render information
@@ -100,7 +100,7 @@ export class CardImage {
     this.scene = scene
 
     // Card image
-    this.image = scene.add.image(0, 0, card.name).setAlpha(0.5)
+    this.image = scene.add.image(0, 0, card.name)
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
