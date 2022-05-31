@@ -23,10 +23,8 @@
     "text": "Visible, Fleeting.",
     "story": "Look at my eyes.\nSurrender\nTo the one thing you want",
     "keywords": [
-      {"name": "Visible",
-        "x": 0,
-        "y": 100
-      }
+      {"name": "Visible", "x": 0, "y": 100},
+      {"name": "Fleeting", "x": 0, "y": 130}
     ]
   },
   {"name": "Drown", "id": 5,
@@ -42,7 +40,11 @@
   {"name": "Starling", "id": 7,
     "cost": 2, "points": 2,
     "text": "Visible, Fleeting, worth +1 point if the next card in the story costs 1.",
-    "story": "Making headway\nDefying the headwind\nHeading out and through"
+    "story": "Making headway\nDefying the headwind\nHeading out and through",
+    "keywords": [
+      {"name": "Visible", "x": 0, "y": 52},
+      {"name": "Fleeting", "x": 0, "y": 82}
+    ]
   },
   {"name": "Birth", "id": 8,
     "cost": 2, "points": 0,
