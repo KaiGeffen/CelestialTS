@@ -11,6 +11,12 @@ interface KeywordTuple {
   value: number
 }
 
+interface ReferenceTuple {
+  name: string
+  x: number
+  y: number
+}
+
 interface CardData {
   name: string
   id: number
@@ -20,6 +26,7 @@ interface CardData {
   dynamicText: string
   story: string
   keywords: KeywordTuple[]
+  references: ReferenceTuple[]
 }
 
 // For the tutorial, the card info shown will only be the mana/points
@@ -40,6 +47,7 @@ export default class Card {
   rarity: Rarity
   story: string
   keywords: KeywordTuple[]
+  references: ReferenceTuple[]
   
   dynamicText: string
   catalogText: string
@@ -55,6 +63,7 @@ export default class Card {
     this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText
 
     this.keywords = data.keywords === undefined ? [] : data.keywords
+    this.references = data.references === undefined ? [] : data.references
 
     // TODO Don't rely on card text like this
     this.fleeting = this.text.includes("Fleeting")

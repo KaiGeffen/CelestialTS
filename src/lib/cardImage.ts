@@ -4,7 +4,7 @@ import { Color, Style, BBStyle, Time, Space } from "../settings/settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
-import KeywordLabel from './keywordLabel'
+import { KeywordLabel, ReferenceLabel } from './keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
@@ -18,6 +18,8 @@ export class CardImage {
   txtPoints: Phaser.GameObjects.Text
 
   keywords: KeywordLabel[] = []
+  // All referenced cards
+  references: ReferenceLabel[] = []
 
   // Whether the current card is required in this context (Must be in the deck)
   required = false
@@ -60,8 +62,9 @@ export class CardImage {
     .setOrigin(0.5)
     this.setPoints(card.points)
 
-    // Add keywords
+    // Add keywords and references
     this.addKeywords()
+    this.addReferences()
 
     // This container
     this.container = this.createContainer(outerContainer)
@@ -229,7 +232,7 @@ export class CardImage {
     }
 
     // Add each of the objects
-    container.add([this.image, this.txtCost, this.txtPoints, ...this.keywords])
+    container.add([this.image, this.txtCost, this.txtPoints, ...this.keywords, ...this.references])
 
     // Make outercontainer contain this container
     outerContainer.add(container)
@@ -252,14 +255,27 @@ export class CardImage {
       keyword.on('pointerdown', () => {
         that.image.emit('pointerdown')
       })
-      // keyword.on('pointerover', () => {
-      //   that.image.emit('pointerover')
-      // })
-      // keyword.on('pointerexit', () => {
-      //   that.image.emit('pointerexit')
-      // })
 
       this.keywords.push(keyword)
+    })
+  }
+
+  private addReferences(): void {
+    let that = this
+
+    this.card.references.forEach((referenceTuple) => {
+      let reference = new ReferenceLabel(
+        this.scene,
+        referenceTuple.name,
+        referenceTuple.x,
+        referenceTuple.y)
+
+      // reference should trigger the hover/click for the image behind
+      reference.on('pointerdown', () => {
+        that.image.emit('pointerdown')
+      })
+
+      this.references.push(reference)
     })
   }
 

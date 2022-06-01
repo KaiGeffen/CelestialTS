@@ -1,9 +1,12 @@
 import 'phaser'
 
 import { Keyword, keywords } from '../catalog/keywords'
+import { Style } from '../settings/settings'
+import { getCard } from "../catalog/catalog"
+import Card from "../lib/card"
 
 
-export default class KeywordLabel extends Phaser.GameObjects.Image {
+export class KeywordLabel extends Phaser.GameObjects.Image {
 	keyword: Keyword
 
 	// The X value of the keyword, if any
@@ -41,6 +44,41 @@ export default class KeywordLabel extends Phaser.GameObjects.Image {
 
 		return () => {
 			hint.showText(s)
+		}
+	}
+
+	private onHoverExit(): () => void {
+		let hint = this.scene['hint']
+
+		return () => {
+			hint.hide()
+		}
+	}
+}
+
+export class ReferenceLabel extends Phaser.GameObjects.Text {
+	card: Card
+
+	constructor(scene: Phaser.Scene, name: string, x: number, y: number) {
+		super(scene, x, y, name, Style.reference)
+		scene.add.existing(this)
+
+		this.card = getCard(name)
+
+		// Set origin
+		this.setOrigin(0.5)
+
+		// On hover this should show the correct hint
+		this.setInteractive()
+		.on('pointerover', this.onHover())
+		.on('pointerout', this.onHoverExit())
+	}
+
+	private onHover(): () => void {
+		let hint = this.scene['hint']
+
+		return () => {
+			hint.showCard(this.card)
 		}
 	}
 

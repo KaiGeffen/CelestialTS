@@ -70,6 +70,12 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     strokeThickness: 3,
     backgroundColor: '#0009',
   },
+  // Matching the size of text on the card images for hitareas
+  reference: {
+    fontFamily: fontFamily,
+    fontSize: '14px',
+    color: '#FFC0CB00',
+  },
 
 
   basic: {
