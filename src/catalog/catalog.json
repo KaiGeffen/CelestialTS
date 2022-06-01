@@ -16,7 +16,10 @@
   {"name": "Impulse", "id": 3,
     "cost": 1, "points": 1,
     "text": "Fleeting, create 2 Ashes in your discard pile.",
-    "story": "Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me"
+    "story": "Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me",
+    "keywords": [
+      {"name": "Fleeting", "x": 0, "y": 82}
+    ]
   },
   {"name": "Dove", "id": 4,
     "cost": 1, "points": 1,
@@ -75,7 +78,10 @@
   {"name": "Arsonist", "id": 14,
     "cost": 4, "points": 4,
     "text": "Fleeting, create 3 Ashes in your discard pile.",
-    "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke"
+    "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
+    "keywords": [
+      {"name": "Fleeting", "x": 0, "y": 82}
+    ]
   },
   {"name": "Mine", "id": 15,
     "cost": 4, "points": 4,
@@ -151,7 +157,10 @@
   },
   {"name": "Born Anew", "id": 55,
     "cost": 1, "points": 0,
-    "text": "Fleeting, transform each of your cards later in the story into an 0:X Fleeting Child, where X is its cost."
+    "text": "Fleeting, transform each of your cards later in the story into an 0:X Fleeting Child, where X is its cost.",
+    "keywords": [
+      {"name": "Fleeting", "x": 0, "y": 39}
+    ]
   },
 
   {"name": "Hungry Ghost", "id": 31,
@@ -169,7 +178,10 @@
   {"name": "Parch", "id": 64,
     "cost": 2, "points": 0,
     "text": "Fleeting, draw 2 cards, create 3 Ashes in your discard pile.",
-    "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips"
+    "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips",
+    "keywords": [
+      {"name": "Fleeting", "x": 0, "y": 82}
+    ]
   },
   {"name": "Hold Tight", "id": 33,
     "cost": 2, "points": 2,
@@ -205,11 +217,17 @@
   {"name": "Nightmare", "id": 68,
     "cost": 3, "points": 0,
     "text": "Visible, worth +4 points if you have more cards in hand than your opponent.",
-    "story": "I struggle to find myself\nBetween the claws and biting words\nShearing my mind away"
+    "story": "I struggle to find myself\nBetween the claws and biting words\nShearing my mind away",
+    "keywords": [
+      {"name": "Visible", "x": 0, "y": 60}
+    ]
   },
   {"name": "Sickness", "id": 58,
     "cost": 3, "points": 0,
-    "text": "Fleeting, give your opponent Starve 4, create a Sickness in their hand."
+    "text": "Fleeting, give your opponent Starve 4, create a Sickness in their hand.",
+    "keywords": [
+      {"name": "Fleeting", "x": 0, "y": 60}
+    ]
   },
   {"name": "Awakening", "id": 39,
     "cost": 3, "points": 3,
@@ -219,7 +237,10 @@
   {"name": "Gamecock", "id": 40,
     "cost": 4, "points": 4,
     "text": "Visible, remove from the game each card in your hand that costs 0 or 1. Worth +1 point for each card removed.",
-    "story": "I will I will I will\nBecome me become me become me\nAt your peril"
+    "story": "I will I will I will\nBecome me become me become me\nAt your peril",
+    "keywords": [
+      {"name": "Visible", "x": 0, "y": 17}
+    ]
   },
   {"name": "Posterity", "id": 53,
     "cost": 4, "points": 4,
@@ -237,16 +258,26 @@
   {"name": "Heron", "id": 65,
     "cost": 0, "points": 0,
     "text": "Visible, set both player's points to 0.\nCosts 1 more for each card in your discard pile.",
-    "story": "How you see me\nIs of no importance to me\nI am playing with being here, there, every where"
+    "story": "How you see me\nIs of no importance to me\nI am playing with being here, there, every where",
+    "keywords": [
+      {"name": "Visible", "x": 0, "y": 60}
+    ]
   },
   {"name": "Conquer", "id": 67,
     "cost": 5, "points": 2,
-    "text": "Visible, worth +X points, where X is the cost of the next card in the story."
+    "text": "Visible, worth +X points, where X is the cost of the next card in the story.",
+    "keywords": [
+      {"name": "Visible", "x": 0, "y": 60}
+    ]
   },
   {"name": "Phoenix", "id": 51,
     "cost": 5, "points": 5,
     "text": "Visible, Fleeting, create a Dove in your hand.",
-    "story": "Cracks in the shell\nShell falls away\nI stretch into wide possibilities"
+    "story": "Cracks in the shell\nShell falls away\nI stretch into wide possibilities",
+    "keywords": [
+      {"name": "Visible", "x": 0, "y": 52},
+      {"name": "Fleeting", "x": 0, "y": 82}
+    ]
   },
 
   {"name": "Boa", "id": 57,
@@ -271,7 +302,10 @@
   {"name": "Sun", "id": 56,
     "cost": 8, "points": 8,
     "text": "Visible.\nMorning: gain Inspired 1.",
-    "story": "I raise my head over the horizon\nI begin\nJust like you"
+    "story": "I raise my head over the horizon\nI begin\nJust like you",
+    "keywords": [
+      {"name": "Visible", "x": 0, "y": 104}
+    ]
   },
   {"name": "Clear Mind", "id": 75,
     "cost": 7, "points": 7,
