@@ -12,7 +12,7 @@ export default class Hint {
 
 	constructor(scene: BaseScene) {
 		this.txt = scene.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
-		.setOrigin(0, 1)
+		.setOrigin(0.5, 1)
 		.setDepth(40)
 		.setVisible(false)
 		.setAlign('center')
@@ -21,7 +21,8 @@ export default class Hint {
 		let that = this
 
 		scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-			this.txt.copyPosition(pointer.position)
+			this.txt.setX(pointer.position.x)
+			this.txt.setY(pointer.position.y - Space.pad)
 			this.ensureOnScreen()
 		})
 	}
@@ -81,8 +82,8 @@ export default class Hint {
 
 		// Default to going left and up from the cursor
 		// If the right side of txt is beyond right side of window, move left that much
-		if (txt.x + bounds.width > Space.windowWidth) {
-			txt.setX(Space.windowWidth - bounds.width)
+		if (txt.x + bounds.width/2 > Space.windowWidth) {
+			txt.setX(Space.windowWidth - bounds.width/2)
 		}
 
 		// If above the top of the screen, lower by that amount

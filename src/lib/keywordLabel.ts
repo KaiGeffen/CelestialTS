@@ -28,12 +28,16 @@ export default class KeywordLabel extends Phaser.GameObjects.Image {
 		const s = this.keyword.text
 		let hint = this.scene['hint']
 
-		return () => { hint.showText(s) }
+		return () => {
+			hint.showText(s)
+		}
 	}
 
 	private onHoverExit(): () => void {
 		let hint = this.scene['hint']
 
-		return () => { hint.hide() }
+		return () => {
+			hint.hide()
+		}
 	}
 }
