@@ -37,8 +37,6 @@ export default class KeywordLabel extends Phaser.GameObjects.Image {
 			s = s.replace(/X/g, this.value.toString())
 		}
 
-		console.log(s)
-
 		let hint = this.scene['hint']
 
 		return () => {

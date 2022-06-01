@@ -136,7 +136,10 @@
 
   {"name": "Nectar", "id": 25,
     "cost": 1, "points": 0,
-    "text": "Nourish 1.\nWhen played, gain Sight 3."
+    "text": "Nourish 1.\nWhen played, gain Sight 3.",
+    "keywords": [
+      {"name": "Sight", "x": 0, "y": 130, "value": 3}
+    ]
   },
   {"name": "Prey", "id": 26,
     "cost": 1, "points": 2,
@@ -234,7 +237,10 @@
   },
   {"name": "Awakening", "id": 39,
     "cost": 3, "points": 3,
-    "text": "When played, gain Sight 1 for each card before this in the story."
+    "text": "When played, gain Sight 1 for each card before this in the story.",
+    "keywords": [
+      {"name": "Sight", "x": -35, "y": 90, "value": 1}
+    ]
   },
 
   {"name": "Gamecock", "id": 40,
