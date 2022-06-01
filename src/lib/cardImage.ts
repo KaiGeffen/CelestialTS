@@ -68,8 +68,7 @@ export class CardImage {
 
     if (interactive) {
       this.image.setInteractive()
-      this.image.on('pointerover', this.onHover(), this)
-      this.image.on('pointerout', this.onHoverExit(), this)
+      this.setOnHover(this.onHover(), this.onHoverExit())
 
       // If the mouse moves outside of the game, exit the hover also
       this.scene.input.on('gameout', this.onHoverExit(), this)
