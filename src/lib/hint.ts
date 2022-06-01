@@ -10,6 +10,9 @@ import { allCards } from '../catalog/catalog'
 export default class Hint {
 	txt: RexUIPlugin.BBCodeText
 
+	// TODO
+	leftPin: number
+
 	constructor(scene: BaseScene) {
 		this.txt = scene.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
 		.setOrigin(0.5, 1)
@@ -18,17 +21,14 @@ export default class Hint {
 		.setAlign('center')
 
 		// Copy mouse position and show a hint when over a hinted object
-		let that = this
-
-		scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-			this.txt.setX(pointer.position.x)
-			this.txt.setY(pointer.position.y - Space.pad)
-			this.ensureOnScreen()
-		})
+		this.copyMousePosition(scene)
 	}
 
 	hide(): Hint {
 		this.txt.setVisible(false)
+
+		// Reset the pin, since the next hovered item might not pin
+		this.leftPin = undefined
 
 		return this
 	}
@@ -74,21 +74,47 @@ export default class Hint {
 		.setFixedSize(0, 0)
 	}
 
+	private copyMousePosition(scene: BaseScene): void {
+		scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+			// Unless there is a left pin, center and hover above the mouse position
+			if (this.leftPin === undefined) {
+				this.txt.setX(pointer.position.x)
+				.setOrigin(0.5, 1)
+				.setY(pointer.position.y - Space.pad)
+			}
+			// If there is a pin, go just to the right of that
+			else {
+				this.txt.setX(this.leftPin + Space.pad)
+				.setOrigin(0, 0.5)
+				.setY(pointer.position.y)
+			}
+			
+			this.ensureOnScreen()
+		})
+	}
+
 	// Ensure that the hint is within the screen bounds, if possible
 	private ensureOnScreen(): void {
 		let txt = this.txt
 
 		let bounds = txt.getBounds()
 
-		// Default to going left and up from the cursor
-		// If the right side of txt is beyond right side of window, move left that much
-		if (txt.x + bounds.width/2 > Space.windowWidth) {
-			txt.setX(Space.windowWidth - bounds.width/2)
+		let dx = 0
+		if (bounds.left < 0) {
+			dx = -bounds.left
+		}
+		else if (bounds.right > Space.windowWidth) {
+			dx = Space.windowWidth - bounds.right
 		}
 
-		// If above the top of the screen, lower by that amount
-		if (txt.y - bounds.height < 0) {
-			txt.setY(bounds.height)
+		let dy = 0
+		if (bounds.top < 0) {
+			dy = -bounds.top
 		}
+		else if (bounds.bottom > Space.windowHeight) {
+			dy = Space.windowHeight - bounds.bottom
+		}
+
+		txt.setPosition(txt.x + dx, txt.y + dy)
 	}
 }
