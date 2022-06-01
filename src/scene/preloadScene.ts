@@ -187,7 +187,6 @@ export default class PreloadClass extends Phaser.Scene {
 
 	// Loads all keywords
 	private loadKeywords(): void {
-		// TODO Include in bbcode also
 		keywords.forEach( (keyword) => {
 			// If the keyword has an X, load all values of 'keyword N'
 			if (!keyword.x) {
@@ -195,8 +194,14 @@ export default class PreloadClass extends Phaser.Scene {
 				this.load.image(`kw-${s}`, `keywords/${s}.png`)
 			}
 			else {
-				// const s = keyword.key
-				// this.load.image(`kw-${s}`, `keywords/${s}${n}.png`)
+				// NOTE Some of these may not exist, but all that exist are covered here
+				['X','1','2','3','4','5','6','7','8','9'].forEach(n => {
+					const s = keyword.key
+					try {
+						this.load.image(`kw-${s} ${n}`, `keywords/${s} ${n}.png`)
+					}
+					catch {}
+				})
 			}
 			
 		})

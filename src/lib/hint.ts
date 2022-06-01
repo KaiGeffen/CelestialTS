@@ -55,14 +55,6 @@ export default class Hint {
 			this.txt.setText(`[img=${card.name}]`)
 			.setFixedSize(Space.cardWidth + Space.pad, Space.cardHeight + Space.pad)
 		}
-
-		
-
-		// 
-		// let width = Math.max(bounds.width, Space.cardWidth + Space.padSmall*2)
-		// let height = bounds.height + Space.cardHeight
-
-		// this.txt.setFixedSize(width, height)
 	}
 
 	showText(s: string): void {

@@ -8,7 +8,7 @@
 		"x": false
 	},
 	{"key": "Sight",
-		"text": "[img=kw-Sight] - The first X cards in the story are visible to you this round.",
+		"text": "[img=kw-Sight X] - The first X cards in the story are visible to you this round.",
 		"x": true
 	},
 
