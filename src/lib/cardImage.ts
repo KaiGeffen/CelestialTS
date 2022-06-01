@@ -241,7 +241,12 @@ export class CardImage {
     let that = this
 
     this.card.keywords.forEach((keywordTuple) => {
-      let keyword = new KeywordLabel(this.scene, keywordTuple.name, keywordTuple.x, keywordTuple.y)
+      let keyword = new KeywordLabel(
+        this.scene,
+        keywordTuple.name,
+        keywordTuple.x,
+        keywordTuple.y,
+        keywordTuple.value)
 
       // Keyword should trigger the hover/click for the image behind
       keyword.on('pointerdown', () => {

@@ -8,6 +8,7 @@ interface KeywordTuple {
   name: string
   x: number
   y: number
+  value: number
 }
 
 interface CardData {

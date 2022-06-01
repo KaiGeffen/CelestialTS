@@ -5,8 +5,12 @@ import { Keyword, keywords } from '../catalog/keywords'
 
 export default class KeywordLabel extends Phaser.GameObjects.Image {
 	keyword: Keyword
-	constructor(scene: Phaser.Scene, name, x, y) {
-		const s = `kw-${name}`
+
+	// The X value of the keyword, if any
+	value: number
+
+	constructor(scene: Phaser.Scene, name, x, y, value?) {
+		const s = value === undefined ? `kw-${name}` : `kw-${name} ${value}`
 
 		super(scene, x, y, s)
 		scene.add.existing(this)
@@ -15,6 +19,7 @@ export default class KeywordLabel extends Phaser.GameObjects.Image {
 		keywords.forEach(keyword => {
 			if (keyword.key === name) {
 				this.keyword = keyword
+				this.value = value
 			}
 		})
 
@@ -25,7 +30,15 @@ export default class KeywordLabel extends Phaser.GameObjects.Image {
 	}
 
 	private onHover(): () => void {
-		const s = this.keyword.text
+		let s = this.keyword.text
+
+		// If this keyword has an X, replace all occurences with its value
+		if (this.value !== undefined) {
+			s = s.replace(/X/g, this.value.toString())
+		}
+
+		console.log(s)
+
 		let hint = this.scene['hint']
 
 		return () => {

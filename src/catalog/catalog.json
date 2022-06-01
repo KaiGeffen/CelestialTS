@@ -149,7 +149,10 @@
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1, "points": 0,
-    "text": "Draw a card that costs 2.\nWhen played, gain Sight 3."
+    "text": "Draw a card that costs 2.\nWhen played, gain Sight 3.",
+    "keywords": [
+      {"name": "Sight", "x": 0, "y": 130, "value": 3}
+    ]
   },
   {"name": "Clear View", "id": 27,
     "cost": 1, "points": 0,

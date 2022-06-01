@@ -200,7 +200,8 @@ export default class PreloadClass extends Phaser.Scene {
 					try {
 						this.load.image(`kw-${s} ${n}`, `keywords/${s} ${n}.png`)
 					}
-					catch {}
+					// TODO
+					catch (error) {}
 				})
 			}
 			
