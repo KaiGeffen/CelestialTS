@@ -8,68 +8,6 @@ import KeywordLabel from './keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
-export var cardInfo: any // BBCodeText
-
-export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1).setAlpha(0)
-
-  // TODO Do this somewhere else
-  // Add image render information
-  allCards.forEach( (card) => {
-    cardInfo.addImage(card.name, {
-      key: card.name,
-      width: Space.cardWidth,
-      height: Space.cardHeight,
-      // y: -17 // Bottom of card is on line with the text
-    })
-  })
-
-  cardInfo.setVisible(false)
-
-  return cardInfo
-}
-
-// TODO Bad smell, it's reccomended not to use containers so much
-// Make card info reflect whatever card it is currently hovering
-export function refreshCardInfo() {
-  let scene: Phaser.Scene = cardInfo.scene
-
-  let allContainers = scene.children.getAll().filter(e => e.type === 'Container' && e['visible'])
-
-  let showText = false
-
-  let pointer = scene.game.input.activePointer
-
-  if (pointer.active) {
-    allContainers.forEach(function (container: Phaser.GameObjects.Container) {
-      container.list.forEach(function (obj) {
-        if (obj.type === 'Container') {
-          let cont2 = obj as Phaser.GameObjects.Container
-          cont2.list.forEach(function (obj2) {
-            if (obj2.type === 'Image') {
-              let sprite = obj2 as Phaser.GameObjects.Image
-              
-              if (sprite.getBounds().contains(pointer.x, pointer.y)) {
-                // Show text only if the sprite has a pointerover listener
-                if (sprite.emit('pointerover')) {
-                  showText = true
-                }
-              }
-              else {
-                sprite.emit('pointerout')
-              }
-            }
-          })
-          
-        }
-      })
-    })
-  }
-
-  // Card info should only become visible is something is hovered over
-  cardInfo.setVisible(showText)
-}
-
 export class CardImage {
   card: Card
   image: Phaser.GameObjects.Image
@@ -78,6 +16,8 @@ export class CardImage {
 
   txtCost: Phaser.GameObjects.Text
   txtPoints: Phaser.GameObjects.Text
+
+  keywords: KeywordLabel[] = []
 
   // Whether the current card is required in this context (Must be in the deck)
   required = false
@@ -100,7 +40,7 @@ export class CardImage {
     this.scene = scene
 
     // Card image
-    this.image = scene.add.image(0, 0, card.name)
+    this.image = scene.add.image(0, 0, card.name)//.setAlpha(0.3)
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
@@ -120,10 +60,11 @@ export class CardImage {
     .setOrigin(0.5)
     this.setPoints(card.points)
 
+    // Add keywords
+    this.addKeywords()
+
     // This container
-    this.container = new ContainerLite(scene, 0, 0, Space.cardWidth, Space.cardHeight)
-    this.container.add([this.image, this.txtCost, this.txtPoints])
-    outerContainer.add(this.container)
+    this.container = this.createContainer(outerContainer)
 
     if (interactive) {
       this.image.setInteractive();
@@ -133,9 +74,6 @@ export class CardImage {
       // If the mouse moves outside of the game, exit the hover also
       this.scene.input.on('gameout', this.onHoverExit(), this)
     }
-
-    // Add keywords
-    this.addKeywords()
   }
 
   destroy(): void {
@@ -153,32 +91,6 @@ export class CardImage {
     this.container.setVisible(false)
 
     return this
-  }
-
-  dissolve(): void {
-    let scene = this.scene
-
-    let copyImage = scene.add.image(0, 0, this.image.texture)
-    this.container.add(copyImage)
-    this.container.sendToBack(copyImage)
-
-    // Add pipeline for dissolve effect
-    let postFxPlugin = scene.plugins.get('rexDissolvePipeline')
-    let dissolvePipeline = postFxPlugin['add'](copyImage, {
-      noiseX: 100,
-      noiseY: 100
-    })
-
-    // this.dissolvePipeline.setProgress(1)
-    scene.tweens.add({
-      targets: dissolvePipeline,
-      progress: 1,
-      ease: 'Quad',
-      duration: Time.recapStateMinimum,
-      onComplete: function(tween, targets, params) {
-        copyImage.destroy()
-      }
-    })
   }
 
   // Set the callback to fire when this card's image is clicked
@@ -289,12 +201,29 @@ export class CardImage {
     this.required = true
   }
 
-  private addKeywords(): void {
-    let keywordLabels = []
+  private createContainer(outerContainer): ContainerLite {
+    let container = new ContainerLite(this.scene, 0, 0, Space.cardWidth, Space.cardHeight)
 
+    // Add each of the objects
+    container.add([this.image, this.txtCost, this.txtPoints, ...this.keywords])
+
+    // Depending on the type of the outer container, need to do different things
+    if (outerContainer instanceof Phaser.GameObjects.Container) {
+      container.addToContainer(outerContainer)
+    }
+    else if (outerContainer instanceof ContainerLite) {
+      outerContainer.add(container)
+    }
+    else {
+      throw 'CardImage was given a container that isnt of a correct type'
+    }
+
+    return container
+  }
+
+  private addKeywords(): void {
     this.card.keywords.forEach((keywordTuple) => {
-      let k = new KeywordLabel(this.scene, keywordTuple.name, keywordTuple.x, keywordTuple.y)
-      this.container.add(k)
+      this.keywords.push(new KeywordLabel(this.scene, keywordTuple.name, keywordTuple.x, keywordTuple.y))
     })
   }
 
