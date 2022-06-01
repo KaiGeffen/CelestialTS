@@ -67,9 +67,9 @@ export class CardImage {
     this.container = this.createContainer(outerContainer)
 
     if (interactive) {
-      this.image.setInteractive();
-      this.image.on('pointerover', this.onHover(), this);
-      this.image.on('pointerout', this.onHoverExit(), this);
+      this.image.setInteractive()
+      this.image.on('pointerover', this.onHover(), this)
+      this.image.on('pointerout', this.onHoverExit(), this)
 
       // If the mouse moves outside of the game, exit the hover also
       this.scene.input.on('gameout', this.onHoverExit(), this)
@@ -222,8 +222,20 @@ export class CardImage {
   }
 
   private addKeywords(): void {
+    let that = this
+
     this.card.keywords.forEach((keywordTuple) => {
-      this.keywords.push(new KeywordLabel(this.scene, keywordTuple.name, keywordTuple.x, keywordTuple.y))
+      let keyword = new KeywordLabel(this.scene, keywordTuple.name, keywordTuple.x, keywordTuple.y)
+
+      // Keyword should trigger the hover/click for the image behind
+      keyword.on('pointerdown', () => {
+        that.image.emit('pointerdown')
+      })
+      keyword.on('pointerover', () => {
+        that.image.emit('pointerover')
+      })
+
+      this.keywords.push(keyword)
     })
   }
 
@@ -292,6 +304,7 @@ export class CardImage {
 
           // Move this cardImage above everything else in its container when it's hovered
           moveToTopOnHover(): CardImage {
+            return this
             let container = this.container
             let parentContainer = container.parentContainer
 
