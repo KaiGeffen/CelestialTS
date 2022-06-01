@@ -152,7 +152,10 @@
   },
   {"name": "Prey", "id": 26,
     "cost": 1, "points": 2,
-    "text": "Create a Predator in your opponent's hand."
+    "text": "Create a Predator in your opponent's hand.",
+    "references": [
+      {"name": "Predator", "x": 0, "y": 112}
+    ]
   },
   {"name": "Morning Dew", "id": 63,
     "cost": 1, "points": 1,
@@ -168,13 +171,19 @@
   },
   {"name": "Clear View", "id": 27,
     "cost": 1, "points": 0,
-    "text": "Create a Seen in your opponent's hand."
+    "text": "Create a Seen in your opponent's hand.",
+    "references": [
+      {"name": "Seen", "x": 5, "y": 112}
+    ]
   },
   {"name": "Born Anew", "id": 55,
     "cost": 1, "points": 0,
     "text": "Fleeting, transform each of your cards later in the story into an 0:X Fleeting Child, where X is its cost.",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y": 39}
+    ],
+    "references": [
+      {"name": "Child", "x": 53, "y": 112}
     ]
   },
 
@@ -330,7 +339,10 @@
   },
   {"name": "Clear Mind", "id": 75,
     "cost": 7, "points": 7,
-    "text": "Create a Seen in your opponent's hand."
+    "text": "Create a Seen in your opponent's hand.",
+    "references": [
+      {"name": "Seen", "x": 5, "y": 112}
+    ]
   },
 
   {"name": "Paramountcy", "id": 62,
