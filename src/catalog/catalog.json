@@ -90,6 +90,9 @@
     "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y": 82}
+    ],
+    "references": [
+      {"name": "Ashes", "x": 6, "y": 112}
     ]
   },
   {"name": "Mine", "id": 15,
@@ -208,6 +211,9 @@
     "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y": 82}
+    ],
+    "references": [
+      {"name": "Ashes", "x": -76, "y": 132}
     ]
   },
   {"name": "Hold Tight", "id": 33,
@@ -307,6 +313,9 @@
     "keywords": [
       {"name": "Visible", "x": 0, "y": 52},
       {"name": "Fleeting", "x": 0, "y": 82}
+    ],
+    "references": [
+      {"name": "Dove", "x": 6, "y": 112}
     ]
   },
 
