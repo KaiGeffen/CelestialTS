@@ -21,7 +21,7 @@ export default class Hint {
 		.setAlign('center')
 
 		// Copy mouse position and show a hint when over a hinted object
-		this.copyMousePosition(scene)
+		scene.input.on('pointermove', () => {this.orientText()})
 	}
 
 	hide(): Hint {
@@ -34,6 +34,7 @@ export default class Hint {
 	}
 
 	show(): Hint {
+		this.orientText()
 		this.txt.setVisible(true)
 
 		return this
@@ -59,30 +60,31 @@ export default class Hint {
 
 	showText(s: string): void {
 		if (s !== '') {
-			this.show()			
+			this.show()
 		}
 
 		this.txt.setText(s)
 		.setFixedSize(0, 0)
 	}
 
-	private copyMousePosition(scene: BaseScene): void {
-		scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-			// Unless there is a left pin, center and hover above the mouse position
-			if (this.leftPin === undefined) {
-				this.txt.setX(pointer.position.x)
-				.setOrigin(0.5, 1)
-				.setY(pointer.position.y - Space.pad)
-			}
-			// If there is a pin, go just to the right of that
-			else {
-				this.txt.setX(this.leftPin + Space.pad)
-				.setOrigin(0, 0.5)
-				.setY(pointer.position.y)
-			}
-			
-			this.ensureOnScreen()
-		})
+	// Orient the text to be in the right position relative to the mouse
+	private orientText(): void {
+		const pointer = this.txt.scene.game.input.activePointer
+
+		// Unless there is a left pin, center and hover above the mouse position
+		if (this.leftPin === undefined) {
+			this.txt.setX(pointer.position.x)
+			.setOrigin(0.5, 1)
+			.setY(pointer.position.y - Space.pad)
+		}
+		// If there is a pin, go just to the right of that
+		else {
+			this.txt.setX(this.leftPin + Space.pad)
+			.setOrigin(0, 0.5)
+			.setY(pointer.position.y)
+		}
+		
+		this.ensureOnScreen()
 	}
 
 	// Ensure that the hint is within the screen bounds, if possible

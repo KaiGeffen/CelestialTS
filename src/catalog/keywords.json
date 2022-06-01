@@ -14,7 +14,7 @@
 
 
 	{"key": "Inspire",
-		"text": "Inspire X - Next round you have X extra mana.",
+		"text": "[img=kw-Inspire X] - Next round you have X extra mana.",
 		"x": true
 	},
 	{"key": "Inspired",
