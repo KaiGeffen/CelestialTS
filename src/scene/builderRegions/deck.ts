@@ -213,6 +213,9 @@ export default class DeckRegion {
 				this.addCardToDeck(card, panel)
 			}
 
+			// Scroll to the top of the page
+			this.scrollablePanel.t = 0
+
 			return true
 		}
 	}
