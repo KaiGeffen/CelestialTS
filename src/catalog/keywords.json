@@ -22,7 +22,7 @@
 		"x": true
 	},
 	{"key": "Nourish",
-		"text": "Nourish X - The next card you resolve is worth +X points.",
+		"text": "[img=kw-Nourish X] - The next card you resolve is worth +X points.",
 		"x": true
 	},
 	{"key": "Starve",
@@ -30,7 +30,7 @@
 		"x": true
 	},
 	{"key": "Birth",
-		"text": "Birth X - If you have a Child in hand, increase its points by X. Otherwise create a 0:X Fleeting Child in hand.",
+		"text": "[img=kw-Birth X] - If you have a Child in hand, increase its points by X. Otherwise create a 0:X [img=kw-Fleeting] Child in hand.",
 		"x": true
 	},
 	{"key": "Morning",

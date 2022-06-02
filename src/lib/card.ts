@@ -173,7 +173,7 @@ export default class Card {
         regex = new RegExp(/\b/.source + keyword.key + /\b/.source, "i")
       }
       else {
-        regex = new RegExp(/\b/.source + keyword.key + ' ' + /(X|[0-9]*)\b/.source, "i")
+        regex = new RegExp(/\b/.source + keyword.key + ' ' + /(X|-?[0-9]*)\b/.source, "i")
       }
 
       let match = cardText.match(regex)
@@ -192,6 +192,9 @@ export default class Card {
       if (x) {
         // NOTE This is replaceAll, but supported on all architectures
         txt = txt.split(/\bX\b/).join(x)
+
+        // NOTE Special case for occurences of +X, where X could be -N, so you want -N instead of +-N
+        txt = txt.split(/\+\-/).join('-')
       }
 
       cardText += txt

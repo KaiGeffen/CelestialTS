@@ -13,7 +13,10 @@
   },
   {"name": "Nascence", "id": 2,
     "cost": 0, "points": 0,
-    "text": "Birth 1."
+    "text": "Birth 1.",
+    "keywords": [
+      {"name": "Birth", "x": 0, "y": 130, "value": 1}
+    ]
   },
 
   {"name": "Impulse", "id": 3,
@@ -57,7 +60,10 @@
   },
   {"name": "Birth", "id": 8,
     "cost": 2, "points": 0,
-    "text": "Birth 2."
+    "text": "Birth 2.",
+    "keywords": [
+      {"name": "Birth", "x": 0, "y": 130, "value": 2}
+    ]
   },
   {"name": "Cosmos", "id": 9,
     "cost": 2, "points": 0,
@@ -69,11 +75,17 @@
 
   {"name": "Ancestry", "id": 10,
     "cost": 3, "points": 0,
-    "text": "Birth X, where X is the number of cards later in the story."
+    "text": "Birth 1 for each card later in the story.",
+    "keywords": [
+      {"name": "Birth", "x": -32, "y": 111, "value": 1}
+    ]
   },
   {"name": "Fruit", "id": 11,
     "cost": 3, "points": 0,
-    "text": "Nourish 3."
+    "text": "Nourish 3.",
+    "keywords": [
+      {"name": "Nourish", "x": 0, "y": 130, "value": 3}
+    ]
   },
   {"name": "Mercy", "id": 12,
     "cost": 3, "points": 3,
@@ -192,7 +204,10 @@
 
   {"name": "Hungry Ghost", "id": 31,
     "cost": 2, "points": 4,
-    "text": "Starve 4."
+    "text": "Nourish -4.",
+    "keywords": [
+      {"name": "Nourish", "x": 0, "y": 130, "value": -4}
+    ]
   },
   {"name": "Sunflower", "id": 69,
     "cost": 2, "points": 1,
@@ -245,7 +260,10 @@
   },
   {"name": "Cradle", "id": 60,
     "cost": 3, "points": 2,
-    "text": "Birth 2."
+    "text": "Birth 2.",
+    "keywords": [
+      {"name": "Birth", "x": 0, "y": 130, "value": 2}
+    ]
   },
   {"name": "Nightmare", "id": 68,
     "cost": 3, "points": 0,
@@ -257,7 +275,7 @@
   },
   {"name": "Sickness", "id": 58,
     "cost": 3, "points": 0,
-    "text": "Fleeting, give your opponent Starve 4, create a Sickness in their hand.",
+    "text": "Fleeting, give your opponent Nourish -4, create a Sickness in their hand.",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y": 60}
     ]
@@ -361,6 +379,6 @@
 
   {"name": "Hollow", "id": 76,
     "cost": 0, "points": 0,
-    "text": "Set your points to 0. Gain Nourish equal to the amount of points you lost this way."
+    "text": "Set your points to 0. Gain Nourish 1 for each point you lost this way."
   }
 ]

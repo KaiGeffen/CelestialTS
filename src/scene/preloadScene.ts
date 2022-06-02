@@ -195,7 +195,7 @@ export default class PreloadClass extends Phaser.Scene {
 			}
 			else {
 				// NOTE Some of these may not exist, but all that exist are covered here
-				['X','1','2','3','4','5','6','7','8','9'].forEach(n => {
+				['-4','1','2','3','4'].forEach(n => {
 					const s = keyword.key
 					try {
 						this.load.image(`kw-${s} ${n}`, `keywords/${s} ${n}.png`)

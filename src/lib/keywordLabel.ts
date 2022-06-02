@@ -38,6 +38,9 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
 		// If this keyword has an X, replace all occurences with its value
 		if (this.value !== undefined) {
 			s = s.replace(/X/g, this.value.toString())
+
+			// NOTE Special case for occurences of +X, where X could be -N, so you want -N instead of +-N
+        	s = s.split(/\+\-/).join('-')
 		}
 
 		let hint = this.scene['hint']
