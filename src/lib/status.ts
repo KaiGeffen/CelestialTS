@@ -1,7 +1,6 @@
 import "phaser"
 import { keywords } from "../catalog/keywords"
 import { Space, Style } from "../settings/settings"
-import { cardInfo } from "./cardImage"
 
 
 export enum Status {
@@ -95,7 +94,6 @@ export class StatusBar {
   		let that = this
 
   		return function() {
-  			cardInfo.setVisible(true)
 
   			// Get the string to be shown
   			let s = ''
@@ -113,23 +111,18 @@ export class StatusBar {
   				}
   			})
 
-		    cardInfo.text = s
 
-		    // Position cardInfo so that it doesn't hide this text
 		    let x = obj.x - obj.width/2
 		    // If it's you, it's above, them it's below
 		    let y
 		    if (that.isYou) {
 		    	y = obj.y - obj.height/2 - Space.pad
 		    } else {
-		    	y = obj.y + obj.height/2 + Space.pad + cardInfo.height
 		    }
 
-		    cardInfo.setPosition(x, y)
 		  }
   	}
 
   	private onHoverExit(): void {
-  		cardInfo.setVisible(false)
   	}
 }
