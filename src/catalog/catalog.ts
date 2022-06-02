@@ -32,11 +32,11 @@ export const cardback: Card = tokenCards[0]
 export const allCards: Card[] = collectibleCards.concat(tokenCards)
 
 // Return the card with the given id, or undefined if none exists
-export function getCard(id: number): Card {
+export function getCard(target: number | string): Card {
 
-  for(let i = 0; i < collectibleCards.length; i++) {
-    let card = collectibleCards[i]
-    if (card.id === id) {
+  for(let i = 0; i < allCards.length; i++) {
+    let card = allCards[i]
+    if (card.id === target || card.name === target) {
       return card
     }
   }

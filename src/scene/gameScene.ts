@@ -238,6 +238,7 @@ class GameScene extends BaseScene {
 
 		if (this.view.paused) {
 			// return false
+			// TODO Decide if this feature will be supported
 		}
 
 		// Remember what version of the game state this is, for use when communicating with server

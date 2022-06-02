@@ -4,6 +4,19 @@ import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
 import { Rarity } from "./rarity"
 
+interface KeywordTuple {
+  name: string
+  x: number
+  y: number
+  value: number
+}
+
+interface ReferenceTuple {
+  name: string
+  x: number
+  y: number
+}
+
 interface CardData {
   name: string
   id: number
@@ -11,9 +24,9 @@ interface CardData {
   points: number
   text: string
   dynamicText: string
-  catalogText: string
-  rarity: Rarity
   story: string
+  keywords: KeywordTuple[]
+  references: ReferenceTuple[]
 }
 
 // For the tutorial, the card info shown will only be the mana/points
@@ -33,6 +46,8 @@ export default class Card {
   text: string
   rarity: Rarity
   story: string
+  keywords: KeywordTuple[]
+  references: ReferenceTuple[]
   
   dynamicText: string
   catalogText: string
@@ -45,12 +60,10 @@ export default class Card {
     this.points = data.points
     this.text = data.text
 
-    this.rarity = data.rarity
-
     this.dynamicText = (data.dynamicText === undefined) ? '' : data.dynamicText
 
-    // TODO Take out the check once all cards have catalog text
-    this.catalogText = (data.catalogText === undefined) ? '' : data.catalogText
+    this.keywords = data.keywords === undefined ? [] : data.keywords
+    this.references = data.references === undefined ? [] : data.references
 
     // TODO Don't rely on card text like this
     this.fleeting = this.text.includes("Fleeting")
@@ -160,7 +173,7 @@ export default class Card {
         regex = new RegExp(/\b/.source + keyword.key + /\b/.source, "i")
       }
       else {
-        regex = new RegExp(/\b/.source + keyword.key + ' ' + /(X|[0-9]*)\b/.source, "i")
+        regex = new RegExp(/\b/.source + keyword.key + ' ' + /(X|-?[0-9]*)\b/.source, "i")
       }
 
       let match = cardText.match(regex)
@@ -179,6 +192,9 @@ export default class Card {
       if (x) {
         // NOTE This is replaceAll, but supported on all architectures
         txt = txt.split(/\bX\b/).join(x)
+
+        // NOTE Special case for occurences of +X, where X could be -N, so you want -N instead of +-N
+        txt = txt.split(/\+\-/).join('-')
       }
 
       cardText += txt

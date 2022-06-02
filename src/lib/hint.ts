@@ -10,28 +10,31 @@ import { allCards } from '../catalog/catalog'
 export default class Hint {
 	txt: RexUIPlugin.BBCodeText
 
+	// TODO
+	leftPin: number
+
 	constructor(scene: BaseScene) {
 		this.txt = scene.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
-		.setOrigin(0, 1)
+		.setOrigin(0.5, 1)
 		.setDepth(40)
 		.setVisible(false)
 		.setAlign('center')
 
-		// Copy mouse position
-		let that = this
-		scene.input.on('pointermove', (pointer) => {
-			this.txt.copyPosition(pointer.position)
-			this.ensureOnScreen()
-		})
+		// Copy mouse position and show a hint when over a hinted object
+		scene.input.on('pointermove', () => {this.orientText()})
 	}
 
 	hide(): Hint {
 		this.txt.setVisible(false)
 
+		// Reset the pin, since the next hovered item might not pin
+		this.leftPin = undefined
+
 		return this
 	}
 
 	show(): Hint {
+		this.orientText()
 		this.txt.setVisible(true)
 
 		return this
@@ -53,23 +56,35 @@ export default class Hint {
 			this.txt.setText(`[img=${card.name}]`)
 			.setFixedSize(Space.cardWidth + Space.pad, Space.cardHeight + Space.pad)
 		}
-
-		
-
-		// 
-		// let width = Math.max(bounds.width, Space.cardWidth + Space.padSmall*2)
-		// let height = bounds.height + Space.cardHeight
-
-		// this.txt.setFixedSize(width, height)
 	}
 
 	showText(s: string): void {
 		if (s !== '') {
-			this.show()			
+			this.show()
 		}
 
 		this.txt.setText(s)
 		.setFixedSize(0, 0)
+	}
+
+	// Orient the text to be in the right position relative to the mouse
+	private orientText(): void {
+		const pointer = this.txt.scene.game.input.activePointer
+
+		// Unless there is a left pin, center and hover above the mouse position
+		if (this.leftPin === undefined) {
+			this.txt.setX(pointer.position.x)
+			.setOrigin(0.5, 1)
+			.setY(pointer.position.y - Space.pad)
+		}
+		// If there is a pin, go just to the right of that
+		else {
+			this.txt.setX(this.leftPin + Space.pad)
+			.setOrigin(0, 0.5)
+			.setY(pointer.position.y)
+		}
+		
+		this.ensureOnScreen()
 	}
 
 	// Ensure that the hint is within the screen bounds, if possible
@@ -78,15 +93,22 @@ export default class Hint {
 
 		let bounds = txt.getBounds()
 
-		// Default to going left and up from the cursor
-		// If the right side of txt is beyond right side of window, move left that much
-		if (txt.x + bounds.width > Space.windowWidth) {
-			txt.setX(Space.windowWidth - bounds.width)
+		let dx = 0
+		if (bounds.left < 0) {
+			dx = -bounds.left
+		}
+		else if (bounds.right > Space.windowWidth) {
+			dx = Space.windowWidth - bounds.right
 		}
 
-		// If above the top of the screen, lower by that amount
-		if (txt.y - bounds.height < 0) {
-			txt.setY(bounds.height)
+		let dy = 0
+		if (bounds.top < 0) {
+			dy = -bounds.top
 		}
+		else if (bounds.bottom > Space.windowHeight) {
+			dy = Space.windowHeight - bounds.bottom
+		}
+
+		txt.setPosition(txt.x + dx, txt.y + dy)
 	}
 }

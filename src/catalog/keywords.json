@@ -1,20 +1,20 @@
 [
 	{"key": "Fleeting",
-		"text": "Fleeting - After resolving, this card is removed from the game.",
+		"text": "[img=kw-Fleeting] - After resolving, this card is removed from the game.",
 		"x": false
 	},
 	{"key": "Visible",
-		"text": "Visible - Both players can see this card while it is in the story.",
+		"text": "[img=kw-Visible] - Both players can see this card while it is in the story.",
 		"x": false
 	},
 	{"key": "Sight",
-		"text": "Sight X - The first X cards in the story are visible to you this round.",
+		"text": "[img=kw-Sight X] - The first X cards in the story are visible to you this round.",
 		"x": true
 	},
 
 
 	{"key": "Inspire",
-		"text": "Inspire X - Next round you have X extra mana.",
+		"text": "[img=kw-Inspire X] - Next round you have X extra mana.",
 		"x": true
 	},
 	{"key": "Inspired",
@@ -22,7 +22,7 @@
 		"x": true
 	},
 	{"key": "Nourish",
-		"text": "Nourish X - The next card you resolve is worth +X points.",
+		"text": "[img=kw-Nourish X] - The next card you resolve is worth +X points.",
 		"x": true
 	},
 	{"key": "Starve",
@@ -30,7 +30,7 @@
 		"x": true
 	},
 	{"key": "Birth",
-		"text": "Birth X - If you have a Child in hand, increase its points by X. Otherwise create a 0:X Fleeting Child in hand.",
+		"text": "[img=kw-Birth X] - If you have a Child in hand, increase its points by X. Otherwise create a 0:X [img=kw-Fleeting] Child in hand.",
 		"x": true
 	},
 	{"key": "Morning",

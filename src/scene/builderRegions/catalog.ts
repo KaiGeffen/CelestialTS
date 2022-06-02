@@ -36,7 +36,7 @@ export default class CatalogRegion {
     for (let i = 0; i < pool.length; i++) {
       let cardImage = this.addCardToCatalog(pool[i], i)
 
-      this.panel.getElement('panel').add(cardImage.image)
+      this.panel.getElement('panel').add(cardImage.container)
     }
 
     this.panel.layout()
@@ -103,14 +103,14 @@ export default class CatalogRegion {
 
       // Check if this card is present
       if (filterFunction(cardImage.card)) {
-        cardImage.image.setVisible(true)
+        cardImage.container.setVisible(true)
 
         // Add the image next, with padding between it and the next card
-        sizer.add(cardImage.image)
+        sizer.add(cardImage.container)
       }
       else
       {
-        cardImage.image.setVisible(false)
+        cardImage.container.setVisible(false)
       }
     }
 

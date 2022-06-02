@@ -4,68 +4,9 @@ import { Color, Style, BBStyle, Time, Space } from "../settings/settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
+import { KeywordLabel, ReferenceLabel } from './keywordLabel'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
-export var cardInfo: any // BBCodeText
-
-export function addCardInfoToScene(scene: Phaser.Scene): Phaser.GameObjects.Text {
-  cardInfo = scene.add['rexBBCodeText'](0, 0, '', BBStyle.cardText).setOrigin(0, 1).setAlpha(0)
-
-  // TODO Do this somewhere else
-  // Add image render information
-  allCards.forEach( (card) => {
-    cardInfo.addImage(card.name, {
-      key: card.name,
-      width: Space.cardWidth,
-      height: Space.cardHeight,
-      // y: -17 // Bottom of card is on line with the text
-    })
-  })
-
-  cardInfo.setVisible(false)
-
-  return cardInfo
-}
-
-// TODO Bad smell, it's reccomended not to use containers so much
-// Make card info reflect whatever card it is currently hovering
-export function refreshCardInfo() {
-  let scene: Phaser.Scene = cardInfo.scene
-
-  let allContainers = scene.children.getAll().filter(e => e.type === 'Container' && e['visible'])
-
-  let showText = false
-
-  let pointer = scene.game.input.activePointer
-
-  if (pointer.active) {
-    allContainers.forEach(function (container: Phaser.GameObjects.Container) {
-      container.list.forEach(function (obj) {
-        if (obj.type === 'Container') {
-          let cont2 = obj as Phaser.GameObjects.Container
-          cont2.list.forEach(function (obj2) {
-            if (obj2.type === 'Image') {
-              let sprite = obj2 as Phaser.GameObjects.Image
-              
-              if (sprite.getBounds().contains(pointer.x, pointer.y)) {
-                // Show text only if the sprite has a pointerover listener
-                if (sprite.emit('pointerover')) {
-                  showText = true
-                }
-              }
-              else {
-                sprite.emit('pointerout')
-              }
-            }
-          })
-          
-        }
-      })
-    })
-  }
-
-  // Card info should only become visible is something is hovered over
-  cardInfo.setVisible(showText)
-}
 
 export class CardImage {
   card: Card
@@ -76,12 +17,16 @@ export class CardImage {
   txtCost: Phaser.GameObjects.Text
   txtPoints: Phaser.GameObjects.Text
 
+  keywords: KeywordLabel[] = []
+  // All referenced cards
+  references: ReferenceLabel[] = []
+
   // Whether the current card is required in this context (Must be in the deck)
   required = false
 
   unplayable: boolean = false
   // A container just for this cardImage / objects related to it
-  container: Phaser.GameObjects.Container
+  container: ContainerLite | Phaser.GameObjects.Container
 
   // The index of this container within its parent container before it was brought to top
   renderIndex: number = undefined
@@ -97,7 +42,7 @@ export class CardImage {
     this.scene = scene
 
     // Card image
-    this.image = scene.add.image(0, 0, card.name)
+    this.image = scene.add.image(0, 0, card.name)//.setAlpha(0.3)
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
@@ -117,22 +62,20 @@ export class CardImage {
     .setOrigin(0.5)
     this.setPoints(card.points)
 
+    // Add keywords and references
+    this.addKeywords()
+    this.addReferences()
+
     // This container
-    this.container = scene.add.container(0, 0)
-    this.container.add([this.image, this.txtCost, this.txtPoints])
-    outerContainer.add(this.container)
+    this.container = this.createContainer(outerContainer)
 
     if (interactive) {
-      this.image.setInteractive();
-      this.image.on('pointerover', this.onHover(), this);
-      this.image.on('pointerout', this.onHoverExit(), this);
+      this.image.setInteractive()
+      this.setOnHover(this.onHover(), this.onHoverExit())
 
       // If the mouse moves outside of the game, exit the hover also
       this.scene.input.on('gameout', this.onHoverExit(), this)
     }
-
-    // Hint any keywords that are in the card
-    this.hintKeywords()
   }
 
   destroy(): void {
@@ -152,32 +95,6 @@ export class CardImage {
     return this
   }
 
-  dissolve(): void {
-    let scene = this.scene
-
-    let copyImage = scene.add.image(0, 0, this.image.texture)
-    this.container.add(copyImage)
-    this.container.sendToBack(copyImage)
-
-    // Add pipeline for dissolve effect
-    let postFxPlugin = scene.plugins.get('rexDissolvePipeline')
-    let dissolvePipeline = postFxPlugin['add'](copyImage, {
-      noiseX: 100,
-      noiseY: 100
-    })
-
-    // this.dissolvePipeline.setProgress(1)
-    scene.tweens.add({
-      targets: dissolvePipeline,
-      progress: 1,
-      ease: 'Quad',
-      duration: Time.recapStateMinimum,
-      onComplete: function(tween, targets, params) {
-        copyImage.destroy()
-      }
-    })
-  }
-
   // Set the callback to fire when this card's image is clicked
   setOnClick(f: () => void, removeListeners = false): CardImage {
     if (removeListeners) {
@@ -185,6 +102,10 @@ export class CardImage {
     }
 
     this.image.on('pointerdown', f)
+    
+    this.keywords.forEach((keyword) => {
+      keyword.on('pointerdown', f)
+    })
 
     return this
   }
@@ -192,12 +113,23 @@ export class CardImage {
   // Remove all callbacks that fire when this card's image is clicked
   removeOnClick(): void {
     this.image.removeAllListeners('pointerdown')
+
+    this.keywords.forEach((keyword) => {
+      keyword.removeAllListeners('pointerdown')
+    })
   }
 
   // Set the callback to fire when this card's image is hovered, and one for when exited
   setOnHover(fHover: () => void, fExit: () => void): CardImage {
+    let that = this
+
     this.image.on('pointerover', fHover)
-    this.image.on('pointerout', fExit)
+    this.image.on('pointerout', () => {
+      const pointer = that.scene.input.activePointer
+      if (!that.image.getBounds().contains(pointer.x, pointer.y)) {
+        fExit()
+      }
+    })
 
     return this
   }
@@ -286,19 +218,65 @@ export class CardImage {
     this.required = true
   }
 
-  private hintKeywords(): void {
+  private createContainer(outerContainer): ContainerLite {
+    // Depending on the type of the outer container, need to do different things
+    let container
+    if (outerContainer instanceof Phaser.GameObjects.Container) {
+      container = this.scene.add.container()
+    }
+    else if (outerContainer instanceof ContainerLite) {
+      container = new ContainerLite(this.scene, 0, 0, Space.cardWidth, Space.cardHeight)
+    }
+    else {
+      throw 'CardImage was given a container that isnt of a correct type'
+    }
+
+    // Add each of the objects
+    container.add([this.image, this.txtCost, this.txtPoints, ...this.keywords, ...this.references])
+
+    // Make outercontainer contain this container
+    outerContainer.add(container)
+
+    return container
+  }
+
+  private addKeywords(): void {
     let that = this
 
-    // TODO Care about locations
-    let hint = that.image.scene['hint']
-    this.setOnHover(
-      () => {
-        hint.showText(that.card.getHintText())
-      },
-      () => {
-        hint.hide()
-      }
-      )
+    this.card.keywords.forEach((keywordTuple) => {
+      let keyword = new KeywordLabel(
+        this.scene,
+        keywordTuple.name,
+        keywordTuple.x,
+        keywordTuple.y,
+        keywordTuple.value)
+
+      // Keyword should trigger the hover/click for the image behind
+      keyword.on('pointerdown', () => {
+        that.image.emit('pointerdown')
+      })
+
+      this.keywords.push(keyword)
+    })
+  }
+
+  private addReferences(): void {
+    let that = this
+
+    this.card.references.forEach((referenceTuple) => {
+      let reference = new ReferenceLabel(
+        this.scene,
+        referenceTuple.name,
+        referenceTuple.x,
+        referenceTuple.y)
+
+      // reference should trigger the hover/click for the image behind
+      reference.on('pointerdown', () => {
+        that.image.emit('pointerdown')
+      })
+
+      this.references.push(reference)
+    })
   }
 
   private onHover(): () => void {
@@ -321,88 +299,67 @@ export class CardImage {
         doHighlight()
       }
 
-      // cardInfo.text = that.card.getCardText()
+    }
+  }
 
-      // // TODO Adjust for extra container
-      // // Copy the position of the card in its local space
-      // let outerContainer = that.container.parentContainer
+  private onHoverExit(): () => void {
+    let that = this
+    return () => {
+      that.removeHighlight()()
+    }
+  }
 
-      // // Adj
-      // let x = that.image.x + that.container.x + outerContainer.x + Space.cardSize/2 + Space.highlightWidth * 2
-      // let y = that.image.y + that.container.y + outerContainer.y + Space.cardSize/2
+  // Move this cardImage above everything else in its container when it's hovered
+  moveToTopOnHover(): CardImage {
+    let that = this
+    let container = this.container
+    let parentContainer = container.parentContainer
 
-      // // Change alignment of text based on horizontal position on screen
-      // if (x + cardInfo.width > Space.windowWidth) // Going off right side
-      // {
-        //   // Try it on the left side
-        //   x -= Space.cardSize + Space.highlightWidth*4 + cardInfo.width
+    // Reverse the order of everything from this objects index on
+    // This makes this appear above everything, and things to the right to be in reverse order
+    let onHover = function() {
+      // If the render index has already been set, we are already reversed
+      if (that.renderIndex !== undefined) {
+        return
+      }
 
-        //   // If it's now going of the left side, instead put it as far right as possible
-        //   if (x < 0) {
-          //     x = Space.windowWidth - cardInfo.width
-          //   }
-          // }
+      // Remember the index that this was at
+      that.renderIndex = parentContainer.getIndex(container)
 
-          // // Adjust y
-          // if (y - cardInfo.height < 0) // Going over the top
-          // {
-            //   y = cardInfo.height
-            // }
-            // else if (y > Space.windowHeight) {
-              //   y = Space.windowHeight
-              // }
+      // From the top of the list until this cardImage, reverse the order
+      for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
+        parentContainer.bringToTop(parentContainer.getAt(i))
+      }
+    }
 
-              // cardInfo.setX(x)
-              // cardInfo.setY(y)
-            }
-          }
+    let onExit = function() {
+      // From INDEX to the top is reversed, flip it back
+      for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
+        parentContainer.bringToTop(parentContainer.getAt(i))
+      }
 
-          private onHoverExit(): () => void {
-            let that = this
-            return () => {
-              that.removeHighlight()()
-            }
-          }
+      // Reset the render index to show no longer reversed
+      that.renderIndex = undefined
+    }
 
-          // Move this cardImage above everything else in its container when it's hovered
-          moveToTopOnHover(): CardImage {
-            let container = this.container
-            let parentContainer = container.parentContainer
+    // Set the hover / exit callbacks
+    this.setOnHover(onHover, onExit)
 
-            // Reverse the order of everything from this objects index on
-            // This makes this appear above everything, and things to the right to be in reverse order
-            this.image.on('pointerover', () => {
-              // Remember the index that this was at
-              this.renderIndex = parentContainer.getIndex(container)
+    return this
+  }
 
-              // From the top of the list until this cardImage, reverse the order
-              for (let i = parentContainer.length - 1; i >= this.renderIndex; i--) {
-                parentContainer.bringToTop(parentContainer.getAt(i))
-              }
-            }, this)
+  // Toggle whether this card appears as being set to mulligan or not
+  icon: Phaser.GameObjects.Image
+  toggleSelectedForMulligan(): CardImage {
+    if (this.icon !== undefined) {
+      this.icon.destroy()
+      this.icon = undefined
+    }
+    else {
+      this.icon = this.container.scene.add.image(0, 0, 'icon-XOut')
+      this.container.add(this.icon)
+    }
 
-            this.image.on('pointerout', () => {
-              // From INDEX to the top is reversed, flip it back
-              for (let i = parentContainer.length - 1; i >= this.renderIndex; i--) {
-                parentContainer.bringToTop(parentContainer.getAt(i))
-              }
-            }, this)
-
-            return this
-          }
-
-          // Toggle whether this card appears as being set to mulligan or not
-          icon: Phaser.GameObjects.Image
-          toggleSelectedForMulligan(): CardImage {
-            if (this.icon !== undefined) {
-              this.icon.destroy()
-              this.icon = undefined
-            }
-            else {
-              this.icon = this.container.scene.add.image(0, 0, 'icon-XOut')
-              this.container.add(this.icon)
-            }
-
-            return this
-          }
-        }
+    return this
+  }
+}
