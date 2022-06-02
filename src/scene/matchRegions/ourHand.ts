@@ -314,6 +314,9 @@ export default class OurHandRegion extends Region {
 					ease: "Sine.easeInOut",
 					// After brief delay, tell network, hide info, shift cards to fill its spot
 					onStart: function () {setTimeout(function() {
+						// Hide any hint that might be showing
+						that.scene['hint'].hide()
+
 						// Fill in the hole where the card was
 						// For every card later than i, move to the right
 						for (let j = i + 1; j < hand.length; j++) {

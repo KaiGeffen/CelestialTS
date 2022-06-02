@@ -168,10 +168,7 @@
   },
   {"name": "Prey", "id": 26,
     "cost": 1, "points": 2,
-    "text": "Create a Predator in your opponent's hand.",
-    "references": [
-      {"name": "Predator", "x": 0, "y": 112}
-    ]
+    "text": "Create a Predator in your opponent's hand."
   },
   {"name": "Morning Dew", "id": 63,
     "cost": 1, "points": 1,
