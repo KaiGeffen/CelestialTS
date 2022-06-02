@@ -89,7 +89,7 @@ class CatalogScene extends BaseScene {
 		return [x, y]
 	}
 
-	private onClick(card: Card, container: Phaser.GameObjects.Container): () => void {
+	private onClick(card: Card, container: Phaser.GameObjects.Container | ContainerLite): () => void {
 	    let that = this
 	    return function() {
 	      that.sound.play('click')
