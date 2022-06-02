@@ -318,6 +318,11 @@ export class CardImage {
     // Reverse the order of everything from this objects index on
     // This makes this appear above everything, and things to the right to be in reverse order
     let onHover = function() {
+      // If the render index has already been set, we are already reversed
+      if (that.renderIndex !== undefined) {
+        return
+      }
+
       // Remember the index that this was at
       that.renderIndex = parentContainer.getIndex(container)
 
@@ -332,6 +337,9 @@ export class CardImage {
       for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
         parentContainer.bringToTop(parentContainer.getAt(i))
       }
+
+      // Reset the render index to show no longer reversed
+      that.renderIndex = undefined
     }
 
     // Set the hover / exit callbacks
