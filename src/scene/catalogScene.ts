@@ -7,6 +7,7 @@ import { CardImage } from "../lib/cardImage"
 import { decodeDeck } from "../lib/codec"
 import Button from "../lib/button"
 import prebuiltDecks from "../catalog/prebuiltDecks"
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
 class CatalogScene extends BaseScene {

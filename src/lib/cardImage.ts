@@ -4,7 +4,7 @@ import { Color, Style, BBStyle, Time, Space } from "../settings/settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
-import { KeywordLabel, ReferenceLabel } from './keywordLabel'
+import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
