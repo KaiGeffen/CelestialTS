@@ -185,8 +185,8 @@ export default class DecklistsRegion {
 				// Deselect decklist buttons
 				that.decklistBtns.forEach(btn => btn.deselect())
 
-				// Select premade button
-				that.btnPremade.select()
+				// Select premade button (Ensure only selected once)
+				that.btnPremade.deselect().select()
 				
 				// Set the current deck to premade list
 				that.scene.setPremade(i)
