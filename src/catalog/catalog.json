@@ -299,7 +299,11 @@
   },
   {"name": "Posterity", "id": 53,
     "cost": 4, "points": 4,
-    "text": "Morning: Birth 1."
+    "text": "Morning: Birth 1.",
+    "keywords": [
+      {"name": "Morning", "x": 0, "y": 100},
+      {"name": "Birth", "x": 0, "y": 130, "value": 1}
+    ]
   },
   {"name": "Gentle Rain", "id": 71,
     "cost": 4, "points": 2,
@@ -307,7 +311,7 @@
   },
   {"name": "Iceberg", "id": 54,
     "cost": 4, "points": 2,
-    "text": "Draw 2 cards.\nCosts X less, where X is the number of times you've passed this round."
+    "text": "Draw 2 cards.\nCosts 1 less for each time you’ve passed this round."
   },
 
   {"name": "Heron", "id": 65,
@@ -362,7 +366,8 @@
     "text": "Visible.\nMorning: gain Inspired 1.",
     "story": "I raise my head over the horizon\nI begin\nJust like you",
     "keywords": [
-      {"name": "Visible", "x": 0, "y": 104}
+      {"name": "Visible", "x": 0, "y": 61},
+      {"name": "Morning", "x": 0, "y": 91}
     ]
   },
   {"name": "Clear Mind", "id": 75,
