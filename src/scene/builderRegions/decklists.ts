@@ -126,6 +126,15 @@ export default class DecklistsRegion {
 	getSelectedDeckIndex(): number {
 		return this.savedDeckIndex
 	}
+
+	// Set the currently selected deck name to the given name
+	setName(name: string): void {
+		if (this.savedDeckIndex === undefined) {
+			throw 'Tried to set the deck name but no deck is selected.'
+		}
+
+		this.decklistBtns[this.savedDeckIndex].setText(name)
+	}
 	
 	private createHeader(): Phaser.GameObjects.GameObject {
 		let sizer = this.scene.rexUI.add.fixWidthSizer({

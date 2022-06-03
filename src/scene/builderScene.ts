@@ -53,6 +53,8 @@ export class BuilderBase extends BaseScene {
   setName(name: string) {
     this.deckRegion.setName(name)
 
+    this.decklistsRegion.setName(name)
+
     return this
   }
 
