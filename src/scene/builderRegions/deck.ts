@@ -160,7 +160,7 @@ export default class DeckRegion {
 
 		if (!alreadyInDeck) {
 			// If it doesn't, create a new cutout
-			let container = new ContainerLite(this.scene, 0, 0, Space.deckPanelWidth, 50) // TODO
+			let container = new ContainerLite(this.scene, 0, 0, Space.deckPanelWidth, Space.cutoutHeight) // TODO
 			let cutout = new Cutout(container, card)
 			cutout.setOnClick(this.removeCardFromDeck(cutout))
 
