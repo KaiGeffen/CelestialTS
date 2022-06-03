@@ -126,9 +126,14 @@ import avatarNames from '../../lib/avatarNames';
 export class AvatarSmall extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		name: string,
+		name: string | number,
 		f: () => void = function() {})
 	{
+		// If an id was given instead of a string, get the string
+		if (typeof name === 'number') {
+			name = avatarNames[name]
+		}
+
 		super(within, x, y, 
 		{
 			icon: {

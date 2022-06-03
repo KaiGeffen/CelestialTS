@@ -15,7 +15,7 @@ console.log(`Screen dimensions: ${width} x ${height}`)
 
 // TODO Most of this needs to change since the gui update
 
-export const Space = {
+export var Space = {
   windowWidth: width,
   windowHeight: height,
   cardSize: 100,

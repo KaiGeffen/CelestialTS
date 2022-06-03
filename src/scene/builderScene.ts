@@ -197,6 +197,7 @@ export class BuilderScene extends BuilderBase {
         menu: 'mode',
         activeScene: that,
         deck: that.getDeckCode(),
+        avatar: that.deckRegion.avatarNumber,
       })
     }
   }

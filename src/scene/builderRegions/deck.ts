@@ -30,7 +30,7 @@ export default class DeckRegion {
 	private deck: Cutout[] = []
 
 	// The avatar button
-	private avatarNumber: number
+	avatarNumber: number
 	private avatar: AvatarSmall
 	private txtDeckName: Phaser.GameObjects.Text
 

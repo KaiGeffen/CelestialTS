@@ -110,6 +110,26 @@ export class CelestialGame extends Phaser.Game {
 
     vRecap.setAttribute('width', window.innerWidth.toString())
     vRecap.setAttribute('height', Space.windowHeight.toString())
+
+    // TODO Move to its own file
+    // Adjust window display whenever resized
+    window.addEventListener('resize', () => {
+      const width = Math.floor(window.innerWidth)
+      const height = Math.floor(window.innerHeight)
+
+      this.scale.resize(width, height)
+
+      Space.windowWidth = width
+      Space.windowHeight = height
+
+      // Reload the active scene
+      this.scene.scenes.forEach(scene => {
+        if (this.scene.isActive(scene)) {
+          // TODO Come up with a redraw method to adjust to the new dimensions
+          // this.scene.start(scene)
+        }
+      })
+    });
   }
 }
 

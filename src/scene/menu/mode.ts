@@ -15,8 +15,12 @@ const width = 400
 export default class ModeMenu extends Menu {
 	password: string
 
+	avatar: number
+
 	constructor(scene: Phaser.Scene, params) {
 		super(scene)
+
+		this.avatar = params.avatar
 
 		let panel = this.createSizer(scene)
 
@@ -126,6 +130,7 @@ export default class ModeMenu extends Menu {
 					isTutorial: false,
 					deck: deck,
 					mmCode:'ai',
+					avatar: this.avatar,
 				}
 			)
 		})
@@ -144,6 +149,7 @@ export default class ModeMenu extends Menu {
 			{
 					isTutorial: false,
 					deck: deck,
+					avatar: this.avatar,
 				}
 			)
 		})
@@ -164,6 +170,7 @@ export default class ModeMenu extends Menu {
 					isTutorial: false,
 					deck: deck,
 					mmCode: that.password,
+					avatar: this.avatar,
 				}
 			)
 		})

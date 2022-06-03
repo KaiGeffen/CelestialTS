@@ -60,7 +60,7 @@ class GameScene extends BaseScene {
 		this.net = new Network(params.deck, this, mmCode)
 
 		// Create the view
-		this.view = new View(this)
+		this.view = new View(this, this.params.avatar)
 
 		this.setCallbacks(this.view, this.net)
 	}
@@ -346,7 +346,7 @@ class View {
 	// Region shown when the game has been won / lost
 	results: Region
 
-	constructor (scene: BaseScene) {
+	constructor (scene: BaseScene, avatarId: number) {
 		this.scene = scene
 
 		let background = scene.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
@@ -356,7 +356,7 @@ class View {
 		// Create each of the regions
 		// this.createOurHand()
 		// new HandRegion()//.create(scene)
-		this.ourHand = new Regions.OurHand().create(scene)
+		this.ourHand = new Regions.OurHand().create(scene, avatarId)
 		this.theirHand = new Regions.TheirHand().create(scene)
 
 		this.story = new Regions.Story().create(scene)

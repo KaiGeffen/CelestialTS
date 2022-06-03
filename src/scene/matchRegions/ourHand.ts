@@ -37,7 +37,7 @@ export default class OurHandRegion extends Region {
 	// Avatar image
 	avatar: AvatarSmall
 
-	create (scene: BaseScene): OurHandRegion {
+	create (scene: BaseScene, avatarId: number): OurHandRegion {
 		let that = this
 		this.scene = scene
 
@@ -55,7 +55,7 @@ export default class OurHandRegion extends Region {
 		this.createStatusDisplay()
 
 		// Create our avatar
-		this.avatar = this.createAvatar()
+		this.avatar = this.createAvatar(avatarId)
 		
 		// Create a visual divider
 		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
@@ -163,9 +163,8 @@ export default class OurHandRegion extends Region {
 		.setAlpha(0)
 	}
 
-	private createAvatar(): AvatarSmall {
-		// TODO Custom avatar
-		let btn = new AvatarSmall(this.container, 6, 6, 'Jules')
+	private createAvatar(avatarId: number): AvatarSmall {
+		let btn = new AvatarSmall(this.container, 6, 6, avatarId)
 		btn.setOrigin(0)
 		
 		return btn
