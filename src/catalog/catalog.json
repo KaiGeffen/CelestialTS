@@ -158,7 +158,12 @@
 
   {"name": "First Light", "id": 50,
     "cost": 0, "points": 0,
-    "text": "When played, gain Sight 4.\nMorning: gain Sight 1."
+    "text": "When played, gain Sight 4.\nMorning: gain Sight 1.",
+    "keywords": [
+      {"name": "Sight", "x": 0, "y": 78, "value": 4},
+      {"name": "Morning", "x": -22, "y": 104},
+      {"name": "Sight", "x": 0, "y": 130, "value": 1}
+    ]
   },
 
   {"name": "Nectar", "id": 25,
@@ -171,12 +176,21 @@
   },
   {"name": "Prey", "id": 26,
     "cost": 1, "points": 2,
-    "text": "Create a Predator in your opponent's hand."
+    "text": "Create a Predator in your opponent's hand.",
+    "references": [
+      {"name": "Predator", "x":6, "y": 113}
+    ]
   },
   {"name": "Dew", "id": 63,
     "cost": 1, "points": 1,
     "text": "Morning: create a Dew in your hand.",
-    "story": "I return\nOver and over again\nSwelling the future"
+    "story": "I return\nOver and over again\nSwelling the future",
+    "keywords": [
+      {"name": "Morning", "x": 0, "y": 102}
+    ],
+    "references": [
+      {"name": "Dew", "x":-17, "y": 134}
+    ]
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1, "points": 0,
@@ -248,7 +262,11 @@
   {"name": "Sprout from Ashes", "id": 74,
     "cost": 2, "points": 1,
     "text": "Remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
-    "story": "Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning"
+    "story": "Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning",
+    "keywords": [
+      {"name": "Nourish", "x": -36, "y": 89, "value": 1},
+      {"name": "Fleeting", "x": 38, "y": 113}
+    ]
   },
   {"name": "Pet", "id": 34,
     "cost": 2, "points": 1,
@@ -281,7 +299,11 @@
     "cost": 3, "points": 0,
     "text": "Fleeting, give your opponent Nourish -4, create a Sickness in their hand.",
     "keywords": [
-      {"name": "Fleeting", "x": 0, "y": 60}
+      {"name": "Fleeting", "x": 0, "y": 60},
+      {"name": "Nourish", "x": -35, "y": 111, "value": -4}
+    ],
+    "references": [
+      {"name": "Sickness", "x": -48, "y": 132}
     ]
   },
   {"name": "Awakening", "id": 39,
@@ -310,7 +332,10 @@
   },
   {"name": "Gentle Rain", "id": 71,
     "cost": 4, "points": 2,
-    "text": "Nourish 1 for each card you've drawn this round."
+    "text": "Nourish 1 for each card you've drawn this round.",
+    "keywords": [
+      {"name": "Nourish", "x": -32, "y": 88, "value": 1}
+    ]
   },
   {"name": "Iceberg", "id": 54,
     "cost": 4, "points": 2,
