@@ -184,6 +184,7 @@ export default class Button {
 		plugin['add'](this.icon, {
 			thickness: 3,
 			outlineColor: Color.outline,
+			quality: 0.3,
 		})
 
 		this.selected = true

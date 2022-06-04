@@ -287,8 +287,11 @@ export class CardImage {
 
       postFxPlugin['remove'](that.image)
       postFxPlugin['add'](that.image,
-        {thickness: Space.highlightWidth,
-          outlineColor: Color.cardHighlight})
+        {
+          thickness: Space.highlightWidth,
+          outlineColor: Color.outline,
+          quality: 0.3,
+        })
     }
 
     return function() {

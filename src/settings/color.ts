@@ -37,8 +37,8 @@ const CoreColors: Record<string, any> = {
 
 
   // Golden icon, for trophy
-  golden: 0xFFAB2E,
-  goldenS: '#FFAB2E',
+  golden: 0xFABD5D,
+  goldenS: '#FABD5D',
 
   // Breath icon, and things relating to breath
   breath: '#5F99DC',
