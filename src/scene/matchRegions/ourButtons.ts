@@ -23,7 +23,7 @@ export default class OurHandRegion extends Region {
 		this.scene = scene
 		const width = 230
 
-		this.container = scene.add.container(Space.windowWidth - width, Space.windowHeight - Space.handHeight).setDepth(2).setVisible(false)
+		this.container = scene.add.container(Space.windowWidth - width, Space.windowHeight - Space.handHeight).setDepth(2)
 
 		// Add the background
 		this.container.add(this.createBackground(scene))

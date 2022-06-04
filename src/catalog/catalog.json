@@ -156,7 +156,7 @@
     ]
   },
 
-  {"name": "Morning Light", "id": 50,
+  {"name": "First Light", "id": 50,
     "cost": 0, "points": 0,
     "text": "When played, gain Sight 4.\nMorning: gain Sight 1."
   },
@@ -173,9 +173,9 @@
     "cost": 1, "points": 2,
     "text": "Create a Predator in your opponent's hand."
   },
-  {"name": "Morning Dew", "id": 63,
+  {"name": "Dew", "id": 63,
     "cost": 1, "points": 1,
-    "text": "Morning: create an Axolotl in your hand.",
+    "text": "Morning: create a Dew in your hand.",
     "story": "I return\nOver and over again\nSwelling the future"
   },
   {"name": "Night Vision", "id": 28,
@@ -192,7 +192,7 @@
       {"name": "Seen", "x": 5, "y": 112}
     ]
   },
-  {"name": "Born Anew", "id": 55,
+  {"name": "Rebirth", "id": 55,
     "cost": 1, "points": 0,
     "text": "Fleeting, transform each of your cards later in the story into an 0:X Fleeting Child, where X is its cost.",
     "keywords": [
