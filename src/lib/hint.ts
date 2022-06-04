@@ -10,7 +10,7 @@ import { allCards } from '../catalog/catalog'
 export default class Hint {
 	txt: RexUIPlugin.BBCodeText
 
-	// TODO
+	// The X position to position flush to, or undefined if no pin
 	leftPin: number
 
 	constructor(scene: BaseScene) {
