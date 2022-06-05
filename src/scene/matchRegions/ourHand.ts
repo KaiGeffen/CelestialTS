@@ -65,10 +65,7 @@ export default class OurHandRegion extends Region {
 		// TODO Font size as a part of a style
 		const x = Space.windowWidth - 294
 		this.txtDeckCount = scene.add.text(x, 15, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		// let iconDeck = scene.add.image(x, this.txtDeckCount.y + 25, 'icon-Deck')
-
 		this.txtDiscardCount = scene.add.text(x, 82, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		// let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
 
 		// TODO
 		let avatarBorder = scene.add.image(0, -12, 'icon-BottomAvatar')
@@ -168,7 +165,6 @@ export default class OurHandRegion extends Region {
 	}
 
 	private createStatusDisplay(): void {
-		// TODO 6
 		let x = 21 + Space.avatarSize - 10
 
 		// Inspire

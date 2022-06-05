@@ -27,19 +27,15 @@ export default class TheirHandRegion extends Region {
 	avatar: AvatarSmall
 
 	create (scene: BaseScene): TheirHandRegion {
-		let that = this
 		this.scene = scene
 
 		// Avatar, status, hand, recap, pass buttons
-
 		this.container = scene.add.container(0, 0).setDepth(1)
-
-		// Add background rectangle
-		let background = this.createBackground(scene)
-		this.container.add(background)
+		this.createBackground()
 		
 		// Highlight visible when they have priority
 		this.priorityHighlight = this.createPriorityHighlight()
+		.setVisible(false)
 		this.container.add(this.priorityHighlight)
 
 		// Create the status visuals
@@ -48,23 +44,15 @@ export default class TheirHandRegion extends Region {
 		// Create our avatar
 		this.avatar = this.createAvatar()
 
-		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
-
 		// TODO Font size as a part of a style
-		const x = divide.x + 80
+		const x = Space.windowWidth - 298
 		this.txtDeckCount = scene.add.text(x, 35, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		let iconDeck = scene.add.image(x, this.txtDeckCount.y + 25, 'icon-Deck')
-
-		this.txtDiscardCount = scene.add.text(x, 95, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
+		this.txtDiscardCount = scene.add.text(x, 103, '', Style.basic).setOrigin(0.5).setFontSize(20)
 
 		// Add each of these objects to container
 		this.container.add([
-			divide,
 			this.txtDeckCount,
-			iconDeck,
 			this.txtDiscardCount,
-			iconDiscard,
 			])
 
 		return this
@@ -94,19 +82,11 @@ export default class TheirHandRegion extends Region {
 		this.animate(state, hand, isRecap)
 	}
 
-	// GENERALIZE 280, 250
-	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
-		const points = `0 0 ${Space.windowWidth - 180} 0 ${Space.windowWidth - 230} 150 0 150`
-		let background = scene.add.polygon(0, 0, points, Color.background, 1).setOrigin(0)
+	private createBackground(): void {
+		let background = this.scene.add.image(Space.windowWidth, 0, 'icon-Top')
+		.setOrigin(1, 0)
 
-		// Add a border around the shape TODO Make a class for this to keep it dry
-		let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-		postFxPlugin['add'](background, {
-			thickness: 1,
-			outlineColor: Color.border,
-		})
-
-		return background
+		this.container.add(background)
 	}
 
 	private createPriorityHighlight(): Phaser.GameObjects.Video {
@@ -118,18 +98,17 @@ export default class TheirHandRegion extends Region {
 
 	private createAvatar(): AvatarSmall {
 		// TODO Custom avatar
-		let btn = new AvatarSmall(this.container, 6, 6, 'Jules')
+		let btn = new AvatarSmall(this.container, 21, 11, 'Jules')
 		btn.setOrigin(0)
 
 		return btn
 	}
 
 	private createStatusDisplay(): void {
-		// TODO 6
-		let x = 6 + Space.avatarSize - 10
+		let x = 21 + Space.avatarSize - 10
 
 		// Inspire
-		let y = 6
+		let y = 11
 		this.btnInspire = new ButtonInspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)

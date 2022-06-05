@@ -17,47 +17,22 @@ export default class TheirScoreRegion extends Region {
 		const height = 100
 		const overlap = 20
 		
-		this.container = scene.add.container(Space.windowWidth - 250, 0)
+		this.container = scene.add.container(0, 0)
 		.setDepth(3)
 
-		// Add background rectangle
-		const background = this.createBackground(scene)
-
 		// Wins
-		const winsIcon = scene.add.image(46, height/2, 'icon-Wins').setOrigin(0, 0.5)
-		let txtWinsReminder = scene.add.text(winsIcon.x + winsIcon.width + Space.pad, height/2 - 13, 'Wins:', Style.small).setOrigin(0, 0.5)
-		this.txtWins = scene.add.text(txtWinsReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
+		this.txtWins = scene.add.text(Space.windowWidth - 140, 70, '', Style.basic)
+		.setOrigin(0)
 
 		// Add each of these objects to container
 		this.container.add([
-			background,
-
-			winsIcon,
-			txtWinsReminder,
 			this.txtWins,
 			])
 
 		return this
 	}
 
-	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
-		const points = '0 0 180 0 160 110 20 110'
-		let background = scene.add.polygon(0, 0, points, Color.background, 1).setOrigin(0)
-
-		// Add a border around the shape TODO Make a class for this to keep it dry
-        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin['add'](background, {
-        	thickness: 1,
-        	outlineColor: Color.border,
-        })
-
-        return background
-	}
-
 	displayState(state: ClientState, isRecap: boolean): void {
-		// const s = `${state.mana}/${state.maxMana[0]}`//\nWins: ${state.wins[0]} to ${state.wins[1]}
-		// this.txtBreath.setText(s)
-
 		this.txtWins.setText(`${state.wins[1]}`)
 	}
 }

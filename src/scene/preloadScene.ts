@@ -171,6 +171,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Share',
 			// Bottom of the screen during match scene
 			'Bottom', 'BottomAvatar',
+			'Top',
 			'BreathBasic', 'BreathSpent', 'BreathExtra', 'BreathHover', 'BreathOom', 
 		]
 
