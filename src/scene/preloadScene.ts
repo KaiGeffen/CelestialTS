@@ -171,19 +171,12 @@ export default class PreloadClass extends Phaser.Scene {
 			'Share',
 			// Bottom of the screen during match scene
 			'Bottom', 'BottomAvatar',
+			'BreathBasic', 'BreathSpent', 'BreathExtra', 'BreathHover', 'BreathOom', 
 		]
 
 		iconNames.forEach( (s) => {
 			this.load.image(`icon-${s}`, `icons/${s}.png`)
 		})
-
-		// Load any spritesheets
-		this.load.spritesheet(`icon-Breath`,
-			`icons/Breath.png`,
-			{frameWidth: 54, frameHeight: 54})
-		this.load.spritesheet(`icon-Cost`,
-			`icons/Cost.png`,
-			{frameWidth: 54, frameHeight: 54})
 	}
 
 	// Loads all keywords

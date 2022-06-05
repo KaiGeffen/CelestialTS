@@ -11,69 +11,44 @@ import BaseScene from '../baseScene'
 
 
 export default class ScoreRegion extends Region {
-	breathIcon: Phaser.GameObjects.Sprite
-	costIcon: Phaser.GameObjects.Sprite
-
 	txtBreath: Phaser.GameObjects.Text
 	txtWins: Phaser.GameObjects.Text
 
+	// Icons for each of the states of breath
+	breathBasic: Phaser.GameObjects.Image[] = []
+	breathSpent: Phaser.GameObjects.Image[] = []
+	breathExtra: Phaser.GameObjects.Image[] = []
+	breathHover: Phaser.GameObjects.Image[] = []
+	breathOom: Phaser.GameObjects.Image[] = []
+
 	create (scene: BaseScene): ScoreRegion {
-		const width = 300
-		const height = 90
-		const overlap = 20
+		this.scene = scene
+		this.container = scene.add.container().setDepth(3)
+
+		// Create all of the breath icons
+		this.createBreathIcons()
+
+		// this.breathIcon = scene.add.sprite(30, height/2, 'icon-Breath').setOrigin(0, 0.5)
+		// this.costIcon = scene.add.sprite(30, height/2, 'icon-Cost').setOrigin(0, 0.5).setVisible(false)
+		const x = Space.windowWidth - 124
+		this.txtWins = scene.add.text(x, Space.windowHeight - 114, '', Style.basic).setOrigin(0)
+		this.txtBreath = scene.add.text(x + 6, Space.windowHeight - 60, '', Style.basic).setOrigin(0)
 		
-		this.container = scene.add.container(Space.windowWidth - width,
-			Space.windowHeight - Space.handHeight - height + overlap)
-			.setDepth(3)
-			.setVisible(false)
-
-		// Add background rectangle
-		const background = this.createBackground(scene)
-
-		this.breathIcon = scene.add.sprite(30, height/2, 'icon-Breath').setOrigin(0, 0.5)
-		this.costIcon = scene.add.sprite(30, height/2, 'icon-Cost').setOrigin(0, 0.5).setVisible(false)
-		let txtBreathReminder = scene.add.text(this.breathIcon.x + this.breathIcon.width + Space.pad, height/2 - 13, 'Breath:', Style.small).setOrigin(0, 0.5)
-		this.txtBreath = scene.add.text(txtBreathReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
-
-		// Wins
-		const winsIcon = scene.add.image(180, height/2, 'icon-Wins').setOrigin(0, 0.5)
-		let txtWinsReminder = scene.add.text(winsIcon.x + winsIcon.width + Space.pad, height/2 - 13, 'Wins:', Style.small).setOrigin(0, 0.5)
-		this.txtWins = scene.add.text(txtWinsReminder.x, height/2 + 7, '', Style.basic).setOrigin(0, 0.5)
 
 		// Add each of these objects to container
 		this.container.add([
-			background,
-			this.breathIcon,
-			this.costIcon,
-			txtBreathReminder,
+			// this.costIcon,
 			this.txtBreath,
-
-			winsIcon,
-			txtWinsReminder,
 			this.txtWins,
 			])
 
 		return this
 	}
 
-	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
-		const points = '20 0 300 0 300 90 0 90'
-		let background = scene.add.polygon(0, 0, points, Color.background, 1).setOrigin(0)
-
-		// Add a border around the shape TODO Make a class for this to keep it dry
-        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin['add'](background, {
-        	thickness: 1,
-        	outlineColor: Color.border,
-        })
-
-        return background
-	}
-
 	displayState(state: ClientState, isRecap: boolean): void {
 		// Reset the displayed cost
 		this.displayCost(0)
-		this.breathIcon.setFrame(Math.min(10, state.mana))
+		// this.breathIcon.setFrame(Math.min(10, state.mana))
 
 		const s = `${state.mana}/${state.maxMana[0]}`
 		this.txtBreath.setText(s)
@@ -83,7 +58,45 @@ export default class ScoreRegion extends Region {
 
 	// Display a given breath cost
 	displayCost(cost: number): void {
-		this.costIcon.setVisible(cost > 0)
-		this.costIcon.setFrame(Math.min(10, cost))
+		// this.costIcon.setVisible(cost > 0)
+		// this.costIcon.setFrame(Math.min(10, cost))
 	}
+
+	// Create all of the breath icons
+	private createBreathIcons(): void {
+		const breathMap = {
+			'Basic': this.breathBasic,
+			'Spent': this.breathSpent,
+			'Extra': this.breathExtra,
+			'Hover': this.breathHover,
+			'Oom': this.breathOom,
+		}
+
+		for (let key in breathMap) {
+			this.createBreathSubtype(key, breathMap[key])
+		}
+	}
+
+	private createBreathSubtype(key: string, images: Phaser.GameObjects.Image[]): void {
+		//Center at 163, 53 from right bottom corner
+		const center = [Space.windowWidth - 163, Space.windowHeight - 53]
+		const radius = 30
+
+		// TODO 10 max breath displayed
+		const MAX = 10
+		for (let i = 0; i < MAX; i++) {
+			// Angle in radians
+			const theta = -2 * Math.PI * i / MAX
+
+			const x = center[0] + Math.cos(theta) * radius
+			const y = center[1] + Math.sin(theta) * radius
+			const s = `icon-Breath${key}`
+
+			let image = this.scene.add.image(x, y, s)
+			this.container.add(image)
+			images.push(image)
+		}
+	}
+
+
 }
