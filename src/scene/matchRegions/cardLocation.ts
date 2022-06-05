@@ -126,17 +126,17 @@ export default class CardLocation {
 
 	static ourDiscard(container: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
-		const x0 = Space.windowWidth - 30
+		const x0 = Space.windowWidth - Space.cardWidth/2 - Space.pad
 		const x = x0 + dx
-		const y = Space.windowHeight/2 + Space.cardHeight/2 + Space.pad
+		const y = Space.windowHeight - 110
 		return [x - container.x, y - container.y]
 	}
 
 	static theirDiscard(container: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
-		const x0 = Space.windowWidth - 30
+		const x0 = Space.windowWidth - Space.cardWidth/2 - Space.pad
 		const x = x0 + dx
-		const y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
+		const y = 110
 		return [x - container.x, y - container.y]
 	}
 

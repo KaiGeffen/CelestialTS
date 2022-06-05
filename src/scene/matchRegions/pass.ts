@@ -105,7 +105,7 @@ export default class PassRegion extends Region {
 	private createBackground(): RoundRectangle {
 		let background = new RoundRectangle(
 			this.scene,
-			Space.windowWidth - Space.cardWidth - Space.pad,
+			Space.windowWidth - Space.cardWidth/2 - Space.pad,
 			Space.windowHeight/2,
 			200,
 			200,

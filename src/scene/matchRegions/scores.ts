@@ -55,7 +55,7 @@ export default class ScoresRegion extends Region {
 		const points = `0 ${Space.handHeight} 30 0 230 0 230 ${Space.handHeight}`
 		let background = new RoundRectangle(
 			scene,
-			Space.windowWidth - Space.cardWidth - Space.pad,
+			Space.windowWidth - Space.cardWidth/2 - Space.pad,
 			Space.windowHeight/2,
 			200,
 			200,
