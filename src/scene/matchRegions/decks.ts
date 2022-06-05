@@ -73,9 +73,35 @@ export default class DecksRegion extends Region {
 			let delay = i * Time.recapTween()
 
 			let animation = state.animations[player][i]
-			if (animation.to === Zone.Deck) {
+
+			// Shuffle the cards in the deck
+			if (animation.from === Zone.Shuffle) {
+				// Cardback image
+				let card = this.addCard(cardback,
+					player === 0 ? CardLocation.ourDeck(this.container) : CardLocation.theirDeck(this.container)
+					)
+
+				// TODO Make a clean shuffle animation
+				this.scene.tweens.add({
+					targets: card.container,
+					angle: 180,
+					delay: delay,
+					duration: Time.recapTweenWithPause(),
+					onStart: function (tween, targets, _)
+					{
+						card.show()
+						scene.sound.play('shuffle')
+					},
+					onComplete: () => {
+						// cards[cards.length - count].show()
+						card.destroy()
+					}
+				})
+			}
+			else if (animation.to === Zone.Deck) {
+				return
 				// Create an image for the card in flight, hide the real copy until animation has completed
-				let card = this.addCard(animation.card, 
+				let card = this.addCard(animation.card,
 					player === 0 ? CardLocation.ourDeck(this.container) : CardLocation.theirDeck(this.container)
 					)
 
