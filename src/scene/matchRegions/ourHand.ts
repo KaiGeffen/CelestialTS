@@ -45,10 +45,11 @@ export default class OurHandRegion extends Region {
 
 		this.container = scene.add.container(0, Space.windowHeight - Space.handHeight).setDepth(1)
 
-		// this.container.add(this.createBackground(scene))
+		this.container.add(this.createBackground(scene))
 
 		// Visual effect that highlights when we have priority
 		this.priorityHighlight = this.createPriorityHighlight()
+		.setVisible(false) // TODO
 		this.container.add(this.priorityHighlight)
 
 		// Create the status visuals
@@ -70,12 +71,12 @@ export default class OurHandRegion extends Region {
 		// let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
 
 		// TODO
-		let renderedBackground = scene.add.image(Space.windowWidth, -50, 'icon-Bottom')
-		.setOrigin(1, 0)
+		let avatarBorder = scene.add.image(0, -12, 'icon-BottomAvatar')
+		.setOrigin(0)
 
 		// Add each of these objects to container
 		this.container.add([
-			renderedBackground,
+			avatarBorder,
 			// divide,
 			this.txtDeckCount,
 			// iconDeck,
@@ -146,20 +147,10 @@ export default class OurHandRegion extends Region {
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
-		let background = scene.add.rectangle(
-			0, 0,
-			Space.windowWidth, Space.handHeight,
-			Color.background, 1
-			).setOrigin(0)
+		let renderedBackground = scene.add.image(Space.windowWidth, -50, 'icon-Bottom')
+		.setOrigin(1, 0)
 
-		// Add a border around the shape TODO Make a class for this to keep it dry
-		let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-		postFxPlugin['add'](background, {
-			thickness: 1,
-			outlineColor: Color.border,
-		})
-
-		return background
+		return renderedBackground
 	}
 
 	private createPriorityHighlight(): Phaser.GameObjects.Video {
@@ -170,7 +161,7 @@ export default class OurHandRegion extends Region {
 	}
 
 	private createAvatar(avatarId: number): AvatarSmall {
-		let btn = new AvatarSmall(this.container, 6, 6, avatarId)
+		let btn = new AvatarSmall(this.container, 21, 11, avatarId)
 		btn.setOrigin(0)
 		
 		return btn
@@ -178,10 +169,10 @@ export default class OurHandRegion extends Region {
 
 	private createStatusDisplay(): void {
 		// TODO 6
-		let x = 6 + Space.avatarSize - 10
+		let x = 21 + Space.avatarSize - 10
 
 		// Inspire
-		let y = 6
+		let y = 11
 		this.btnInspire = new ButtonInspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
