@@ -75,7 +75,7 @@ export default class CardLocation {
 		const x0 = 300
 		let dx = Space.cardWidth - Space.storyXOverlap
 		
-		const maxOffset = Space.windowWidth - x0 - 350 // Space to the right of the last card
+		const maxOffset = Space.windowWidth - x0 - Space.cardWidth/2 - 260 // Space to the right of the last card
 		if (state !== undefined) {
 			// Find the amount that we must scale down by
 			// This may be multiplied by a constant to fit within the max
