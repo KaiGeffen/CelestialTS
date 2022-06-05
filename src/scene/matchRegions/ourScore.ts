@@ -25,6 +25,7 @@ export default class ScoreRegion extends Region {
 		this.container = scene.add.container(Space.windowWidth - width,
 			Space.windowHeight - Space.handHeight - height + overlap)
 			.setDepth(3)
+			.setVisible(false)
 
 		// Add background rectangle
 		const background = this.createBackground(scene)

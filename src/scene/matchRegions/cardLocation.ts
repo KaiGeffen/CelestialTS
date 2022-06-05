@@ -6,7 +6,7 @@ import ClientState from '../../lib/clientState'
 import { Space } from '../../settings/settings'
 
 // Amount of room to leave to the right of the last card in either hand
-const minRoom = 300 + Space.cardWidth
+const minRoom = 342 + Space.cardWidth/2
 
 // This describes where on screen each card in each region should appear
 // so that regions can move their cards to the appropriate locations for

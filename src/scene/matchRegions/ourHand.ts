@@ -45,7 +45,7 @@ export default class OurHandRegion extends Region {
 
 		this.container = scene.add.container(0, Space.windowHeight - Space.handHeight).setDepth(1)
 
-		this.container.add(this.createBackground(scene))
+		// this.container.add(this.createBackground(scene))
 
 		// Visual effect that highlights when we have priority
 		this.priorityHighlight = this.createPriorityHighlight()
@@ -58,24 +58,30 @@ export default class OurHandRegion extends Region {
 		this.avatar = this.createAvatar(avatarId)
 		
 		// Create a visual divider
-		let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
+		// let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
 		// Deck and discard pile totals
 		// TODO Font size as a part of a style
-		const x = divide.x + 80
-		this.txtDeckCount = scene.add.text(x, 35, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		let iconDeck = scene.add.image(x, this.txtDeckCount.y + 25, 'icon-Deck')
+		const x = Space.windowWidth - 294
+		this.txtDeckCount = scene.add.text(x, 15, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		// let iconDeck = scene.add.image(x, this.txtDeckCount.y + 25, 'icon-Deck')
 
-		this.txtDiscardCount = scene.add.text(x, 95, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
+		this.txtDiscardCount = scene.add.text(x, 82, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		// let iconDiscard = scene.add.image(x, this.txtDiscardCount.y + 25, 'icon-Discard')
+
+		// TODO
+		let renderedBackground = scene.add.image(Space.windowWidth, -50, 'icon-Bottom')
+		.setOrigin(1, 0)
 
 		// Add each of these objects to container
 		this.container.add([
-			divide,
+			renderedBackground,
+			// divide,
 			this.txtDeckCount,
-			iconDeck,
+			// iconDeck,
 			this.txtDiscardCount,
-			iconDiscard,
+			// iconDiscard,
+			
 			])
 
 		return this

@@ -169,7 +169,8 @@ export default class PreloadClass extends Phaser.Scene {
 			'XOut',
 			'Winner', 'Loser', 'ResultStats',
 			'Share',
-
+			// Bottom of the screen during match scene
+			'Bottom',
 		]
 
 		iconNames.forEach( (s) => {
