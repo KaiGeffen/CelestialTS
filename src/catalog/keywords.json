@@ -7,34 +7,24 @@
 		"text": "[img=kw-Visible] - Both players can see this card while it is in the story.",
 		"x": false
 	},
+	{"key": "Morning",
+		"text": "[img=kw-Morning] - At the start of each round, if this is the top card of your discard pile, trigger the following effect.",
+		"x": false
+	},
 	{"key": "Sight",
 		"text": "[img=kw-Sight X] - The first X cards in the story are visible to you this round.",
 		"x": true
 	},
-
-
 	{"key": "Inspire",
 		"text": "[img=kw-Inspire X] - Next round you have X extra mana.",
-		"x": true
-	},
-	{"key": "Inspired",
-		"text": "Inspired X - This round you have X extra mana.",
 		"x": true
 	},
 	{"key": "Nourish",
 		"text": "[img=kw-Nourish X] - The next card you resolve is worth +X points.",
 		"x": true
 	},
-	{"key": "Starve",
-		"text": "Starve X - The next card you resolve is worth -X points.",
-		"x": true
-	},
 	{"key": "Birth",
 		"text": "[img=kw-Birth X] - If you have a Child in hand, increase its points by X. Otherwise create a 0:X [img=kw-Fleeting] Child in hand.",
 		"x": true
-	},
-	{"key": "Morning",
-		"text": "[img=kw-Morning] - At the start of each round, if this is the top card of your discard pile, trigger the following effect.",
-		"x": false
 	}
 ]
