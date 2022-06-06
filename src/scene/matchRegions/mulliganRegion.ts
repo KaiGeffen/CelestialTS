@@ -4,7 +4,7 @@ import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
-import { Space, Color, Time, Style } from '../../settings/settings'
+import { Space, Color, Time, Style, Depth } from '../../settings/settings'
 import Button from '../../lib/button' // TODO Stop using this
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 import { CardImage } from '../../lib/cardImage'
@@ -31,7 +31,7 @@ export default class MulliganRegion extends Region {
 		this.cards = []
 		this.mulliganChoices = [false, false, false]
 
-		this.container = scene.add.container(0, 0).setDepth(4)
+		this.container = scene.add.container(0, 0).setDepth(Depth.mulligan)
 
 		// Add the background
 		this.container.add(this.createBackground(scene))

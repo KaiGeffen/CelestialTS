@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Style } from '../../settings/settings'
+import { Space, Color, Style, Depth } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -18,7 +18,7 @@ export default class TheirScoreRegion extends Region {
 		const overlap = 20
 		
 		this.container = scene.add.container(0, 0)
-		.setDepth(3)
+		.setDepth(Depth.theirScore)
 
 		// Wins
 		this.txtWins = scene.add.text(Space.windowWidth - 140, 70, '', Style.basic)

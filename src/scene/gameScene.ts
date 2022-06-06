@@ -467,6 +467,7 @@ export class TutorialGameScene extends AdventureGameScene {
 		switch (this.params.missionID) {
 			case 3:
 				this.view.pass.hide()
+				this.view.ourHand.focus()
 			case 6:
 				this.view.decks.hide()
 				this.view.discardPiles.hide()
@@ -477,6 +478,7 @@ export class TutorialGameScene extends AdventureGameScene {
 				}
 
 			case 9:
+				// TODO
 		}
 		
 		return result

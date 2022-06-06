@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Style } from '../../settings/settings'
+import { Space, Color, Style, Depth } from '../../settings/settings'
 import { SymmetricButtonLarge } from '../../lib/buttons/backed'
 // import { CardImage } from '../../lib/cardImage'
 // import { cardback } from '../../catalog/catalog'
@@ -19,7 +19,7 @@ export default class ResultsRegion extends Region {
 		let that = this
 
 		this.scene = scene
-		this.container = scene.add.container(0, 0).setDepth(5)
+		this.container = scene.add.container(0, 0).setDepth(Depth.results)
 		this.seen = false
 
 		// Create background

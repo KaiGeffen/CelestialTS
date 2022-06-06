@@ -7,6 +7,8 @@ import { Style, BBStyle } from "./style"
 import { Time } from "./time"
 import { Url } from "./url"
 import { UserSettings } from "./userSettings"
+import { Depth } from "./depth"
+
 
 export {
   Color,
@@ -16,5 +18,6 @@ export {
   Style, BBStyle,
   Time,
   Url,
-  UserSettings
+  UserSettings,
+  Depth,
 }

@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Time } from '../../settings/settings'
+import { Space, Color, Time, Depth } from '../../settings/settings'
 import { AButtonSmall, AButtonLarge } from '../../lib/buttons/backed'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -24,7 +24,7 @@ export default class OurHandRegion extends Region {
 		const width = 230
 
 		this.container = scene.add.container(Space.windowWidth - width, Space.windowHeight - Space.handHeight)
-		.setDepth(2)
+		.setDepth(Depth.ourButtons)
 		.setVisible(false)
 
 		// Add the background

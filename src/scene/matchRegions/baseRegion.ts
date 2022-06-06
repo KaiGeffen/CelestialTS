@@ -3,7 +3,7 @@ import 'phaser'
 import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
 import ClientState from '../../lib/clientState'
-import { Time } from '../../settings/settings'
+import { Time, Space, Color, Depth } from '../../settings/settings'
 import BaseScene from '../baseScene'
 
 
@@ -29,6 +29,28 @@ export default class Region {
 
 	hide(): void {
 		this.container.setVisible(false)
+	}
+
+	// Bring attention to the given region by hiding everything else on screen
+	focus(): void {
+		const x = -this.container.x
+		const y = -this.container.y
+		let background = this.scene.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, Color.focusBackground, 0.6)
+		.setOrigin(0)
+		.setInteractive()
+		
+		this.container.add(background)
+		this.container.sendToBack(background)
+
+		// Remember the depth of this container in the callback
+		const depth = this.container.depth
+		background.on('pointerdown', () => {
+			this.container.setDepth(depth)
+			background.destroy()
+		})
+
+		// Move this container above all others
+		this.container.setDepth(Depth.aboveAll)
 	}
 
 	protected deleteTemp(): void {

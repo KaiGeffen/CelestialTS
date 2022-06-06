@@ -3,7 +3,7 @@ import "phaser"
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
-import { Space, Color, Time } from '../../settings/settings'
+import { Space, Color, Time, Depth } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -19,7 +19,7 @@ export default class DiscardPilesRegion extends Region {
 	create (scene: BaseScene): DiscardPilesRegion {
 		this.scene = scene
 
-		this.container = scene.add.container(Space.windowWidth, Space.windowHeight/2).setDepth(-1)
+		this.container = scene.add.container(Space.windowWidth, Space.windowHeight/2).setDepth(Depth.discardPiles)
 
 		return this
 	}

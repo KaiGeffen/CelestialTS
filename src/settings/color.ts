@@ -18,7 +18,8 @@ const CoreColors: Record<string, any> = {
   white: 0xffffff,
   whiteS: '#ffffff',
 
-  grey: 0x555555e0,
+  grey: 0x555555,
+  greyA: 0x555555e0,
 
 
   // Trial colors
@@ -77,7 +78,7 @@ export const Color: Record<string, any> = {
 
   // Hint text fill and background (What shows when you hover something that has an explanation)
   hintFill: CoreColors.white,
-  hintBackground: CoreColors.grey,
+  hintBackground: CoreColors.greyA,
 
 
   // Outline plugin color
@@ -85,6 +86,9 @@ export const Color: Record<string, any> = {
 
   // Lines used throughout ui
   line: 0xeeeeee,
+
+  // A translucent background that draws attention to one element on the screen
+  focusBackground: CoreColors.grey,
 
 
   // Background of the webpage

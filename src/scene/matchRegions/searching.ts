@@ -1,5 +1,5 @@
 import "phaser"
-import { Color, Space, Style } from '../../settings/settings'
+import { Color, Space, Style, Depth } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import { SymmetricButtonSmall } from '../../lib/buttons/backed'
@@ -7,7 +7,7 @@ import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 
 export default class SearchingRegion extends Region {	
 	create (scene: BaseScene): Region {
-		this.container = scene.add.container(0, 0).setDepth(9)
+		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
 		this.container.add(this.createBackground(scene))
 

@@ -7,7 +7,7 @@ import Button from '../../lib/buttons/button'
 import { CardImage } from '../../lib/cardImage'
 import ClientState from '../../lib/clientState'
 import { Status } from '../../lib/status'
-import { Color, Space, Style, Time } from '../../settings/settings'
+import { Color, Space, Style, Time, Depth } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -30,7 +30,7 @@ export default class TheirHandRegion extends Region {
 		this.scene = scene
 
 		// Avatar, status, hand, recap, pass buttons
-		this.container = scene.add.container(0, 0).setDepth(1)
+		this.container = scene.add.container(0, 0).setDepth(Depth.theirHand)
 		this.createBackground()
 		
 		// Highlight visible when they have priority

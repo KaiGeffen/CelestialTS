@@ -3,7 +3,7 @@ import "phaser"
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
-import { Space, Color, Time, Style } from '../../settings/settings'
+import { Space, Color, Time, Style, Depth } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
@@ -20,7 +20,7 @@ class OverlayRegion extends Region {
 		this.scene = scene
 
 		this.container = scene.add.container(0, 0)
-		.setDepth(0.5)
+		.setDepth(Depth.pileOverlays)
 		.setVisible(false)
 
 		let that = this

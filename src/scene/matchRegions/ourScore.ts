@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Style, Mechanics } from '../../settings/settings'
+import { Space, Color, Style, Mechanics, Depth } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -27,7 +27,7 @@ export default class ScoreRegion extends Region {
 
 	create (scene: BaseScene): ScoreRegion {
 		this.scene = scene
-		this.container = scene.add.container().setDepth(3)
+		this.container = scene.add.container().setDepth(Depth.ourScore)
 
 		// Create all of the breath icons
 		this.createBreathIcons()

@@ -3,7 +3,7 @@ import "phaser"
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
-import { Space, Color, Time, Style } from '../../settings/settings'
+import { Space, Color, Time, Style, Depth } from '../../settings/settings'
 import Button from '../../lib/buttons/button'
 import { AvatarSmall, ButtonInspire, ButtonNourish } from '../../lib/buttons/backed'
 import Card from '../../lib/card'
@@ -43,7 +43,7 @@ export default class OurHandRegion extends Region {
 
 		// Avatar, status, hand, recap, pass buttons
 
-		this.container = scene.add.container(0, Space.windowHeight - Space.handHeight).setDepth(1)
+		this.container = scene.add.container(0, Space.windowHeight - Space.handHeight).setDepth(Depth.ourHand)
 
 		this.container.add(this.createBackground(scene))
 
