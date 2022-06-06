@@ -55,7 +55,7 @@ export default class ScoreRegion extends Region {
 		const s = `${state.mana}/${state.maxMana[0]}`
 		this.txtBreath.setText(s)
 
-		this.txtWins.setText(`${state.wins[0]}`)
+		this.txtWins.setText(`${state.wins[0]}/5`)
 	}
 
 	// Display a given breath cost

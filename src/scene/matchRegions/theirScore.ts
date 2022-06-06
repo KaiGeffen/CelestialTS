@@ -33,6 +33,6 @@ export default class TheirScoreRegion extends Region {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
-		this.txtWins.setText(`${state.wins[1]}`)
+		this.txtWins.setText(`${state.wins[1]}/5`)
 	}
 }

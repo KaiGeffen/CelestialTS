@@ -60,7 +60,7 @@ class GameScene extends BaseScene {
 		this.net = new Network(params.deck, this, mmCode)
 
 		// Create the view
-		this.view = new View(this, this.params.avatar)
+		this.view = new View(this, this.params.avatar || 0)
 
 		this.setCallbacks(this.view, this.net)
 	}
@@ -224,7 +224,7 @@ class GameScene extends BaseScene {
 	}
 
 	// Display the given game state, returns false if the state isn't shown immediately
-	private displayState(state: ClientState, isRecap: boolean): boolean {
+	protected displayState(state: ClientState, isRecap: boolean): boolean {
 		// If there is a new recap, queue that instead and don't show this state yet
 		if (this.queueNewRecap(state)) {
 			return false
@@ -453,3 +453,33 @@ export class AdventureGameScene extends GameScene {
 		}
 	}
 }
+
+export class TutorialGameScene extends AdventureGameScene {
+	constructor (args = {key: 'TutorialGameScene', lastScene: 'AdventureScene'}) {
+		super(args)
+	}
+
+	// TODO Ensure that autopass is on
+	// TODO Hide the counts for deck and discard pile
+	protected displayState(state: ClientState, isRecap: boolean): boolean {
+		let result = super.displayState(state, isRecap)
+
+		switch (this.params.missionID) {
+			case 3:
+				this.view.pass.hide()
+			case 6:
+				this.view.decks.hide()
+				this.view.discardPiles.hide()
+
+				if (state.maxMana[0] === 1) {
+					// Can't pass on the first round
+					this.view.pass.hide()
+				}
+
+			case 9:
+		}
+		
+		return result
+	}
+}
+
