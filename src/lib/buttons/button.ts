@@ -92,6 +92,8 @@ export default class Button {
 			this.icon = this.scene.add.image(x, y + offset, filename)
 			.on('pointerover', () => this.icon.setTint(Color.buttonHighlight), this)
 			.on('pointerout', () => this.icon.clearTint(), this)
+			// TODO Add a config option to clear tint (Useful if a menu is opening onclick)
+			// .on('pointerdown', () => this.icon.clearTint(), this)
 
 			// Set interactive
 			if (config.icon.interactive) {

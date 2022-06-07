@@ -3,7 +3,7 @@ import 'phaser'
 import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
 import ClientState from '../../lib/clientState'
-import { Time, Space, Color, Depth } from '../../settings/settings'
+import { Time, Space, Color, Depth, Style } from '../../settings/settings'
 import BaseScene from '../baseScene'
 
 
@@ -32,25 +32,52 @@ export default class Region {
 	}
 
 	// Bring attention to the given region by hiding everything else on screen
-	focus(): void {
+	focus(text = ''): void {
 		const x = -this.container.x
 		const y = -this.container.y
-		let background = this.scene.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, Color.focusBackground, 0.6)
-		.setOrigin(0)
-		.setInteractive()
-		
-		this.container.add(background)
-		this.container.sendToBack(background)
 
-		// Remember the depth of this container in the callback
-		const depth = this.container.depth
-		background.on('pointerdown', () => {
-			this.container.setDepth(depth)
-			background.destroy()
-		})
+		// TODO
+		// const s = text || "You look like you're in a hurry, so I'll speed things up. -Gives 2 wins to you"
+		let foo = this.scene.rexUI.add.textBox({
+			x: Space.windowWidth/2,
+			y: Space.windowHeight/2,
+			background:
+				this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.focusBackground, 0.6),
+				// .setOrigin(0)
+				// .setInteractive()
+				// .on('pointerdown', () => {foo.destroy()}),
+			text: this.scene.add.text(0, 0, text, Style.tutorial)
+		}).layout()
+
+		foo.start(text, 10)
+
+		this.temp.push(foo)
+		// this.container.add(foo)
+		console.log(foo)
+
+		// foo.start('uwuwuwuwuwuwuwuwuwuwuwuwu', 3)
+
+		// let txt = 
+		// .setOrigin(0.5)
+		// this.container.add(txt)
+		// this.temp.push(txt)
+		
+		// // Background behind everything, then text
+		// this.container.sendToBack(txt)
+		// .sendToBack(background)
+
+		// // Remember the depth of this container in the callback
+		// // const depth = this.container.depth
+		// background.on('pointerdown', () => {
+		// 	// this.container.setDepth(depth)
+		// 	txt.destroy()
+		// 	background.destroy()
+		// })
+
+		// TODO Reverse depth on state change
 
 		// Move this container above all others
-		this.container.setDepth(Depth.aboveAll)
+		// this.container.setDepth(Depth.aboveAll)
 	}
 
 	protected deleteTemp(): void {

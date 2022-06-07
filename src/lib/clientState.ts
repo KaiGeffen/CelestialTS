@@ -69,4 +69,17 @@ export default class ClientState {
 		this.animations = state.animations.map(l => decodeAnimationList(l))
 		this.costs = state.costs
 	}
+
+	// Get if this state is the start of a round
+	isRoundStart(): boolean {
+		if (this.story.acts.length > 0) {
+			return false
+		}
+
+		if (this.passes > 0) {
+			return false
+		}
+
+		return true
+	}
 }

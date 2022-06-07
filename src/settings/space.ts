@@ -55,8 +55,8 @@ export var Space = {
   smallButtonWidth: 100,
   smallButtonHeight: 50,
 
-  largeButtonWidth: 150,
-  largeButtonHeight: 45,
+  largeButtonWidth: 100,
+  largeButtonHeight: 50,
 
   cutoutHeight: 49,
 
