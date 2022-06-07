@@ -113,7 +113,7 @@ export default class DeckRegion {
 
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
-		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Jules', this.onClickAvatar())
+		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Jules', this.onClickAvatar(), true)
 		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Add the deck's name

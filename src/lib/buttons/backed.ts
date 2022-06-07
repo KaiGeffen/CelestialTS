@@ -124,10 +124,13 @@ export class ButtonNewDeck extends Button {
 // TODO Move to another file
 import avatarNames from '../../lib/avatarNames';
 export class AvatarSmall extends Button {
+	editIcon: Button
+
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
 		name: string | number,
-		f: () => void = function() {})
+		f: () => void = function() {},
+		hasEditIcon = false)
 	{
 		// If an id was given instead of a string, get the string
 		if (typeof name === 'number') {
@@ -144,6 +147,13 @@ export class AvatarSmall extends Button {
 				click: f
 			}
 		})
+
+		if (hasEditIcon) {
+			let edit = this.scene.add.image(x + 45, y + 45, 'icon-Edit')
+			if (within instanceof Phaser.GameObjects.Container || within instanceof ContainerLite) {
+				within.add(edit)
+			}
+		}
 	}
 
 	setAvatarNumber(num: number): AvatarSmall {
