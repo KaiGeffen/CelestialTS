@@ -148,6 +148,7 @@ export default class TheirHandRegion extends Region {
 
 	// Animate any cards leaving the hand
 	private animate(state: ClientState, hand: CardImage[], isRecap: boolean): void {
+		return
 		this.animatePriority(state, isRecap)
 
 		this.animateCardsLeavingHand(state, isRecap, hand)

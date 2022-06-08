@@ -133,6 +133,7 @@ export default class StoryRegion extends Region {
 	}
 
 	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
+		return
 		let that = this
 
 		// If the last card was just played by the opponent,
