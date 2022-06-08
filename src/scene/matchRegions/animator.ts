@@ -1,15 +1,20 @@
 import 'phaser'
 import ClientState from '../../lib/clientState'
 import BaseScene from '../baseScene'
-import { Zone } from '../../lib/animation'
+import { Animation, Zone } from '../../lib/animation'
 import CardLocation from './cardLocation'
 import { CardImage } from '../../lib/cardImage'
-import { Time, Depth } from '../../settings/settings'
+import { Space, Time, Depth } from '../../settings/settings'
 import { cardback } from '../../catalog/catalog'
 
 
 export default class Animator {
 	static animate(state: ClientState, scene: BaseScene) {
+		// TODO Handle initial mulligan separately
+		if (state.versionNumber === 0) {
+			return
+		}
+
 		// TODO Delete container
 		let container = scene.add.container().setDepth(Depth.aboveAll)
 
@@ -17,9 +22,16 @@ export default class Animator {
 			for (let i = 0; i < state.animations[owner].length; i++) {
 				let animation = state.animations[owner][i]
 
-				// TODO Handle initial mulligan separately
-				if (state.versionNumber === 0) {
-					return
+				// Gain a status
+				if (animation.to === Zone.Status) {
+					this.animateStatus(scene, animation, owner)
+					continue
+				}
+
+				// Transform a card TODO
+				if (animation.to === Zone.Transform) {
+					// The only occurence of this left is Transform > Story changing acts into Robots
+					continue
 				}
 
 				let start = this.getStart(animation, state, container, owner)
@@ -28,13 +40,20 @@ export default class Animator {
 				if (animation.card !== null) {
 					let card = this.createCard(animation.card, start, container)
 
-					this.animateCard(scene, card, end, i)
+					if (animation.to !== animation.from) {
+						// Show the card in motion between start and end
+						this.animateCard(scene, card, end, i)
+					}
+					else {
+						// Emphasize the card if it stayed in the same zone
+						this.animateEmphasis(scene, card, i)
+					}
 				}
 			}
 		}	
 	}
 
-	private static getStart(animation, state, container, owner: number): [number, number] {
+	private static getStart(animation: Animation, state, container, owner: number): [number, number] {
 		switch (animation.from) {
 			case Zone.Deck:
 			if (owner === 0) {
@@ -48,7 +67,6 @@ export default class Animator {
 			return CardLocation.story(state, false, animation.index, container, owner)
 
 			case Zone.Gone:
-			console.log(animation)
 			return CardLocation.gone(container)
 
 			case Zone.Hand:
@@ -68,12 +86,10 @@ export default class Animator {
 			}
 		}
 
-		console.log(animation)
-
 		return [300,300]
 	}
 
-	private static getEnd(animation, state, container, owner): [number, number] {
+	private static getEnd(animation: Animation, state, container, owner): [number, number] {
 		switch (animation.to) {
 			case Zone.Deck:
 			if (owner === 0) {
@@ -107,8 +123,6 @@ export default class Animator {
 			}
 		}
 
-		console.log(animation)
-
 		return [300,300]
 	}
 
@@ -136,6 +150,34 @@ export default class Animator {
 				card.show()
 				// TODO Different for create?
 				scene.sound.play('draw')
+			},
+			onComplete: function (tween, targets, _)
+			{
+				card.destroy()
+			}
+		})
+	}
+
+	private static animateStatus(scene: Phaser.Scene, animation: Animation, owner: number): void {
+		// TODO
+		console.log(animation)
+
+		// scene.add.image(Space.windowWidth/2, Space.windowHeight/2, `icon-${animation.status}1`)
+
+	}
+
+	// Animate a card being emphasized in its place, such as showing that a Morning card is proccing
+	private static animateEmphasis(scene: Phaser.Scene, card: CardImage, i: number): void {
+		// Animate card scaling up and disappearing
+		scene.tweens.add({
+			targets: card.container,
+			scale: 3,
+			alpha: 0,
+			delay: i * Time.recapTweenWithPause(),
+			duration: Time.recapTween(),
+			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
+			{
+				card.show()
 			},
 			onComplete: function (tween, targets, _)
 			{
