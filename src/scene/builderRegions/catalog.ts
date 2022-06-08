@@ -158,7 +158,6 @@ export default class CatalogRegion {
         x: x,
         duration: Time.builderSlide(),
         onStart: () => {
-          console.log(that.scrollablePanel)
           that.panel.minWidth = Space.windowWidth - x
           that.scrollablePanel.layout()
         },

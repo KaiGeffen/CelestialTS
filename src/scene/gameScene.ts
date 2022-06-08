@@ -1,25 +1,15 @@
 import "phaser";
-import { collectibleCards, cardback } from "../catalog/catalog"
-import Card from "../lib/card"
-
-import { Network, versionNumber } from "../net"
-import ClientState from "../lib/clientState"
-import BaseScene from "./baseScene"
-import { CardImage } from "../lib/cardImage"
-import { StatusBar } from "../lib/status"
-import { SymmetricButtonLarge } from '../lib/buttons/backed'
-
+import ClientState from "../lib/clientState";
+import { Network, versionNumber } from "../net";
 // Import Settings itself 
-import { Color, Style, UserSettings, Time, Space, Mechanics } from "../settings/settings"
-import Recap from '../lib/recap'
-import Button from '../lib/button'
-import Icon from '../lib/icon'
-import Menu from '../lib/menu'
-import { Animation, Zone } from '../lib/animation'
+import { UserSettings } from "../settings/settings";
+import BaseScene from "./baseScene";
+import Region from './matchRegions/baseRegion';
 // TODO Remove unused
+import Regions from "./matchRegions/matchRegions";
 
-import Regions from "./matchRegions/matchRegions"
-import Region from './matchRegions/baseRegion'
+import Animator from './matchRegions/animator'
+
 
 
 var storyHiddenLock: boolean = false
@@ -383,6 +373,9 @@ class View {
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
+		// TODO Put this somewhere good
+		Animator.animate(state, this.scene)
+
 		this.searching.hide()
 
 		this.mulligan.displayState(state, isRecap)

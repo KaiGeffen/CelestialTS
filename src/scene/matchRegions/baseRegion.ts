@@ -33,6 +33,7 @@ export default class Region {
 
 	// Bring attention to the given region by hiding everything else on screen
 	focus(text = ''): void {
+		return
 		const x = -this.container.x
 		const y = -this.container.y
 

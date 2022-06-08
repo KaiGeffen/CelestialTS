@@ -207,6 +207,7 @@ export default class OurHandRegion extends Region {
 
 	// Animate any cards ending in the hand
 	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
+		return
 		let scene = this.scene
 
 		this.animatePriority(state, isRecap)
