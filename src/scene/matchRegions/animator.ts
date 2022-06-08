@@ -17,6 +17,11 @@ export default class Animator {
 			for (let i = 0; i < state.animations[owner].length; i++) {
 				let animation = state.animations[owner][i]
 
+				// TODO Handle initial mulligan separately
+				if (state.versionNumber === 0) {
+					return
+				}
+
 				let start = this.getStart(animation, state, container, owner)
 				let end = this.getEnd(animation, state, container, owner)
 
@@ -125,6 +130,7 @@ export default class Animator {
 			y: end[1],
 			delay: i * Time.recapTweenWithPause(),
 			duration: Time.recapTween(),
+			// ease: Phaser.Math.Easing.Sine.In,
 			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
 			{
 				card.show()

@@ -4,7 +4,7 @@ import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
-import { Space, Color, Time, Style } from '../../settings/settings'
+import { Space, Color, Time, Style, Depth } from '../../settings/settings'
 import Button from '../../lib/button'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
@@ -133,7 +133,6 @@ export default class StoryRegion extends Region {
 	}
 
 	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
-		return
 		let that = this
 
 		// If the last card was just played by the opponent,
