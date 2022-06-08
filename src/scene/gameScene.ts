@@ -472,7 +472,7 @@ export class TutorialGameScene extends AdventureGameScene {
 				// Display hints based on what round it is (TODO this in json)
 				switch(state.versionNumber) {
 					case 0:
-						this.view.ourHand.focus("These are the cards in your hand. Each has a cost (Top) and point ")
+						this.view.ourHand.focus("This is your hand. Each card costs some amount of breath to play (Top number) and gives you an amount of points when it resolves (Bottom number).\nCards are played to the story that we build together, and at night that story resolves, granting whoever contributed more points the win.\nWhen a player gets to 5 wins, that player wins the game.")
 						// this.view.ourHand.focus("Spend breath to play cards from your hand to the story.\nOnce we're both done, night falls and the story is performed.")
 						break
 					case 2:
