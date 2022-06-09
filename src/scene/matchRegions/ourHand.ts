@@ -182,12 +182,16 @@ export default class OurHandRegion extends Region {
 
 	private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
 		let that = this
+		console.log(status)
 		let keyword = keywords.find((value) => {
+			console.log(value)
 			return value.key === status
 		})
 
 		let onHover = () => {
 			let s = keyword.text
+
+			// TODO Need to remove the first occurence of X (In the image data)
 
 			// Get the value from the given status button
 			s = s.split(/\bX\b/).join(btn.getText())
