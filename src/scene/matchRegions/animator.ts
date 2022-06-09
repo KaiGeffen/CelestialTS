@@ -231,10 +231,10 @@ export default class Animator {
 			}
 		}
 
-		// Remove that cardimage from its container
-		this.container.add(card.container)
-		// card.setContainer(this.container)
-
+		// Make a new copy of that card in the same position but in this container
+		card = this.createCard(card.card, [card.container.x, card.container.y])
+		.show()
+		
 		// Should go to our deck
 		let end = CardLocation.ourDeck()
 
