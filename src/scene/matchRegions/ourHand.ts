@@ -295,7 +295,7 @@ export default class OurHandRegion extends Region {
 	}
 
 	private displayStatuses(state: ClientState): void {
-		// // Specific to 4 TODO
+		// Specific to 4 TODO
 		let amts = [0, 0, 0, 0]
 		const length = 4
 
@@ -303,10 +303,13 @@ export default class OurHandRegion extends Region {
 			amts[status]++
 		})
 
-		this.btnInspire.setVisible(amts[1] > 0)
-		.setText(`${amts[1]}`)
+		const amtInspire = amts[1]
+		const amtNourish = amts[2] - amts[3]
 
-		this.btnNourish.setVisible(amts[2] > 0)
-		.setText(`${amts[2]}`)
+		this.btnInspire.setVisible(amtInspire !== 0)
+		.setText(`${amtInspire}`)
+
+		this.btnNourish.setVisible(amtNourish !== 0)
+		.setText(`${amtNourish}`)
 	}
 }
