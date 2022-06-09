@@ -80,7 +80,15 @@ export class CardImage {
 
   destroy(): void {
     this.image.destroy()
-    this.container.destroy()
+
+    // TODO ContainerLite has a bug where destroy will mess up the displayList
+    // TODO Find a better workaround that destroys the container itself
+    if (typeof this.container === typeof ContainerLite) {
+      this.container['clear'](true)
+    }
+    else {
+      this.container.destroy()
+    }
   }
 
   show(): CardImage {

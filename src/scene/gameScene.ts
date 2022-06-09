@@ -6,7 +6,7 @@ import { UserSettings } from "../settings/settings";
 import BaseScene from "./baseScene";
 import Region from './matchRegions/baseRegion';
 // TODO Remove unused
-import Regions from "./matchRegions/matchRegions";
+import Regions from "./matchRegions/matchRegions"
 
 import Animator from './matchRegions/animator'
 

@@ -182,9 +182,7 @@ export default class OurHandRegion extends Region {
 
 	private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
 		let that = this
-		console.log(status)
 		let keyword = keywords.find((value) => {
-			console.log(value)
 			return value.key === status
 		})
 
@@ -194,12 +192,8 @@ export default class OurHandRegion extends Region {
 			// Remove the first X (In image data)
 			s = s.replace(' X', '')
 
-			console.log(s)
-
 			// Get the value from the given status button
 			s = s.split(/\bX\b/).join(btn.getText())
-
-			console.log(s)
 
 			// Hint shows status text
 			that.scene.hint.showText(s)

@@ -7,6 +7,7 @@ import { CardImage } from '../../lib/cardImage'
 import { Space, Time, Depth } from '../../settings/settings'
 import { cardback } from '../../catalog/catalog'
 import { View } from '../gameScene'
+import { Status } from '../../lib/status'
 
 
 export default class Animator {
@@ -30,9 +31,13 @@ export default class Animator {
 			for (let i = 0; i < state.animations[owner].length; i++) {
 				let animation = state.animations[owner][i]
 
+				if (animation.from === Zone.Mulligan) {
+					this.animateMulligan(animation, owner, i)
+				}
+
 				// Gain a status
 				if (animation.from === Zone.Status) {
-					this.animateStatus(animation, owner)
+					this.animateStatus(animation, owner, i)
 					continue
 				}
 
@@ -205,10 +210,41 @@ export default class Animator {
 		})
 	}
 
+	// Animate a card being thrown back into the deck during mulligan phase
+	private animateMulligan(animation: Animation, owner: number, i: number) {
+		if (owner === 1) {
+			return
+		}
+
+		let mulligan = this.view.mulligan
+		
+		// Get the cardImage that is being referenced
+		let card: CardImage
+		let mulliganedCount = 0
+		for (let i = 0; i < mulligan['mulliganChoices'].length; i++) {
+			if (mulligan['mulliganChoices']) {
+				if (mulliganedCount === animation.index) {
+					card = mulligan.cards[i]
+					break
+				}
+				mulliganedCount++
+			}
+		}
+
+		// Remove that cardimage from its container
+		this.container.add(card.container)
+		// card.setContainer(this.container)
+
+		// Should go to our deck
+		let end = CardLocation.ourDeck()
+
+		this.animateCard(card, end, i)
+	}
+
 	// Animate the given player's deck shuffling
 	private animateShuffle(owner: number, i: number): void {
 		let that = this
-		
+
 		let start
 		if (owner === 0) {
 			start = CardLocation.ourDeck()
@@ -256,11 +292,45 @@ export default class Animator {
 		})
 	}
 
-	private animateStatus(animation: Animation, owner: number): void {
+	private animateStatus(animation: Animation, owner: number, i: number): void {
 		// TODO
 
 		// scene.add.image(Space.windowWidth/2, Space.windowHeight/2, `icon-${animation.status}1`)
 		// TODO
+		return
+
+		// TODO Some visual sparks or fruit thrown in the air?
+
+		let obj
+		switch (animation.status) {
+			case Status.Inspire:
+			if (owner === 0) {
+				obj = this.view.ourHand['btnInspire'] // TODO Smell, fix typing
+			}
+			else {
+				obj = this.view.theirHand['btnInspire']
+			}
+			break
+
+			case Status.Nourish:
+			if (owner === 0) {
+				obj = this.view.ourHand['btnNourish']
+			}
+			else {
+				obj = this.view.theirHand['btnNourish']
+			}
+			break
+		}
+
+		console.log(obj)
+
+		this.scene.tweens.add({
+			targets: obj.icon,
+			scale: 2,
+			delay: i * Time.recapTweenWithPause(),
+			duration: Time.recapTween()/2,
+			yoyo: true
+		})
 	}
 
 	// Animate a card being emphasized in its place, such as showing that a Morning card is proccing
