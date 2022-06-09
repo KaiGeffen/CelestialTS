@@ -10,14 +10,21 @@ import { View } from '../gameScene'
 
 
 export default class Animator {
-	static animate(state: ClientState, scene: BaseScene, view: View): void {
+	scene: BaseScene
+	view: View
+	container: Phaser.GameObjects.Container
+
+	constructor(scene: BaseScene, view: View) {
+		this.scene = scene
+		this.view = view
+		this.container = scene.add.container().setDepth(Depth.aboveAll)
+	}
+
+	animate(state: ClientState): void {
 		// TODO Handle initial mulligan separately
 		if (state.versionNumber === 0) {
 			return
 		}
-
-		// TODO Delete container
-		let container = scene.add.container().setDepth(Depth.aboveAll)
 
 		for (let owner = 0; owner < 2; owner++) {
 			for (let i = 0; i < state.animations[owner].length; i++) {
@@ -25,13 +32,13 @@ export default class Animator {
 
 				// Gain a status
 				if (animation.from === Zone.Status) {
-					this.animateStatus(scene, animation, owner)
+					this.animateStatus(animation, owner)
 					continue
 				}
 
 				// Shuffle a player's deck
 				if (animation.from === Zone.Shuffle) {
-					this.animateShuffle(scene, owner, i, container)
+					this.animateShuffle(owner, i)
 					continue
 				}
 
@@ -41,103 +48,103 @@ export default class Animator {
 					continue
 				}
 
-				let start = this.getStart(animation, state, container, owner)
-				let end = this.getEnd(animation, state, container, owner)
+				let start = this.getStart(animation, state, owner)
+				let end = this.getEnd(animation, state, owner)
 
 				if (animation.card !== null) {
-					let card = this.createCard(animation.card, start, container)
+					let card = this.createCard(animation.card, start)
 					
 					// Get the cardImage that this card becomes upon completion, if there is one
-					let permanentCard = this.getCard(animation, owner, view)
+					let permanentCard = this.getCard(animation, owner)
 
 					if (animation.to !== animation.from) {
 						// Show the card in motion between start and end
-						this.animateCard(scene, card, end, i, permanentCard)
+						this.animateCard(card, end, i, permanentCard)
 					}
 					else {
 						// Emphasize the card if it stayed in the same zone
-						this.animateEmphasis(scene, card, i)
+						this.animateEmphasis(card, i)
 					}
 				}
 			}
 		}	
 	}
 
-	private static getStart(animation: Animation, state, container, owner: number): [number, number] {
+	private getStart(animation: Animation, state, owner: number): [number, number] {
 		switch (animation.from) {
 			case Zone.Deck:
 			if (owner === 0) {
 				return CardLocation.ourDeck()
 			}
 			else {
-				return CardLocation.theirDeck(container)
+				return CardLocation.theirDeck(this.container)
 			}
 
 			case Zone.Story:
-			return CardLocation.story(state, false, animation.index, container, owner)
+			return CardLocation.story(state, false, animation.index, this.container, owner)
 
 			case Zone.Gone:
-			return CardLocation.gone(container)
+			return CardLocation.gone(this.container)
 
 			case Zone.Hand:
 			if (owner === 0) {
 				return CardLocation.ourHand(state, animation.index)
 			}
 			else {
-				return CardLocation.theirHand(state, animation.index, container)
+				return CardLocation.theirHand(state, animation.index, this.container)
 			}
 			
 			case Zone.Discard:
 			if (owner === 0) {
-				return CardLocation.ourDiscard(container)
+				return CardLocation.ourDiscard(this.container)
 			}
 			else {
-				return CardLocation.theirDiscard(container)
+				return CardLocation.theirDiscard(this.container)
 			}
 		}
 
 		return [300,300]
 	}
 
-	private static getEnd(animation: Animation, state, container, owner): [number, number] {
+	private getEnd(animation: Animation, state, owner): [number, number] {
 		switch (animation.to) {
 			case Zone.Deck:
 			if (owner === 0) {
 				return CardLocation.ourDeck()
 			}
 			else {
-				return CardLocation.theirDeck(container)
+				return CardLocation.theirDeck(this.container)
 			}
 
 			// TODO Clarify index 1 and 2, mostly 2 seems to be null
 			case Zone.Story:
-			return CardLocation.story(state, false, animation.index, container, owner)
+			return CardLocation.story(state, false, animation.index, this.container, owner)
 
 			case Zone.Gone:
-			return CardLocation.gone(container)
+			return CardLocation.gone(this.container)
 
 			case Zone.Hand:
 			if (owner === 0) {
 				return CardLocation.ourHand(state, animation.index)
 			}
 			else {
-				return CardLocation.theirHand(state, animation.index, container)
+				return CardLocation.theirHand(state, animation.index, this.container)
 			}
 
 			case Zone.Discard:
 			if (owner === 0) {
-				return CardLocation.ourDiscard(container)
+				return CardLocation.ourDiscard(this.container)
 			}
 			else {
-				return CardLocation.theirDiscard(container)
+				return CardLocation.theirDiscard(this.container)
 			}
 		}
 
 		return [300,300]
 	}
 
-	private static createCard(card, start, container: Phaser.GameObjects.Container): CardImage {
-		let cardImage = new CardImage(card, container, false)
+	private createCard(card, start): CardImage {
+		let cardImage = new CardImage(card, this.container, false)
 
 		// Set its initial position and make it hidden until its tween plays
 		cardImage.setPosition(start)
@@ -147,16 +154,16 @@ export default class Animator {
 	}
 
 	// Get the cardImage referenced by this animation
-	private static getCard(animation: Animation, owner: number, view: View): CardImage {
+	private getCard(animation: Animation, owner: number): CardImage {
 		let card
 
 		switch(animation.to) {
 			case Zone.Hand:
 			if (owner === 0) {
 				// TODO Check length
-				card = view.ourHand.cards[animation.index]
+				card = this.view.ourHand.cards[animation.index]
 			} else {
-				card = view.theirHand.cards[animation.index]
+				card = this.view.theirHand.cards[animation.index]
 			}
 			break
 
@@ -168,13 +175,14 @@ export default class Animator {
 
 	// Animate the given card moving to given end position with given delay
 	// If a permanent card is specified, that's the image that should become visible when tween completes
-	private static animateCard(scene: Phaser.Scene, card: CardImage, end: [number, number], i: number, permanentCard?: CardImage) {
+	private animateCard(card: CardImage, end: [number, number], i: number, permanentCard?: CardImage) {
+		let that = this
 		if (permanentCard) {
 			permanentCard.hide()
 		}
 
 		// Animate moving x direction, becoming visible when animation starts
-		scene.tweens.add({
+		this.scene.tweens.add({
 			targets: card.container,
 			x: end[0],
 			y: end[1],
@@ -185,7 +193,7 @@ export default class Animator {
 			{
 				card.show()
 				// TODO Different for create?
-				scene.sound.play('draw')
+				that.scene.sound.play('draw')
 			},
 			onComplete: function (tween, targets, _)
 			{
@@ -198,7 +206,9 @@ export default class Animator {
 	}
 
 	// Animate the given player's deck shuffling
-	private static animateShuffle(scene: Phaser.Scene, owner: number, i: number, container: Phaser.GameObjects.Container): void {
+	private animateShuffle(owner: number, i: number): void {
+		let that = this
+		
 		let start
 		if (owner === 0) {
 			start = CardLocation.ourDeck()
@@ -207,12 +217,12 @@ export default class Animator {
 			start = CardLocation.theirDeck()
 		}
 		
-		let topCard = this.createCard(cardback, start, container)
-		let bottomCard = this.createCard(cardback, start, container)
+		let topCard = this.createCard(cardback, start)
+		let bottomCard = this.createCard(cardback, start)
 
-		scene.add.tween({
+		this.scene.add.tween({
 			targets: topCard.container,
-			x: start[0] + Space.cardHeight/2,
+			x: start[0] + Space.cardWidth/2,
 			delay: i * Time.recapTweenWithPause(),
 			duration: Time.recapTween()/4,
 			yoyo: true,
@@ -220,7 +230,7 @@ export default class Animator {
 			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
 			{
 				topCard.show()
-				scene.sound.play('shuffle')
+				that.scene.sound.play('shuffle')
 			},
 			onComplete: function (tween, targets, _)
 			{
@@ -228,7 +238,7 @@ export default class Animator {
 			}
 		})
 
-		scene.add.tween({
+		this.scene.add.tween({
 			targets: bottomCard.container,
 			x: start[0] - Space.cardHeight/2,
 			delay: i * Time.recapTweenWithPause(),
@@ -246,17 +256,17 @@ export default class Animator {
 		})
 	}
 
-	private static animateStatus(scene: Phaser.Scene, animation: Animation, owner: number): void {
+	private animateStatus(animation: Animation, owner: number): void {
 		// TODO
 
 		// scene.add.image(Space.windowWidth/2, Space.windowHeight/2, `icon-${animation.status}1`)
-
+		// TODO
 	}
 
 	// Animate a card being emphasized in its place, such as showing that a Morning card is proccing
-	private static animateEmphasis(scene: Phaser.Scene, card: CardImage, i: number): void {
+	private animateEmphasis(card: CardImage, i: number): void {
 		// Animate card scaling up and disappearing
-		scene.tweens.add({
+		this.scene.tweens.add({
 			targets: card.container,
 			scale: 3,
 			alpha: 0,

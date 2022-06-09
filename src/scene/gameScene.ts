@@ -336,6 +336,9 @@ export class View {
 	// Region shown when the game has been won / lost
 	results: Region
 
+	// Class that animates everything that is animated
+	animator: Animator
+
 	constructor (scene: BaseScene, avatarId: number) {
 		this.scene = scene
 
@@ -370,6 +373,8 @@ export class View {
 		// Results are visible after the game is over
 		this.results = new Regions.Results().create(scene)
 		this.results.hide()
+
+		this.animator = new Animator(scene, this)
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
@@ -396,7 +401,7 @@ export class View {
 		this.results.displayState(state, isRecap)
 
 		// Animate the state
-		Animator.animate(state, this.scene, this)
+		this.animator.animate(state)
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
