@@ -128,11 +128,17 @@ export default class CardLocation {
 		return [x, y]
 	}
 
-	static theirDeck(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+	static theirDeck(container?: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
-		const x = 30 - dx
-		const y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
-		return [x - container.x, y - container.y]
+		let x = 30 - dx
+		let y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
+
+		if (container !== undefined) {
+			x -= container.x
+			y -= container.y
+		}
+
+		return [x, y]
 	}
 
 	static ourDiscard(container: Phaser.GameObjects.Container, i = 0): [number, number] {

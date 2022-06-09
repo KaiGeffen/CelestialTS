@@ -22,9 +22,16 @@ export default class Animator {
 			for (let i = 0; i < state.animations[owner].length; i++) {
 				let animation = state.animations[owner][i]
 
+				console.log(animation)
 				// Gain a status
-				if (animation.to === Zone.Status) {
+				if (animation.from === Zone.Status) {
 					this.animateStatus(scene, animation, owner)
+					continue
+				}
+
+				// Shuffle a player's deck
+				if (animation.from === Zone.Shuffle) {
+					this.animateShuffle(scene, owner, i, container)
 					continue
 				}
 
@@ -154,6 +161,55 @@ export default class Animator {
 			onComplete: function (tween, targets, _)
 			{
 				card.destroy()
+			}
+		})
+	}
+
+	// Animate the given player's deck shuffling
+	private static animateShuffle(scene: Phaser.Scene, owner: number, i: number, container: Phaser.GameObjects.Container): void {
+		let start
+		if (owner === 0) {
+			start = CardLocation.ourDeck()
+		}
+		else {
+			start = CardLocation.theirDeck()
+		}
+		
+		let topCard = this.createCard(cardback, start, container)
+		let bottomCard = this.createCard(cardback, start, container)
+
+		scene.add.tween({
+			targets: topCard.container,
+			x: start[0] + Space.cardHeight/2,
+			delay: i * Time.recapTweenWithPause(),
+			duration: Time.recapTween()/4,
+			yoyo: true,
+			repeat: 1,
+			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
+			{
+				topCard.show()
+				scene.sound.play('shuffle')
+			},
+			onComplete: function (tween, targets, _)
+			{
+				topCard.destroy()
+			}
+		})
+
+		scene.add.tween({
+			targets: bottomCard.container,
+			x: start[0] - Space.cardHeight/2,
+			delay: i * Time.recapTweenWithPause(),
+			duration: Time.recapTween()/4,
+			yoyo: true,
+			repeat: 1,
+			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
+			{
+				bottomCard.show()
+			},
+			onComplete: function (tween, targets, _)
+			{
+				bottomCard.destroy()
 			}
 		})
 	}
