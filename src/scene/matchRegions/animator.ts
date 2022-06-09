@@ -27,6 +27,8 @@ export default class Animator {
 			return
 		}
 
+		console.log(state.animations)
+
 		for (let owner = 0; owner < 2; owner++) {
 			for (let i = 0; i < state.animations[owner].length; i++) {
 				let animation = state.animations[owner][i]
@@ -34,29 +36,23 @@ export default class Animator {
 				if (animation.from === Zone.Mulligan) {
 					this.animateMulligan(animation, owner, i)
 				}
-
 				// Gain a status
-				if (animation.from === Zone.Status) {
+				else if (animation.from === Zone.Status) {
 					this.animateStatus(animation, owner, i)
-					continue
 				}
-
 				// Shuffle a player's deck
-				if (animation.from === Zone.Shuffle) {
+				else if (animation.from === Zone.Shuffle) {
 					this.animateShuffle(owner, i)
-					continue
 				}
-
 				// Transform a card TODO
-				if (animation.to === Zone.Transform) {
+				else if (animation.to === Zone.Transform) {
 					// The only occurence of this left is Transform > Story changing acts into Robots
 					continue
 				}
+				else if (animation.card !== null) {
+					let start = this.getStart(animation, state, owner)
+					let end = this.getEnd(animation, state, owner)
 
-				let start = this.getStart(animation, state, owner)
-				let end = this.getEnd(animation, state, owner)
-
-				if (animation.card !== null) {
 					let card = this.createCard(animation.card, start)
 					
 					// Get the cardImage that this card becomes upon completion, if there is one
@@ -211,7 +207,7 @@ export default class Animator {
 	}
 
 	// Animate a card being thrown back into the deck during mulligan phase
-	private animateMulligan(animation: Animation, owner: number, i: number) {
+	private animateMulligan(animation: Animation, owner: number, iAnimation: number) {
 		if (owner === 1) {
 			return
 		}
@@ -222,7 +218,7 @@ export default class Animator {
 		let card: CardImage
 		let mulliganedCount = 0
 		for (let i = 0; i < mulligan['mulliganChoices'].length; i++) {
-			if (mulligan['mulliganChoices']) {
+			if (mulligan['mulliganChoices'][i]) {
 				if (mulliganedCount === animation.index) {
 					card = mulligan.cards[i]
 					break
@@ -238,7 +234,7 @@ export default class Animator {
 		// Should go to our deck
 		let end = CardLocation.ourDeck()
 
-		this.animateCard(card, end, i)
+		this.animateCard(card, end, iAnimation)
 	}
 
 	// Animate the given player's deck shuffling
