@@ -22,7 +22,6 @@ export default class Animator {
 			for (let i = 0; i < state.animations[owner].length; i++) {
 				let animation = state.animations[owner][i]
 
-				console.log(animation)
 				// Gain a status
 				if (animation.from === Zone.Status) {
 					this.animateStatus(scene, animation, owner)
@@ -216,7 +215,6 @@ export default class Animator {
 
 	private static animateStatus(scene: Phaser.Scene, animation: Animation, owner: number): void {
 		// TODO
-		console.log(animation)
 
 		// scene.add.image(Space.windowWidth/2, Space.windowHeight/2, `icon-${animation.status}1`)
 

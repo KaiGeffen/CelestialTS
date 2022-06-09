@@ -127,6 +127,12 @@ export default class OurHandRegion extends Region {
 				})
 			}
 
+			// Hide this card until a draw results in its index being filled
+			this.hideUntilPresent(card, state.animations[0],
+				(animation) => {
+					return animation.to === Zone.Hand && animation.index === i
+				})
+
 			cardsInHand.push(card)
 			this.temp.push(card)
 		}

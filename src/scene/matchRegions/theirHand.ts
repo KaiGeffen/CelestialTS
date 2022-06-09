@@ -66,12 +66,16 @@ export default class TheirHandRegion extends Region {
 		// Statuses
 		this.displayStatuses(state)
 
-		let hand = []
 		for (let i = 0; i < state.opponentHandSize; i++) {
 			let card = this.addCard(cardback, CardLocation.theirHand(state, i, this.container))
 			.moveToTopOnHover()
 
-			hand.push(card)
+			// Hide this card until a draw results in its index being filled
+			this.hideUntilPresent(card, state.animations[1],
+				(animation) => {
+					return animation.to === Zone.Hand && animation.index === i
+				})
+
 			this.temp.push(card)
 		}
 
