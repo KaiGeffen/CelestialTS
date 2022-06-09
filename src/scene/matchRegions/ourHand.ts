@@ -248,7 +248,7 @@ export default class OurHandRegion extends Region {
 								targets: adjustedCard.container,
 								// TODO Fix this to be in general (Space to move might be smaller if cards squished)
 								x: CardLocation.ourHand(state, j - 1, that.container)[0],
-								duration: Time.recapTween() - 10,
+								duration: Time.playCard() - 10,
 								ease: "Sine.easeInOut"
 							})
 						}
