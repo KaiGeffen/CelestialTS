@@ -160,7 +160,7 @@ export default class StoryRegion extends Region {
 				targets: card.container,
 				x: x,
 				y: y,
-				duration: Time.recapTweenWithPause(),
+				duration: Time.playCard(),
 				onStart: function (tween, targets, _)
 				{
 					card.show()

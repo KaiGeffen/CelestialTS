@@ -2,6 +2,11 @@
 import { UserSettings } from './settings'
 
 export class Time {
+  // Time for a card to be played from hand to story
+  static playCard(): number {
+    return 400
+  }
+
   static recapStateMinimum(): number {
     return 1000 / (UserSettings._get('animationSpeed') * 2 + 0.5)
   }

@@ -134,8 +134,6 @@ export default class OurHandRegion extends Region {
 		// Pile sizes
 		this.txtDeckCount.setText(`${state.deck.length}`)
 		this.txtDiscardCount.setText(`${state.discard[0].length}`)
-
-		this.animate(state, cardsInHand, isRecap)
 	}
 
 	// Hide the cards in our hand, used when mulligan is visible
@@ -205,75 +203,6 @@ export default class OurHandRegion extends Region {
 		return [onHover, onExit]
 	}
 
-	// Animate any cards ending in the hand
-	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
-		return
-		let scene = this.scene
-
-		this.animatePriority(state, isRecap)
-		
-		let delay = 0
-		for (let i = 0; i < state.animations[0].length; i++) {
-			let animation = state.animations[0][i]
-			if (animation.to === Zone.Hand) {
-				let card = cards[animation.index]
-
-				// Animate the card coming from given zone
-				// Remember where to end, then move to starting position
-				let x = card.container.x
-				let y = card.container.y
-
-				if (animation.from === Zone.Hand) {
-					// This is the card having an effect in the player's hand
-					this.animateEmphasis(card, delay)
-				}
-				else {
-					// Set the starting position based on zone it's coming from
-					let position
-					switch (animation.from) {
-						case Zone.Deck:
-						position = CardLocation.ourDeck(this.container)
-						break
-
-						case Zone.Discard:
-						position = CardLocation.ourDiscard(this.container)
-						break
-
-						case Zone.Story:
-						position = CardLocation.story(state, isRecap, animation.index2, this.container, 0)
-						break
-
-						case Zone.Gone:
-						position = CardLocation.gone(this.container)
-						break
-					}
-					card.setPosition(position)
-
-					// Hide the card until it starts animating
-					card.hide()
-
-					// Animate moving x direction, becoming visible when animation starts
-					this.scene.tweens.add({
-						targets: card.container,
-						x: x,
-						y: y,
-						delay: delay,
-						duration: Time.recapTweenWithPause(),
-						onStart: function (tween, targets, _)
-						{
-							card.show()
-							// TODO Different for create?
-							scene.sound.play('draw')
-						}
-					})
-				}
-			}
-
-			// Delay occurs for each animation even if not going to hand
-			delay += Time.recapTween()
-		}
-	}
-
 	// Animate us getting or losing priority
 	private animatePriority(state: ClientState, isRecap: boolean): void {
 		const targetAlpha = state.priority === 0 && !isRecap ? 1 : 0
@@ -303,7 +232,7 @@ export default class OurHandRegion extends Region {
 					targets: card.container,
 					x: nextStoryPosition[0],
 					y: nextStoryPosition[1],
-					duration: Time.recapTween(),
+					duration: Time.playCard(),
 					ease: "Sine.easeInOut",
 					// After brief delay, tell network, hide info, shift cards to fill its spot
 					onStart: function () {setTimeout(function() {
