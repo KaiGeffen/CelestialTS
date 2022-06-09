@@ -16,6 +16,9 @@ export default class Region {
 	// All gameobjects that should be deleted before new state is shown
 	temp: any[] = []
 
+	// The cards in the current state in this region, if any
+	cards: CardImage[]
+
 	addCard(card: Card, position: [number, number] = [0, 0]): CardImage {
 		return new CardImage(card, this.container).setPosition(position)
 	}
@@ -106,33 +109,5 @@ export default class Region {
 				card.destroy()
 			}
 		})
-	}
-
-
-	// Hide the given card until its animation has completed
-	protected hideUntilPresent(card: CardImage, animations, pred: (animation) => boolean): void {
-		// Delay until the card appears, if undefined there is no delay
-		let delay
-		for (let i = 0; i < animations.length; i++) {
-			const animation = animations[i]
-			if (pred(animation)) {
-				delay = i * Time.recapTween() + Time.recapTweenWithPause()
-			}
-		}
-
-		// If the card should be hidden, hide it, then show it after delay
-		if (delay !== undefined) {
-			card.hide()
-
-			this.scene.tweens.add({
-				targets: card.container,
-				alpha: 1, // NOTE This does nothing
-				delay: delay,
-				// duration: 1,
-				onStart: () => { 
-					card.show()
-				},
-			})
-		}
 	}
 }

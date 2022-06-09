@@ -6,10 +6,11 @@ import CardLocation from './cardLocation'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Time, Depth } from '../../settings/settings'
 import { cardback } from '../../catalog/catalog'
+import { View } from '../gameScene'
 
 
 export default class Animator {
-	static animate(state: ClientState, scene: BaseScene) {
+	static animate(state: ClientState, scene: BaseScene, view: View): void {
 		// TODO Handle initial mulligan separately
 		if (state.versionNumber === 0) {
 			return
@@ -45,10 +46,13 @@ export default class Animator {
 
 				if (animation.card !== null) {
 					let card = this.createCard(animation.card, start, container)
+					
+					// Get the cardImage that this card becomes upon completion, if there is one
+					let permanentCard = this.getCard(animation, owner, view)
 
 					if (animation.to !== animation.from) {
 						// Show the card in motion between start and end
-						this.animateCard(scene, card, end, i)
+						this.animateCard(scene, card, end, i, permanentCard)
 					}
 					else {
 						// Emphasize the card if it stayed in the same zone
@@ -142,7 +146,33 @@ export default class Animator {
 		return cardImage
 	}
 
-	private static animateCard(scene: Phaser.Scene, card: CardImage, end: [number, number], i: number) {
+	// Get the cardImage referenced by this animation
+	private static getCard(animation: Animation, owner: number, view: View): CardImage {
+		let card
+
+		switch(animation.to) {
+			case Zone.Hand:
+			if (owner === 0) {
+				// TODO Check length
+				card = view.ourHand.cards[animation.index]
+			} else {
+				card = view.theirHand.cards[animation.index]
+			}
+			break
+
+			// case Zone.
+
+		}
+		return card
+	}
+
+	// Animate the given card moving to given end position with given delay
+	// If a permanent card is specified, that's the image that should become visible when tween completes
+	private static animateCard(scene: Phaser.Scene, card: CardImage, end: [number, number], i: number, permanentCard?: CardImage) {
+		if (permanentCard) {
+			permanentCard.hide()
+		}
+
 		// Animate moving x direction, becoming visible when animation starts
 		scene.tweens.add({
 			targets: card.container,
@@ -159,6 +189,9 @@ export default class Animator {
 			},
 			onComplete: function (tween, targets, _)
 			{
+				if (permanentCard) {
+					permanentCard.show()					
+				}
 				card.destroy()
 			}
 		})

@@ -102,14 +102,14 @@ export default class OurHandRegion extends Region {
 		this.displayStatuses(state)
 		
 		// Add each of the cards in our hand
-		let cardsInHand = []
+		this.cards = []
 		for (let i = 0; i < state.hand.length; i++) {
 			let card = this.addCard(state.hand[i], CardLocation.ourHand(state, i, this.container))
 			.setCost(state.costs[i])
 			.moveToTopOnHover()
 
 			const cost = state.costs[i]
-			card.setOnHover(that.onCardHover(card, cost), that.onCardExit(card, cardsInHand, i))
+			card.setOnHover(that.onCardHover(card, cost), that.onCardExit(card, this.cards, i))
 
 			// Set whether card shows up as playable, and also whether we can click to play a card in this state
 			if (!state.cardsPlayable[i]) {
@@ -119,7 +119,7 @@ export default class OurHandRegion extends Region {
 				})
 			}
 			else if (state.priority === 0 && state.winner === null) {
-				card.setOnClick(that.onCardClick(i, card, cardsInHand, state, isRecap))
+				card.setOnClick(that.onCardClick(i, card, this.cards, state, isRecap))
 			} else {
 				card.setOnClick(() => {
 					// TODO Signal errors in a variety of ways (Not enough mana, replay playing, etc)
@@ -127,13 +127,7 @@ export default class OurHandRegion extends Region {
 				})
 			}
 
-			// Hide this card until a draw results in its index being filled
-			this.hideUntilPresent(card, state.animations[0],
-				(animation) => {
-					return animation.to === Zone.Hand && animation.index === i
-				})
-
-			cardsInHand.push(card)
+			this.cards.push(card)
 			this.temp.push(card)
 		}
 

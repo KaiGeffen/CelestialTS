@@ -306,7 +306,7 @@ class GameScene extends BaseScene {
 
 
 // The View of MVC - What is presented to the user
-class View {
+export class View {
 	scene: BaseScene
 
 	// Whether the recap is playing or is paused
@@ -373,9 +373,6 @@ class View {
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
-		// TODO Put this somewhere good
-		Animator.animate(state, this.scene)
-
 		this.searching.hide()
 
 		this.mulligan.displayState(state, isRecap)
@@ -397,6 +394,9 @@ class View {
 		this.theirDiscardOverlay.displayState(state, isRecap)
 
 		this.results.displayState(state, isRecap)
+
+		// Animate the state
+		Animator.animate(state, this.scene, this)
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
