@@ -27,14 +27,12 @@ export default class Animator {
 			return
 		}
 
-		console.log(state.animations)
-
 		for (let owner = 0; owner < 2; owner++) {
 			for (let i = 0; i < state.animations[owner].length; i++) {
 				let animation = state.animations[owner][i]
 
 				if (animation.from === Zone.Mulligan) {
-					this.animateMulligan(animation, owner, i)
+					this.animateMulligan(animation, owner, i, state)
 				}
 				// Gain a status
 				else if (animation.from === Zone.Status) {
@@ -119,17 +117,17 @@ export default class Animator {
 
 			// TODO Clarify index 1 and 2, mostly 2 seems to be null
 			case Zone.Story:
-			return CardLocation.story(state, false, animation.index, this.container, owner)
+			return CardLocation.story(state, false, animation.index2, this.container, owner)
 
 			case Zone.Gone:
 			return CardLocation.gone(this.container)
 
 			case Zone.Hand:
 			if (owner === 0) {
-				return CardLocation.ourHand(state, animation.index)
+				return CardLocation.ourHand(state, animation.index2)
 			}
 			else {
-				return CardLocation.theirHand(state, animation.index, this.container)
+				return CardLocation.theirHand(state, animation.index2, this.container)
 			}
 
 			case Zone.Discard:
@@ -162,9 +160,9 @@ export default class Animator {
 			case Zone.Hand:
 			if (owner === 0) {
 				// TODO Check length
-				card = this.view.ourHand.cards[animation.index]
+				card = this.view.ourHand.cards[animation.index2]
 			} else {
-				card = this.view.theirHand.cards[animation.index]
+				card = this.view.theirHand.cards[animation.index2]
 			}
 			break
 
@@ -207,34 +205,23 @@ export default class Animator {
 	}
 
 	// Animate a card being thrown back into the deck during mulligan phase
-	private animateMulligan(animation: Animation, owner: number, iAnimation: number) {
+	private animateMulligan(animation: Animation, owner: number, iAnimation: number, state: ClientState) {
 		if (owner === 1) {
 			return
 		}
 
-		let mulligan = this.view.mulligan
-		
 		// Get the cardImage that is being referenced
-		let card: CardImage
-		let mulliganedCount = 0
-		for (let i = 0; i < mulligan['mulliganChoices'].length; i++) {
-			if (mulligan['mulliganChoices'][i]) {
-				if (mulliganedCount === animation.index) {
-					card = mulligan.cards[i]
-					break
-				}
-				mulliganedCount++
-			}
-		}
-
+		let card = this.view.mulligan.cards[animation.index]
+		
 		// Make a new copy of that card in the same position but in this container
 		card = this.createCard(card.card, [card.container.x, card.container.y])
 		.show()
 		
 		// Should go to our deck
-		let end = CardLocation.ourDeck()
+		let end = this.getEnd(animation, state, owner)
 
-		this.animateCard(card, end, iAnimation)
+		let permanentCard = this.getCard(animation, owner)
+		this.animateCard(card, end, iAnimation, permanentCard)
 	}
 
 	// Animate the given player's deck shuffling
