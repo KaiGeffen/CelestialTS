@@ -3,6 +3,8 @@ import birds from "./birds.json"
 import ashes from "./ashes.json"
 import shadow from "./shadow.json"
 import pet from "./pet.json"
+import birth from "./birth.json"
+// import vision from "./vision.json"
 
 
 export const adventureData: Adventure[] = [
@@ -11,6 +13,8 @@ export const adventureData: Adventure[] = [
   ...ashes,
   ...shadow,
   ...pet,
+  ...birth,
+  // ...vision,
 ]
 
 export interface Adventure {

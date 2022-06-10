@@ -254,7 +254,7 @@ export default class Animator {
 
 		this.scene.add.tween({
 			targets: topCard.container,
-			x: start[0] + Space.cardWidth/2,
+			x: start[0] + Space.cardWidth/4,
 			delay: i * Time.recapTweenWithPause(),
 			duration: Time.recapTween()/4,
 			yoyo: true,
