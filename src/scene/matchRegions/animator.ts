@@ -47,7 +47,7 @@ export default class Animator {
 					// The only occurence of this left is Transform > Story changing acts into Robots
 					continue
 				}
-				else if (animation.card !== null) {
+				else {
 					let start = this.getStart(animation, state, owner)
 					let end = this.getEnd(animation, state, owner)
 
@@ -143,7 +143,7 @@ export default class Animator {
 	}
 
 	private createCard(card, start): CardImage {
-		let cardImage = new CardImage(card, this.container, false)
+		let cardImage = new CardImage(card || cardback, this.container, false)
 
 		// Set its initial position and make it hidden until its tween plays
 		cardImage.setPosition(start)
