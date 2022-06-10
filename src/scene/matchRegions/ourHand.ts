@@ -102,14 +102,14 @@ export default class OurHandRegion extends Region {
 		this.displayStatuses(state)
 		
 		// Add each of the cards in our hand
-		let cardsInHand = []
+		this.cards = []
 		for (let i = 0; i < state.hand.length; i++) {
 			let card = this.addCard(state.hand[i], CardLocation.ourHand(state, i, this.container))
 			.setCost(state.costs[i])
 			.moveToTopOnHover()
 
 			const cost = state.costs[i]
-			card.setOnHover(that.onCardHover(card, cost), that.onCardExit(card, cardsInHand, i))
+			card.setOnHover(that.onCardHover(card, cost), that.onCardExit(card, this.cards, i))
 
 			// Set whether card shows up as playable, and also whether we can click to play a card in this state
 			if (!state.cardsPlayable[i]) {
@@ -119,7 +119,7 @@ export default class OurHandRegion extends Region {
 				})
 			}
 			else if (state.priority === 0 && state.winner === null) {
-				card.setOnClick(that.onCardClick(i, card, cardsInHand, state, isRecap))
+				card.setOnClick(that.onCardClick(i, card, this.cards, state, isRecap))
 			} else {
 				card.setOnClick(() => {
 					// TODO Signal errors in a variety of ways (Not enough mana, replay playing, etc)
@@ -127,15 +127,13 @@ export default class OurHandRegion extends Region {
 				})
 			}
 
-			cardsInHand.push(card)
+			this.cards.push(card)
 			this.temp.push(card)
 		}
 
 		// Pile sizes
 		this.txtDeckCount.setText(`${state.deck.length}`)
 		this.txtDiscardCount.setText(`${state.discard[0].length}`)
-
-		this.animate(state, cardsInHand, isRecap)
 	}
 
 	// Hide the cards in our hand, used when mulligan is visible
@@ -191,6 +189,9 @@ export default class OurHandRegion extends Region {
 		let onHover = () => {
 			let s = keyword.text
 
+			// Remove the first X (In image data)
+			s = s.replace(' X', '')
+
 			// Get the value from the given status button
 			s = s.split(/\bX\b/).join(btn.getText())
 
@@ -203,74 +204,6 @@ export default class OurHandRegion extends Region {
 		}
 
 		return [onHover, onExit]
-	}
-
-	// Animate any cards ending in the hand
-	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
-		let scene = this.scene
-
-		this.animatePriority(state, isRecap)
-		
-		let delay = 0
-		for (let i = 0; i < state.animations[0].length; i++) {
-			let animation = state.animations[0][i]
-			if (animation.to === Zone.Hand) {
-				let card = cards[animation.index]
-
-				// Animate the card coming from given zone
-				// Remember where to end, then move to starting position
-				let x = card.container.x
-				let y = card.container.y
-
-				if (animation.from === Zone.Hand) {
-					// This is the card having an effect in the player's hand
-					this.animateEmphasis(card, delay)
-				}
-				else {
-					// Set the starting position based on zone it's coming from
-					let position
-					switch (animation.from) {
-						case Zone.Deck:
-						position = CardLocation.ourDeck(this.container)
-						break
-
-						case Zone.Discard:
-						position = CardLocation.ourDiscard(this.container)
-						break
-
-						case Zone.Story:
-						position = CardLocation.story(state, isRecap, animation.index2, this.container, 0)
-						break
-
-						case Zone.Gone:
-						position = CardLocation.gone(this.container)
-						break
-					}
-					card.setPosition(position)
-
-					// Hide the card until it starts animating
-					card.hide()
-
-					// Animate moving x direction, becoming visible when animation starts
-					this.scene.tweens.add({
-						targets: card.container,
-						x: x,
-						y: y,
-						delay: delay,
-						duration: Time.recapTweenWithPause(),
-						onStart: function (tween, targets, _)
-						{
-							card.show()
-							// TODO Different for create?
-							scene.sound.play('draw')
-						}
-					})
-				}
-			}
-
-			// Delay occurs for each animation even if not going to hand
-			delay += Time.recapTween()
-		}
 	}
 
 	// Animate us getting or losing priority
@@ -302,7 +235,7 @@ export default class OurHandRegion extends Region {
 					targets: card.container,
 					x: nextStoryPosition[0],
 					y: nextStoryPosition[1],
-					duration: Time.recapTween(),
+					duration: Time.playCard(),
 					ease: "Sine.easeInOut",
 					// After brief delay, tell network, hide info, shift cards to fill its spot
 					onStart: function () {setTimeout(function() {
@@ -318,7 +251,7 @@ export default class OurHandRegion extends Region {
 								targets: adjustedCard.container,
 								// TODO Fix this to be in general (Space to move might be smaller if cards squished)
 								x: CardLocation.ourHand(state, j - 1, that.container)[0],
-								duration: Time.recapTween() - 10,
+								duration: Time.playCard() - 10,
 								ease: "Sine.easeInOut"
 							})
 						}
@@ -365,7 +298,7 @@ export default class OurHandRegion extends Region {
 	}
 
 	private displayStatuses(state: ClientState): void {
-		// // Specific to 4 TODO
+		// Specific to 4 TODO
 		let amts = [0, 0, 0, 0]
 		const length = 4
 
@@ -373,10 +306,13 @@ export default class OurHandRegion extends Region {
 			amts[status]++
 		})
 
-		this.btnInspire.setVisible(amts[1] > 0)
-		.setText(`${amts[1]}`)
+		const amtInspire = amts[1]
+		const amtNourish = amts[2] - amts[3]
 
-		this.btnNourish.setVisible(amts[2] > 0)
-		.setText(`${amts[2]}`)
+		this.btnInspire.setVisible(amtInspire !== 0)
+		.setText(`${amtInspire}`)
+
+		this.btnNourish.setVisible(amtNourish !== 0)
+		.setText(`${amtNourish}`)
 	}
 }

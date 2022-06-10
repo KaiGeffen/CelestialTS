@@ -79,7 +79,6 @@ export class CardImage {
   }
 
   destroy(): void {
-    this.image.destroy()
     this.container.destroy()
   }
 

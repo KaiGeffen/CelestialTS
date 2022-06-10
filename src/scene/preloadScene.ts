@@ -184,12 +184,11 @@ export default class PreloadClass extends Phaser.Scene {
 	// Loads all keywords
 	private loadKeywords(): void {
 		keywords.forEach( (keyword) => {
+			const s = keyword.key
+			this.load.image(`kw-${s}`, `keywords/${s}.png`)
+
 			// If the keyword has an X, load all values of 'keyword N'
-			if (!keyword.x) {
-				const s = keyword.key
-				this.load.image(`kw-${s}`, `keywords/${s}.png`)
-			}
-			else {
+			if (keyword.x) {
 				// NOTE Some of these may not exist, but all that exist are covered here
 				['-4','1','2','3','4'].forEach(n => {
 					const s = keyword.key

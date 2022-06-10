@@ -63,6 +63,7 @@ export default class DecksRegion extends Region {
 	// TODO Go backwards so that cards are hidden that haven't yet reached the discard pile
 	// Animate any cards ending in the hand
 	private animate(state: ClientState, cards: CardImage[], player: number, isRecap: boolean): void {
+		return
 		let scene = this.scene
 		
 		// Keep a count of how many cards have gone to the deck already

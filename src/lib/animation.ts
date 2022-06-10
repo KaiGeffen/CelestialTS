@@ -53,7 +53,7 @@ function decodeAnimation(animation: animationData): Animation {
 
 	let card = animation.card === null ? null : decodeCard(animation.card)
 
-	let status = animation.zone_from === 'Status' ? Status[animation.index] : null
+	let status = animation.zone_from === 'Status' ? animation.index : null
 
 	// return dict[s]
 	return new Animation(

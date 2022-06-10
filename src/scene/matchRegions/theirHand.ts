@@ -66,20 +66,18 @@ export default class TheirHandRegion extends Region {
 		// Statuses
 		this.displayStatuses(state)
 
-		let hand = []
+		this.cards = []
 		for (let i = 0; i < state.opponentHandSize; i++) {
 			let card = this.addCard(cardback, CardLocation.theirHand(state, i, this.container))
 			.moveToTopOnHover()
 
-			hand.push(card)
+			this.cards.push(card)
 			this.temp.push(card)
 		}
 
 		// Pile sizes
 		this.txtDeckCount.setText(`${state.opponentDeckSize}`)
 		this.txtDiscardCount.setText(`${state.discard[1].length}`)
-
-		this.animate(state, hand, isRecap)
 	}
 
 	private createBackground(): void {
@@ -146,14 +144,6 @@ export default class TheirHandRegion extends Region {
 		return [onHover, onExit]
 	}
 
-	// Animate any cards leaving the hand
-	private animate(state: ClientState, hand: CardImage[], isRecap: boolean): void {
-		this.animatePriority(state, isRecap)
-
-		this.animateCardsLeavingHand(state, isRecap, hand)
-		// Status
-	}
-
 	// Animate them getting or losing priority
 	private animatePriority(state: ClientState, isRecap: boolean): void {
 		const targetAlpha = state.priority === 1 && !isRecap ? 1 : 0
@@ -165,72 +155,8 @@ export default class TheirHandRegion extends Region {
 		})
 	}
 
-	private animateCardsLeavingHand(state:ClientState, isRecap: boolean, hand: CardImage[]): void {
-		let scene = this.scene
-		
-		let delay = 0
-		for (let i = 0; i < state.animations[1].length; i++) {
-			let animation = state.animations[1][i]
-			if (animation.to === Zone.Hand) {
-				let card = hand[animation.index]
-
-									// Animate the card coming from given zone
-					// Remember where to end, then move to starting position
-				let x = card.container.x
-				let y = card.container.y
-
-				if (animation.from === Zone.Hand) {
-					// This is the card having an effect in the player's hand
-					this.animateEmphasis(card, delay)
-				}
-				else {
-					// Set the starting position based on zone it's coming from
-					let position
-					switch (animation.from) {
-						case Zone.Deck:
-						position = CardLocation.theirDeck(this.container)
-						break
-
-						case Zone.Discard:
-						position = CardLocation.theirDiscard(this.container)
-						break
-
-						case Zone.Story:
-						position = CardLocation.story(state, isRecap, animation.index2, this.container, 1)
-						break
-
-						case Zone.Gone:
-						position = CardLocation.gone(this.container)
-						break
-					}
-					card.setPosition(position)
-
-					// Hide the card until it starts animating
-					card.hide()
-
-					// Animate moving x direction, appearing at start
-					this.scene.tweens.add({
-						targets: card.container,
-						x: x,
-						y: y,
-						delay: delay,
-						duration: Time.recapTweenWithPause(),
-						onStart: function (tween, targets, _)
-						{
-							card.show()
-							scene.sound.play('draw')
-						},
-					})
-				}
-			}
-
-			// Delay occurs for each animation even if not going to hand
-			delay += Time.recapTween()
-		}
-	}
-
 	private displayStatuses(state: ClientState): void {
-		// // Specific to 4 TODO
+		// Specific to 4 TODO
 		let amts = [0, 0, 0, 0]
 		const length = 4
 
@@ -238,10 +164,13 @@ export default class TheirHandRegion extends Region {
 			amts[status]++
 		})
 
-		this.btnInspire.setVisible(amts[1] > 0)
-		.setText(`${amts[1]}`)
+		const amtInspire = amts[1]
+		const amtNourish = amts[2] - amts[3]
 
-		this.btnNourish.setVisible(amts[2] > 0)
-		.setText(`${amts[2]}`)
+		this.btnInspire.setVisible(amtInspire !== 0)
+		.setText(`${amtInspire}`)
+
+		this.btnNourish.setVisible(amtNourish !== 0)
+		.setText(`${amtNourish}`)
 	}
 }

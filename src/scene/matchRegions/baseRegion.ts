@@ -16,6 +16,9 @@ export default class Region {
 	// All gameobjects that should be deleted before new state is shown
 	temp: any[] = []
 
+	// The cards in the current state in this region, if any
+	cards: CardImage[]
+
 	addCard(card: Card, position: [number, number] = [0, 0]): CardImage {
 		return new CardImage(card, this.container).setPosition(position)
 	}
@@ -33,6 +36,7 @@ export default class Region {
 
 	// Bring attention to the given region by hiding everything else on screen
 	focus(text = ''): void {
+		return
 		const x = -this.container.x
 		const y = -this.container.y
 

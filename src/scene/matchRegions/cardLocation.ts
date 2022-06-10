@@ -12,7 +12,7 @@ const minRoom = 342 + Space.cardWidth/2
 // so that regions can move their cards to the appropriate locations for
 // other regions
 export default class CardLocation {
-	static ourHand(state: ClientState, i: number, container: Phaser.GameObjects.Container): [number, number] {
+	static ourHand(state: ClientState, i: number, container?: Phaser.GameObjects.Container): [number, number] {
 		// X of the first card in their hand
 		const x0 = 220 + Space.cardWidth/2
 
@@ -35,11 +35,16 @@ export default class CardLocation {
 
 		// Offset from the first card
 		const xOffset = dx * i
-		const x = x0 + xOffset
+		let x = x0 + xOffset
 
-		const y = Space.windowHeight - Space.handHeight + Space.cardHeight/2
+		let y = Space.windowHeight - Space.handHeight + Space.cardHeight/2
 
-		return [x - container.x, y - container.y]
+		if (container !== undefined) {
+			x -= container.x
+			y -= container.y
+		}
+
+		return [x, y]
 	}
 
 	static theirHand(state: ClientState, i: number, container: Phaser.GameObjects.Container): [number, number] {
@@ -110,18 +115,30 @@ export default class CardLocation {
 		return [x - container.x, y - container.y]
 	}
 
-	static ourDeck(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+	static ourDeck(container?: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
-		const x = 30 - dx
-		const y = Space.windowHeight/2 + Space.cardHeight/2 + Space.pad
-		return [x - container.x, y - container.y]
+		let x = 30 - dx
+		let y = Space.windowHeight/2 + Space.cardHeight/2 + Space.pad
+
+		if (container !== undefined) {
+			x -= container.x
+			y -= container.y
+		}
+
+		return [x, y]
 	}
 
-	static theirDeck(container: Phaser.GameObjects.Container, i = 0): [number, number] {
+	static theirDeck(container?: Phaser.GameObjects.Container, i = 0): [number, number] {
 		const dx = 3 * i
-		const x = 30 - dx
-		const y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
-		return [x - container.x, y - container.y]
+		let x = 30 - dx
+		let y = Space.windowHeight/2 - Space.cardHeight/2 - Space.pad
+
+		if (container !== undefined) {
+			x -= container.x
+			y -= container.y
+		}
+
+		return [x, y]
 	}
 
 	static ourDiscard(container: Phaser.GameObjects.Container, i = 0): [number, number] {

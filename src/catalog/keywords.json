@@ -16,7 +16,11 @@
 		"x": true
 	},
 	{"key": "Inspire",
-		"text": "[img=kw-Inspire X] - Next round you have X extra mana.",
+		"text": "[img=kw-Inspire X] - Next round you have X extra breath.",
+		"x": true
+	},
+	{"key": "Inspired",
+		"text": "[img=kw-Inspire X] - This round you have X extra breath.",
 		"x": true
 	},
 	{"key": "Nourish",

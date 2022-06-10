@@ -1,25 +1,15 @@
 import "phaser";
-import { collectibleCards, cardback } from "../catalog/catalog"
-import Card from "../lib/card"
-
-import { Network, versionNumber } from "../net"
-import ClientState from "../lib/clientState"
-import BaseScene from "./baseScene"
-import { CardImage } from "../lib/cardImage"
-import { StatusBar } from "../lib/status"
-import { SymmetricButtonLarge } from '../lib/buttons/backed'
-
+import ClientState from "../lib/clientState";
+import { Network, versionNumber } from "../net";
 // Import Settings itself 
-import { Color, Style, UserSettings, Time, Space, Mechanics } from "../settings/settings"
-import Recap from '../lib/recap'
-import Button from '../lib/button'
-import Icon from '../lib/icon'
-import Menu from '../lib/menu'
-import { Animation, Zone } from '../lib/animation'
+import { UserSettings } from "../settings/settings";
+import BaseScene from "./baseScene";
+import Region from './matchRegions/baseRegion';
 // TODO Remove unused
-
 import Regions from "./matchRegions/matchRegions"
-import Region from './matchRegions/baseRegion'
+
+import Animator from './matchRegions/animator'
+
 
 
 var storyHiddenLock: boolean = false
@@ -316,7 +306,7 @@ class GameScene extends BaseScene {
 
 
 // The View of MVC - What is presented to the user
-class View {
+export class View {
 	scene: BaseScene
 
 	// Whether the recap is playing or is paused
@@ -345,6 +335,9 @@ class View {
 
 	// Region shown when the game has been won / lost
 	results: Region
+
+	// Class that animates everything that is animated
+	animator: Animator
 
 	constructor (scene: BaseScene, avatarId: number) {
 		this.scene = scene
@@ -380,6 +373,8 @@ class View {
 		// Results are visible after the game is over
 		this.results = new Regions.Results().create(scene)
 		this.results.hide()
+
+		this.animator = new Animator(scene, this)
 	}
 
 	displayState(state: ClientState, isRecap: boolean) {
@@ -404,6 +399,9 @@ class View {
 		this.theirDiscardOverlay.displayState(state, isRecap)
 
 		this.results.displayState(state, isRecap)
+
+		// Animate the state
+		this.animator.animate(state)
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
@@ -472,7 +470,7 @@ export class TutorialGameScene extends AdventureGameScene {
 				// Display hints based on what round it is (TODO this in json)
 				switch(state.versionNumber) {
 					case 0:
-						this.view.ourHand.focus("These are the cards in your hand. Each has a cost (Top) and point ")
+						this.view.ourHand.focus("This is your hand. Each card costs some amount of breath to play (Top number) and gives you an amount of points when it resolves (Bottom number).\nCards are played to the story that we build together, and at night that story resolves, granting whoever contributed more points the win.\nWhen a player gets to 5 wins, that player wins the game.")
 						// this.view.ourHand.focus("Spend breath to play cards from your hand to the story.\nOnce we're both done, night falls and the story is performed.")
 						break
 					case 2:
