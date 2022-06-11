@@ -1,20 +1,13 @@
 import "phaser"
-
+import { keywords } from "../../catalog/keywords"
+import Button from '../../lib/buttons/button'
+import Buttons from '../../lib/buttons/buttons'
+import { CardImage } from '../../lib/cardImage'
+import ClientState from '../../lib/clientState'
+import { Depth, Space, Style, Time } from '../../settings/settings'
+import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
-
-import { Space, Color, Time, Style, Depth } from '../../settings/settings'
-import Button from '../../lib/buttons/button'
-import { AvatarSmall, ButtonInspire, ButtonNourish } from '../../lib/buttons/backed'
-import Card from '../../lib/card'
-import { CardImage } from '../../lib/cardImage'
-import { cardback } from '../../catalog/catalog'
-import ClientState from '../../lib/clientState'
-import { Animation, Zone } from '../../lib/animation'
-
-import { Status } from '../../lib/status'
-import BaseScene from '../baseScene'
-import { keywords } from "../../catalog/keywords"
 
 
 export default class OurHandRegion extends Region {
@@ -28,14 +21,14 @@ export default class OurHandRegion extends Region {
 	txtDeckCount: Phaser.GameObjects.Text
 	txtDiscardCount: Phaser.GameObjects.Text
 
-	btnInspire: ButtonInspire
-	btnNourish: ButtonNourish
+	btnInspire: Button
+	btnNourish: Button
 
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
 
 	// Avatar image
-	avatar: AvatarSmall
+	avatar: Button
 
 	create (scene: BaseScene, avatarId: number): OurHandRegion {
 		let that = this
@@ -155,8 +148,8 @@ export default class OurHandRegion extends Region {
 		.setAlpha(0)
 	}
 
-	private createAvatar(avatarId: number): AvatarSmall {
-		let btn = new AvatarSmall(this.container, 21, 11, avatarId)
+	private createAvatar(avatarId: number): Button {
+		let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
 		btn.setOrigin(0)
 		
 		return btn
@@ -167,14 +160,14 @@ export default class OurHandRegion extends Region {
 
 		// Inspire
 		let y = 11
-		this.btnInspire = new ButtonInspire(this.container, x - 15, y)
+		this.btnInspire = new Buttons.Keywords.Inspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
 		this.btnInspire.setOnHover(...this.onHoverStatus('Inspired', this.btnInspire))
 
 		// Nourish
 		y += Space.avatarSize/2
-		this.btnNourish = new ButtonNourish(this.container, x - 15, y)
+		this.btnNourish = new Buttons.Keywords.Nourish(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
 		this.btnNourish.setOnHover(...this.onHoverStatus('Nourish', this.btnNourish))

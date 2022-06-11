@@ -6,7 +6,6 @@ import StoryRegion from "./story"
 import OurScoreRegion from "./ourScore"
 import DecksRegion from "./decks"
 import DiscardPilesRegion from "./discardPiles"
-import OurButtonsRegion from "./ourButtons"
 import TheirScoreRegion from "./theirScore"
 import { OurDeckOverlay, TheirDeckOverlay, OurDiscardOverlay, TheirDiscardOverlay } from "./pileOverlays"
 import PassRegion from './pass'
@@ -23,7 +22,6 @@ export default class Regions {
 	static Story = StoryRegion
 	static OurScore = OurScoreRegion
 	static TheirScore = TheirScoreRegion
-	static OurButtons = OurButtonsRegion
 	static Decks = DecksRegion
 	static DiscardPiles = DiscardPilesRegion
 	static OurDeck = OurDeckOverlay

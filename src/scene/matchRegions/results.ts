@@ -3,7 +3,7 @@ import "phaser"
 import Region from './baseRegion'
 
 import { Space, Color, Style, Depth } from '../../settings/settings'
-import { SymmetricButtonLarge } from '../../lib/buttons/backed'
+import Buttons from '../../lib/buttons/buttons'
 // import { CardImage } from '../../lib/cardImage'
 // import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
@@ -72,10 +72,10 @@ export default class ResultsRegion extends Region {
 		// Exit
 		let x = Space.pad + Space.largeButtonWidth/2
 		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
-		new SymmetricButtonLarge(this.container, x, y, 'Exit', this.exitCallback())
+		new Buttons.Basic(this.container, x, y, 'Exit', this.exitCallback())
 
 		// New match
-		new SymmetricButtonLarge(this.container, Space.windowWidth/2, y, 'New Match', this.newMatchCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'New Match', this.newMatchCallback())
 		
 		// TODO Hint
 		// let txtHint = this.scene.add.text(
@@ -88,7 +88,7 @@ export default class ResultsRegion extends Region {
 		
 
 		// Review
-		new SymmetricButtonLarge(this.container, Space.windowWidth - x, y, 'Review', this.reviewCallback())
+		new Buttons.Basic(this.container, Space.windowWidth - x, y, 'Review', this.reviewCallback())
 	}
 
 	private createImages(scene: Phaser.Scene) {

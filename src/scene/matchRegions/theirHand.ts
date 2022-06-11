@@ -1,13 +1,10 @@
 import "phaser"
 import { cardback } from '../../catalog/catalog'
 import { keywords } from "../../catalog/keywords"
-import { Zone } from '../../lib/animation'
-import { AvatarSmall, ButtonInspire, ButtonNourish } from '../../lib/buttons/backed'
 import Button from '../../lib/buttons/button'
-import { CardImage } from '../../lib/cardImage'
+import Buttons from '../../lib/buttons/buttons'
 import ClientState from '../../lib/clientState'
-import { Status } from '../../lib/status'
-import { Color, Space, Style, Time, Depth } from '../../settings/settings'
+import { Depth, Space, Style, Time } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -20,11 +17,11 @@ export default class TheirHandRegion extends Region {
 	txtDeckCount: Phaser.GameObjects.Text
 	txtDiscardCount: Phaser.GameObjects.Text
 
-	btnInspire: ButtonInspire
-	btnNourish: ButtonNourish
+	btnInspire: Button
+	btnNourish: Button
 
 	// Avatar image
-	avatar: AvatarSmall
+	avatar: Button
 
 	create (scene: BaseScene): TheirHandRegion {
 		this.scene = scene
@@ -107,14 +104,14 @@ export default class TheirHandRegion extends Region {
 
 		// Inspire
 		let y = 11
-		this.btnInspire = new ButtonInspire(this.container, x - 15, y)
+		this.btnInspire = new Buttons.Keywords.Inspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
 		this.btnInspire.setOnHover(...this.onHoverStatus('Inspired', this.btnInspire))
 
 		// Nourish
 		y += Space.avatarSize/2
-		this.btnNourish = new ButtonNourish(this.container, x - 15, y)
+		this.btnNourish = new Buttons.Keywords.Nourish(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
 		this.btnNourish.setOnHover(...this.onHoverStatus('Nourish', this.btnNourish))

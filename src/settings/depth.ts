@@ -1,6 +1,6 @@
 // The depth of each layer in the match scene
 export const Depth: Record<string, number> = {
-	ourButtons: 2,
+	// ourButtons: 2,
 	theirHand: 1,
 	pileOverlays: 0.5,
 	ourHand: 1,

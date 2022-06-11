@@ -20,7 +20,7 @@ export default class BasicButton extends Button {
 				interactive: false
 			},
 			icon: {
-				name: 'Button2',
+				name: 'Button',
 				interactive: true
 			},
 			callbacks: {
