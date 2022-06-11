@@ -2,6 +2,7 @@ import "phaser"
 import { Color, Space, Style, Depth } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
+import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 
 
@@ -32,7 +33,7 @@ export default class SearchingRegion extends Region {
 		return txt
 	}
 
-	private addButtons(scene: BaseScene, container: Phaser.GameObjects.Container): SymmetricButtonSmall {
+	private addButtons(scene: BaseScene, container: Phaser.GameObjects.Container): Button {
 		let btn = new Buttons.Basic(container, Space.windowWidth/2, Space.windowHeight/2 + 100, 'Cancel', () => {
 			// Stop the other active scene
 			scene.beforeExit()
