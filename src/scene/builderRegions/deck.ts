@@ -1,7 +1,9 @@
 import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
-import { SymmetricButtonLarge, AvatarSmall } from '../../lib/buttons/backed'
+import Button from '../../lib/buttons/button'
+import Buttons from '../../lib/buttons/buttons'
+
 import Cutout from '../../lib/buttons/cutout'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Style, Color, Mechanics, Time } from '../../settings/settings'
@@ -24,14 +26,14 @@ export default class DeckRegion {
 	private scrollablePanel
 
 	// Button allowing user to Start, or showing the count of cards in their deck
-	private btnStart: SymmetricButtonLarge
+	private btnStart: Button
 
 	// Deck of cards in user's current deck
 	private deck: Cutout[] = []
 
 	// The avatar button
 	avatarNumber: number
-	private avatar: AvatarSmall
+	private avatar: Button
 	private txtDeckName: Phaser.GameObjects.Text
 
 	// Only for adventure mode
@@ -113,7 +115,7 @@ export default class DeckRegion {
 
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
-		this.avatar = new AvatarSmall(containerAvatar, 0, 0, 'Jules', this.onClickAvatar(), true)
+		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules', this.onClickAvatar(), true)
 		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Add the deck's name
@@ -132,7 +134,7 @@ export default class DeckRegion {
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		let containerButton = new ContainerLite(this.scene, 0, 0, width, Space.largeButtonHeight)
-		this.btnStart = new SymmetricButtonLarge(containerButton, 0, 0, '0/15', startCallback)
+		this.btnStart = new Buttons.Basic(containerButton, 0, 0, '0/15', startCallback)
 		sizer.add(containerButton)
 
 		return sizer
@@ -226,7 +228,7 @@ export default class DeckRegion {
 
 		this.avatarNumber = id
 
-		this.avatar.setAvatarNumber(id)
+		this.avatar.setQuality(id)
 		.enable()
 
 		return this

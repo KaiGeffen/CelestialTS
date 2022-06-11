@@ -50,7 +50,6 @@ const ConfigDefaults = {
 	}
 }
 
-
 export default class Button {
 	scene: Phaser.Scene
 
@@ -309,4 +308,9 @@ export default class Button {
 	}
 
 	highlight() {}
+
+	// Set the subtype's individual characteristic, implemented by some buttons
+	setQuality(args): Button {
+		throw `Button type ${typeof this} doesn't have a quality to set.`
+	}
 }
