@@ -8,7 +8,7 @@ import avatarNames from '../../lib/avatarNames'
 // These have different callbacks, and edit has an additional icon
 // TODO Separate or clarify these roles
 export default class AvatarButton extends Button {
-	editIcon: Button
+	editIcon: Phaser.GameObjects.Image
 
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -33,16 +33,28 @@ export default class AvatarButton extends Button {
 		})
 
 		if (hasEditIcon) {
-			let edit = this.scene.add.image(x + 45, y + 45, 'icon-Edit')
+			this.editIcon = this.scene.add.image(x + 45, y + 45, 'icon-Edit')
 			if (within instanceof Phaser.GameObjects.Container || within instanceof ContainerLite) {
-				within.add(edit)
+				within.add(this.editIcon)
 			}
 		}
+	}
+
+	disable() {
+		if (this.editIcon !== undefined) {
+			this.editIcon.setVisible(false)
+		}
+
+		return super.disable()
 	}
 
 	setQuality(num: number): Button {
 		let name = avatarNames[num]
 		this.setTexture(`avatar-${name}`)
+
+		if (this.editIcon !== undefined) {
+			this.editIcon.setVisible(true)
+		}
 
 		return this
 	}
