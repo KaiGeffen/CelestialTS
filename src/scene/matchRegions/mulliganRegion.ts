@@ -5,8 +5,8 @@ import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
 import { Space, Color, Time, Style, Depth } from '../../settings/settings'
-import Button from '../../lib/button' // TODO Stop using this
-import { SymmetricButtonSmall } from '../../lib/buttons/backed'
+import Buttons from '../../lib/buttons/buttons'
+
 import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
 import { cardback } from '../../catalog/catalog'
@@ -45,7 +45,7 @@ export default class MulliganRegion extends Region {
 			'Starting Hand',
 			Style.announcement).setOrigin(0.5, 1)
 
-		let btn = new SymmetricButtonSmall(this.container,
+		let btn = new Buttons.Basic(this.container,
 			Space.windowWidth/2,
 			Space.windowHeight/2 + Space.cardHeight/2 + Space.pad * 3,
 			'Ready')

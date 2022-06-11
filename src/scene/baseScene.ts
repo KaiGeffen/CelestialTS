@@ -4,7 +4,6 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import Button from '../lib/buttons/button'
 import Icons from '../lib/buttons/icons'
-import { SymmetricButtonSmall } from '../lib/buttons/backed'
 import Hint from '../lib/hint'
 
 

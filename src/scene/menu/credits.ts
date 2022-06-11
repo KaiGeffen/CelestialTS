@@ -6,7 +6,6 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 import Menu from './menu'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
-import { SymmetricButtonSmall } from '../../lib/buttons/backed'
 
 
 export default class CreditsMenu extends Menu {

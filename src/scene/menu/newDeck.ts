@@ -1,10 +1,9 @@
-import 'phaser';
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import avatarNames from '../../lib/avatarNames';
-import { ButtonAvatarSmall } from '../../lib/buttons/avatarSelect';
-import { SymmetricButtonSmall } from '../../lib/buttons/backed';
-import { Color, Space, Style } from '../../settings/settings';
-import Menu from './menu';
+import 'phaser'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import avatarNames from '../../lib/avatarNames'
+import Buttons from '../../lib/buttons/buttons'
+import { Color, Space, Style } from '../../settings/settings'
+import Menu from './menu'
 
 
 const width = 430
@@ -140,7 +139,7 @@ class AlterDeckMenu extends Menu {
 			}
 
 			let name = avatarNames[i]
-			let avatar = new ButtonAvatarSmall(sizer, 0, 0, name, () => {
+			let avatar = new Buttons.Avatar(sizer, 0, 0, name, () => {
 				// Deselect all avatars, then select this one, remember which is selected
 				avatars.forEach(a => a.deselect())
 				avatar.select()
@@ -179,7 +178,7 @@ class AlterDeckMenu extends Menu {
 	private createCancel(scene: Phaser.Scene) {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, 'Cancel', () => {
+		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
 			scene.scene.stop()
 		})
 
@@ -191,7 +190,7 @@ class AlterDeckMenu extends Menu {
 
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, this.confirmString, () => {
+		new Buttons.Basic(container, 0, 0, this.confirmString, () => {
 			createCallback(that.name, that.selectedAvatar)
 
 			// Close this scene

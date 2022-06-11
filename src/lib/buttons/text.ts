@@ -1,10 +1,9 @@
-import "phaser"
+import 'phaser'
 import Button from './button'
-
 import { Style, Color } from '../../settings/settings'
 
 
-export class TextButton extends Button {
+export default class TextButton extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number, text: string,
 		f: () => void = function() {},

@@ -7,7 +7,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 import Menu from './menu'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
-import { SymmetricButtonSmall } from '../../lib/buttons/backed'
+import Buttons from '../../lib/buttons/buttons'
 
 
 const width = 400
@@ -121,7 +121,7 @@ export default class ModeMenu extends Menu {
 	private createAI(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, 'AI', () => {
+		new Buttons.Basic(container, 0, 0, 'AI', () => {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
@@ -141,7 +141,7 @@ export default class ModeMenu extends Menu {
 	private createPVP(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, 'PVP', () => {
+		new Buttons.Basic(container, 0, 0, 'PVP', () => {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
@@ -161,7 +161,7 @@ export default class ModeMenu extends Menu {
 		let that = this
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, 'PWD', () => {
+		new Buttons.Basic(container, 0, 0, 'PWD', () => {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene

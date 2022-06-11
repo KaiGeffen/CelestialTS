@@ -1,10 +1,6 @@
-import 'phaser';
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import avatarNames from '../../lib/avatarNames';
-import { ButtonAvatarSmall } from '../../lib/buttons/avatarSelect';
-import { SymmetricButtonSmall } from '../../lib/buttons/backed';
-import { Color, Space, Style, Mechanics } from '../../settings/settings';
-import Menu from './menu';
+import 'phaser'
+import { Color, Mechanics, Space, Style } from '../../settings/settings'
+import Menu from './menu'
 
 
 const width = 430

@@ -4,10 +4,9 @@ import { Color } from "../../settings/settings"
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
 import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
+import Buttons from '../../lib/buttons/buttons'
 import Icons from '../../lib/buttons/icons'
-
-import { TextButton } from '../../lib/buttons/text'
-import { UButton } from '../../lib/buttons/underlined'
+import UButton from '../../lib/buttons/underlined'
 
 import { BuilderBase } from '../builderScene'
 
@@ -36,7 +35,7 @@ export default class FilterRegion {
 
 		this.createBackground(container)
 
-		new TextButton(container, Space.pad, 40, '<   Back', () => {scene.doBack()}).setOrigin(0, 0.5)
+		new Buttons.Text(container, Space.pad, 40, '<   Back', () => {scene.doBack()}).setOrigin(0, 0.5)
 
 		this.createFilterButtons(container)
 
