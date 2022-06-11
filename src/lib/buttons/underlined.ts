@@ -35,7 +35,7 @@ export default class UButton extends Button {
 		this.selected = !this.selected
 
 		if (this.selected) {
-			this.icon.setTint(Color.buttonSelected)
+			this.icon.setTint(Color.filterSelected)
 		}
 		else {
 			this.icon.clearTint()

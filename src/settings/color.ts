@@ -35,7 +35,7 @@ const CoreColors: Record<string, any> = {
   darken: 0x333333,
 
   buttonSelected: 0xBCB4B4,
-
+  filterSelected: 0x3C67FF,
 
   // Golden icon, for trophy
   golden: 0xFABD5D,
@@ -58,6 +58,7 @@ export const Color: Record<string, any> = {
   darken: CoreColors.darken,
 
   buttonSelected: CoreColors.buttonSelected,
+  filterSelected: CoreColors.filterSelected,
   buttonTxtSelected: CoreColors.whiteS,
 
   textboxText: CoreColors.c1,
@@ -124,9 +125,6 @@ export const Color: Record<string, any> = {
   // Radio button components
   radioOutline: CoreColors.primary,
   radioFill: CoreColors.variant,
-
-  // Filter tint when active
-  filterSelected: CoreColors.variant,
 
   // Text entered within text areas
   textArea: CoreColors.variantS,

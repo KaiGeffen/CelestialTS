@@ -94,7 +94,7 @@ export default class Button {
 			
 			if (!config.icon.noGlow) {
 				this.icon.on('pointerover', () => this.glow())
-				.on('pointerout', () => this.stopGlow())			
+				.on('pointerout', () => this.stopGlow())
 			}
 			// TODO Add a config option to clear glow (Useful if a menu is opening onclick)
 			// .on('pointerdown', () => this.icon.clearTint(), this)
@@ -230,7 +230,7 @@ export default class Button {
 	// The glow effect button has while hovered
 	glow() {
 		let plugin = this.scene.plugins.get('rexOutlinePipeline')
-		plugin['add'](this.icon, {
+		plugin['add'](this.icon || this.txt, {
 			thickness: 3,
 			outlineColor: Color.outline,
 			quality: 0.3,
@@ -240,7 +240,7 @@ export default class Button {
 	}
 	stopGlow() {
 		let plugin = this.scene.plugins.get('rexOutlinePipeline')
-		plugin['remove'](this.icon)
+		plugin['remove'](this.icon || this.txt)
 
 		return this
 	}
