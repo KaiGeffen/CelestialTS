@@ -4,9 +4,11 @@ import { Color } from "../../settings/settings"
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
 import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
+import Icons from '../../lib/buttons/icons'
+
 import { TextButton } from '../../lib/buttons/text'
 import { UButton } from '../../lib/buttons/underlined'
-import { IButtonX } from '../../lib/buttons/icon'
+
 import { BuilderBase } from '../builderScene'
 
 
@@ -63,7 +65,7 @@ export default class FilterRegion {
 
 			btns.push(btn)
 		}
-		let btnX = new IButtonX(container, 1000, 40, this.onClearFilters(btns))
+		let btnX = new Icons.X(container, 1000, 40, this.onClearFilters(btns))
 	}
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {

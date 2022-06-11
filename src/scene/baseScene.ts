@@ -2,13 +2,14 @@ import "phaser"
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
-import { IButtonOptions } from '../lib/buttons/icon'
+import Button from '../lib/buttons/button'
+import Icons from '../lib/buttons/icons'
 import { SymmetricButtonSmall } from '../lib/buttons/backed'
 import Hint from '../lib/hint'
 
 
 export default class BaseScene extends Phaser.Scene {
-	private btnOptions: IButtonOptions
+	private btnOptions: Button
 
 	// Allows for typing objects in RexUI library
 	rexUI: RexUIPlugin
@@ -37,7 +38,7 @@ export default class BaseScene extends Phaser.Scene {
 		}
 
 		// Menu button
-		this.btnOptions = new IButtonOptions(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu()).setOrigin(1, 0).setDepth(10)
+		this.btnOptions = new Icons.Options(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu()).setOrigin(1, 0).setDepth(10)
 
 	    // Error text, for when the user does something wrong they get an explanation
 	    this.txtError = this.createErrorText()
