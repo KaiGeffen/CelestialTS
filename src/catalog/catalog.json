@@ -314,12 +314,12 @@
     ]
   },
 
-  {"name": "Gamecock", "id": 40,
+  {"name": "Secretary Bird", "id": 40,
     "cost": 4, "points": 4,
-    "text": "Visible, remove from the game each card in your hand that costs 0 or 1. Worth +1 point for each card removed.",
+    "text": "Visible, worth +1 point for each card in your hand that costs 1 or less. Remove those cards from the game.",
     "story": "I will I will I will\nBecome me become me become me\nAt your peril",
     "keywords": [
-      {"name": "Visible", "x": 0, "y": 17}
+      {"name": "Visible", "x": 0, "y": 43}
     ]
   },
   {"name": "Posterity", "id": 53,

@@ -4,7 +4,7 @@ export const Depth: Record<string, number> = {
 	theirHand: 1,
 	pileOverlays: 0.5,
 	ourHand: 1,
-	results: 5,
+	results: 10,
 	ourScore: 3,
 	mulligan: 4,
 	discardPiles: -1,

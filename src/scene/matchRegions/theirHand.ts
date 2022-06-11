@@ -129,6 +129,9 @@ export default class TheirHandRegion extends Region {
 		let onHover = () => {
 			let s = keyword.text
 
+			// Remove the first X (In image data)
+			s = s.replace(' X', '')
+
 			// Get the value from the given status button
 			s = s.split(/\bX\b/).join(btn.getText())
 			s = s.replace('you', 'they')
