@@ -1,9 +1,8 @@
-import 'phaser';
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import { ButtonNewDeck } from '../../lib/buttons/backed';
-import Button from '../../lib/buttons/button';
-import { ButtonDecklist } from '../../lib/buttons/decklist';
-import { IButtonPremade, IButtonShare } from '../../lib/buttons/icon';
+import 'phaser'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import Button from '../../lib/buttons/button'
+import Buttons from '../../lib/buttons/buttons'
+import Icons from '../../lib/buttons/icons'
 import { Color, Mechanics, Space, Style, UserSettings } from "../../settings/settings";
 
 
@@ -148,7 +147,7 @@ export default class DecklistsRegion {
 		})
 
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.largeButtonHeight)
-		this.btnPremade = new IButtonPremade(container, 0, 0,
+		this.btnPremade = new Buttons.Premade(container, 0, 0,
 			() => {
 				// TODO Hand this to a class instead of calling ourselves
 				this.scene.scene.launch('MenuScene', {
@@ -170,7 +169,7 @@ export default class DecklistsRegion {
 		.addSpace()
 
 		// Add a share button that allows user to copy/paste their deck code
-		new IButtonShare(hintSizer, 0, 0, this.shareCallback())
+		new Icons.Share(hintSizer, 0, 0, this.shareCallback())
 
 		return sizer
 	}
@@ -236,7 +235,7 @@ export default class DecklistsRegion {
 		let name = deck === undefined ? '' : deck['name']
 
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
-		let btn = new ButtonDecklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
+		let btn = new Buttons.Decklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
 		.setDepth(2)
 
 		// Set the on click for this button
@@ -344,7 +343,7 @@ export default class DecklistsRegion {
 		// TODO Width and height constants
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
 
-		let btn = new ButtonNewDeck(container, 0, 0, 'New Deck', openNewDeckMenuCallback)
+		let btn = new Buttons.NewDeck(container, 0, 0, 'New Deck', openNewDeckMenuCallback)
 		.setDepth(2)
 
 		return container

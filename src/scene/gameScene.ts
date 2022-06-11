@@ -97,28 +97,28 @@ class GameScene extends BaseScene {
 		})
 
 		// Buttons TODO Rework these
-		view.ourButtons.setRecapCallback(() => {
-			that.recapPlaying = true
-			that.queuedRecap = [...that.lastRecap]
-			that.queueState(that.currentState)
-		})
+		// view.ourButtons.setRecapCallback(() => {
+		// 	that.recapPlaying = true
+		// 	that.queuedRecap = [...that.lastRecap]
+		// 	that.queueState(that.currentState)
+		// })
 
-		view.ourButtons.setPassCallback(() => {
-			net.playCard(10)
-		})
+		// view.ourButtons.setPassCallback(() => {
+		// 	net.playCard(10)
+		// })
 
-		view.ourButtons.setSkipCallback(() => {
-			that.tweens.getAllTweens().forEach((tween) => {
-				tween.complete()
-			})
+		// view.ourButtons.setSkipCallback(() => {
+		// 	that.tweens.getAllTweens().forEach((tween) => {
+		// 		tween.complete()
+		// 	})
 
-			// Set variables to a state where a recap isn't playing
-			that.queuedRecap = []
-			that.recapPlaying = false
-			that.view.paused = false
-		})
-		view.ourButtons.setPlayCallback(() => {that.view.paused = false})
-		view.ourButtons.setPauseCallback(() => {that.view.paused = true})
+		// 	// Set variables to a state where a recap isn't playing
+		// 	that.queuedRecap = []
+		// 	that.recapPlaying = false
+		// 	that.view.paused = false
+		// })
+		// view.ourButtons.setPlayCallback(() => {that.view.paused = false})
+		// view.ourButtons.setPauseCallback(() => {that.view.paused = true})
 
 		// Story
 		view.story.setCallback((i: number) => {
@@ -315,7 +315,7 @@ export class View {
 	searching: Region
 
 	ourHand: Region
-	ourButtons: Region
+	// ourButtons: Region
 	theirHand: Region
 	story: Region
 	ourScore
@@ -355,7 +355,7 @@ export class View {
 		this.story = new Regions.Story().create(scene)
 		this.ourScore = new Regions.OurScore().create(scene)
 		this.theirScore = new Regions.TheirScore().create(scene)
-		this.ourButtons = new Regions.OurButtons().create(scene)
+		// this.ourButtons = new Regions.OurButtons().create(scene)
 
 		this.decks = new Regions.Decks().create(scene)
 		this.discardPiles = new Regions.DiscardPiles().create(scene)
@@ -387,7 +387,7 @@ export class View {
 		this.story.displayState(state, isRecap)
 		this.ourScore.displayState(state, isRecap)
 		this.theirScore.displayState(state, isRecap)
-		this.ourButtons.displayState(state, isRecap)
+		// this.ourButtons.displayState(state, isRecap)
 		this.decks.displayState(state, isRecap)
 		this.discardPiles.displayState(state, isRecap)
 		this.pass.displayState(state, isRecap)

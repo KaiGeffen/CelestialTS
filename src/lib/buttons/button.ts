@@ -22,6 +22,7 @@ interface Config {
 		name: string,
 		interactive: boolean,
 		offset?: number,
+		noGlow?: boolean,
 	},
 	callbacks?: {
 		click?: () => void,
@@ -37,6 +38,7 @@ const ConfigDefaults = {
 		style: Style.basic,
 		hitArea: undefined,
 		offset: 0,
+		noGlow: false,
 	},
 	icon: {
 		name: '',
@@ -49,7 +51,6 @@ const ConfigDefaults = {
 		exit: () => {},
 	}
 }
-
 
 export default class Button {
 	scene: Phaser.Scene
@@ -90,9 +91,12 @@ export default class Button {
 			
 			let filename = config.icon.name.includes('-') ? config.icon.name : `icon-${config.icon.name}`
 			this.icon = this.scene.add.image(x, y + offset, filename)
-			.on('pointerover', () => this.icon.setTint(Color.buttonHighlight), this)
-			.on('pointerout', () => this.icon.clearTint(), this)
-			// TODO Add a config option to clear tint (Useful if a menu is opening onclick)
+			
+			if (!config.icon.noGlow) {
+				this.icon.on('pointerover', () => this.glow())
+				.on('pointerout', () => this.stopGlow())			
+			}
+			// TODO Add a config option to clear glow (Useful if a menu is opening onclick)
 			// .on('pointerdown', () => this.icon.clearTint(), this)
 
 			// Set interactive
@@ -180,14 +184,11 @@ export default class Button {
 	}
 
 
-	// TODO
 	select(): Button {
-		let plugin = this.scene.plugins.get('rexOutlinePipeline')
-		plugin['add'](this.icon, {
-			thickness: 3,
-			outlineColor: Color.outline,
-			quality: 0.3,
-		})
+		this.icon.setTint(Color.buttonSelected)
+		if (this.txt) {
+			this.txt.setColor(Color.buttonTxtSelected)
+		}
 
 		this.selected = true
 		
@@ -195,8 +196,10 @@ export default class Button {
 	}
 
 	deselect(): Button {
-		let plugin = this.scene.plugins.get('rexOutlinePipeline')
-		plugin['remove'](this.icon)
+		this.icon.clearTint()
+		if (this.txt) {
+			this.txt.setStyle(Style.basic)
+		}
 
 		this.selected = false
 
@@ -224,10 +227,23 @@ export default class Button {
 
 
 
-	// TODO Remove or change
-	glow() {}
-	glowUntilClicked() {}
-	stopGlow() {}
+	// The glow effect button has while hovered
+	glow() {
+		let plugin = this.scene.plugins.get('rexOutlinePipeline')
+		plugin['add'](this.icon, {
+			thickness: 3,
+			outlineColor: Color.outline,
+			quality: 0.3,
+		})
+		
+		return this
+	}
+	stopGlow() {
+		let plugin = this.scene.plugins.get('rexOutlinePipeline')
+		plugin['remove'](this.icon)
+
+		return this
+	}
 
 
 
@@ -309,4 +325,9 @@ export default class Button {
 	}
 
 	highlight() {}
+
+	// Set the subtype's individual characteristic, implemented by some buttons
+	setQuality(args): Button {
+		throw `Button type ${typeof this} doesn't have a quality to set.`
+	}
 }

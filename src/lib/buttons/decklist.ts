@@ -1,15 +1,15 @@
-import "phaser"
+import 'phaser'
+import Button from './button'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import { Space, Style, Color } from '../../settings/settings'
 
-import Button from './button'
-import { IButtonSmallX } from './icon'
+import Icons from './icons'
 
 
 // TODO Temporary
-export class ButtonDecklist extends Button {
-	btnX: IButtonSmallX
+export default class DecklistButton extends Button {
+	btnX: Button
 
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
@@ -35,7 +35,7 @@ export class ButtonDecklist extends Button {
 		// Adjust the font 
 
 		// Also add an x button on top
-		this.btnX = new IButtonSmallX(within, x - 70, y, xCallback)
+		this.btnX = new Icons.SmallX(within, x - 70, y, xCallback)
 	}
 
 	setDepth(value: number): Button {

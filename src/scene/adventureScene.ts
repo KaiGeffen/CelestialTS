@@ -1,7 +1,7 @@
 import "phaser"
 import BaseScene from './baseScene'
 import { Style, Space, Color, UserSettings, Time, BBStyle } from '../settings/settings'
-import Button from "../lib/button"
+import Buttons from "../lib/buttons/buttons"
 import Menu from "../lib/menu"
 import { CardImage } from "../lib/cardImage"
 
@@ -190,7 +190,7 @@ export default class AdventureScene extends BaseScene {
 			name += mission.type === 'card' ? '🂡' : ''
 			name += mission.name
 
-			let btn = new Button(that,
+			let btn = new Buttons.Basic(that,
 				mission.x,
 				mission.y,
 				`${name}`,

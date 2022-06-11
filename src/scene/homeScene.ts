@@ -2,7 +2,8 @@ import "phaser"
 import { Style, Color, Space, UserProgress, Url } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
-import Button from "../lib/button"
+import Button from "../lib/buttons/button"
+import Buttons from "../lib/buttons/buttons"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 
@@ -21,6 +22,8 @@ export default class HomeScene extends BaseScene {
   }
 
   create(): void {
+    let that = this
+    
     // Region for tutorial options
     this.tutorialRegion.create()
 
@@ -31,21 +34,18 @@ export default class HomeScene extends BaseScene {
     // TODO Logout, save the most recent token so that new celestial.com website visits don't start logged out
     // if (!UserSettings._get('loggedIn')) {
     //   // Login button
-    //   let btnLogin = new Button(this, Space.pad/2, 0, "Login", this.doLogin).setOrigin(0)
+    //   let btnLogin = new Buttons.Basic(this, Space.pad/2, 0, "Login", this.doLogin).setOrigin(0)
     // }
 
     // Discord button
-    let btnDiscord = new Button(this, Space.windowWidth/2 + 100, Space.windowHeight - 50, "Discord").setOrigin(0.5)
+    let btnDiscord = new Buttons.Basic(this, Space.windowWidth/2 + 100, Space.windowHeight - 50, "Discord").setOrigin(0.5)
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
-    if (!UserProgress.contains('discord')) {
-      btnDiscord.glowUntilClicked()
-    }
 
     // Adventure button
-    let btnAdventure = new Button(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", this.doAdventure).setOrigin(0.5)
+    let btnAdventure = new Buttons.Basic(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", () => that.doAdventure()).setOrigin(0.5)
 
     // Start Button
-    new Button(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart()).setOrigin(0.5)//.setStyle(Style.announcement)
+    new Buttons.Basic(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart()).setOrigin(0.5)//.setStyle(Style.announcement)
 
     let msgText = UserProgress.getMessage('welcome')
     if (msgText !== undefined) {

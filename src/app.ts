@@ -7,8 +7,6 @@ import { StandardGameScene, AdventureGameScene, TutorialGameScene } from "./scen
 import { BuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 
 import CreditsScene from "./scene/creditsScene"
-import ChoiceScene from "./scene/choiceScene"
-import { AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene } from "./scene/catalogScene"
 import AdventureScene from "./scene/adventureScene"
 
 import { Color, Space } from "./settings/settings"
@@ -37,8 +35,6 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [PreloadScene, HomeScene,
   MenuScene,
   CreditsScene,
-  ChoiceScene,
-  AnubisCatalogScene, RobotsCatalogScene, StalkerCatalogScene, LordCatalogScene, BastetCatalogScene, HorusCatalogScene,
   StandardGameScene, AdventureGameScene, TutorialGameScene,
   AdventureBuilderScene,
   BuilderScene,

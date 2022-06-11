@@ -1,13 +1,11 @@
 import "phaser"
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-
 import { Space, Style, Color } from '../../settings/settings'
-
 import Button from './button'
 
 
 // Exported buttons
-export class IButtonOptions extends Button {
+class Options extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
 		f: () => void = function() {},
@@ -26,7 +24,8 @@ export class IButtonOptions extends Button {
 	}
 }
 
-export class IButtonX extends Button {
+// TODO Is this used?
+class X extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
 		f: () => void = function() {},
@@ -45,7 +44,7 @@ export class IButtonX extends Button {
 	}
 }
 
-export class IButtonSmallX extends Button {
+class SmallX extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
 		f: () => void = function() {})
@@ -63,26 +62,7 @@ export class IButtonSmallX extends Button {
 	}
 }
 
-export class IButtonPremade extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
-		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
-	{
-		super(within, x, y, 
-		{
-			icon: {
-				name: 'Premade',
-				interactive: true
-			},
-			callbacks: {
-				click: f
-			}
-		})
-	}
-}
-
-export class IButtonShare extends Button {
+class Share extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
 		f: () => void = function() {},
@@ -102,7 +82,7 @@ export class IButtonShare extends Button {
 }
 
 // TODO Not really an icon, move somewhere else?
-export class IButtonPass extends Button {
+class Pass extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
 		f: () => void = function() {},
@@ -138,4 +118,14 @@ export class IButtonPass extends Button {
 
 		return this
 	}
+}
+
+
+// Export all of the available icons, which are subtype of buttons
+export default class Icons {
+	static Options = Options
+	static X = X
+	static SmallX = SmallX
+	static Share = Share
+	static Pass = Pass
 }

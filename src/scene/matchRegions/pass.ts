@@ -1,7 +1,7 @@
 import "phaser";
 import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 import Button from '../../lib/buttons/button';
-import { IButtonPass } from '../../lib/buttons/icon';
+import Icons from '../../lib/buttons/icons'
 import ClientState from '../../lib/clientState';
 import { Style, Color, Space } from '../../settings/settings';
 import BaseScene from '../baseScene';
@@ -126,7 +126,7 @@ export default class PassRegion extends Region {
 	private createButton(): Button {
 		let that = this
 
-		let btn = new IButtonPass(this.container,
+		let btn = new Icons.Pass(this.container,
 			this.background.x,
 			this.background.y)
 		

@@ -4,6 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import { Space, Style, Color } from '../../settings/settings'
 import Button from './button'
 
+// TODO Figure out how the premade screen should look, integrate this with buttons namespace
 
 export class ButtonAvatarFull extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,

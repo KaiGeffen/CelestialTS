@@ -1,10 +1,9 @@
 import "phaser"
 import Button from './button'
-
 import { Style, Color } from '../../settings/settings'
 
 
-export class UButton extends Button {
+export default class UButton extends Button {
 	selected: boolean = false
 
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,

@@ -33,7 +33,8 @@ export default class Cutout extends Button {
 			},
 			icon: {
 				name: `cutout-${card.name}`,
-				interactive: true
+				interactive: true,
+				noGlow: true,
 			},
 			callbacks: {
 				click: f,
@@ -41,9 +42,11 @@ export default class Cutout extends Button {
 				hover: () => {
 					hint.leftPin = this.icon.getRightCenter().x
 					hint.showCard(card)
+					this.icon.setTint(Color.buttonSelected)
 				},
 				exit: () => {
 					hint.hide()
+					this.icon.clearTint()
 				}
 			}
 		})

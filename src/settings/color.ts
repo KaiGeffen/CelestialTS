@@ -34,7 +34,7 @@ const CoreColors: Record<string, any> = {
 
   darken: 0x333333,
 
-  buttonSelected: 0x3C67FF,
+  buttonSelected: 0xBCB4B4,
 
 
   // Golden icon, for trophy
@@ -58,6 +58,8 @@ export const Color: Record<string, any> = {
   darken: CoreColors.darken,
 
   buttonSelected: CoreColors.buttonSelected,
+  buttonTxtSelected: CoreColors.whiteS,
+
   textboxText: CoreColors.c1,
   textboxBackground: CoreColors.c2s,
   header: CoreColors.c1,

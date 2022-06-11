@@ -8,7 +8,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Menu from './menu'
 import BaseScene from '../../scene/baseScene'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
-import { SymmetricButtonSmall } from '../../lib/buttons/backed'
+import Buttons from '../../lib/buttons/buttons'
 
 
 const width = 400
@@ -216,7 +216,7 @@ export default class OptionsMenu extends Menu {
 	private createReadRulebook(scene: Phaser.Scene) {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, 'Rulebook', () => {
+		new Buttons.Basic(container, 0, 0, 'Rulebook', () => {
 			scene.scene.start('MenuScene', {menu: 'rulebook'})
 		})
 
@@ -226,7 +226,7 @@ export default class OptionsMenu extends Menu {
 	private createCredits(scene: Phaser.Scene) {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, 'Credits', () => {
+		new Buttons.Basic(container, 0, 0, 'Credits', () => {
 			scene.scene.start('MenuScene', {menu: 'credits'})
 		})
 
@@ -236,7 +236,7 @@ export default class OptionsMenu extends Menu {
 	private createQuit(scene: Phaser.Scene, activeScene: BaseScene) {
 		let container = new ContainerLite(scene, 0, 0, 100, 50)
 
-		new SymmetricButtonSmall(container, 0, 0, 'Quit', () => {
+		new Buttons.Basic(container, 0, 0, 'Quit', () => {
 			// Stop the other active scene
 			activeScene.beforeExit()
 			activeScene.scene.stop()
