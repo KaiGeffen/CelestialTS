@@ -1,13 +1,8 @@
 import "phaser"
-
-import Region from './baseRegion'
-
-import { Space, Color, Style, Mechanics, Depth } from '../../settings/settings'
-import Button from '../../lib/button'
-import { CardImage } from '../../lib/cardImage'
-import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
+import { Depth, Space, Style } from '../../settings/settings'
 import BaseScene from '../baseScene'
+import Region from './baseRegion'
 
 
 export default class ScoreRegion extends Region {

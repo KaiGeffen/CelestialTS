@@ -1,16 +1,10 @@
-import "phaser"
-import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
-
-import Region from './baseRegion'
-import CardLocation from './cardLocation'
-
-import { Space, Color, Time, Style, Depth } from '../../settings/settings'
-import Button from '../../lib/button'
-import { CardImage } from '../../lib/cardImage'
-import { cardback } from '../../catalog/catalog'
-import ClientState from '../../lib/clientState'
-import BaseScene from '../baseScene'
-import { IButtonPass } from '../../lib/buttons/icon'
+import "phaser";
+import { CardImage } from '../../lib/cardImage';
+import ClientState from '../../lib/clientState';
+import { Space, Style, Time } from '../../settings/settings';
+import BaseScene from '../baseScene';
+import Region from './baseRegion';
+import CardLocation from './cardLocation';
 
 
 // This is slightly wrong, because the top hand is smaller than this hand height

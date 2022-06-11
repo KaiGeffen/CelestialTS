@@ -1,16 +1,11 @@
 import "phaser"
-
+import Card from '../../lib/card'
+import { CardImage } from '../../lib/cardImage'
+import ClientState from '../../lib/clientState'
+import { Color, Depth, Space, Style } from '../../settings/settings'
+import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
-
-import { Space, Color, Time, Style, Depth } from '../../settings/settings'
-import Button from '../../lib/button'
-import { CardImage } from '../../lib/cardImage'
-import Card from '../../lib/card'
-import { cardback } from '../../catalog/catalog'
-import ClientState from '../../lib/clientState'
-import { Animation, Zone } from '../../lib/animation'
-import BaseScene from '../baseScene'
 
 
 class OverlayRegion extends Region {

@@ -1,15 +1,11 @@
 import "phaser"
-
+import { Zone } from '../../lib/animation'
+import { CardImage } from '../../lib/cardImage'
+import ClientState from '../../lib/clientState'
+import { Depth, Space, Time } from '../../settings/settings'
+import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
-
-import { Space, Color, Time, Depth } from '../../settings/settings'
-import Button from '../../lib/button'
-import { CardImage } from '../../lib/cardImage'
-import { cardback } from '../../catalog/catalog'
-import ClientState from '../../lib/clientState'
-import { Animation, Zone } from '../../lib/animation'
-import BaseScene from '../baseScene'
 
 
 export default class DiscardPilesRegion extends Region {
