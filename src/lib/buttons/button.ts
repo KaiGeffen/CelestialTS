@@ -22,6 +22,7 @@ interface Config {
 		name: string,
 		interactive: boolean,
 		offset?: number,
+		noGlow?: boolean,
 	},
 	callbacks?: {
 		click?: () => void,
@@ -37,6 +38,7 @@ const ConfigDefaults = {
 		style: Style.basic,
 		hitArea: undefined,
 		offset: 0,
+		noGlow: false,
 	},
 	icon: {
 		name: '',
@@ -89,9 +91,12 @@ export default class Button {
 			
 			let filename = config.icon.name.includes('-') ? config.icon.name : `icon-${config.icon.name}`
 			this.icon = this.scene.add.image(x, y + offset, filename)
-			.on('pointerover', () => this.glow())
-			.on('pointerout', () => this.stopGlow())
-			// TODO Add a config option to clear tint (Useful if a menu is opening onclick)
+			
+			if (!config.icon.noGlow) {
+				this.icon.on('pointerover', () => this.glow())
+				.on('pointerout', () => this.stopGlow())			
+			}
+			// TODO Add a config option to clear glow (Useful if a menu is opening onclick)
 			// .on('pointerdown', () => this.icon.clearTint(), this)
 
 			// Set interactive
