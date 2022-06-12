@@ -7,11 +7,18 @@ import BaseScene from '../scene/baseScene'
 import { allCards } from '../catalog/catalog'
 
 
+// Time in milliseconds that user must pause before hint appears
+const WAIT_TIME = 400
+
 export default class Hint {
 	txt: RexUIPlugin.BBCodeText
 
 	// The X position to position flush to, or undefined if no pin
 	leftPin: number
+
+	// Time in milliseconds that user has waited without moving cursor
+	waitTime = 0
+	skipWait = false
 
 	constructor(scene: BaseScene) {
 		this.txt = scene.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
@@ -21,7 +28,21 @@ export default class Hint {
 		.setAlign('center')
 
 		// Copy mouse position and show a hint when over a hinted object
-		scene.input.on('pointermove', () => {this.orientText()})
+		scene.input.on('pointermove', () => {
+			this.orientText()
+			if (!this.skipWait) {
+				this.txt.setAlpha(0)
+				this.waitTime = 0
+			}
+		})
+		scene.events.on('update', (time, delta) => {
+			if (this.waitTime < WAIT_TIME && !this.skipWait) {
+				this.waitTime += delta
+			}
+			else {
+				this.txt.setAlpha(1)
+			}
+		})
 	}
 
 	hide(): Hint {
@@ -40,7 +61,7 @@ export default class Hint {
 		return this
 	}
 
-	showCard(card: Card): void {
+	showCard(card: Card): Hint {
 		this.show()
 
 		// Explain any keywords within the card
@@ -56,6 +77,8 @@ export default class Hint {
 			this.txt.setText(`[img=${card.name}]`)
 			.setFixedSize(Space.cardWidth + Space.pad, Space.cardHeight + Space.pad)
 		}
+
+		return this
 	}
 
 	showText(s: string): void {
@@ -65,6 +88,14 @@ export default class Hint {
 
 		this.txt.setText(s)
 		.setFixedSize(0, 0)
+	}
+
+	enableWaitTime(): void {
+		this.skipWait = false
+	}
+
+	disableWaitTime(): void {
+		this.skipWait = true
 	}
 
 	// Orient the text to be in the right position relative to the mouse
