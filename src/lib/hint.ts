@@ -8,7 +8,7 @@ import { allCards } from '../catalog/catalog'
 
 
 // Time in milliseconds that user must pause before hint appears
-const WAIT_TIME = 400
+const WAIT_TIME = 100
 
 export default class Hint {
 	txt: RexUIPlugin.BBCodeText
