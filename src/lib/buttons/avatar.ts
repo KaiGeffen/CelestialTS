@@ -40,6 +40,14 @@ export default class AvatarButton extends Button {
 		}
 	}
 
+	destroy() {
+		if (this.editIcon) {
+			this.editIcon.destroy()
+		}
+
+		super.destroy()
+	}
+
 	disable() {
 		if (this.editIcon !== undefined) {
 			this.editIcon.setVisible(false)
