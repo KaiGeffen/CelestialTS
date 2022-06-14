@@ -116,7 +116,7 @@ export class AdventureBuilderScene extends BuilderBase {
 
 export class BuilderScene extends BuilderBase {
   lastDecklist: number
-  lastDeck: string
+  lastPremade: number
 
   constructor() {
     super({
@@ -131,9 +131,6 @@ export class BuilderScene extends BuilderBase {
     this.catalogRegion = new CatalogRegion().create(this, Space.decklistPanelWidth)
 
     this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.updateDeckCallback())
-    if (this.lastDeck !== undefined) {
-      this.deckRegion.setDeck(this.lastDeck)
-    }
 
     this.decklistsRegion = new DecklistsRegion().create(this)
     
@@ -143,8 +140,8 @@ export class BuilderScene extends BuilderBase {
     if (this.lastDecklist !== undefined) {
       this.decklistsRegion.selectDeck(this.lastDecklist)
     }
-    else if (this.lastDeck !== undefined) {
-      this.deckRegion.setDeck(this.lastDeck)
+    else if (this.lastPremade !== undefined) {
+      this.decklistsRegion.premadeCallback()(this.lastPremade)()
     }
   }
 
@@ -181,8 +178,8 @@ export class BuilderScene extends BuilderBase {
   // Remember what deck / decklist was selected
   private rememberSettings() {
     // Remember the deck for when the builder is returned to
-      this.lastDecklist = this.decklistsRegion.getSelectedDeckIndex()
-      this.lastDeck = this.getDeckCode()
+      this.lastDecklist = this.decklistsRegion.savedDeckIndex
+      this.lastPremade = this.decklistsRegion.savedPremadeIndex
   }
 
   private startCallback(): () => void {

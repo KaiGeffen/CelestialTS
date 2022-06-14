@@ -19,6 +19,9 @@ export default class DecklistsRegion {
 	// The index of the currently selected deck
 	savedDeckIndex: number
 
+	// The index of the currently selected premade
+	savedPremadeIndex: number
+
 	// Button for user to select a premade deck
 	btnPremade: Button
 
@@ -122,10 +125,6 @@ export default class DecklistsRegion {
 		this.decklistBtns[index].onClick()
 	}
 
-	getSelectedDeckIndex(): number {
-		return this.savedDeckIndex
-	}
-
 	// Set the currently selected deck name to the given name
 	setName(name: string): void {
 		if (this.savedDeckIndex === undefined) {
@@ -175,11 +174,12 @@ export default class DecklistsRegion {
 	}
 
 	// Callback for when a premade avatar is clicked on
-	private premadeCallback(): (i: number) => () => void {
+	premadeCallback(): (i: number) => () => void {
 		let that = this
 		return function(i: number) {
 			return function() {
 				that.savedDeckIndex = undefined
+				that.savedPremadeIndex = i
 
 				// Deselect decklist buttons
 				that.decklistBtns.forEach(btn => btn.deselect())
