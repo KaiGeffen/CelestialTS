@@ -101,10 +101,6 @@ export class CardImage {
     }
 
     this.image.on('pointerdown', f)
-    
-    this.keywords.forEach((keyword) => {
-      keyword.on('pointerdown', f)
-    })
 
     return this
   }
@@ -113,9 +109,9 @@ export class CardImage {
   removeOnClick(): void {
     this.image.removeAllListeners('pointerdown')
 
-    this.keywords.forEach((keyword) => {
-      keyword.removeAllListeners('pointerdown')
-    })
+    // this.keywords.forEach((keyword) => {
+    //   keyword.removeAllListeners('pointerdown')
+    // })
   }
 
   // Set the callback to fire when this card's image is hovered, and one for when exited

@@ -108,7 +108,7 @@ export default class TheirHandRegion extends Region {
 		let x = 21 + Space.avatarSize - 10
 
 		// Inspire
-		let y = 11
+		let y = 5
 		this.btnInspire = new Buttons.Keywords.Inspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
