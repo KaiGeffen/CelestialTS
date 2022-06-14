@@ -60,7 +60,6 @@ export default class OurHandRegion extends Region {
 		this.txtDeckCount = scene.add.text(x, 15, '', Style.basic).setOrigin(0.5).setFontSize(20)
 		this.txtDiscardCount = scene.add.text(x, 82, '', Style.basic).setOrigin(0.5).setFontSize(20)
 
-		// TODO
 		let avatarBorder = scene.add.image(0, -12, 'icon-BottomAvatar')
 		.setOrigin(0)
 

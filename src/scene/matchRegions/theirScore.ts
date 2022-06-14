@@ -20,7 +20,7 @@ export default class TheirScoreRegion extends Region {
 		.setDepth(Depth.theirScore)
 
 		// Wins
-		this.txtWins = scene.add.text(Space.windowWidth - 140, 70, '', Style.basic)
+		this.txtWins = scene.add.text(Space.windowWidth - 140, 53, '', Style.basic)
 		.setOrigin(0)
 
 		// Add each of these objects to container

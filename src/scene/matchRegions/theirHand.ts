@@ -42,12 +42,17 @@ export default class TheirHandRegion extends Region {
 		this.avatar = this.createAvatar()
 
 		// TODO Font size as a part of a style
-		const x = Space.windowWidth - 298
-		this.txtDeckCount = scene.add.text(x, 35, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		this.txtDiscardCount = scene.add.text(x, 103, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		const x = Space.windowWidth - 300
+		this.txtDeckCount = scene.add.text(x, 23, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		this.txtDiscardCount = scene.add.text(x, 91, '', Style.basic).setOrigin(0.5).setFontSize(20)
+
+		let avatarBorder = scene.add.image(0, -12 + 177 - 7, 'icon-BottomAvatar')
+		.setOrigin(0)
+		.setScale(1, -1)
 
 		// Add each of these objects to container
 		this.container.add([
+			avatarBorder,
 			this.txtDeckCount,
 			this.txtDiscardCount,
 			])
@@ -93,7 +98,7 @@ export default class TheirHandRegion extends Region {
 
 	private createAvatar(): Button {
 		// TODO Custom avatar
-		let btn = new Buttons.Avatar(this.container, 21, 11, 'Jules')
+		let btn = new Buttons.Avatar(this.container, 21, 5, 'Jules')
 		btn.setOrigin(0)
 
 		return btn
