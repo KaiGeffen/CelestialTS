@@ -46,20 +46,29 @@ export class CardImage {
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
+    let hint = this.scene['hint']
     this.txtCost = this.scene.add['rexBBCodeText'](
       -Space.cardWidth/2 + 25,
       -Space.cardHeight/2 + 25,
-      '',
+      `${card.cost}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
-    .setAlpha(0)
+    .setAlpha(0.001)
+    .setInteractive()
+    .on('pointerover', () => hint.showText(`This card costs ${this.txtCost.text} breath to play.`))
+    .on('pointerout', () => hint.hide())
+    .on('pointerdown', () => this.image.emit('pointerdown'))
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
       -Space.cardWidth/2 + 25,
       -Space.cardHeight/2 + 77,
-      '',
+      `${card.points}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
+    .setInteractive()
+    .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
+    .on('pointerout', () => hint.hide())
+    .on('pointerdown', () => this.image.emit('pointerdown'))
     this.setPoints(card.points)
 
     // Add keywords and references
@@ -173,7 +182,7 @@ export class CardImage {
   setCost(cost: number): CardImage {
     if (cost !== null) {
       if (cost === this.card.cost) {
-        this.txtCost.setAlpha(0)
+        this.txtCost.setAlpha(0.001)
       }
       else {
         this.txtCost.setAlpha(1)
@@ -189,7 +198,7 @@ export class CardImage {
   setPoints(amt: number): CardImage {
     // If this is the default of the card, don't display any custom point value
     if(this.card.dynamicText === '') {
-      this.txtPoints.setAlpha(0)
+      this.txtPoints.setAlpha(0.001)
     }
 
     // TODO Change color name

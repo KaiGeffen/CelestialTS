@@ -4,6 +4,7 @@ import { Keyword, keywords } from '../catalog/keywords'
 import { Style } from '../settings/settings'
 import { getCard } from "../catalog/catalog"
 import Card from "../lib/card"
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 
 
 export class KeywordLabel extends Phaser.GameObjects.Image {
