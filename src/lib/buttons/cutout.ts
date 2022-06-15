@@ -30,6 +30,7 @@ export default class Cutout extends Button {
 				text: '',
 				interactive: false,
 				style: Style.cardCount,
+				// offset: 10,
 			},
 			icon: {
 				name: `cutout-${card.name}`,
@@ -110,7 +111,7 @@ export default class Cutout extends Button {
 
 	private updateText(): Cutout {
 		this.setText(`             ${this.name} X${this.count}`)
-		// this.setText(`                                        X${this.count}`)
+		// this.setText(`                                           x${this.count}`)
 
 		return this
 	}
