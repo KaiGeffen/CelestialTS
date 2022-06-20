@@ -2,8 +2,7 @@ import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
-import Icons from '../../lib/buttons/icons'
-import { Color, Mechanics, Space, Style, UserSettings } from "../../settings/settings";
+import { Color, Mechanics, Space, Style, UserSettings } from "../../settings/settings"
 
 
 const width = Space.decklistPanelWidth
@@ -167,9 +166,6 @@ export default class DecklistsRegion {
 		hintSizer.add(txtHint)
 		.addSpace()
 
-		// Add a share button that allows user to copy/paste their deck code
-		new Icons.Share(hintSizer, 0, 0, this.shareCallback())
-
 		return sizer
 	}
 
@@ -190,21 +186,6 @@ export default class DecklistsRegion {
 				// Set the current deck to premade list
 				that.scene.setPremade(i)
 			}
-		}
-	}
-
-	private shareCallback(): () => void {
-		let that = this
-
-		return function() {
-			that.scene.scene.launch('MenuScene', {
-				menu: 'shareDeck',
-				// Called when the text changes in the menu
-				currentDeck: that.scene.getDeckCode(),
-				callback: function(inputText) {
-					that.scene.setDeck(inputText.text)
-				}
-			})
 		}
 	}
 
