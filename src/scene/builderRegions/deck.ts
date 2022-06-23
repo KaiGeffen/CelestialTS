@@ -14,6 +14,8 @@ import { decodeCard, encodeCard } from '../../lib/codec'
 import avatarNames from '../../lib/avatarNames';
 import premadeDecklists from '../../catalog/premadeDecklists';
 
+// TODO Sense and use this throughout
+const ON_MOBILE = false
 
 const width = Space.deckPanelWidth// + Space.pad * 2
 
@@ -71,7 +73,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			// header: this.createHeader(startCallback),
+			header: ON_MOBILE ? undefined : this.createHeader(startCallback),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
@@ -87,10 +89,12 @@ export default class DeckRegion {
 
 		this.updateOnScroll(this.panel, this.scrollablePanel)
 
-		// TODO If on mobile
-		this.panel.add(this.createHeader(startCallback), {
-			padding: {bottom: Space.pad}
-		})
+		// If on mobile, header scrolls with the rest of content
+		if (ON_MOBILE) {
+			this.panel.add(this.createHeader(startCallback), {
+				padding: {bottom: Space.pad}
+			})
+		}
 
 		this.scrollablePanel.layout()
 
@@ -454,14 +458,14 @@ export default class DeckRegion {
 					(cutout.card.name > card.name))
 				)
 			{
-				let index = i - requiredAmt + 1
+				let index = i - requiredAmt + (ON_MOBILE ? 1 : 0)
 				panel.insert(index, child)
 				return index
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		let index = this.deck.length - requiredAmt + 1
+		let index = this.deck.length - requiredAmt + (ON_MOBILE ? 1 : 0)
 		panel.insert(index, child)
 		return index
 	}
