@@ -57,7 +57,7 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
-		.setInteractive()
+		// .setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: Space.decklistPanelWidth - Space.deckPanelWidth,
@@ -71,7 +71,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			header: this.createHeader(startCallback),
+			// header: this.createHeader(startCallback),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
@@ -86,6 +86,11 @@ export default class DeckRegion {
 			}).setOrigin(0)
 
 		this.updateOnScroll(this.panel, this.scrollablePanel)
+
+		// TODO If on mobile
+		this.panel.add(this.createHeader(startCallback), {
+			padding: {bottom: Space.pad}
+		})
 
 		this.scrollablePanel.layout()
 
@@ -102,9 +107,11 @@ export default class DeckRegion {
 			top: 10,
 			bottom: 10,
 			// line: 10,//80 - Space.cardHeight,
-		}}).addBackground(
-		this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
-		)
+		}})
+
+		// .addBackground(
+		// this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
+		// )
 
 		// In Mobile, add the header here
 		// TODO
@@ -313,9 +320,10 @@ export default class DeckRegion {
 	// Create a scrollable panel with all of the given required cards
 	private createRequiredCardList(cards: string) {
 		// Create the sizer that contains the cards
-		let sizer = this.scene['rexUI'].add.fixWidthSizer().addBackground(
-			this.scene.add.rectangle(0, 0, width, 0, 0xF44FFF)
-		)
+		let sizer = this.scene['rexUI'].add.fixWidthSizer()
+		// .addBackground(
+		// 	this.scene.add.rectangle(0, 0, width, 0, 0xF44FFF)
+		// )
 		
 		// Create the scrolling panel that contains it
 		// const height = Math.min(Space.windowHeight/2, 800)
@@ -446,14 +454,16 @@ export default class DeckRegion {
 					(cutout.card.name > card.name))
 				)
 			{
-				panel.insert(i - requiredAmt, child)
-				return i - requiredAmt
+				let index = i - requiredAmt + 1
+				panel.insert(index, child)
+				return index
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		panel.insert(this.deck.length - requiredAmt, child)
-		return this.deck.length - requiredAmt
+		let index = this.deck.length - requiredAmt + 1
+		panel.insert(index, child)
+		return index
 	}
 
 	private onClickAvatar(): () => void {
