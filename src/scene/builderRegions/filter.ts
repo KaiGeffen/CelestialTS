@@ -3,7 +3,7 @@ import 'phaser'
 import { Color } from "../../settings/settings"
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, UserSettings, Space, Mechanics } from "../../settings/settings"
+import { Style, UserSettings, Space, Mechanics, Mobile } from "../../settings/settings"
 import Buttons from '../../lib/buttons/buttons'
 import Icons from '../../lib/buttons/icons'
 import UButton from '../../lib/buttons/underlined'
@@ -68,6 +68,11 @@ export default class FilterRegion {
 	}
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {
+		// TODO Have an icon instead of full search bar on mobile
+		if (Mobile) {
+			return
+		}
+
 		let textboxSearch = this.scene.add['rexInputText'](
 			215, 40, 308, 40, {
 				type: 'text',
@@ -87,6 +92,8 @@ export default class FilterRegion {
 			this.scene.filter()
 		}, this)
 		.setOrigin(0, 0.5)
+
+		textboxSearch.removeInteractive()
 
 		container.add(textboxSearch)
 	}
