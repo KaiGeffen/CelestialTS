@@ -335,6 +335,8 @@ export default class DecklistsRegion {
 		let that = this
 
 		return function() {
+			that.savedDeckIndex = undefined
+			
 			// Adjusted the saved user data
 			UserSettings._pop('decks', deckIndex)
 
