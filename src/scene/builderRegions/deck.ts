@@ -1,23 +1,20 @@
-import 'phaser'
+import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-
-import Button from '../../lib/buttons/button'
-import Buttons from '../../lib/buttons/buttons'
-
-import Cutout from '../../lib/buttons/cutout'
-
-import { CardImage } from '../../lib/cardImage'
-import { Space, Style, Color, Mechanics, Time } from '../../settings/settings'
-import Card from '../../lib/card'
-import { decodeCard, encodeCard } from '../../lib/codec'
-import avatarNames from '../../lib/avatarNames';
 import premadeDecklists from '../../catalog/premadeDecklists';
+import avatarNames from '../../lib/avatarNames';
+import Button from '../../lib/buttons/button';
+import Buttons from '../../lib/buttons/buttons';
+import Cutout from '../../lib/buttons/cutout';
+import Icons from '../../lib/buttons/icons';
+import Card from '../../lib/card';
+import { decodeCard } from '../../lib/codec';
+import { Color, Mechanics, Space, Style, Time, Mobile } from '../../settings/settings';
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
 
 export default class DeckRegion {
-	private scene: Phaser.Scene
+	private scene
 
 	// Callback for when the deck's avatar or name is edited
 	editCallback: (name: string, avatar: number) => void
@@ -56,7 +53,7 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
-		.setInteractive()
+		// .setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: Space.decklistPanelWidth - Space.deckPanelWidth,
@@ -70,8 +67,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			header: this.createHeader(startCallback),
-			footer: this.createFooter(startCallback),
+			header: Mobile ? undefined : this.createHeader(startCallback),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
@@ -86,6 +82,13 @@ export default class DeckRegion {
 			}).setOrigin(0)
 
 		this.updateOnScroll(this.panel, this.scrollablePanel)
+
+		// If on mobile, header scrolls with the rest of content
+		if (Mobile) {
+			this.panel.add(this.createHeader(startCallback), {
+				padding: {bottom: Space.pad}
+			})
+		}
 
 		this.scrollablePanel.layout()
 
@@ -102,41 +105,47 @@ export default class DeckRegion {
 			top: 10,
 			bottom: 10,
 			// line: 10,//80 - Space.cardHeight,
-		}}).addBackground(
-		this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
-		)
+		}})
+
+		// .addBackground(
+		// this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
+		// )
+
+		// In Mobile, add the header here
+		// TODO
 
 		return this.panel
 	}
 
 	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			Space: {left: Space.pad, right: Space.pad}
+			Space: {left: Space.pad, right: Space.pad, bottom: Space.pad}
 		})
-
-		// Add this deck's avatar
-		let containerAvatar = new ContainerLite(this.scene, 0, 0, width, Space.avatarSize)
-		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules', this.onClickAvatar(), true)
-		sizer.add(containerAvatar, {padding: {bottom: Space.pad}})
 
 		// Add the deck's name
 		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement).setOrigin(0.5)
-		let container = new ContainerLite(this.scene, 0, 0, width, this.txtDeckName.height - Space.pad*2)
+		let container = new ContainerLite(this.scene, 0, 0, width, this.txtDeckName.displayHeight)
 		container.add(this.txtDeckName)
 		sizer.add(container)
 
-		return sizer
-	}
-
-	private createFooter(startCallback: () => void): Phaser.GameObjects.GameObject {
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			Space: {left: Space.pad, right: Space.pad}
-		})
+		// Add a share button that allows user to copy/paste their deck code
+		let containerShare = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize/2)
+		new Icons.Share(containerShare, 0, 0, this.shareCallback())
+		// TODO Remove if using a premade deck
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
-		let containerButton = new ContainerLite(this.scene, 0, 0, width, Space.largeButtonHeight)
-		this.btnStart = new Buttons.Basic(containerButton, 0, 0, '0/15', startCallback)
-		sizer.add(containerButton)
+		let containerStart = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize/2)
+		this.btnStart = new Buttons.Basic(containerStart, 0, 0, '0/15', startCallback)
+		
+		// Make a container for all of the buttons
+		let sizerButtons = this.scene['rexUI'].add.fixWidthSizer({Space: {item: Space.pad}})
+		sizerButtons.add([containerShare, containerStart])
+		sizer.add(sizerButtons)
+
+		// Add this deck's avatar
+		let containerAvatar = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
+		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules', this.onClickAvatar(), true)
+		sizer.add(containerAvatar)
 
 		return sizer
 	}
@@ -309,9 +318,10 @@ export default class DeckRegion {
 	// Create a scrollable panel with all of the given required cards
 	private createRequiredCardList(cards: string) {
 		// Create the sizer that contains the cards
-		let sizer = this.scene['rexUI'].add.fixWidthSizer().addBackground(
-			this.scene.add.rectangle(0, 0, width, 0, 0xF44FFF)
-		)
+		let sizer = this.scene['rexUI'].add.fixWidthSizer()
+		// .addBackground(
+		// 	this.scene.add.rectangle(0, 0, width, 0, 0xF44FFF)
+		// )
 		
 		// Create the scrolling panel that contains it
 		// const height = Math.min(Space.windowHeight/2, 800)
@@ -442,14 +452,16 @@ export default class DeckRegion {
 					(cutout.card.name > card.name))
 				)
 			{
-				panel.insert(i - requiredAmt, child)
-				return i - requiredAmt
+				let index = i - requiredAmt + (Mobile ? 1 : 0)
+				panel.insert(index, child)
+				return index
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		panel.insert(this.deck.length - requiredAmt, child)
-		return this.deck.length - requiredAmt
+		let index = this.deck.length - requiredAmt + (Mobile ? 1 : 0)
+		panel.insert(index, child)
+		return index
 	}
 
 	private onClickAvatar(): () => void {
@@ -462,6 +474,21 @@ export default class DeckRegion {
 					deckName: that.txtDeckName.text,
 					selectedAvatar: that.avatarNumber,
 				})
+		}
+	}
+
+	private shareCallback(): () => void {
+		let that = this
+
+		return function() {
+			that.scene.scene.launch('MenuScene', {
+				menu: 'shareDeck',
+				// Called when the text changes in the menu
+				currentDeck: that.scene.getDeckCode(),
+				callback: function(inputText) {
+					that.scene.setDeck(inputText.text)
+				}
+			})
 		}
 	}
 
