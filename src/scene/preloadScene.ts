@@ -1,7 +1,6 @@
 import "phaser"
-var mobile = require('is-mobile')
 
-import { Style, Color, Space, UserSettings, UserProgress, Url } from "../settings/settings"
+import { Style, Color, Space, UserSettings, UserProgress, Url, Mobile } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import { keywords } from '../catalog/keywords'
 import Server from "../server"
@@ -112,7 +111,7 @@ export default class PreloadClass extends Phaser.Scene {
 		this.sound.volume = UserSettings._get('volume')
 
 		// If the user is using mobile, ensure that the see the mobile message
-		if (mobile()) {
+		if (Mobile) {
 			UserProgress.addAchievement('mobile')
 		}
 		

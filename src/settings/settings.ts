@@ -8,6 +8,7 @@ import { Time } from "./time"
 import { Url } from "./url"
 import { UserSettings } from "./userSettings"
 import { Depth } from "./depth"
+import { Mobile } from "./mobile"
 
 
 export {
@@ -20,4 +21,5 @@ export {
   Url,
   UserSettings,
   Depth,
+  Mobile,
 }

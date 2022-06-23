@@ -1,21 +1,15 @@
-import 'phaser'
+import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-
-import Button from '../../lib/buttons/button'
-import Buttons from '../../lib/buttons/buttons'
-import Icons from '../../lib/buttons/icons'
-
-import Cutout from '../../lib/buttons/cutout'
-
-import { CardImage } from '../../lib/cardImage'
-import { Space, Style, Color, Mechanics, Time } from '../../settings/settings'
-import Card from '../../lib/card'
-import { decodeCard, encodeCard } from '../../lib/codec'
-import avatarNames from '../../lib/avatarNames';
 import premadeDecklists from '../../catalog/premadeDecklists';
+import avatarNames from '../../lib/avatarNames';
+import Button from '../../lib/buttons/button';
+import Buttons from '../../lib/buttons/buttons';
+import Cutout from '../../lib/buttons/cutout';
+import Icons from '../../lib/buttons/icons';
+import Card from '../../lib/card';
+import { decodeCard } from '../../lib/codec';
+import { Color, Mechanics, Space, Style, Time, Mobile } from '../../settings/settings';
 
-// TODO Sense and use this throughout
-const ON_MOBILE = false
 
 const width = Space.deckPanelWidth// + Space.pad * 2
 
@@ -73,7 +67,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			header: ON_MOBILE ? undefined : this.createHeader(startCallback),
+			header: Mobile ? undefined : this.createHeader(startCallback),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
@@ -90,7 +84,7 @@ export default class DeckRegion {
 		this.updateOnScroll(this.panel, this.scrollablePanel)
 
 		// If on mobile, header scrolls with the rest of content
-		if (ON_MOBILE) {
+		if (Mobile) {
 			this.panel.add(this.createHeader(startCallback), {
 				padding: {bottom: Space.pad}
 			})
@@ -458,14 +452,14 @@ export default class DeckRegion {
 					(cutout.card.name > card.name))
 				)
 			{
-				let index = i - requiredAmt + (ON_MOBILE ? 1 : 0)
+				let index = i - requiredAmt + (Mobile ? 1 : 0)
 				panel.insert(index, child)
 				return index
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		let index = this.deck.length - requiredAmt + (ON_MOBILE ? 1 : 0)
+		let index = this.deck.length - requiredAmt + (Mobile ? 1 : 0)
 		panel.insert(index, child)
 		return index
 	}
