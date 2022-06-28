@@ -21,7 +21,8 @@ export default class DecklistButton extends Button {
 			text: {
 				text: text,
 				style: Style.basic,
-				interactive: false
+				interactive: false,
+				offsetX: -45,
 			},
 			icon: {
 				name: 'CustomDeck',
@@ -36,6 +37,7 @@ export default class DecklistButton extends Button {
 
 		// Also add an x button on top
 		this.btnX = new Icons.SmallX(within, x - 70, y, xCallback)
+		this.txt.setOrigin(0, 0.5)
 	}
 
 	setDepth(value: number): Button {
