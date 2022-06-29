@@ -34,9 +34,6 @@ export default class DeckRegion {
 	private avatar: Button
 	private txtDeckName: Phaser.GameObjects.Text
 
-	// Only for adventure mode
-	private txtChoice: Phaser.GameObjects.Text
-
 	create(scene: Phaser.Scene,
 		startCallback: () => void,
 		editCallback?: (name: string, avatar: number) => void
@@ -53,7 +50,6 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
-		// .setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: Space.decklistPanelWidth - Space.deckPanelWidth,
@@ -74,11 +70,6 @@ export default class DeckRegion {
 				bottom: Space.pad,
 				item: Space.pad,
 			},
-
-			// mouseWheelScroller: {
-				// 	focus: true,
-				// 	speed: 1
-				// },
 			}).setOrigin(0)
 
 		this.updateOnScroll(this.panel, this.scrollablePanel)
@@ -104,15 +95,7 @@ export default class DeckRegion {
 		this.panel = this.scene['rexUI'].add.fixWidthSizer({space: {
 			top: 10,
 			bottom: 10,
-			// line: 10,//80 - Space.cardHeight,
 		}})
-
-		// .addBackground(
-		// this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
-		// )
-
-		// In Mobile, add the header here
-		// TODO
 
 		return this.panel
 	}
@@ -164,7 +147,7 @@ export default class DeckRegion {
 		// If this card exists in the deck already, increment it
 		let alreadyInDeck = false
 		this.deck.forEach(cutout => {
-			if (cutout.name === card.name && !cutout.required) {
+			if (cutout.name === card.name) {
 				cutout.increment()
 				alreadyInDeck = true
 			}
@@ -285,62 +268,6 @@ export default class DeckRegion {
 		return txt
 	}
 
-	// Add cards to the deck that must be in the deck
-	// NOTE This is implemented by removing everything from the header
-	// then populating it with the required cards
-	addRequiredCards(cards: string): void {
-		let header = this.scrollablePanel.getElement('header')
-
-		// Remove everything from the header
-		this.avatar.destroy()
-		header.removeAll()
-
-		// Add in a hint and list of cards
-		const amt = cards.match(/\:/g).length + 1
-		let txtRequired = this.scene.add.text(0, 0, `Required Cards: ${amt}`, Style.basic).setOrigin(0.5)
-		let containerRequired = new ContainerLite(this.scene, 0, 0, width, txtRequired.height)
-		header.add(containerRequired.add(txtRequired))
-
-		// Add in a scrollable panel of the required cards
-		header.add(this.createRequiredCardList(cards))
-
-		// Hint for the cards user's can choose to complete the deck
-		this.txtChoice = this.scene.add.text(0, 0, `Chosen Cards: 0/${Mechanics.deckSize - amt}`, Style.basic).setOrigin(0.5, 0)
-		let containerChoice = new ContainerLite(this.scene, 0, 0, width, this.txtChoice.height)
-		header.add(containerChoice.add(this.txtChoice))
-
-		// Panel should move over since decklist region doesn't exist
-		this.scrollablePanel.x = 0
-
-		this.scrollablePanel.layout()
-	}
-
-	// Create a scrollable panel with all of the given required cards
-	private createRequiredCardList(cards: string) {
-		// Create the sizer that contains the cards
-		let sizer = this.scene['rexUI'].add.fixWidthSizer()
-		// .addBackground(
-		// 	this.scene.add.rectangle(0, 0, width, 0, 0xF44FFF)
-		// )
-		
-		// Create the scrolling panel that contains it
-		// const height = Math.min(Space.windowHeight/2, 800)
-		// let panel = this.scene['rexUI'].add.scrollablePanel({
-		// 	height: height,
-		// 	panel: {
-		// 		child: sizer
-		// 	},
-		// })
-
-		this.setDeck(cards, sizer)
-
-		this.deck.forEach(cutout => {
-			cutout.setRequired()
-		})
-
-		return sizer
-	}
-
 	// Remove the card from deck which has given index
 	private removeCardFromDeck(cutout: Cutout): () => void {
 		let that = this
@@ -356,7 +283,7 @@ export default class DeckRegion {
 
 				for (let i = 0; i < that.deck.length && index === undefined; i++) {
 					const cutoutI = that.deck[i]
-					if (cutoutI.id === cutout.id && !cutoutI.required) {
+					if (cutoutI.id === cutout.id) {
 						index = i
 					}
 				}
@@ -385,20 +312,9 @@ export default class DeckRegion {
 	// Update the card count and deck button texts
 	private updateText(): void {
 		let totalCount = 0
-		let choiceCount = 0
 		this.deck.forEach(cutout => {
 			totalCount += cutout.count
-
-			// This is a chosen card if not required
-			if (!cutout.required) {
-				choiceCount += cutout.count
-			}
 		})
-
-		// Display amount of chosen cards
-		if (this.txtChoice !== undefined) {
-			this.txtChoice.setText(`Chosen Cards: ${choiceCount}/${Mechanics.deckSize - totalCount + choiceCount}`)
-		}
 
 		if (totalCount === Mechanics.deckSize) {
 			this.btnStart.setText('Start')
@@ -437,29 +353,22 @@ export default class DeckRegion {
 	}
 
 	private addToPanelSorted(child: ContainerLite, card: Card, panel): number {
-		// Keep track of how many of these cards are required, to insert in the right index
-		let requiredAmt = 0
-
 		for (let i = 0; i < this.deck.length; i++) {
 			const cutout = this.deck[i]
-			if (cutout.required) {
-				requiredAmt += 1
-				continue
-			}
 
 			if ((cutout.card.cost > card.cost) ||
 				((cutout.card.cost === card.cost) &&
 					(cutout.card.name > card.name))
 				)
 			{
-				let index = i - requiredAmt + (Mobile ? 1 : 0)
+				let index = i + (Mobile ? 1 : 0)
 				panel.insert(index, child)
 				return index
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		let index = this.deck.length - requiredAmt + (Mobile ? 1 : 0)
+		let index = this.deck.length + (Mobile ? 1 : 0)
 		panel.insert(index, child)
 		return index
 	}
