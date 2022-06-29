@@ -1,0 +1,144 @@
+[
+  {
+    "name": "Vision 1 - Clear View",
+    "id": 600,
+    "x": 600,
+    "y": 50,
+    "prereq": [[306], [406]],
+    "type": "mission",
+    "deck": "27:27:27:27:12:12:12:13",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Clear View",
+    "id": 601,
+    "x": 600,
+    "y": 100,
+    "prereq": [[600]],
+    "type": "card",
+    "card": 27
+  },
+  {
+    "name": "Vision 2 - Awakening",
+    "id": 602,
+    "x": 600,
+    "y": 200,
+    "prereq": [[601]],
+    "type": "mission",
+    "deck": "2:2:1:1:39:39:39:19",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Awakening",
+    "id": 603,
+    "x": 600,
+    "y": 250,
+    "prereq": [[602]],
+    "type": "card",
+    "card": 39
+  },
+  {
+    "name": "Vision 3 - Nectar",
+    "id": 604,
+    "x": 600,
+    "y": 300,
+    "prereq": [[601]],
+    "type": "mission",
+    "deck": "25:25:25:69:13:57:57",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Nectar",
+    "id": 605,
+    "x": 600,
+    "y": 350,
+    "prereq": [[604]],
+    "type": "card",
+    "card": 25
+  },
+  {
+    "name": "Vision 4 - Cradle",
+    "id": 606,
+    "x": 600,
+    "y": 400,
+    "prereq": [[601]],
+    "type": "mission",
+    "deck": "2:2:0:60:60:60:16",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Cradle",
+    "id": 607,
+    "x": 600,
+    "y": 450,
+    "prereq": [[606]],
+    "type": "card",
+    "card": 60
+  },
+  {
+    "name": "Vision 5 - The Future",
+    "id": 608,
+    "x": 600,
+    "y": 500,
+    "prereq": [[603], [505], [507]],
+    "type": "mission",
+    "deck": "2:2:2:6:15:22:22",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "The Future",
+    "id": 609,
+    "x": 600,
+    "y": 550,
+    "prereq": [[608]],
+    "type": "card",
+    "card": 22
+  },
+  {
+    "name": "Vision 6 - Ancestry",
+    "id": 610,
+    "x": 600,
+    "y": 600,
+    "prereq": [[607, 509]],
+    "type": "mission",
+    "deck": "2:2:2:10:10:22:22",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Ancestry",
+    "id": 611,
+    "x": 600,
+    "y": 650,
+    "prereq": [[610]],
+    "type": "card",
+    "card": 10
+  },
+
+
+
+
+
+
+
+
+
+  {
+    "name": "Vision Bonus 1 - Rebirth",
+    "id": 620,
+    "x": 600,
+    "y": 900,
+    "prereq": [[601]],
+    "type": "mission",
+    "deck": "55:55:55:19:19:19:44:44",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Rebirth",
+    "id": 621,
+    "x": 600,
+    "y": 950,
+    "prereq": [[620]],
+    "type": "card",
+    "card": 55
+  }
+]
