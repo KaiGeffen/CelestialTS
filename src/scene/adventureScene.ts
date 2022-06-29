@@ -2,6 +2,7 @@ import "phaser"
 import BaseScene from './baseScene'
 import { Style, Space, Color, UserSettings, Time, BBStyle } from '../settings/settings'
 import Buttons from "../lib/buttons/buttons"
+import Icons from "../lib/buttons/icons"
 import Menu from "../lib/menu"
 import { CardImage } from "../lib/cardImage"
 
@@ -16,6 +17,8 @@ const MAP_HEIGHT = 2700
 // TODO Make consistent with Journey (Change adventure to journey or vice verca)
 export default class AdventureScene extends BaseScene {
 	params = {scrollX: 0, scrollY: 0};
+
+	panDirection
 
 	constructor() {
 		super({
@@ -32,6 +35,9 @@ export default class AdventureScene extends BaseScene {
 		let background = this.add.image(0, 0, 'map-Birds')
 			.setOrigin(0)
 			.setInteractive()
+
+		// Add navigation arrows
+		this.createArrows()
 
 		// Add all of the available nodes
 		this.addAdventureData()
@@ -86,6 +92,17 @@ export default class AdventureScene extends BaseScene {
 		if (params.scrollX !== undefined) {
 			this.cameras.main.scrollX = params.scrollX
 			this.cameras.main.scrollY = params.scrollY
+		}
+	}
+
+	update(): void {
+		// If pointer is released, stop panning
+		if (!this.input.activePointer.isDown) {
+			this.panDirection = undefined
+		}
+
+		if (this.panDirection !== undefined) {
+			AdventureScene.moveCamera(this.cameras.main, this.panDirection[0], this.panDirection[1])
 		}
 	}
 
@@ -163,6 +180,47 @@ export default class AdventureScene extends BaseScene {
 		this.addAdventureData()
 
 		fullPanel.layout()
+	}
+
+	private createArrows(): void {
+		let that = this
+
+		const mag = 25
+
+		// Details for each arrow (North, East, South, West)
+		const arrows = [
+			{
+				x: Space.windowWidth/2,
+				y: Space.pad,
+				direction: [0, -mag]
+			},
+			{
+				x: Space.windowWidth - Space.pad,
+				y: Space.windowHeight/2,
+				direction: [mag, 0]
+			},
+			{
+				x: Space.windowWidth/2,
+				y: Space.windowHeight - Space.pad,
+				direction: [0, mag]
+			},
+			{
+				x: Space.pad,
+				y: Space.windowHeight/2,
+				direction: [-mag, 0]
+			},
+		]
+
+		for (let i = 0; i < arrows.length; i++) {
+			const arrow = arrows[i]
+
+			new Icons.X(this, arrow.x, arrow.y)
+			.setDepth(10)
+			.setNoScroll()
+			.setOnClick(() => {
+				that.panDirection = arrow.direction
+			})
+		}
 	}
 
 	// Add all of the missions to the panel
@@ -254,14 +312,18 @@ export default class AdventureScene extends BaseScene {
 		let camera = this.cameras.main
 
 		this.input.on('gameobjectwheel', function(pointer, gameObject, dx, dy, dz, event) {
-			camera.scrollX = Math.min(
-				MAP_WIDTH - Space.windowWidth,
-				Math.max(0, camera.scrollX + dx)
-			)
-			camera.scrollY = Math.min(
-				MAP_HEIGHT - Space.windowHeight,
-				Math.max(0, camera.scrollY + dy)
-			)
+			AdventureScene.moveCamera(camera, dx, dy)
 		})
+	}
+
+	private static moveCamera(camera, dx, dy): void {
+		camera.scrollX = Math.min(
+			MAP_WIDTH - Space.windowWidth,
+			Math.max(0, camera.scrollX + dx)
+			)
+		camera.scrollY = Math.min(
+			MAP_HEIGHT - Space.windowHeight,
+			Math.max(0, camera.scrollY + dy)
+			)
 	}
 }
