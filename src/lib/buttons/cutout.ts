@@ -30,7 +30,7 @@ export default class Cutout extends Button {
 				text: '',
 				interactive: false,
 				style: Style.cardCount,
-				// offset: 10,
+				offsetX: 125,
 			},
 			icon: {
 				name: `cutout-${card.name}`,
@@ -99,19 +99,19 @@ export default class Cutout extends Button {
 	setRequired(): Cutout {
 		this.required = true
 
-		let that = this
-
-		this.txt.setTint(0x00ff00)
+		// Ensure that a lock is used instead of the X
+		this.updateText()
 
 		this.onClick = () => {
-			that.scene['signalError']("Can't remove required card.")
+			this.scene['signalError']("Can't remove required card.")
 		}
 		return this
 	}
 
 	private updateText(): Cutout {
-		this.setText(`             ${this.name} X${this.count}`)
-		// this.setText(`                                           x${this.count}`)
+		const char = this.required ? '🔒' : 'X'
+		// this.setText(`             ${this.name} ${char}${this.count}`)
+		this.setText(`${char}${this.count}`)
 
 		return this
 	}
