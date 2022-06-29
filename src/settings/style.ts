@@ -98,7 +98,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   announcement: {
     fontFamily: fontFamily,
     fontSize: FontSettings.huge.size,
-    color: Color.avatar,//'#fff',
+    color: '#fff',
     stroke: Color.basicText,
     strokeThickness: 4
   },
