@@ -6,6 +6,7 @@ import CatalogRegion from './builderRegions/catalog'
 import DeckRegion from './builderRegions/deck'
 import DecklistsRegion from './builderRegions/decklists'
 import FilterRegion from './builderRegions/filter'
+import JourneyRegion from './builderRegions/journey'
 import { Space } from '../settings/settings'
 
 
@@ -76,6 +77,8 @@ export class BuilderBase extends BaseScene {
 }
 
 export class AdventureBuilderScene extends BuilderBase {
+  journeyRegion: JourneyRegion
+
   constructor() {
     super({
       key: "AdventureBuilderScene",
@@ -88,13 +91,21 @@ export class AdventureBuilderScene extends BuilderBase {
     
     this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback())
-    this.deckRegion.addRequiredCards(params.deck)
+    this.journeyRegion = new JourneyRegion().create(this, this.startCallback())
+    this.journeyRegion.addRequiredCards(params.deck)
 
     this.filterRegion = new FilterRegion().create(this, true)
 
     // Must filter out cards that you don't have access to
     this.filter()
+  }
+
+  addCardToDeck(card: Card): boolean {
+    return this.journeyRegion.addCardToDeck(card)
+  }
+
+  getDeckCode(): string {
+    return this.journeyRegion.getDeckCode()
   }
 
   updateSavedDeck(deck: string): void {}
