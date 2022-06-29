@@ -19,6 +19,8 @@ export default class DeckRegion {
 	// The panel within which all of the cards are
 	private panel
 	private scrollablePanel
+	// Panel populated with cutouts of cards user has chosen
+	private chosenPanel
 
 	// Button allowing user to Start, or showing the count of cards in their deck
 	private btnStart: Button
@@ -113,7 +115,7 @@ export default class DeckRegion {
 	}
 
 	// Add the given card and return the created cardImage
-	addCardToDeck(card: Card, panel = this.panel): boolean {
+	addCardToDeck(card: Card, panel = this.chosenPanel): boolean {
 		let totalCount = 0
 		this.deck.forEach(cutout => {
 			totalCount += cutout.count
@@ -221,6 +223,9 @@ export default class DeckRegion {
 		let containerChoice = new ContainerLite(this.scene, 0, 0, width, this.txtChoice.height + Space.pad)
 		this.panel.add(containerChoice.add(this.txtChoice))
 
+		// Create a panel for cards user has chosen
+		this.panel.add(this.createChosenCardList())
+
 		// Add in a hint and list of cards
 		let txtRequired = this.scene.add.text(0, 0, `Required Cards: ${amt}`, Style.basic).setOrigin(0.5)
 		let containerRequired = new ContainerLite(this.scene, 0, 0, width, txtRequired.height + Space.pad)
@@ -232,6 +237,13 @@ export default class DeckRegion {
 		this.updateText()
 
 		this.scrollablePanel.layout()
+	}
+
+	// Create a scrollable panel with all of the cards user has chosen
+	private createChosenCardList() {
+		this.chosenPanel = this.scene['rexUI'].add.fixWidthSizer()
+
+		return this.chosenPanel
 	}
 
 	// Create a scrollable panel with all of the given required cards
@@ -284,8 +296,7 @@ export default class DeckRegion {
 			}
 
 			that.updateText()
-
-			that.scene['updateSavedDeck'](that.getDeckCode())
+			that.scrollablePanel.layout()
 		}
 	}
 
@@ -301,8 +312,6 @@ export default class DeckRegion {
 				choiceCount += cutout.count
 			}
 		})
-
-		console.log(choiceCount)
 
 		// Display amount of chosen cards
 		if (this.txtChoice !== undefined) {
@@ -346,62 +355,24 @@ export default class DeckRegion {
 	}
 
 	private addToPanelSorted(child: ContainerLite, card: Card, panel): number {
-		// Keep track of how many of these cards are required, to insert in the right index
-		let requiredAmt = 0
-
 		for (let i = 0; i < this.deck.length; i++) {
 			const cutout = this.deck[i]
-			if (cutout.required) {
-				requiredAmt += 1
-				continue
-			}
 
 			if ((cutout.card.cost > card.cost) ||
 				((cutout.card.cost === card.cost) &&
 					(cutout.card.name > card.name))
 				)
 			{
-				let index = i - requiredAmt + (Mobile ? 2 : 1)
+				let index = i
 				panel.insert(index, child)
 				return index
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		let index = this.deck.length - requiredAmt + (Mobile ? 2 : 1)
+		let index = this.deck.length
 		panel.insert(index, child)
 		return index
-	}
-
-	private shareCallback(): () => void {
-		let that = this
-
-		return function() {
-			that.scene.scene.launch('MenuScene', {
-				menu: 'shareDeck',
-				// Called when the text changes in the menu
-				currentDeck: that.scene.getDeckCode(),
-				callback: function(inputText) {
-					that.scene.setDeck(inputText.text)
-				}
-			})
-		}
-	}
-
-	hidePanel(): void {
-		this.scene.tweens.add({
-			targets: this.scrollablePanel,
-			x: Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad,
-			duration: Time.builderSlide(),
-		})
-	}
-
-	showPanel(): void {
-		this.scene.tweens.add({
-			targets: this.scrollablePanel,
-			x: Space.decklistPanelWidth,
-			duration: Time.builderSlide(),
-		})
 	}
 }
 
