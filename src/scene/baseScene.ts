@@ -37,7 +37,10 @@ export default class BaseScene extends Phaser.Scene {
 		}
 
 		// Menu button
-		this.btnOptions = new Icons.Options(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu()).setOrigin(1, 0).setDepth(10)
+		this.btnOptions = new Icons.Options(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu())
+		.setOrigin(1, 0)
+		.setDepth(10)
+		.setNoScroll()
 
 	    // Error text, for when the user does something wrong they get an explanation
 	    this.txtError = this.createErrorText()

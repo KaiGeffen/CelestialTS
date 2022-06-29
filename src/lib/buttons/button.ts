@@ -333,4 +333,17 @@ export default class Button {
 	setQuality(args): Button {
 		throw `Button type ${typeof this} doesn't have a quality to set.`
 	}
+
+	// Set the object to not scroll with the camera
+	setNoScroll(): Button {
+		if (this.txt) {
+			this.txt.setScrollFactor(0, 0)
+		}
+
+		if (this.icon) {
+			this.icon.setScrollFactor(0, 0)
+		}
+
+		return this
+	}
 }
