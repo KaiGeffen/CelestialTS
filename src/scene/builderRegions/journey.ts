@@ -42,7 +42,7 @@ export default class DeckRegion {
 	}
 
 	private createScrollable(startCallback: () => void) {
-		let background = this.scene.add.rectangle(0, 0, 0, 0, Color.background)
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: 0,
@@ -69,9 +69,7 @@ export default class DeckRegion {
 
 		// If on mobile, header scrolls with the rest of content
 		if (Mobile) {
-			this.panel.add(this.createHeader(startCallback), {
-				padding: {bottom: Space.pad}
-			})
+			this.createHeader(startCallback, this.panel)
 		}
 
 		this.scrollablePanel.layout()
@@ -90,16 +88,12 @@ export default class DeckRegion {
 		return this.panel
 	}
 
-	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			Space: {left: Space.pad, right: Space.pad}
-		})
-
-		// Add the deck's name
-		// this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement).setOrigin(0.5)
-		// let container = new ContainerLite(this.scene, 0, 0, width, this.txtDeckName.displayHeight)
-		// container.add(this.txtDeckName)
-		// sizer.add(container)
+	private createHeader(startCallback: () => void, sizer?): Phaser.GameObjects.GameObject {
+		if (sizer === undefined) {
+			sizer = this.scene['rexUI'].add.fixWidthSizer({
+				Space: {left: Space.pad, right: Space.pad}
+			})
+		}
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		let containerStart = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize)
