@@ -34,6 +34,7 @@ export default class BaseScene extends Phaser.Scene {
 		if (UserSettings._get('musicVolume') > 0) {
 			let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
         	music.play()
+        	music.volume = UserSettings._get('musicVolume')
 		}
 
 		// Menu button

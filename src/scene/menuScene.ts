@@ -26,6 +26,8 @@ export default class MenuScene extends Phaser.Scene {
 	}
 
 	create(params): void {
+		this.sound.play('open')
+
 		this.addBackground()
 
 		createMenu(this, params.menu, params)
