@@ -79,6 +79,8 @@ export default class MenuScene extends Phaser.Scene {
 				top.destroy()
 			}
 
+			that.sound.play('close')
+
 			that.scene.stop()
 		}
 			

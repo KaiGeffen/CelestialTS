@@ -138,7 +138,10 @@ export default class Button {
 		// Set the callbacks separate from the objects
 		if (config.callbacks) {
 			// Add default callbacks if not specified
-			this.onClick = config.callbacks.click ? config.callbacks.click : () => {}
+			this.onClick = config.callbacks.click ? () => {
+				config.callbacks.click()
+				this.scene.sound.play('click')
+				} : () => {}
 			this.onHover = config.callbacks.hover ? config.callbacks.hover : () => {}
 			this.onExit = config.callbacks.exit ? config.callbacks.exit : () => {}
 		}
@@ -261,6 +264,7 @@ export default class Button {
 		let that = this
 
 		this.onClick = () => {
+			this.scene.sound.play('click')
 			f()
 			if (once) {
 				that.disable()

@@ -21,8 +21,7 @@ export default class Cutout extends Button {
 	constructor(within: ContainerLite,
 		card: Card,
 		x: number = 0, y: number = 0,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = function() {})
 	{
 		super(within, x, y, 
 		{
@@ -30,7 +29,7 @@ export default class Cutout extends Button {
 				text: '',
 				interactive: false,
 				style: Style.cardCount,
-				offsetX: 125,
+				// offsetX: 125,
 			},
 			icon: {
 				name: `cutout-${card.name}`,
@@ -110,8 +109,8 @@ export default class Cutout extends Button {
 
 	private updateText(): Cutout {
 		const char = this.required ? '🔒' : 'X'
-		// this.setText(`             ${this.name} ${char}${this.count}`)
-		this.setText(`${char}${this.count}`)
+		this.setText(`             ${this.name} ${char}${this.count}`)
+		// this.setText(`${char}${this.count}`)
 
 		return this
 	}

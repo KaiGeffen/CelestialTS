@@ -12,7 +12,6 @@ export default class Icon {
 
 		this.btn.setInteractive()
 		.on('pointerdown', () => {
-			scene.sound.play('click')
 			f()
 		})
 		.on('pointerover', () => {

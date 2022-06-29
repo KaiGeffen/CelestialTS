@@ -57,8 +57,10 @@ export default class Animator {
 					let permanentCard = this.getCard(animation, owner)
 
 					if (animation.to !== animation.from) {
+						
+
 						// Show the card in motion between start and end
-						this.animateCard(card, end, i, permanentCard)
+						this.animateCard(card, end, i, permanentCard, this.getSound(animation.to))
 					}
 					else {
 						// Emphasize the card if it stayed in the same zone
@@ -174,7 +176,7 @@ export default class Animator {
 
 	// Animate the given card moving to given end position with given delay
 	// If a permanent card is specified, that's the image that should become visible when tween completes
-	private animateCard(card: CardImage, end: [number, number], i: number, permanentCard?: CardImage) {
+	private animateCard(card: CardImage, end: [number, number], i: number, permanentCard?: CardImage, sound?) {
 		let that = this
 		if (permanentCard) {
 			permanentCard.hide()
@@ -191,8 +193,9 @@ export default class Animator {
 			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
 			{
 				card.show()
-				// TODO Different for create?
-				that.scene.sound.play('draw')
+				if (sound) {
+					that.scene.sound.play(sound)					
+				}
 			},
 			onComplete: function (tween, targets, _)
 			{
@@ -334,5 +337,15 @@ export default class Animator {
 				card.destroy()
 			}
 		})
+	}
+
+	private getSound(to: Zone): string {
+		switch (to) {
+			case Zone.Hand:
+			return 'draw'
+			case Zone.Discard:
+			return 'discard'
+		}
+		return undefined
 	}
 }
