@@ -16,9 +16,6 @@ const width = Space.deckPanelWidth// + Space.pad * 2
 export default class DeckRegion {
 	private scene
 
-	// Callback for when the deck's avatar or name is edited
-	editCallback: (name: string, avatar: number) => void
-
 	// The panel within which all of the cards are
 	private panel
 	private scrollablePanel
@@ -30,11 +27,8 @@ export default class DeckRegion {
 	private deck: Cutout[] = []
 
 	// The avatar button
-	// avatarNumber: number
 	private avatar: Button
-	// private txtDeckName: Phaser.GameObjects.Text
 
-	// Only for adventure mode
 	private txtChoice: Phaser.GameObjects.Text
 
 	create(scene: Phaser.Scene, startCallback: () => void) {
@@ -235,6 +229,8 @@ export default class DeckRegion {
 		// Add in a scrollable panel of the required cards
 		this.panel.add(this.createRequiredCardList(cards))
 
+		this.updateText()
+
 		this.scrollablePanel.layout()
 	}
 
@@ -242,18 +238,6 @@ export default class DeckRegion {
 	private createRequiredCardList(cards: string) {
 		// Create the sizer that contains the cards
 		let sizer = this.scene['rexUI'].add.fixWidthSizer()
-		// .addBackground(
-		// 	this.scene.add.rectangle(0, 0, width, 0, 0xF44FFF)
-		// )
-		
-		// Create the scrolling panel that contains it
-		// const height = Math.min(Space.windowHeight/2, 800)
-		// let panel = this.scene['rexUI'].add.scrollablePanel({
-		// 	height: height,
-		// 	panel: {
-		// 		child: sizer
-		// 	},
-		// })
 
 		this.setDeck(cards, sizer)
 
@@ -317,6 +301,8 @@ export default class DeckRegion {
 				choiceCount += cutout.count
 			}
 		})
+
+		console.log(choiceCount)
 
 		// Display amount of chosen cards
 		if (this.txtChoice !== undefined) {
@@ -385,19 +371,6 @@ export default class DeckRegion {
 		let index = this.deck.length - requiredAmt + (Mobile ? 2 : 1)
 		panel.insert(index, child)
 		return index
-	}
-
-	private onClickAvatar(): () => void {
-		let that = this
-
-		return function() {
-			that.scene.scene.launch('MenuScene', {
-					menu: 'editDeck',
-					callback: that.editCallback,
-					deckName: that.txtDeckName.text,
-					selectedAvatar: that.avatarNumber,
-				})
-		}
 	}
 
 	private shareCallback(): () => void {
