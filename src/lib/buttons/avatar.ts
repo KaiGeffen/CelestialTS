@@ -2,6 +2,7 @@ import 'phaser'
 import Button from './button'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
+import { Color } from '../../settings/settings'
 
 
 // Used when selected an avatar, when editing an avatar, and in a match
@@ -64,6 +65,15 @@ export default class AvatarButton extends Button {
 			this.editIcon.setVisible(true)
 		}
 
+		return this
+	}
+
+	// Override the default select so it doesn't grey the image
+	select(): Button {
+		this.icon.setTint(Color.outline)
+
+		this.selected = true
+		
 		return this
 	}
 }
