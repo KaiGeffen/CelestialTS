@@ -15,15 +15,25 @@ export default class Animator {
 	view: View
 	container: Phaser.GameObjects.Container
 
+	// In the last state, which cards could we see in the story
+	lastSeenCards: boolean[] = []
+
 	constructor(scene: BaseScene, view: View) {
 		this.scene = scene
 		this.view = view
 		this.container = scene.add.container().setDepth(Depth.aboveAll)
 	}
 
-	animate(state: ClientState): void {
+	animate(state: ClientState, isRecap: boolean): void {
 		// TODO Handle initial mulligan separately
 		if (state.versionNumber === 0) {
+			return
+		}
+
+
+
+		if (isRecap && state.isRecapStart()) {
+			this.animateRecapStart(state)
 			return
 		}
 
@@ -68,7 +78,9 @@ export default class Animator {
 					}
 				}
 			}
-		}	
+		}
+
+		// this.lastSeenCards = this.getLastSeenCards(state)
 	}
 
 	private getStart(animation: Animation, state, owner: number): [number, number] {
@@ -337,6 +349,57 @@ export default class Animator {
 				card.destroy()
 			}
 		})
+	}
+
+	// Animate a card being revealed
+	private animateReveal(card: CardImage, i: number): void {
+		// Animate the back of the card flipping
+		let hiddenCard = this.createCard(cardback, [0,0])
+		.show()
+		.copyLocation(card)
+
+		this.scene.tweens.add({
+			targets: hiddenCard.container,
+			scaleX: 0,
+			delay: i * Time.recapTweenWithPause(),
+			duration: Time.recapTween() / 2,
+			onComplete: function (tween, targets, _)
+			{
+				hiddenCard.destroy()
+			}
+		})
+
+		// Animate the actual card flipping up
+		card.hide()
+		card.container.scaleX = 0
+		this.scene.tweens.add({
+			targets: card.container,
+			scaleX: 1,
+			delay: i * Time.recapTweenWithPause() + Time.recapTween() / 2,
+			duration: Time.recapTween() / 2,
+			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
+			{
+				card.show()
+			}
+		})
+	}
+
+	// Animate cards being flipped over at the start of a recap
+	private animateRecapStart(state: ClientState): void {
+		console.log(state)
+		
+		let acts = state.story.acts
+		let amtSeen = 0
+		for (let i = 0; i < acts.length; i++) {
+			let act = acts[i]
+
+			let card = this.view.story.cards[i]
+
+			this.animateReveal(card, amtSeen)
+
+			amtSeen++
+		}
+		
 	}
 
 	private getSound(to: Zone): string {

@@ -82,4 +82,9 @@ export default class ClientState {
 
 		return true
 	}
+
+	// Get if this state is the start of a recap
+	isRecapStart(): boolean {
+		return this.recap.playList.length === 0
+	}
 }

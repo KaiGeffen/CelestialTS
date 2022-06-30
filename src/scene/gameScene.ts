@@ -401,7 +401,7 @@ export class View {
 		this.results.displayState(state, isRecap)
 
 		// Animate the state
-		this.animator.animate(state)
+		this.animator.animate(state, isRecap)
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {

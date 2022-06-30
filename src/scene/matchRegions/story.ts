@@ -69,6 +69,8 @@ export default class StoryRegion extends Region {
 		}
 
 		this.animate(state, cards, isRecap)
+
+		this.cards = cards
 	}
 
 	// Set the callback for when an act in the story is clicked on

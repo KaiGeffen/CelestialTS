@@ -369,4 +369,13 @@ export class CardImage {
 
     return this
   }
+
+  // Copy the location and parent of another cardImage
+  copyLocation(card: CardImage): CardImage {
+
+    this.container.copyPosition(card.container)
+    card.container.parentContainer.add(this.container)
+
+    return this
+  }
 }
