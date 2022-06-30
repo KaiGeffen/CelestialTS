@@ -108,7 +108,7 @@ export default class Cutout extends Button {
 	}
 
 	private updateText(): Cutout {	
-		const char = this.required ? '🔒' : 'X'
+		const char = this.required ? '🔒' : 'x'
 		// this.setText(`             ${this.name} ${char}${this.count}`)
 		this.setText(`${char}${this.count}`)
 
