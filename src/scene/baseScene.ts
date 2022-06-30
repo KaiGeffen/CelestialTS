@@ -104,8 +104,6 @@ export default class BaseScene extends Phaser.Scene {
 			if (that.scene.isActive('MenuScene')) {
 				return
 			}
-			
-			that.sound.play('open')
 
 			that.scene.launch('MenuScene', {
 				menu: 'options',
