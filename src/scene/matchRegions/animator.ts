@@ -15,8 +15,8 @@ export default class Animator {
 	view: View
 	container: Phaser.GameObjects.Container
 
-	// In the last state, which cards could we see in the story
-	lastSeenCards: boolean[] = []
+	// In the last state, which cards were hidden in the story
+	lastHiddenCards: boolean[] = []
 
 	constructor(scene: BaseScene, view: View) {
 		this.scene = scene
@@ -80,7 +80,7 @@ export default class Animator {
 			}
 		}
 
-		// this.lastSeenCards = this.getLastSeenCards(state)
+		this.lastHiddenCards = this.getHiddenCards(state)
 	}
 
 	private getStart(animation: Animation, state, owner: number): [number, number] {
@@ -386,20 +386,30 @@ export default class Animator {
 
 	// Animate cards being flipped over at the start of a recap
 	private animateRecapStart(state: ClientState): void {
-		console.log(state)
-		
 		let acts = state.story.acts
 		let amtSeen = 0
 		for (let i = 0; i < acts.length; i++) {
-			let act = acts[i]
+			// If it was hidden, flip it over
+			if (this.lastHiddenCards[i]) {
+				let act = acts[i]
 
-			let card = this.view.story.cards[i]
+				let card = this.view.story.cards[i]
 
-			this.animateReveal(card, amtSeen)
+				this.animateReveal(card, amtSeen)
 
-			amtSeen++
+				amtSeen++
+			}			
 		}
-		
+	}
+
+	private getHiddenCards(state: ClientState): boolean[] {
+		let result = []
+
+		for (let i = 0; i < state.story.acts.length; i++) {
+			result[i] = state.story.acts[i].card === cardback
+		}
+
+		return result
 	}
 
 	private getSound(to: Zone): string {
