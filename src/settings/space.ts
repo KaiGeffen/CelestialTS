@@ -49,7 +49,7 @@ export var Space = {
   filterBarHeight: 70,
 
   decklistPanelWidth: 240,
-  deckPanelWidth: 320,
+  deckPanelWidth: 320 + 50,
 
   // Dimensions for common buttons
   smallButtonWidth: 100,

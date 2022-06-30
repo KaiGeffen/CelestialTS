@@ -67,13 +67,7 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 
 		allCards.forEach( (card) => {
-			if (card.name === 'Dove' || card.name === 'Birth' || card.name === 'Pet') {
-				this.load.image(`cutout-${card.name}`, `cutouts/${card.name}.png`)
-			}
-			// TODO Add in more cutouts
-			else {
-				this.load.image(`cutout-${card.name}`, `cutouts/Impulse.png`)
-			}
+			this.load.image(`cutout-${card.name}`, `cutouts/${card.name}.png`)
 		})
 
 		// Load all keywords
