@@ -7,9 +7,6 @@ import BaseScene from '../scene/baseScene'
 import { allCards } from '../catalog/catalog'
 
 
-// Time in milliseconds that user must pause before hint appears
-const WAIT_TIME = 100
-
 export default class Hint {
 	txt: RexUIPlugin.BBCodeText
 
@@ -36,7 +33,7 @@ export default class Hint {
 			}
 		})
 		scene.events.on('update', (time, delta) => {
-			if (this.waitTime < WAIT_TIME && !this.skipWait) {
+			if (this.waitTime < Time.hint && !this.skipWait) {
 				this.waitTime += delta
 			}
 			else {

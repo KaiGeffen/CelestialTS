@@ -37,4 +37,7 @@ export class Time {
 
   // How long the avatar emote lasts
   static emote = 1000
+
+  // Time user must pause before hint appears
+  static hint = 100
 }
