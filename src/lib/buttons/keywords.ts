@@ -2,9 +2,38 @@ import 'phaser'
 import Button from './button'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import { Style } from '../../settings/settings'
+import { keywords } from '../../catalog/keywords'
 
 
-export class InspireButton extends Button {
+function getHint(btn: Button, status: string): string {
+	let keyword = keywords.find((value) => {
+		return value.key === status
+	})
+
+	let s = keyword.text
+
+	// Remove the first X (In image data)
+	s = s.replace(' X', '')
+
+	// Get the value from the given status button
+	s = s.split(/\bX\b/).join(btn.getText())
+
+	return s
+}
+
+
+class KeywordButton extends Button {
+	setText(s: string): Button {
+		let result = super.setText(s)
+
+		this.makeHintable()
+
+		return result
+	}
+}
+
+
+export class InspireButton extends KeywordButton {
 	constructor(within: Phaser.GameObjects.Container,
 		x: number, y: number,
 		text: string = '',
@@ -28,9 +57,15 @@ export class InspireButton extends Button {
 
 		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)
 	}
+
+	makeHintable(): Button {
+		const s = getHint(this, 'Inspire')
+
+		return super.makeHintable(s)
+	}
 }
 
-export class NourishButton extends Button {
+export class NourishButton extends KeywordButton {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
 		text: string = '',
@@ -53,5 +88,11 @@ export class NourishButton extends Button {
 		})
 
 		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)
+	}
+
+	makeHintable(): Button {
+		const s = getHint(this, 'Nourish')
+
+		return super.makeHintable(s)
 	}
 }

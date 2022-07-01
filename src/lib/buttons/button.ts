@@ -350,4 +350,18 @@ export default class Button {
 
 		return this
 	}
+
+	// Enable a hint to show when this button is hovered
+	makeHintable(s?): Button {
+		if (s !== undefined) {
+			this.setOnHover(() => {
+				this.scene['hint'].showText(s)
+			},
+			() => {
+				this.scene['hint'].hide()
+			})
+		}
+		
+		return this
+	}
 }

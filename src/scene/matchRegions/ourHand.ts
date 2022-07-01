@@ -1,5 +1,4 @@
 import "phaser"
-import { keywords } from "../../catalog/keywords"
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import { CardImage } from '../../lib/cardImage'
@@ -164,40 +163,12 @@ export default class OurHandRegion extends Region {
 		this.btnInspire = new Buttons.Keywords.Inspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
-		this.btnInspire.setOnHover(...this.onHoverStatus('Inspired', this.btnInspire))
 
 		// Nourish
 		y += Space.avatarSize/2
 		this.btnNourish = new Buttons.Keywords.Nourish(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
-		this.btnNourish.setOnHover(...this.onHoverStatus('Nourish', this.btnNourish))
-	}
-
-	private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
-		let that = this
-		let keyword = keywords.find((value) => {
-			return value.key === status
-		})
-
-		let onHover = () => {
-			let s = keyword.text
-
-			// Remove the first X (In image data)
-			s = s.replace(' X', '')
-
-			// Get the value from the given status button
-			s = s.split(/\bX\b/).join(btn.getText())
-
-			// Hint shows status text
-			that.scene.hint.showText(s)
-		}
-
-		let onExit = () => {
-			that.scene.hint.hide()
-		}
-
-		return [onHover, onExit]
 	}
 
 	// Animate us getting or losing priority
