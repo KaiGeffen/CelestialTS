@@ -4,7 +4,7 @@ import { Style, Color, Space, UserSettings, UserProgress, Url, Mobile } from "..
 import { allCards } from "../catalog/catalog"
 import { keywords } from '../catalog/keywords'
 import Server from "../server"
-
+import avatarsNames from '../lib/avatarNames'
 
 
 const SOUNDS = [
@@ -219,17 +219,15 @@ export default class PreloadClass extends Phaser.Scene {
 
 	// Loads all avatar images
 	private loadAvatars(): void {
-		let avatarsNames = [
-			'Jules', 'JulesFull',
-			'Adonis', 'AdonisFull',
-			'Mia', 'MiaFull',
-			'Kitz', 'KitzFull',
-			'Imani', 'ImaniFull',
-			'Mona', 'MonaFull',
-		]
+		avatarsNames.forEach( (name) => {
+			// Load the full sized image
+			this.load.image(`avatar-${name}Full`, `avatars/${name}Full.png`)
 
-		avatarsNames.forEach( (s) => {
-			this.load.image(`avatar-${s}`, `avatars/${s}.png`)
+			// Load the spritesheet with basic + emotes
+			this.load.spritesheet(`avatar-${name}`, `avatars/${name}.png`, {
+				frameWidth: 130,
+				frameHeight: 130,
+			})
 		})
 	}
 

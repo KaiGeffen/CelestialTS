@@ -2,7 +2,7 @@ import 'phaser'
 import Button from './button'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
-import { Color } from '../../settings/settings'
+import { Color, Time } from '../../settings/settings'
 
 
 // Used when selected an avatar, when editing an avatar, and in a match
@@ -74,6 +74,19 @@ export default class AvatarButton extends Button {
 
 		this.selected = true
 		
+		return this
+	}
+
+	// Set it so the avatar emotes briefly when clicked
+	setEmotive(): Button {
+		this.setOnClick(() => {
+			this.icon.setFrame(1)
+
+			setTimeout(() => {
+				this.icon.setFrame(0)
+			}, Time.emote)
+		})
+
 		return this
 	}
 }

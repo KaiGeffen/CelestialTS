@@ -236,7 +236,7 @@ export default class Animator {
 		let end = this.getEnd(animation, state, owner)
 
 		let permanentCard = this.getCard(animation, owner)
-		this.animateCard(card, end, iAnimation, permanentCard)
+		this.animateCard(card, end, iAnimation, permanentCard, 'play')
 	}
 
 	// Animate the given player's deck shuffling

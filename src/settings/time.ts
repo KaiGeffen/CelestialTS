@@ -34,4 +34,7 @@ export class Time {
   static builderSlide(): number {
     return 300
   }
+
+  // How long the avatar emote lasts
+  static emote = 1000
 }

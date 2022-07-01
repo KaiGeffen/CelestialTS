@@ -149,7 +149,9 @@ export default class OurHandRegion extends Region {
 
 	private createAvatar(avatarId: number): Button {
 		let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
-		btn.setOrigin(0)
+		.setOrigin(0)
+
+		btn['setEmotive']()
 		
 		return btn
 	}
