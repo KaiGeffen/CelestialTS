@@ -77,12 +77,17 @@ export default class AvatarButton extends Button {
 		return this
 	}
 
+	timeout: NodeJS.Timeout
 	// Set it so the avatar emotes briefly when clicked
 	setEmotive(): Button {
 		this.setOnClick(() => {
+			// Stop the timeout if it exists
+			clearTimeout(this.timeout)
+			
 			this.icon.setFrame(1)
 
-			setTimeout(() => {
+			// Keep track of this timeout
+			this.timeout = setTimeout(() => {
 				this.icon.setFrame(0)
 			}, Time.emote)
 		})
