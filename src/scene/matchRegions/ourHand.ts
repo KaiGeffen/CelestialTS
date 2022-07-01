@@ -22,6 +22,7 @@ export default class OurHandRegion extends Region {
 
 	btnInspire: Button
 	btnNourish: Button
+	btnSight: Button
 
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
@@ -140,8 +141,14 @@ export default class OurHandRegion extends Region {
 	private createAvatar(avatarId: number): Button {
 		let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
 		.setOrigin(0)
+		['setEmotive']()
 
-		btn['setEmotive']()
+		// Sight
+		this.btnSight = new Buttons.Keywords.Sight(this.container,
+			btn.icon.x + Space.avatarSize/2,
+			btn.icon.y + Space.avatarSize)
+		.setOrigin(0.5, 1)
+		.setVisible(false)
 		
 		return btn
 	}
@@ -270,5 +277,8 @@ export default class OurHandRegion extends Region {
 
 		this.btnNourish.setVisible(amtNourish !== 0)
 		.setText(`${amtNourish}`)
+
+		this.btnSight.setVisible(state.vision !== 0)
+		.setText(`${state.vision}`)
 	}
 }

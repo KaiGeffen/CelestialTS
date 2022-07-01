@@ -150,7 +150,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Wins',
 			'Divide',
 			'Deck', 'Discard',
-			'Nourish', 'Inspire',
+			'Nourish', 'Inspire', 'Sight',
 			'Button',
 			'Pass',
 			'Options', 'X', 'SmallX',

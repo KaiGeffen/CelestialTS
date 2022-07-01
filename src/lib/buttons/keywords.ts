@@ -96,3 +96,34 @@ export class NourishButton extends KeywordButton {
 		return super.makeHintable(s)
 	}
 }
+
+export class SightButton extends KeywordButton {
+	constructor(within: Phaser.GameObjects.Container,
+		x: number, y: number,
+		text: string = '',
+		f: () => void = function() {})
+	{
+		super(within, x, y, 
+		{
+			text: {
+				text: text,
+				interactive: false,
+				style: Style.basic,
+				offsetX: 11,
+			},
+			icon: {
+				name: `Sight`,
+				interactive: true,
+			},
+			callbacks: {
+				click: f,
+			}
+		})
+	}
+
+	makeHintable(): Button {
+		const s = `${getHint(this, 'Sight')}\nYour opponent doesn't know this.`
+
+		return super.makeHintable(s)
+	}
+}
