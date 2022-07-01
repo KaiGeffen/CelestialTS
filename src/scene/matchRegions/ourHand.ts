@@ -17,8 +17,8 @@ export default class OurHandRegion extends Region {
 	// Effect showing that we have priority
 	priorityHighlight: Phaser.GameObjects.Video
 
-	txtDeckCount: Phaser.GameObjects.Text
-	txtDiscardCount: Phaser.GameObjects.Text
+	btnDeck: Button
+	btnDiscard: Button
 
 	btnInspire: Button
 	btnNourish: Button
@@ -56,22 +56,13 @@ export default class OurHandRegion extends Region {
 		// Deck and discard pile totals
 		// TODO Font size as a part of a style
 		const x = Space.windowWidth - 294
-		this.txtDeckCount = scene.add.text(x, 15, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		this.txtDiscardCount = scene.add.text(x, 82, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		this.btnDeck = new Buttons.Stack.Deck(this.container, x, Space.handHeight * 1/4)
+		this.btnDiscard = new Buttons.Stack.Discard(this.container, x, Space.handHeight * 3/4)
 
+		// Chrome border for avatar
 		let avatarBorder = scene.add.image(0, -12, 'icon-BottomAvatar')
 		.setOrigin(0)
-
-		// Add each of these objects to container
-		this.container.add([
-			avatarBorder,
-			// divide,
-			this.txtDeckCount,
-			// iconDeck,
-			this.txtDiscardCount,
-			// iconDiscard,
-			
-			])
+		this.container.add(avatarBorder)
 
 		return this
 	}
@@ -123,8 +114,8 @@ export default class OurHandRegion extends Region {
 		}
 
 		// Pile sizes
-		this.txtDeckCount.setText(`${state.deck.length}`)
-		this.txtDiscardCount.setText(`${state.discard[0].length}`)
+		this.btnDeck.setText(`${state.deck.length}`)
+		this.btnDiscard.setText(`${state.discard[0].length}`)
 	}
 
 	// Hide the cards in our hand, used when mulligan is visible
