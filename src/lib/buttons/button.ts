@@ -104,12 +104,9 @@ export default class Button {
 			// Set interactive
 			if (config.icon.interactive) {
 				this.icon.setInteractive()
-
-				if (config.callbacks) {
-					this.icon.on('pointerdown', () => {that.onClick()})
-					this.icon.on('pointerover', () => {that.onHover()})
-					this.icon.on('pointerout', () => {that.onExit()})
-				}
+				.on('pointerdown', () => {that.onClick()})
+				.on('pointerover', () => {that.onHover()})
+				.on('pointerout', () => {that.onExit()})
 			}
 		}
 
@@ -126,12 +123,9 @@ export default class Button {
 				this.txt.setInteractive(...config.text.hitArea)
 				.on('pointerover', () => this.txt.setTint(Color.buttonHighlight), this)
 				.on('pointerout', () => this.txt.clearTint(), this)
-
-				if (config.callbacks) {
-					this.txt.on('pointerdown', () => {that.onClick()})
-					this.txt.on('pointerover', () => {that.onHover()})
-					this.txt.on('pointerout', () => {that.onExit()})
-				}
+				.on('pointerdown', () => {that.onClick()})
+				.on('pointerover', () => {that.onHover()})
+				.on('pointerout', () => {that.onExit()})
 			}
 		}
 
@@ -352,7 +346,7 @@ export default class Button {
 	}
 
 	// Enable a hint to show when this button is hovered
-	makeHintable(s?): Button {
+	makeHintable(s?: string): Button {
 		if (s !== undefined) {
 			this.setOnHover(() => {
 				this.scene['hint'].showText(s)

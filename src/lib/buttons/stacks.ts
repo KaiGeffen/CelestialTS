@@ -23,6 +23,15 @@ export class DeckButton extends Button {
 			},
 		})
 	}
+
+	setText(s: string): Button {
+		let result = super.setText(s)
+
+		const hint = `You have ${s} cards in your deck.\nClick to see them all (unordered).`
+		this.makeHintable(hint)
+
+		return result
+	}
 }
 
 
@@ -44,5 +53,14 @@ export class DiscardButton extends Button {
 				interactive: true
 			},
 		})
+	}
+
+	setText(s: string): Button {
+		let result = super.setText(s)
+
+		const hint = `You have ${s} cards in your discard pile.\nClick to see them all.`
+		this.makeHintable(hint)
+
+		return result
 	}
 }

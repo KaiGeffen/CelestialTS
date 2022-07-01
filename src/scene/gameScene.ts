@@ -96,6 +96,14 @@ class GameScene extends BaseScene {
 			that.view.ourScore.displayCost(cost)
 		})
 
+		// TODO This all has a bad smell
+		view.ourHand.btnDeck.setOnClick(() => {
+			that.view.ourDeckOverlay.show()
+		})
+		view.ourHand.btnDiscard.setOnClick(() => {
+			that.view.ourDiscardOverlay.show()
+		})
+
 		// Buttons TODO Rework these
 		// view.ourButtons.setRecapCallback(() => {
 		// 	that.recapPlaying = true
