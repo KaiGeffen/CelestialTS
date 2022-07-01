@@ -164,6 +164,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Bottom', 'BottomAvatar',
 			'Top',
 			'BreathBasic', 'BreathSpent', 'BreathExtra', 'BreathHover', 'BreathOom', 
+			'Arrow',
 		]
 
 		iconNames.forEach( (s) => {

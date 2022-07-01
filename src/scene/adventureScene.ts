@@ -186,26 +186,27 @@ export default class AdventureScene extends BaseScene {
 		let that = this
 
 		const mag = 25
+		const pad = 60
 
 		// Details for each arrow (North, East, South, West)
 		const arrows = [
 			{
 				x: Space.windowWidth/2,
-				y: Space.pad,
+				y: pad,
 				direction: [0, -mag]
 			},
 			{
-				x: Space.windowWidth - Space.pad,
+				x: Space.windowWidth - pad,
 				y: Space.windowHeight/2,
 				direction: [mag, 0]
 			},
 			{
 				x: Space.windowWidth/2,
-				y: Space.windowHeight - Space.pad,
+				y: Space.windowHeight - pad,
 				direction: [0, mag]
 			},
 			{
-				x: Space.pad,
+				x: pad,
 				y: Space.windowHeight/2,
 				direction: [-mag, 0]
 			},
@@ -214,7 +215,7 @@ export default class AdventureScene extends BaseScene {
 		for (let i = 0; i < arrows.length; i++) {
 			const arrow = arrows[i]
 
-			new Icons.X(this, arrow.x, arrow.y)
+			let icon = new Icons.Arrow(this, arrow.x, arrow.y, i)
 			.setDepth(10)
 			.setNoScroll()
 			.setOnClick(() => {

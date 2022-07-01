@@ -81,6 +81,27 @@ class Share extends Button {
 	}
 }
 
+class Arrow extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		theta: number, // In 90 degree increments from north
+		f: () => void = function() {})
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Arrow',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+
+		this.icon.setRotation(theta * Math.PI/2)
+	}
+}
+
 // TODO Not really an icon, move somewhere else?
 class Pass extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
@@ -127,5 +148,6 @@ export default class Icons {
 	static X = X
 	static SmallX = SmallX
 	static Share = Share
+	static Arrow = Arrow
 	static Pass = Pass
 }
