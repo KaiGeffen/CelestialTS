@@ -98,10 +98,21 @@ class GameScene extends BaseScene {
 
 		// TODO This all has a bad smell
 		view.ourHand.btnDeck.setOnClick(() => {
+			that.hint.hide()
 			that.view.ourDeckOverlay.show()
 		})
 		view.ourHand.btnDiscard.setOnClick(() => {
+			that.hint.hide()
 			that.view.ourDiscardOverlay.show()
+		})
+
+		view.theirHand.btnDeck.setOnClick(() => {
+			that.hint.hide()
+			that.view.theirDeckOverlay.show()
+		})
+		view.theirHand.btnDiscard.setOnClick(() => {
+			that.hint.hide()
+			that.view.theirDiscardOverlay.show()
 		})
 
 		// Buttons TODO Rework these

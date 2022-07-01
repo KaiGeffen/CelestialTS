@@ -14,8 +14,8 @@ export default class TheirHandRegion extends Region {
 	// Effect showing that they have priority
 	priorityHighlight: Phaser.GameObjects.Video
 
-	txtDeckCount: Phaser.GameObjects.Text
-	txtDiscardCount: Phaser.GameObjects.Text
+	btnDeck: Button
+	btnDiscard: Button
 
 	btnInspire: Button
 	btnNourish: Button
@@ -41,21 +41,17 @@ export default class TheirHandRegion extends Region {
 		// Create our avatar
 		this.avatar = this.createAvatar()
 
-		// TODO Font size as a part of a style
+		// Create stack buttons
 		const x = Space.windowWidth - 300
-		this.txtDeckCount = scene.add.text(x, 23, '', Style.basic).setOrigin(0.5).setFontSize(20)
-		this.txtDiscardCount = scene.add.text(x, 91, '', Style.basic).setOrigin(0.5).setFontSize(20)
+		this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 1)
+		this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 1)
 
 		let avatarBorder = scene.add.image(0, -12 + 177 - 7, 'icon-BottomAvatar')
 		.setOrigin(0)
 		.setScale(1, -1)
 
 		// Add each of these objects to container
-		this.container.add([
-			avatarBorder,
-			this.txtDeckCount,
-			this.txtDiscardCount,
-			])
+		this.container.add(avatarBorder)
 
 		return this
 	}
@@ -78,8 +74,8 @@ export default class TheirHandRegion extends Region {
 		}
 
 		// Pile sizes
-		this.txtDeckCount.setText(`${state.opponentDeckSize}`)
-		this.txtDiscardCount.setText(`${state.discard[1].length}`)
+		this.btnDeck.setText(`${state.opponentDeckSize}`)
+		this.btnDiscard.setText(`${state.discard[1].length}`)
 	}
 
 	private createBackground(): void {

@@ -2,7 +2,7 @@
 export const Depth: Record<string, number> = {
 	// ourButtons: 2,
 	theirHand: 1,
-	pileOverlays: 0.5,
+	pileOverlays: 8,
 	ourHand: 1,
 	results: 10,
 	ourScore: 3,

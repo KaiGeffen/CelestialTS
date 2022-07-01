@@ -16,7 +16,7 @@ export default class Buttons {
 	static Decklist = DecklistButton
 	static Premade = PremadeButton
 	static Text = TextButton
-	static Stack = {
+	static Stacks = {
 		Deck: DeckButton,
 		Discard: DiscardButton,
 	}

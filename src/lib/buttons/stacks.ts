@@ -5,10 +5,13 @@ import { Color } from '../../settings/settings'
 
 
 export class DeckButton extends Button {
+	owner: number
+
 	constructor(
 		within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number,
 		y: number,
+		owner: number,
 		)
 	{
 		super(within, x, y, 
@@ -22,12 +25,20 @@ export class DeckButton extends Button {
 				interactive: true
 			},
 		})
+
+		this.owner = owner
 	}
 
 	setText(s: string): Button {
 		let result = super.setText(s)
 
-		const hint = `You have ${s} cards in your deck.\nClick to see them all (unordered).`
+		let hint
+		if (this.owner === 0) {
+			hint = `You have ${s} cards in your deck.\nClick to see them all (unordered).`
+		}
+		else {
+			hint = `They have ${s} cards in their deck.\nClick to see their last shuffle.`
+		}
 		this.makeHintable(hint)
 
 		return result
@@ -36,10 +47,13 @@ export class DeckButton extends Button {
 
 
 export class DiscardButton extends Button {
+	owner: number
+
 	constructor(
 		within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number,
 		y: number,
+		owner: number,
 		)
 	{
 		super(within, x, y, 
@@ -53,12 +67,20 @@ export class DiscardButton extends Button {
 				interactive: true
 			},
 		})
+
+		this.owner = owner
 	}
 
 	setText(s: string): Button {
 		let result = super.setText(s)
 
-		const hint = `You have ${s} cards in your discard pile.\nClick to see them all.`
+		let hint
+		if (this.owner === 0) {
+			hint = `You have ${s} cards in your discard pile.\nClick to see them all.`
+		}
+		else {
+			hint = `They have ${s} cards in their discard pile.\nClick to see them all.`
+		}
 		this.makeHintable(hint)
 
 		return result

@@ -57,8 +57,8 @@ export default class OurHandRegion extends Region {
 		// Deck and discard pile totals
 		// TODO Font size as a part of a style
 		const x = Space.windowWidth - 294
-		this.btnDeck = new Buttons.Stack.Deck(this.container, x, Space.handHeight * 1/4)
-		this.btnDiscard = new Buttons.Stack.Discard(this.container, x, Space.handHeight * 3/4)
+		this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 0)
+		this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 0)
 
 		// Chrome border for avatar
 		let avatarBorder = scene.add.image(0, -12, 'icon-BottomAvatar')
