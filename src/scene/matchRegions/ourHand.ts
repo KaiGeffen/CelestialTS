@@ -70,6 +70,10 @@ export default class OurHandRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
+		// Pile sizes
+		this.btnDeck.setText(`${state.deck.length}`)
+		this.btnDiscard.setText(`${state.discard[0].length}`)
+
 		// Until we have mulliganed, hide the cards in our hand
 		if (!state.mulligansComplete[0]) {
 			this.hideHand()
@@ -112,10 +116,6 @@ export default class OurHandRegion extends Region {
 			this.cards.push(card)
 			this.temp.push(card)
 		}
-
-		// Pile sizes
-		this.btnDeck.setText(`${state.deck.length}`)
-		this.btnDiscard.setText(`${state.discard[0].length}`)
 	}
 
 	// Hide the cards in our hand, used when mulligan is visible
