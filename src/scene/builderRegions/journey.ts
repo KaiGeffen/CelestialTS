@@ -103,6 +103,7 @@ export default class DeckRegion {
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize)
 		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules') // TODO
+		this.avatar['setEmotive']()
 		sizer.add(containerAvatar)
 
 		return sizer
