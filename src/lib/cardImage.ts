@@ -130,7 +130,21 @@ export class CardImage {
     this.image.on('pointerover', fHover)
     this.image.on('pointerout', () => {
       const pointer = that.scene.input.activePointer
-      if (!that.image.getBounds().contains(pointer.x, pointer.y)) {
+
+      // Check if any of the internal elements are highlighted (Keywords, references, etc)
+      let overInternal = false;
+      [
+      this.txtCost, this.txtPoints,
+      ...this.keywords,
+      ...this.references,
+      ].forEach(obj => {
+        if (obj.getBounds().contains(pointer.x, pointer.y)) {
+          console.log(obj)
+          overInternal = true
+        }
+      })
+
+      if (!overInternal) {
         fExit()
       }
     })
