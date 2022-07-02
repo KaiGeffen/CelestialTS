@@ -18,7 +18,9 @@ export class DeckButton extends Button {
 		{
 			text: {
 				text: '',
-				interactive: false
+				interactive: false,
+				offset: 5,
+				offsetX: 3,
 			},
 			icon: {
 				name: 'Deck',
