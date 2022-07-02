@@ -259,7 +259,7 @@
     "text": "Set both player's points to 0, then give your opponent 1 point for each card in their hand.",
     "story": "All tied up\ncan’t even stand\nAm I lethal to you and yours\nMy tight bonds calm me."
   },
-  {"name": "Sprout from Ashes", "id": 74,
+  {"name": "From Ashes", "id": 74,
     "cost": 2, "points": 1,
     "text": "Remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
     "story": "Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning",
