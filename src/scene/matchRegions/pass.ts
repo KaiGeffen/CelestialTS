@@ -137,9 +137,10 @@ export default class PassRegion extends Region {
 		this.btnPass.setOnClick(() => {that.callback()}, true)
 
 		// Recap button
-		this.btnRecap = new Icons.Recap(this.container,
-			this.background.x + 100,
-			this.background.y - 100)
+		this.btnRecap = new Icons.Recap(this.scene,
+			Space.windowWidth - Space.pad - 16,
+			Space.pad * 2 + 32 + 16) // TODO Icons have height 32
+		.setDepth(100)
 
 		this.btnRecap.setOnClick(() => {that.recapCallback()})
 	}
