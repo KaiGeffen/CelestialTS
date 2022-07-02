@@ -80,6 +80,16 @@ export default class Card {
     return hintText
   }
 
+  getReferencedCards(): string {
+    let result = ''
+    
+    this.references.forEach(reference => {
+      result += ` [img=${reference.name}]`
+    })
+
+    return result
+  }
+
   // Get the text for this card, including formatting
   getCardText(): string {
     if (this === cardback) {

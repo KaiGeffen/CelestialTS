@@ -228,7 +228,8 @@ export const BBStyle: Record<string, any> = {
       right: Space.padSmall,
       top: Space.padSmall,
       bottom: Space.padSmall
-    }
+    },
+    // lineSpacing: Space.cardHeight - Space.pad,
   },
   // Error text that appears in the center of the screen
   error: {

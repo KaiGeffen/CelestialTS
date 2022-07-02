@@ -44,7 +44,7 @@ export var Space = {
   handHeight: 160,
   // Standard corner width for rounded rectangles
   corner: 10,
-  maxTextWidth: 400,
+  maxTextWidth: 500, // Note must be more than twice cardWidth for hints
 
   filterBarHeight: 70,
 

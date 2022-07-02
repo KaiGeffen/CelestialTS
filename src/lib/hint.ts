@@ -67,12 +67,21 @@ export default class Hint {
 			this.showText(hintText)
 
 			// NOTE This is a hack because of a bug where card image renders with a single line's height
-			this.txt.setText(`[img=${card.name}]\n\n\n\n\n\n\n\n\n\n\n\n\n${hintText}`)
+			this.txt
+			.setText(`[img=${card.name}]`)
+			.appendText(`[color=grey][${card.getReferencedCards()}[/color]`)
+			.appendText('\n\n\n\n\n\n\n\n\n\n\n\n')
+			.appendText(`\n${hintText}`)
 			.setFixedSize(Space.maxTextWidth + Space.pad, 0)
 		}
 		else {
+			const width = card.getReferencedCards() === '' ? Space.cardWidth + Space.pad : Space.maxTextWidth + Space.pad
 			this.txt.setText(`[img=${card.name}]`)
-			.setFixedSize(Space.cardWidth + Space.pad, Space.cardHeight + Space.pad)
+			.appendText(`${card.getReferencedCards()}`)
+			.setFixedSize(
+				width,
+				Space.cardHeight + Space.pad
+				)
 		}
 
 		return this
