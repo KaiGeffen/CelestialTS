@@ -10,6 +10,7 @@ import ClientState from '../../lib/clientState'
 // import { Animation, Zone } from '../../lib/animation'
 import BaseScene from '../baseScene'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import avatarNames from '../../lib/avatarNames'
 
 
 export default class ResultsRegion extends Region {
@@ -75,10 +76,9 @@ export default class ResultsRegion extends Region {
 		}
 
 		// Avatars
-		//TODO
 		// Results TODO
-		const av1 = 'Jules'
-		const av2 = 'Mia'
+		const av1 = avatarNames[state.avatars[0]]
+		const av2 = avatarNames[state.avatars[1]]
 		this.ourAvatar.setTexture(`avatar-${av1}Full`)
 		this.theirAvatar.setTexture(`avatar-${av2}Full`)
 

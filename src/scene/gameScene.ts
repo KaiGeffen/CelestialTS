@@ -47,7 +47,7 @@ class GameScene extends BaseScene {
 		}
 
 		// Connect with the server
-		this.net = new Network(params.deck, this, mmCode)
+		this.net = new Network(params.deck, this, mmCode, params.avatar)
 
 		// Create the view
 		this.view = new View(this, this.params.avatar || 0)

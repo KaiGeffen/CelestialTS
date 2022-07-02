@@ -59,7 +59,8 @@ export default class TheirHandRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
-		let that = this
+		// Avatar
+		this.avatar.setQuality(state.avatars[1])
 
 		// Statuses
 		this.displayStatuses(state)

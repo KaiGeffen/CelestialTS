@@ -28,6 +28,7 @@ export default class ClientState {
 	cardsPlayable: boolean[]
 	vision: number
 	winner: number
+	avatars: [number, number]
 
 
 	// Score is only for viewing the recap of states between each act in story
@@ -68,6 +69,7 @@ export default class ClientState {
 		this.soundEffect = state.sound_effect
 		this.animations = state.animations.map(l => decodeAnimationList(l))
 		this.costs = state.costs
+		this.avatars = state.avatars
 	}
 
 	// Get if this state is the start of a round
