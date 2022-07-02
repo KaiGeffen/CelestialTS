@@ -81,6 +81,25 @@ class Share extends Button {
 	}
 }
 
+class Recap extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Recap',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}
+
 class Arrow extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -152,6 +171,7 @@ export default class Icons {
 	static X = X
 	static SmallX = SmallX
 	static Share = Share
+	static Recap = Recap
 	static Arrow = Arrow
 	static Pass = Pass
 }

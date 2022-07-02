@@ -160,6 +160,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Winner', 'Loser', 'ResultStats',
 			'Share',
 			'Edit',
+			'Recap',
 			// Bottom of the screen during match scene
 			'Bottom', 'BottomAvatar',
 			'Top',

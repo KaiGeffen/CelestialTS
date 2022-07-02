@@ -12,10 +12,13 @@ import Region from './baseRegion';
 export default class PassRegion extends Region {
 	background: RoundRectangle
 	callback: () => void
+	recapCallback: () => void
+	
 	// The callback once the winner has been declared
 	showResultsCallback: () => void
 
 	btnPass: Button
+	btnRecap: Button
 
 	txtYouPassed: Phaser.GameObjects.Text
 	txtTheyPassed: Phaser.GameObjects.Text
@@ -28,8 +31,8 @@ export default class PassRegion extends Region {
 		this.background = this.createBackground()
 		this.container.add(this.background)
 
-		// Pass button
-		this.btnPass = this.createButton()
+		// Pass and recap button
+		this.createButtons()
 
 		// Text for who has passed
 		this.createText()
@@ -123,17 +126,22 @@ export default class PassRegion extends Region {
 		return background
 	}
 
-	private createButton(): Button {
+	private createButtons(): void {
 		let that = this
 
-		let btn = new Icons.Pass(this.container,
+		this.btnPass = new Icons.Pass(this.container,
 			this.background.x,
 			this.background.y)
 		
 		// Set on click to be the callback, but only once
-		btn.setOnClick(() => {that.callback()}, true)
+		this.btnPass.setOnClick(() => {that.callback()}, true)
 
-		return btn
+		// Recap button
+		this.btnRecap = new Icons.Recap(this.container,
+			this.background.x + 100,
+			this.background.y - 100)
+
+		this.btnRecap.setOnClick(() => {that.recapCallback()})
 	}
 
 	private createText(): void {

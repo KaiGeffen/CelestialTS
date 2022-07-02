@@ -167,6 +167,11 @@ class GameScene extends BaseScene {
 		view.pass.setShowResultsCallback(() => {
 			that.view.results.show()
 		})
+		view.pass.recapCallback = () => {
+			that.recapPlaying = true
+			that.queuedRecap = [...that.lastRecap]
+			that.queueState(that.currentState)
+		}
 
 		// Piles (Show overlay when clicked)
 		view.decks.setCallback(() => {
