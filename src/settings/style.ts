@@ -76,7 +76,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '14px',
     color: '#FFC0CB00',
   },
-  
+
   basic: {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,
@@ -206,7 +206,13 @@ export const BBStyle: Record<string, any> = {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
-    wordWrap: { width: Space.maxTextWidth }
+    wordWrap: { width: Space.maxTextWidth },
+    underline: {
+      color: Color.basicText,
+      thickness: 3,
+      offset: 7,
+    },
+    halign: 'center',
   },
   // Hint text shown when something onscreen is hovered
   hint: {
@@ -229,8 +235,7 @@ export const BBStyle: Record<string, any> = {
       bottom: Space.padSmall
     },
     // lineSpacing: Space.cardHeight - Space.pad,
-  },
-  // Error text that appears in the center of the screen
+  },  // Error text that appears in the center of the screen
   error: {
     fontFamily: fontFamily,
     fontSize: FontSettings.huge.size,

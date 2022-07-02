@@ -103,6 +103,9 @@ export const Color: Record<string, any> = {
 
   avatar: CoreColors.goldenS,
 
+  // Color of the text for results (End screen) of rounds you won
+  resultsWin: CoreColors.goldenS,
+
 
 
   // Menu components

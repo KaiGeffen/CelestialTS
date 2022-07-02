@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Style, Depth } from '../../settings/settings'
+import { Space, Color, Style, BBStyle, Depth } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
 // import { CardImage } from '../../lib/cardImage'
 // import { cardback } from '../../catalog/catalog'
@@ -114,7 +114,9 @@ export default class ResultsRegion extends Region {
 		// Your avatar
 		// TODO 360
 		let ourAvatar = this.scene.add.image(Space.windowWidth/2 - 300, Space.windowHeight/2, 'avatar-JulesFull')
+		.setInteractive()
 		let theirAvatar = this.scene.add.image(Space.windowWidth/2 + 300, Space.windowHeight/2, 'avatar-MiaFull')
+		.setInteractive()
 
 		this.container.add([
 			this.txtResult,
@@ -174,7 +176,7 @@ export default class ResultsRegion extends Region {
 	private createHeader(): ContainerLite {
 		let container = new ContainerLite(this.scene, 0, 0, 300, 50)
 
-		let txt = this.scene.add.text(0, 0, 'Results:', Style.header).setOrigin(0.5)
+		let txt = this.scene.add['rexBBCodeText'](0, 0, '[size=30][u]Results:[/u][/size]', BBStyle.basic).setOrigin(0.5)
 
 		container.add(txt)
 
@@ -183,51 +185,51 @@ export default class ResultsRegion extends Region {
 
 	private createPanel() {
 		let panel = this.scene['rexUI'].add.fixWidthSizer({
+			align: 'center',
 			space: {
 				left: Space.pad,
 				right: Space.pad,
-				top: Space.pad,
 				bottom: Space.pad,
 			}
 		})
 
 		const s = `Round 1
-0 - 1
+0 - [color=${Color.resultsWin}]1[/color]
 
 Round 2
 2 - 2
 
 Round 3
-4 - 5
+4 - [color=${Color.resultsWin}]5[/color]
 
 Round 4
 0 - 0
 
 Round 5
-2 - 7
+2 - [color=${Color.resultsWin}]7[/color]
 
 Round 6
-3 - 4
+3 - [color=${Color.resultsWin}]4[/color]
 
 Round 1
-0 - 1
+0 - [color=${Color.resultsWin}]1[/color]
 
 Round 2
 2 - 2
 
 Round 3
-4 - 5
+4 - [color=${Color.resultsWin}]5[/color]
 
 Round 4
 0 - 0
 
 Round 5
-2 - 7
+2 - [color=${Color.resultsWin}]7[/color]
 
 Round 6
 3 - 4`
 
-		this.txtRoundResults = this.scene.add.text(0, 0, s, Style.basic)
+		this.txtRoundResults = this.scene.add['rexBBCodeText'](0, 0, s, BBStyle.basic)
 		panel.add(this.txtRoundResults)
 
 		return panel
