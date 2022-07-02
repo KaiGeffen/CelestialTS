@@ -127,6 +127,7 @@ export default class OurHandRegion extends Region {
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
 		let renderedBackground = scene.add.image(Space.windowWidth, -50, 'icon-Bottom')
 		.setOrigin(1, 0)
+		.setInteractive()
 
 		return renderedBackground
 	}

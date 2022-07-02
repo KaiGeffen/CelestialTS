@@ -80,9 +80,9 @@ export class TheirDeckOverlay extends OverlayRegion {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
-		const total = state.lastShuffle[1].length
+		const total = state.lastShuffle.length
 		for (let i = 0; i < total; i++) {
-			this.addOverlayCard(state.lastShuffle[1][i], i, total)
+			this.addOverlayCard(state.lastShuffle[i], i, total)
 		}
 
 		this.txtTitle.setVisible(total <= 15)

@@ -139,7 +139,6 @@ export class CardImage {
       ...this.references,
       ].forEach(obj => {
         if (obj.getBounds().contains(pointer.x, pointer.y)) {
-          console.log(obj)
           overInternal = true
         }
       })

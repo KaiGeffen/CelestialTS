@@ -81,6 +81,7 @@ export default class TheirHandRegion extends Region {
 	private createBackground(): void {
 		let background = this.scene.add.image(Space.windowWidth, 0, 'icon-Top')
 		.setOrigin(1, 0)
+		.setInteractive()
 
 		this.container.add(background)
 	}
