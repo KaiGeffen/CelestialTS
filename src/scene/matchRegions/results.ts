@@ -16,8 +16,15 @@ export default class ResultsRegion extends Region {
 	// Whether the results have been seen already
 	seen: boolean
 
+	// Text saying if you won or lost
 	txtResult: Phaser.GameObjects.Text
+
+	// Longer text describing how each round went
 	txtRoundResults: Phaser.GameObjects.Text
+
+	// Avatar images for both players
+	ourAvatar: Phaser.GameObjects.Image
+	theirAvatar: Phaser.GameObjects.Image
 
 	// The panel that shows results of the match
 	panel
@@ -67,6 +74,14 @@ export default class ResultsRegion extends Region {
 			return
 		}
 
+		// Avatars
+		//TODO
+		// Results TODO
+		const av1 = 'Jules'
+		const av2 = 'Mia'
+		this.ourAvatar.setTexture(`avatar-${av1}Full`)
+		this.theirAvatar.setTexture(`avatar-${av2}Full`)
+
 		this.show()
 		this.seen = true
 	}
@@ -113,15 +128,15 @@ export default class ResultsRegion extends Region {
 
 		// Your avatar
 		// TODO 360
-		let ourAvatar = this.scene.add.image(Space.windowWidth/2 - 300, Space.windowHeight/2, 'avatar-JulesFull')
+		this.ourAvatar = this.scene.add.image(Space.windowWidth/2 - 300, Space.windowHeight/2, 'avatar-JulesFull')
 		.setInteractive()
-		let theirAvatar = this.scene.add.image(Space.windowWidth/2 + 300, Space.windowHeight/2, 'avatar-MiaFull')
+		this.theirAvatar = this.scene.add.image(Space.windowWidth/2 + 300, Space.windowHeight/2, 'avatar-MiaFull')
 		.setInteractive()
 
 		this.container.add([
 			this.txtResult,
-			ourAvatar,
-			theirAvatar,
+			this.ourAvatar,
+			this.theirAvatar,
 			])
 	}
 
@@ -143,6 +158,9 @@ export default class ResultsRegion extends Region {
 			panel: {
 				child: panel
 			},
+			space: {
+				bottom: Space.padSmall
+			}
 			})
 		.setDepth(Depth.results)
 
@@ -189,7 +207,6 @@ export default class ResultsRegion extends Region {
 			space: {
 				left: Space.pad,
 				right: Space.pad,
-				bottom: Space.pad,
 			}
 		})
 
