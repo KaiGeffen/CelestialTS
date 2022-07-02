@@ -15,9 +15,13 @@ export default class ResultsRegion extends Region {
 	// Whether the results have been seen already
 	seen: boolean
 
-	create (scene: BaseScene): ResultsRegion {
-		let that = this
+	txtResult: Phaser.GameObjects.Text
 
+	// The panel that shows results of the match
+	panel
+
+
+	create (scene: BaseScene): ResultsRegion {
 		this.scene = scene
 		this.container = scene.add.container(0, 0).setDepth(Depth.results)
 		this.seen = false
@@ -29,11 +33,11 @@ export default class ResultsRegion extends Region {
 			)
 		.setOrigin(0)
 		.setInteractive()
-		.on('pointerdown', () => {that.container.setVisible(false)})
+		.on('pointerdown', () => {this.hide()})
 		this.container.add(background)
 
 		// Images
-		this.createImages(scene)
+		this.createContent()
 
 		// Buttons 
 		this.createButtons()
@@ -66,16 +70,24 @@ export default class ResultsRegion extends Region {
 		this.seen = true
 	}
 
+	hide(): void {
+		console.log('here')
+		this.panel.setVisible(false)
+		super.hide()
+	}
+
+	show(): void {
+		this.panel.setVisible(true)
+		super.show()
+	}
+
 	private createButtons() {
-		let that = this
-
 		// Exit
-		let x = Space.pad + Space.largeButtonWidth/2
 		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
-		new Buttons.Basic(this.container, x, y, 'Exit', this.exitCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2 + Space.pad + Space.largeButtonWidth, y, 'Exit', this.exitCallback())
 
-		// New match
-		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'New Match', this.newMatchCallback())
+		// Replay
+		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Replay', this.newMatchCallback())
 		
 		// TODO Hint
 		// let txtHint = this.scene.add.text(
@@ -88,30 +100,70 @@ export default class ResultsRegion extends Region {
 		
 
 		// Review
-		new Buttons.Basic(this.container, Space.windowWidth - x, y, 'Review', this.reviewCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2 - Space.pad - Space.largeButtonWidth, y, 'Review', this.reviewCallback())
 	}
 
-	private createImages(scene: Phaser.Scene) {
-		// Winner
-		let winner = scene.add.image(Space.windowWidth/2,
-			Space.windowHeight/2,
-			'icon-Winner'
-			).setInteractive()
-		this.container.add(winner)
+	private createContent() {
+		// Win/Lose text
+		this.txtResult = this.scene.add.text(Space.windowWidth/2, Space.pad, 'Foo', Style.announcement)
 
-		// Loser
-		let loser = scene.add.image(Space.pad,
-			Space.windowHeight/2,
-			'icon-Loser'
-			).setOrigin(0, 0.5).setInteractive()
-		this.container.add(loser)
+		// Create the panel with more details about the results
+		this.createResultsPanel()
 
-		// Stats
-		let stats = scene.add.image(Space.windowWidth - Space.pad,
-			0,
-			'icon-ResultStats'
-			).setOrigin(1, 0).setInteractive()
-		this.container.add(stats)
+		// Your avatar
+		// TODO 360
+		let ourAvatar = this.scene.add.image(Space.windowWidth/2 - 300, Space.windowHeight/2, 'avatar-JulesFull')
+		let theirAvatar = this.scene.add.image(Space.windowWidth/2 + 300, Space.windowHeight/2, 'avatar-MiaFull')
+
+		this.container.add([
+			this.txtResult,
+			ourAvatar,
+			theirAvatar,
+			])
+	}
+
+	private createResultsPanel() {
+		let background = this.createBackground()
+
+		this.panel = this.scene['rexUI'].add.scrollablePanel({
+			x: Space.windowWidth/2,
+			y: Space.windowHeight/2,
+			width: 300,
+			height: 600,
+
+			background: background,
+
+			panel: {
+				child: this.scene['rexUI'].add.fixWidthSizer({
+					space: {
+						left: Space.pad,
+						right: Space.pad,
+						top: 70 + Space.pad, // TODO 70 is the filter height
+						bottom: Space.pad - 10,
+						item: Space.pad,
+						line: Space.pad,
+					}
+				})
+			}})
+		.setDepth(Depth.results)
+
+		let foo = this.scene.add.image(0, 0, 'icon-Share')
+
+		this.panel.add(foo)
+		this.panel.layout()
+	}
+
+	private createBackground() {
+		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 50, Color.background)
+
+		// Add a border around the shape TODO Make a class for this to keep it dry
+		let postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
+		postFxPlugin['add'](background, {
+			thickness: 1,
+			outlineColor: Color.border,
+		})
+
+		return background
 	}
 
 	private exitCallback(): () => void {
