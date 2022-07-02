@@ -42,7 +42,7 @@ export default class OurHandRegion extends Region {
 
 		// Visual effect that highlights when we have priority
 		this.priorityHighlight = this.createPriorityHighlight()
-		.setVisible(false) // TODO
+		.setVisible(false)
 		this.container.add(this.priorityHighlight)
 
 		// Create the status visuals
@@ -117,6 +117,9 @@ export default class OurHandRegion extends Region {
 			this.cards.push(card)
 			this.temp.push(card)
 		}
+
+		// Show priority / not
+		this.animatePriority(state, isRecap)
 	}
 
 	// Hide the cards in our hand, used when mulligan is visible
@@ -133,10 +136,11 @@ export default class OurHandRegion extends Region {
 	}
 
 	private createPriorityHighlight(): Phaser.GameObjects.Video {
-		return this.scene.add.video(0, 0, 'priorityHighlight')
-		.setOrigin(0)
+		return this.scene.add.video(Space.windowWidth - 341,
+			-12,
+			'priorityHighlight')
+		.setOrigin(1, 0)
 		.play(true)
-		.setAlpha(0)
 	}
 
 	private createAvatar(avatarId: number): Button {
@@ -172,7 +176,7 @@ export default class OurHandRegion extends Region {
 
 	// Animate us getting or losing priority
 	private animatePriority(state: ClientState, isRecap: boolean): void {
-		const targetAlpha = state.priority === 0 && !isRecap ? 1 : 0
+		const targetAlpha = state.priority === 0 && !isRecap ? 0.4 : 0
 
 		this.scene.tweens.add({
 			targets: this.priorityHighlight,
