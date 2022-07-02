@@ -29,7 +29,8 @@ export default class ClientState {
 	vision: number
 	winner: number
 	avatars: [number, number]
-
+	roundResults: [number[], number[]]
+	
 
 	// Score is only for viewing the recap of states between each act in story
 	score: [number, number]
@@ -70,6 +71,7 @@ export default class ClientState {
 		this.animations = state.animations.map(l => decodeAnimationList(l))
 		this.costs = state.costs
 		this.avatars = state.avatars
+		this.roundResults = state.round_results
 	}
 
 	// Get if this state is the start of a round

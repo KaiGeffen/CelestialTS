@@ -76,11 +76,16 @@ export default class ResultsRegion extends Region {
 		}
 
 		// Avatars
-		// Results TODO
 		const av1 = avatarNames[state.avatars[0]]
 		const av2 = avatarNames[state.avatars[1]]
 		this.ourAvatar.setTexture(`avatar-${av1}Full`)
 		this.theirAvatar.setTexture(`avatar-${av2}Full`)
+
+		// Text saying if you won or lost
+		this.txtResult.setText(state.winner === 0 ? 'Victory' : 'Defeat')
+
+		// Text describing the results of each round
+		this.txtRoundResults.setText(this.getRoundResults(state))
 
 		this.show()
 		this.seen = true
@@ -127,7 +132,6 @@ export default class ResultsRegion extends Region {
 		this.createResultsPanel()
 
 		// Your avatar
-		// TODO 360
 		this.ourAvatar = this.scene.add.image(Space.windowWidth/2 - 300, Space.windowHeight/2, 'avatar-JulesFull')
 		.setInteractive()
 		this.theirAvatar = this.scene.add.image(Space.windowWidth/2 + 300, Space.windowHeight/2, 'avatar-MiaFull')
@@ -165,17 +169,6 @@ export default class ResultsRegion extends Region {
 		.setDepth(Depth.results)
 
 		this.updateOnScroll(panel, this.panel)
-
-
-		// // TODO Make this dynamic
-		// const s = `Hey there\nuwu`
-
-		// let foo = this.scene.add.text(400, 400, s, Style.basic)
-		// // .setDepth(100)
-
-		// this.panel.add(foo)
-		// console.log(this.panel)
-		// this.panel.layout()
 	}
 
 	private createBackground() {
@@ -210,43 +203,7 @@ export default class ResultsRegion extends Region {
 			}
 		})
 
-		const s = `Round 1
-0 - [color=${Color.resultsWin}]1[/color]
-
-Round 2
-2 - 2
-
-Round 3
-4 - [color=${Color.resultsWin}]5[/color]
-
-Round 4
-0 - 0
-
-Round 5
-2 - [color=${Color.resultsWin}]7[/color]
-
-Round 6
-3 - [color=${Color.resultsWin}]4[/color]
-
-Round 1
-0 - [color=${Color.resultsWin}]1[/color]
-
-Round 2
-2 - 2
-
-Round 3
-4 - [color=${Color.resultsWin}]5[/color]
-
-Round 4
-0 - 0
-
-Round 5
-2 - [color=${Color.resultsWin}]7[/color]
-
-Round 6
-3 - 4`
-
-		this.txtRoundResults = this.scene.add['rexBBCodeText'](0, 0, s, BBStyle.basic)
+		this.txtRoundResults = this.scene.add['rexBBCodeText'](0, 0, '', BBStyle.basic)
 		panel.add(this.txtRoundResults)
 
 		return panel
@@ -272,6 +229,33 @@ Round 6
 		return function() {
 			that.hide()
 		}
+	}
+
+	private getRoundResults(state: ClientState): string {
+		let result = ''
+
+		for (let i = 0; i < state.roundResults[0].length; i++) {
+			const round = i + 1
+			result += `Round ${round}\n`
+			
+			// Add the scores, with the higher score golden
+			const ours = state.roundResults[0][i]
+			const theirs = state.roundResults[1][i]
+			if (ours > theirs) {
+				result += `[color=${Color.resultsWin}]${ours}[/color] - ${theirs}\n\n`
+			}
+			else if (theirs > ours) {
+				result += `${ours} - [color=${Color.resultsWin}]${theirs}[/color]\n\n`
+			}
+			else {
+				result += `${ours} - ${theirs}\n\n`
+			}
+		}
+
+		// Trim the last 2 newlines from string
+		result = result.trim()
+
+		return result
 	}
 
 	// TODO Make dry with other scenes
