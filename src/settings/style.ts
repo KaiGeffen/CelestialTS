@@ -76,8 +76,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '14px',
     color: '#FFC0CB00',
   },
-
-
+  
   basic: {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,

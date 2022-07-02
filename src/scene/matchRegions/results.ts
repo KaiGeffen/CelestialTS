@@ -9,6 +9,7 @@ import Buttons from '../../lib/buttons/buttons'
 import ClientState from '../../lib/clientState'
 // import { Animation, Zone } from '../../lib/animation'
 import BaseScene from '../baseScene'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
 export default class ResultsRegion extends Region {
@@ -16,10 +17,10 @@ export default class ResultsRegion extends Region {
 	seen: boolean
 
 	txtResult: Phaser.GameObjects.Text
+	txtRoundResults: Phaser.GameObjects.Text
 
 	// The panel that shows results of the match
 	panel
-
 
 	create (scene: BaseScene): ResultsRegion {
 		this.scene = scene
@@ -71,13 +72,13 @@ export default class ResultsRegion extends Region {
 	}
 
 	hide(): void {
-		console.log('here')
 		this.panel.setVisible(false)
 		super.hide()
 	}
 
 	show(): void {
 		this.panel.setVisible(true)
+		.layout()
 		super.show()
 	}
 
@@ -105,7 +106,7 @@ export default class ResultsRegion extends Region {
 
 	private createContent() {
 		// Win/Lose text
-		this.txtResult = this.scene.add.text(Space.windowWidth/2, Space.pad, 'Foo', Style.announcement)
+		this.txtResult = this.scene.add.text(Space.windowWidth/2, Space.pad, 'Victory', Style.announcement).setOrigin(0.5, 0)
 
 		// Create the panel with more details about the results
 		this.createResultsPanel()
@@ -125,6 +126,8 @@ export default class ResultsRegion extends Region {
 	private createResultsPanel() {
 		let background = this.createBackground()
 
+		let panel = this.createPanel()
+
 		this.panel = this.scene['rexUI'].add.scrollablePanel({
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
@@ -133,24 +136,26 @@ export default class ResultsRegion extends Region {
 
 			background: background,
 
+			header: this.createHeader(),
+
 			panel: {
-				child: this.scene['rexUI'].add.fixWidthSizer({
-					space: {
-						left: Space.pad,
-						right: Space.pad,
-						top: 70 + Space.pad, // TODO 70 is the filter height
-						bottom: Space.pad - 10,
-						item: Space.pad,
-						line: Space.pad,
-					}
-				})
-			}})
+				child: panel
+			},
+			})
 		.setDepth(Depth.results)
 
-		let foo = this.scene.add.image(0, 0, 'icon-Share')
+		this.updateOnScroll(panel, this.panel)
 
-		this.panel.add(foo)
-		this.panel.layout()
+
+		// // TODO Make this dynamic
+		// const s = `Hey there\nuwu`
+
+		// let foo = this.scene.add.text(400, 400, s, Style.basic)
+		// // .setDepth(100)
+
+		// this.panel.add(foo)
+		// console.log(this.panel)
+		// this.panel.layout()
 	}
 
 	private createBackground() {
@@ -164,6 +169,68 @@ export default class ResultsRegion extends Region {
 		})
 
 		return background
+	}
+
+	private createHeader(): ContainerLite {
+		let container = new ContainerLite(this.scene, 0, 0, 300, 50)
+
+		let txt = this.scene.add.text(0, 0, 'Results:', Style.header).setOrigin(0.5)
+
+		container.add(txt)
+
+		return container
+	}
+
+	private createPanel() {
+		let panel = this.scene['rexUI'].add.fixWidthSizer({
+			space: {
+				left: Space.pad,
+				right: Space.pad,
+				top: Space.pad,
+				bottom: Space.pad,
+			}
+		})
+
+		const s = `Round 1
+0 - 1
+
+Round 2
+2 - 2
+
+Round 3
+4 - 5
+
+Round 4
+0 - 0
+
+Round 5
+2 - 7
+
+Round 6
+3 - 4
+
+Round 1
+0 - 1
+
+Round 2
+2 - 2
+
+Round 3
+4 - 5
+
+Round 4
+0 - 0
+
+Round 5
+2 - 7
+
+Round 6
+3 - 4`
+
+		this.txtRoundResults = this.scene.add.text(0, 0, s, Style.basic)
+		panel.add(this.txtRoundResults)
+
+		return panel
 	}
 
 	private exitCallback(): () => void {
@@ -186,5 +253,25 @@ export default class ResultsRegion extends Region {
 		return function() {
 			that.hide()
 		}
+	}
+
+	// TODO Make dry with other scenes
+	// Update the panel when user scrolls with their mouse wheel
+	private updateOnScroll(panel, scrollablePanel) {
+		let that = this
+
+		this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+			// Return if the pointer is outside of the panel
+			if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+				return
+			}
+
+			// Scroll panel down by amount wheel moved
+			scrollablePanel.childOY -= dy
+
+			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+			scrollablePanel.t = Math.max(0, scrollablePanel.t)
+			scrollablePanel.t = Math.min(0.999999, scrollablePanel.t)
+		})
 	}
 }
