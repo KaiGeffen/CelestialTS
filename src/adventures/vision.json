@@ -86,7 +86,7 @@
     "opponent": "3:3:3:3:3:6:12:12:14:14:17:20:20:21:21"
   },
   {
-    "name": "The Future",
+    "name": "Jackal",
     "id": 609,
     "x": 600,
     "y": 550,
@@ -95,23 +95,23 @@
     "card": 22
   },
   {
-    "name": "Vision 6 - TODO",
+    "name": "Vision 6 - Morning Light",
     "id": 610,
     "x": 600,
     "y": 600,
     "prereq": [[609]],
     "type": "mission",
-    "deck": "2:2:2:10:10:22:22",
-    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+    "deck": "50:50:50:65:34:34",
+    "opponent": "0:0:28:28:26:26:8:31:31:7:15:16:57:75:23"
   },
   {
-    "name": "Ancestry",
+    "name": "Morning Light",
     "id": 611,
     "x": 600,
     "y": 650,
     "prereq": [[610]],
     "type": "card",
-    "card": 10
+    "card": 50
   },
 
 

@@ -116,7 +116,6 @@ export class SightButton extends KeywordButton {
 				text: text,
 				interactive: false,
 				style: Style.basic,
-				offsetX: 11,
 			},
 			icon: {
 				name: `Sight`,
@@ -126,6 +125,9 @@ export class SightButton extends KeywordButton {
 				click: f,
 			}
 		})
+
+		// TODO Make Sight button look better
+		this.txt.setPosition(x + 11, y - 15)
 	}
 
 	makeHintable(): Button {
