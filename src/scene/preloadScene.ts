@@ -94,9 +94,6 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 		// TODO Move to postload
 		this.load.audio('background', 'music/background.mp3')
-		
-		// Allow for audio to be uploaded to test out different sfx
-		this.enableSFXSwapping()
 
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
