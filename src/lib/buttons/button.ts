@@ -229,6 +229,8 @@ export default class Button {
 
 	// The glow effect button has while hovered
 	glow() {
+		this.scene.sound.play('hover')
+
 		let plugin = this.scene.plugins.get('rexOutlinePipeline')
 		plugin['add'](this.icon || this.txt, {
 			thickness: 3,
