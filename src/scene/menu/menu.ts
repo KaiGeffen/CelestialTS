@@ -21,6 +21,7 @@ import { NewDeckMenu, EditDeckMenu } from "./newDeck"
 import ShareDeckMenu from "./shareDeck"
 import ModeMenu from "./mode"
 import DCMenu from './disconnect'
+import ConfirmMenu from './confirm'
 
 
 const menus = {
@@ -33,6 +34,7 @@ const menus = {
 	'mode': ModeMenu,
 	'editDeck': EditDeckMenu,
 	'disconnect': DCMenu,
+	'confirm': ConfirmMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 

@@ -333,8 +333,7 @@ export default class DecklistsRegion {
 	// Callback for deleting deck with given index
 	private deleteDeck(deckIndex: number, container: ContainerLite): () => void {
 		let that = this
-
-		return function() {
+		let callback = () => {
 			that.savedDeckIndex = undefined
 			
 			// Adjusted the saved user data
@@ -349,6 +348,14 @@ export default class DecklistsRegion {
 			// Format panel, then ensure we aren't below the panel
 			that.scrollablePanel.layout()
 			that.scrollablePanel.t = Math.min(1, that.scrollablePanel.t)
+		}
+
+		return function() {
+			that.scene.scene.launch('MenuScene', {
+				menu: 'confirm',
+				callback: callback,
+				hint: 'delete this deck'
+			})
 		}
 	}
 }
