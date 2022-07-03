@@ -368,7 +368,7 @@ export class View {
 
 		let background = scene.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
 
-		this.searching = new Regions.Searching().create(scene)
+		this.searching = new Regions.Searching().create(scene, avatarId)
 
 		// Create each of the regions
 		// this.createOurHand()

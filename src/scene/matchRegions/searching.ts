@@ -4,19 +4,30 @@ import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
+import avatarNames from '../../lib/avatarNames'
 
 
-export default class SearchingRegion extends Region {	
-	create (scene: BaseScene): Region {
+export default class SearchingRegion extends Region {
+	// Interval on which the opponent's avatar is shuffled
+	interval: NodeJS.Timeout
+
+	create (scene: BaseScene, avatarId: number): Region {
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
 		this.container.add(this.createBackground(scene))
 
 		this.container.add(this.createText(scene))
 
+		this.createAvatars(scene, avatarId)
+
 		this.addButtons(scene, this.container)
 
 		return this
+	}
+
+	hide(): void {
+		clearInterval(this.interval)
+		return super.hide()
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
@@ -31,6 +42,26 @@ export default class SearchingRegion extends Region {
 		.setOrigin(0.5)
 
 		return txt
+	}
+
+	private createAvatars(scene: Phaser.Scene, avatarId: number): void {
+		const scale = Space.windowHeight / 600
+		let avatar = scene.add.image(0, 0, `avatar-${avatarNames[avatarId]}Full`)
+		.setScale(scale)
+		.setOrigin(0)
+
+		let mysteryAvatar = scene.add.image(Space.windowWidth, 0, `avatar-${avatarNames[0]}Full`)
+		.setScale(scale)
+		.setOrigin(1, 0)
+		.setTint(0x222222)
+
+		let i = 0
+		this.interval = setInterval(() => {
+			i = (i + 1) % avatarNames.length
+			mysteryAvatar.setTexture(`avatar-${avatarNames[i]}Full`)
+		}, 2000)
+
+		this.container.add([avatar, mysteryAvatar])
 	}
 
 	private addButtons(scene: BaseScene, container: Phaser.GameObjects.Container): Button {
