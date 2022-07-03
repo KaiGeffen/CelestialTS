@@ -57,30 +57,30 @@
     "card": 25
   },
   {
-    "name": "Vision 4 - Cradle",
+    "name": "Vision 4 - Conquer",
     "id": 606,
     "x": 600,
     "y": 400,
     "prereq": [[601]],
     "type": "mission",
-    "deck": "2:2:0:60:60:60:16",
-    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+    "deck": "1:1:1:1:67:67:19:19:19",
+    "opponent": "25:25:26:26:69:69:48:11:11:15:15:67:57:57:23"
   },
   {
-    "name": "Cradle",
+    "name": "Conquer",
     "id": 607,
     "x": 600,
     "y": 450,
     "prereq": [[606]],
     "type": "card",
-    "card": 60
+    "card": 67
   },
   {
-    "name": "Vision 5 - The Future",
+    "name": "Vision 5 - TODO",
     "id": 608,
     "x": 600,
     "y": 500,
-    "prereq": [[603], [505], [507]],
+    "prereq": [[607]],
     "type": "mission",
     "deck": "2:2:2:6:15:22:22",
     "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
@@ -95,11 +95,11 @@
     "card": 22
   },
   {
-    "name": "Vision 6 - Ancestry",
+    "name": "Vision 6 - TODO",
     "id": 610,
     "x": 600,
     "y": 600,
-    "prereq": [[607, 509]],
+    "prereq": [[609]],
     "type": "mission",
     "deck": "2:2:2:10:10:22:22",
     "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
