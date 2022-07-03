@@ -188,8 +188,20 @@ export default class OptionsMenu extends Menu {
 		let txtVolumeHint = scene.add.text(0, 0, 'Autopass:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
-		let txt = scene.add.text(0, 0, 'Yes!', Style.basic)
-		sizer.add(txt)
+
+		const s = UserSettings._get('autopass') ? 'Enabled' : 'Disabled'
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let btn = new Buttons.Basic(container, 0, 0, s, () => {
+			if (UserSettings._get('autopass')) {
+				btn.setText('Disabled')
+				UserSettings._set('autopass', false)
+			}
+			else {
+				btn.setText('Enabled')
+				UserSettings._set('autopass', true)
+			}
+		})
+		sizer.add(container)
 
 		return sizer
 	}
