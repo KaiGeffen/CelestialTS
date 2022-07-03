@@ -30,6 +30,13 @@ class KeywordButton extends Button {
 
 		return result
 	}
+
+	// Keep the text centered
+	setOrigin(...args): Button {
+		this.icon.setOrigin(...args)
+		
+		return this
+	}
 }
 
 
@@ -55,11 +62,11 @@ export class InspireButton extends KeywordButton {
 			}
 		})
 
-		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)
+		this.txt.setPosition(x + 46, y + 17)
 	}
 
 	makeHintable(): Button {
-		const s = getHint(this, 'Inspire')
+		const s = getHint(this, 'Inspired')
 
 		return super.makeHintable(s)
 	}
