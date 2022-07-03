@@ -63,7 +63,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Load each of the card and token images
 		allCards.forEach( (card) => {
-			this.load.image(card.name, `images/${card.name}.png`)
+			this.load.image(card.name, `cards/${card.name}.png`)
 		})
 
 		allCards.forEach( (card) => {
