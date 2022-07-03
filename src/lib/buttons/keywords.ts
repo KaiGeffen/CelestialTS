@@ -94,7 +94,7 @@ export class NourishButton extends KeywordButton {
 			}
 		})
 
-		this.txt.setPosition(x + 40, y + 5).setOrigin(0.5)
+		this.txt.setPosition(x + 46, y + 17)
 	}
 
 	makeHintable(): Button {
