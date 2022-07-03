@@ -80,8 +80,10 @@ class GameScene extends BaseScene {
 	}
 
 	signalDC(): void {
-		// TODO Replace this with menu impl
-		console.log('opp disconnected')
+		this.scene.launch('MenuScene', {
+			menu: 'disconnect',
+			activeScene: this,
+		})
 	}
 
 	// Set all of the callback functions for the regions in the view

@@ -1,13 +1,8 @@
-import 'phaser'
-import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-
-import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js'
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
-
-
-import Menu from './menu'
-import { Space, Color, Style, UserSettings } from '../../settings/settings'
-import Buttons from '../../lib/buttons/buttons'
+import 'phaser';
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import Buttons from '../../lib/buttons/buttons';
+import { Color, Space, Style } from '../../settings/settings';
+import Menu from './menu';
 
 
 const width = 400
@@ -42,8 +37,7 @@ export default class ModeMenu extends Menu {
 				right: Space.pad/2,
 				top: Space.pad/2,
 				bottom: Space.pad/2,
-				item: Space.pad/2,
-				line: Space.pad/2,
+				line: Space.pad,
 			},
 		}
 		)

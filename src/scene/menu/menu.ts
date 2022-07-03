@@ -20,6 +20,7 @@ import RulebookMenu from "./rulebook"
 import { NewDeckMenu, EditDeckMenu } from "./newDeck"
 import ShareDeckMenu from "./shareDeck"
 import ModeMenu from "./mode"
+import DCMenu from './disconnect'
 
 
 const menus = {
@@ -31,6 +32,7 @@ const menus = {
 	'shareDeck': ShareDeckMenu,
 	'mode': ModeMenu,
 	'editDeck': EditDeckMenu,
+	'disconnect': DCMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 
