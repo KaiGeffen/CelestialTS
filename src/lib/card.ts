@@ -84,7 +84,9 @@ export default class Card {
     let result = ''
     
     this.references.forEach(reference => {
-      result += ` [img=${reference.name}]`
+      if (this.name !== reference.name) {
+        result += ` [img=${reference.name}]`
+      }
     })
 
     return result
