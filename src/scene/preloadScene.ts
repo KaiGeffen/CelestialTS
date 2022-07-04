@@ -24,8 +24,6 @@ export default class PreloadClass extends Phaser.Scene {
 		// Load all of the assets
 		Loader.loadAll(this)
 
-		console.log(this.load)
-
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
 
