@@ -45,31 +45,51 @@ export default class FilterRegion {
 	}
 
 	private createBackground(container: Phaser.GameObjects.Container) {
-		let background = this.scene.add.image(0, 0, 'icon-Search')
-		.setOrigin(0)
-		.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
+		let background
+		if (!Mobile) {
+			background = this.scene.add.image(0, 0, 'icon-Search')
+			.setOrigin(0)
+			.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
+		}
+		else {
+			background = this.scene.add.rectangle(0, 0, Space.windowWidth, Space.filterBarHeight, Color.background)
+			.setOrigin(0)
+			.setInteractive()
+
+			this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+				distance: 3,
+				shadowColor: 0x000000,
+			})
+		}
 
 		container.add(background)
 	}
 
 	private createFilterButtons(container: Phaser.GameObjects.Container) {
+		// Where the filter buttons start
+		const x0 = !Mobile ? 645 : Space.windowWidth - 470
+		const y = 40
+
 		// Cost filters
-		container.add(this.scene.add.text(645, 40, 'Cost:', Style.builder).setOrigin(1, 0.5))
+		container.add(this.scene.add.text(x0, y, 'Cost:', Style.builder).setOrigin(1, 0.5))
 
 		let btns = []
 		for (let i = 0; i <= 7; i++) {
 			let s = i === 7 ? '7+' : i.toString()
-			let btn = new UButton(container, 670 + i * 41, 40, s)
+			let btn = new UButton(container, x0 + 35 + i * 41, y, s)
 			btn.setOnClick(this.onClickFilterButton(i, btns))
 
 			btns.push(btn)
 		}
-		let btnX = new Icons.X(container, 1000, 40, this.onClearFilters(btns))
+		let btnX = new Icons.X(container, x0 + 35 + 8 * 41, y, this.onClearFilters(btns))
 	}
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {
 		// TODO Have an icon instead of full search bar on mobile
 		if (Mobile) {
+			// Minimum x is 170 for a 760 screen
+			let x = 170 + Math.max(0, Space.windowWidth - 760)/2
+			new Icons.Search(container, x, 40)
 			return
 		}
 

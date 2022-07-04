@@ -183,6 +183,25 @@ class Pass extends Button {
 	}
 }
 
+// The search bar on Mobile
+class Search extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'SearchMobile',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}
 
 // Export all of the available icons, which are subtype of buttons
 export default class Icons {
@@ -194,4 +213,5 @@ export default class Icons {
 	static Skip = Skip
 	static Arrow = Arrow
 	static Pass = Pass
+	static Search = Search
 }
