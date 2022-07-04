@@ -18,7 +18,6 @@ export default class PassRegion extends Region {
 	showResultsCallback: () => void
 
 	btnPass: Button
-	btnRecap: Button
 
 	txtYouPassed: Phaser.GameObjects.Text
 	txtTheyPassed: Phaser.GameObjects.Text
@@ -135,14 +134,6 @@ export default class PassRegion extends Region {
 		
 		// Set on click to be the callback, but only once
 		this.btnPass.setOnClick(() => {that.callback()}, true)
-
-		// Recap button
-		this.btnRecap = new Icons.Recap(this.scene,
-			Space.windowWidth - Space.pad - 16,
-			Space.pad * 2 + 32 + 16) // TODO Icons have height 32
-		.setDepth(100)
-
-		this.btnRecap.setOnClick(() => {that.recapCallback()})
 	}
 
 	private createText(): void {

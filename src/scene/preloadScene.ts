@@ -158,6 +158,7 @@ export default class PreloadClass extends Phaser.Scene {
 			'Share',
 			'Edit',
 			'Recap',
+			'Skip',
 			// Bottom of the screen during match scene
 			'Bottom', 'BottomAvatar',
 			'Top',

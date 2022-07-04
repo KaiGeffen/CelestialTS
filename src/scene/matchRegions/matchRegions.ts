@@ -1,4 +1,5 @@
 import SearchingRegion from "./searching"
+import CommandsRegion from "./commands"
 
 import OurHandRegion from "./ourHand"
 import TheirHandRegion from "./theirHand"
@@ -17,6 +18,7 @@ import ResultsRegion from "./results"
 
 export default class Regions {
 	static Searching = SearchingRegion
+	static Commands = CommandsRegion
 	static OurHand = OurHandRegion
 	static TheirHand = TheirHandRegion
 	static Story = StoryRegion

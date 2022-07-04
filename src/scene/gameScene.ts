@@ -90,6 +90,23 @@ class GameScene extends BaseScene {
 	private setCallbacks(view, net: Network): void {
 		let that = this
 
+		// Commands region
+		view.commands.recapCallback = () => {
+			that.recapPlaying = true
+			that.queuedRecap = [...that.lastRecap]
+			that.queueState(that.currentState)
+		}
+		view.commands.skipCallback = () => {
+			that.tweens.getAllTweens().forEach((tween) => {
+				tween.complete()
+			})
+
+			// Set variables to a state where a recap isn't playing
+			that.queuedRecap = []
+			that.recapPlaying = false
+			that.view.paused = false
+		}
+
 		// Hand region
 		view.ourHand.setCallback((i: number) => {
 			net.playCard(i)
@@ -169,11 +186,6 @@ class GameScene extends BaseScene {
 		view.pass.setShowResultsCallback(() => {
 			that.view.results.show()
 		})
-		view.pass.recapCallback = () => {
-			that.recapPlaying = true
-			that.queuedRecap = [...that.lastRecap]
-			that.queueState(that.currentState)
-		}
 
 		// Piles (Show overlay when clicked)
 		view.decks.setCallback(() => {
@@ -340,6 +352,9 @@ export class View {
 
 	searching: Region
 
+	// The buttons below Options button
+	commands: Region
+
 	ourHand: Region
 	// ourButtons: Region
 	theirHand: Region
@@ -371,6 +386,8 @@ export class View {
 		let background = scene.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
 
 		this.searching = new Regions.Searching().create(scene, avatarId)
+
+		this.commands = new Regions.Commands().create(scene)
 
 		// Create each of the regions
 		// this.createOurHand()
@@ -407,6 +424,7 @@ export class View {
 		this.searching.hide()
 
 		this.mulligan.displayState(state, isRecap)
+		this.commands.displayState(state, isRecap)
 		
 		this.ourHand.displayState(state, isRecap)
 		this.theirHand.displayState(state, isRecap)
