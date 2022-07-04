@@ -181,9 +181,10 @@ export default class DeckRegion {
 
 		if (!alreadyInDeck) {
 			// If it doesn't, create a new cutout
-			let container = new ContainerLite(this.scene, 0, 0, Space.deckPanelWidth, Space.cutoutHeight) // TODO
+			let container = new ContainerLite(this.scene, 0, 0, Space.deckPanelWidth, Space.cutoutHeight)
 			let cutout = new Cutout(container, card)
 			cutout.setOnClick(this.removeCardFromDeck(cutout))
+			.setDepth(2)
 
 			// Add the container in the right position in the panel
 			let index = this.addToPanelSorted(container, card, panel)
