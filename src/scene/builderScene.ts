@@ -114,13 +114,17 @@ export class AdventureBuilderScene extends BuilderBase {
     let that = this
 
     return function() {
+      // TODO Not just the 100s digit number
+      const avatar = (Math.floor(that.params.id / 100) - 1) % 6
+
       // Start a match against an ai opponent with the specified deck
       that.scene.start("AdventureGameScene",
         {isTutorial: false,
           deck: that.getDeckCode(),
           mmCode: `ai:${that.params.opponent}`,
-          missionID: that.params.id}
-          )
+          missionID: that.params.id,
+          avatar: avatar,
+        })
     }
   }
 }
