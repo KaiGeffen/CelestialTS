@@ -1,45 +1,7 @@
-import "phaser"
-
-import { Style, Color, Space, UserSettings, UserProgress, Url, Mobile } from "../settings/settings"
-import { allCards } from "../catalog/catalog"
-import { keywords } from '../catalog/keywords'
-import Server from "../server"
-import avatarsNames from '../lib/avatarNames'
-
-
-const SOUNDS = [
-'success',
-'failure',
-'click',
-'open',
-'close',
-'play',
-'pass',
-'draw',
-'discard',
-'create',
-'shuffle',
-'resolve',
-'win',
-'lose',
-'tie',
-'hover',
-
-'build',
-'inspire',
-'nourish',
-'starve',
-
-'meow',
-'yell',
-'bone_snap',
-'bird',
-'drown',
-'fire',
-'reset',
-'crowd',
-'sarcophagus'
-]
+import 'phaser'
+import Loader from '../loader/loader'
+import Server from '../server'
+import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
 
 
 export default class PreloadClass extends Phaser.Scene {
@@ -59,45 +21,13 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// this.renderSigninButton()
 
-		this.load.path = "assets/"
+		// Load all of the assets
+		Loader.loadAll(this)
 
-		// Load each of the card and token images
-		allCards.forEach( (card) => {
-			this.load.image(card.name, `cards/${card.name}.png`)
-		})
-
-		allCards.forEach( (card) => {
-			this.load.image(`cutout-${card.name}`, `cutouts/${card.name}.png`)
-		})
-
-		// Load all keywords
-		this.loadKeywords()
-
-		// Load the icon images
-		this.loadIcons()
-
-		// Load the background images
-		this.loadBackgrounds()
-
-		// Load the map images
-		this.loadMap()
-
-		// Load the avatar images
-		this.loadAvatars()
-
-		// Load in texture videos
-		this.loadVideos()
-
-		// Load all audio
-		SOUNDS.forEach( (sound) => {
-			this.load.audio(sound, `sfx/${sound}.mp3`)
-		})
-		// TODO Move to postload
-		this.load.audio('background', 'music/background.mp3')
+		console.log(this.load)
 
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
-
 
 		this.sound.volume = UserSettings._get('volume')
 
@@ -139,100 +69,6 @@ export default class PreloadClass extends Phaser.Scene {
 			onsuccess: onSuccess,
 			onfailure: onFailure
 		})
-	}
-
-	// Loads all images that are used as icons in ux
-	private loadIcons(): void {
-		let iconNames = [
-			'Wins',
-			'Divide',
-			'Deck', 'Discard',
-			'Nourish', 'Inspire', 'Sight',
-			'Button',
-			'Pass',
-			'Options', 'X', 'SmallX',
-			'Search', 'Underline',
-			'Premade', 'CustomDeck',
-			'XOut',
-			'Winner', 'Loser', 'ResultStats',
-			'Share',
-			'Edit',
-			'Recap',
-			'Skip',
-			// Bottom of the screen during match scene
-			'Bottom', 'BottomAvatar',
-			'Top',
-			'BreathBasic', 'BreathSpent', 'BreathExtra', 'BreathHover', 'BreathOom', 
-			'Arrow',
-		]
-
-		iconNames.forEach( (s) => {
-			this.load.image(`icon-${s}`, `icons/${s}.png`)
-		})
-	}
-
-	// Loads all keywords
-	private loadKeywords(): void {
-		keywords.forEach( (keyword) => {
-			const s = keyword.key
-			this.load.image(`kw-${s}`, `keywords/${s}.png`)
-
-			// If the keyword has an X, load all values of 'keyword N'
-			if (keyword.x) {
-				// NOTE Some of these may not exist, but all that exist are covered here
-				['-4','1','2','3','4'].forEach(n => {
-					const s = keyword.key
-					try {
-						this.load.image(`kw-${s} ${n}`, `keywords/${s} ${n}.png`)
-					}
-					// TODO
-					catch (error) {}
-				})
-			}
-			
-		})
-	}
-
-	// Loads all background images
-	private loadBackgrounds(): void {
-		let backgroundNames = [
-			'Defeat', 'Victory',
-			'Match',
-		]
-
-		backgroundNames.forEach( (s) => {
-			this.load.image(`bg-${s}`, `backgrounds/${s}.png`)
-		})
-	}
-
-	// Loads all map images (Journey mode)
-	private loadMap(): void {
-		let backgroundNames = [
-			'Birds',
-		]
-
-		backgroundNames.forEach( (s) => {
-			this.load.image(`map-${s}`, `maps/${s}.png`)
-		})
-	}
-
-	// Loads all avatar images
-	private loadAvatars(): void {
-		avatarsNames.forEach( (name) => {
-			// Load the full sized image
-			this.load.image(`avatar-${name}Full`, `avatars/${name}Full.png`)
-
-			// Load the spritesheet with basic + emotes
-			this.load.spritesheet(`avatar-${name}`, `avatars/${name}.png`, {
-				frameWidth: 130,
-				frameHeight: 130,
-			})
-		})
-	}
-
-	// Loads all video textures
-	private loadVideos(): void {
-		this.load.video('priorityHighlight', 'priority.mp4')
 	}
 
 	// Create the which show user how much has loaded

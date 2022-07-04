@@ -32,7 +32,7 @@ export default class AdventureScene extends BaseScene {
 		this.params = params
 
 		// Create the background
-		let background = this.add.image(0, 0, 'map-Birds')
+		let background = this.add.image(0, 0, 'bg-map')
 			.setOrigin(0)
 			.setInteractive()
 
