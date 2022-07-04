@@ -89,7 +89,17 @@ export default class FilterRegion {
 		if (Mobile) {
 			// Minimum x is 170 for a 760 screen
 			let x = 170 + Math.max(0, Space.windowWidth - 760)/2
-			new Icons.Search(container, x, 40)
+			new Icons.Search(container, x, 40, () => {
+				this.scene.scene.launch('MenuScene', {
+	        menu: 'search',
+	        callback: (s: string) => {
+	        	// Filter the visible cards based on the text
+						this.searchText = s
+						this.scene.filter()
+	        },
+	        start: this.searchText,
+	      })
+			})
 			return
 		}
 

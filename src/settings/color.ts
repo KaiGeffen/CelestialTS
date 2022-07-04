@@ -106,6 +106,8 @@ export const Color: Record<string, any> = {
   // Color of the text for results (End screen) of rounds you won
   resultsWin: CoreColors.goldenS,
 
+  // Background color for any search bars
+  searchBackground: '#F2F2F2',
 
 
   // Menu components
