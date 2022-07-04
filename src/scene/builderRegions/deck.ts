@@ -112,16 +112,30 @@ export default class DeckRegion {
 			Space: {left: Space.pad, right: Space.pad, bottom: Space.pad}
 		})
 
-		// If on mobile, add a back button
-		new Buttons.Text(sizer, Space.pad, 40, '<   Back', () => {
-			this.scene.deselect()
+		// Sizer for the top of the header
+		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
+			width: width,
+			align: Mobile ? 'left' : 'center',
 		})
+		sizer.add(sizerTop)
 
 		// Add the deck's name
-		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement).setOrigin(0.5)
-		let container = new ContainerLite(this.scene, 0, 0, width, this.txtDeckName.displayHeight)
-		container.add(this.txtDeckName)
-		sizer.add(container)
+		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement)
+		.setOrigin(0.5)
+
+		// If on mobile, add a back button
+		if (Mobile) {
+			let backContainer = new ContainerLite(this.scene, 0, 0, 40, this.txtDeckName.displayHeight)
+			new Buttons.Text(backContainer, 0, 0, '<', () => {
+				this.scene.deselect()
+			}).txt.setFontSize(40)
+			sizerTop.add(backContainer)
+
+			this.txtDeckName.setOrigin(0, 0.5)
+		}
+
+		sizerTop.add(this.txtDeckName)
+		.layout()
 
 		// Add a share button that allows user to copy/paste their deck code
 		let containerShare = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize/2)
