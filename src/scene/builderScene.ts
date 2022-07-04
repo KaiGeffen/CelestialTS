@@ -229,7 +229,10 @@ export class BuilderScene extends BuilderBase {
     }
   }
 
-  deselectDeck(): void {
+  // Deselect whatever decklist is selected
+  deselect(): void {
+    this.decklistsRegion.deselect()
+
     this.deckRegion.hidePanel()
     this.catalogRegion.shiftLeft()
   }

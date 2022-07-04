@@ -13,6 +13,9 @@ import { Color, Mechanics, Space, Style, Time, Mobile } from '../../settings/set
 
 const width = Space.deckPanelWidth// + Space.pad * 2
 
+// Where the panel starts
+const X_START = Mobile? -Space.deckPanelWidth - Space.pad : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
+
 export default class DeckRegion {
 	private scene
 
@@ -50,9 +53,10 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
+		.setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: Space.decklistPanelWidth - Space.deckPanelWidth,
+			x: X_START,
 			y: 0,
 			width: width,
 			height: Space.windowHeight,
@@ -79,6 +83,9 @@ export default class DeckRegion {
 			this.panel.add(this.createHeader(startCallback), {
 				padding: {bottom: Space.pad}
 			})
+
+			this.scrollablePanel.setDepth(2)
+			// TODO
 		}
 
 		this.scrollablePanel.layout()
@@ -103,6 +110,11 @@ export default class DeckRegion {
 	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
 			Space: {left: Space.pad, right: Space.pad, bottom: Space.pad}
+		})
+
+		// If on mobile, add a back button
+		new Buttons.Text(sizer, Space.pad, 40, '<   Back', () => {
+			this.scene.deselect()
 		})
 
 		// Add the deck's name
@@ -404,15 +416,16 @@ export default class DeckRegion {
 	hidePanel(): void {
 		this.scene.tweens.add({
 			targets: this.scrollablePanel,
-			x: Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad,
+			x: X_START,
 			duration: Time.builderSlide(),
 		})
 	}
 
 	showPanel(): void {
+		const x = Mobile ? 0 : Space.decklistPanelWidth
 		this.scene.tweens.add({
 			targets: this.scrollablePanel,
-			x: Space.decklistPanelWidth,
+			x: x,
 			duration: Time.builderSlide(),
 		})
 	}

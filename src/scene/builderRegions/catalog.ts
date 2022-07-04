@@ -4,7 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, UserSettings, Space, Mechanics, Time } from "../../settings/settings"
+import { Style, UserSettings, Space, Mechanics, Time, Mobile } from "../../settings/settings"
 import { collectibleCards } from "../../catalog/catalog"
 
 
@@ -151,7 +151,7 @@ export default class CatalogRegion {
   shiftRight(): void {
     let that = this
 
-    const x = Space.decklistPanelWidth + Space.deckPanelWidth
+    const x = Mobile ? Space.deckPanelWidth : Space.decklistPanelWidth + Space.deckPanelWidth
     if (this.panel.x < x) {
       this.scene.tweens.add({
         targets: this.scrollablePanel,

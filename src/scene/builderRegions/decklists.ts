@@ -240,11 +240,7 @@ export default class DecklistsRegion {
 
 			// If it's already selected, deselect it
 			if (btn.selected) {
-				that.savedDeckIndex = undefined
-				that.scene.setDeck([])
-				btn.deselect()
-
-				that.scene.deselectDeck()
+				that.scene.deselect()
 			}
 			// Otherwise select this button
 			else {
@@ -260,6 +256,16 @@ export default class DecklistsRegion {
 				.setName(deck['name'])
 			}
 		}
+	}
+
+	// Deselect whatever deck is currently selected
+	deselect(): void {
+		this.savedDeckIndex = undefined
+		this.scene.setDeck([])
+		
+		this.decklistBtns.forEach(b => {
+			b.deselect()
+		})
 	}
 
 	// Create a button for each deck that user has created

@@ -10,6 +10,7 @@ export const Depth: Record<string, number> = {
 	discardPiles: -1,
 	searching: 9,
 	theirScore: 3,
+	commands: 7,
 
 	// Above all other layers
 	aboveAll: 9.5,
