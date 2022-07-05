@@ -184,7 +184,9 @@ export default class DeckRegion {
 			let container = new ContainerLite(this.scene, 0, 0, Space.deckPanelWidth, Space.cutoutHeight)
 			let cutout = new Cutout(container, card)
 			cutout.setOnClick(this.removeCardFromDeck(cutout))
-			.setDepth(2)
+			if (Mobile) {
+				cutout.setDepth(2)
+			}
 
 			// Add the container in the right position in the panel
 			let index = this.addToPanelSorted(container, card, panel)
