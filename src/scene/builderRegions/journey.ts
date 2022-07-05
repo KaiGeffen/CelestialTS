@@ -8,7 +8,7 @@ import Cutout from '../../lib/buttons/cutout';
 import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard } from '../../lib/codec';
-import { Color, Mechanics, Space, Style, Time, Mobile } from '../../settings/settings';
+import { Color, Mechanics, Space, Style, Time, Mobile, Scroll } from '../../settings/settings';
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -57,6 +57,8 @@ export default class DeckRegion {
 			},
 
 			header: Mobile ? undefined : this.createHeader(startCallback),
+
+			slider: Mobile ? Scroll(this.scene) : undefined,
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,

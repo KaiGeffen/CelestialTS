@@ -9,6 +9,7 @@ import { Url } from "./url"
 import { UserSettings } from "./userSettings"
 import { Depth } from "./depth"
 import { Mobile } from "./mobile"
+import { Scroll } from './scroll'
 
 
 export {
@@ -22,4 +23,5 @@ export {
   UserSettings,
   Depth,
   Mobile,
+  Scroll,
 }

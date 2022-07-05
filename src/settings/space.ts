@@ -62,4 +62,6 @@ export var Space = {
 
   avatarSize: 130,
   iconSize: 32,
+
+  scrollWidth: 40,
 }
