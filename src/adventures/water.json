@@ -20,7 +20,7 @@
   },
   {
     "name": "Water 2 - Iceberg (Sun, Gentle Rain)",
-    "id": 704,
+    "id": 710,
     "x": 1500,
     "y": 1300,
     "prereq": [[121, 406]],
@@ -30,11 +30,49 @@
   },
   {
     "name": "Iceberg",
-    "id": 705,
+    "id": 711,
     "x": 1500,
     "y": 1350,
-    "prereq": [[704]],
+    "prereq": [[710]],
     "type": "card",
     "card": 54
+  },
+  {
+    "name": "Water 3 - Excess (Water)",
+    "id": 720,
+    "x": 1500,
+    "y": 1500,
+    "prereq": [[701, 711]],
+    "type": "mission",
+    "deck": "2:3:3:3:3:6:46",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Iceberg",
+    "id": 721,
+    "x": 1500,
+    "y": 1550,
+    "prereq": [[720]],
+    "type": "card",
+    "card": 46
+  },
+  {
+    "name": "Water 4 - Paramountcy (Main Story)",
+    "id": 730,
+    "x": 1500,
+    "y": 1700,
+    "prereq": [[]],
+    "type": "mission",
+    "deck": "20:20:44:44:62",
+    "opponent": "2:2:2:2:4:4:8:8:8:10:60:11:15:22:22"
+  },
+  {
+    "name": "Iceberg",
+    "id": 731,
+    "x": 1500,
+    "y": 1750,
+    "prereq": [[730]],
+    "type": "card",
+    "card": 62
   }
 ]
