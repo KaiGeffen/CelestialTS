@@ -14,7 +14,8 @@ import { Color, Mechanics, Space, Style, Time, Mobile } from '../../settings/set
 const width = Space.deckPanelWidth// + Space.pad * 2
 
 // Where the panel starts
-const X_START = Mobile? -Space.deckPanelWidth - Space.pad : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
+// TODO 40 is the padding on the right side
+const X_START = Mobile ? -Space.deckPanelWidth - Space.pad - 60 : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
 
 export default class DeckRegion {
 	private scene
@@ -67,12 +68,19 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
+			slider: !Mobile ? undefined : {
+				input: 'drag',
+				track: this.scene['rexUI'].add.roundRectangle(0, 0, 40, 0, 10, 0xff55ff),
+				thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 30, Color.sliderThumb),
+			},
+
 			header: Mobile ? undefined : this.createHeader(startCallback),
 
 			space: {
 				top: Space.filterBarHeight + Space.pad,
 				bottom: Space.pad,
 				item: Space.pad,
+				right: Mobile ? 20 : 0,
 			},
 			}).setOrigin(0)
 

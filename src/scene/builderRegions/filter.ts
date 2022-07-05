@@ -49,7 +49,7 @@ export default class FilterRegion {
 		if (!Mobile) {
 			background = this.scene.add.image(0, 0, 'icon-Search')
 			.setOrigin(0)
-			.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
+			.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth - 40, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
 		}
 		else {
 			background = this.scene.add.rectangle(0, 0, Space.windowWidth, Space.filterBarHeight, Color.background)

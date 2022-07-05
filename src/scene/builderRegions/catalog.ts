@@ -4,7 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, UserSettings, Space, Mechanics, Time, Mobile } from "../../settings/settings"
+import { Style, Color, UserSettings, Space, Mechanics, Time, Mobile } from "../../settings/settings"
 import { collectibleCards } from "../../catalog/catalog"
 
 
@@ -70,7 +70,13 @@ export default class CatalogRegion {
             line: Space.pad,
           }
         })
-      }}).setOrigin(0)
+      },
+      slider: {
+        input: 'click',
+        track: this.scene['rexUI'].add.roundRectangle(0, 0, 40, 0, 5, Color.sliderTrack),
+        thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 20, Color.sliderThumb),
+      },
+    }).setOrigin(0)
 
     // Update panel when mousewheel scrolls
     let panel = superPanel.getElement('panel')
@@ -151,7 +157,7 @@ export default class CatalogRegion {
   shiftRight(): void {
     let that = this
 
-    const x = Mobile ? Space.deckPanelWidth : Space.decklistPanelWidth + Space.deckPanelWidth
+    const x = Mobile ? Space.deckPanelWidth + 60 : Space.decklistPanelWidth + Space.deckPanelWidth
     if (this.panel.x < x) {
       this.scene.tweens.add({
         targets: this.scrollablePanel,
