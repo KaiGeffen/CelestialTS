@@ -91,4 +91,10 @@ export default class ClientState {
 	isRecapStart(): boolean {
 		return this.recap.playList.length === 0
 	}
+
+	// Get if this state is the end of a recap
+	isRecapEnd(): boolean {
+		// TODO This is a bad way of establishing this
+		return ['win', 'lose', 'tie'].includes(this.soundEffect)
+	}
 }
