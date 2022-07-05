@@ -3,7 +3,7 @@ import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 import Button from '../../lib/buttons/button';
 import Icons from '../../lib/buttons/icons'
 import ClientState from '../../lib/clientState';
-import { Style, Color, Space } from '../../settings/settings';
+import { Style, Color, Space, Time } from '../../settings/settings';
 import BaseScene from '../baseScene';
 import Region from './baseRegion';
 
@@ -60,24 +60,24 @@ export default class PassRegion extends Region {
 
 		// Show who has passed
 		if (state.passes === 2) {
-			this.txtYouPassed.setVisible(true)
-			this.txtTheyPassed.setVisible(true)
+			this.animatePass(this.txtYouPassed, true)
+			this.animatePass(this.txtTheyPassed, true)
 		}
 		else if (state.passes === 1) {
 			// My turn, so they passed
 			if (state.priority === 0) {
-				this.txtYouPassed.setVisible(false)
-				this.txtTheyPassed.setVisible(true)
+				this.animatePass(this.txtYouPassed, false)
+				this.animatePass(this.txtTheyPassed, true)
 			}
 			// Their turn, so I passed
 			else {
-				this.txtYouPassed.setVisible(true)
-				this.txtTheyPassed.setVisible(false)
+				this.animatePass(this.txtYouPassed, true)
+				this.animatePass(this.txtTheyPassed, false)
 			}
 		}
 		else {
-			this.txtYouPassed.setVisible(false)
-			this.txtTheyPassed.setVisible(false)
+			this.animatePass(this.txtYouPassed, false)
+			this.animatePass(this.txtTheyPassed, false)
 		}
 
 		// Enable/disable button based on who has priority
@@ -155,5 +155,20 @@ export default class PassRegion extends Region {
 			this.txtYouPassed,
 			this.txtTheyPassed
 			])
+	}
+
+	// Animate the given object saying that the player has/not passed
+	// NOTE This causes a pause on every state change even if alpha is 0 > 0
+	private animatePass(txt: Phaser.GameObjects.Text, hasPassed: boolean): void {
+		this.scene.tweens.add({
+			targets: txt,
+			alpha: hasPassed ? 1 : 0,
+			duration: Time.recapTween(),
+			
+			onComplete: function (tween, targets, _)
+			{
+				txt.setAlpha(hasPassed ? 1 : 0)
+			}
+		})
 	}
 }
