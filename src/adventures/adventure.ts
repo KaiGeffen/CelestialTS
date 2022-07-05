@@ -5,6 +5,7 @@ import shadow from "./shadow.json"
 import pet from "./pet.json"
 import birth from "./birth.json"
 import vision from "./vision.json"
+import water from './water.json'
 
 
 export const adventureData: Adventure[] = [
@@ -15,6 +16,7 @@ export const adventureData: Adventure[] = [
   ...pet,
   ...birth,
   ...vision,
+  ...water,
 ]
 
 export interface Adventure {
