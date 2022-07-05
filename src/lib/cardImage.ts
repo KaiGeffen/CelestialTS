@@ -24,7 +24,6 @@ export class CardImage {
   // Whether the current card is required in this context (Must be in the deck)
   required = false
 
-  unplayable: boolean = false
   // A container just for this cardImage / objects related to it
   container: ContainerLite | Phaser.GameObjects.Container
 
@@ -42,7 +41,7 @@ export class CardImage {
     this.scene = scene
 
     // Card image
-    this.image = scene.add.image(0, 0, card.name)//.setAlpha(0.3)
+    this.image = scene.add.image(0, 0, card.name)
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
@@ -153,8 +152,6 @@ export class CardImage {
 
   // Set whether this card is playable
   setPlayable(isPlayable: Boolean): void {
-    this.unplayable = !isPlayable
-
     if (isPlayable) {
       this.image.clearTint()
     }
@@ -174,14 +171,10 @@ export class CardImage {
     }
   }
 
-  setTransparent(value: Boolean): CardImage {
-    if (value) {
-      this.container.setAlpha(0.2)
-    }
-    else {
-      this.container.setAlpha(1)
-    }
-
+  // Set that a card has resolved (In the story)
+  setResolved(): CardImage {
+    this.image.setTint(Color.cardUnplayable)
+    
     return this
   }
 
@@ -227,12 +220,6 @@ export class CardImage {
     return function() {
       that.scene.plugins.get('rexOutlinePipeline')['remove'](that.image)
     }
-  }
-
-  // Set that this card is required and can't be removed from the deck
-  setRequired(): void {
-    this.image.setTint(Color.cardUnplayable)
-    this.required = true
   }
 
   private createContainer(outerContainer): ContainerLite {
@@ -312,13 +299,8 @@ export class CardImage {
     }
 
     return function() {
-      // cardInfo.setVisible(true)
-
-      if (!that.unplayable) {
-        that.scene.sound.play('hover')
-        doHighlight()
-      }
-
+      that.scene.sound.play('hover')
+      doHighlight()
     }
   }
 

@@ -37,7 +37,7 @@ export default class StoryRegion extends Region {
 			
 			let card = this.addCard(play[0],
 				CardLocation.story(state, isRecap, resolvedI, this.container, play[1]))
-			.setTransparent(true)
+			.setResolved()
 			.moveToTopOnHover()
 			.setOnClick(that.callback(resolvedI))
 
