@@ -352,8 +352,11 @@ export default class DeckRegion {
 	}
 
 	private addToPanelSorted(child: ContainerLite, card: Card, panel): number {
-		for (let i = 0; i < this.deck.length; i++) {
-			const cutout = this.deck[i]
+		// If adding to the chosen cards, don't consider required cards
+		let cards = panel === this.chosenPanel ? this.deck.filter((cutout) => !cutout.required) : this.deck
+
+		for (let i = 0; i < cards.length; i++) {
+			const cutout = cards[i]
 
 			if ((cutout.card.cost > card.cost) ||
 				((cutout.card.cost === card.cost) &&
@@ -367,9 +370,8 @@ export default class DeckRegion {
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		let index = this.deck.length
+		let index = cards.length
 		panel.insert(index, child)
 		return index
 	}
 }
-
