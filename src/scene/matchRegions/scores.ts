@@ -75,13 +75,13 @@ export default class ScoresRegion extends Region {
 			)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
-        let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-        postFxPlugin['add'](background, {
-        	thickness: 1,
-        	outlineColor: Color.border,
-        })
+		let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
+		postFxPlugin['add'](background, {
+			thickness: 1,
+			outlineColor: Color.border,
+		})
 
-        return background
+		return background
 	}
 
 	// Display the current score totals
@@ -119,6 +119,5 @@ export default class ScoresRegion extends Region {
 				.setVisible(false)
 			}
 		})
-		}
 	}
 }
