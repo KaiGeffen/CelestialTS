@@ -348,7 +348,7 @@ export default class DecklistsRegion {
 			UserSettings._pop('decks', deckIndex)
 
 			// Adjust values stored in this deck region
-			that.scene.deselectDeck()
+			that.scene.deselect()
 
 			// Refresh the decklist panel
 			that.createDecklistPanel()
