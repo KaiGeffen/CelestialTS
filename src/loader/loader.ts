@@ -1,5 +1,5 @@
 import avatarNames from '../lib/avatarNames'
-import { allCards } from '../catalog/catalog'
+import { allCards, collectibleCards } from '../catalog/catalog'
 
 // Json data
 import avatarData from './avatars.json'
@@ -35,7 +35,7 @@ const prefixMap: PrefixEntry[] = [
 	{
 		fp: 'cutouts/',
 		prefix: 'cutout-',
-		list: allCards.map((card) => card.name),
+		list: collectibleCards.map((card) => card.name),
 	},
 	{
 		fp: 'icons/',

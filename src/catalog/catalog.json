@@ -146,7 +146,7 @@
 
   {"name": "The Future", "id": 22,
     "cost": 8, "points": 5,
-    "text": "Draw 1 card.\nCosts X less, where X is the total point value of all robots in your hand."
+    "text": "Draw 1 card.\nCosts X less, where X is the total point value of all Children in your hand."
   },
   {"name": "Oak", "id": 23,
     "cost": 8, "points": 8,
