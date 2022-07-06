@@ -252,7 +252,7 @@
   },
   {"name": "Fishing Boat", "id": 32,
     "cost": 2, "points": 0,
-    "text": "Draw up to 3 cards that each cost 1."
+    "text": "Draw 3 cards that each cost 1."
   },
   {"name": "Imprison", "id": 35,
     "cost": 2, "points": 0,
