@@ -49,12 +49,11 @@ export default class ChoosePremade extends Menu {
 		})
 
 		// Add each of the avatars
-		panel.addSpace()
 		for (let i = 0; i < avatarNames.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
 			let avatarSmall = new Buttons.Avatar(container, 0, 0, i, () => {
 				this.avatarFull.setTexture(`avatar-${avatarNames[i]}Full`)
-				// TODO
+				this.txtName.setText(`${avatarNames[i]}`)
 			})
 			
 			panel.add(container)
@@ -77,7 +76,11 @@ export default class ChoosePremade extends Menu {
 
 		// TODO Set when opening
 		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarNames[0]}Full`)
-		// .setScale(1)
+		
+		// Scale to fit in the window
+		let space = Space.windowHeight - Space.pad * 3 - Space.avatarSize
+		let ratio = space / this.avatarFull.height
+		this.avatarFull.setScale(ratio)
 
 		panel.add(this.avatarFull)
 		.add(this.createText(), {align: 'top'})
@@ -120,22 +123,5 @@ export default class ChoosePremade extends Menu {
 		panel.add(c2)
 
 		return panel
-	}
-
-	private createCharacter(scene: Phaser.Scene, name: string, callback: () => void): ContainerLite {
-		let container = new ContainerLite(scene,
-			0,
-			0,
-			400,
-			600,
-			)
-
-		let that = this
-		let avatar = new ButtonAvatarFull(container, 0, 0, name, name, () => {
-			callback()
-			that.close()
-		})
-
-		return container
 	}
 }
