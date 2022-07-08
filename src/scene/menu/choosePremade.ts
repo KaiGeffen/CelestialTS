@@ -174,22 +174,25 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createChart(): void {
-		this.chart = this.scene['rexUI'].add.chart(1170, 400, 500, 500, {
+		this.chart = this.scene['rexUI'].add.chart(1200, 400, 450, 450, {
 			type: 'radar',
 			data: {
-				labels: ['Difficulty', 'Speed', 'Control', 'Explosiveness'],
+				labels: ['Difficulty', 'Speed', 'Control', 'Explosiveness', 'TODO'],
 				datasets: [
 				{
+					label: '',
 					borderColor: Color.radar,
 					pointBackgroundColor: Color.radar,
-					data: [1, 1, 1, 1]
+					data: [1, 1, 1, 1, 1],
 				},
 				]
 			},
 			options: {
-                legend: {
-                    display: false,
-                },
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
                 scales: {
                 	r: {
                 		min: 0,
@@ -198,6 +201,11 @@ export default class ChoosePremade extends Menu {
                 			stepSize: 1,
                 			display: false
                 		},
+                		pointLabels: {
+                			font: {
+                				size: 20
+                			}
+                		}
                 	},
                 }
             }
