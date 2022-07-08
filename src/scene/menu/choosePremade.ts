@@ -138,9 +138,12 @@ export default class ChoosePremade extends Menu {
 		// new Buttons.Basic(this.scene, 0, y, 'Cancel')
 		// new Buttons.Basic(this.scene, 0, y, 'Select')
 
+		const width = Space.windowWidth - this.avatarFull.width - Space.pad * 2
+
 		let panel = this.scene['rexUI'].add.sizer({
-			x: this.avatarFull.width + (Space.windowWidth - this.avatarFull.width - Space.pad * 2)/2,
+			x: this.avatarFull.width + (width)/2,
 			y: Space.windowHeight - Space.pad - Space.smallButtonWidth/2,
+			width: width,
 			space: {
 				item: Space.pad,
 			}
@@ -150,7 +153,9 @@ export default class ChoosePremade extends Menu {
 		let btnCancel = new Buttons.Basic(c1, 0, 0, 'Cancel', () => {
 			this.close()
 		})
-		panel.add(c1)
+		panel.addSpace()
+		.add(c1)
+		.addSpace()
 
 		let c2 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 		let btnSelect = new Buttons.Basic(c2, 0, 0, 'Select', () => {
@@ -158,6 +163,7 @@ export default class ChoosePremade extends Menu {
 			this.close()
 		})
 		panel.add(c2)
+		.addSpace()
 
 		return panel
 	}
