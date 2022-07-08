@@ -20,6 +20,8 @@ export default class ChoosePremade extends Menu {
 	txtSurname: Phaser.GameObjects.Text
 	txtDescription: Phaser.GameObjects.Text
 
+	chart: any
+
 	constructor(scene: Phaser.Scene, params) {
 		let callback: (number) => void = params.callback
 		super(scene)
@@ -56,7 +58,10 @@ export default class ChoosePremade extends Menu {
 
 		this.createButtons(callback).layout()
 
-		sizer.layout().layout()
+		// Create chart showing details about selected deck
+		this.createChart()
+
+		sizer.layout()
 	}
 
 	private createHeader(): any {
@@ -168,11 +173,51 @@ export default class ChoosePremade extends Menu {
 		return panel
 	}
 
+	private createChart(): void {
+		this.chart = this.scene['rexUI'].add.chart(1170, 400, 500, 500, {
+			type: 'radar',
+			data: {
+				labels: ['Difficulty', 'Speed', 'Control', 'Explosiveness'],
+				datasets: [
+				{
+					borderColor: Color.radar,
+					pointBackgroundColor: Color.radar,
+					data: [1, 1, 1, 1]
+				},
+				]
+			},
+			options: {
+                legend: {
+                    display: false,
+                },
+                scales: {
+                	r: {
+                		min: 0,
+                		max: 5,
+                		ticks: {
+                			stepSize: 1,
+                			display: false
+                		},
+                	},
+                }
+            }
+		})
+	}
+
 	// Populate the content objects with the given avatar details
 	private setContent(details): void {
+		// Image
 		this.avatarFull.setTexture(`avatar-${details.name}Full`)
+
+		// Text
 		this.txtName.setText(`${details.name}`)
 		this.txtSurname.setText(`${details.surname}`)
 		this.txtDescription.setText(`${details.description}`)
+
+		// Chart
+		for (let i = 0; i < details.chart.length; i++) {
+			this.chart.setChartData(0, i, details.chart[i])
+		}
+		this.chart.updateChart()
 	}
 }
