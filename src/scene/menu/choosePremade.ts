@@ -8,7 +8,7 @@ import Buttons from '../../lib/buttons/buttons'
 
 import Menu from './menu'
 import { Style, Space, Color } from '../../settings/settings'
-import avatarNames from '../../lib/avatarNames'
+import avatarDetails from '../../catalog/avatarDetails.json'
 
 
 export default class ChoosePremade extends Menu {
@@ -33,6 +33,9 @@ export default class ChoosePremade extends Menu {
 		this.avatarsSmall = []
 
 		this.createSizer(callback)
+
+		// Set the content based on the selected avatar
+		this.setContent(avatarDetails[this.selectedAvatar])
 	}
 
 	private createSizer(callback: (number) => void): void {
@@ -64,7 +67,7 @@ export default class ChoosePremade extends Menu {
 		// TODO Deselect others
 
 		// Add each of the avatars
-		for (let i = 0; i < avatarNames.length; i++) {
+		for (let i = 0; i < avatarDetails.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
 			this.avatarsSmall[i] = new Buttons.Avatar(container, 0, 0, i, () => {
 				// Set which avatar is selected
@@ -73,8 +76,7 @@ export default class ChoosePremade extends Menu {
 				this.avatarsSmall[i].select()
 
 				// Adjust displayed content
-				this.avatarFull.setTexture(`avatar-${avatarNames[i]}Full`)
-				this.txtName.setText(`${avatarNames[i]}`)
+				this.setContent(avatarDetails[i])
 			})
 
 			// Select this avatar if appropriate
@@ -100,8 +102,7 @@ export default class ChoosePremade extends Menu {
 			align: 'top',
 		})
 
-		// TODO Set when opening
-		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarNames[this.selectedAvatar]}Full`)
+		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarDetails[0].name}Full`)
 		
 		// Scale to fit in the window
 		let space = Space.windowHeight - Space.pad * 3 - Space.avatarSize
@@ -118,10 +119,9 @@ export default class ChoosePremade extends Menu {
 		let panel = this.scene['rexUI'].add.fixWidthSizer()
 
 		// TODO Displayed the selected one
-		this.txtName = this.scene.add.text(0, 0, avatarNames[0], Style.announcement)
-		this.txtSurname = this.scene.add.text(0, 0, 'Dove boi does bird things', Style.surname)
-		const s = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. `
-		this.txtDescription = this.scene.add.text(0, 0, s, Style.basic)
+		this.txtName = this.scene.add.text(0, 0, '', Style.announcement)
+		this.txtSurname = this.scene.add.text(0, 0, '', Style.surname)
+		this.txtDescription = this.scene.add.text(0, 0, '', Style.basic)
 
 		// Add all this text to the panel
 		panel.add(this.txtName)
@@ -166,5 +166,13 @@ export default class ChoosePremade extends Menu {
 		.addSpace()
 
 		return panel
+	}
+
+	// Populate the content objects with the given avatar details
+	private setContent(details): void {
+		this.avatarFull.setTexture(`avatar-${details.name}Full`)
+		this.txtName.setText(`${details.name}`)
+		this.txtSurname.setText(`${details.surname}`)
+		this.txtDescription.setText(`${details.description}`)
 	}
 }
