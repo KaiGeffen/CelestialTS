@@ -23,7 +23,7 @@ const CoreColors: Record<string, any> = {
 
 
   // Trial colors
-  background: 0xFFFFFF,//0xF5F2EB,
+  background: 0xF5F2EB,
 
   c1: 0x664930,
   c1s: '#664930', // Basic text brown color
@@ -135,6 +135,9 @@ export const Color: Record<string, any> = {
   textArea: CoreColors.variantS,
   textAreaBackground: '#444',
   textAreaBackgroundAlt: CoreColors.secondaryS,
+
+  // Color for the radar chart
+  radar: CoreColors.goldenS,
 
 
 

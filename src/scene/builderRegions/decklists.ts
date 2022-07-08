@@ -152,7 +152,8 @@ export default class DecklistsRegion {
 				// TODO Hand this to a class instead of calling ourselves
 				this.scene.scene.launch('MenuScene', {
 					menu: 'choosePremade',
-					callback: this.premadeCallback()
+					selected: this.savedPremadeIndex,
+					callback: this.premadeCallback(),
 				})
 			}
 			)
@@ -172,22 +173,20 @@ export default class DecklistsRegion {
 	}
 
 	// Callback for when a premade avatar is clicked on
-	premadeCallback(): (i: number) => () => void {
+	premadeCallback(): (i: number) => void {
 		let that = this
 		return function(i: number) {
-			return function() {
-				that.savedDeckIndex = undefined
-				that.savedPremadeIndex = i
+			that.savedDeckIndex = undefined
+			that.savedPremadeIndex = i
 
-				// Deselect decklist buttons
-				that.decklistBtns.forEach(btn => btn.deselect())
+			// Deselect decklist buttons
+			that.decklistBtns.forEach(btn => btn.deselect())
 
-				// Select premade button (Ensure only selected once)
-				that.btnPremade.deselect().select()
-				
-				// Set the current deck to premade list
-				that.scene.setPremade(i)
-			}
+			// Select premade button (Ensure only selected once)
+			that.btnPremade.deselect().select()
+			
+			// Set the current deck to premade list
+			that.scene.setPremade(i)
 		}
 	}
 
