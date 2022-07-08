@@ -3,36 +3,36 @@
     "name": "Jules",
     "surname": "The dude of birds n stuff",
     "description": "Hehe uwu ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. Fusce semper accumsan dolor sit amet sodales. Curabitur at ultrices tortor. Vestibulum blandit sem vel sollicitudin sodales. Vestibulum laoreet lacus sit amet orci pretium, quis dapibus sapien convallis. Nullam non vulputate augue. Sed lorem nunc, cursus sed orci quis, laoreet maximus sapien. Etiam sed interdum ipsum, id fringilla nunc. Donec vitae pharetra lorem. Nullam at nunc dictum, scelerisque elit eget, ornare ex. Nam ac pretium libero.",
-    "chart": [1,4,3,1,5]
+    "chart": [1,4,3,2,1]
   },
   {
     "name": "Adonis",
     "surname": "Burning to ashes",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. Fusce semper accumsan dolor sit amet sodales. Curabitur at ultrices tortor. Vestibulum blandit sem vel sollicitudin sodales. Vestibulum laoreet lacus sit amet orci pretium, quis dapibus sapien convallis. Nullam non vulputate augue. Sed lorem nunc, cursus sed orci quis, laoreet maximus sapien. Etiam sed interdum ipsum, id fringilla nunc. Donec vitae pharetra lorem. Nullam at nunc dictum, scelerisque elit eget, ornare ex. Nam ac pretium libero.",
-    "chart": [2,5,1,5,1]
+    "chart": [2,5,1,4,4]
   },
   {
     "name": "Mia",
     "surname": "Control and shadows",
     "description": "Boffa lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. Fusce semper accumsan dolor sit amet sodales. Curabitur at ultrices tortor. Vestibulum blandit sem vel sollicitudin sodales. Vestibulum laoreet lacus sit amet orci pretium, quis dapibus sapien convallis. Nullam non vulputate augue. Sed lorem nunc, cursus sed orci quis, laoreet maximus sapien. Etiam sed interdum ipsum, id fringilla nunc. Donec vitae pharetra lorem. Nullam at nunc dictum, scelerisque elit eget, ornare ex. Nam ac pretium libero.",
-    "chart": [3,3,5,3,2]
+    "chart": [3,3,5,2,2]
   },
   {
     "name": "Kitz",
     "surname": "Sweetest combo cat",
     "description": "Rem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. Fusce semper accumsan dolor sit amet sodales. Curabitur at ultrices tortor. Vestibulum blandit sem vel sollicitudin sodales. Vestibulum laoreet lacus sit amet orci pretium, quis dapibus sapien convallis. Nullam non vulputate augue. Sed lorem nunc, cursus sed orci quis, laoreet maximus sapien. Etiam sed interdum ipsum, id fringilla nunc. Donec vitae pharetra lorem. Nullam at nunc dictum, scelerisque elit eget, ornare ex. Nam ac pretium libero.",
-    "chart": [4,2,1,5,2]
+    "chart": [4,2,1,5,5]
   },
   {
     "name": "Imani",
     "surname": "Birth and creation, eternity",
     "description": "Ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. Fusce semper accumsan dolor sit amet sodales. Curabitur at ultrices tortor. Vestibulum blandit sem vel sollicitudin sodales. Vestibulum laoreet lacus sit amet orci pretium, quis dapibus sapien convallis. Nullam non vulputate augue. Sed lorem nunc, cursus sed orci quis, laoreet maximus sapien. Etiam sed interdum ipsum, id fringilla nunc. Donec vitae pharetra lorem. Nullam at nunc dictum, scelerisque elit eget, ornare ex. Nam ac pretium libero.",
-    "chart": [4,2,1,4,2]
+    "chart": [4,2,1,4,3]
   },
   {
     "name": "Mona",
     "surname": "Awake and aware",
     "description": "Dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. Fusce semper accumsan dolor sit amet sodales. Curabitur at ultrices tortor. Vestibulum blandit sem vel sollicitudin sodales. Vestibulum laoreet lacus sit amet orci pretium, quis dapibus sapien convallis. Nullam non vulputate augue. Sed lorem nunc, cursus sed orci quis, laoreet maximus sapien. Etiam sed interdum ipsum, id fringilla nunc. Donec vitae pharetra lorem. Nullam at nunc dictum, scelerisque elit eget, ornare ex. Nam ac pretium libero.",
-    "chart": [5,1,5,3,2]
+    "chart": [5,1,5,1,2]
   }
 ]

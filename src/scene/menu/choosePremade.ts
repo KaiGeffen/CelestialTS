@@ -177,7 +177,7 @@ export default class ChoosePremade extends Menu {
 		this.chart = this.scene['rexUI'].add.chart(1200, 400, 450, 450, {
 			type: 'radar',
 			data: {
-				labels: ['Difficulty', 'Speed', 'Control', 'Explosiveness', 'TODO'],
+				labels: ['Difficulty', 'Speed', 'Control', 'Max Points', 'Combos'],
 				datasets: [
 				{
 					label: '',
