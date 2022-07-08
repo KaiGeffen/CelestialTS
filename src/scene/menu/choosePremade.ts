@@ -40,6 +40,8 @@ export default class ChoosePremade extends Menu {
 		.addNewLine()
 		.add(this.createPanel())
 
+		this.createButtons().layout()
+
 		sizer.layout().layout()
 	}
 
@@ -108,18 +110,24 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createButtons(): any {
+		// const y = Space.windowHeight - Space.pad - Space.smallButtonHeight/2
+		// new Buttons.Basic(this.scene, 0, y, 'Cancel')
+		// new Buttons.Basic(this.scene, 0, y, 'Select')
+
 		let panel = this.scene['rexUI'].add.sizer({
+			x: this.avatarFull.width + (Space.windowWidth - this.avatarFull.width - Space.pad * 2)/2,
+			y: Space.windowHeight - Space.pad - Space.smallButtonWidth/2,
 			space: {
 				item: Space.pad,
 			}
 		})
 
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
-		let btn = new Buttons.Basic(container, 0, 0, 'hewwo')
-		panel.add(container)
+		let c1 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let btnCancel = new Buttons.Basic(c1, 0, 0, 'Cancel')
+		panel.add(c1)
 
 		let c2 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
-		let btn2 = new Buttons.Basic(c2, 0, 0, 'hewwo')
+		let btnSelect = new Buttons.Basic(c2, 0, 0, 'Select')
 		panel.add(c2)
 
 		return panel
