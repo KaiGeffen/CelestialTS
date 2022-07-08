@@ -61,8 +61,6 @@ export default class DeckRegion {
 			width: width,
 			height: Space.windowHeight,
 
-			background: background,
-
 			panel: {
 				child: this.createPanel(startCallback)
 			},
@@ -70,11 +68,12 @@ export default class DeckRegion {
 			slider: Mobile ? Scroll(this.scene) : undefined,
 			
 			header: Mobile ? undefined : this.createHeader(startCallback),
+			background: background,
 
 			space: {
-				top: Space.filterBarHeight + Space.pad,
+				top: Space.filterBarHeight,
 				bottom: Space.pad,
-				item: Space.pad,
+				// item: Space.pad,
 			},
 			}).setOrigin(0)
 
@@ -101,25 +100,25 @@ export default class DeckRegion {
 	}
 
 	private createPanel(startCallback: () => void): Phaser.GameObjects.GameObject {
-		this.panel = this.scene['rexUI'].add.fixWidthSizer({space: {
-			top: 10,
-			bottom: 10,
-		}})
+		this.panel = this.scene['rexUI'].add.fixWidthSizer()
 
 		return this.panel
 	}
 
 	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background2)
+		.setInteractive()
+
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			Space: {left: Space.pad, right: Space.pad, bottom: Space.pad}
-		})
+			space: {top: Space.padSmall, bottom: Space.padSmall},
+		}).addBackground(background)
 
 		// Sizer for the top of the header
 		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
 			width: width,
 			align: Mobile ? 'left' : 'center',
 		})
-		sizer.add(sizerTop)
+		sizer.add(sizerTop, {space: {top: 100}})
 
 		// Add the deck's name
 		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement)
