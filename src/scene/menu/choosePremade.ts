@@ -24,6 +24,11 @@ export default class ChoosePremade extends Menu {
 		let callback: (number) => void = params.callback
 		super(scene)
 
+		// Add a background rectangle
+		this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.background)
+		.setOrigin(0)
+		.setInteractive()
+
 		this.selectedAvatar = params.selected | 0
 		this.avatarsSmall = []
 
