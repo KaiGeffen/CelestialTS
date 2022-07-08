@@ -12,19 +12,25 @@ import avatarNames from '../../lib/avatarNames'
 
 
 export default class ChoosePremade extends Menu {
+	selectedAvatar: number
+
+	avatarsSmall: Button[]
 	avatarFull: Phaser.GameObjects.Image
 	txtName: Phaser.GameObjects.Text
 	txtSurname: Phaser.GameObjects.Text
 	txtDescription: Phaser.GameObjects.Text
 
 	constructor(scene: Phaser.Scene, params) {
-		let callback: (number) => () => void = params.callback
+		let callback: (number) => void = params.callback
 		super(scene)
 
-		this.createSizer()
+		this.selectedAvatar = params.selected | 0
+		this.avatarsSmall = []
+
+		this.createSizer(callback)
 	}
 
-	private createSizer(): void {
+	private createSizer(callback: (number) => void): void {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
 			width: Space.windowWidth,
 			space: {
@@ -40,7 +46,7 @@ export default class ChoosePremade extends Menu {
 		.addNewLine()
 		.add(this.createPanel())
 
-		this.createButtons().layout()
+		this.createButtons(callback).layout()
 
 		sizer.layout().layout()
 	}
@@ -50,13 +56,26 @@ export default class ChoosePremade extends Menu {
 			width: Space.windowWidth
 		})
 
+		// TODO Deselect others
+
 		// Add each of the avatars
 		for (let i = 0; i < avatarNames.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
-			let avatarSmall = new Buttons.Avatar(container, 0, 0, i, () => {
+			this.avatarsSmall[i] = new Buttons.Avatar(container, 0, 0, i, () => {
+				// Set which avatar is selected
+				this.selectedAvatar = i
+				this.avatarsSmall.forEach(a => a.deselect())
+				this.avatarsSmall[i].select()
+
+				// Adjust displayed content
 				this.avatarFull.setTexture(`avatar-${avatarNames[i]}Full`)
 				this.txtName.setText(`${avatarNames[i]}`)
 			})
+
+			// Select this avatar if appropriate
+			if (i === this.selectedAvatar) {
+				this.avatarsSmall[i].select()
+			}
 			
 			panel.add(container)
 			.addSpace()
@@ -77,7 +96,7 @@ export default class ChoosePremade extends Menu {
 		})
 
 		// TODO Set when opening
-		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarNames[0]}Full`)
+		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarNames[this.selectedAvatar]}Full`)
 		
 		// Scale to fit in the window
 		let space = Space.windowHeight - Space.pad * 3 - Space.avatarSize
@@ -93,7 +112,7 @@ export default class ChoosePremade extends Menu {
 	private createText(): any {
 		let panel = this.scene['rexUI'].add.fixWidthSizer()
 
-		// TODO i
+		// TODO Displayed the selected one
 		this.txtName = this.scene.add.text(0, 0, avatarNames[0], Style.announcement)
 		this.txtSurname = this.scene.add.text(0, 0, 'Dove boi does bird things', Style.surname)
 		const s = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet malesuada massa. Nulla eget dolor tortor. `
@@ -109,7 +128,7 @@ export default class ChoosePremade extends Menu {
 		return panel
 	}
 
-	private createButtons(): any {
+	private createButtons(callback: (number) => void): any {
 		// const y = Space.windowHeight - Space.pad - Space.smallButtonHeight/2
 		// new Buttons.Basic(this.scene, 0, y, 'Cancel')
 		// new Buttons.Basic(this.scene, 0, y, 'Select')
@@ -123,11 +142,16 @@ export default class ChoosePremade extends Menu {
 		})
 
 		let c1 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
-		let btnCancel = new Buttons.Basic(c1, 0, 0, 'Cancel')
+		let btnCancel = new Buttons.Basic(c1, 0, 0, 'Cancel', () => {
+			this.close()
+		})
 		panel.add(c1)
 
 		let c2 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
-		let btnSelect = new Buttons.Basic(c2, 0, 0, 'Select')
+		let btnSelect = new Buttons.Basic(c2, 0, 0, 'Select', () => {
+			callback(this.selectedAvatar)
+			this.close()
+		})
 		panel.add(c2)
 
 		return panel
