@@ -72,8 +72,6 @@ export default class DeckRegion {
 
 			space: {
 				top: Space.filterBarHeight,
-				bottom: Space.pad,
-				// item: Space.pad,
 			},
 			}).setOrigin(0)
 
@@ -100,13 +98,17 @@ export default class DeckRegion {
 	}
 
 	private createPanel(startCallback: () => void): Phaser.GameObjects.GameObject {
-		this.panel = this.scene['rexUI'].add.fixWidthSizer()
+		this.panel = this.scene['rexUI'].add.fixWidthSizer({
+			space: {
+				top: Space.padSmall
+			}
+		})
 
 		return this.panel
 	}
 
 	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
-		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background2)
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
@@ -156,6 +158,13 @@ export default class DeckRegion {
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
 		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules', this.onClickAvatar(), true)
 		sizer.add(containerAvatar)
+
+		// Give the background a drop shadow
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			angle: -90,
+			shadowColor: 0x000000,
+		})
 
 		return sizer
 	}
