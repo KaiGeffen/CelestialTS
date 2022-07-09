@@ -66,13 +66,13 @@ export default class SearchingRegion extends Region {
 
 	private addButtons(scene: BaseScene, container: Phaser.GameObjects.Container): Button {
 		let btn = new Buttons.Basic(container, Space.windowWidth/2, Space.windowHeight/2 + 100, 'Cancel', () => {
-			// Stop the other active scene
+			// Do any necessary cleanup
 			scene.beforeExit()
-			scene.scene.stop()
 
-			// Stop this scene and start the home scene
-			scene.scene.start("BuilderScene")
+			// Return to the last scene
+			scene.doBack()
 		})
+
 
 		return btn
 	}
