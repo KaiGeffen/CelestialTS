@@ -24,6 +24,7 @@ const CoreColors: Record<string, any> = {
 
   // Trial colors
   background: 0xF5F2EB,
+  background2: 0xC3B9A2,
 
   c1: 0x664930,
   c1s: '#664930', // Basic text brown color
@@ -96,6 +97,7 @@ export const Color: Record<string, any> = {
 
   // Background of the webpage
   background: CoreColors.background, //CoreColors.primary,
+  background2: CoreColors.background2,
 
   // Fill color of progress bar in loading screen
   progressBackground: CoreColors.secondary,
