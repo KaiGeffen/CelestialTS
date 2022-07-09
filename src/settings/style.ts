@@ -76,6 +76,14 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '14px',
     color: '#FFC0CB00',
   },
+  // Surname for characters in premade deck
+  surname: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.large.size,
+    color: '#fff',
+    stroke: Color.basicText,
+    strokeThickness: 2
+  },
 
   basic: {
     fontFamily: fontFamily,

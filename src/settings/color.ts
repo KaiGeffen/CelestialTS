@@ -138,6 +138,9 @@ export const Color: Record<string, any> = {
   textAreaBackground: '#444',
   textAreaBackgroundAlt: CoreColors.secondaryS,
 
+  // Color for the radar chart
+  radar: CoreColors.goldenS,
+
 
 
   // Card components

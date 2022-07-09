@@ -21,6 +21,9 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// this.renderSigninButton()
 
+		// Gain access to chart plugin
+		this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
+
 		// Load all of the assets
 		Loader.loadAll(this)
 

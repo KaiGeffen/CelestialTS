@@ -156,7 +156,7 @@ export class BuilderScene extends BuilderBase {
       this.decklistsRegion.selectDeck(this.lastDecklist)
     }
     else if (this.lastPremade !== undefined) {
-      this.decklistsRegion.premadeCallback()(this.lastPremade)()
+      this.decklistsRegion.premadeCallback()(this.lastPremade)
     }
   }
 
