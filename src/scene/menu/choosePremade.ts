@@ -174,7 +174,12 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createChart(): void {
-		this.chart = this.scene['rexUI'].add.chart(1200, 400, 450, 450, {
+		this.chart = this.scene['rexUI'].add.chart(
+			Space.windowWidth,
+			Space.avatarSize + Space.pad * 2,
+			450,
+			450,
+			{
 			type: 'radar',
 			data: {
 				labels: ['Difficulty', 'Speed', 'Control', 'Max Points', 'Combos'],
@@ -209,7 +214,7 @@ export default class ChoosePremade extends Menu {
                 	},
                 }
             }
-		})
+		}).setOrigin(1, 0)
 	}
 
 	// Populate the content objects with the given avatar details
