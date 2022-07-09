@@ -61,8 +61,6 @@ export default class DeckRegion {
 			width: width,
 			height: Space.windowHeight,
 
-			background: background,
-
 			panel: {
 				child: this.createPanel(startCallback)
 			},
@@ -70,11 +68,10 @@ export default class DeckRegion {
 			slider: Mobile ? Scroll(this.scene) : undefined,
 			
 			header: Mobile ? undefined : this.createHeader(startCallback),
+			background: background,
 
 			space: {
-				top: Space.filterBarHeight + Space.pad,
-				bottom: Space.pad,
-				item: Space.pad,
+				top: Space.filterBarHeight,
 			},
 			}).setOrigin(0)
 
@@ -101,25 +98,29 @@ export default class DeckRegion {
 	}
 
 	private createPanel(startCallback: () => void): Phaser.GameObjects.GameObject {
-		this.panel = this.scene['rexUI'].add.fixWidthSizer({space: {
-			top: 10,
-			bottom: 10,
-		}})
+		this.panel = this.scene['rexUI'].add.fixWidthSizer({
+			space: {
+				top: Space.padSmall
+			}
+		})
 
 		return this.panel
 	}
 
 	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
+		.setInteractive()
+
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			Space: {left: Space.pad, right: Space.pad, bottom: Space.pad}
-		})
+			space: {top: Space.padSmall, bottom: Space.padSmall},
+		}).addBackground(background)
 
 		// Sizer for the top of the header
 		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
 			width: width,
 			align: Mobile ? 'left' : 'center',
 		})
-		sizer.add(sizerTop)
+		sizer.add(sizerTop, {space: {top: 100}})
 
 		// Add the deck's name
 		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement)
@@ -157,6 +158,13 @@ export default class DeckRegion {
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
 		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules', this.onClickAvatar(), true)
 		sizer.add(containerAvatar)
+
+		// Give the background a drop shadow
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			angle: -90,
+			shadowColor: 0x000000,
+		})
 
 		return sizer
 	}
