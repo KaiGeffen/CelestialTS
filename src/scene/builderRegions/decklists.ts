@@ -122,8 +122,8 @@ export default class DecklistsRegion {
 		}
 	}
 
-	selectDeck(index: number): void {
-		this.decklistBtns[index].onClick()
+	selectDeck(i: number): void {
+		this.decklistOnClick(i)()
 	}
 
 	// Set the currently selected deck name to the given name
@@ -219,24 +219,26 @@ export default class DecklistsRegion {
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
 		let btn = new Buttons.Decklist(container, 0, 0, name, () => {}, this.deleteDeck(i, container))
 		.setDepth(2)
-
-		// Set the on click for this button
-		btn.setOnClick(this.decklistOnClick(btn, i))
+		.setOnClick(this.decklistOnClick(i))
 
 		this.decklistBtns.push(btn)
 
 		return container
 	}
 
-	private decklistOnClick(btn: Button, i: number) {
+	private decklistOnClick(i: number) {
 		let that = this
 
 		// Set btn as active, select self and deselect other buttons, set the deck
 		return function() {
+			let btn = that.decklistBtns[i]
+
 			// Deselect all other buttons
-			that.decklistBtns.forEach(b => {
-				if (b !== btn) b.deselect()
-			})
+			for (let j = 0; j < that.decklistBtns.length; j++) {
+				if (i !== j) {
+					that.decklistBtns[j].deselect()
+				}
+			}
 			that.btnPremade.deselect()
 
 			// If it's already selected, deselect it
