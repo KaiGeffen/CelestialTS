@@ -59,7 +59,7 @@ export class CardImage {
     .setAlpha(0.001)
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card costs ${this.txtCost.text} breath to play.`))
-    .on('pointerout', () => hint.hide())
+    .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
     .on('pointerdown', () => that.clickCallback())
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
@@ -70,7 +70,7 @@ export class CardImage {
     .setOrigin(0.5)
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
-    .on('pointerout', () => hint.hide())
+    .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
     .on('pointerdown', () => that.clickCallback())
     this.setPoints(card.points)
 
