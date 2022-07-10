@@ -386,7 +386,7 @@
   },
   {"name": "Excess", "id": 46,
     "cost": 7, "points": 7,
-    "text": "Costs 0 if you have 4 cards in the story."
+    "text": "Costs 0 if you have exactly 4 cards in the story."
   },
 
   {"name": "Sun", "id": 56,
