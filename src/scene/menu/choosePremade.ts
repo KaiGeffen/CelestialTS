@@ -46,11 +46,10 @@ export default class ChoosePremade extends Menu {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
 			width: Space.windowWidth,
 			space: {
-				left: Space.pad,
+				// left: Space.pad,
 				right: Space.pad,
-				top: Space.pad,
 				bottom: Space.pad,
-				line: Space.pad,
+				// line: Space.pad,
 			}
 		}).setOrigin(0)
 
@@ -67,13 +66,18 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createHeader(): any {
-		let panel = this.scene['rexUI'].add.sizer({
-			width: Space.windowWidth
-		})
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background2)
 
-		// TODO Deselect others
+		let panel = this.scene['rexUI'].add.sizer({
+			width: Space.windowWidth,
+			space: {
+				top: Space.pad,
+				bottom: Space.pad,
+			}
+		}).addBackground(background)
 
 		// Add each of the avatars
+		panel.addSpace()
 		for (let i = 0; i < avatarDetails.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
 			this.avatarsSmall[i] = new Buttons.Avatar(container, 0, 0, i, () => {
@@ -95,6 +99,13 @@ export default class ChoosePremade extends Menu {
 			.addSpace()
 		}
 
+		// Give the background a drop shadow
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			angle: -90,
+			shadowColor: 0x000000,
+		})
+
 		return panel
 	}
 
@@ -103,7 +114,7 @@ export default class ChoosePremade extends Menu {
 		let panel = this.scene['rexUI'].add.sizer({
 			// width: Space.windowWidth,
 			space: {
-				// left: 200,
+				left: Space.pad,
 				item: Space.pad,
 			},
 			align: 'top',
