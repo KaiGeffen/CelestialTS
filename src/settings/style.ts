@@ -79,10 +79,8 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Surname for characters in premade deck
   surname: {
     fontFamily: fontFamily,
-    fontSize: FontSettings.large.size,
-    color: '#fff',
-    stroke: Color.basicText,
-    strokeThickness: 2
+    fontSize: '34px',
+    color: Color.basicText,
   },
 
   basic: {
@@ -292,5 +290,20 @@ export const BBStyle: Record<string, any> = {
       mode: 'word',
       width: 1000
     }
-  }
+  },
+  // Description for avatars
+  description: {
+    fontFamily: fontFamily,
+    fontSize: FontSettings.standard.size,
+    color: Color.basicText,
+    wrap: {
+      mode: 'word',
+      width: Space.maxTextWidth,
+    },
+    underline: {
+      color: Color.basicText,
+      thickness: 3,
+      offset: 7,
+    },
+  },
 }

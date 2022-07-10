@@ -17,8 +17,8 @@ export default class Hint {
 	waitTime = 0
 	skipWait = false
 
-	constructor(scene: BaseScene) {
-		this.txt = scene.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
+	constructor(scene: Phaser.Scene) {
+		this.txt = scene['rexUI'].add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.hint)
 		.setOrigin(0.5, 1)
 		.setDepth(40)
 		.setVisible(false)

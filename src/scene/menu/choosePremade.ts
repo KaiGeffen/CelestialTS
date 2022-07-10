@@ -1,5 +1,6 @@
 import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 // TODO Remove, use Buttons namespace
 import { ButtonAvatarFull } from '../../lib/buttons/avatarSelect'
@@ -7,8 +8,9 @@ import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 
 import Menu from './menu'
-import { Style, Space, Color } from '../../settings/settings'
+import { Style, BBStyle, Space, Color } from '../../settings/settings'
 import avatarDetails from '../../catalog/avatarDetails.json'
+import Hint from '../../lib/hint'
 
 
 export default class ChoosePremade extends Menu {
@@ -18,7 +20,7 @@ export default class ChoosePremade extends Menu {
 	avatarFull: Phaser.GameObjects.Image
 	txtName: Phaser.GameObjects.Text
 	txtSurname: Phaser.GameObjects.Text
-	txtDescription: Phaser.GameObjects.Text
+	txtDescription: RexUIPlugin.BBCodeText
 
 	chart: any
 
@@ -121,12 +123,22 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createText(): any {
-		let panel = this.scene['rexUI'].add.fixWidthSizer()
+		let panel = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
+
+		// Hint on which information is displayed
+		let hint = new Hint(this.scene)
 
 		// TODO Displayed the selected one
 		this.txtName = this.scene.add.text(0, 0, '', Style.announcement)
 		this.txtSurname = this.scene.add.text(0, 0, '', Style.surname)
-		this.txtDescription = this.scene.add.text(0, 0, '', Style.basic)
+		this.txtDescription = this.scene['rexUI'].add.BBCodeText(0, 0, '', BBStyle.description)
+		.setInteractive()
+		.on('areaover', function (key) {
+			hint.showText(key)
+		})
+		.on('areaout', () => {
+			hint.hide()
+		})
 
 		// Add all this text to the panel
 		panel.add(this.txtName)
