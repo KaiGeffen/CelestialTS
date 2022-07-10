@@ -26,9 +26,9 @@ export class CardImage {
   // Whether or not this object is hovered currently
   hovered = false
 
-  hoverCallback: () => void
-  exitCallback: () => void
-  clickCallback: () => void
+  hoverCallback = () => {}
+  exitCallback = () => {}
+  clickCallback = () => {}
 
   // The index of this container within its parent container before it was brought to top
   renderIndex: number = undefined
@@ -38,6 +38,7 @@ export class CardImage {
   }
 
   init(card: Card, outerContainer: any, interactive: Boolean) {
+    let that = this
     this.card = card
 
     let scene: Phaser.Scene = outerContainer.scene
@@ -59,7 +60,7 @@ export class CardImage {
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card costs ${this.txtCost.text} breath to play.`))
     .on('pointerout', () => hint.hide())
-    .on('pointerdown', () => this.clickCallback())
+    .on('pointerdown', () => that.clickCallback())
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
       -Space.cardWidth/2 + 25,
@@ -70,7 +71,7 @@ export class CardImage {
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
     .on('pointerout', () => hint.hide())
-    .on('pointerdown', () => this.clickCallback())
+    .on('pointerdown', () => that.clickCallback())
     this.setPoints(card.points)
 
     // Add keywords and references
@@ -82,10 +83,12 @@ export class CardImage {
 
     if (interactive) {
       this.image.setInteractive()
-      this.setOnHover(this.onHover(), this.onHoverExit())
+      .on('pointerover', this.onHover())
+      .on('pointerout', this.onHoverExit())
+      .on('pointerdown', () => that.clickCallback())
 
       // If the mouse moves outside of the game, exit the hover also
-      this.scene.input.on('gameout', this.onHoverExit(), this)
+      this.scene.input.on('gameout', () => this.exitCallback(), this)
     }
   }
 
@@ -107,18 +110,18 @@ export class CardImage {
 
   // Set the callback to fire when this card's image is clicked
   setOnClick(f: () => void, removeListeners = false): CardImage {
-    let callback
-    if (removeListeners || this.clickCallback === undefined) {
-      callback = f
-    }
-    else {
-      callback = () => {
-        this.clickCallback()
-        f()
-      }
-    }
+    // let callback
+    // if (removeListeners || this.clickCallback === undefined) {
+    //   callback = f
+    // }
+    // else {
+    //   callback = () => {
+    //     this.clickCallback()
+    //     f()
+    //   }
+    // }
 
-    this.clickCallback = callback
+    this.clickCallback = f
 
     return this
   }
@@ -268,9 +271,6 @@ export class CardImage {
       // Reset the render index to show no longer reversed
       that.renderIndex = undefined
     }
-
-    // Set the hover / exit callbacks
-    this.setOnHover(onHover, onExit)
 
     return this
   }

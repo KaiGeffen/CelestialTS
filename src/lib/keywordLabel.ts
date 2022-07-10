@@ -27,8 +27,6 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
 			}
 		})
 
-		console.log(f)
-
 		// On hover this should show the correct hint
 		this.setInteractive()
 		.on('pointerdown', f)
