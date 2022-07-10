@@ -300,7 +300,7 @@ export default class DecklistsRegion {
 			// Create the deck in storage
 			UserSettings._push('decks', {
 				name: name,
-				value: scene.getDeckCode(),
+				value: '',
 				avatar: avatar,
 			})
 
