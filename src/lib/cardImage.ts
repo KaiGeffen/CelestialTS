@@ -128,8 +128,17 @@ export class CardImage {
 
   // Set the callback to fire when this card's image is hovered, and one for when exited
   setOnHover(fHover: () => void, fExit: () => void): CardImage {
-    this.hoverCallback = fHover
-    this.exitCallback = fExit
+    var oldHover = this.hoverCallback
+    this.hoverCallback = () => {
+      oldHover()
+      fHover()
+    }
+
+    var oldExit = this.exitCallback
+    this.exitCallback = () => {
+      oldExit()
+      fExit()
+    }
 
     return this
   }
@@ -247,7 +256,7 @@ export class CardImage {
 
     // Reverse the order of everything from this objects index on
     // This makes this appear above everything, and things to the right to be in reverse order
-    this.hoverCallback = function() {
+    let fHover = () => {
       // If the render index has already been set, we are already reversed
       if (that.renderIndex !== undefined) {
         return
@@ -262,15 +271,17 @@ export class CardImage {
       }
     }
 
-    this.exitCallback = () => {
+    let fExit = () => {
       // From INDEX to the top is reversed, flip it back
       for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
         parentContainer.bringToTop(parentContainer.getAt(i))
       }
-
+      console.log('here')
       // Reset the render index to show no longer reversed
       that.renderIndex = undefined
     }
+
+    this.setOnHover(fHover, fExit)
 
     return this
   }
