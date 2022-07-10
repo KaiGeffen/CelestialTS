@@ -5,6 +5,7 @@ import { Style, BBStyle, Color, Time, UserSettings, Space } from '../settings/se
 import Card from './card'
 import BaseScene from '../scene/baseScene'
 import { allCards } from '../catalog/catalog'
+import { Keyword, keywords } from '../catalog/keywords'
 
 
 export default class Hint {
@@ -94,6 +95,17 @@ export default class Hint {
 
 		this.txt.setText(s)
 		.setFixedSize(0, 0)
+	}
+
+	// TODO Use in more places, instead of forming a string then passing to showText
+	showKeyword(name: string): void {
+		keywords.forEach(keyword => {
+			// TODO Support X substitution
+			if (keyword.key === name) {
+				this.showText(keyword.text)
+				return
+			}
+		})
 	}
 
 	enableWaitTime(): void {
