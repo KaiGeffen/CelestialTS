@@ -9,23 +9,26 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 
 export class CardImage {
+  scene: Phaser.Scene
+
   card: Card
   image: Phaser.GameObjects.Image
 
-  scene: Phaser.Scene
-
+  // Visual elements that appear on the cardImage
   txtCost: Phaser.GameObjects.Text
   txtPoints: Phaser.GameObjects.Text
-
   keywords: KeywordLabel[] = []
-  // All referenced cards
   references: ReferenceLabel[] = []
 
-  // Whether the current card is required in this context (Must be in the deck)
-  required = false
-
-  // A container just for this cardImage / objects related to it
+  // A container just for this cardImage and elements within it
   container: ContainerLite | Phaser.GameObjects.Container
+
+  // Whether or not this object is hovered currently
+  hovered = false
+
+  hoverCallback: () => void
+  exitCallback: () => void
+  clickCallback: () => void
 
   // The index of this container within its parent container before it was brought to top
   renderIndex: number = undefined
@@ -56,7 +59,7 @@ export class CardImage {
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card costs ${this.txtCost.text} breath to play.`))
     .on('pointerout', () => hint.hide())
-    .on('pointerdown', () => this.image.emit('pointerdown'))
+    .on('pointerdown', () => this.clickCallback())
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
       -Space.cardWidth/2 + 25,
@@ -67,7 +70,7 @@ export class CardImage {
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
     .on('pointerout', () => hint.hide())
-    .on('pointerdown', () => this.image.emit('pointerdown'))
+    .on('pointerdown', () => this.clickCallback())
     this.setPoints(card.points)
 
     // Add keywords and references
@@ -104,48 +107,26 @@ export class CardImage {
 
   // Set the callback to fire when this card's image is clicked
   setOnClick(f: () => void, removeListeners = false): CardImage {
-    if (removeListeners) {
-      this.removeOnClick()
+    let callback
+    if (removeListeners || this.clickCallback === undefined) {
+      callback = f
+    }
+    else {
+      callback = () => {
+        this.clickCallback()
+        f()
+      }
     }
 
-    this.image.on('pointerdown', f)
+    this.clickCallback = callback
 
     return this
   }
 
-  // Remove all callbacks that fire when this card's image is clicked
-  removeOnClick(): void {
-    this.image.removeAllListeners('pointerdown')
-
-    // this.keywords.forEach((keyword) => {
-    //   keyword.removeAllListeners('pointerdown')
-    // })
-  }
-
   // Set the callback to fire when this card's image is hovered, and one for when exited
   setOnHover(fHover: () => void, fExit: () => void): CardImage {
-    let that = this
-
-    this.image.on('pointerover', fHover)
-    this.image.on('pointerout', () => {
-      const pointer = that.scene.input.activePointer
-
-      // Check if any of the internal elements are highlighted (Keywords, references, etc)
-      let overInternal = false;
-      [
-      this.txtCost, this.txtPoints,
-      ...this.keywords,
-      ...this.references,
-      ].forEach(obj => {
-        if (obj.getBounds().contains(pointer.x, pointer.y)) {
-          overInternal = true
-        }
-      })
-
-      if (!overInternal) {
-        fExit()
-      }
-    })
+    this.hoverCallback = fHover
+    this.exitCallback = fExit
 
     return this
   }
@@ -157,17 +138,6 @@ export class CardImage {
     }
     else {
       this.image.setTint(Color.cardUnplayable)
-    }
-  }
-
-  // Set whether this card is described or not
-  setDescribable(isDescribable: Boolean): void {
-    if (!isDescribable) {
-      this.image.removeInteractive()
-    }
-    else{
-      // TODO Enable if isDescribable is true
-      throw 'setDescribable(true) is not implemented for cardImage'
     }
   }
 
@@ -213,15 +183,6 @@ export class CardImage {
     return this
   }
 
-  // Remove the highlight from this card
-  removeHighlight(): () => void {
-    let that = this
-
-    return function() {
-      that.scene.plugins.get('rexOutlinePipeline')['remove'](that.image)
-    }
-  }
-
   private createContainer(outerContainer): ContainerLite {
     // Depending on the type of the outer container, need to do different things
     let container
@@ -253,12 +214,8 @@ export class CardImage {
         keywordTuple.name,
         keywordTuple.x,
         keywordTuple.y,
-        keywordTuple.value)
-
-      // Keyword should trigger the hover/click for the image behind
-      keyword.on('pointerdown', () => {
-        that.image.emit('pointerdown')
-      })
+        keywordTuple.value,
+        () => {that.clickCallback()})
 
       this.keywords.push(keyword)
     })
@@ -272,43 +229,11 @@ export class CardImage {
         this.scene,
         referenceTuple.name,
         referenceTuple.x,
-        referenceTuple.y)
-
-      // reference should trigger the hover/click for the image behind
-      reference.on('pointerdown', () => {
-        that.image.emit('pointerdown')
-      })
+        referenceTuple.y,
+        () => {that.clickCallback()})
 
       this.references.push(reference)
     })
-  }
-
-  private onHover(): () => void {
-    let that = this
-
-    function doHighlight() {
-      var postFxPlugin = that.scene.plugins.get('rexOutlinePipeline')
-
-      postFxPlugin['remove'](that.image)
-      postFxPlugin['add'](that.image,
-        {
-          thickness: Space.highlightWidth,
-          outlineColor: Color.outline,
-          quality: 0.3,
-        })
-    }
-
-    return function() {
-      that.scene.sound.play('hover')
-      doHighlight()
-    }
-  }
-
-  private onHoverExit(): () => void {
-    let that = this
-    return () => {
-      that.removeHighlight()()
-    }
   }
 
   // Move this cardImage above everything else in its container when it's hovered
@@ -319,7 +244,7 @@ export class CardImage {
 
     // Reverse the order of everything from this objects index on
     // This makes this appear above everything, and things to the right to be in reverse order
-    let onHover = function() {
+    this.hoverCallback = function() {
       // If the render index has already been set, we are already reversed
       if (that.renderIndex !== undefined) {
         return
@@ -334,7 +259,7 @@ export class CardImage {
       }
     }
 
-    let onExit = function() {
+    this.exitCallback = () => {
       // From INDEX to the top is reversed, flip it back
       for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
         parentContainer.bringToTop(parentContainer.getAt(i))
@@ -374,4 +299,70 @@ export class CardImage {
 
     return this
   }
+
+  private onHover(): () => void {
+    let that = this
+
+    function doHighlight() {
+      var postFxPlugin = that.scene.plugins.get('rexOutlinePipeline')
+
+      postFxPlugin['remove'](that.image)
+      postFxPlugin['add'](that.image,
+        {
+          thickness: Space.highlightWidth,
+          outlineColor: Color.outline,
+          quality: 0.3,
+        })
+    }
+
+    return () => {
+      // If already hovered, exit
+      if (this.hovered) {
+        return
+      }
+      this.hovered = true
+
+      // Play a sound
+      this.scene.sound.play('hover')
+
+      // Apply the highlight effect
+      doHighlight()
+
+      // Do the callback
+      this.hoverCallback()
+    }
+  }
+
+  private onHoverExit(): () => void {
+    return () => {
+      // If still over the internal elements, exit
+      const pointer = this.scene.input.activePointer
+
+      // Check if any of the internal elements are highlighted (Keywords, references, etc)
+      let overInternal = false;
+      [
+      this.txtCost, this.txtPoints,
+      ...this.keywords,
+      ...this.references,
+      ].forEach(obj => {
+        if (obj.getBounds().contains(pointer.x, pointer.y)) {
+          overInternal = true
+        }
+      })
+
+      if (overInternal) {
+        return
+      }
+
+      // Remove the highlight effect
+      this.scene.plugins.get('rexOutlinePipeline')['remove'](this.image)
+
+      // Do the callback
+      this.exitCallback()
+
+      // Set the parameter to no longer hovered
+      this.hovered = false
+    }
+  }
+
 }

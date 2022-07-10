@@ -13,7 +13,7 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
 	// The X value of the keyword, if any
 	value: number
 
-	constructor(scene: Phaser.Scene, name, x, y, value?) {
+	constructor(scene: Phaser.Scene, name, x: number, y: number, value: number, f: () => void) {
 		const s = value === undefined ? `kw-${name}` : `kw-${name} ${value}`
 
 		super(scene, x, y, s)
@@ -27,8 +27,11 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
 			}
 		})
 
+		console.log(f)
+
 		// On hover this should show the correct hint
 		this.setInteractive()
+		.on('pointerdown', f)
 		.on('pointerover', this.onHover())
 		.on('pointerout', this.onHoverExit())
 	}
@@ -63,7 +66,7 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
 export class ReferenceLabel extends Phaser.GameObjects.Text {
 	card: Card
 
-	constructor(scene: Phaser.Scene, name: string, x: number, y: number) {
+	constructor(scene: Phaser.Scene, name: string, x: number, y: number, f: () => void) {
 		super(scene, x, y, name, Style.reference)
 		scene.add.existing(this)
 
@@ -74,6 +77,7 @@ export class ReferenceLabel extends Phaser.GameObjects.Text {
 
 		// On hover this should show the correct hint
 		this.setInteractive()
+		.on('pointerdown', f)
 		.on('pointerover', this.onHover())
 		.on('pointerout', this.onHoverExit())
 	}
