@@ -133,8 +133,12 @@ export default class ChoosePremade extends Menu {
 		this.txtSurname = this.scene.add.text(0, 0, '', Style.surname)
 		this.txtDescription = this.scene['rexUI'].add.BBCodeText(0, 0, '', BBStyle.description)
 		.setInteractive()
-		.on('areaover', function (key) {
-			hint.showKeyword(key)
+		.on('areaover', function (key: string) {
+			if (key[0] === '_') {
+				hint.showCard(key.slice(1))
+			} else {
+				hint.showKeyword(key)
+			}
 		})
 		.on('areaout', () => {
 			hint.hide()

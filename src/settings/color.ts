@@ -141,6 +141,8 @@ export const Color: Record<string, any> = {
   // Color for the radar chart
   radar: CoreColors.goldenS,
 
+  // Color for text that references anything
+  reference: CoreColors.goldenS,
 
 
   // Card components
@@ -156,8 +158,6 @@ export const Color: Record<string, any> = {
   // Color for text that references a button
   buttonReference: CoreColors.variantS,
 
-  // Color for text that references a card
-  cardReference: CoreColors.primaryS,
 
   // Rulebook components
   rulebookText: CoreColors.black,

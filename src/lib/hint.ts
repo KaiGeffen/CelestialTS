@@ -4,7 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { Style, BBStyle, Color, Time, UserSettings, Space } from '../settings/settings'
 import Card from './card'
 import BaseScene from '../scene/baseScene'
-import { allCards } from '../catalog/catalog'
+import { allCards, getCard } from '../catalog/catalog'
 import { Keyword, keywords } from '../catalog/keywords'
 
 
@@ -59,10 +59,14 @@ export default class Hint {
 		return this
 	}
 
-	showCard(card: Card): Hint {
+	showCard(card: Card | string): Hint {
 		this.show()
 
 		// Explain any keywords within the card
+		if (typeof card === 'string') {
+			card = getCard(card)
+		}
+		
 		let hintText = card.getHintText()
 		if (hintText !== '') {
 			this.showText(hintText)
