@@ -16,7 +16,7 @@ export default class Menu {
 		if (this.exitCallback) {
 			this.exitCallback()
 		}
-		
+
 		this.scene.scene.stop()
 	}
 }
@@ -51,13 +51,13 @@ const menus = {
 
 // Allows for the creation and storing of custom menus not specified 
 // in separate ts files
-export function createMenu(scene: Phaser.Scene, title: string, params) {
+export function createMenu(scene: Phaser.Scene, title: string, params): Menu {
 	// Check if the given menu exists, if not throw
 	if (!(title in menus)) {
 		throw `Given menu ${title} is not in list of implemented menus.`
 	}
 
-	new menus[title](scene, params)
+	return new menus[title](scene, params)
 }
 
 

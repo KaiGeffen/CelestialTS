@@ -30,11 +30,11 @@ export default class MenuScene extends Phaser.Scene {
 
 		this.addBackground()
 
-		createMenu(this, params.menu, params)
+		let menu = createMenu(this, params.menu, params)
 
 		// When esc is pressed, close this scene
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-		esc.on('down', this.endScene())
+		esc.on('down', () => {menu.close()})
 
 		this.scene.bringToTop()
 	}
