@@ -104,9 +104,14 @@ export default class Hint {
 	// TODO Use in more places, instead of forming a string then passing to showText
 	showKeyword(name: string): void {
 		keywords.forEach(keyword => {
-			// TODO Support X substitution
 			if (keyword.key === name) {
-				this.showText(keyword.text)
+				let s = keyword.text
+
+				if (keyword.x) {
+					s = s.replace(' X', '')
+				}
+
+				this.showText(s)
 				return
 			}
 		})
