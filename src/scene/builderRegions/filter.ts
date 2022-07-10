@@ -23,6 +23,7 @@ export default class FilterRegion {
 	// The costs and string that cards in the catalog are filtered for
 	filterCostAry: boolean[] = []
 	searchText: string = ""
+	searchObj: Phaser.GameObjects.GameObject
 	filterUnowned: boolean
 
 	// Create this region, offset by the given width
@@ -103,7 +104,7 @@ export default class FilterRegion {
 			return
 		}
 
-		let textboxSearch = this.scene.add['rexInputText'](
+		this.searchObj = this.scene.add['rexInputText'](
 			215, 40, 308, 40, {
 				type: 'text',
 				text: this.searchText,
@@ -122,10 +123,9 @@ export default class FilterRegion {
 			this.scene.filter()
 		}, this)
 		.setOrigin(0, 0.5)
+		.removeInteractive()
 
-		textboxSearch.removeInteractive()
-
-		container.add(textboxSearch)
+		container.add(this.searchObj)
 	}
 
 	private onClickFilterButton(thisI: number, btns: UButton[]): () => void {

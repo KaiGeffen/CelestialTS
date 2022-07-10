@@ -24,7 +24,7 @@ export default class ChoosePremade extends Menu {
 
 	constructor(scene: Phaser.Scene, params) {
 		let callback: (number) => void = params.callback
-		super(scene)
+		super(scene, params)
 
 		// Add a background rectangle
 		this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.background)

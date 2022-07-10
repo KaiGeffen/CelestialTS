@@ -190,6 +190,10 @@ export class BuilderScene extends BuilderBase {
     return super.setDeck(deckCode)
   }
 
+  setSearchVisible(value: boolean): void {
+    this.filterRegion.searchObj.setVisible(value)
+  }
+
   // Remember what deck / decklist was selected
   private rememberSettings() {
     // Remember the deck for when the builder is returned to

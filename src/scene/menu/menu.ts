@@ -2,11 +2,21 @@ import "phaser"
 
 export default class Menu {
 	scene: Phaser.Scene
-	constructor(scene: Phaser.Scene) {
+	exitCallback: () => void
+
+	constructor(scene: Phaser.Scene, params?) {
 		this.scene = scene
+
+		if (params) {
+			this.exitCallback = params.exitCallback
+		}
 	}
 
 	close() {
+		if (this.exitCallback) {
+			this.exitCallback()
+		}
+		
 		this.scene.scene.stop()
 	}
 }

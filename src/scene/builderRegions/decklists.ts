@@ -149,11 +149,12 @@ export default class DecklistsRegion {
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.largeButtonHeight)
 		this.btnPremade = new Buttons.Premade(container, 0, 0,
 			() => {
-				// TODO Hand this to a class instead of calling ourselves
+				this.scene.setSearchVisible(false)
 				this.scene.scene.launch('MenuScene', {
 					menu: 'choosePremade',
 					selected: this.savedPremadeIndex,
 					callback: this.premadeCallback(),
+					exitCallback: () => this.scene.setSearchVisible(true)
 				})
 			}
 			)
