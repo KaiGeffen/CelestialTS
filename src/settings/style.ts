@@ -296,6 +296,16 @@ export const BBStyle: Record<string, any> = {
     fontFamily: fontFamily,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
+    backgroundColor: Color.background2,
+    backgroundCornerRadius: 5,
+    backgroundStrokeColor: Color.outline,
+    backgroundStrokeLineWidth: 2,
+    padding: { 
+      left: Space.padSmall,
+      right: Space.padSmall,
+      top: Space.padSmall,
+      bottom: Space.padSmall
+    },
     wrap: {
       mode: 'word',
       width: Space.maxTextWidth,

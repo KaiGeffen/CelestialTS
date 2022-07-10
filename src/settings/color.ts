@@ -24,7 +24,7 @@ const CoreColors: Record<string, any> = {
 
   // Trial colors
   background: 0xF5F2EB,
-  background2: 0xC3B9A2,
+  background2: 0xffffff,
 
   c1: 0x664930,
   c1s: '#664930', // Basic text brown color
