@@ -352,10 +352,7 @@
   },
   {"name": "Conquer", "id": 67,
     "cost": 5, "points": 2,
-    "text": "Visible, worth +X points, where X is the cost of the next card in the story.",
-    "keywords": [
-      {"name": "Visible", "x": 0, "y": 60}
-    ]
+    "text": "Costs 1 less for each card you can see in the story."
   },
   {"name": "Phoenix", "id": 51,
     "cost": 5, "points": 5,

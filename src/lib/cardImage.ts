@@ -276,7 +276,7 @@ export class CardImage {
       for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
         parentContainer.bringToTop(parentContainer.getAt(i))
       }
-      console.log('here')
+
       // Reset the render index to show no longer reversed
       that.renderIndex = undefined
     }
