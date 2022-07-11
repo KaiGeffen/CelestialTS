@@ -105,10 +105,10 @@ export default class ResultsRegion extends Region {
 	private createButtons() {
 		// Exit
 		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
-		new Buttons.Basic(this.container, Space.windowWidth/2 + Space.pad + Space.largeButtonWidth, y, 'Exit', this.exitCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2 + Space.pad + Space.largeButtonWidth, y, 'Exit Match', this.exitCallback())
 
 		// Replay
-		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Replay', this.newMatchCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Play Again', this.newMatchCallback())
 		
 		// TODO Hint
 		// let txtHint = this.scene.add.text(
@@ -121,7 +121,7 @@ export default class ResultsRegion extends Region {
 		
 
 		// Review
-		new Buttons.Basic(this.container, Space.windowWidth/2 - Space.pad - Space.largeButtonWidth, y, 'Review', this.reviewCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2 - Space.pad - Space.largeButtonWidth, y, 'Hide', this.reviewCallback())
 	}
 
 	private createContent() {
