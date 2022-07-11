@@ -93,7 +93,7 @@ export default class DCMenu extends Menu {
 	}
 
 	private createReview(scene: Phaser.Scene): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Review', () => {
 			this.close()
@@ -103,7 +103,7 @@ export default class DCMenu extends Menu {
 	}
 
 	private createExit(scene: Phaser.Scene, activeScene: Phaser.Scene): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Exit', () => {
 			activeScene.scene.stop()

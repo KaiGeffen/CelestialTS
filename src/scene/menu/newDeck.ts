@@ -176,7 +176,7 @@ class AlterDeckMenu extends Menu {
 	}
 
 	private createCancel(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
 			scene.scene.stop()
@@ -188,7 +188,7 @@ class AlterDeckMenu extends Menu {
 	private createOK(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
 		let that = this
 
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, this.confirmString, () => {
 			createCallback(that.name, that.selectedAvatar)
