@@ -7,6 +7,7 @@ import iconData from './icons.json'
 import backgroundData from './backgrounds.json'
 import keywordData from './keywords.json'
 import sfxData from './sfx.json'
+import { Space } from '../settings/settings'
 
 
 // Entry in the prefix map below
@@ -58,6 +59,9 @@ export default class Loader {
 		// Load the avatars as a spritesheet
 		Loader.loadAvatarPortraits(scene)
 
+		// Load button as a spritesheet
+		Loader.loadButton(scene)
+
 		// Load all audio
 		Loader.loadAudio(scene)
 
@@ -85,9 +89,17 @@ export default class Loader {
 		avatarNames.forEach((name) => {
 			// Load the spritesheet with basic + emotes
 			scene.load.spritesheet(`avatar-${name}`, `avatars/${name}.png`, {
-				frameWidth: 130,
-				frameHeight: 130,
+				frameWidth: Space.avatarSize,
+				frameHeight: Space.avatarSize,
 			})
+		})
+	}
+
+	// Loads the basic button as a spritesheet
+	private static loadButton(scene): void {
+		scene.load.spritesheet(`icon-Button`, `icons/Button.png`, {
+			frameWidth: Space.smallButtonWidth,
+			frameHeight: Space.smallButtonHeight + 8, // 8 From dropshadow
 		})
 	}
 

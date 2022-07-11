@@ -28,4 +28,18 @@ export default class BasicButton extends Button {
 			}
 		})
 	}
+
+	// Button is a spritesheet with different states
+	enable(): this {
+		super.enable()
+		this.icon.setFrame(0)
+
+		return this
+	}
+	disable(): this {
+		super.disable()
+		this.icon.setFrame(1)
+
+		return this
+	}
 }
