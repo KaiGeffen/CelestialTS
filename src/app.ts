@@ -28,8 +28,8 @@ const config: Phaser.Types.Core.GameConfig = {
   width: Space.windowWidth,
   height: Space.windowHeight,
   parent: "game",
-  transparent: true,
   disableContextMenu: true,
+  backgroundColor: Color.background,
   dom: {
     createContainer: true
   },
@@ -43,7 +43,6 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  backgroundColor: Color.background,
   plugins: {
     scene: [{
       key: 'rexUI',
