@@ -77,7 +77,7 @@ export default class Hint {
 			.appendText(`[color=grey][${card.getReferencedCards()}[/color]`)
 			.appendText('\n\n\n\n\n\n\n\n\n\n\n\n')
 			.appendText(`\n${hintText}`)
-			.setFixedSize(Space.maxTextWidth + Space.pad, 0)
+			.setFixedSize(0, 0)
 		}
 		else {
 			const width = card.getReferencedCards() === '' ? Space.cardWidth + Space.pad : Space.maxTextWidth + Space.pad
