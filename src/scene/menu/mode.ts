@@ -5,7 +5,7 @@ import { Color, Space, Style } from '../../settings/settings';
 import Menu from './menu';
 
 
-const width = 400
+const width = 550
 
 export default class ModeMenu extends Menu {
 	password: string
@@ -113,7 +113,7 @@ export default class ModeMenu extends Menu {
 	}
 
 	private createAI(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'AI', () => {
 			activeScene.scene.stop()
@@ -133,7 +133,7 @@ export default class ModeMenu extends Menu {
 	}
 
 	private createPVP(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'PVP', () => {
 			activeScene.scene.stop()
@@ -153,7 +153,7 @@ export default class ModeMenu extends Menu {
 
 	private createPWD(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
 		let that = this
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'PWD', () => {
 			activeScene.scene.stop()

@@ -93,6 +93,8 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: fontFamily,
     fontSize: '20px',
     color: Color.button,
+    stroke: '#000000',
+    strokeThickness: 1,
   },
   small: {
     fontFamily: fontFamily,

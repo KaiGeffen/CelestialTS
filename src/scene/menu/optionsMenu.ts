@@ -11,7 +11,7 @@ import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
 
 
-const width = 400
+const width = 550
 
 export default class OptionsMenu extends Menu {
 	constructor(scene: Phaser.Scene, params) {
@@ -226,7 +226,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createReadRulebook(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Rulebook', () => {
 			scene.scene.start('MenuScene', {menu: 'rulebook'})
@@ -236,7 +236,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createCredits(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Credits', () => {
 			scene.scene.start('MenuScene', {menu: 'credits'})
@@ -246,7 +246,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createQuit(scene: Phaser.Scene, activeScene: BaseScene) {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Quit', () => {
 			// Stop the other active scene

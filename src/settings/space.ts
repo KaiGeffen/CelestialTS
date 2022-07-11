@@ -52,7 +52,7 @@ export var Space = {
   deckPanelWidth: 320 + 50,
 
   // Dimensions for common buttons
-  smallButtonWidth: 100,
+  smallButtonWidth: 150,
   smallButtonHeight: 50,
 
   largeButtonWidth: 150,

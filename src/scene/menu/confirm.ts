@@ -93,7 +93,7 @@ export default class ConfirmMenu extends Menu {
 	}
 
 	private createCancel(scene: Phaser.Scene): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
 			this.close()
@@ -103,7 +103,7 @@ export default class ConfirmMenu extends Menu {
 	}
 
 	private createOkay(scene: Phaser.Scene, callback: () => void): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, 100, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Okay', () => {
 			callback()
