@@ -74,7 +74,7 @@ export default class Hint {
 			// NOTE This is a hack because of a bug where card image renders with a single line's height
 			this.txt
 			.setText(`[img=${card.name}]`)
-			.appendText(`[color=grey][${card.getReferencedCards()}[/color]`)
+			.appendText(`[color=grey]${card.getReferencedCards()}[/color]`)
 			.appendText('\n\n\n\n\n\n\n\n\n\n\n\n')
 			.appendText(`\n${hintText}`)
 			.setFixedSize(0, 0)
