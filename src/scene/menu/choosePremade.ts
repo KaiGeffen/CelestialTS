@@ -134,7 +134,7 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createText(): any {
-		let panel = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
+		let panel = this.scene['rexUI'].add.fixWidthSizer()
 
 		// Hint on which information is displayed
 		let hint = new Hint(this.scene)
@@ -142,7 +142,10 @@ export default class ChoosePremade extends Menu {
 		// TODO Displayed the selected one
 		this.txtName = this.scene.add.text(0, 0, '', Style.announcement)
 		this.txtSurname = this.scene.add.text(0, 0, '', Style.surname)
-		this.txtDescription = this.scene['rexUI'].add.BBCodeText(0, 0, '', BBStyle.description)
+		this.txtDescription = this.scene['rexUI'].add.BBCodeText({
+			style: BBStyle.description,
+		})
+		.setFixedSize(Space.maxTextWidth + Space.padSmall*2, 360)
 		.setInteractive()
 		.on('areaover', function (key: string) {
 			if (key[0] === '_') {
@@ -158,7 +161,7 @@ export default class ChoosePremade extends Menu {
 		// Add all this text to the panel
 		panel.add(this.txtName)
 		.addNewLine()
-		.add(this.txtSurname, {expand: true})
+		.add(this.txtSurname)
 		.addNewLine()
 		.add(this.txtDescription)
 
@@ -166,26 +169,22 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createButtons(callback: (number) => void): any {
-		// const y = Space.windowHeight - Space.pad - Space.smallButtonHeight/2
-		// new Buttons.Basic(this.scene, 0, y, 'Cancel')
-		// new Buttons.Basic(this.scene, 0, y, 'Select')
-
-		const width = Space.windowWidth - this.avatarFull.width - Space.pad * 2
+		const width = this.txtDescription.displayWidth
 
 		let panel = this.scene['rexUI'].add.sizer({
-			x: this.avatarFull.width + (width)/2,
-			y: Space.windowHeight - Space.pad - Space.smallButtonWidth/2,
+			x: this.avatarFull.displayWidth + Space.pad*2,
+			y: Space.windowHeight - Space.pad,
 			width: width,
 			space: {
 				item: Space.pad,
 			}
-		})
+		}).setOrigin(0, 1)
 
 		let c1 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 		let btnCancel = new Buttons.Basic(c1, 0, 0, 'Cancel', () => {
 			this.close()
 		})
-		panel.addSpace()
+		panel
 		.add(c1)
 		.addSpace()
 
@@ -195,7 +194,7 @@ export default class ChoosePremade extends Menu {
 			this.close()
 		})
 		panel.add(c2)
-		.addSpace()
+		// .addSpace()
 
 		return panel
 	}
