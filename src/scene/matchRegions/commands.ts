@@ -19,6 +19,8 @@ export default class CommandsRegion extends Region {
 
 	create (scene: BaseScene): CommandsRegion {
 		this.scene = scene
+		this.container = scene.add.container()
+		.setDepth(Depth.commands)
 
 		// Add the background
 		this.createRecap()
@@ -34,10 +36,9 @@ export default class CommandsRegion extends Region {
 
 	private createRecap(): void {
 		// Recap button
-		this.btnRecap = new Icons.Recap(this.scene,
+		this.btnRecap = new Icons.Recap(this.container,
 			Space.windowWidth - Space.pad - 16,
 			y)
-		.setDepth(Depth.commands)
 		.setVisible(false)
 
 		this.btnRecap.setOnClick(() => {this.recapCallback()})
@@ -45,10 +46,9 @@ export default class CommandsRegion extends Region {
 
 	private createSkip(): void {
 		// Skip button
-		this.btnSkip = new Icons.Skip(this.scene,
+		this.btnSkip = new Icons.Skip(this.container,
 			Space.windowWidth - Space.pad - Space.iconSize/2,
 			y)
-		.setDepth(Depth.commands)
 		.setVisible(false)
 
 		this.btnSkip.setOnClick(() => {this.skipCallback()})

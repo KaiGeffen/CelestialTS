@@ -503,6 +503,7 @@ export class TutorialGameScene extends AdventureGameScene {
 
 	// TODO Ensure that autopass is on
 	// TODO Hide the counts for deck and discard pile
+	// TODO When a winner is found, move on to the next stillframe of the tutorial
 	protected displayState(state: ClientState, isRecap: boolean): boolean {
 		let result = super.displayState(state, isRecap)
 
@@ -511,6 +512,8 @@ export class TutorialGameScene extends AdventureGameScene {
 				this.view.decks.hide()
 				this.view.discardPiles.hide()
 				this.view.pass.hide()
+				this.view.commands.hide()
+
 				// Display hints based on what round it is (TODO this in json)
 				switch(state.versionNumber) {
 					case 0:
