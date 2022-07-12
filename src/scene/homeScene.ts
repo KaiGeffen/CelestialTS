@@ -77,12 +77,7 @@ export default class HomeScene extends BaseScene {
   private doStart(): () => void {
     let that = this
     return function() {
-      // Guide user to Tutorial if this is their first time here
-      if (UserProgress.addAchievement('tutorialKnown')) {
-      }
-      else {
-        that.doDeckbuilder()
-      }
+      that.doDeckbuilder()
     }
   }
 
