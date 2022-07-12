@@ -52,10 +52,9 @@ export default class Animator {
 				else if (animation.from === Zone.Shuffle) {
 					this.animateShuffle(owner, i)
 				}
-				// Transform a card TODO
-				else if (animation.to === Zone.Transform) {
-					// The only occurence of this left is Transform > Story changing acts into Robots
-					continue
+				// Transform a card
+				else if (animation.from === Zone.Transform) {
+					this.animateTransform(animation, i, owner)
 				}
 				else {
 					let start = this.getStart(animation, state, owner)
@@ -156,7 +155,7 @@ export default class Animator {
 		return [300,300]
 	}
 
-	private createCard(card, start): CardImage {
+	private createCard(card, start: [number, number] = [0,0]): CardImage {
 		let cardImage = new CardImage(card || cardback, this.container, false)
 
 		// Set its initial position and make it hidden until its tween plays
@@ -180,8 +179,14 @@ export default class Animator {
 			}
 			break
 
-			// case Zone.
+			case Zone.Story:
+			card = this.view.story.cards[animation.index]
+			break
 
+			default:
+			console.log('Trying to get a card for animator in a zone not supported:')
+			console.log(animation)
+			break
 		}
 		return card
 	}
@@ -333,20 +338,23 @@ export default class Animator {
 
 	// Animate a card being emphasized in its place, such as showing that a Morning card is proccing
 	private animateEmphasis(card: CardImage, i: number): void {
+		let cardCopy = this.createCard(card.card, [0, 0])
+		.copyLocation(card)
+
 		// Animate card scaling up and disappearing
 		this.scene.tweens.add({
-			targets: card.container,
+			targets: cardCopy.container,
 			scale: 3,
 			alpha: 0,
 			delay: i * Time.recapTweenWithPause(),
 			duration: Time.recapTween(),
 			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
 			{
-				card.show()
+				cardCopy.show()
 			},
 			onComplete: function (tween, targets, _)
 			{
-				card.destroy()
+				cardCopy.destroy()
 			}
 		})
 	}
@@ -380,6 +388,26 @@ export default class Animator {
 			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
 			{
 				card.show()
+			}
+		})
+	}
+
+	// Animate a card transforming into another card
+	private animateTransform(animation: Animation, i: number, owner): void {
+		let newCard = this.getCard(animation, owner)
+		let oldCard = this.createCard(animation.card)
+		.show()
+		.copyLocation(newCard)
+
+		// Animate card scaling up and disappearing
+		this.scene.tweens.add({
+			targets: oldCard.container,
+			alpha: 0,
+			delay: i * Time.recapTweenWithPause(),
+			duration: Time.recapTween(),
+			onComplete: function (tween, targets, _)
+			{
+				oldCard.destroy()
 			}
 		})
 	}
