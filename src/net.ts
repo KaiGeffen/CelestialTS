@@ -169,6 +169,7 @@ export class Network {
 		else {
 			// The WS location on DO
 			let loc = window.location
+			console.log(loc)
 			let fullPath = `wss://${loc.host}${loc.pathname}ws/${mmCode}`
 			socket = new WebSocket(fullPath)
 		}
