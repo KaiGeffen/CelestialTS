@@ -50,7 +50,8 @@ export default class OptionsMenu extends Menu {
 		)
 
 		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+		let rect = scene.add.image(0, 0, 'bg-Texture').setInteractive()
+		//scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
 		panel.addBackground(rect)
 
 		return panel

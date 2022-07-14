@@ -23,6 +23,9 @@ export default class HomeScene extends BaseScene {
 
   create(): void {
     let that = this
+
+    this.add.image(0, 0, 'bg-Texture')
+    .setOrigin(0)
     
     // Region for tutorial options
     this.tutorialRegion.create()
@@ -45,7 +48,7 @@ export default class HomeScene extends BaseScene {
     let btnAdventure = new Buttons.Basic(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", () => that.doAdventure()).setOrigin(0.5)
 
     // Start Button
-    new Buttons.Basic(this, Space.windowWidth/2, Space.windowHeight/2, "Click to Start", this.doStart()).setOrigin(0.5)//.setStyle(Style.announcement)
+    new Buttons.Basic(this, Space.windowWidth/2, Space.windowHeight/2, "Start", this.doStart()).setOrigin(0.5)//.setStyle(Style.announcement)
 
     let msgText = UserProgress.getMessage('welcome')
     if (msgText !== undefined) {

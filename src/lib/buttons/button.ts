@@ -38,6 +38,7 @@ const ConfigDefaults = {
 		interactive: false,
 		style: Style.basic,
 		hitArea: undefined,
+		// TODO Call this offsetY
 		offset: 0,
 		offsetX: 0,
 		noGlow: false,

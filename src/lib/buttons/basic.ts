@@ -16,8 +16,9 @@ export default class BasicButton extends Button {
 		super(within, x, y, 
 		{
 			text: {
-				text: text,
-				interactive: false
+				text: text.toUpperCase(),
+				interactive: false,
+				offset: -4,
 			},
 			icon: {
 				name: 'Button',
@@ -27,6 +28,10 @@ export default class BasicButton extends Button {
 				click: f
 			}
 		})
+	}
+
+	setText(s: string): Button {
+		return super.setText(s.toUpperCase())
 	}
 
 	// Button is a spritesheet with different states
