@@ -369,7 +369,7 @@ export default class DeckRegion {
 
 			// TODO Grey out the button, have a disable method for button class
 			// For debugging, allow sub-15 card decks locally
-			if (location.port !== '494f9') {
+			if (location.port !== '4949') {
 				this.btnStart.disable()
 			}
 		}
