@@ -138,8 +138,9 @@ export const Color: Record<string, any> = {
   textAreaBackground: '#444',
   textAreaBackgroundAlt: CoreColors.secondaryS,
 
-  // Color for the radar chart
+  // Color for the various charts
   radar: CoreColors.goldenS,
+  bar: CoreColors.goldenS,
 
   // Color for text that references anything
   reference: CoreColors.goldenS,

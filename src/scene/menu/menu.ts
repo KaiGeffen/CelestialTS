@@ -33,6 +33,7 @@ import ModeMenu from "./mode"
 import DCMenu from './disconnect'
 import ConfirmMenu from './confirm'
 import SearchMenu from './search'
+import DistributionMenu from './distribution'
 
 
 const menus = {
@@ -47,6 +48,7 @@ const menus = {
 	'disconnect': DCMenu,
 	'confirm': ConfirmMenu,
 	'search': SearchMenu,
+	'distribution': DistributionMenu,
 }
 
 // Allows for the creation and storing of custom menus not specified 

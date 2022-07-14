@@ -143,6 +143,10 @@ export default class DeckRegion {
 		// Add a share button that allows user to copy/paste their deck code
 		let containerShare = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize/2)
 		new Icons.Share(containerShare, 0, 0, this.shareCallback())
+
+		// Add a graph button for showing the distribution of costs in the deck
+		// let containerGraph = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize/2)
+		new Icons.Distribution(containerShare, 0, 0, this.distributionCallback())
 		// TODO Remove if using a premade deck
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
@@ -436,6 +440,18 @@ export default class DeckRegion {
 				callback: function(inputText) {
 					that.scene.setDeck(inputText.text)
 				}
+			})
+		}
+	}
+
+	private distributionCallback(): () => void {
+		let that = this
+
+		return function() {
+			that.scene.scene.launch('MenuScene', {
+				menu: 'distribution',
+				// Used to form the graph
+				currentDeck: that.deck,
 			})
 		}
 	}
