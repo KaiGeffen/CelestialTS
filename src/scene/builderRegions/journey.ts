@@ -42,7 +42,7 @@ export default class DeckRegion {
 	}
 
 	private createScrollable(startCallback: () => void) {
-		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
+		let background = this.scene.add.image(0, 0, 'bg-Texture')
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: 0,
@@ -61,9 +61,7 @@ export default class DeckRegion {
 			slider: Mobile ? Scroll(this.scene) : undefined,
 
 			space: {
-				top: Space.filterBarHeight + Space.pad,
-				bottom: Space.pad,
-				item: Space.pad,
+				top: Space.filterBarHeight,
 			},
 			}).setOrigin(0)
 
@@ -92,8 +90,21 @@ export default class DeckRegion {
 
 	private createHeader(startCallback: () => void, sizer?): Phaser.GameObjects.GameObject {
 		if (sizer === undefined) {
+			let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+
 			sizer = this.scene['rexUI'].add.fixWidthSizer({
-				Space: {left: Space.pad, right: Space.pad}
+				space: {
+					top: Space.pad,
+					bottom: Space.pad,
+				}
+			})
+			.addBackground(background)
+
+			// Add a drop shadow going down from the background
+			this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+				distance: 3,
+				angle: -90,
+				shadowColor: 0x000000,
 			})
 		}
 

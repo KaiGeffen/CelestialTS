@@ -1,4 +1,6 @@
 import "phaser"
+import { Style, Color } from '../../settings/settings'
+
 
 export default class Menu {
 	scene: Phaser.Scene
@@ -18,6 +20,27 @@ export default class Menu {
 		}
 
 		this.scene.scene.stop()
+	}
+
+	createHeader(s: string, width: number): any {
+		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+		
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
+		.addBackground(background)
+
+		let txt = this.scene.add.text(0, 0, s, Style.announcement)
+		sizer.addSpace()
+		.add(txt)
+		.addSpace()
+
+		// Add a drop shadow going down from the background
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			angle: -90,
+			shadowColor: 0x000000,
+		})
+
+		return sizer
 	}
 }
 

@@ -58,7 +58,7 @@ export default class CatalogRegion {
 
       scrollMode: 0,
 
-      // background: scene['rexUI'].add.roundRectangle(x, 0, width, height, 16, Color.menuBackground, 0.7).setOrigin(0),
+      background: this.scene.add.image(0, 0, 'bg-Texture'),
 
       panel: {
         child: scene['rexUI'].add.fixWidthSizer({

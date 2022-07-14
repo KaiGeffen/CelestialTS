@@ -46,7 +46,7 @@ export var Space = {
   corner: 10,
   maxTextWidth: 500, // Note must be more than twice cardWidth for hints
 
-  filterBarHeight: 70,
+  filterBarHeight: 80,
 
   decklistPanelWidth: 240,
   deckPanelWidth: 320 + 50,

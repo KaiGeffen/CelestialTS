@@ -44,7 +44,7 @@ export default class DecklistsRegion {
 
 	// Move lower TODO
 	private createScrollable() {
-		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
+		let background = this.scene.add.image(0, 0, 'bg-Texture')
 		.setInteractive()
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
@@ -64,7 +64,7 @@ export default class DecklistsRegion {
 			slider: Mobile ? Scroll(this.scene) : undefined,
 
 			space: {
-				top: Space.filterBarHeight + Space.pad,
+				top: Space.filterBarHeight,
 			},
 			}).setOrigin(0)
 
@@ -90,12 +90,10 @@ export default class DecklistsRegion {
 					space: {
 					left: Space.pad,
 					right: Space.pad,
-					top: 10,
-					bottom: 10,
-					line: 10,
-				}}).addBackground(
-				this.scene.add.rectangle(0, 0, width, Space.windowHeight, Color.background)
-				)
+					top: Space.padSmall,
+					bottom: Space.padSmall,
+					line: Space.padSmall,
+				}})
 
 		this.updateOnScroll(this.panel)
 
@@ -136,6 +134,14 @@ export default class DecklistsRegion {
 	}
 	
 	private createHeader(): Phaser.GameObjects.GameObject {
+		// Make a background with a drop shadow straight down
+		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			angle: -90,
+			shadowColor: 0x000000,
+		})
+
 		let sizer = this.scene.rexUI.add.fixWidthSizer({
 			space: {
 				top: Space.pad,
@@ -144,7 +150,7 @@ export default class DecklistsRegion {
 				bottom: Space.pad,
 				line: Space.pad,
 			}
-		})
+		}).addBackground(background)
 
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.largeButtonHeight)
 		this.btnPremade = new Buttons.Premade(container, 0, 0,

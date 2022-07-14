@@ -36,55 +36,40 @@ export default class OptionsMenu extends Menu {
 		{
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
-			// width: width,
-			// height: 500,
-			space: {
-				left: Space.pad/2,
-				right: Space.pad/2,
-				top: Space.pad/2,
-				bottom: Space.pad/2,
-				item: Space.pad/2,
-				line: Space.pad/2,
-			},
-		}
-		)
+			width: width + Space.padSmall*2,
 
-		// Add background
-		let rect = scene.add.image(0, 0, 'bg-Texture').setInteractive()
-		//scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
+			space: {
+				// left: Space.padSmall,
+				// right: Space.padSmall,
+				bottom: Space.padSmall,
+				item: Space.padSmall,
+				line: Space.padSmall,
+			},
+		})
+		.addBackground(scene.add.image(0, 0, 'bg-Texture').setInteractive())
 
 		return panel
 	}
 
 	private createContent(scene: Phaser.Scene, panel, activeScene: BaseScene) {
-		panel.add(this.createTitle(scene))
+		panel.add(this.createHeader('Options', width + Space.padSmall*2))
 		.addNewLine()
 
-		panel.add(this.createVolume(scene))
+		const padding = {padding: {left: Space.padSmall, right: Space.padSmall}}
+
+		panel.add(this.createVolume(scene), padding)
 		.addNewLine()
 
-		panel.add(this.createMusic(scene))
+		panel.add(this.createMusic(scene), padding)
 		.addNewLine()
 
-		panel.add(this.createSpeed(scene))
+		panel.add(this.createSpeed(scene), padding)
 		.addNewLine()
 		
-		panel.add(this.createAutopass(scene))
+		panel.add(this.createAutopass(scene), padding)
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, activeScene))
-	}
-
-	private createTitle(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		let txt = scene.add.text(0, 0, 'Options', Style.announcement)
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
+		panel.add(this.createButtons(scene, activeScene), padding)
 	}
 
 	private createVolume(scene: Phaser.Scene) {
