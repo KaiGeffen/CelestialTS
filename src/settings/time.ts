@@ -40,4 +40,7 @@ export class Time {
 
   // Time user must pause before hint appears
   static hint = 100
+
+  // Time for the charts to display a new dataset
+  static chart = 600
 }

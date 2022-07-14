@@ -140,7 +140,8 @@ export const Color: Record<string, any> = {
 
   // Color for the various charts
   radar: CoreColors.goldenS,
-  bar: CoreColors.goldenS,
+  bar: CoreColors.breath + '99',
+  barBorder: CoreColors.goldenS,
 
   // Color for text that references anything
   reference: CoreColors.goldenS,

@@ -8,7 +8,7 @@ import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 
 import Menu from './menu'
-import { Style, BBStyle, Space, Color } from '../../settings/settings'
+import { Style, BBStyle, Space, Color, Time } from '../../settings/settings'
 import avatarDetails from '../../catalog/avatarDetails.json'
 import Hint from '../../lib/hint'
 
@@ -219,6 +219,7 @@ export default class ChoosePremade extends Menu {
 				]
 			},
 			options: {
+				animation: {duration: Time.chart},
 				plugins: {
 					legend: {
 						display: false,

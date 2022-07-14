@@ -141,12 +141,12 @@ export default class DeckRegion {
 		.layout()
 
 		// Add a share button that allows user to copy/paste their deck code
-		let containerShare = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize/2)
+		let containerShare = new ContainerLite(this.scene, 0, 0, width/4, Space.avatarSize/2)
 		new Icons.Share(containerShare, 0, 0, this.shareCallback())
 
 		// Add a graph button for showing the distribution of costs in the deck
-		// let containerGraph = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize/2)
-		new Icons.Distribution(containerShare, 0, 0, this.distributionCallback())
+		let containerDistribution = new ContainerLite(this.scene, 0, 0, width/4, Space.avatarSize/2)
+		new Icons.Distribution(containerDistribution, 0, 0, this.distributionCallback())
 		// TODO Remove if using a premade deck
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
@@ -155,7 +155,7 @@ export default class DeckRegion {
 		
 		// Make a container for all of the buttons
 		let sizerButtons = this.scene['rexUI'].add.fixWidthSizer({Space: {item: Space.pad}})
-		sizerButtons.add([containerShare, containerStart])
+		sizerButtons.add([containerShare, containerDistribution, containerStart])
 		sizer.add(sizerButtons)
 
 		// Add this deck's avatar

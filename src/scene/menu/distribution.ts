@@ -1,12 +1,10 @@
 import 'phaser';
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import Buttons from '../../lib/buttons/buttons';
-import { Color, Space, Style } from '../../settings/settings';
-import Menu from './menu';
 import Cutout from '../../lib/buttons/cutout';
+import { Color, Space, Time } from '../../settings/settings';
+import Menu from './menu';
 
 // TODO Clean up
-const width = 500
+const width = 700
 
 export default class DistributionMenu extends Menu {
 	constructor(scene: Phaser.Scene, params) {
@@ -48,11 +46,13 @@ export default class DistributionMenu extends Menu {
 	}
 
 	private createChart(costs: number[]): any {
+		const chartWidth = width - Space.padSmall*2
+
 		return this.scene['rexUI'].add.chart(
 			Space.windowWidth/2,
 			Space.windowHeight/2,
-			width - Space.padSmall*2,
-			width - Space.padSmall*2,
+			chartWidth,
+			chartWidth * 2 / 3,
 			{
 			type: 'bar',
 			data: {
@@ -61,22 +61,28 @@ export default class DistributionMenu extends Menu {
 				{
 					label: 'Costs',
 					backgroundColor: Color.bar,
+					borderWidth: 3,
+					borderColor: Color.barBorder,
 					data: costs,
 				},
 				]
 			},
 			options: {
+				animation: {
+					duration: Time.chart,
+					easing: 'easeOutQuint',
+				},
 				plugins: {
 					legend: { display: false },
 				},
-                // scales: {
-                // 	x: {
-                // 		beginAtZero: true,
-                // 	},
-                // 	y: {
-                // 		beginAtZero: true,
-                // 	},
-                // }
+                scales: {
+                	y: {
+                		ticks: {
+                			stepSize: 1,
+                		},
+                		beginAtZero: true,
+                	},
+                }
             }
 		})
 	}
