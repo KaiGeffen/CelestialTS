@@ -56,7 +56,7 @@ export default class ShareDeckMenu extends Menu {
 		textChangeCallback: (inputText) => void,
 		currentDeck: string)
 	{
-		panel.add(this.createTitle(scene))
+		panel.add(this.createHeader('Share Deck', width))
 		.addNewLine()
 
 		// Add hint
@@ -65,17 +65,6 @@ export default class ShareDeckMenu extends Menu {
 		.addNewLine()
 
 		panel.add(this.createField(scene, textChangeCallback, currentDeck))
-	}
-
-	private createTitle(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		let txt = scene.add.text(0, 0, 'Share Deck', Style.announcement)
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
 	}
 
 	private createField(scene: Phaser.Scene, textChangeCallback: (inputText) => void, currentDeck: string) {

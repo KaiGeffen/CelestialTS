@@ -20,6 +20,8 @@ class AlterDeckMenu extends Menu {
 	titleString: string
 	confirmString: string
 
+	btnConfirm: Button
+
 	constructor(scene: Phaser.Scene, params, titleString, confirmString, deckName = '') {
 		super(scene)
 
@@ -106,6 +108,11 @@ class AlterDeckMenu extends Menu {
 				id: 'search-field'
 			}
 		).on('textchange', function(inputText) {
+			if (inputText.text.length === 0) {
+				that.btnConfirm.disable()
+			} else {
+				that.btnConfirm.enable()
+			}
 			that.name = inputText.text
 		})
 
@@ -170,7 +177,7 @@ class AlterDeckMenu extends Menu {
 		sizer
 		.add(this.createCancel(scene))
 		.addSpace()
-		.add(this.createOK(scene, createCallback))
+		.add(this.createConfirm(scene, createCallback))
 
 		return sizer
 	}
@@ -185,17 +192,22 @@ class AlterDeckMenu extends Menu {
 		return container
 	}
 
-	private createOK(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
+	private createConfirm(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
 		let that = this
 
 		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
-		new Buttons.Basic(container, 0, 0, this.confirmString, () => {
+		this.btnConfirm = new Buttons.Basic(container, 0, 0, this.confirmString, () => {
 			createCallback(that.name, that.selectedAvatar)
 
 			// Close this scene
 			scene.scene.stop()
 		})
+
+		// Can't create deck if it doesn't have a name
+		if (!this.name) {
+			this.btnConfirm.disable()
+		}
 
 		return container
 	}
