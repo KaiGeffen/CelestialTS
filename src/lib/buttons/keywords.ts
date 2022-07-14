@@ -62,7 +62,7 @@ export class InspireButton extends KeywordButton {
 			}
 		})
 
-		this.txt.setPosition(x + 46, y + 17)
+		this.txt.setPosition(x + 52, y + 17)
 	}
 
 	makeHintable(): Button {
@@ -94,7 +94,7 @@ export class NourishButton extends KeywordButton {
 			}
 		})
 
-		this.txt.setPosition(x + 46, y + 17)
+		this.txt.setPosition(x + 52, y + 17)
 	}
 
 	makeHintable(): Button {
