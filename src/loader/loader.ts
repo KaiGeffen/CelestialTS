@@ -109,9 +109,6 @@ export default class Loader {
 		sfxData.forEach( (sound) => {
 			scene.load.audio(sound, `sfx/${sound}.mp3`)
 		})
-
-		// Load the music
-		scene.load.audio('background', 'music/background.mp3')
 	}
 
 	// Loads all video textures
