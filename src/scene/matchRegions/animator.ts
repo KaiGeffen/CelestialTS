@@ -184,8 +184,8 @@ export default class Animator {
 			break
 
 			default:
-			console.log('Trying to get a card for animator in a zone not supported:')
-			console.log(animation)
+			// console.log('Trying to get a card for animator in a zone not supported:')
+			// console.log(animation)
 			break
 		}
 		return card

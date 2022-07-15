@@ -29,6 +29,7 @@ const config: Phaser.Types.Core.GameConfig = {
   height: Space.windowHeight,
   parent: "game",
   disableContextMenu: true,
+  powerPreference: 'high-performance',
   backgroundColor: Color.background,
   dom: {
     createContainer: true
