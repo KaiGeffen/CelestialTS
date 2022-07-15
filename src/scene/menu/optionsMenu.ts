@@ -32,6 +32,17 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createSizer(scene: Phaser.Scene)  {
+		let background = scene.add.image(0, 0, 'bg-Texture')
+
+		background['resize'] = (w, h) => {
+			// background.setDisplaySize(w, h)
+			const x = (background.displayWidth - w)/2
+			const y = (background.displayHeight - h)/2
+			
+			background.setCrop(x, y, w, h)
+			.setInteractive(new Phaser.Geom.Rectangle(x, y, w, h), Phaser.Geom.Rectangle.Contains)
+		}
+
 		let panel = scene['rexUI'].add.fixWidthSizer(
 		{
 			x: Space.windowWidth/2,
@@ -46,7 +57,7 @@ export default class OptionsMenu extends Menu {
 				line: Space.padSmall,
 			},
 		})
-		.addBackground(scene.add.image(0, 0, 'bg-Texture').setInteractive())
+		.addBackground(background)
 
 		return panel
 	}

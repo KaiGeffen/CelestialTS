@@ -53,7 +53,13 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.image(0, 0, 'bg-Texture')
-		.setInteractive()
+		background['resize'] = (w, h) => {
+			const x = (background.displayWidth - w)/2
+			const y = (background.displayHeight - h)/2
+			
+			background.setCrop(x, y, w, h)
+			.setInteractive(new Phaser.Geom.Rectangle(x, y, w, h), Phaser.Geom.Rectangle.Contains)
+		}
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: X_START,
