@@ -54,7 +54,7 @@ export default class ChoosePremade extends Menu {
 			}
 		}).setOrigin(0)
 
-		sizer.add(this.createHeader())
+		sizer.add(this.createCustomHeader())
 		.addNewLine()
 		.add(this.createPanel())
 
@@ -66,7 +66,7 @@ export default class ChoosePremade extends Menu {
 		sizer.layout()
 	}
 
-	private createHeader(): any {
+	private createCustomHeader(): any {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background2)
 
 		let panel = this.scene['rexUI'].add.sizer({
