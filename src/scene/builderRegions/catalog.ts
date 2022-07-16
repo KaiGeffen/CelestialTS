@@ -156,17 +156,20 @@ export default class CatalogRegion {
     let that = this
 
     const x = Mobile ? Space.deckPanelWidth + 60 : Space.decklistPanelWidth + Space.deckPanelWidth
-    if (this.panel.x < x) {
-      this.scene.tweens.add({
-        targets: this.scrollablePanel,
-        x: x,
-        duration: Time.builderSlide(),
-        onStart: () => {
-          that.panel.minWidth = Space.windowWidth - x
-          that.scrollablePanel.layout()
-        },
-      })
-    }
+    this.scrollablePanel.x = x
+    this.panel.minWidth = Space.windowWidth - x
+    this.scrollablePanel.layout()
+    // if (this.panel.x < x) {
+    //   this.scene.tweens.add({
+    //     targets: this.scrollablePanel,
+    //     x: x,
+    //     duration: Time.builderSlide(),
+    //     onStart: () => {
+    //       that.panel.minWidth = Space.windowWidth - x
+    //       that.scrollablePanel.layout()
+    //     },
+    //   })
+    // }
   }
 
   // Shift the catalog to the left to fill the absence of deck panel
@@ -174,16 +177,19 @@ export default class CatalogRegion {
     let that = this
 
     const x = Space.decklistPanelWidth + (Mobile ? Space.scrollWidth : 0)
-    if (this.panel.x > x) {
-      this.scene.tweens.add({
-        targets: this.scrollablePanel,
-        x: x,
-        duration: Time.builderSlide(),
-        onStart: () => {
-          that.panel.minWidth = Space.windowWidth - x
-          that.scrollablePanel.layout()
-        },
-      })
-    }
+    this.scrollablePanel.x = x
+    this.panel.minWidth = Space.windowWidth - x
+    this.scrollablePanel.layout()
+    // if (this.panel.x > x) {
+    //   this.scene.tweens.add({
+    //     targets: this.scrollablePanel,
+    //     x: x,
+    //     duration: Time.builderSlide(),
+    //     onStart: () => {
+    //       that.panel.minWidth = Space.windowWidth - x
+    //       that.scrollablePanel.layout()
+    //     },
+    //   })
+    // }
   }
 }

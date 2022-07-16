@@ -463,20 +463,22 @@ export default class DeckRegion {
 	}
 
 	hidePanel(): void {
-		this.scene.tweens.add({
-			targets: this.scrollablePanel,
-			x: X_START,
-			duration: Time.builderSlide(),
-		})
+		this.scrollablePanel.setX(X_START)
+		// this.scene.tweens.add({
+		// 	targets: this.scrollablePanel,
+		// 	x: X_START,
+		// 	duration: Time.builderSlide(),
+		// })
 	}
 
 	showPanel(): void {
 		const x = Mobile ? 0 : Space.decklistPanelWidth
-		this.scene.tweens.add({
-			targets: this.scrollablePanel,
-			x: x,
-			duration: Time.builderSlide(),
-		})
+		this.scrollablePanel.x = x
+		// this.scene.tweens.add({
+		// 	targets: this.scrollablePanel,
+		// 	x: x,
+		// 	duration: Time.builderSlide(),
+		// })
 	}
 }
 
