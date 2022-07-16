@@ -25,12 +25,13 @@ import ContainerLitePlugin from 'phaser3-rex-plugins/plugins/containerlite-plugi
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Celestial",
+  type: Phaser.AUTO,
   width: Space.windowWidth,
   height: Space.windowHeight,
   parent: "game",
   disableContextMenu: true,
+  pixelArt: true,
   powerPreference: 'high-performance',
-  // backgroundColor: Color.background,
   transparent: true,
   dom: {
     createContainer: true
@@ -42,9 +43,9 @@ const config: Phaser.Types.Core.GameConfig = {
   AdventureBuilderScene,
   BuilderScene,
   AdventureScene],
-  scale: {
-    autoCenter: Phaser.Scale.CENTER_BOTH
-  },
+  // scale: {
+  //   autoCenter: Phaser.Scale.CENTER_BOTH
+  // },
   plugins: {
     scene: [{
       key: 'rexUI',
