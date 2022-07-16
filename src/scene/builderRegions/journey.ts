@@ -272,9 +272,6 @@ export default class DeckRegion {
 	private removeCardFromDeck(cutout: Cutout): () => void {
 		let that = this
 		return function() {
-			// Play a sound
-			that.scene.sound.play('click')
-
 			// Decrement, if fully gone, remove from deck list
 			if (cutout.decrement().count === 0) {
 
