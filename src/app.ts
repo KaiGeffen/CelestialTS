@@ -98,16 +98,6 @@ export class CelestialGame extends Phaser.Game {
   constructor(config: Phaser.Types.Core.GameConfig) {
     super(config)
 
-    // Set the size of the movies in the background based on the window size
-    let vMain = document.getElementById('v-main')
-    let vRecap = document.getElementById('v-recap')
-
-    vMain.setAttribute('width', window.innerWidth.toString())
-    vMain.setAttribute('height', Space.windowHeight.toString())
-
-    vRecap.setAttribute('width', window.innerWidth.toString())
-    vRecap.setAttribute('height', Space.windowHeight.toString())
-
     // TODO Move to its own file
     // Adjust window display whenever resized
     window.addEventListener('resize', () => {
