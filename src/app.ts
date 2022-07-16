@@ -30,7 +30,8 @@ const config: Phaser.Types.Core.GameConfig = {
   parent: "game",
   disableContextMenu: true,
   powerPreference: 'high-performance',
-  backgroundColor: Color.background,
+  // backgroundColor: Color.background,
+  transparent: true,
   dom: {
     createContainer: true
   },

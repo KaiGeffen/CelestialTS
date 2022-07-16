@@ -58,8 +58,6 @@ export default class CatalogRegion {
 
       scrollMode: 0,
 
-      background: this.scene.add.image(0, 0, 'bg-Texture'),
-
       panel: {
         child: scene['rexUI'].add.fixWidthSizer({
           space: {

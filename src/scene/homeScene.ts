@@ -23,9 +23,6 @@ export default class HomeScene extends BaseScene {
 
   create(): void {
     let that = this
-
-    this.add.image(0, 0, 'bg-Texture')
-    .setOrigin(0)
     
     // Region for tutorial options
     this.tutorialRegion.create()
