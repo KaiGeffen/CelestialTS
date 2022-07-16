@@ -376,4 +376,24 @@ export class CardImage {
     }
   }
 
+  // Show which player controls the card while it's in the story
+  showController(player: number): CardImage {
+    let color, angle
+    if (player === 0) {
+      color = 0x0000ff
+      angle = -90
+    } else {
+      color = 0xff0000
+      angle = 90
+    }
+
+    this.scene.plugins.get('rexDropShadowPipeline')['add'](this.image, {
+      distance: 10,
+      angle: angle,
+      shadowColor: color,
+    })
+
+    return this
+  }
+
 }
