@@ -89,25 +89,15 @@ export class AdventureBuilderScene extends BuilderBase {
   create(params): void {
     super.create(params)
     
-    this.catalogRegion = new CatalogRegion()
+    this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
 
-    this.journeyRegion = new JourneyRegion()
+    this.journeyRegion = new JourneyRegion().create(this, this.startCallback())
+    this.journeyRegion.addRequiredCards(params.deck)
 
-    this.filterRegion = new FilterRegion()
-
-    // Allow scene to load before the regions finish loading
-    Promise.resolve()
-    .then(() => {
-      this.catalogRegion.create(this, Space.decklistPanelWidth)
-
-      this.journeyRegion.create(this, this.startCallback())
-      .addRequiredCards(params.deck)
-
-      this.filterRegion.create(this, true)
+    this.filterRegion = new FilterRegion().create(this, true)
 
     // Must filter out cards that you don't have access to
-      this.filter()
-    })
+    this.filter()
   }
 
   addCardToDeck(card: Card): boolean {

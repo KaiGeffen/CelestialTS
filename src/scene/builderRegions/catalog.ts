@@ -16,7 +16,7 @@ export default class CatalogRegion {
   container: ContainerLite
 
   // The scrollable panel on which the catalog exists
-  scrollablePanel
+  private scrollablePanel
   panel
 
   // Full list of all cards in the catalog (Even those invisible)
