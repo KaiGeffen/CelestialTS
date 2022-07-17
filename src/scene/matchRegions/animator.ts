@@ -173,6 +173,10 @@ export default class Animator {
 			}
 			break
 
+			case Zone.Story:
+			card = this.view.story.cards[animation.index]
+			break
+
 			case Zone.Mulligan:
 			// Only show our mulligans
 			card = this.view.mulligan.cards[animation.index]
@@ -190,10 +194,6 @@ export default class Animator {
 
 			// case Zone.Discard:
 			// // TODO
-			// break
-
-			// case Zone.Story:
-			// card = this.view.story.cards[animation.index]
 			// break
 
 			// case Zone.Gone:
