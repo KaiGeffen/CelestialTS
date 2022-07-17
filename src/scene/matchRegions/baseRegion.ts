@@ -18,6 +18,7 @@ export default class Region {
 
 	// The cards in the current state in this region, if any
 	cards: CardImage[]
+	cards2: CardImage[]
 
 	addCard(card: Card, position: [number, number] = [0, 0]): CardImage {
 		return new CardImage(card, this.container).setPosition(position)

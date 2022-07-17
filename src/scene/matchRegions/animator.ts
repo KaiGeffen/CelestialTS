@@ -182,11 +182,21 @@ export default class Animator {
 			card = this.view.mulligan.cards[animation.index]
 			break
 
-			default:
-			console.log(animation)
+			case Zone.Deck:
+			if (owner === 0) {
+				card = this.view.decks.cards[animation.index2]
+			} else {
+				card = this.view.decks.cards2[animation.index2]
+			}
 			break
 
-			// case Zone.Deck:
+			case Zone.Discard:
+			if (owner === 0) {
+				card = this.view.discardPiles.cards[animation.index2]
+			} else {
+				card = this.view.discardPiles.cards2[animation.index2]
+			}
+			break
 
 			// // TODO
 			// break
@@ -199,6 +209,9 @@ export default class Animator {
 			// case Zone.Gone:
 			// case Zone.Create:
 			// default:
+			default:
+			console.log(animation)
+			break
 		}
 		return card
 	}

@@ -22,19 +22,23 @@ export default class DecksRegion extends Region {
 		this.deleteTemp()
 
 		// Ours
+		this.cards = []
 		for (let i = 0; i < state.deck.length; i++) {
 			let card = this.addCard(cardback, CardLocation.ourDeck(this.container, i))
 			.setOnClick(this.ourCallback)
 
 			this.temp.push(card)
+			this.cards.push(card)
 		}
 
 		// Theirs
+		this.cards2 = []
 		for (let i = 0; i < state.opponentDeckSize; i++) {
 			let card = this.addCard(cardback, CardLocation.theirDeck(this.container, i))
 			.setOnClick(this.theirCallback)
 			
 			this.temp.push(card)
+			this.cards2.push(card)
 		}
 	}
 
