@@ -25,13 +25,6 @@ export default class Animator {
 	}
 
 	animate(state: ClientState, isRecap: boolean): void {
-		// TODO Handle initial mulligan separately
-		if (state.versionNumber === 0) {
-			return
-		}
-
-
-
 		if (isRecap && state.isRecapStart()) {
 			this.animateRecapStart(state)
 			return
@@ -61,12 +54,10 @@ export default class Animator {
 					let end = this.getEnd(animation, state, owner)
 
 					let card = this.createCard(animation.card, start)
-					
-					// Get the cardImage that this card becomes upon completion, if there is one
-					let permanentCard = this.getCard(animation, owner)
 
 					if (animation.to !== animation.from) {
-						
+						// Get the cardImage that this card becomes upon completion, if there is one
+						let permanentCard = this.getCard(animation, owner)
 
 						// Show the card in motion between start and end
 						this.animateCard(card, end, i, permanentCard, this.getSound(animation.to))
@@ -135,6 +126,9 @@ export default class Animator {
 			case Zone.Gone:
 			return CardLocation.gone(this.container)
 
+			case Zone.Mulligan:
+			return CardLocation.mulligan(this.container, animation.index)
+
 			case Zone.Hand:
 			if (owner === 0) {
 				return CardLocation.ourHand(state, animation.index2)
@@ -179,14 +173,32 @@ export default class Animator {
 			}
 			break
 
-			case Zone.Story:
-			card = this.view.story.cards[animation.index]
+			case Zone.Mulligan:
+			// Only show our mulligans
+			card = this.view.mulligan.cards[animation.index]
 			break
 
 			default:
-			// console.log('Trying to get a card for animator in a zone not supported:')
-			// console.log(animation)
+			console.log(animation)
 			break
+
+			// case Zone.Deck:
+
+			// // TODO
+			// break
+			// card = this.view.decks.cards
+
+			// case Zone.Discard:
+			// // TODO
+			// break
+
+			// case Zone.Story:
+			// card = this.view.story.cards[animation.index]
+			// break
+
+			// case Zone.Gone:
+			// case Zone.Create:
+			// default:
 		}
 		return card
 	}
