@@ -167,7 +167,7 @@ export default class ModeMenu extends Menu {
 					avatar: this.avatar,
 				}
 			)
-		}).disable()
+		})//.disable()
 
 		return container
 	}

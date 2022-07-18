@@ -14,8 +14,7 @@ export default class AvatarButton extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
 		name: string | number,
-		f: () => void = function() {},
-		hasEditIcon = false)
+		f: () => void = function() {})
 	{
 		// If an id was given instead of a string, get the string
 		if (typeof name === 'number') {
@@ -32,13 +31,6 @@ export default class AvatarButton extends Button {
 				click: f
 			}
 		})
-
-		if (hasEditIcon) {
-			this.editIcon = this.scene.add.image(x + 45, y + 45, 'icon-Edit')
-			if (within instanceof Phaser.GameObjects.Container || within instanceof ContainerLite) {
-				within.add(this.editIcon)
-			}
-		}
 	}
 
 	destroy() {
