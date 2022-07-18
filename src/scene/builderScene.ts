@@ -187,7 +187,11 @@ export class BuilderScene extends BuilderBase {
     this.deckRegion.showPanel()
     this.catalogRegion.shiftRight()
 
-    return super.setDeck(deckCode)
+    let result = super.setDeck(deckCode)
+
+    this.updateSavedDeck(this.getDeckCode())
+
+    return result
   }
 
   setSearchVisible(value: boolean): void {
