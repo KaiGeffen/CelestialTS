@@ -86,9 +86,13 @@ export default class Region {
 	}
 
 	protected deleteTemp(): void {
+		// TODO At least BBCodeText isn't deleting, need to ensure that objects with active: false are gced
 		for (let i = 0; i < this.temp.length; i++) {
 			this.temp[i].destroy()
 		}
+
+		delete this.temp
+		this.temp = []
 	}
 
 	// Animate the given card being emphasized

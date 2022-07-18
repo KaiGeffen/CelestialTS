@@ -93,7 +93,16 @@ export class CardImage {
   }
 
   destroy(): void {
-    this.container.destroy()
+    [
+    this.image,
+    this.txtCost,
+    this.txtPoints,
+    ...this.keywords,
+    ...this.references,
+    this.container
+    ].forEach(obj => {
+      obj.destroy()
+    })
   }
 
   show(): CardImage {
