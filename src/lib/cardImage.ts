@@ -145,6 +145,11 @@ export class CardImage {
 
     var oldExit = this.exitCallback
     this.exitCallback = () => {
+      // Don't do the callback if this isn't currently hovered
+      if (!this.hovered) {
+        return
+      }
+
       oldExit()
       fExit()
     }
