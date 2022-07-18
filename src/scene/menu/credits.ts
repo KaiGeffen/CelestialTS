@@ -8,6 +8,7 @@ import Menu from './menu'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
 
 
+// TODO Change width
 export default class CreditsMenu extends Menu {
 	// TODO This is a fix to an issue with GetAllChildrenSizers not working
 	// in the sizer child of scrollable panel, which is called when trying to destroy
@@ -37,6 +38,7 @@ export default class CreditsMenu extends Menu {
 		{
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
+
 			space: {
 				left: Space.pad/2,
 				right: Space.pad/2,
@@ -66,6 +68,8 @@ export default class CreditsMenu extends Menu {
 			y: Space.windowHeight/2,
 			width: 50,
 			height: Space.windowHeight - Space.pad * 2,
+			
+			header: this.createHeader('Credits', Space.maxTextWidth),
 			
 			panel: {
 				child: panel.setDepth(1)

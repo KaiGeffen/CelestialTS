@@ -27,17 +27,16 @@ export default class ModeMenu extends Menu {
 		panel.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
+	private createSizer(scene: Phaser.Scene): any {
 		let panel = scene['rexUI'].add.fixWidthSizer(
 		{
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
+
+			align: 'center',
 			space: {
-				left: Space.pad/2,
-				right: Space.pad/2,
-				top: Space.pad/2,
-				bottom: Space.pad/2,
-				line: Space.pad,
+				bottom: Space.padSmall,
+				line: Space.pad * 2,
 			},
 		}
 		)
@@ -50,7 +49,7 @@ export default class ModeMenu extends Menu {
 	}
 
 	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene, deck: string) {
-		panel.add(this.createTitle(scene))
+		panel.add(this.createHeader('Game Mode', width))
 		.addNewLine()
 
 		panel.add(this.createPasswordEntry(scene))
@@ -59,22 +58,12 @@ export default class ModeMenu extends Menu {
 		panel.add(this.createButtons(scene, activeScene, deck))
 	}
 
-	private createTitle(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		let txt = scene.add.text(0, 0, 'Choose a Mode', Style.announcement)
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
-	}
-
+	// TODO Replace background with a prerendered visual?
 	private createPasswordEntry(scene: Phaser.Scene) {
 		let that = this
 
 		let inputText = scene.add['rexInputText'](
-			0, 0, width, 40, {
+			0, 0, width - Space.pad * 2, 40, {
 				type: 'text',
 				text: '', // Retain the last password
 				placeholder: 'Password',
@@ -95,12 +84,7 @@ export default class ModeMenu extends Menu {
 
 	// Create the buttons at the bottom
 	private createButtons(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
-		let sizer = scene['rexUI'].add.sizer({
-			width: width,
-			space: {
-				item: Space.pad
-			}
-		})
+		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad*2})
 
 		sizer
 		.add(this.createAI(scene, activeScene, deck))

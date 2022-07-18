@@ -3,7 +3,8 @@ import Cutout from '../../lib/buttons/cutout';
 import { Color, Space, Time } from '../../settings/settings';
 import Menu from './menu';
 
-// TODO Clean up
+
+// TODO Add a header, general formatting / color
 const width = 700
 
 export default class DistributionMenu extends Menu {

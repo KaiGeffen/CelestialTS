@@ -50,6 +50,8 @@ export default class RulebookMenu extends Menu {
 			y: Space.windowHeight/2,
 			width: 50,
 			height: Space.windowHeight - Space.pad * 2,
+
+			header: this.createHeader('Rulebook', Space.maxTextWidth),
 			
 			panel: {
 				child: panel.setDepth(1)

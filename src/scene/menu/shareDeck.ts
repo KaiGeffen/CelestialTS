@@ -34,10 +34,9 @@ export default class ShareDeckMenu extends Menu {
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			width: width,
+
+			align: 'center',
 			space: {
-				left: Space.pad,
-				right: Space.pad,
-				top: Space.pad,
 				bottom: Space.pad,
 				line: Space.pad,
 			},
@@ -59,12 +58,17 @@ export default class ShareDeckMenu extends Menu {
 		panel.add(this.createHeader('Share Deck', width))
 		.addNewLine()
 
+		const padding = {space: {
+			left: Space.pad/2,
+			right: Space.pad/2,
+		}}
+
 		// Add hint
 		let txtHint = scene.add.text(0, 0, 'Copy or paste your deck code here:', Style.basic)
-		panel.add(txtHint)
+		panel.add(txtHint, padding)
 		.addNewLine()
 
-		panel.add(this.createField(scene, textChangeCallback, currentDeck))
+		panel.add(this.createField(scene, textChangeCallback, currentDeck), padding)
 	}
 
 	private createField(scene: Phaser.Scene, textChangeCallback: (inputText) => void, currentDeck: string) {

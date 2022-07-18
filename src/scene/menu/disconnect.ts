@@ -27,9 +27,6 @@ export default class DCMenu extends Menu {
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			space: {
-				left: Space.pad/2,
-				right: Space.pad/2,
-				top: Space.pad/2,
 				bottom: Space.pad/2,
 				line: Space.pad,
 			},
@@ -44,13 +41,18 @@ export default class DCMenu extends Menu {
 	}
 
 	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene) {
-		panel.add(this.createTitle(scene))
+		panel.add(this.createHeader('Opponent Disconnected', width))
 		.addNewLine()
 
-		panel.add(this.createHint(scene))
+		const padding = {space: {
+			left: Space.pad/2,
+			right: Space.pad/2,
+		}}
+
+		panel.add(this.createHint(scene), padding)
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, activeScene))
+		panel.add(this.createButtons(scene, activeScene), padding)
 	}
 
 	private createTitle(scene: Phaser.Scene) {

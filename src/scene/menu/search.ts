@@ -5,6 +5,8 @@ import { Color, Space, Style } from '../../settings/settings'
 import Menu from './menu'
 
 
+// TODO Update to use the new header method
+
 const width = 400
 
 export default class SearchMenu extends Menu {

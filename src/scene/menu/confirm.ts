@@ -26,9 +26,6 @@ export default class ConfirmMenu extends Menu {
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			space: {
-				left: Space.pad/2,
-				right: Space.pad/2,
-				top: Space.pad/2,
 				bottom: Space.pad/2,
 				line: Space.pad,
 			},
@@ -43,24 +40,18 @@ export default class ConfirmMenu extends Menu {
 	}
 
 	private createContent(scene: Phaser.Scene, panel, callback: () => void, hint: string) {
-		panel.add(this.createTitle(scene))
+		panel.add(this.createHeader('Confirm', width))
 		.addNewLine()
 
-		panel.add(this.createHint(scene, hint))
+		const padding = {space: {
+			left: Space.pad/2,
+			right: Space.pad/2,
+		}}
+
+		panel.add(this.createHint(scene, hint), padding)
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, callback))
-	}
-
-	private createTitle(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		let txt = scene.add.text(0, 0, 'Confirm', Style.announcement)
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
+		panel.add(this.createButtons(scene, callback), padding)
 	}
 
 	private createHint(scene: Phaser.Scene, hint: string) {

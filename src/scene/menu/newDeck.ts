@@ -7,7 +7,7 @@ import { Color, Space, Style } from '../../settings/settings'
 import Menu from './menu'
 
 
-const width = 430
+const width = 500
 const inputTextWidth = 200
 
 class AlterDeckMenu extends Menu {
@@ -45,13 +45,12 @@ class AlterDeckMenu extends Menu {
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			width: width,
-			// height: 500,
+
+			align: 'center',
 			space: {
-				left: Space.pad,
-				right: Space.pad,
-				top: Space.pad,
-				bottom: Space.pad,
+				bottom: Space.padSmall,
 				line: Space.pad,
+
 			},
 		}
 		)
@@ -64,16 +63,21 @@ class AlterDeckMenu extends Menu {
 	}
 
 	private createContent(scene: Phaser.Scene, panel, createCallback: (name: string, avatar: number) => void) {
-		panel.add(this.createTitle(scene))
+		panel.add(this.createHeader(this.titleString, width))
 		.addNewLine()
 
-		panel.add(this.createName(scene))
+		const padding = {space: {
+			left: Space.pad,
+			right: Space.pad,
+		}}
+
+		panel.add(this.createName(scene), padding)
 		.addNewLine()
 
-		panel.add(this.createAvatar(scene))
+		panel.add(this.createAvatar(scene), padding)
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, createCallback))
+		panel.add(this.createButtons(scene, createCallback), padding)
 	}
 
 	private createTitle(scene: Phaser.Scene) {
@@ -90,7 +94,7 @@ class AlterDeckMenu extends Menu {
 	private createName(scene: Phaser.Scene) {
 		let that = this
 
-		let sizer = scene['rexUI'].add.sizer({width: width})
+		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad * 2})
 		sizer.addSpace()
 
 		let inputText = scene.add['rexInputText']
@@ -127,7 +131,7 @@ class AlterDeckMenu extends Menu {
 		let that = this
 
 		let fixSizer = scene['rexUI'].add.fixWidthSizer({
-			width: width,
+			width: Space.avatarSize * 3 + Space.pad * 2,
 			space: { line: Space.pad },
 		})
 
@@ -169,7 +173,7 @@ class AlterDeckMenu extends Menu {
 	// Create the buttons at the bottom which navigate to other scenes/menus
 	private createButtons(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
 		let sizer = scene['rexUI'].add.sizer({
-			width: width,
+			width: width - Space.pad * 2,
 			space: {
 				item: Space.pad
 			}
