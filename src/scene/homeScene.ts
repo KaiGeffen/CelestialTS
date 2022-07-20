@@ -9,7 +9,6 @@ import Menu from "../lib/menu"
 
 
 export default class HomeScene extends BaseScene {
-  tutorialRegion
 
   constructor() {
     super({
@@ -17,25 +16,15 @@ export default class HomeScene extends BaseScene {
     })
   }
 
-  init(): void {
-    this.tutorialRegion = new TutorialRegion(this)
-  }
-
   create(): void {
     let that = this
-    
-    // Region for tutorial options
-    this.tutorialRegion.create()
+
+    // Show the login button
+    document.getElementById("signin").hidden = false
 
     // Display text and button
     this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 150, "Celestial",
       Style.title).setOrigin(0.5)
-
-    // TODO Logout, save the most recent token so that new celestial.com website visits don't start logged out
-    // if (!UserSettings._get('loggedIn')) {
-    //   // Login button
-    //   let btnLogin = new Buttons.Basic(this, Space.pad/2, 0, "Login", this.doLogin).setOrigin(0)
-    // }
 
     // Discord button
     let btnDiscord = new Buttons.Basic(this, Space.windowWidth/2 + 100, Space.windowHeight - 50, "Discord").setOrigin(0.5)
@@ -53,6 +42,11 @@ export default class HomeScene extends BaseScene {
     }
     
     super.create()
+  }
+
+  // Hide the signin button
+  beforeExit(): void {
+    document.getElementById("signin").hidden = true
   }
 
   private displayMessage(message: string): void {
@@ -84,169 +78,20 @@ export default class HomeScene extends BaseScene {
   private doDeckbuilder(): void {
     UserProgress.addAchievement('deckMenuNotice')
     
+    this.beforeExit()
     this.scene.start("BuilderScene", {isTutorial: false})
   }
 
   private doAdventure(): void {
+    this.beforeExit()
     this.scene.start("AdventureScene")
   }
 
-  private doCredits(): void {
-    this.scene.start("CreditsScene")
-  }
-  
   private doDiscord(btnDiscord: Button): () => void {
     return function() {
       UserProgress.addAchievement('discord')
     
       window.open(Url.discord)
     }
-  }
-
-  private doLogin(): void {
-    window.open(Url.oauth)
-  }
-}
-
-
-class TutorialRegion {
-  scene: Phaser.Scene
-  menu: Menu
-
-  constructor(scene: Phaser.Scene) {
-    this.init(scene)
-  }
-
-  init(scene: Phaser.Scene): void {
-    this.scene = scene
-  }
-
-  create(): void {
-    let that = this
-
-    // Dimensions
-    // Height of the label
-    let yLbl = Space.cardSize / 2
-
-    let xDelta = Space.iconSeparation
-    let yDelta = Space.cardSize + Space.pad + yLbl
-    let x = Space.cardSize + Space.pad/2
-    let y = Space.cardSize * 3/2 + Space.pad * 2
-
-    let width = xDelta * 3 //Space.cardSize * 5 + Space.pad * 2
-    let height = yDelta * 3 + yLbl //Space.cardSize * 3 + Space.pad * 4 * 2
-    
-    // Make this menu which all the objects go in
-    this.menu = new Menu(
-      this.scene,
-      width,
-      height,
-      false,
-      30)
-
-
-    // Add icons
-    let iconBasics = new Icon(this.scene, this.menu, 0, -yDelta, 'Basics', function() {
-      that.scene.scene.start("TutorialScene1", {isTutorial: true, tutorialNumber: 1, deck: []})
-    })
-    // let iconDraft = new Icon(this.scene, this.menu, -xDelta, -yDelta, 'Draft', function() {
-    //   UserProgress.addAchievement('draftNotice')
-    //   that.scene.scene.start("DraftBuilderScene")
-    // })
-
-    // Core icons
-    let iconAnubis = new Icon(this.scene, this.menu, -xDelta, 0, 'Anubis', function() {
-      that.scene.scene.start("AnubisCatalogScene")
-    })
-    let iconRobots = new Icon(this.scene, this.menu, 0, 0, 'Robots', function() {
-      that.scene.scene.start("RobotsCatalogScene")
-    })
-    let iconStalker = new Icon(this.scene, this.menu, xDelta, 0, 'Stalker', function() {
-      that.scene.scene.start("StalkerCatalogScene")
-    })
-
-    // Expansion icons
-    let iconLord = new Icon(this.scene, this.menu, -xDelta, yDelta, 'Lord', function() {
-      that.scene.scene.start("LordCatalogScene")
-    })
-    let iconBastet = new Icon(this.scene, this.menu, 0, yDelta, 'Bastet', function() {
-      that.scene.scene.start("BastetCatalogScene")
-    })
-    let iconHorus = new Icon(this.scene, this.menu, xDelta, yDelta, 'Horus', function() {
-      that.scene.scene.start("HorusCatalogScene")
-    })
-
-    // Unlock (Make clickable and legible) any tutorials which user now has access to
-    if (!UserProgress.contains('tutorialComplete')) {
-      // iconDraft.lock()
-      iconAnubis.lock()
-      iconRobots.lock()
-      iconStalker.lock()
-    }
-    if (!(UserProgress.contains('tutorialCompleteAnubis') &&
-      UserProgress.contains('tutorialCompleteRobots') &&
-      UserProgress.contains('tutorialCompleteStalker'))) {
-      iconLord.lock()
-      iconBastet.lock()
-      iconHorus.lock()
-    }
-
-    // Add check marks over each completed tutorial
-    this.createCheckMarks(xDelta, yDelta)
-  }
-
-  onOpenMenu(btnTutorial: Button): () => void {
-    let that = this
-    return function() {
-      btnTutorial.stopGlow()
-      UserProgress.addAchievement('tutorialKnown')
-
-      that.menu.open()
-    }
-  }
-
-  // Create a check mark over each tutorial that user has completed
-  private createCheckMarks(xDelta: number, yDelta: number): void {
-    UserProgress.contains('tutorialCompleteAnubis')
-    if (UserProgress.contains('tutorialComplete')) {
-      this.menu.add(this.scene.add.text(0, -yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
-    }
-
-    // Core set decks
-    if (UserProgress.contains('tutorialCompleteAnubis')) {
-      this.menu.add(this.scene.add.text(-xDelta, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
-    }
-
-    if (UserProgress.contains('tutorialCompleteRobots')) {
-      this.menu.add(this.scene.add.text(0, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
-    }
-
-    if (UserProgress.contains('tutorialCompleteStalker')) {
-      this.menu.add(this.scene.add.text(xDelta, 0, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
-    }
-
-    // Expansion decks
-    if (UserProgress.contains('tutorialCompleteLord')) {
-      this.menu.add(this.scene.add.text(-xDelta, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
-    }
-
-    if (UserProgress.contains('tutorialCompleteBastet')) {
-      this.menu.add(this.scene.add.text(0, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
-    }
-
-    if (UserProgress.contains('tutorialCompleteHorus')) {
-      this.menu.add(this.scene.add.text(xDelta, yDelta, '✓', Style.checkMark).setOrigin(0.5).setDepth(1))
-    }
-  }
-
-  // Set the coloring that happens when the icon is hovered/not
-  private setIconHover(btn: Phaser.GameObjects.Image): void {
-    btn.setInteractive()
-    btn.on('pointerover', function() {
-      btn.setTint(Color.iconHighlight)
-    })
-    btn.on('pointerout', function() {
-      btn.clearTint()
-    })
   }
 }

@@ -19,7 +19,7 @@ export default class PreloadClass extends Phaser.Scene {
 		// Ensure that every user setting is either set, or set it to its default value
 		UserSettings._ensure()
 
-		// this.renderSigninButton()
+		this.renderSigninButton()
 
 		// Gain access to chart plugin
 		this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
@@ -67,6 +67,9 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Render login button
 		gapi.signin2.render("signin", {
+			// longtitle: true,
+			width: Space.smallButtonWidth,
+			height: Space.smallButtonHeight,
 			onsuccess: onSuccess,
 			onfailure: onFailure
 		})
