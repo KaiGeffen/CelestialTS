@@ -98,21 +98,9 @@ export default class OurHandRegion extends Region {
 			const cost = state.costs[i]
 			card.setOnHover(that.onCardHover(card, cost), that.onCardExit(card, this.cards, i))
 
-			// Set whether card shows up as playable, and also whether we can click to play a card in this state
-			if (!state.cardsPlayable[i]) {
-				card.setPlayable(false)
-				card.setOnClick(() => {
-					that.scene.signalError("You don't have enough mana.")
-				})
-			}
-			else if (state.priority === 0 && state.winner === null) {
-				card.setOnClick(that.onCardClick(i, card, this.cards, state, isRecap))
-			} else {
-				card.setOnClick(() => {
-					// TODO Signal errors in a variety of ways (Not enough mana, replay playing, etc)
-					that.scene.signalError("It's not your turn.")
-				})
-			}
+			// Set whether the card shows as playable, and set its onclick
+			card.setPlayable(state.cardsPlayable[i])
+			this.setCardOnClick(card, state, isRecap, i)
 
 			this.cards.push(card)
 			this.temp.push(card)
@@ -120,6 +108,41 @@ export default class OurHandRegion extends Region {
 
 		// Show priority / not
 		this.animatePriority(state, isRecap)
+	}
+
+	// Set the callback / error message for when card is clicked
+	private setCardOnClick(card: CardImage, state: ClientState, isRecap: boolean, i: number) {
+		let msg
+		if (state.winner !== null) {
+			msg = "The game is over."
+		}
+		else if (isRecap) {
+			msg = "The story is resolving."
+		}
+		else if (state.priority === 1) {
+			msg = "It's not your turn."
+		}
+		else if (this.cardClicked) {
+			msg = "You've already selected a card."
+		}
+		else if (!state.cardsPlayable[i]) {
+			msg = "You don't have enough breath to play that card."
+		}
+
+		// Show error message if there is one, otherwise play the card
+		if (msg !== undefined) {
+			card.setOnClick(() => {
+				this.scene.signalError(msg)
+			})
+		}
+		else {
+			card.setOnClick(this.onCardClick(i, card, this.cards, state, isRecap))
+		}
+
+		// Set whether card shows up as playable, and also whether we can click to play a card in this state
+		if (!state.cardsPlayable[i]) {
+			card.setPlayable(false)
+		}
 	}
 
 	// Hide the cards in our hand, used when mulligan is visible

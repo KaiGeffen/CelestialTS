@@ -12,7 +12,7 @@ export class Time {
   }
 
   static errorMsgTime(): number {
-    return 1400 / (UserSettings._get('animationSpeed') * 2 + 0.5)
+    return 2500
   }
 
   static recapTween(): number {

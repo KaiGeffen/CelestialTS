@@ -267,7 +267,7 @@ export const BBStyle: Record<string, any> = {
     strokeThickness: 4,
     wrap: {
       mode: 'word',
-      width: 500
+      width: Space.windowWidth - Space.pad * 2
     }
   },
   // Text shown during the tutorial which animates

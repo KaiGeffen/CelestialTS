@@ -144,6 +144,7 @@ export default class CatalogRegion {
         scene.sound.play('click')
       }
       else {
+        // TODO Break up into different cases
         scene.signalError('Deck is full')
       }
     }
