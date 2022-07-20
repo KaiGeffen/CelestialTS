@@ -26,7 +26,7 @@ export class BuilderBase extends BaseScene {
     this.params = params
   }
 
-  addCardToDeck(card: Card): boolean {
+  addCardToDeck(card: Card): string {
     return this.deckRegion.addCardToDeck(card)
   }
 
@@ -100,7 +100,7 @@ export class AdventureBuilderScene extends BuilderBase {
     this.filter()
   }
 
-  addCardToDeck(card: Card): boolean {
+  addCardToDeck(card: Card): string {
     return this.journeyRegion.addCardToDeck(card)
   }
 
@@ -160,11 +160,11 @@ export class BuilderScene extends BuilderBase {
     }
   }
 
-  addCardToDeck(card: Card): boolean {
+  addCardToDeck(card: Card): string {
     // If no deck is selected, don't add the card
     if (this.decklistsRegion.savedDeckIndex === undefined) {
       // TODO What should happen here? Zoom up the card?
-      return false
+      return 'No deck selected.'
     }
 
     let result = this.deckRegion.addCardToDeck(card)

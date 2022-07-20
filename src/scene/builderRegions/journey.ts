@@ -123,14 +123,14 @@ export default class DeckRegion {
 	}
 
 	// Add the given card and return the created cardImage
-	addCardToDeck(card: Card, panel = this.chosenPanel): boolean {
+	addCardToDeck(card: Card, panel = this.chosenPanel): string {
 		let totalCount = 0
 		this.deck.forEach(cutout => {
 			totalCount += cutout.count
 		})
 
 		if (totalCount  >= Mechanics.deckSize) {
-			return false
+			return 'Deck is full.'
 		}
 
 		// If this card exists in the deck already, increment it
@@ -159,7 +159,7 @@ export default class DeckRegion {
 		// Update start button to reflect new amount of cards in deck
 		this.updateText()
 
-		return true
+		return
 	}
 
 	// Set the current deck, and return whether the given deck was valid

@@ -104,7 +104,7 @@ export default class Cutout extends Button {
 		this.updateText()
 
 		this.onClick = () => {
-			this.scene['signalError']("Can't remove required card.")
+			this.scene['signalError']("Can't remove a required card.")
 		}
 		return this
 	}

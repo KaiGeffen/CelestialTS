@@ -15,6 +15,7 @@ const CoreColors: Record<string, any> = {
   greenS: '#070',
 
   black: 0x000000,
+  blackS: '#000',
   white: 0xffffff,
   whiteS: '#ffffff',
 
@@ -84,6 +85,10 @@ export const Color: Record<string, any> = {
   hintFill: CoreColors.white,
   hintBackground: CoreColors.greyA,
 
+  // Colors for any error messages that pop up
+  error: CoreColors.whiteS,
+  errorBackground: CoreColors.blackS,
+  errorStroke: '#c00',
 
   // Outline plugin color
   outline: CoreColors.golden,

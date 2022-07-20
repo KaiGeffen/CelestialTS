@@ -247,24 +247,19 @@ export const BBStyle: Record<string, any> = {
   error: {
     fontFamily: fontFamily,
     fontSize: FontSettings.huge.size,
-    color: '#fff',
-    backgroundColor: Color.cardTextBackground,
-    backgroundStrokeColor: "#fff",
-    backgroundStrokeLineWidth: 2,
+    color: Color.error,
+    backgroundColor: Color.errorBackground,
+    backgroundStrokeColor: Color.errorStroke,
+    backgroundStrokeLineWidth: 4,
     backgroundCornerRadius: 5,
     backgroundHorizontalGradient: false,
     padding: { 
-      left: 10,
-      right: 10,
-      top: 5,
-      bottom: 5
+      left: Space.pad,
+      right: Space.pad,
+      top: Space.pad,
+      bottom: Space.pad
     },
-    underline: {
-      color: Color.cardText,
-      thickness: 2,
-      offset: 8
-    },
-    strokeThickness: 4,
+    // strokeThickness: 4,
     wrap: {
       mode: 'word',
       width: Space.windowWidth - Space.pad * 2

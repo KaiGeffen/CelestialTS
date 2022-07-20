@@ -137,15 +137,14 @@ export default class CatalogRegion {
 
   // Event when a card in the catalog is clicked
   private onClickCatalogCard(card: Card): () => void {
-    let scene = this.scene
+    return () => {
+      const errorMsg = this.scene.addCardToDeck(card)
 
-    return function() {
-      if (scene.addCardToDeck(card)) {
-        scene.sound.play('click')
+      if (errorMsg === undefined) {
+        this.scene.sound.play('click')
       }
       else {
-        // TODO Break up into different cases
-        scene.signalError('Deck is full')
+        this.scene.signalError(errorMsg)
       }
     }
   }
