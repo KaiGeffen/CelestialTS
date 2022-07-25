@@ -45,14 +45,14 @@ export default class SearchingRegion extends Region {
 	}
 
 	private createAvatars(scene: Phaser.Scene, avatarId: number): void {
-		const scale = Space.windowHeight / 600
-		let avatar = scene.add.image(0, 0, `avatar-${avatarNames[avatarId]}Full`)
+		const scale = Math.min(1, Space.windowHeight / 600)
+		let avatar = scene.add.image(0, Space.windowHeight/2, `avatar-${avatarNames[avatarId]}Full`)
 		.setScale(scale)
-		.setOrigin(0)
+		.setOrigin(0, 0.5)
 
-		let mysteryAvatar = scene.add.image(Space.windowWidth, 0, `avatar-${avatarNames[0]}Full`)
+		let mysteryAvatar = scene.add.image(Space.windowWidth, Space.windowHeight/2, `avatar-${avatarNames[0]}Full`)
 		.setScale(scale)
-		.setOrigin(1, 0)
+		.setOrigin(1, 0.5)
 		.setTint(0x222222)
 
 		let i = 0
