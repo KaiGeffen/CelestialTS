@@ -189,7 +189,7 @@ class Pass extends Button {
 			text: {
 				text: 'PASS',
 				interactive: false,
-				style: Style.huge,
+				style: Style.pass,
 			},
 			icon: {
 				name: 'Pass',
@@ -201,8 +201,8 @@ class Pass extends Button {
 		})
 
 		// Show a hint when hovered
-		const s = 'Pass priority.\nOnce both players have passed in a row, the round ends.'
-		super.makeHintable(s)
+		// const s = 'Pass priority.\nOnce both players have passed in a row, the round ends.'
+		// super.makeHintable(s)
 	}
 
 	enable() {
