@@ -10,7 +10,6 @@ import Region from './baseRegion';
 
 // During the round, shows Pass button, who has passed, and who has priority
 export default class PassRegion extends Region {
-	background: RoundRectangle
 	callback: () => void
 	recapCallback: () => void
 	
@@ -25,10 +24,6 @@ export default class PassRegion extends Region {
 	create (scene: BaseScene): PassRegion {
 		this.scene = scene
 		this.container = scene.add.container()
-
-		// Add the background
-		this.background = this.createBackground()
-		this.container.add(this.background)
 
 		// Pass and recap button
 		this.createButtons()
@@ -47,6 +42,7 @@ export default class PassRegion extends Region {
 			this.container.setVisible(false)
 			return
 		}
+		this.container.setVisible(true)
 
 		// Once the game is over, change the callback to instead show results of match
 		if (state.winner !== null) {
@@ -55,8 +51,8 @@ export default class PassRegion extends Region {
 			})
 		}
 
-		// Show this container when state is not in recap
-		this.container.setVisible(!isRecap)
+		// Rotate to the right day/night
+		this.showDayNight(isRecap)
 
 		// Show who has passed
 		if (state.passes === 2) {
@@ -104,33 +100,12 @@ export default class PassRegion extends Region {
 		this.showResultsCallback = callback
 	}
 
-	private createBackground(): RoundRectangle {
-		let background = new RoundRectangle(
-			this.scene,
-			Space.windowWidth - Space.cardWidth/2 - Space.pad,
-			Space.windowHeight/2,
-			200,
-			200,
-			100,
-			Color.background
-			)
-
-		// Add a border around the shape TODO Make a class for this to keep it dry
-		let postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
-		postFxPlugin['add'](background, {
-			thickness: 1,
-			outlineColor: Color.border,
-		})
-
-		return background
-	}
-
 	private createButtons(): void {
 		let that = this
 
 		this.btnPass = new Icons.Pass(this.container,
-			this.background.x,
-			this.background.y)
+			Space.windowWidth, // Has sun on one side moon on other
+			Space.windowHeight/2)
 		
 		// Set on click to be the callback, but only once
 		this.btnPass.setOnClick(() => {that.callback()}, true)
@@ -138,15 +113,15 @@ export default class PassRegion extends Region {
 
 	private createText(): void {
 		this.txtYouPassed = this.scene.add.text(
-			this.background.x,
-			this.background.y + 120,
+			Space.windowWidth - 300,
+			Space.windowHeight/2 + 120,
 			'You Passed',
 			Style.basic,
 			).setOrigin(0.5)
 
 		this.txtTheyPassed = this.scene.add.text(
-			this.background.x,
-			this.background.y - 120,
+			Space.windowWidth - 300,
+			Space.windowHeight/2 - 120,
 			'They Passed',
 			Style.basic,
 			).setOrigin(0.5)
@@ -169,6 +144,21 @@ export default class PassRegion extends Region {
 			{
 				txt.setAlpha(hasPassed ? 1 : 0)
 			}
+		})
+	}
+
+	// Animate the sun / moon being visible when it's day or night
+	private showDayNight(isRecap: boolean) {
+		let target = this.btnPass.icon
+
+		if (!isRecap) {
+			target.rotation += .001
+		}
+
+		// NOTE Target just below PI so that it doesn't flip to -PI and then rotate a full 2PI
+		this.scene.tweens.add({
+			targets: target,
+			rotation: isRecap ? Math.PI - .001 : 0,
 		})
 	}
 }
