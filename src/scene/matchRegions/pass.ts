@@ -10,7 +10,6 @@ import Region from './baseRegion';
 
 // During the round, shows Pass button, who has passed, and who has priority
 export default class PassRegion extends Region {
-	background: RoundRectangle
 	callback: () => void
 	recapCallback: () => void
 	
@@ -26,10 +25,6 @@ export default class PassRegion extends Region {
 		this.scene = scene
 		this.container = scene.add.container()
 
-		// Add the background
-		this.background = this.createBackground()
-		this.container.add(this.background)
-
 		// Pass and recap button
 		this.createButtons()
 
@@ -37,27 +32,6 @@ export default class PassRegion extends Region {
 		this.createText()
 
 		return this
-	}
-
-	private createBackground(): RoundRectangle {
-		let background = new RoundRectangle(
-			this.scene,
-			Space.windowWidth - Space.cardWidth/2 - Space.pad,
-			Space.windowHeight/2,
-			200,
-			200,
-			100,
-			Color.background
-			)
-
-		// Add a border around the shape TODO Make a class for this to keep it dry
-		let postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
-		postFxPlugin['add'](background, {
-			thickness: 1,
-			outlineColor: Color.border,
-		})
-
-		return background
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
