@@ -37,6 +37,8 @@ export default class PassRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
+		return
+
 		// Before mulligan is complete, hide this region
 		if (state.mulligansComplete.includes(false)) {
 			this.container.setVisible(false)
