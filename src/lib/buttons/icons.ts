@@ -190,6 +190,7 @@ class Pass extends Button {
 				text: 'PASS',
 				interactive: false,
 				style: Style.pass,
+				offsetX: -164,
 			},
 			icon: {
 				name: 'Pass',
@@ -213,6 +214,7 @@ class Pass extends Button {
 	}
 
 	disable() {
+		// TODO Have this be on a cloud instead
 		this.setText('THEIR\nTURN')
 		super.disable()
 

@@ -113,14 +113,14 @@ export default class PassRegion extends Region {
 
 	private createText(): void {
 		this.txtYouPassed = this.scene.add.text(
-			Space.windowWidth - 300,
+			Space.windowWidth - 150,
 			Space.windowHeight/2 + 120,
 			'You Passed',
 			Style.basic,
 			).setOrigin(0.5)
 
 		this.txtTheyPassed = this.scene.add.text(
-			Space.windowWidth - 300,
+			Space.windowWidth - 150,
 			Space.windowHeight/2 - 120,
 			'They Passed',
 			Style.basic,
