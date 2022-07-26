@@ -58,9 +58,14 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		switch (this.params.missionID) {
 			case 3:
-			// TODO Rename
+			this.view.decks.hide()
+			this.view.discardPiles.hide()
+			this.view.pass.hide()
+			this.view.commands.hide()
+			
 			this.displayHints1()
 			break
+
 			// case 6:
 			// this.displayState2(state, isRecap)
 			// break
@@ -69,24 +74,31 @@ export default class TutorialGameScene extends AdventureGameScene {
 			// break
 		}
 
+		this.progress += 1
+
 		return result
 	}
 
 	// Display hints for the first tutorial
 	private displayHints1(): void {
-		this.view.decks.hide()
-		this.view.discardPiles.hide()
-		this.view.pass.hide()
-		this.view.commands.hide()
+		const datum = data[this.progress]
+		
+		if (datum === undefined) {
+			this.txt.setVisible(false)
+			this.btnNext.setVisible(false)
+			return
+		}
 
 		// Set the appropriate text and position
-		const datum = data[this.progress]
-		let s = `[i]${datum.italic}[/i]\n\n[b]${datum.bold}[/b]`
+		let s = `[i]${datum.italic}[/i]${datum.italic !== '' ? '\n\n' : ''}[b]${datum.bold}[/b]`
 		this.txt.setText(s)
 
 		// Move next button just below the text
 		const p = this.txt.getBottomCenter()
 		this.btnNext.setPosition(p.x, p.y + Space.pad + Space.largeButtonHeight/2)
+
+		// If this is the final hint before the player must do something, hide the button
+		this.btnNext.setVisible(!datum.final)
 
 		// Hide different elements on the screen based on progress
 		switch (this.progress) {
@@ -114,6 +126,18 @@ export default class TutorialGameScene extends AdventureGameScene {
 			case 5:
 			this.addCard('Mercy')
 			break
+
+			case 6:
+			this.card.destroy()
+			this.view.ourHand.show()
+			['hideStacks']()
+			break
+
+			case 7:
+			this.view.theirHand.show()
+			['hideStacks']()
+			break
+
 		}
 
 
@@ -126,7 +150,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 		}
 
 		// Card that is being explained
-		const x = Space.pad + Space.cardWidth/2
+
+		const x = this.txt.getLeftCenter().x/2
 		const y = Space.windowHeight/2
 		this.card = new CardImage(getCard(name), this.add.container(x, y))
 	}

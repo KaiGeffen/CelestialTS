@@ -311,15 +311,10 @@ export default class OurHandRegion extends Region {
 	}
 
 	// TUTORIAL FUNCTIONALITY
-	// Hide all elements in this region
-	hideAll(): Region {
+	hideStacks(): Region {
 		this.btnDeck.setVisible(false)
 		this.btnDiscard.setVisible(false)
-		this.avatar.setVisible(false)
-		// this.background.setVisible(false)
 
 		return this
 	}
-
-	// show()
 }

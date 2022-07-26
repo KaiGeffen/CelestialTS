@@ -176,4 +176,12 @@ export default class TheirHandRegion extends Region {
 		this.btnNourish.setVisible(amtNourish !== 0)
 		.setText(`${amtNourish}`)
 	}
+
+	// TUTORIAL FUNCTIONALITY
+	hideStacks(): Region {
+		this.btnDeck.setVisible(false)
+		this.btnDiscard.setVisible(false)
+
+		return this
+	}
 }

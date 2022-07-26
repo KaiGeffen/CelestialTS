@@ -24,13 +24,13 @@
     "italic": "Mercy is a tale of the whole world’s compassion, it is that perfect moment when tension washes away completely.",
     "bold": "Mercy costs 3 breath to play, is worth 3 points when it resolves, and will cause both players to draw a card."
   },
-
   {
-    "italic": "Jules",
-    "bold": "Flurry of bright wings"
+    "italic": "",
+    "bold": "You start each match with 3 cards in hand.\n\nAt the start of each round, you draw 2 cards.\n\nYou can’t have more than 6 cards in hand."
   },
   {
-    "italic": "In this city we tell stories - each day we craft them, and each night they come to life before a crowd. When you’ve won 5 times, you may pass on. To ease your journey into the city, I’ve given you 2 wins for now.",
-    "bold": "Win the game by winning 5 rounds.\nFor the tutorial, you start with 2 wins."
+    "italic": "",
+    "bold": "When you’re ready, click a card in your hand to add it to the story.",
+    "final": true
   }
 ]
