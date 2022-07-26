@@ -164,6 +164,18 @@ export default class Button {
 		return this
 	}
 
+	// Emulating phaser gameobject functions
+	setPosition(x = 0, y = 0): Button {
+		if (this.txt) {
+			this.txt.setPosition(x, y)
+		}
+		if (this.icon) {
+			this.icon.setPosition(x, y)
+		}
+
+		return this
+	}
+
 	setVisible(value): Button {
 		if (this.txt) {
 			this.txt.setVisible(value)

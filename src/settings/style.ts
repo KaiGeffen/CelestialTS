@@ -221,6 +221,10 @@ export const BBStyle: Record<string, any> = {
       offset: 7,
     },
     halign: 'center',
+    wrap: {
+      mode: 'word',
+      width: Space.maxTextWidth
+    },
   },
   // Hint text shown when something onscreen is hovered
   hint: {

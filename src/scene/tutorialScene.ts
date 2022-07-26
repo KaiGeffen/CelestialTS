@@ -5,6 +5,8 @@ import ClientState from "../lib/clientState";
 import { AdventureGameScene } from './gameScene';
 import data from '../catalog/tutorial.json'
 import { Space, BBStyle } from '../settings/settings'
+import Button from '../lib/buttons/button'
+import Buttons from '../lib/buttons/buttons'
 
 
 export default class TutorialGameScene extends AdventureGameScene {
@@ -13,6 +15,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 	// The primary text object
 	txt: RexUIPlugin.BBCodeText
+
+	// Text button to continue the hint text
+	btnNext: Button
 
 	constructor (args = {key: 'TutorialGameScene', lastScene: 'AdventureScene'}) {
 		super(args)
@@ -29,6 +34,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 			BBStyle.basic)
 		.setOrigin(0.5)
 		.setDepth(40)
+
+		// Next button for tutorial text
+		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next')
 	}
 
 	// TODO Ensure that autopass is on
@@ -36,6 +44,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 	// TODO When a winner is found, move on to the next stillframe of the tutorial
 	protected displayState(state: ClientState, isRecap: boolean): boolean {
 		let result = super.displayState(state, isRecap)
+
+		if (!result) { return false }
 
 		switch (this.params.missionID) {
 			case 3:
@@ -59,9 +69,20 @@ export default class TutorialGameScene extends AdventureGameScene {
 		this.view.pass.hide()
 		this.view.commands.hide()
 
+		// Set the appropriate text and position
 		const datum = data[this.progress]
 		let s = `[i]${datum.italic}[/i]\n\n${datum.standard}`
 		this.txt.setText(s)
+
+		// Move next button just below the text
+		const p = this.txt.getBottomCenter()
+		this.btnNext.setPosition(p.x, p.y + Space.pad + Space.largeButtonHeight/2)
+		
+		// Hide different elements on the screen based on progress
+		switch (this.progress) {
+			case 0:
+
+		}
 
 
 	}
