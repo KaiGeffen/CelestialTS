@@ -7,6 +7,8 @@ import data from '../catalog/tutorial.json'
 import { Space, BBStyle } from '../settings/settings'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
+import { CardImage } from '../lib/cardImage'
+import { getCard } from '../catalog/catalog'
 
 
 export default class TutorialGameScene extends AdventureGameScene {
@@ -18,6 +20,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 	// Text button to continue the hint text
 	btnNext: Button
+
+	// A card that is being shown
+	card: CardImage
 
 	constructor (args = {key: 'TutorialGameScene', lastScene: 'AdventureScene'}) {
 		super(args)
@@ -39,7 +44,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next',
 			() => {
 				this.progress += 1
-				this.displayState1()
+				this.displayHints1()
 			})
 	}
 
@@ -54,7 +59,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 		switch (this.params.missionID) {
 			case 3:
 			// TODO Rename
-			this.displayState1()
+			this.displayHints1()
 			break
 			// case 6:
 			// this.displayState2(state, isRecap)
@@ -67,8 +72,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 		return result
 	}
 
-	// Display the state of the first tutorial
-	private displayState1(): void {
+	// Display hints for the first tutorial
+	private displayHints1(): void {
 		this.view.decks.hide()
 		this.view.discardPiles.hide()
 		this.view.pass.hide()
@@ -76,7 +81,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		// Set the appropriate text and position
 		const datum = data[this.progress]
-		let s = `[i]${datum.italic}[/i]\n\n${datum.standard}`
+		let s = `[i]${datum.italic}[/i]\n\n[b]${datum.bold}[/b]`
 		this.txt.setText(s)
 
 		// Move next button just below the text
@@ -97,9 +102,33 @@ export default class TutorialGameScene extends AdventureGameScene {
 			case 1:
 			this.view.ourScore.showBreath()
 			break
+
+			case 2:
+			this.addCard('Dove')
+			break
+
+			case 4:
+			this.addCard('Dash')
+			break
+
+			case 5:
+			this.addCard('Mercy')
+			break
 		}
 
 
+	}
+
+	// Add a card that is a part of an explanation
+	private addCard(name: string): void {
+		if (this.card !== undefined) {
+			this.card.destroy()
+		}
+
+		// Card that is being explained
+		const x = Space.pad + Space.cardWidth/2
+		const y = Space.windowHeight/2
+		this.card = new CardImage(getCard(name), this.add.container(x, y))
 	}
 
 

@@ -1,24 +1,36 @@
 [
   {
     "italic": "In this city we tell stories - each day we craft them, and each night they come to life before a crowd. When you’ve won 5 times, you may pass on. To ease your journey into the city, I’ve given you 2 wins for now.",
-    "standard": "Win the game by winning 5 rounds.\nFor the tutorial, you start with 2 wins."
+    "bold": "Win the game by winning 5 rounds.\nFor the tutorial, you start with 2 wins."
   },
 
   {
     "italic": "With our sacred breath we create the stories that we tell here. Each card takes some breath to play as we add it to our shared story. And each morning we awake with more breath in our lungs.",
-    "standard": "Spend Breath to play cards from your hand. You start with 1 breath and gain 1 more each round."
+    "bold": "Spend Breath to play cards from your hand. You start with 1 breath and gain 1 more each round."
   },
   {
-    "italic": "In this city we tell stories - each day we craft them, and each night they come to life before a crowd. When you’ve won 5 times, you may pass on. To ease your journey into the city, I’ve given you 2 wins for now.",
-    "standard": "Win the game by winning 5 rounds.\nFor the tutorial, you start with 2 wins."
+    "italic": "These cards are the elements of the stories we tell - wisps and imagery brought here to form something greater. With our breath we weave them into the story, and when night falls they come to life, to enchant and delight the audience.",
+    "bold": "Each card has a cost to play it (Top number) and amount of points it earns (Bottom number). It also has text that describes any extra effects. Hover over the card to see explanations."
+  },
+  {
+    "italic": "Dove is about freedom and letting go. To fly unfettered to any height.",
+    "bold": "Dove costs 1 breath to play, and earns 1 point. It also has the following effects:\nOnce Dove has been added to the story, it will be visible to both players.\nWhen Dove resolves it will be removed from the game instead of moving to your discard pile."
+  },
+  {
+    "italic": "Dash is about the singular need to move fast. Run away from it all, never stop running!",
+    "bold": "Dash costs 2 breath, and is worth 3 points, minus the number of cards (Yours and your opponents) that appear to the left of it in the story that round."
+  },
+  {
+    "italic": "Mercy is a tale of the whole world’s compassion, it is that perfect moment when tension washes away completely.",
+    "bold": "Mercy costs 3 breath to play, is worth 3 points when it resolves, and will cause both players to draw a card."
   },
 
   {
     "italic": "Jules",
-    "standard": "Flurry of bright wings"
+    "bold": "Flurry of bright wings"
   },
   {
     "italic": "In this city we tell stories - each day we craft them, and each night they come to life before a crowd. When you’ve won 5 times, you may pass on. To ease your journey into the city, I’ve given you 2 wins for now.",
-    "standard": "Win the game by winning 5 rounds.\nFor the tutorial, you start with 2 wins."
+    "bold": "Win the game by winning 5 rounds.\nFor the tutorial, you start with 2 wins."
   }
 ]
