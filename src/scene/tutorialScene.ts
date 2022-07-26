@@ -21,17 +21,23 @@ export default class TutorialGameScene extends AdventureGameScene {
 	// Text button to continue the hint text
 	btnNext: Button
 
+	// Pointer for showing area of interest to user
+	pointer: Phaser.GameObjects.Image
+
 	// A card that is being shown
 	card: CardImage
 
 	constructor (args = {key: 'TutorialGameScene', lastScene: 'AdventureScene'}) {
 		super(args)
-		this.progress = 0
 	}
 
 	create(): void {
 		super.create()
 
+		// Must reset progress
+		this.progress = -1
+
+		// Hint text
 		this.txt = this.rexUI.add.BBCodeText(
 			Space.windowWidth/2,
 			Space.windowHeight/2,
@@ -46,6 +52,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 				this.progress += 1
 				this.displayHints1()
 			})
+
+		// Pointer for showing area of interest to user
+		this.pointer = this.add.image(0, 0, 'icon-Pointer')
 	}
 
 	// TODO Ensure that autopass is on
@@ -55,6 +64,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 		let result = super.displayState(state, isRecap)
 
 		if (!result) { return false }
+
+		this.progress += 1
 
 		switch (this.params.missionID) {
 			case 3:
@@ -74,8 +85,6 @@ export default class TutorialGameScene extends AdventureGameScene {
 			// break
 		}
 
-		this.progress += 1
-
 		return result
 	}
 
@@ -86,16 +95,16 @@ export default class TutorialGameScene extends AdventureGameScene {
 		if (datum === undefined) {
 			this.txt.setVisible(false)
 			this.btnNext.setVisible(false)
+			this.pointer.setVisible(false)
 			return
 		}
 
-		// Set the appropriate text and position
+		// Set the appropriate text
 		let s = `[i]${datum.italic}[/i]${datum.italic !== '' ? '\n\n' : ''}[b]${datum.bold}[/b]`
 		this.txt.setText(s)
 
-		// Move next button just below the text
-		const p = this.txt.getBottomCenter()
-		this.btnNext.setPosition(p.x, p.y + Space.pad + Space.largeButtonHeight/2)
+		// Align the elements based on the type of hint
+		this.align(datum)
 
 		// If this is the final hint before the player must do something, hide the button
 		this.btnNext.setVisible(!datum.final)
@@ -137,11 +146,32 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.view.theirHand.show()
 			['hideStacks']()
 			break
-
 		}
 
 
 	}
+
+	// Align the elements based on the type of tutorial
+	private align(datum): void {
+		switch (datum.align) {
+			case 'right':
+			// TODO rotate first
+			let x = Space.windowWidth - Space.pad - this.pointer.width/2 - 80
+			let y = Space.windowHeight - Space.handHeight - this.pointer.height + 30
+			this.pointer.setPosition(x, y)
+
+			// Text to the right of pointer
+			x -= this.pointer.width/2 + Space.pad + this.txt.displayWidth/2
+			y -= this.pointer.height/2
+			this.txt.setPosition(x, y)
+		}
+
+
+		// Move next button just below the text
+		const p = this.txt.getBottomCenter()
+		this.btnNext.setPosition(p.x, p.y + Space.pad + Space.largeButtonHeight/2)
+	}
+
 
 	// Add a card that is a part of an explanation
 	private addCard(name: string): void {
