@@ -40,5 +40,16 @@
     "bold": "When you’re ready, click a card in your hand to add it to the story.",
     "align": "center",
     "final": true
+  },
+  null,
+  {
+    "italic": "",
+    "bold": "I play a Dove, too.\n\nYou can see it in the story because it’s Visible.",
+    "align": "story"
+  },
+  {
+    "italic": "",
+    "bold": "You’re out of cards to play.\nThe round ends now, and the cards we’ve played resolve from left to right.",
+    "align": "story"
   }
 ]

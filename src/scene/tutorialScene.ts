@@ -92,7 +92,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 	private displayHints1(): void {
 		const datum = data[this.progress]
 		
-		if (datum === undefined) {
+		if (datum === undefined || datum === null) {
 			this.txt.setVisible(false)
 			this.btnNext.setVisible(false)
 			this.pointer.setVisible(false)
@@ -102,13 +102,14 @@ export default class TutorialGameScene extends AdventureGameScene {
 		// Set the appropriate text
 		let s = `[i]${datum.italic}[/i]${datum.italic !== '' ? '\n\n' : ''}[b]${datum.bold}[/b]`
 		this.txt.setText(s)
-
-		// Align the elements based on the type of hint
-		this.align(datum)
+		.setVisible(s !== '')
 
 		// If this is the final hint before the player must do something, hide the button
 		this.btnNext.setVisible(!datum.final)
 		this.pointer.setVisible(!datum.final)
+
+		// Align the elements based on the type of hint
+		this.align(datum)
 
 		// Hide different elements on the screen based on progress
 		switch (this.progress) {
@@ -144,12 +145,11 @@ export default class TutorialGameScene extends AdventureGameScene {
 			break
 
 			case 7:
+			this.view.theirScore.show()
 			this.view.theirHand.show()
 			['hideStacks']()
 			break
 		}
-
-
 	}
 
 	// Align the elements based on the type of tutorial
@@ -224,6 +224,20 @@ export default class TutorialGameScene extends AdventureGameScene {
 			break
 
 
+
+			case 'story':
+			this.pointer.setVisible(false)
+
+			// Text to the right of center
+			x = Space.windowWidth/2 + this.txt.displayWidth/2 + Space.pad
+			y = Space.windowHeight/2
+			this.txt.setPosition(x, y)
+
+			// Button just below text
+			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			this.btnNext.setPosition(x, y)
+
+			break
 		}
 	}
 
