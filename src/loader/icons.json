@@ -13,7 +13,7 @@
 	"Edit",
 	"Recap",
 	"Skip",
-	"Bottom", "BottomAvatar",
+	"Bottom", "BottomAvatar", "Bottom Score",
 	"Top",
 	"BreathBasic", "BreathSpent", "BreathExtra", "BreathHover", "BreathOom", 
 	"Arrow"

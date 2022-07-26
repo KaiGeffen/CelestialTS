@@ -309,4 +309,17 @@ export default class OurHandRegion extends Region {
 		this.btnSight.setVisible(state.vision !== 0)
 		.setText(`${state.vision}`)
 	}
+
+	// TUTORIAL FUNCTIONALITY
+	// Hide all elements in this region
+	hideAll(): Region {
+		this.btnDeck.setVisible(false)
+		this.btnDiscard.setVisible(false)
+		this.avatar.setVisible(false)
+		// this.background.setVisible(false)
+
+		return this
+	}
+
+	// show()
 }

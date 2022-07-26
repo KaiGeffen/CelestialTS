@@ -36,7 +36,11 @@ export default class TutorialGameScene extends AdventureGameScene {
 		.setDepth(40)
 
 		// Next button for tutorial text
-		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next')
+		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next',
+			() => {
+				this.progress += 1
+				this.displayState1()
+			})
 	}
 
 	// TODO Ensure that autopass is on
@@ -49,7 +53,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		switch (this.params.missionID) {
 			case 3:
-			this.displayState1(state, isRecap)
+			// TODO Rename
+			this.displayState1()
 			break
 			// case 6:
 			// this.displayState2(state, isRecap)
@@ -63,7 +68,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 	}
 
 	// Display the state of the first tutorial
-	private displayState1(state: ClientState, isRecap: boolean): void {
+	private displayState1(): void {
 		this.view.decks.hide()
 		this.view.discardPiles.hide()
 		this.view.pass.hide()
@@ -77,11 +82,21 @@ export default class TutorialGameScene extends AdventureGameScene {
 		// Move next button just below the text
 		const p = this.txt.getBottomCenter()
 		this.btnNext.setPosition(p.x, p.y + Space.pad + Space.largeButtonHeight/2)
-		
+
 		// Hide different elements on the screen based on progress
 		switch (this.progress) {
 			case 0:
+			this.view.theirHand.hide()
+			this.view.theirScore.hide()
+			this.view.ourHand.hide()
+			this.view.ourScore.hideAll()
+			.showBackground()
+			.showWins()
+			break
 
+			case 1:
+			this.view.ourScore.showBreath()
+			break
 		}
 
 
