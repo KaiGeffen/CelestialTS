@@ -108,6 +108,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		// If this is the final hint before the player must do something, hide the button
 		this.btnNext.setVisible(!datum.final)
+		this.pointer.setVisible(!datum.final)
 
 		// Hide different elements on the screen based on progress
 		switch (this.progress) {
@@ -153,35 +154,85 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 	// Align the elements based on the type of tutorial
 	private align(datum): void {
+		// Reset flipping the pointer
+		this.pointer.resetFlip()
+
+		let x, y
 		switch (datum.align) {
 			case 'right':
-			// TODO rotate first
-			let x = Space.windowWidth - Space.pad - this.pointer.width/2 - 80
-			let y = Space.windowHeight - Space.handHeight - this.pointer.height + 30
+			this.pointer.setRotation(0)
+
+			x = Space.windowWidth - Space.pad - this.pointer.width/2 - 80
+			y = Space.windowHeight - Space.handHeight - this.pointer.height + 30
 			this.pointer.setPosition(x, y)
 
-			// Text to the right of pointer
+			// Text to the left of pointer
 			x -= this.pointer.width/2 + Space.pad + this.txt.displayWidth/2
 			y -= this.pointer.height/2
 			this.txt.setPosition(x, y)
+
+			// Move next button just below the text
+			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			this.btnNext.setPosition(x, y)
+			break
+
+
+
+			case 'card':
+			this.pointer.setRotation(Math.PI/2)
+
+			x = Space.windowWidth/2 + Space.cardWidth/2 + Space.pad + this.pointer.width/2 + 50
+			y = Space.windowHeight/2 + this.pointer.height/2
+			this.pointer.setPosition(x, y)
+
+			// Text above the pointer
+			x = Space.windowWidth/2 + Space.cardWidth/2 + Space.pad + this.txt.displayWidth/2
+			y -= this.pointer.height/2 + Space.pad + this.txt.displayHeight/2
+			this.txt.setPosition(x, y)
+
+			// Move next button below and to the left of
+			x -= this.txt.displayWidth/2 - Space.smallButtonWidth/2 - Space.pad
+			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			this.btnNext.setPosition(x, y)
+			break
+
+
+
+			case 'bottom':
+			this.pointer.setRotation(0).setFlipX(true)
+
+			x = Space.windowWidth/2 - Space.cardWidth
+			y = Space.windowHeight - Space.handHeight - this.pointer.displayHeight/2 - Space.pad*2
+			this.pointer.setPosition(x, y)
+
+			// Text left of the pointer
+			// NOTE Get right instead of left because x is flipped
+			x = this.pointer.getRightCenter().x + this.txt.displayWidth/2 + Space.pad
+			y -= this.pointer.displayHeight/2
+			this.txt.setPosition(x, y)
+
+			// Button just below text
+			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			this.btnNext.setPosition(x, y)
+
+			break
+
+
+
+			case 'center':
+			this.txt.setPosition(Space.windowWidth/2, Space.windowHeight/2)
+			break
+
+
 		}
-
-
-		// Move next button just below the text
-		const p = this.txt.getBottomCenter()
-		this.btnNext.setPosition(p.x, p.y + Space.pad + Space.largeButtonHeight/2)
 	}
 
-
-	// Add a card that is a part of an explanation
 	private addCard(name: string): void {
 		if (this.card !== undefined) {
 			this.card.destroy()
 		}
 
-		// Card that is being explained
-
-		const x = this.txt.getLeftCenter().x/2
+		const x = Space.windowWidth/2
 		const y = Space.windowHeight/2
 		this.card = new CardImage(getCard(name), this.add.container(x, y))
 	}
