@@ -3,7 +3,7 @@ import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 import Button from '../../lib/buttons/button';
 import Icons from '../../lib/buttons/icons'
 import ClientState from '../../lib/clientState';
-import { Style, Color, Space, Time } from '../../settings/settings';
+import { Style, Color, Space, Time, Ease } from '../../settings/settings';
 import BaseScene from '../baseScene';
 import Region from './baseRegion';
 
@@ -159,6 +159,7 @@ export default class PassRegion extends Region {
 		this.scene.tweens.add({
 			targets: target,
 			rotation: isRecap ? Math.PI - .001 : 0,
+			ease: Ease.basic,
 		})
 	}
 }

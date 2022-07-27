@@ -10,6 +10,7 @@ import { UserSettings } from "./userSettings"
 import { Depth } from "./depth"
 import { Mobile } from "./mobile"
 import { Scroll } from './scroll'
+import { Ease } from './ease'
 
 
 export {
@@ -24,4 +25,6 @@ export {
   Depth,
   Mobile,
   Scroll,
+  Ease,
 }
+

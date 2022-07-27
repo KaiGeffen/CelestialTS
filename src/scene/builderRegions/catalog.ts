@@ -4,7 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, Color, UserSettings, Space, Mechanics, Time, Mobile, Scroll } from "../../settings/settings"
+import { Style, Color, UserSettings, Space, Mechanics, Time, Mobile, Scroll, Ease } from "../../settings/settings"
 import { collectibleCards } from "../../catalog/catalog"
 
 
@@ -166,6 +166,7 @@ export default class CatalogRegion {
         targets: this.panel,
         minWidth: width,
         duration: Time.builderSlide(),
+        ease: Ease.basic,
         onUpdate: () => {
           that.scrollablePanel.layout()
         },
@@ -186,6 +187,7 @@ export default class CatalogRegion {
         targets: this.panel,
         minWidth: width,
         duration: Time.builderSlide(),
+        ease: Ease.basic,
         onUpdate: () => {
           that.scrollablePanel.layout()
         },

@@ -8,7 +8,7 @@ import Cutout from '../../lib/buttons/cutout';
 import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard } from '../../lib/codec';
-import { Color, Mechanics, Space, Style, Time, Mobile, Scroll } from '../../settings/settings';
+import { Color, Mechanics, Space, Style, Time, Mobile, Scroll, Ease } from '../../settings/settings';
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -472,6 +472,7 @@ export default class DeckRegion {
 			targets: this.scrollablePanel,
 			x: X_START,
 			duration: Time.builderSlide(),
+			ease: Ease.basic,
 		})
 	}
 
@@ -482,6 +483,7 @@ export default class DeckRegion {
 			targets: this.scrollablePanel,
 			x: x,
 			duration: Time.builderSlide(),
+			ease: Ease.basic,
 		})
 	}
 }
