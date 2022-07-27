@@ -45,13 +45,17 @@ export default class CatalogRegion {
   }
 
   private createPanel(scene: Phaser.Scene, x: number) {
-    x += Mobile ? Space.scrollWidth : 0
-    let height = Space.windowHeight
+    // NOTE Scroller is in both environments
+    // x += Mobile ? Space.scrollWidth : 0
+
+    // TODO Rename x
+
+    const width = Space.windowWidth - x
+    const height = Space.windowHeight
 
     // Make the object
-    let width = Space.windowWidth - x
     let superPanel = this.scrollablePanel = scene['rexUI'].add.scrollablePanel({
-      x: x,
+      x: Space.windowWidth,
       y: 0,
       width: width,
       height: height,
@@ -72,7 +76,7 @@ export default class CatalogRegion {
       },
 
       slider: Scroll(scene),
-    }).setOrigin(0)
+    }).setOrigin(1, 0)
 
     // Update panel when mousewheel scrolls
     let panel = superPanel.getElement('panel')
@@ -154,20 +158,19 @@ export default class CatalogRegion {
     let that = this
 
     const x = Mobile ? Space.deckPanelWidth + 60 : Space.decklistPanelWidth + Space.deckPanelWidth
-    this.scrollablePanel.x = x
-    this.panel.minWidth = Space.windowWidth - x
-    this.scrollablePanel.layout()
-    // if (this.panel.x < x) {
-    //   this.scene.tweens.add({
-    //     targets: this.scrollablePanel,
-    //     x: x,
-    //     duration: Time.builderSlide(),
-    //     onStart: () => {
-    //       that.panel.minWidth = Space.windowWidth - x
-    //       that.scrollablePanel.layout()
-    //     },
-    //   })
-    // }
+    const width = Space.windowWidth - x
+
+    // Animate shift
+    if (this.panel.minWidth > width) {
+      this.scene.tweens.add({
+        targets: this.panel,
+        minWidth: width,
+        duration: Time.builderSlide(),
+        onUpdate: () => {
+          that.scrollablePanel.layout()
+        },
+      })
+    }
   }
 
   // Shift the catalog to the left to fill the absence of deck panel
@@ -175,19 +178,18 @@ export default class CatalogRegion {
     let that = this
 
     const x = Space.decklistPanelWidth + (Mobile ? Space.scrollWidth : 0)
-    this.scrollablePanel.x = x
-    this.panel.minWidth = Space.windowWidth - x
-    this.scrollablePanel.layout()
-    // if (this.panel.x > x) {
-    //   this.scene.tweens.add({
-    //     targets: this.scrollablePanel,
-    //     x: x,
-    //     duration: Time.builderSlide(),
-    //     onStart: () => {
-    //       that.panel.minWidth = Space.windowWidth - x
-    //       that.scrollablePanel.layout()
-    //     },
-    //   })
-    // }
+    const width = Space.windowWidth - x
+
+    // Animate shift
+    if (this.panel.minWidth < width) {
+      this.scene.tweens.add({
+        targets: this.panel,
+        minWidth: width,
+        duration: Time.builderSlide(),
+        onUpdate: () => {
+          that.scrollablePanel.layout()
+        },
+      })
+    }
   }
 }
