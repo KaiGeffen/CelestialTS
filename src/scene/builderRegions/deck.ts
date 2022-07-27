@@ -472,7 +472,7 @@ export default class DeckRegion {
 			targets: this.scrollablePanel,
 			x: X_START,
 			duration: Time.builderSlide(),
-			ease: Ease.basic,
+			ease: Ease.slide,
 		})
 	}
 
@@ -483,7 +483,7 @@ export default class DeckRegion {
 			targets: this.scrollablePanel,
 			x: x,
 			duration: Time.builderSlide(),
-			ease: Ease.basic,
+			ease: Ease.slide,
 		})
 	}
 }

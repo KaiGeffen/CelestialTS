@@ -160,15 +160,19 @@ export default class CatalogRegion {
     const x = Mobile ? Space.deckPanelWidth + 60 : Space.decklistPanelWidth + Space.deckPanelWidth
     const width = Space.windowWidth - x
 
+    // Ratio of how much panel has been scrolled
+    const ratio = this.scrollablePanel.t
+
     // Animate shift
     if (this.panel.minWidth > width) {
       this.scene.tweens.add({
         targets: this.panel,
         minWidth: width,
         duration: Time.builderSlide(),
-        ease: Ease.basic,
+        ease: Ease.slide,
         onUpdate: () => {
           that.scrollablePanel.layout()
+          that.scrollablePanel.t = ratio
         },
       })
     }
@@ -181,15 +185,19 @@ export default class CatalogRegion {
     const x = Space.decklistPanelWidth + (Mobile ? Space.scrollWidth : 0)
     const width = Space.windowWidth - x
 
+    // Ratio of how much panel has been scrolled
+    const ratio = this.scrollablePanel.t
+
     // Animate shift
     if (this.panel.minWidth < width) {
       this.scene.tweens.add({
         targets: this.panel,
         minWidth: width,
         duration: Time.builderSlide(),
-        ease: Ease.basic,
+        ease: Ease.slide,
         onUpdate: () => {
           that.scrollablePanel.layout()
+          that.scrollablePanel.t = ratio
         },
       })
     }
