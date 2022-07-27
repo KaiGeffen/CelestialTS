@@ -309,4 +309,12 @@ export default class OurHandRegion extends Region {
 		this.btnSight.setVisible(state.vision !== 0)
 		.setText(`${state.vision}`)
 	}
+
+	// TUTORIAL FUNCTIONALITY
+	hideStacks(): Region {
+		this.btnDeck.setVisible(false)
+		this.btnDiscard.setVisible(false)
+
+		return this
+	}
 }

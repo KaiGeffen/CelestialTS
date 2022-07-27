@@ -34,6 +34,7 @@ export class CardImage {
   renderIndex: number = undefined
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
+    card = card || cardback
     this.init(card, container, interactive)
   }
 

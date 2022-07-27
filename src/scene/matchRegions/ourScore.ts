@@ -103,4 +103,50 @@ export default class ScoreRegion extends Region {
 	}
 
 
+	// TUTORIAL FUNCTIONALITY
+	// Hide all elements in this region
+	hideAll(): Region {
+		this.txtWins.setVisible(false)
+		this.txtBreath.setVisible(false);
+
+		// Make all breath invisible
+		[...this.breathBasic, 
+		...this.breathSpent, 
+		...this.breathExtra, 
+		...this.breathHover, 
+		...this.breathOom].forEach(obj => {
+			obj.setVisible(false)
+		})
+
+		return this
+	}
+
+	showBackground(): Region {
+		let bg = this.scene.add.image(
+			Space.windowWidth,
+			Space.windowHeight - 50 - Space.handHeight,
+			'icon-Bottom Score')
+		.setOrigin(1, 0)
+		.setInteractive()
+
+		return this
+	}
+
+	// Show just the wins
+	showWins(): Region {
+		this.txtWins.setVisible(true)
+
+		return this
+	}
+
+	// Show our Breath
+	showBreath(): Region {
+		this.txtBreath.setVisible(true);
+
+		// Make the starting breath visible
+		this.breathBasic[0].setVisible(true)
+		this.breathSpent[0].setVisible(true)
+
+		return this
+	}
 }

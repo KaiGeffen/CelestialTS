@@ -27,12 +27,14 @@ export default class Region {
 	// Display parts of the given state relevant to this region
 	displayState(state: ClientState, isRecap: boolean): void {}
 
-	show(): void {
+	show(): Region {
 		this.container.setVisible(true)
+		return this
 	}
 
-	hide(): void {
+	hide(): Region {
 		this.container.setVisible(false)
+		return this
 	}
 
 	// Bring attention to the given region by hiding everything else on screen
