@@ -25,7 +25,7 @@ export default class SearchingRegion extends Region {
 		return this
 	}
 
-	hide(): void {
+	hide(): Region {
 		clearInterval(this.interval)
 		return super.hide()
 	}

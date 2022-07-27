@@ -91,15 +91,15 @@ export default class ResultsRegion extends Region {
 		this.seen = true
 	}
 
-	hide(): void {
+	hide(): Region {
 		this.panel.setVisible(false)
-		super.hide()
+		return super.hide()
 	}
 
-	show(): void {
+	show(): Region {
 		this.panel.setVisible(true)
 		.layout()
-		super.show()
+		return super.show()
 	}
 
 	private createButtons() {
