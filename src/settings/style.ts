@@ -59,7 +59,9 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   pass: {
     fontFamily: fontFamily,
     fontSize: '40px',
-    color: Color.basicText,
+    color: Color.passText,
+    stroke: Color.passStroke,
+    strokeThickness: 3,
   },
   // Text for the deck title at the bottom of the avatar
   avatar: {

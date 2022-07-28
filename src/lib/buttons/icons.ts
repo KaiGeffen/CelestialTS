@@ -190,7 +190,8 @@ class Pass extends Button {
 				text: 'PASS',
 				interactive: false,
 				style: Style.pass,
-				offsetX: -164,
+				offsetX: -156,
+				offset: 4,
 			},
 			icon: {
 				name: 'Pass',
