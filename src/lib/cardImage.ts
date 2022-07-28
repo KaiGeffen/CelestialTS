@@ -89,7 +89,8 @@ export class CardImage {
       .on('pointerdown', () => that.clickCallback())
 
       // If the mouse moves outside of the game, exit the hover also
-      this.scene.input.on('gameout', () => this.exitCallback(), this)
+      // NOTE This logic won't run until the frame after user interacts with the canvas
+      this.scene.input.on('gameout', this.onHoverExit(true))
     }
   }
 
@@ -359,8 +360,12 @@ export class CardImage {
     }
   }
 
-  private onHoverExit(): () => void {
+  private onHoverExit(ignoreOverInternal = false): () => void {
     return () => {
+      if (!this.hovered) {
+        return
+      }
+
       // If still over the internal elements, exit
       const pointer = this.scene.input.activePointer
 
@@ -376,7 +381,7 @@ export class CardImage {
         }
       })
 
-      if (overInternal) {
+      if (!ignoreOverInternal && overInternal) {
         return
       }
 
