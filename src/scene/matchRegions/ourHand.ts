@@ -27,6 +27,9 @@ export default class OurHandRegion extends Region {
 	// Whether we have already clicked on a card to play it
 	cardClicked: boolean
 
+	// Index of the card from the last state that was being hovered, if any
+	hoveredCard: number
+
 	// Avatar image
 	avatar: Button
 
@@ -96,7 +99,7 @@ export default class OurHandRegion extends Region {
 			.moveToTopOnHover()
 
 			const cost = state.costs[i]
-			card.setOnHover(that.onCardHover(card, cost), that.onCardExit(card, this.cards, i))
+			card.setOnHover(that.onCardHover(card, cost, i), that.onCardExit(card, this.cards, i))
 
 			// Set whether the card shows as playable, and set its onclick
 			card.setPlayable(state.cardsPlayable[i])
@@ -104,6 +107,11 @@ export default class OurHandRegion extends Region {
 
 			this.cards.push(card)
 			this.temp.push(card)
+		}
+
+		// Hover whichever card was being hovered last
+		if (this.hoveredCard !== undefined) {
+			this.cards[this.hoveredCard].image.emit('pointerover')
 		}
 
 		// Show priority / not
@@ -249,20 +257,36 @@ export default class OurHandRegion extends Region {
 
 						// Trigger the callback function for this card
 						that.callback(i)
-					}, 10)}
+					}, 10)},
+					// Remember which card is being hovered
+					onComplete: () => {
+						if (that.hoveredCard !== undefined) {
+							// If the played card was hovered, forget that
+							if (that.hoveredCard === i) {
+								that.hoveredCard = undefined
+							}
+							// If a later card was hovered, adjust down to fill this card leaving hand
+							else if (that.hoveredCard > i) {
+								that.hoveredCard -= 1
+							}
+						}
+					},
 				})
 			}
 		}
 	}
 
 	// Return the function that runs when given card is hovered
-	private onCardHover(card: CardImage, cost: number): () => void {
+	private onCardHover(card: CardImage, cost: number, index: number): () => void {
 		let that = this
 		return () => {
 			card.container.setY(Space.handHeight - Space.cardHeight/2)
 
 			// Show the card's cost in the breath icon
 			that.displayCostCallback(cost)
+
+			// Remember that this card is being hovered
+			that.hoveredCard = index
 		}
 	}
 
@@ -274,6 +298,9 @@ export default class OurHandRegion extends Region {
 
 			// Stop showing a positive card cost
 			that.displayCostCallback(0)
+
+			// Remember that no card is being hovered now
+			that.hoveredCard = undefined
 		}
 	}
 
