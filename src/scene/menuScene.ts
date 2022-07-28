@@ -44,13 +44,12 @@ export default class MenuScene extends Phaser.Scene {
 	// Play a transition as this menu opens
 	transitionIn(): void {
 		const camera = this.cameras.main
-		
-		camera.alpha = 0
 
 		this.tweens.add({
 			targets: camera,
 			alpha: 1,
 			duration: Time.menuTransition,
+			onStart: () => {camera.alpha = 0}
 		})
 	}
 
@@ -87,7 +86,7 @@ export default class MenuScene extends Phaser.Scene {
 	}
 
 	// NOTE This is a fix for sizer objects not deleting properly in all cases
-	private endScene(): () => void {
+	endScene(): () => void {
 		let that = this
 
 		return () => {

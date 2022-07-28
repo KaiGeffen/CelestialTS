@@ -1,9 +1,10 @@
 import "phaser"
 import { Style, Color } from '../../settings/settings'
+import MenuScene from '../menuScene'
 
 
 export default class Menu {
-	scene: Phaser.Scene
+	scene: MenuScene
 	exitCallback: () => void
 
 	constructor(scene: Phaser.Scene, params?) {
@@ -19,7 +20,7 @@ export default class Menu {
 			this.exitCallback()
 		}
 
-		this.scene.scene.stop()
+		this.scene.endScene()()
 	}
 
 	createHeader(s: string, width: number): any {
