@@ -1,6 +1,6 @@
 import "phaser"
 
-import { Style, Color, Space } from "../settings/settings"
+import { Style, Color, Space, Time } from "../settings/settings"
 import { createMenu } from "./menu/menu"
 
 
@@ -37,6 +37,21 @@ export default class MenuScene extends Phaser.Scene {
 		esc.on('down', () => {menu.close()})
 
 		this.scene.bringToTop()
+
+		this.transitionIn()
+	}
+
+	// Play a transition as this menu opens
+	transitionIn(): void {
+		const camera = this.cameras.main
+		
+		camera.alpha = 0
+
+		this.tweens.add({
+			targets: camera,
+			alpha: 1,
+			duration: Time.menuTransition,
+		})
 	}
 
 	private addTitle(s: string) {
@@ -75,15 +90,19 @@ export default class MenuScene extends Phaser.Scene {
 	private endScene(): () => void {
 		let that = this
 
-		return function() {
-			let top = that.children.getByName('top')
+		return () => {
+			let top = this.children.getByName('top')
 			if (top !== null) {
 				top.destroy()
 			}
 
-			that.sound.play('close')
-
-			that.scene.stop()
+			this.tweens.add({
+				targets: this.cameras.main,
+				alpha: 0,
+				duration: Time.menuTransition,
+				onStart: () => {this.sound.play('close')},
+				onComplete: () => {this.scene.stop()},
+			})
 		}
 			
 	}

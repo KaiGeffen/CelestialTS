@@ -43,4 +43,7 @@ export class Time {
 
   // Time for the charts to display a new dataset
   static chart = 600
+
+  // Time for menu to open / close
+  static menuTransition = 100
 }
