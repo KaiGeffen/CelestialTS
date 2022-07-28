@@ -215,7 +215,8 @@ class Pass extends Button {
 
 	disable() {
 		// TODO Have this be on a cloud instead
-		this.setText('THEIR\nTURN')
+		// this.setText('THEIR\nTURN')
+		this.setText('')
 		super.disable()
 
 		return this

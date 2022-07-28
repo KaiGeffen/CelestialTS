@@ -13,28 +13,23 @@ export default class ScoresRegion extends Region {
 	txtTheirScore: Phaser.GameObjects.Text
 	txtRoundResult: Phaser.GameObjects.Text
 
-	background: RoundRectangle
-
 	create (scene: BaseScene): ScoresRegion {
 		this.scene = scene
 		this.container = scene.add.container()
 
-		// Add the background
-		this.background = this.createBackground(scene)
-		this.container.add(this.background)
-
 		// Text
+		const x = Space.windowWidth - 158
 		let txtHint = scene.add.text(
-			this.background.x, Space.windowHeight/2, 'Points', Style.small
+			x, Space.windowHeight/2, 'Points', Style.small
 			).setOrigin(0.5)
 		this.txtOurScore = scene.add.text(
-			this.background.x, Space.windowHeight/2 + 50, '', Style.announcement
+			x, Space.windowHeight/2 + 50, '', Style.announcement
 			).setOrigin(0.5)
 		this.txtTheirScore = scene.add.text(
-			this.background.x, Space.windowHeight/2 - 50, '', Style.announcement
+			x, Space.windowHeight/2 - 50, '', Style.announcement
 			).setOrigin(0.5)
 		this.txtRoundResult = scene.add.text(
-			this.background.x, Space.windowHeight/2, '', Style.announcement
+			x, Space.windowHeight/2, '', Style.announcement
 			).setOrigin(0.5)
 		
 		this.container.add([
@@ -60,28 +55,6 @@ export default class ScoresRegion extends Region {
 		if (isRecap && state.isRecapEnd()) {
 			this.animateResult(state)
 		}
-	}
-
-	private createBackground(scene: Phaser.Scene): RoundRectangle {
-		const points = `0 ${Space.handHeight} 30 0 230 0 230 ${Space.handHeight}`
-		let background = new RoundRectangle(
-			scene,
-			Space.windowWidth - Space.cardWidth/2 - Space.pad,
-			Space.windowHeight/2,
-			200,
-			200,
-			100,
-			Color.background
-			)
-
-		// Add a border around the shape TODO Make a class for this to keep it dry
-		let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
-		postFxPlugin['add'](background, {
-			thickness: 1,
-			outlineColor: Color.border,
-		})
-
-		return background
 	}
 
 	// Display the current score totals

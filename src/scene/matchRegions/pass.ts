@@ -83,7 +83,7 @@ export default class PassRegion extends Region {
 			// This displays the correct alternate text
 			this.btnPass.setText('EXIT')
 		}
-		else if (state.priority === 0) {
+		else if (state.priority === 0 && !isRecap) {
 			this.btnPass.enable()
 		}
 		else {
