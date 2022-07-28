@@ -220,13 +220,13 @@ class AlterDeckMenu extends Menu {
 }
 
 export class NewDeckMenu extends AlterDeckMenu {
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene, params, 'New Deck', 'Create')
 	}
 }
 
 export class EditDeckMenu extends AlterDeckMenu {
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene, params, 'Update Deck', 'Update')
 	}
 }
