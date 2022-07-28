@@ -9,12 +9,13 @@ import Menu from './menu'
 import BaseScene from '../../scene/baseScene'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
+import MenuScene from '../menuScene'
 
 
 const width = 550
 
 export default class OptionsMenu extends Menu {
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene)
 
 		// Make a fixed height sizer

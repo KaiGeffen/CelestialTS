@@ -3,12 +3,13 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import Buttons from '../../lib/buttons/buttons';
 import { Color, Space, Style } from '../../settings/settings';
 import Menu from './menu';
+import MenuScene from '../menuScene'
 
 
 const width = 500
 
 export default class ConfirmMenu extends Menu {
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene)
 
 		let panel = this.createSizer(scene)

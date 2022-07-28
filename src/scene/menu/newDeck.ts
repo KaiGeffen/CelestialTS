@@ -5,6 +5,7 @@ import Buttons from '../../lib/buttons/buttons'
 import Button from '../../lib/buttons/button'
 import { Color, Space, Style } from '../../settings/settings'
 import Menu from './menu'
+import MenuScene from '../menuScene'
 
 
 const width = 500
@@ -23,7 +24,7 @@ class AlterDeckMenu extends Menu {
 
 	btnConfirm: Button
 
-	constructor(scene: Phaser.Scene, params, titleString, confirmString, deckName = '') {
+	constructor(scene: MenuScene, params, titleString, confirmString, deckName = '') {
 		super(scene)
 
 		this.name = params.deckName

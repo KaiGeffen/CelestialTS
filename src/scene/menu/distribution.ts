@@ -2,13 +2,14 @@ import 'phaser';
 import Cutout from '../../lib/buttons/cutout';
 import { Color, Space, Time } from '../../settings/settings';
 import Menu from './menu';
+import MenuScene from '../menuScene'
 
 
 // TODO Add a header, general formatting / color
 const width = 700
 
 export default class DistributionMenu extends Menu {
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene)
 
 		const costs = this.getCosts(params.currentDeck)

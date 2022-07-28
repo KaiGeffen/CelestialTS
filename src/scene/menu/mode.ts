@@ -3,6 +3,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import Buttons from '../../lib/buttons/buttons';
 import { Color, Space, Style } from '../../settings/settings';
 import Menu from './menu';
+import MenuScene from '../menuScene'
 
 
 const width = 550
@@ -12,7 +13,7 @@ export default class ModeMenu extends Menu {
 
 	avatar: number
 
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene)
 
 		this.avatar = params.avatar

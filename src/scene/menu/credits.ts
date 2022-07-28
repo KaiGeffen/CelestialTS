@@ -6,6 +6,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 import Menu from './menu'
 import { Space, Color, Style, UserSettings } from '../../settings/settings'
+import MenuScene from '../menuScene'
 
 
 // TODO Change width
@@ -14,7 +15,7 @@ export default class CreditsMenu extends Menu {
 	// in the sizer child of scrollable panel, which is called when trying to destroy
 	// that object as the scene ends
 
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene)
 
 		// Make a fixed height sizer

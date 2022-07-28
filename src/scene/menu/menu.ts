@@ -7,7 +7,7 @@ export default class Menu {
 	scene: MenuScene
 	exitCallback: () => void
 
-	constructor(scene: Phaser.Scene, params?) {
+	constructor(scene: MenuScene, params?) {
 		this.scene = scene
 
 		if (params) {

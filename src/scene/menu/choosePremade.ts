@@ -1,16 +1,13 @@
-import 'phaser'
+import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-
-// TODO Remove, use Buttons namespace
-import { ButtonAvatarFull } from '../../lib/buttons/avatarSelect'
-import Button from '../../lib/buttons/button'
-import Buttons from '../../lib/buttons/buttons'
-
-import Menu from './menu'
-import { Style, BBStyle, Space, Color, Time } from '../../settings/settings'
-import avatarDetails from '../../catalog/avatarDetails.json'
-import Hint from '../../lib/hint'
+import avatarDetails from '../../catalog/avatarDetails.json';
+import Button from '../../lib/buttons/button';
+import Buttons from '../../lib/buttons/buttons';
+import Hint from '../../lib/hint';
+import { BBStyle, Color, Space, Style, Time } from '../../settings/settings';
+import MenuScene from '../menuScene';
+import Menu from './menu';
 
 
 export default class ChoosePremade extends Menu {
@@ -24,7 +21,7 @@ export default class ChoosePremade extends Menu {
 
 	chart: any
 
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		let callback: (number) => void = params.callback
 		super(scene, params)
 

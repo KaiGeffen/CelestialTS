@@ -1,6 +1,7 @@
 import 'phaser'
 import { Color, Mechanics, Space, Style } from '../../settings/settings'
 import Menu from './menu'
+import MenuScene from '../menuScene'
 
 
 const width = 430
@@ -13,7 +14,7 @@ export default class ShareDeckMenu extends Menu {
 	// The user selected avatar number
 	selectedAvatar: number
 
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene)
 
 		// Make a fixed height sizer

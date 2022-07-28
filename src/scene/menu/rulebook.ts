@@ -1,10 +1,11 @@
 import 'phaser';
 import { Color, Space, Style } from '../../settings/settings';
 import Menu from './menu';
+import MenuScene from '../menuScene'
 
 
 export default class RulebookMenu extends Menu {
-	constructor(scene: Phaser.Scene, params) {
+	constructor(scene: MenuScene, params) {
 		super(scene)
 
 		// Make a fixed height sizer
