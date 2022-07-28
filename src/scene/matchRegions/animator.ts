@@ -4,7 +4,7 @@ import BaseScene from '../baseScene'
 import { Animation, Zone } from '../../lib/animation'
 import CardLocation from './cardLocation'
 import { CardImage } from '../../lib/cardImage'
-import { Space, Time, Depth } from '../../settings/settings'
+import { Space, Time, Depth, Ease } from '../../settings/settings'
 import { cardback } from '../../catalog/catalog'
 import { View } from '../gameScene'
 import { Status } from '../../lib/status'
@@ -231,7 +231,7 @@ export default class Animator {
 			y: end[1],
 			delay: i * Time.recapTweenWithPause(),
 			duration: Time.recapTween(),
-			// ease: Phaser.Math.Easing.Sine.In,
+			ease: Ease.card,
 			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
 			{
 				card.show()

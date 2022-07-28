@@ -4,4 +4,7 @@ export const Ease: Record<string, string> = {
 
 	// Regions in the builder sliding around
 	slide: 'Sine.Out',
+
+	// Card moving between regions
+	card: 'Linear',
 }
