@@ -76,7 +76,7 @@ export default class BaseScene extends Phaser.Scene {
 	signalError(msg: string = ''): void {
       	this.sound.play('failure')
 
-		this.cameras.main.flash(300, 0, 0, 0.1)
+		// this.cameras.main.flash(300, 0, 0, 0.1)
 
 		this.txtError
 			.setText(`[stroke=black]${msg}[/stroke]`)
