@@ -9,7 +9,7 @@ import { Color, Time } from '../../settings/settings'
 // These have different callbacks, and edit has an additional icon
 // TODO Separate or clarify these roles
 export default class AvatarButton extends Button {
-	editIcon: Phaser.GameObjects.Image
+	name: string
 
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -28,34 +28,29 @@ export default class AvatarButton extends Button {
 				interactive: true,
 			},
 			callbacks: {
-				click: f
-			}
+				click: () => {
+					f()
+					this.scene.sound.play(`voice-${this.name}`)
+				}
+			},
+			muteClick: true,
 		})
+
+		this.name = name
 	}
 
-	destroy() {
-		if (this.editIcon) {
-			this.editIcon.destroy()
+	setOnClick(f, once = false): Button {
+		let fWithSound = () => {
+			f()
+			this.scene.sound.play(`voice-${this.name}`)
 		}
 
-		super.destroy()
-	}
-
-	disable() {
-		if (this.editIcon !== undefined) {
-			this.editIcon.setVisible(false)
-		}
-
-		return super.disable()
+		return super.setOnClick(fWithSound, once)
 	}
 
 	setQuality(num: number): Button {
-		let name = avatarNames[num]
-		this.setTexture(`avatar-${name}`)
-
-		if (this.editIcon !== undefined) {
-			this.editIcon.setVisible(true)
-		}
+		this.name = avatarNames[num]
+		this.setTexture(`avatar-${this.name}`)
 
 		return this
 	}

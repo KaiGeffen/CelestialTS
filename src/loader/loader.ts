@@ -7,6 +7,7 @@ import iconData from './icons.json'
 import backgroundData from './backgrounds.json'
 import keywordData from './keywords.json'
 import sfxData from './sfx.json'
+import voiceData from './voice.json'
 import { Space } from '../settings/settings'
 
 
@@ -106,8 +107,13 @@ export default class Loader {
 	// Loads all audio
 	private static loadAudio(scene): void {
 		// Load all sfx
-		sfxData.forEach( (sound) => {
+		sfxData.forEach((sound) => {
 			scene.load.audio(sound, `sfx/${sound}.mp3`)
+		})
+
+		// Load each characters voice clip
+		voiceData.forEach((name) => {
+			scene.load.audio(`voice-${name}`, `voice/${name}.mp3`)
 		})
 	}
 

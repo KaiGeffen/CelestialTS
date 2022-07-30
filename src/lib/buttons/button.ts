@@ -29,7 +29,8 @@ interface Config {
 		click?: () => void,
 		hover?: () => void,		
 		exit?: () => void,
-	}
+	},
+	muteClick?: boolean,
 }
 
 const ConfigDefaults = {
@@ -52,7 +53,8 @@ const ConfigDefaults = {
 		click: () => {},
 		hover: () => {},		
 		exit: () => {},
-	}
+	},
+	muteClick: false,
 }
 
 export default class Button {
@@ -62,6 +64,8 @@ export default class Button {
 	icon: Phaser.GameObjects.Image
 
 	selected = false
+
+	muteClick: boolean
 
 	// Enabled, Selected, Highlighted, etc
 	// Callbacks
@@ -78,7 +82,7 @@ export default class Button {
 		config: Config,
 		)
 	{
-		let that = this
+		this.muteClick = config.muteClick
 
 		// Define scene
 		if (within instanceof Phaser.Scene) {
@@ -105,9 +109,9 @@ export default class Button {
 			// Set interactive
 			if (config.icon.interactive) {
 				this.icon.setInteractive()
-				.on('pointerdown', () => {that.onClick()})
-				.on('pointerover', () => {that.onHover()})
-				.on('pointerout', () => {that.onExit()})
+				.on('pointerdown', () => {this.onClick()})
+				.on('pointerover', () => {this.onHover()})
+				.on('pointerout', () => {this.onExit()})
 			}
 		}
 
@@ -124,9 +128,9 @@ export default class Button {
 				this.txt.setInteractive(...config.text.hitArea)
 				.on('pointerover', () => this.txt.setTint(Color.buttonHighlight), this)
 				.on('pointerout', () => this.txt.clearTint(), this)
-				.on('pointerdown', () => {that.onClick()})
-				.on('pointerover', () => {that.onHover()})
-				.on('pointerout', () => {that.onExit()})
+				.on('pointerdown', () => {this.onClick()})
+				.on('pointerover', () => {this.onHover()})
+				.on('pointerout', () => {this.onExit()})
 			}
 		}
 
@@ -135,7 +139,10 @@ export default class Button {
 			// Add default callbacks if not specified
 			this.onClick = config.callbacks.click ? () => {
 				config.callbacks.click()
-				this.scene.sound.play('click')
+
+				if (!this.muteClick) {
+					this.scene.sound.play('click')				
+				}
 				} : () => {}
 			this.onHover = config.callbacks.hover ? config.callbacks.hover : () => {}
 			this.onExit = config.callbacks.exit ? config.callbacks.exit : () => {}
@@ -270,13 +277,13 @@ export default class Button {
 	// Set the on click callback for this button
 	// If once, only perform this callback once, then disable the button
 	setOnClick(f, once = false): Button {
-		let that = this
-
 		this.onClick = () => {
-			this.scene.sound.play('click')
+			if (!this.muteClick) {
+				this.scene.sound.play('click')				
+			}
 			f()
 			if (once) {
-				that.disable()
+				this.disable()
 			}
 		}
 
