@@ -288,11 +288,14 @@
     ]
   },
   {"name": "Nightmare", "id": 68,
-    "cost": 3, "points": 0,
-    "text": "Visible, worth +4 points if you have more cards in hand than your opponent.",
+    "cost": 2, "points": 2,
+    "text": "Morning: if your opponent’s hand is empty, create a Shadow in your hand.",
     "story": "I struggle to find myself\nBetween the claws and biting words\nShearing my mind away",
     "keywords": [
-      {"name": "Visible", "x": 0, "y": 60}
+      {"name": "Morning", "x": 0, "y": 60}
+    ],
+    "references": [
+      {"name": "Shadow", "x": 45, "y": 112}
     ]
   },
   {"name": "Sickness", "id": 58,
