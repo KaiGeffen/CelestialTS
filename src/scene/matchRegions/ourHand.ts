@@ -15,7 +15,7 @@ export default class OurHandRegion extends Region {
 	displayCostCallback: (cost: number) => void
 
 	// Effect showing that we have priority
-	priorityHighlight: Phaser.GameObjects.Video
+	// priorityHighlight: Phaser.GameObjects.Video
 
 	btnDeck: Button
 	btnDiscard: Button
@@ -44,9 +44,9 @@ export default class OurHandRegion extends Region {
 		this.container.add(this.createBackground(scene))
 
 		// Visual effect that highlights when we have priority
-		this.priorityHighlight = this.createPriorityHighlight()
-		.setVisible(false)
-		this.container.add(this.priorityHighlight)
+		// this.priorityHighlight = this.createPriorityHighlight()
+		// .setVisible(false)
+		// this.container.add(this.priorityHighlight)
 
 		// Create the status visuals
 		this.createStatusDisplay()
@@ -115,7 +115,7 @@ export default class OurHandRegion extends Region {
 		}
 
 		// Show priority / not
-		this.animatePriority(state, isRecap)
+		// this.animatePriority(state, isRecap)
 	}
 
 	// Set the callback / error message for when card is clicked
@@ -166,13 +166,20 @@ export default class OurHandRegion extends Region {
 		return renderedBackground
 	}
 
-	private createPriorityHighlight(): Phaser.GameObjects.Video {
-		return this.scene.add.video(Space.windowWidth - 341,
-			-12,
-			'priorityHighlight')
-		.setOrigin(1, 0)
-		.play(true)
-	}
+	// private createPriorityHighlight(): Phaser.GameObjects.Video {
+	// 	console.log(this.scene.add.video(Space.windowWidth/2,
+	// 		Space.windowHeight/2,
+	// 		'priorityHighlight')
+	// 	.play(true))
+
+	// 	this.scene.add.video(0, 0, 'priorityHighlight').play(true).setDepth(100)
+
+	// 	return this.scene.add.video(Space.windowWidth - 341,
+	// 		-12,
+	// 		'priorityHighlight')
+	// 	.setOrigin(1, 0)
+	// 	.play(true)
+	// }
 
 	private createAvatar(avatarId: number): Button {
 		let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
@@ -206,15 +213,15 @@ export default class OurHandRegion extends Region {
 	}
 
 	// Animate us getting or losing priority
-	private animatePriority(state: ClientState, isRecap: boolean): void {
-		const targetAlpha = state.priority === 0 && !isRecap ? 0.4 : 0
+	// private animatePriority(state: ClientState, isRecap: boolean): void {
+	// 	const targetAlpha = state.priority === 0 && !isRecap ? 1 : 0
 
-		this.scene.tweens.add({
-			targets: this.priorityHighlight,
-			alpha: targetAlpha,
-			duration: Time.recapTweenWithPause()
-		})
-	}
+	// 	this.scene.tweens.add({
+	// 		targets: this.priorityHighlight,
+	// 		alpha: targetAlpha,
+	// 		duration: Time.recapTweenWithPause()
+	// 	})
+	// }
 
 	// Return the function that runs when card with given index is clicked on
 	private onCardClick(i: number, card: CardImage, hand: CardImage[], state: ClientState, isRecap: boolean): () => void {

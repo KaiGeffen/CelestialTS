@@ -113,6 +113,6 @@ export default class Loader {
 
 	// Loads all video textures
 	private static loadVideos(scene): void {
-		scene.load.video('priorityHighlight', 'priority.mp4')
+		// scene.load.video('priorityHighlight', 'priority.mp4')
 	}
 }
