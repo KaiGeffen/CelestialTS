@@ -4,7 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import ClientState from "../lib/clientState";
 import { AdventureGameScene } from './gameScene';
 import data from '../catalog/tutorial.json'
-import { Space, BBStyle } from '../settings/settings'
+import { Space, BBStyle, Time } from '../settings/settings'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
 import { CardImage } from '../lib/cardImage'
@@ -103,6 +103,12 @@ export default class TutorialGameScene extends AdventureGameScene {
 		let s = `[i]${datum.italic}[/i]${datum.italic !== '' ? '\n\n' : ''}[b]${datum.bold}[/b]`
 		this.txt.setText(s)
 		.setVisible(s !== '')
+		this.tweens.add({
+			targets: this.txt,
+			alpha: 1,
+			duration: Time.hintFade(),
+			onStart: () => {this.txt.alpha = 0},
+		})
 
 		// If this is the final hint before the player must do something, hide the button
 		this.btnNext.setVisible(!datum.final)

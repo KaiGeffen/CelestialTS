@@ -23,6 +23,11 @@ export class Time {
     return 400 / (UserSettings._get('animationSpeed') * 2 + 0.5)
   }
 
+  // How long a hint text takes to fade in
+  static hintFade(): number {
+    return 500 / (UserSettings._get('animationSpeed') * 2 + 0.5)
+  }
+
   static textSpeed(): number {
     return 15
   }
