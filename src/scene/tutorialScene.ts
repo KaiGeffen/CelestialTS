@@ -65,7 +65,10 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		if (!result) { return false }
 
-		this.progress += 1
+		// Don't progress hints during the recap
+		if (!isRecap) {
+			this.progress += 1
+		}
 
 		switch (this.params.missionID) {
 			case 3:
@@ -93,9 +96,14 @@ export default class TutorialGameScene extends AdventureGameScene {
 		const datum = data[this.progress]
 		
 		if (datum === undefined || datum === null) {
+			// Hide all elements
 			this.txt.setVisible(false)
 			this.btnNext.setVisible(false)
 			this.pointer.setVisible(false)
+
+			// Ensure that scene is not paused
+			this.paused = false
+
 			return
 		}
 
@@ -103,6 +111,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 		let s = `[i]${datum.italic}[/i]${datum.italic !== '' ? '\n\n' : ''}[b]${datum.bold}[/b]`
 		this.txt.setText(s)
 		.setVisible(s !== '')
+
+		// Fade that text in
 		this.tweens.add({
 			targets: this.txt,
 			alpha: 1,
@@ -156,6 +166,10 @@ export default class TutorialGameScene extends AdventureGameScene {
 			['hideStacks']()
 			break
 		}
+
+		// If next button is visible, pause match until it's clicked
+		this.paused = this.btnNext.isVisible()
+		console.log(this.paused)
 	}
 
 	// Align the elements based on the type of tutorial

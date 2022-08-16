@@ -21,6 +21,9 @@ class GameScene extends BaseScene {
 	view: View
 	net: Network
 
+	// Whether the match is paused (Awaiting user to click a button, for example)
+	paused: boolean
+
 	// The states which are queued up and have not yet been seen, with key being their version number
 	queuedStates: { [key: number]: ClientState}
 
@@ -50,6 +53,8 @@ class GameScene extends BaseScene {
 
 		// Create the view
 		this.view = new View(this, this.params.avatar || 0)
+
+		this.paused = false
 
 		this.setCallbacks(this.view, this.net)
 	}
@@ -103,7 +108,6 @@ class GameScene extends BaseScene {
 			// Set variables to a state where a recap isn't playing
 			that.queuedRecap = []
 			that.recapPlaying = false
-			that.view.paused = false
 		}
 
 		// Hand region
@@ -263,9 +267,8 @@ class GameScene extends BaseScene {
 			return false
 		}
 
-		if (this.view.paused) {
-			// return false
-			// TODO Decide if this feature will be supported
+		if (this.paused) {
+			return false
 		}
 
 		// Remember what version of the game state this is, for use when communicating with server
@@ -345,9 +348,6 @@ class GameScene extends BaseScene {
 // The View of MVC - What is presented to the user
 export class View {
 	scene: BaseScene
-
-	// Whether the recap is playing or is paused
-	paused: boolean
 
 	searching: Region
 

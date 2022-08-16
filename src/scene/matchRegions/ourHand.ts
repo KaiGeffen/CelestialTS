@@ -231,55 +231,62 @@ export default class OurHandRegion extends Region {
 		const nextStoryPosition = CardLocation.story(state, isRecap, state.story.acts.length, this.container, 0)
 
 		return function() {
-			// If we have already played a card, do nothing when clicking on another
-			if (that.cardClicked === false) {
-				// Remember that we have clicked a card already
-				that.cardClicked = true
-
-				// Send this card to its place in the story
-				that.scene.tweens.add({
-					targets: card.container,
-					x: nextStoryPosition[0],
-					y: nextStoryPosition[1],
-					duration: Time.playCard(),
-					ease: "Sine.easeInOut",
-					// After brief delay, tell network, hide info, shift cards to fill its spot
-					onStart: function () {setTimeout(function() {
-						// Hide any hint that might be showing
-						that.scene['hint'].hide()
-
-						// Fill in the hole where the card was
-						// For every card later than i, move to the right
-						for (let j = i + 1; j < hand.length; j++) {
-							let adjustedCard = hand[j]
-
-							that.scene.tweens.add({
-								targets: adjustedCard.container,
-								// TODO Fix this to be in general (Space to move might be smaller if cards squished)
-								x: CardLocation.ourHand(state, j - 1, that.container)[0],
-								duration: Time.playCard() - 10,
-								ease: "Sine.easeInOut"
-							})
-						}
-
-						// Trigger the callback function for this card
-						that.callback(i)
-					}, 10)},
-					// Remember which card is being hovered
-					onComplete: () => {
-						if (that.hoveredCard !== undefined) {
-							// If the played card was hovered, forget that
-							if (that.hoveredCard === i) {
-								that.hoveredCard = undefined
-							}
-							// If a later card was hovered, adjust down to fill this card leaving hand
-							else if (that.hoveredCard > i) {
-								that.hoveredCard -= 1
-							}
-						}
-					},
-				})
+			// If the match is paused, do nothing
+			if (that.scene['paused']) {
+				return
 			}
+
+			// If we have already played a card, do nothing when clicking on another
+			if (that.cardClicked) {
+				return
+			}
+
+			// Remember that we have clicked a card already
+			that.cardClicked = true
+
+			// Send this card to its place in the story
+			that.scene.tweens.add({
+				targets: card.container,
+				x: nextStoryPosition[0],
+				y: nextStoryPosition[1],
+				duration: Time.playCard(),
+				ease: "Sine.easeInOut",
+				// After brief delay, tell network, hide info, shift cards to fill its spot
+				onStart: function () {setTimeout(function() {
+					// Hide any hint that might be showing
+					that.scene['hint'].hide()
+
+					// Fill in the hole where the card was
+					// For every card later than i, move to the right
+					for (let j = i + 1; j < hand.length; j++) {
+						let adjustedCard = hand[j]
+
+						that.scene.tweens.add({
+							targets: adjustedCard.container,
+							// TODO Fix this to be in general (Space to move might be smaller if cards squished)
+							x: CardLocation.ourHand(state, j - 1, that.container)[0],
+							duration: Time.playCard() - 10,
+							ease: "Sine.easeInOut"
+						})
+					}
+
+					// Trigger the callback function for this card
+					that.callback(i)
+				}, 10)},
+				// Remember which card is being hovered
+				onComplete: () => {
+					if (that.hoveredCard !== undefined) {
+						// If the played card was hovered, forget that
+						if (that.hoveredCard === i) {
+							that.hoveredCard = undefined
+						}
+						// If a later card was hovered, adjust down to fill this card leaving hand
+						else if (that.hoveredCard > i) {
+							that.hoveredCard -= 1
+						}
+					}
+				},
+			})
 		}
 	}
 

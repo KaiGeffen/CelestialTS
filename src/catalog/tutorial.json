@@ -51,5 +51,23 @@
     "italic": "",
     "bold": "You’re out of cards to play.\nThe round ends now, and the cards we’ve played resolve from left to right.",
     "align": "story"
-  }
+  },
+  null,
+  null,
+  {
+    "italic": "",
+    "bold": "Last round, we both earned 1 point, so we tied and neither of us earned a win.",
+    "align": "bottom"
+  },
+  {
+    "italic": "",
+    "bold": "As this round starts, we each draw 2 cards, our max breath goes up by 1, and our breath refills completely.",
+    "align": "bottom"
+  },
+  {
+    "italic": "",
+    "bold": "Playing Dash here earns 3 points - surely beating whatever I play...",
+    "align": "center",
+    "final": true
+  },
 ]
