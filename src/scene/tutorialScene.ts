@@ -50,7 +50,18 @@ export default class TutorialGameScene extends AdventureGameScene {
 		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next',
 			() => {
 				this.progress += 1
-				this.displayHints1()
+				switch (this.params.missionID) {
+					case 3:
+					this.displayHints1()
+					break
+					case 6:
+					this.displayHints2()
+					break
+					case 9:
+					// this.displayHints3()
+					break
+				}
+				
 			})
 
 		// Pointer for showing area of interest to user
@@ -80,6 +91,10 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.displayHints1()
 			break
 
+			case 6:
+			this.displayHints2()
+			break
+
 			// case 6:
 			// this.displayState2(state, isRecap)
 			// break
@@ -91,9 +106,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 		return result
 	}
 
-	// Display hints for the first tutorial
-	private displayHints1(): void {
-		const datum = data[this.progress]
+	// Display the current hint for the given mission id
+	private displayHint(i: number): void {
+		const datum = data[i][this.progress]
 		
 		if (datum === undefined || datum === null) {
 			// Hide all elements
@@ -126,6 +141,14 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		// Align the elements based on the type of hint
 		this.align(datum)
+
+		// If next button is visible, pause match until it's clicked
+		this.paused = this.btnNext.isVisible()
+	}
+
+	// Display hints for the first tutorial
+	private displayHints1(): void {
+		this.displayHint(0)
 
 		// Hide different elements on the screen based on progress
 		switch (this.progress) {
@@ -166,10 +189,25 @@ export default class TutorialGameScene extends AdventureGameScene {
 			['hideStacks']()
 			break
 		}
+	}
+	
+	// Display hints for the first tutorial
+	private displayHints2(): void {
+		this.displayHint(1)
 
-		// If next button is visible, pause match until it's clicked
-		this.paused = this.btnNext.isVisible()
-		console.log(this.paused)
+		// Hide stacks
+		this.view.decks.hide()
+		this.view.discardPiles.hide()
+		this.view.commands.hide()
+		this.view.ourHand['hideStacks']()
+		this.view.theirHand['hideStacks']()
+
+		// Hide pass until a point
+		if (this.progress < 8) {
+			this.view.pass.hide()
+		} else {
+			this.view.pass.show()
+		}
 	}
 
 	// Align the elements based on the type of tutorial

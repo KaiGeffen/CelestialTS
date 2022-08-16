@@ -1,4 +1,4 @@
-[
+[[
   {
     "italic": "In this city we tell stories - each day we craft them, and each night they come to life before a crowd. When you’ve won 5 times, you may pass on. To ease your journey into the city, I’ve given you 2 wins for now.",
     "bold": "Win the game by winning 5 rounds.\nFor the tutorial, you start with 2 wins.",
@@ -57,17 +57,43 @@
   {
     "italic": "",
     "bold": "Last round, we both earned 1 point, so we tied and neither of us earned a win.",
-    "align": "bottom"
+    "align": "center"
   },
   {
     "italic": "",
     "bold": "As this round starts, we each draw 2 cards, our max breath goes up by 1, and our breath refills completely.",
-    "align": "bottom"
+    "align": "center"
   },
   {
     "italic": "",
     "bold": "Playing Dash here earns 3 points - surely beating whatever I play...",
     "align": "center",
     "final": true
+  }
+],
+[
+  {
+    "italic": "",
+    "bold": "If you play a card with Inspire, you will have extra breath on the next round.\n\nPlay Stars now so you can afford Mercy next round.",
+    "align": "bottom"
   },
-]
+  null,
+  null,
+  null,
+  null,
+  null,
+  {
+    "italic": "",
+    "bold": "With your 3 breath you can afford Mercy.\n\nBut gaining extra breath here would probably just be a waste...",
+    "align": "center",
+    "final": true
+  },
+  null,
+  {
+    "italic": "",
+    "bold": "Sometimes it's better to Pass instead of playing a card.",
+    "align": "right",
+    "final": true
+  },
+  null
+]]
