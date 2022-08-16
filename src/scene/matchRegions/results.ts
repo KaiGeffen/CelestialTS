@@ -102,7 +102,7 @@ export default class ResultsRegion extends Region {
 		return super.show()
 	}
 
-	private createButtons() {
+	protected createButtons() {
 		// Exit
 		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
 		new Buttons.Basic(this.container, Space.windowWidth/2 + Space.pad + Space.largeButtonWidth, y, 'Exit Match', this.exitCallback())
@@ -276,5 +276,23 @@ export default class ResultsRegion extends Region {
 			scrollablePanel.t = Math.max(0, scrollablePanel.t)
 			scrollablePanel.t = Math.min(0.999999, scrollablePanel.t)
 		})
+	}
+}
+
+export class ResultsRegionTutorial extends ResultsRegion {
+	missionID: number
+
+	protected createButtons() {
+		// Continue
+		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
+		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Play Again', this.continueCallback())
+	}
+
+	private continueCallback(): () => void {
+		return () => {
+			console.log(this.missionID)
+			console.log(`ai:t${1}`)
+			this.scene.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${1}`, missionID: this.missionID})
+		}
 	}
 }
