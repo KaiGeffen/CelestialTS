@@ -11,6 +11,7 @@ export const Depth: Record<string, number> = {
 	searching: 9,
 	theirScore: 3,
 	commands: 7,
+	tutorial: 7,
 
 	// Above all other layers
 	aboveAll: 9.5,

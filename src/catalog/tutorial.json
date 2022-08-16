@@ -96,4 +96,22 @@
     "final": true
   },
   null
+],
+[
+  {
+    "italic": "",
+    "bold": "You draw cards from your deck. Your deck starts with 15 cards in it. Click to see everything in your deck.",
+    "align": "bottom"
+  },
+  {
+    "italic": "",
+    "bold": "When cards resolve or are discarded, they go to your discard pile.",
+    "align": "bottom"
+  },
+  {
+    "italic": "",
+    "bold": "If your deck is empty when you would draw a card, your discard pile is shuffled to form a new deck.",
+    "align": "bottom"
+  },
+  null
 ]]

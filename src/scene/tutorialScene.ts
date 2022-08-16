@@ -4,7 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import ClientState from "../lib/clientState";
 import { AdventureGameScene } from './gameScene';
 import data from '../catalog/tutorial.json'
-import { Space, BBStyle, Time } from '../settings/settings'
+import { Space, BBStyle, Time, Depth } from '../settings/settings'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
 import { CardImage } from '../lib/cardImage'
@@ -44,7 +44,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			'',
 			BBStyle.basic)
 		.setOrigin(0.5)
-		.setDepth(40)
+		.setDepth(Depth.Tutorial)
 
 		// Next button for tutorial text
 		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next',
@@ -58,7 +58,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 					this.displayHints2()
 					break
 					case 9:
-					// this.displayHints3()
+					this.displayHints3()
 					break
 				}
 				
@@ -95,12 +95,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.displayHints2()
 			break
 
-			// case 6:
-			// this.displayState2(state, isRecap)
-			// break
-			// case 9:
-			// this.displayState3(state, isRecap)
-			// break
+			case 9:
+			this.displayHints3()
+			break
 		}
 
 		return result
@@ -191,7 +188,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 		}
 	}
 	
-	// Display hints for the first tutorial
+	// Display hints for the second tutorial
 	private displayHints2(): void {
 		this.displayHint(1)
 
@@ -208,6 +205,24 @@ export default class TutorialGameScene extends AdventureGameScene {
 		} else {
 			this.view.pass.show()
 		}
+	}
+
+	// Display hints for the third tutorial
+	private displayHints3(): void {
+		this.displayHint(2)
+
+		// Hide stacks
+		// this.view.discardPiles.hide()
+		this.view.commands.hide()
+		// this.view.ourHand['hideStacks']()
+		// this.view.theirHand['hideStacks']()
+
+		// // Hide pass until a point
+		// if (this.progress < 8) {
+		// 	this.view.pass.hide()
+		// } else {
+		// 	this.view.pass.show()
+		// }
 	}
 
 	// Align the elements based on the type of tutorial
