@@ -47,7 +47,7 @@ export default class PassRegion extends Region {
 
 
 		// Display the current score totals
-		const s = `${state.score[0]}\n\n${state.score[1]}`
+		const s = `${state.score[1]}\n\n${state.score[0]}`
 		this.btnMoon.setText(s)
 
 		// Once the game is over, change the callback to instead show results of match
