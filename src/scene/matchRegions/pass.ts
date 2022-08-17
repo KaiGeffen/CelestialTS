@@ -17,13 +17,14 @@ export default class PassRegion extends Region {
 	showResultsCallback: () => void
 
 	btnPass: Button
+	btnMoon: Button
 
 	txtYouPassed: Phaser.GameObjects.Text
 	txtTheyPassed: Phaser.GameObjects.Text
 
 	create (scene: BaseScene): PassRegion {
 		this.scene = scene
-		this.container = scene.add.container()
+		this.container = scene.add.container(Space.windowWidth, Space.windowHeight/2)
 
 		// Pass and recap button
 		this.createButtons()
@@ -103,9 +104,17 @@ export default class PassRegion extends Region {
 	private createButtons(): void {
 		let that = this
 
-		this.btnPass = new Icons.Pass(this.container,
-			Space.windowWidth, // Has sun on one side moon on other
-			Space.windowHeight/2)
+		this.btnPass = new Icons.Pass(this.container, -156, 0)
+		this.btnMoon = new Icons.Moon(this.container, 156, 0, () => {
+			if (this.scene['paused']) {
+				this.scene['paused'] = false
+				this.btnMoon.setText('')
+			}
+			else {
+				this.scene['paused'] = true
+				this.btnMoon.setText('Paused')
+			}
+		})
 		
 		// Set on click to be the callback, but only once
 		this.btnPass.setOnClick(() => {that.callback()}, true)
@@ -113,15 +122,15 @@ export default class PassRegion extends Region {
 
 	private createText(): void {
 		this.txtYouPassed = this.scene.add.text(
-			Space.windowWidth - 150,
-			Space.windowHeight/2 + 120,
+			-150,
+			120,
 			'You Passed',
 			Style.basic,
 			).setOrigin(0.5)
 
 		this.txtTheyPassed = this.scene.add.text(
-			Space.windowWidth - 150,
-			Space.windowHeight/2 - 120,
+			-150,
+			-120,
 			'They Passed',
 			Style.basic,
 			).setOrigin(0.5)
@@ -149,7 +158,7 @@ export default class PassRegion extends Region {
 
 	// Animate the sun / moon being visible when it's day or night
 	private showDayNight(isRecap: boolean) {
-		let target = this.btnPass.icon
+		let target = this.container
 
 		if (!isRecap) {
 			target.rotation += .001
