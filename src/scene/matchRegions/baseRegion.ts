@@ -37,6 +37,10 @@ export default class Region {
 		return this
 	}
 
+	isVisible(): boolean {
+		return this.container.visible
+	}
+
 	// Bring attention to the given region by hiding everything else on screen
 	focus(text = ''): void {
 		return

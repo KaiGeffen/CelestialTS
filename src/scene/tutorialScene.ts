@@ -10,6 +10,7 @@ import Buttons from '../lib/buttons/buttons'
 import { CardImage } from '../lib/cardImage'
 import { getCard } from '../catalog/catalog'
 import { ResultsRegionTutorial } from './matchRegions/results'
+import { Animation, Zone } from '../lib/animation'
 
 
 export default class TutorialGameScene extends AdventureGameScene {
@@ -75,9 +76,23 @@ export default class TutorialGameScene extends AdventureGameScene {
 	}
 
 	// TODO Ensure that autopass is on
-	// TODO Hide the counts for deck and discard pile
 	// TODO When a winner is found, move on to the next stillframe of the tutorial
 	protected displayState(state: ClientState, isRecap: boolean): boolean {
+		// Remove unused animations
+		for (let i = 0; i < 2; i++) {
+			state.animations[i] = state.animations[i].filter((animation: Animation) => {
+				// Filter out shuffle and mulligan animations
+				if (animation.to === Zone.Shuffle || animation.from === Zone.Shuffle) {
+					return false
+				}
+				if (animation.to === Zone.Mulligan || animation.from === Zone.Mulligan) {
+					return false
+				}
+
+				return true
+			})
+		}
+
 		let result = super.displayState(state, isRecap)
 
 		if (!result) { return false }
