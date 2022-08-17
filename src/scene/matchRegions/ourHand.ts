@@ -111,7 +111,10 @@ export default class OurHandRegion extends Region {
 
 		// Hover whichever card was being hovered last
 		if (this.hoveredCard !== undefined) {
-			this.cards[this.hoveredCard].image.emit('pointerover')
+			let card = this.cards[this.hoveredCard]
+			if (card !== undefined) {
+				card.image.emit('pointerover')
+			}
 		}
 
 		// Show priority / not
