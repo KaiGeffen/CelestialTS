@@ -235,7 +235,7 @@ class Moon extends Button {
 			text: {
 				text: '',
 				interactive: false,
-				style: Style.pass,
+				style: Style.moon,
 			},
 			icon: {
 				name: 'Moon',

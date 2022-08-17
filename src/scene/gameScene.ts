@@ -402,7 +402,7 @@ export class View {
 		this.decks = new Regions.Decks().create(scene)
 		this.discardPiles = new Regions.DiscardPiles().create(scene)
 		this.pass = new Regions.Pass().create(scene)
-		this.scores = new Regions.Scores().create(scene)
+		this.scores = new Regions.RoundResult().create(scene)
 
 		this.ourDeckOverlay = new Regions.OurDeck().create(scene)
 		this.theirDeckOverlay = new Regions.TheirDeck().create(scene)
