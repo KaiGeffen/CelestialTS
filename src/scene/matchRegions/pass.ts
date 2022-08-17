@@ -95,6 +95,14 @@ export default class PassRegion extends Region {
 		else {
 			this.btnPass.disable()
 		}
+
+		// Disable moon during day
+		if (isRecap) {
+			this.btnMoon.enable()
+		}
+		else {
+			this.btnMoon.disable()
+		}
 	}
 
 	// Set the callback for when user hits the Pass button
