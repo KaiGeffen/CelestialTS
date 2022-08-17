@@ -11,7 +11,8 @@ import Region from './baseRegion';
 export default class ScoresRegion extends Region {
 	txtOurScore: Phaser.GameObjects.Text
 	txtTheirScore: Phaser.GameObjects.Text
-	txtRoundResult: Phaser.GameObjects.Text
+
+	imgRoundResult: Phaser.GameObjects.Image
 
 	create (scene: BaseScene): ScoresRegion {
 		this.scene = scene
@@ -28,15 +29,15 @@ export default class ScoresRegion extends Region {
 		this.txtTheirScore = scene.add.text(
 			x, Space.windowHeight/2 - 50, '', Style.announcement
 			).setOrigin(0.5)
-		this.txtRoundResult = scene.add.text(
-			x, Space.windowHeight/2, '', Style.announcement
-			).setOrigin(0.5)
+
+		// Image in the center saying if you won/lost/tied
+		this.imgRoundResult = scene.add.image(Space.windowWidth/2, Space.windowHeight/2, 'icon-RoundWin')
 		
 		this.container.add([
 			txtHint,
 			this.txtOurScore,
 			this.txtTheirScore,
-			this.txtRoundResult,
+			this.imgRoundResult,
 			])
 
 		return this
@@ -55,6 +56,9 @@ export default class ScoresRegion extends Region {
 		if (isRecap && state.isRecapEnd()) {
 			this.animateResult(state)
 		}
+		else {
+			this.imgRoundResult.setVisible(false)
+		}
 	}
 
 	// Display the current score totals
@@ -67,29 +71,33 @@ export default class ScoresRegion extends Region {
 	// Animate the results of this round
 	// TODO Temporary, replace with crisper animation
 	private animateResult(state: ClientState): void {
-		let s
+		let s, img
 		if (state.recap.sums[0] > state.recap.sums[1]) {
-			s = 'Win!'
+			img = 'Win'
 		}
 		else if (state.recap.sums[0] < state.recap.sums[1]) {
-			s = 'Lose!'
+			img = 'Lose'
 		}
 		else {
-			s = 'Tie!'
+			img = 'Tie'
 		}
-		this.txtRoundResult.setText(s)
-		.setVisible(true)
+
+		// Set what image displays
+		this.imgRoundResult.setTexture(`icon-Round${img}`)
 
 		this.scene.tweens.add({
-			targets: this.txtRoundResult,
-			duration: Time.recapTween(),
-			hold: Time.recapTween(),
+			targets: this.imgRoundResult,
+			duration: 200,
+			hold: 2400,
 			ease: "Sine.easeInOut",
-			scale: 1.5,
+			alpha: 1,
 			yoyo: true,
+			onStart: () => {
+				this.imgRoundResult.setAlpha(0)
+				.setVisible(true)
+			},
 			onComplete: () => {
-				this.txtRoundResult.setScale(0)
-				.setVisible(false)
+				this.imgRoundResult.setAlpha(0)
 			}
 		})
 	}
