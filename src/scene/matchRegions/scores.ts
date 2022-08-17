@@ -6,12 +6,11 @@ import BaseScene from '../baseScene';
 import Region from './baseRegion';
 
 
+// TODO Rename Score to round result or something
+
 // Shows the current scores of the night's performance
 // As well as any buttons
 export default class ScoresRegion extends Region {
-	txtOurScore: Phaser.GameObjects.Text
-	txtTheirScore: Phaser.GameObjects.Text
-
 	imgRoundResult: Phaser.GameObjects.Image
 
 	create (scene: BaseScene): ScoresRegion {
@@ -23,20 +22,12 @@ export default class ScoresRegion extends Region {
 		let txtHint = scene.add.text(
 			x, Space.windowHeight/2, 'Points', Style.small
 			).setOrigin(0.5)
-		this.txtOurScore = scene.add.text(
-			x, Space.windowHeight/2 + 50, '', Style.announcement
-			).setOrigin(0.5)
-		this.txtTheirScore = scene.add.text(
-			x, Space.windowHeight/2 - 50, '', Style.announcement
-			).setOrigin(0.5)
 
 		// Image in the center saying if you won/lost/tied
 		this.imgRoundResult = scene.add.image(Space.windowWidth/2, Space.windowHeight/2, 'icon-RoundWin')
 		
 		this.container.add([
 			txtHint,
-			this.txtOurScore,
-			this.txtTheirScore,
 			this.imgRoundResult,
 			])
 
@@ -48,10 +39,6 @@ export default class ScoresRegion extends Region {
 
 		this.container.setVisible(isRecap)
 
-		if (isRecap) {
-			this.displayScores(state, isRecap)
-		}
-
 		// On the final state of the recap, animate the text of round results
 		if (isRecap && state.isRecapEnd()) {
 			this.animateResult(state)
@@ -59,13 +46,6 @@ export default class ScoresRegion extends Region {
 		else {
 			this.imgRoundResult.setVisible(false)
 		}
-	}
-
-	// Display the current score totals
-	private displayScores(state: ClientState, isRecap: boolean): void {
-		// Display current total
-		this.txtOurScore.setText(`${state.score[0]}`)
-		this.txtTheirScore.setText(`${state.score[1]}`)
 	}
 
 	// Animate the results of this round

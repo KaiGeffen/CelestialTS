@@ -248,6 +248,7 @@ class Moon extends Button {
 
 		// Rotate 180 since moon always viewed upside down
 		this.txt.setRotation(Math.PI)
+		.setAlign('center')
 	}
 }
 

@@ -45,6 +45,11 @@ export default class PassRegion extends Region {
 		}
 		this.container.setVisible(true)
 
+
+		// Display the current score totals
+		const s = `${state.score[0]}\n\n${state.score[1]}`
+		this.btnMoon.setText(s)
+
 		// Once the game is over, change the callback to instead show results of match
 		if (state.winner !== null) {
 			this.btnPass.setOnClick(() => {	
@@ -108,11 +113,11 @@ export default class PassRegion extends Region {
 		this.btnMoon = new Icons.Moon(this.container, 156, 0, () => {
 			if (this.scene['paused']) {
 				this.scene['paused'] = false
-				this.btnMoon.setText('')
+				this.btnMoon.setText(this.btnMoon.txt.text.replace('\nPaused\n', '\n\n'))
 			}
 			else {
 				this.scene['paused'] = true
-				this.btnMoon.setText('Paused')
+				this.btnMoon.setText(this.btnMoon.txt.text.replace('\n\n', '\nPaused\n'))
 			}
 		})
 		
