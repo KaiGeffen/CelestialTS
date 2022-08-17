@@ -38,7 +38,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		// Replace the results screen with tutorial results
 		this.view.results = new ResultsRegionTutorial().create(this)
-		this.view.results['missionID'] = this.params.missionID
+		this.view.results['missionID'] = this.params.missionID + 1
 		this.view.results.hide()
 
 		// Must reset progress
@@ -58,13 +58,13 @@ export default class TutorialGameScene extends AdventureGameScene {
 			() => {
 				this.progress += 1
 				switch (this.params.missionID) {
-					case 3:
+					case 0:
 					this.displayHints1()
 					break
-					case 6:
+					case 1:
 					this.displayHints2()
 					break
-					case 9:
+					case 2:
 					this.displayHints3()
 					break
 				}
@@ -103,7 +103,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 		}
 
 		switch (this.params.missionID) {
-			case 3:
+			case 0:
 			this.view.decks.hide()
 			this.view.discardPiles.hide()
 			this.view.pass.hide()
@@ -112,11 +112,11 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.displayHints1()
 			break
 
-			case 6:
+			case 1:
 			this.displayHints2()
 			break
 
-			case 9:
+			case 2:
 			this.displayHints3()
 			break
 		}

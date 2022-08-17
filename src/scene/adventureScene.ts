@@ -265,7 +265,7 @@ export default class AdventureScene extends BaseScene {
 			return function() {
 				that.params.scrollX = that.cameras.main.scrollX
 				that.params.scrollY = that.cameras.main.scrollY
-    			that.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${mission.tutorial}`, missionID: mission.id})
+    			that.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${mission.id}`, missionID: mission.id})
 			}
 		}
 		else if (mission.type === 'mission') {

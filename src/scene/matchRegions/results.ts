@@ -279,20 +279,27 @@ export default class ResultsRegion extends Region {
 	}
 }
 
+import intro from "../../adventures/intro.json"
+
+
 export class ResultsRegionTutorial extends ResultsRegion {
 	missionID: number
 
 	protected createButtons() {
 		// Continue
 		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
-		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Play Again', this.continueCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Continue', this.continueCallback())
 	}
 
 	private continueCallback(): () => void {
 		return () => {
-			console.log(this.missionID)
-			console.log(`ai:t${1}`)
-			this.scene.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${1}`, missionID: this.missionID})
+			// If we are done with tutorials, 
+			if (this.missionID >= intro.length) {
+				this.scene.scene.start("AdventureScene")
+			}
+			else {
+				this.scene.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${this.missionID}`, missionID: this.missionID})
+			}
 		}
 	}
 }

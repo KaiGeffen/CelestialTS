@@ -1,101 +1,26 @@
 [
   {
-    "name": "Dove",
+    "name": "Intro",
     "id": 0,
     "x": 100,
-    "y": 50,
-    "prereq": [[]],
-    "type": "card",
-    "card": 4
-  },
-  {
-    "name": "Dash",
-    "id": 1,
-    "x": 100,
-    "y": 100,
-    "prereq": [[0]],
-    "type": "card",
-    "card": 6
-  },
-  {
-    "name": "Mercy",
-    "id": 2,
-    "x": 100,
-    "y": 150,
-    "prereq": [[1]],
-    "type": "card",
-    "card": 12
-  },
-  {
-    "name": "Intro",
-    "id": 3,
-    "x": 100,
     "y": 200,
-    "prereq": [[2]],
-    "type": "tutorial",
-    "tutorial": "0"
-  },
-  {
-    "name": "Stars",
-    "id": 4,
-    "x": 100,
-    "y": 250,
-    "prereq": [[3]],
-    "type": "card",
-    "card": 0
-  },
-  {
-    "name": "Uprising",
-    "id": 5,
-    "x": 100,
-    "y": 300,
-    "prereq": [[4]],
-    "type": "card",
-    "card": 18
+    "prereq": [[]],
+    "type": "tutorial"
   },
   {
     "name": "Intro 2",
-    "id": 6,
+    "id": 1,
     "x": 100,
     "y": 350,
-    "prereq": [[5]],
-    "type": "tutorial",
-    "tutorial": "1"
-  },
-  {
-    "name": "Cosmos",
-    "id": 7,
-    "x": 100,
-    "y": 400,
-    "prereq": [[6]],
-    "type": "card",
-    "card": 9
-  },
-  {
-    "name": "Fruiting",
-    "id": 8,
-    "x": 100,
-    "y": 450,
-    "prereq": [[7]],
-    "type": "card",
-    "card": 11
+    "prereq": [[0]],
+    "type": "tutorial"
   },
   {
     "name": "Intro 3",
-    "id": 9,
+    "id": 2,
     "x": 100,
     "y": 500,
-    "prereq": [[8]],
-    "type": "tutorial",
-    "tutorial": "2"
-  },
-  {
-    "name": "Hurricane",
-    "id": 10,
-    "x": 100,
-    "y": 550,
-    "prereq": [[9]],
-    "type": "card",
-    "card": 13
+    "prereq": [[1]],
+    "type": "tutorial"
   }
 ]
