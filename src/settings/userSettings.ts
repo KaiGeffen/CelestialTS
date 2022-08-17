@@ -31,7 +31,7 @@ export class UserSettings {
       igc: 0,
 
       // For adventure mode, for each card, whether or not that card has been unlocked
-      inventory: Array(baseCards.length).fill(false),
+      inventory: getStartingInventory(),
 
       // List of each mission by its id, and if the player has completed it
       completedMissions: Array(1000).fill(true), // Tutorial complete Array(300).fill(true)
@@ -121,4 +121,15 @@ export class UserSettings {
       return amt
     }
   }
+}
+
+function getStartingInventory(): boolean[] {
+  let ary = Array(baseCards.length).fill(false);
+
+  // Unlock each of the starting cards
+  [0,4,9,6,11,12,13,18].forEach(i => {
+    ary[i] = true
+  })
+
+  return ary
 }
