@@ -314,7 +314,16 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 
 			case 'center':
-			this.txt.setPosition(Space.windowWidth/2, Space.windowHeight/2)
+			this.pointer.setVisible(false)
+
+			x = Space.windowWidth/2
+			y = Space.windowHeight/2
+			this.txt.setPosition(x, y)
+
+			// Button just below text
+			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			this.btnNext.setPosition(x, y)
+
 			break
 
 
