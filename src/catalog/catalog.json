@@ -231,10 +231,6 @@
       {"name": "Inspire", "x": -36, "y": 111, "value": 1}
     ]
   },
-  {"name": "Desert", "id": 49,
-    "cost": 2, "points": 0,
-    "text": "Worth +3 points if this is the last card in the story. Otherwise, return the last card in the story to its owner's hand."
-  },
   {"name": "Parch", "id": 64,
     "cost": 2, "points": 0,
     "text": "Fleeting, draw 2 cards, create 3 Ashes in your discard pile.",
@@ -396,13 +392,6 @@
     "keywords": [
       {"name": "Visible", "x": 0, "y": 61},
       {"name": "Morning", "x": 0, "y": 91}
-    ]
-  },
-  {"name": "Clear Mind", "id": 75,
-    "cost": 7, "points": 7,
-    "text": "Create a Seen in your opponent's hand.",
-    "references": [
-      {"name": "Seen", "x": 5, "y": 112}
     ]
   },
 
