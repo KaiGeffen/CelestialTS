@@ -18,11 +18,10 @@ export default class DistributionMenu extends Menu {
 		{
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
+			align: 'center',
 			space: {
-				left: Space.pad,
-				right: Space.pad,
-				top: Space.pad,
 				bottom: Space.pad,
+				line: Space.pad,
 			}
 		}
 		)
@@ -31,6 +30,11 @@ export default class DistributionMenu extends Menu {
 		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
 		panel.addBackground(rect)
 
+		// Header
+		panel.add(this.createHeader('Breath Cost Distribution', width))
+		.addNewLine()
+
+		// Chart
 		panel.add(this.createChart(costs))
 
 		panel.layout()
@@ -48,7 +52,7 @@ export default class DistributionMenu extends Menu {
 	}
 
 	private createChart(costs: number[]): any {
-		const chartWidth = width - Space.padSmall*2
+		const chartWidth = width - Space.pad * 2
 
 		return this.scene['rexUI'].add.chart(
 			Space.windowWidth/2,
