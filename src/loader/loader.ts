@@ -69,6 +69,9 @@ export default class Loader {
 		// Load the videos
 		Loader.loadVideos(scene)
 
+		// Load the round results
+		Loader.loadResults(scene)
+
 		// Load the rest of the assets
 		Loader.bulkLoad(scene)
 	}
@@ -120,5 +123,42 @@ export default class Loader {
 	// Loads all video textures
 	private static loadVideos(scene): void {
 		// scene.load.video('priorityHighlight', 'priority.mp4')
+	}
+
+	// Load the round result animations
+	private static loadResults(scene: Phaser.Scene): void {
+		['Win', 'Lose', 'Tie'].forEach(s => {
+			const name = `icon-Round${s}`
+
+			scene.load.spritesheet(name, `icons/Round${s}.png`, {
+				frameWidth: 542,
+				frameHeight: 822/3,
+			})
+
+			// Add the basic animation
+			console.log(scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }))
+			console.log(scene.anims.create({
+				key: name,
+				frameRate: 70,
+				frames: scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }),
+				repeat: -1,
+			}))
+		})
+
+		
+	}
+
+	// TODO Group these events that happen after loading is complete
+	static loadAnimations(scene: Phaser.Scene): void {
+		const name = 'icon-RoundWin'
+
+		// Add the basic animation
+		console.log(scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }))
+		console.log(scene.anims.create({
+			key: 'anim',
+			frameRate: 70,
+			frames: scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }),
+			repeat: -1,
+		}))
 	}
 }

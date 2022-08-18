@@ -9,18 +9,19 @@ import Region from './baseRegion';
 // Shows the current scores of the night's performance
 // As well as any buttons
 export default class RoundResultRegion extends Region {
-	imgRoundResult: Phaser.GameObjects.Image
+	roundResult: Phaser.GameObjects.Sprite
 
 	create (scene: BaseScene): RoundResultRegion {
 		this.scene = scene
 		this.container = scene.add.container()
 
 		// Image in the center saying if you won/lost/tied
-		this.imgRoundResult = scene.add.image(Space.windowWidth/2, Space.windowHeight/2, 'icon-RoundWin')
-		.setAlpha(0)
+		this.roundResult = scene.add.sprite(Space.windowWidth/2, Space.windowHeight/2, 'icon-RoundWin', 2)
+		// .setAlpha(0)
+		.play('anim')
 		
 		this.container.add([
-			this.imgRoundResult,
+			this.roundResult,
 			])
 
 		return this
@@ -50,21 +51,22 @@ export default class RoundResultRegion extends Region {
 		}
 
 		// Set what image displays
-		this.imgRoundResult.setTexture(`icon-Round${img}`)
+		this.roundResult.setTexture(`icon-Round${img}`, 0)
 
+		// Tween it fading in and out
 		this.scene.tweens.add({
-			targets: this.imgRoundResult,
+			targets: this.roundResult,
 			duration: 200,
 			hold: 2400,
 			ease: "Sine.easeInOut",
 			alpha: 1,
 			yoyo: true,
 			onStart: () => {
-				this.imgRoundResult.setAlpha(0)
+				this.roundResult.setAlpha(0)
 			},
 			onComplete: () => {
-				this.imgRoundResult.setAlpha(0)
-			}
+				this.roundResult.setAlpha(0)
+			},
 		})
 	}
 }
