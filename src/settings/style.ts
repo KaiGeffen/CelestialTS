@@ -92,6 +92,14 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '34px',
     color: Color.basicText,
   },
+  // The text saying if you won/lost/tied
+  roundResult: {
+    fontFamily: fontFamily,
+    fontSize: '60px',
+    color: '#fff',
+    stroke: Color.basicText,
+    strokeThickness: 4
+  },
 
   basic: {
     fontFamily: fontFamily,

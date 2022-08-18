@@ -76,6 +76,19 @@ export default class Loader {
 		Loader.bulkLoad(scene)
 	}
 
+	// TODO Group these events that happen after loading is complete
+	static loadAnimations(scene: Phaser.Scene): void {
+		['Win', 'Lose', 'Tie'].forEach(s => {
+			const name = `icon-Round${s}`
+
+			scene.anims.create({
+				key: name,
+				frameRate: 2,
+				frames: scene.anims.generateFrameNumbers(name, { start: 0, end: 3 }),
+			})
+		})
+	}
+
 	// Load all of the assets that load in a normal way
 	private static bulkLoad(scene): void {
 		// For each type of asset
@@ -133,22 +146,6 @@ export default class Loader {
 			scene.load.spritesheet(name, `icons/Round${s}.png`, {
 				frameWidth: 563,
 				frameHeight: 258,
-			})
-		})
-
-		
-	}
-
-	// TODO Group these events that happen after loading is complete
-	static loadAnimations(scene: Phaser.Scene): void {
-		['Win', 'Lose', 'Tie'].forEach(s => {
-			const name = `icon-Round${s}`
-
-			scene.anims.create({
-				key: name,
-				frameRate: 1,
-				frames: scene.anims.generateFrameNumbers(name, { start: 0, end: 3 }),
-				repeat: -1,
 			})
 		})
 	}
