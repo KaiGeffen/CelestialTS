@@ -131,18 +131,9 @@ export default class Loader {
 			const name = `icon-Round${s}`
 
 			scene.load.spritesheet(name, `icons/Round${s}.png`, {
-				frameWidth: 542,
-				frameHeight: 822/3,
+				frameWidth: 563,
+				frameHeight: 258,
 			})
-
-			// Add the basic animation
-			console.log(scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }))
-			console.log(scene.anims.create({
-				key: name,
-				frameRate: 70,
-				frames: scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }),
-				repeat: -1,
-			}))
 		})
 
 		
@@ -150,15 +141,15 @@ export default class Loader {
 
 	// TODO Group these events that happen after loading is complete
 	static loadAnimations(scene: Phaser.Scene): void {
-		const name = 'icon-RoundWin'
+		['Win', 'Lose', 'Tie'].forEach(s => {
+			const name = `icon-Round${s}`
 
-		// Add the basic animation
-		console.log(scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }))
-		console.log(scene.anims.create({
-			key: 'anim',
-			frameRate: 70,
-			frames: scene.anims.generateFrameNumbers(name, { start: 0, end: 2 }),
-			repeat: -1,
-		}))
+			scene.anims.create({
+				key: name,
+				frameRate: 1,
+				frames: scene.anims.generateFrameNumbers(name, { start: 0, end: 3 }),
+				repeat: -1,
+			})
+		})
 	}
 }

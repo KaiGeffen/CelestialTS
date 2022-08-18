@@ -18,7 +18,7 @@ export default class RoundResultRegion extends Region {
 		// Image in the center saying if you won/lost/tied
 		this.roundResult = scene.add.sprite(Space.windowWidth/2, Space.windowHeight/2, 'icon-RoundWin', 2)
 		// .setAlpha(0)
-		.play('anim')
+		.play('icon-RoundWin')
 		
 		this.container.add([
 			this.roundResult,
@@ -51,7 +51,9 @@ export default class RoundResultRegion extends Region {
 		}
 
 		// Set what image displays
-		this.roundResult.setTexture(`icon-Round${img}`, 0)
+		const name = `icon-Round${img}`
+		this.roundResult.setTexture(name, 0)
+		.play(name)
 
 		// Tween it fading in and out
 		this.scene.tweens.add({
