@@ -96,16 +96,16 @@ export class Network {
 		}
 
 		// If user is logged in, communicate that we are now searching for a match
-		// if (Server.loggedIn()) {
-		// 	// If logged in, this same ws/listener will get reused
-		// 	listenerAdded = true
+		if (Server.loggedIn()) {
+			// If logged in, this same ws/listener will get reused
+			listenerAdded = true
 
-		// 	let message = JSON.stringify({
-		// 		type: 'find_match',
-		// 		value: mmCode
-		// 	})
-		// 	socket.send(message)
-		// }
+			let message = JSON.stringify({
+				type: 'find_match',
+				value: mmCode,
+			})
+			socket.send(message)
+		}
 	}
 
 	playCard(index: number) {
@@ -161,8 +161,6 @@ export class Network {
 		let socket
 		if (Server.loggedIn()) {
 			socket = Server.getWS()
-
-			Server.seekNewMatch(mmCode)
 		}
 		else if (location.port === '4949') {
 			socket = new WebSocket(`ws://${ip}:${port}/${mmCode}`)

@@ -74,15 +74,6 @@ export default class Server {
 		return wsServer
 	}
 
-	// Seek a new match with the given matchmaking code
-	static seekNewMatch(mmCode: string): void {
-		let msg = {
-			"type": "new_match",
-			"path": mmCode,
-		}
-		wsServer.send(JSON.stringify(msg))
-	}
-
 	// Returns if the user is logged in
 	static loggedIn(): boolean {
 		return wsServer !== undefined
