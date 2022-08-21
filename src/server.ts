@@ -145,13 +145,13 @@ export default class Server {
 	// Load user data that was sent from server into session storage
 	private static loadUserData(data): void {
 		// Put this data into the session storage so that UserSettings sees it before local storage
-		sessionStorage.setItem('igc', JSON.stringify(data[1]))
-		sessionStorage.setItem('userProgress', JSON.stringify(data[5]))
-		sessionStorage.setItem('inventory', JSON.stringify(data[7]))
+		// sessionStorage.setItem('igc', JSON.stringify(data[1]))
+		sessionStorage.setItem('userProgress', JSON.stringify(data[6]))
+		// sessionStorage.setItem('inventory', JSON.stringify(data[7]))
 
 		// Decks must be translated from string, string to dictionary
 		let decks = []
-		data[8].forEach(pair => {
+		data[5].forEach(pair => {
 			let name = pair[0]
 			let deckCode = pair[1]
 
