@@ -57,8 +57,7 @@ export default class PreloadClass extends Phaser.Scene {
 			// Communicate with server, load data on response
 			let token = user.getAuthResponse().id_token
 
-			// TODO
-			// Server.login(token, that)
+			Server.login(token, that)
 		}
 
 		function onFailure(): void {
