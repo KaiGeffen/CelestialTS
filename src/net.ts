@@ -161,6 +161,8 @@ export class Network {
 		let socket
 		if (Server.loggedIn()) {
 			socket = Server.getWS()
+
+			Server.seekNewMatch(mmCode)
 		}
 		else if (location.port === '4949') {
 			socket = new WebSocket(`ws://${ip}:${port}/${mmCode}`)
