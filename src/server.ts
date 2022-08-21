@@ -127,7 +127,7 @@ export default class Server {
 			let decksAsList = []
 
 			decks.forEach(deck => {
-				let tuple = [deck['name'], deck['value']]
+				let tuple = [deck['name'], deck['value'], deck['avatar']]
 				decksAsList.push(tuple)
 			})
 
@@ -154,8 +154,10 @@ export default class Server {
 		data[5].forEach(pair => {
 			let name = pair[0]
 			let deckCode = pair[1]
+			// TODO Decks must have an avatar
+			let avatar = pair[2] | 0
 
-			decks.push({name: name, value: deckCode})
+			decks.push({name: name, value: deckCode, avatar: avatar})
 		})
 		sessionStorage.setItem('decks', JSON.stringify(decks))
 	}
