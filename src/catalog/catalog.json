@@ -390,8 +390,8 @@
     "text": "Visible.\nMorning: gain 1 extra breath this round.",
     "story": "I raise my head over the horizon\nI begin\nJust like you",
     "keywords": [
-      {"name": "Visible", "x": 0, "y": 61},
-      {"name": "Morning", "x": 0, "y": 91}
+      {"name": "Visible", "x": 0, "y": 52},
+      {"name": "Morning", "x": 0, "y": 82}
     ]
   },
 
