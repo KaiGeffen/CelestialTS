@@ -33,6 +33,9 @@ class GameScene extends BaseScene {
 	lastRecap: ClientState[]
 	currentState: ClientState
 
+	// Whether this match is a tutorial
+	isTutorial = false
+
 	init (params: any) {
 		this.params = params
 		// Reset variables
@@ -308,8 +311,9 @@ class GameScene extends BaseScene {
 			return true
 		}
 
-		// If autopass is off, don't pass
-		if (!UserSettings._get('autopass')) {
+		// If autopass is off, don't pass unless this is a tutorial
+		console.log(this.isTutorial)
+		if (!UserSettings._get('autopass') && !this.isTutorial) {
 			return false
 		}
 		// Otherwise, pass only if we have no playable cards

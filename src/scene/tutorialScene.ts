@@ -29,6 +29,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 	// A card that is being shown
 	card: CardImage
 
+	isTutorial = true
+
 	constructor (args = {key: 'TutorialGameScene', lastScene: 'AdventureScene'}) {
 		super(args)
 	}
@@ -75,7 +77,6 @@ export default class TutorialGameScene extends AdventureGameScene {
 		this.pointer = this.add.image(0, 0, 'icon-Pointer')
 	}
 
-	// TODO Ensure that autopass is on
 	// TODO When a winner is found, move on to the next stillframe of the tutorial
 	protected displayState(state: ClientState, isRecap: boolean): boolean {
 		// Remove unused animations
