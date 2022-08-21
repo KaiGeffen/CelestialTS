@@ -6,7 +6,7 @@ import Menu from './menu';
 import MenuScene from '../menuScene'
 
 
-const width = 400
+const width = 600
 
 export default class DCMenu extends Menu {
 	constructor(scene: MenuScene, params) {
