@@ -109,17 +109,27 @@
   {
     "italic": "",
     "bold": "You draw cards from your deck. Your deck starts with 15 cards in it. Click to see everything in your deck.",
-    "align": "bottom"
+    "align": "left"
   },
   {
     "italic": "",
     "bold": "When cards resolve or are discarded, they go to your discard pile.",
-    "align": "bottom"
+    "align": "right"
   },
   {
     "italic": "",
     "bold": "If your deck is empty when you would draw a card, your discard pile is shuffled to form a new deck.",
-    "align": "bottom"
+    "align": "center"
+  },
+  null,
+  null,
+  null,
+  null,
+  null,
+  {
+    "italic": "",
+    "bold": "Nourish will make the next card you resolve worth extra points, even if that card is played on a future round. Use it carefully to get points when you need them.",
+    "align": "center"
   },
   null
 ]]

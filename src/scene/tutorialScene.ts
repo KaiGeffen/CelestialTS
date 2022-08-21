@@ -288,6 +288,26 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 
 
+			case 'left':
+			this.pointer.setRotation(0)
+			.setFlipX(true)
+
+			x = Space.pad + this.pointer.width/2 + 80
+			y = Space.windowHeight - Space.handHeight - this.pointer.height + 30
+			this.pointer.setPosition(x, y)
+
+			// Text to the right of pointer
+			x += this.pointer.width/2 + Space.pad + this.txt.displayWidth/2
+			y -= this.pointer.height/2
+			this.txt.setPosition(x, y)
+
+			// Move next button just below the text
+			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			this.btnNext.setPosition(x, y)
+			break
+
+
+
 			case 'card':
 			this.pointer.setRotation(Math.PI/2)
 
