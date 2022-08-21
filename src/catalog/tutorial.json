@@ -12,7 +12,7 @@
   },
   {
     "italic": "These cards are the elements of the stories we tell - wisps and imagery brought here to form something greater. With our breath we weave them into the story, and when night falls they come to life, to enchant and delight the audience.",
-    "bold": "Each card has a cost to play it (Top number) and amount of points it earns (Bottom number). It also has text that describes any extra effects. Hover over the card to see explanations.",
+    "bold": "Each card has a cost to play it (Top number), amount of points it earns (Bottom number), and text describing any extra effects. Hover over the card to see explanations.\nI'll quickly explain 3 basic cards.",
     "align": "card"
   },
   {
@@ -91,9 +91,17 @@
   null,
   {
     "italic": "",
-    "bold": "Sometimes it's better to Pass instead of playing a card.",
+    "bold": "Sometimes it's better to pass instead of playing a card. Click the sun to pass.",
     "align": "right",
     "final": true
+  },
+  null,
+  null,
+  null,
+  {
+    "italic": "",
+    "bold": "With just a Dove, you probably can't win this round. But if you play enough Stars you can play Uprising next round to win for sure!",
+    "align": "center"
   },
   null
 ],
