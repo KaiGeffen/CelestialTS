@@ -65,7 +65,6 @@ export class UserSettings {
   static _set(key: string, value: any) {
     if (key in sessionStorage) {
       sessionStorage.setItem(key, JSON.stringify(value))
-      console.log(JSON.stringify(value))
 
       // If key is in session storage then we're signed in
       // User progress and decks should be communicated to the server immediately
