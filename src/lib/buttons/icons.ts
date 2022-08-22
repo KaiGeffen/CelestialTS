@@ -272,6 +272,25 @@ class Search extends Button {
 	}
 }
 
+class Discord extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Discord',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}
+
 // Export all of the available icons, which are subtype of buttons
 export default class Icons {
 	static Options = Options
@@ -286,4 +305,5 @@ export default class Icons {
 	static Pass = Pass
 	static Moon = Moon
 	static Search = Search
+	static Discord = Discord
 }

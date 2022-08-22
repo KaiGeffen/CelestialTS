@@ -4,6 +4,7 @@ import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
+import Icons from "../lib/buttons/icons"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import intro from "../adventures/intro.json"
@@ -28,7 +29,9 @@ export default class HomeScene extends BaseScene {
       Style.title).setOrigin(0.5)
 
     // Discord button
-    let btnDiscord = new Buttons.Basic(this, Space.windowWidth/2 + 100, Space.windowHeight - 50, "Discord").setOrigin(0.5)
+    let btnDiscord = new Icons.Discord(this, Space.smallButtonWidth + Space.pad, 9)
+    .setOrigin(0)
+
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
 
     // Adventure button
