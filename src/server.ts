@@ -67,6 +67,13 @@ export default class Server {
 					break
 			}
 		})
+
+		// If the connection closes, login again with same args
+		wsServer.addEventListener('close', () => {
+			console.log('Logged in websocket is closing, signing in again')
+
+			Server.login(token, scene)
+		})
 	}
 
 	// Get the open websocket, for use in playing a match
