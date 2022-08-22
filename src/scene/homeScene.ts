@@ -1,11 +1,12 @@
 import "phaser"
-import { Style, Color, Space, UserProgress, Url } from "../settings/settings"
+import { Style, Color, Space, UserProgress, Url, UserSettings } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
+import intro from "../adventures/intro.json"
 
 
 export default class HomeScene extends BaseScene {
@@ -84,6 +85,19 @@ export default class HomeScene extends BaseScene {
 
   private doAdventure(): void {
     this.beforeExit()
+
+    // If user hasn't completed the tutorial, jump to the last tutorial they haven't completed
+    const missions = UserSettings._get('completedMissions')
+    for (let i = 0; i < intro.length; i++) {
+
+      // If this tutorial mission hasn't been completed, jump to that mission
+      if (!missions[i]) {
+        this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${i}`, missionID: i})
+        return
+      }
+    }
+
+    // Otherwise, go to the adventure scene map
     this.scene.start("AdventureScene")
   }
 
