@@ -10,6 +10,7 @@ import Buttons from '../lib/buttons/buttons'
 import { CardImage } from '../lib/cardImage'
 import { getCard } from '../catalog/catalog'
 import { ResultsRegionTutorial } from './matchRegions/results'
+import { SearchingRegionTutorial } from './matchRegions/searching'
 import { Animation, Zone } from '../lib/animation'
 
 
@@ -42,6 +43,10 @@ export default class TutorialGameScene extends AdventureGameScene {
 		this.view.results = new ResultsRegionTutorial().create(this)
 		this.view.results['missionID'] = this.params.missionID + 1
 		this.view.results.hide()
+
+		// Replace the searching screen with still frames
+		this.view.searching.hide()
+		this.view.searching = new SearchingRegionTutorial().create(this)
 
 		// Must reset progress
 		this.progress = -1

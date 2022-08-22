@@ -77,3 +77,58 @@ export default class SearchingRegion extends Region {
 		return btn
 	}
 }
+
+// A separate initial region seen during the tutorial
+export class SearchingRegionTutorial extends Region {
+	create(scene: BaseScene): Region {
+		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
+
+		this.createImage(scene)
+
+		this.createText(scene)
+		
+		this.createButton(scene)
+
+		// Pause until button is pressed
+		scene['paused'] = true
+
+		return this
+	}
+
+	private createImage(scene: Phaser.Scene): void {
+		let img = scene.add.image(Space.windowWidth/2, 0, 'bg-Story 1')
+		.setOrigin(0.5, 0)
+		.setInteractive()
+
+		const scale = Space.windowWidth / img.displayWidth
+		img.setScale(scale)
+
+		// Scroll the image down from viewing the buildings to seeing the person
+		scene.add.tween({
+			targets: img,
+			duration: 4000,
+			y: Space.windowHeight - img.displayHeight
+		})
+		
+		this.container.add(img)
+	}
+
+	// TODO Write this out slowly
+	private createText(scene: Phaser.Scene): void {
+		let txt = scene.add.text(Space.windowWidth/2, Space.pad, 'Some story framing goes here.\n\nText plays slowly.', Style.announcement)
+		.setOrigin(0.5, 0)
+		
+		this.container.add(txt)
+	}
+
+	private createButton(scene): void {
+		new Buttons.Basic(
+			this.container,
+			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
+			Space.windowHeight - Space.pad - Space.largeButtonHeight/2,
+			'Continue',
+			() => {
+				scene['paused'] = false
+			})
+	}
+}
