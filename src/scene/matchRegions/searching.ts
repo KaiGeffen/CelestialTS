@@ -80,6 +80,8 @@ export default class SearchingRegion extends Region {
 
 // A separate initial region seen during the tutorial
 export class SearchingRegionTutorial extends Region {
+	btn: Button
+
 	create(scene: BaseScene): Region {
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
@@ -107,7 +109,10 @@ export class SearchingRegionTutorial extends Region {
 		scene.add.tween({
 			targets: img,
 			duration: 4000,
-			y: Space.windowHeight - img.displayHeight
+			y: Space.windowHeight - img.displayHeight,
+			onComplete: () => {
+				this.btn.enable()
+			}
 		})
 		
 		this.container.add(img)
@@ -122,7 +127,7 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createButton(scene): void {
-		new Buttons.Basic(
+		this.btn = new Buttons.Basic(
 			this.container,
 			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
 			Space.windowHeight - Space.pad - Space.largeButtonHeight/2,
@@ -130,5 +135,6 @@ export class SearchingRegionTutorial extends Region {
 			() => {
 				scene['paused'] = false
 			})
+		.disable()
 	}
 }
