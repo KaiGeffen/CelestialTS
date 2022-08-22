@@ -159,6 +159,13 @@ export class CardImage {
     return this
   }
 
+  removeOnHover(): CardImage {
+    this.hoverCallback = () => {}
+    this.exitCallback = () => {}
+
+    return this
+  }
+
   // Set whether this card is playable
   setPlayable(isPlayable: Boolean): void {
     if (isPlayable) {

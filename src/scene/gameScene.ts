@@ -312,7 +312,6 @@ class GameScene extends BaseScene {
 		}
 
 		// If autopass is off, don't pass unless this is a tutorial
-		console.log(this.isTutorial)
 		if (!UserSettings._get('autopass') && !this.isTutorial) {
 			return false
 		}
