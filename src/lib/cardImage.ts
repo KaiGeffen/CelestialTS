@@ -90,7 +90,8 @@ export class CardImage {
 
       // If the mouse moves outside of the game, exit the hover also
       // NOTE This logic won't run until the frame after user interacts with the canvas
-      this.scene.input.on('gameout', this.onHoverExit(true))
+      // Removed, phaser does this anyways on returning to focus
+      // this.scene.input.on('gameout', this.onHoverExit(true))
     }
   }
 
