@@ -118,12 +118,22 @@ export class SearchingRegionTutorial extends Region {
 		this.container.add(img)
 	}
 
-	// TODO Write this out slowly
-	private createText(scene: Phaser.Scene): void {
-		let txt = scene.add.text(Space.windowWidth/2, Space.pad, 'Some story framing goes here.\n\nText plays slowly.', Style.announcement)
+	private createText(scene: BaseScene): void {
+		let txt = scene.add.text(0, 0, '', Style.announcement)
+
+		const s = "We called out to the people of the world.\n\nIn desperation, curiosity, and humor.\n\nCome to our city, teach us what you've learned."
+		let txtB = scene.rexUI.add.textBox({
+			text: txt,
+			x: Space.windowWidth/2,
+			y: Space.pad,
+			width: Space.windowWidth * 2/3,
+			// Need to wrap the text
+			// wrapWidth: Space.windowWidth * 2/3,
+		})
+		.start(s, 50)
 		.setOrigin(0.5, 0)
 		
-		this.container.add(txt)
+		this.container.add([txt, txtB])
 	}
 
 	private createButton(scene): void {

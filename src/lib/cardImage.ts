@@ -310,6 +310,19 @@ export class CardImage {
     return this
   }
 
+  // TODO Make this dry with the above
+  // Reverse the depth ordering of cards in hand from this on
+  revertCentringInHand(): CardImage {
+    const parentContainer = this.container.parentContainer
+
+    // From INDEX to the top is reversed, flip it back
+    for (let i = parentContainer.length - 1; i >= this.renderIndex; i--) {
+      parentContainer.bringToTop(parentContainer.getAt(i))
+    }
+
+    return this
+  }
+
   // Toggle whether this card appears as being set to mulligan or not
   icon: Phaser.GameObjects.Image
   toggleSelectedForMulligan(): CardImage {
