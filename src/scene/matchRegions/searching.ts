@@ -119,14 +119,14 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createText(scene: BaseScene): void {
-		let txt = scene.add.text(0, 0, '', Style.announcement)
+		let txt = scene.add.text(0, 0, '', Style.stillframe)
 
 		const s = "We called out to the people of the world.\n\nIn desperation, curiosity, and humor.\n\nCome to our city, teach us what you've learned."
 		let txtB = scene.rexUI.add.textBox({
 			text: txt,
 			x: Space.windowWidth/2,
 			y: Space.pad,
-			width: Space.windowWidth * 2/3,
+			width: 1000,
 			// Need to wrap the text
 			// wrapWidth: Space.windowWidth * 2/3,
 		})
