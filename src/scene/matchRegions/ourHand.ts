@@ -9,6 +9,9 @@ import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
 
+// The y distance card moves up when hovered
+const HOVER_OFFSET = Space.cardHeight/2
+
 export default class OurHandRegion extends Region {
 	// Function called when elements in this region are interacted with
 	callback: (i: number) =>  void
@@ -112,7 +115,13 @@ export default class OurHandRegion extends Region {
 		// Hover whichever card was being hovered last
 		if (this.hoveredCard !== undefined) {
 			let card = this.cards[this.hoveredCard]
-			if (card !== undefined) {
+
+			// Check that the mouse is still over the card's x
+			const pointer = this.scene.input.activePointer
+			const pointerOverCard = card.image.getBounds().contains(pointer.x, pointer.y + HOVER_OFFSET)
+			console.log(pointerOverCard)
+
+			if (card !== undefined && pointerOverCard) {
 				card.image.emit('pointerover')
 			}
 		}
@@ -303,7 +312,7 @@ export default class OurHandRegion extends Region {
 	private onCardHover(card: CardImage, cost: number, index: number): () => void {
 		let that = this
 		return () => {
-			card.container.setY(Space.handHeight - Space.cardHeight/2)
+			card.container.setY(Space.handHeight - HOVER_OFFSET)
 
 			// Show the card's cost in the breath icon
 			that.displayCostCallback(cost)
@@ -317,7 +326,7 @@ export default class OurHandRegion extends Region {
 	private onCardExit(card: CardImage, cards: CardImage[], index: number): () => void {
 		let that = this
 		return () => {
-			card.container.setY(Space.cardHeight/2)
+			card.container.setY(HOVER_OFFSET)
 
 			// Stop showing a positive card cost
 			that.displayCostCallback(0)
