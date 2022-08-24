@@ -61,13 +61,69 @@ export default class HomeScene extends BaseScene {
   private createButtons(): void {
     const y = headerHeight + (Space.windowHeight - headerHeight)/2
 
-    new Buttons.Backed(this,
-      Space.windowWidth/2 - Space.pad/2,
+    // Add the map background
+    // map.mask
+    // let btn = new Buttons.Backed(this,
+    //   Space.windowWidth/2 - Space.pad/2,
+    //   headerHeight + Space.pad,
+    //   '',
+    //   'bg-Adventure',
+    //   () => this.doAdventure()
+    //   ).setOrigin(1, 0)
+
+    const width = (Space.windowWidth - Space.pad * 3)/2
+    const height = Space.windowHeight - headerHeight - Space.pad * 2
+
+    let rect = this.add.rectangle(Space.windowWidth/2 - Space.pad/2,
       headerHeight + Space.pad,
-      '',
-      'bg-Adventure',
-      () => this.doAdventure()
-      ).setOrigin(1, 0)
+      width,
+      height,
+      0xffff00,
+      1)
+    .setOrigin(1, 0)
+
+    // Add tweens that make the map circle
+    const time = 10000
+
+    let map = this.add.sprite(0, 0, 'bg-Map').setOrigin(0)
+    let tweens: Phaser.Tweens.Tween[] = []
+    tweens.push(this.tweens.add({
+      targets: map,
+      x: -(map.displayWidth - width - Space.pad),
+      duration: time,
+      ease: 'Sine.easeInOut',
+      yoyo: true,
+      repeat: -1,
+    }).pause())
+
+    tweens.push(this.tweens.add({
+      targets: map,
+      y: -(map.displayHeight - height - Space.pad - headerHeight),
+      duration: time,
+      delay: time/2,
+      ease: 'Sine.easeInOut',
+      yoyo: true,
+      repeat: -1,
+    }).pause())
+
+    // Make tweens only play while rectangle is hovered
+    rect.setInteractive()
+    .on('pointerover', () => {
+      map.setBlendMode(Phaser.BlendModes.NORMAL)
+
+      // tweens.forEach(tween => {
+      //   tween.play()
+      // })
+    })
+    .on('pointerout', () => {
+      map.setBlendMode(Phaser.BlendModes.LUMINOSITY)
+
+      // tweens.forEach(tween => {
+      //   tween.pause()
+      // })
+    })
+
+    map.mask = new Phaser.Display.Masks.BitmapMask(this, rect)
 
     new Buttons.Backed(this,
       Space.windowWidth/2 + Space.pad/2,
