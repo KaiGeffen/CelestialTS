@@ -10,6 +10,8 @@ import Menu from "../lib/menu"
 import intro from "../adventures/intro.json"
 
 
+const headerHeight = Space.iconSize + Space.pad * 2
+
 export default class HomeScene extends BaseScene {
 
   constructor() {
@@ -19,31 +21,9 @@ export default class HomeScene extends BaseScene {
   }
 
   create(): void {
-    let that = this
+    this.createHeader()
 
-    // Show the login button
-    document.getElementById("signin").hidden = false
-
-    // Display text and button
-    this.add.text(Space.windowWidth/2, Space.windowHeight/2 - 150, "Celestial",
-      Style.title).setOrigin(0.5)
-
-    // Discord button
-    let btnDiscord = new Icons.Discord(this, Space.smallButtonWidth + Space.pad, 9)
-    .setOrigin(0)
-
-    btnDiscord.setOnClick(this.doDiscord(btnDiscord))
-
-    // Adventure button
-    let btnAdventure = new Buttons.Basic(this, Space.windowWidth/2, Space.windowHeight - 100, "Adventure", () => that.doAdventure()).setOrigin(0.5)
-
-    // Start Button
-    new Buttons.Basic(this, Space.windowWidth/2, Space.windowHeight/2, "Start", this.doStart()).setOrigin(0.5)//.setStyle(Style.announcement)
-
-    let msgText = UserProgress.getMessage('welcome')
-    if (msgText !== undefined) {
-      this.displayMessage(msgText)
-    }
+    this.createButtons()
     
     super.create()
   }
@@ -51,6 +31,51 @@ export default class HomeScene extends BaseScene {
   // Hide the signin button
   beforeExit(): void {
     document.getElementById("signin").hidden = true
+  }
+
+  private createHeader(): void {
+    // Make the background
+    let background = this.add.rectangle(0, 0, Space.windowWidth, headerHeight, Color.background2)
+    .setOrigin(0)
+
+    this.plugins.get('rexDropShadowPipeline')['add'](background, {
+      distance: 3,
+      angle: -90,
+      shadowColor: 0x000000,
+    })
+    
+    // Show the login button
+    document.getElementById("signin").hidden = false
+
+    // Create Discord button
+    let btnDiscord = new Icons.Discord(this, Space.smallButtonWidth + Space.pad, 9)
+    .setOrigin(0)
+
+    btnDiscord.setOnClick(this.doDiscord(btnDiscord))
+
+    // Create title
+    this.add.text(Space.windowWidth/2, headerHeight/2, "Celestial", Style.homeTitle)
+    .setOrigin(0.5)
+  }
+
+  private createButtons(): void {
+    const y = headerHeight + (Space.windowHeight - headerHeight)/2
+
+    new Buttons.Backed(this,
+      Space.windowWidth/2 - Space.pad/2,
+      headerHeight + Space.pad,
+      '',
+      'bg-Adventure',
+      () => this.doAdventure()
+      ).setOrigin(1, 0)
+
+    new Buttons.Backed(this,
+      Space.windowWidth/2 + Space.pad/2,
+      headerHeight + Space.pad,
+      '',
+      'bg-Free Play',
+      this.doStart()
+      ).setOrigin(0, 0)
   }
 
   private displayMessage(message: string): void {

@@ -159,12 +159,21 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   //   fontFamily: fontFamily,
   //   fontSize: FontSettings.standard.size
   // },
-  title: {
+  // Title for menus
+  menutitle: {
     fontFamily: fontFamily,
     fontSize: FontSettings.title.size,
     color: '#fff',
     stroke: '#000',
     strokeThickness: 6
+  },
+  // Title for the home scene
+  homeTitle: {
+    fontFamily: fontFamily,
+    fontSize: '70px',
+    color: '#fff',
+    stroke: '#000',
+    strokeThickness: 3
   },
   credits: {
     fontFamily: fontFamily,

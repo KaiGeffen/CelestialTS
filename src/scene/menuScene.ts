@@ -58,7 +58,7 @@ export default class MenuScene extends Phaser.Scene {
 			Space.windowWidth / 2,
 			Space.windowHeight / 2 - 150,
 			s,
-			Style.title).setOrigin(0.5)
+			Style.menuTitle).setOrigin(0.5)
 	}
 
 	private addMessage(s: string) {
