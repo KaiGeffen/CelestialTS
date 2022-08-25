@@ -118,6 +118,26 @@ class Distribution extends Button {
 		})
 	}
 }
+
+class Paste extends Button {
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
+		x: number, y: number,
+		f: () => void = function() {},
+		playSound: boolean = true)
+	{
+		super(within, x, y, 
+		{
+			icon: {
+				name: 'Paste',
+				interactive: true
+			},
+			callbacks: {
+				click: f
+			}
+		})
+	}
+}
+
 class Recap extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -299,6 +319,7 @@ export default class Icons {
 	static Share = Share
 	static Edit = Edit
 	static Distribution = Distribution
+	static Paste = Paste
 	static Recap = Recap
 	static Skip = Skip
 	static Arrow = Arrow

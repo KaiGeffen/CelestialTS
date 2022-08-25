@@ -2,7 +2,9 @@ import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
+import Icons from '../../lib/buttons/icons'
 import { Color, Mechanics, Space, Style, UserSettings, Mobile, Scroll } from "../../settings/settings"
+
 
 
 const width = Space.decklistPanelWidth
@@ -182,6 +184,8 @@ export default class DecklistsRegion {
 		hintSizer.add(txtHint)
 		.addSpace()
 
+		let btnPaste = new Icons.Paste(hintSizer, 0, 0, this.pasteCallback())
+
 		return sizer
 	}
 
@@ -200,6 +204,22 @@ export default class DecklistsRegion {
 			
 			// Set the current deck to premade list
 			that.scene.setPremade(i)
+		}
+	}
+
+	// When paste button is clicked
+	private pasteCallback(): () => void {
+		return () => {
+			// If user already has 9 decks, signal error instead
+			if (UserSettings._get('decks').length >= Mechanics.maxDecks) {
+				this.scene.signalError(`Reached max number of decks (${Mechanics.maxDecks}).`)
+			}
+			else {
+				this.scene.scene.launch('MenuScene', {
+					menu: 'paste',
+					callback: this.createCallback(),
+				})
+			}
 		}
 	}
 
@@ -308,28 +328,6 @@ export default class DecklistsRegion {
 		let that = this
 		let scene = this.scene
 
-		// Callback for when 'Create' is hit in the menu
-		function createCallback(name: string, avatar: number): void {
-			// Create the deck in storage
-			UserSettings._push('decks', {
-				name: name,
-				value: '',
-				avatar: avatar,
-			})
-
-			// Create a new button
-			let newBtn = that.createDeckBtn(that.decklistBtns.length)
-			panel.add(newBtn)
-			that.scrollablePanel.layout()
-
-			// Select that deck
-			let index = that.decklistBtns.length - 1
-			that.decklistBtns[index].onClick()
-
-			// Scroll down to show the new deck
-			that.scrollablePanel.t = 1
-		}
-
 		function openNewDeckMenuCallback() {
 			// If user already has 9 decks, signal error instead
 			if (UserSettings._get('decks').length >= Mechanics.maxDecks) {
@@ -338,7 +336,7 @@ export default class DecklistsRegion {
 			else {
 				scene.scene.launch('MenuScene', {
 					menu: 'newDeck',
-					callback: createCallback,
+					callback: that.createCallback(),
 				})
 			}
 		}
@@ -350,6 +348,35 @@ export default class DecklistsRegion {
 		.setDepth(2)
 
 		return container
+	}
+
+	// Return a callback for when a deck is created (From paste or new deck)
+	createCallback(): (name: string, avatar: number, deckCode?: string) => void {
+		return (name: string, avatar: number, deckCode?: string) => {
+			// Create the deck in storage
+			UserSettings._push('decks', {
+				name: name,
+				value: '',
+				avatar: avatar,
+			})
+
+			// Create a new button
+			let newBtn = this.createDeckBtn(this.decklistBtns.length)
+			this.panel.add(newBtn)
+			this.scrollablePanel.layout()
+
+			// Select this deck
+			let index = this.decklistBtns.length - 1
+			this.decklistBtns[index].onClick()
+
+			// Scroll down to show the new deck
+			this.scrollablePanel.t = 1
+
+			// If a deck code was included, populate it
+			if (deckCode !== undefined) {
+				this.scene.setDeck(deckCode)
+			}
+		}
 	}
 
 	// Callback for deleting deck with given index
