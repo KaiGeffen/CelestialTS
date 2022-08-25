@@ -262,6 +262,9 @@ export default class OurHandRegion extends Region {
 			// Remove this cards hover/exit behavior so it doesn't jump back to hand y
 			card.removeOnHover()
 
+			// Hide any hints
+			that.scene['hint'].hide()
+
 			// Send this card to its place in the story
 			that.scene.tweens.add({
 				targets: card.container,
