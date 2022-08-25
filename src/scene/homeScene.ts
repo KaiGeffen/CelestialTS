@@ -83,9 +83,12 @@ export default class HomeScene extends BaseScene {
     .setOrigin(1, 0)
 
     // Add tweens that make the map circle
-    const time = 10000
+    const time = 30000
 
-    let map = this.add.sprite(0, 0, 'bg-Map').setOrigin(0)
+    let map = this.add.sprite(0, 0, 'bg-Map')
+    .setOrigin(0)
+    .setTint(0x444444)
+
     let tweens: Phaser.Tweens.Tween[] = []
     tweens.push(this.tweens.add({
       targets: map,
@@ -94,7 +97,7 @@ export default class HomeScene extends BaseScene {
       ease: 'Sine.easeInOut',
       yoyo: true,
       repeat: -1,
-    }).pause())
+    }))
 
     tweens.push(this.tweens.add({
       targets: map,
@@ -104,19 +107,19 @@ export default class HomeScene extends BaseScene {
       ease: 'Sine.easeInOut',
       yoyo: true,
       repeat: -1,
-    }).pause())
+    }))
 
     // Make tweens only play while rectangle is hovered
     rect.setInteractive()
     .on('pointerover', () => {
-      map.setBlendMode(Phaser.BlendModes.NORMAL)
+      map.clearTint()
 
       // tweens.forEach(tween => {
-      //   tween.play()
+      //   tween.play().play()
       // })
     })
     .on('pointerout', () => {
-      map.setBlendMode(Phaser.BlendModes.LUMINOSITY)
+      map.setTint(0x444444)
 
       // tweens.forEach(tween => {
       //   tween.pause()
@@ -125,6 +128,11 @@ export default class HomeScene extends BaseScene {
 
     map.mask = new Phaser.Display.Masks.BitmapMask(this, rect)
 
+    // Text over the rectangle
+    this.add.text(rect.x - rect.displayWidth/2, rect.y + rect.displayHeight/2, 'Adventure', Style.homeTitle)
+    .setOrigin(0.5)
+
+    // Free Play button
     new Buttons.Backed(this,
       Space.windowWidth/2 + Space.pad/2,
       headerHeight + Space.pad,
