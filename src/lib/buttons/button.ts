@@ -329,6 +329,8 @@ export default class Button {
 		// }
 		if (this.icon !== undefined) {
 			this.icon.setInteractive()
+
+			this.icon.setAlpha(1)
 		}
 
 		return this
@@ -342,6 +344,8 @@ export default class Button {
 		if (this.icon !== undefined) {
 			this.icon.disableInteractive()
 			.emit('pointerout')
+
+			this.icon.setAlpha(0.5)
 		}
 
 		return this

@@ -37,6 +37,10 @@ export default class DeckRegion {
 	private avatar: Button
 	private txtDeckName: Phaser.GameObjects.Text
 
+	// Buttons
+	private btnEdit: Button
+	private btnShare: Button
+
 	create(scene: Phaser.Scene,
 		startCallback: () => void,
 		editCallback?: (name: string, avatar: number) => void
@@ -148,11 +152,11 @@ export default class DeckRegion {
 
 		// Add a share button that allows user to copy/paste their deck code
 		let containerEdit = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth/3, Space.avatarSize/2)
-		new Icons.Edit(containerEdit, 0, 0, this.openEditMenu())
+		this.btnEdit = new Icons.Edit(containerEdit, 0, 0, this.openEditMenu())
 
 		// Add a share button that allows user to copy/paste their deck code
 		let containerShare = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth/3, Space.avatarSize/2)
-		new Icons.Share(containerShare, 0, 0, this.shareCallback())
+		this.btnShare = new Icons.Share(containerShare, 0, 0, this.shareCallback())
 
 		// Add a graph button for showing the distribution of costs in the deck
 		let containerDistribution = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth/3, Space.avatarSize/2)
@@ -231,6 +235,10 @@ export default class DeckRegion {
 
 	// Set the current deck, and return whether the given deck was valid
 	setDeck(deckCode: string | Card[], panel = this.panel): boolean {
+		// Enable the edit and share icons
+		this.btnEdit.enable()
+		this.btnShare.enable()
+
 		let deck: Card[]
 		if (typeof deckCode === "string") {
 			// Get the deck from this code
@@ -299,6 +307,10 @@ export default class DeckRegion {
 		this.deck.forEach(cutout => {
 			cutout.setRequired()
 		})
+
+		// Disable the edit and share icons
+		this.btnEdit.disable()
+		this.btnShare.disable()
 
 		return this
 	}
