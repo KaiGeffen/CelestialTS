@@ -61,20 +61,10 @@ export default class HomeScene extends BaseScene {
   private createButtons(): void {
     const y = headerHeight + (Space.windowHeight - headerHeight)/2
 
-    // Add the map background
-    // map.mask
-    // let btn = new Buttons.Backed(this,
-    //   Space.windowWidth/2 - Space.pad/2,
-    //   headerHeight + Space.pad,
-    //   '',
-    //   'bg-Adventure',
-    //   () => this.doAdventure()
-    //   ).setOrigin(1, 0)
-
     const width = (Space.windowWidth - Space.pad * 3)/2
     const height = Space.windowHeight - headerHeight - Space.pad * 2
 
-    let rect = this.add.rectangle(Space.windowWidth/2 - Space.pad/2,
+    let rectLeft = this.add.rectangle(Space.windowWidth/2 - Space.pad/2,
       headerHeight + Space.pad,
       width,
       height,
@@ -109,40 +99,57 @@ export default class HomeScene extends BaseScene {
       repeat: -1,
     }))
 
-    // Make tweens only play while rectangle is hovered
-    rect.setInteractive()
+    // While not hovered, rectangle is greyed
+    rectLeft.setInteractive()
     .on('pointerover', () => {
       map.clearTint()
-
-      // tweens.forEach(tween => {
-      //   tween.play().play()
-      // })
     })
     .on('pointerout', () => {
       map.setTint(0x444444)
-
-      // tweens.forEach(tween => {
-      //   tween.pause()
-      // })
     })
     .on('pointerdown', () => {
       this.doAdventure()
     })
 
-    map.mask = new Phaser.Display.Masks.BitmapMask(this, rect)
+    map.mask = new Phaser.Display.Masks.BitmapMask(this, rectLeft)
 
     // Text over the rectangle
-    this.add.text(rect.x - rect.displayWidth/2, rect.y + rect.displayHeight/2, 'Adventure', Style.homeTitle)
+    this.add.text(rectLeft.x - rectLeft.displayWidth/2, rectLeft.y + rectLeft.displayHeight/2, 'Adventure', Style.homeTitle)
     .setOrigin(0.5)
 
+
+
     // Free Play button
-    new Buttons.Backed(this,
-      Space.windowWidth/2 + Space.pad/2,
+    let rectRight = this.add.rectangle(Space.windowWidth/2 + Space.pad/2,
       headerHeight + Space.pad,
-      '',
-      'bg-Free Play',
-      this.doStart()
-      ).setOrigin(0, 0)
+      width,
+      height,
+      0xffff00,
+      1)
+    .setOrigin(0, 0)
+
+    let freePlay = this.add.sprite(
+      rectRight.x,
+      rectRight.y,
+      'bg-Free Play')
+    .setOrigin(0)
+    .setTint(0x444444)
+
+    // While not hovered, rectangle is greyed
+    rectRight.setInteractive()
+    .on('pointerover', () => {
+      freePlay.clearTint()
+    })
+    .on('pointerout', () => {
+      freePlay.setTint(0x444444)
+    })
+    .on('pointerdown', this.doStart())
+
+    freePlay.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight)
+
+    // Text over the rectangle
+    this.add.text(rectRight.x + rectRight.displayWidth/2, rectRight.y + rectRight.displayHeight/2, 'Free Play', Style.homeTitle)
+    .setOrigin(0.5)
   }
 
   private displayMessage(message: string): void {
