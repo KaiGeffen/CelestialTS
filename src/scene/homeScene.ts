@@ -125,6 +125,9 @@ export default class HomeScene extends BaseScene {
       //   tween.pause()
       // })
     })
+    .on('pointerdown', () => {
+      this.doAdventure()
+    })
 
     map.mask = new Phaser.Display.Masks.BitmapMask(this, rect)
 
