@@ -300,9 +300,6 @@ export default class DeckRegion {
 			cutout.setRequired()
 		})
 
-		// Disable the avatar from changing / changing name
-		this.avatar.disable()
-
 		return this
 	}
 
