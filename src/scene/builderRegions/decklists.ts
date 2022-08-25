@@ -297,7 +297,6 @@ export default class DecklistsRegion {
 	// Deselect whatever deck is currently selected
 	deselect(): void {
 		this.savedDeckIndex = undefined
-		this.scene.setDeck([])
 		
 		this.decklistBtns.forEach(b => {
 			b.deselect()
