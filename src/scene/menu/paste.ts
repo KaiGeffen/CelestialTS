@@ -48,7 +48,7 @@ export default class PasteMenu extends Menu {
 		return panel
 	}
 
-	private createContent(scene: Phaser.Scene, panel, createCallback: (name: string, avatar: number) => void) {
+	private createContent(scene: Phaser.Scene, panel, createCallback: (name: string, avatar: number, deckCode?: string) => void) {
 		panel.add(this.createHeader('Paste Deck Code', width))
 		.addNewLine()
 
@@ -98,7 +98,7 @@ export default class PasteMenu extends Menu {
 	}
 
 	// Create the buttons at the bottom which navigate to other scenes/menus
-	private createButtons(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
+	private createButtons(scene: Phaser.Scene, createCallback: (name: string, avatar: number, deckCode?: string) => void) {
 		let sizer = scene['rexUI'].add.sizer({
 			width: width - Space.pad * 2,
 			space: {
@@ -124,7 +124,7 @@ export default class PasteMenu extends Menu {
 		return container
 	}
 
-	private createConfirm(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
+	private createConfirm(scene: Phaser.Scene, createCallback: (name: string, avatar: number, deckCode?: string) => void) {
 		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Create', () => {
