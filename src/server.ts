@@ -17,7 +17,7 @@ var packOpenCallback: (cards: Card[]) => void = undefined
 
 export default class Server {
 	// Log in with the server for user with given OAuth token
-	static login(token, scene: Phaser.Scene) {
+	static login(token, scene?: Phaser.Scene) {
 		let that = this
 
 		// The first message sent to server once the match starts
@@ -53,7 +53,7 @@ export default class Server {
 
 					// Reload the home scene if we just loaded
 					// TODO Call onExit for the current scene?
-					if (scene.scene.isActive('HomeScene')) {
+					if (scene !== undefined && scene.scene.isActive('HomeScene')) {
 						scene.scene.start('HomeScene')
 					}
 
@@ -73,9 +73,8 @@ export default class Server {
 			console.log('Logged in websocket is closing, signing in again')
 
 			console.log(token)
-			console.log(scene)
 
-			Server.login(token, scene)
+			Server.login(token)
 		})
 	}
 
