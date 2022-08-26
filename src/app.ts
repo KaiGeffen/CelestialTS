@@ -7,7 +7,6 @@ import { StandardGameScene, AdventureGameScene } from "./scene/gameScene"
 import TutorialGameScene from "./scene/tutorialScene"
 import { BuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 
-import CreditsScene from "./scene/creditsScene"
 import AdventureScene from "./scene/adventureScene"
 
 import { Color, Space } from "./settings/settings"
@@ -39,7 +38,6 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scene: [PreloadScene, HomeScene,
   MenuScene,
-  CreditsScene,
   StandardGameScene, AdventureGameScene, TutorialGameScene,
   AdventureBuilderScene,
   BuilderScene,

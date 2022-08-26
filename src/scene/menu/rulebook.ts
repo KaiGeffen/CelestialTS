@@ -39,6 +39,8 @@ export default class RulebookMenu extends Menu {
 
 	private createContent(scene: Phaser.Scene, panel) {
 		let txt = scene.add.text(0, 0, rulebookString, Style.basic)
+		.setWordWrapWidth(Space.windowWidth - Space.pad * 4)
+
 		panel.add(txt)
 	}
 

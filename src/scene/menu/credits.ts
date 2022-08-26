@@ -56,6 +56,7 @@ export default class CreditsMenu extends Menu {
 
 	private createContent(scene: Phaser.Scene, panel) {
 		let txt = scene.add.text(0, 0, creditsString, Style.basic)
+		.setWordWrapWidth(Space.windowWidth - Space.pad * 4)
 
 		panel.add(txt)
 	}
@@ -90,31 +91,15 @@ export default class CreditsMenu extends Menu {
 }
 
 const creditsString = 
-`UI Design: Alina Onishchenko
-Game Development / Programming: Kai Geffen
-Art: Kiva Singh
+`Lead developer: Kai Geffen
 
-Cardback by Susan Arnsten-Russell
+Artistic Director: Kiva Singh
+
+Artist: Elise Mahan
+
+UI Design: Alina Onishchenko
+
 Original score and music design by Ian Riley: www.ianrileymusic.tech
-All icons are from game-icons.net under CC BY 3.0
 
-Delapouite: https://delapouite.com/
-Stars, Spy, Swift, Crypt, Fishing Boat, Factory, Mine, Chimney, Uprising, Sarcophagus, Anubis, Horus, Enrage, Camera, Butterfly, Bandit, Wanted Poster, Night Vision, Bastet, Stable, Pelican, Beehive, Eagle, Icarus, Ecology, Scarab, Kneel, Desert, Generator, Conquer, Cornucopia, Paramountcy, Sunflower, Gentle Rain, PVP icon, Draft icon, Exit icon, Retry icon
-
-Lorc: https://lorcblog.blogspot.com/
-Bone Knife, Cog, Crossed Bones, Dove, Juggle, Drown, Gears, Dash, Cosmos, Fruiting, Gift, Paranoia, Hurricane, Dinosaur Bones, Lotus, Oak, Cardback, Broken Bone, Robot, Bee, Disintegrate, Imprison, Fish Bones, Bounty, Anvil, Nightmare, Sickness, Cogsplosion, Phoenix, Symbiosis, Sun, Carrion, Hollow, Basics icon, Review icon
-
-Lord Berandas: https://www.deviantart.com/berandas
-Sine, AI
-
-Dark Zaitzev: https://www.deviantart.com/darkzaitzev
-Stalker
-
-Cathelineau:
-Tumulus, Occupation
-
-Skoll:
-Unearth, Pocket Watch, Password icon
-
-Caro Asercion:
-Boar, Axolotl, Heron`
+Icons are from game-icons.net under CC BY 3.0
+Lorc: https://lorcblog.blogspot.com/ (Visible icon)`
