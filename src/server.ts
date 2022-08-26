@@ -72,6 +72,9 @@ export default class Server {
 		wsServer.addEventListener('close', () => {
 			console.log('Logged in websocket is closing, signing in again')
 
+			console.log(token)
+			console.log(scene)
+
 			Server.login(token, scene)
 		})
 	}
