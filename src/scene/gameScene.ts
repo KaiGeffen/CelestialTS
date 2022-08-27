@@ -385,7 +385,14 @@ export class View {
 	constructor (scene: BaseScene, avatarId: number) {
 		this.scene = scene
 
-		let background = scene.add.image(0, 0, 'bg-Match').setOrigin(0).setDepth(-1)
+		let background = scene.add.image(0, 0, 'bg-Match')
+		.setOrigin(0)
+		.setDepth(-1)
+		// Hovering this will hide the hint, in case it lingers from a state change
+		.setInteractive()
+		.on('pointerover', () => {
+			this.scene.hint.hide()
+		})
 
 		this.searching = new Regions.Searching().create(scene, avatarId)
 
