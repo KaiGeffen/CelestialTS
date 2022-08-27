@@ -46,7 +46,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		// Replace the searching screen with still frames
 		this.view.searching.hide()
-		this.view.searching = new SearchingRegionTutorial().create(this)
+		this.view.searching = new SearchingRegionTutorial().create(this, this.params.missionID)
 
 		// Must reset progress
 		this.progress = -1

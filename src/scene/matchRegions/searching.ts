@@ -81,24 +81,31 @@ export default class SearchingRegion extends Region {
 // A separate initial region seen during the tutorial
 export class SearchingRegionTutorial extends Region {
 	btn: Button
+	img: Phaser.GameObjects.Image
+	textbox: any
 
-	create(scene: BaseScene): Region {
+	hasSecondPart: boolean
+
+	create(scene: BaseScene, tutorialNum: number): Region {
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
-		this.createImage(scene)
+		this.createImage(scene, tutorialNum)
 
-		this.createText(scene)
+		this.createText(scene, tutorialNum)
 		
-		this.createButton(scene)
+		this.createButton(scene, tutorialNum)
 
 		// Pause until button is pressed
 		scene['paused'] = true
 
+		// For the first tutorial, have 2 parts
+		this.hasSecondPart = tutorialNum === 0
+
 		return this
 	}
 
-	private createImage(scene: Phaser.Scene): void {
-		let img = scene.add.image(Space.windowWidth/2, 0, 'bg-Story 1')
+	private createImage(scene: Phaser.Scene, tutorialNum: number): void {
+		let img = scene.add.image(Space.windowWidth/2, 0, `bg-Story ${tutorialNum === 0 ? 1 : 2}`)
 		.setOrigin(0.5, 0)
 		.setInteractive()
 
@@ -116,13 +123,15 @@ export class SearchingRegionTutorial extends Region {
 		})
 		
 		this.container.add(img)
+
+		this.img = img
 	}
 
-	private createText(scene: BaseScene): void {
+	private createText(scene: BaseScene, tutorialNum: number): void {
 		let txt = scene.add.text(0, 0, '', Style.stillframe)
 
-		const s = "We called out to the people of the world.\n\nIn desperation, curiosity, and humor.\n\nCome to our city, teach us what you've learned."
-		let txtB = scene.rexUI.add.textBox({
+		const s = STORY_TEXT[tutorialNum][0]
+		this.textbox = scene.rexUI.add.textBox({
 			text: txt,
 			x: Space.windowWidth/2,
 			y: Space.pad,
@@ -133,18 +142,65 @@ export class SearchingRegionTutorial extends Region {
 		.start(s, 50)
 		.setOrigin(0.5, 0)
 		
-		this.container.add([txt, txtB])
+		this.container.add([txt, this.textbox])
 	}
 
-	private createButton(scene): void {
+	private createButton(scene, tutorialNum): void {
 		this.btn = new Buttons.Basic(
 			this.container,
 			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
 			Space.windowHeight - Space.pad - Space.largeButtonHeight/2,
 			'Continue',
 			() => {
-				scene['paused'] = false
+				if (this.hasSecondPart) {
+					this.hasSecondPart = false
+
+					// Change the background image
+					this.img.setTexture('bg-Story 2')
+					// const scale = Space.windowWidth / this.img.displayWidth
+					// this.img.setScale(scale)
+
+					// Change the text
+					const s = STORY_TEXT[tutorialNum][1]
+					this.textbox.start(s, 50)
+				}
+				else {
+					scene['paused'] = false
+				}
 			})
 		.disable()
 	}
 }
+
+const STORY_TEXT = [
+[`We called out to the people of the world.
+In desperation, curiosity, and humor.
+Come to our city, teach us what you've learned.
+
+One by one they arrived, guided by stars, and were greeted with excitement at the gate.`,
+
+`Hey!
+Welcome to the city, we're glad you made it.
+What stories have you brought to tell us?
+
+     Release, impetus, and charity.
+
+Ho ho, exciting!
+Please, show me.`],
+
+[`Marvelous! Traveler, please tell us more.
+What have you seen out there in the world?
+
+     Scenes of wonder and change
+
+*Gasp*
+Show me`],
+
+[`So vibrant your tales, they please so the ear and mind.
+Do you have any last ones to share?
+
+     The fields overflowing as the people stared up at the sky
+
+Traveler, is this true?
+Show me this, and I will open the gates, and welcome you into the city`],
+]
