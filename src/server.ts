@@ -49,6 +49,14 @@ export default class Server {
 					break
 
 				case 'send_user_data':
+					// TODO If the token is bad, the value returned is null
+					// In that case, make the server instead send a 'logout' message to the client
+					if (msg.value === undefined) {
+						wsServer.close()
+						wsServer = undefined
+						return
+					}
+					
 					that.loadUserData(msg.value)
 
 					// Reload the home scene if we just loaded
