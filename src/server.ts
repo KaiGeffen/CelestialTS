@@ -182,7 +182,7 @@ export default class Server {
 	}
 
 	// Send server user's list of completed missions
-	static sendCompletedMission(ary): void {
+	static sendCompletedMissions(ary): void {
 		if (wsServer === undefined) {
 			throw 'Sending completed missions when server ws doesnt exist.'
 		}
