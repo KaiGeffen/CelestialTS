@@ -162,7 +162,6 @@ export default class Server {
 	// Load user data that was sent from server into session storage
 	private static loadUserData(data): void {
 		// Put this data into the session storage so that UserSettings sees it before local storage
-		// sessionStorage.setItem('igc', JSON.stringify(data[1]))
 		sessionStorage.setItem('userProgress', JSON.stringify(data[6]))
 		// sessionStorage.setItem('inventory', JSON.stringify(data[7]))
 

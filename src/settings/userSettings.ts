@@ -28,9 +28,6 @@ export class UserSettings {
       // List of all things user has accomplished (Beat Anubis, seen Discord, etc)
       userProgress: [],
 
-      // Deprecated
-      igc: 0,
-
       // For adventure mode, for each card, whether or not that card has been unlocked
       inventory: getStartingInventory(),
 
