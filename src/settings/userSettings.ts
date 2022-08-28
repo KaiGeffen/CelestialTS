@@ -10,7 +10,7 @@ export class UserSettings {
   static _ensure(): void {
     const defaultSettings = {
 
-      // Settings
+      // Device specific settings (Not tied to user account)
       vsAi: true,
       mmCode: '',
       volume: 0.3,
@@ -24,7 +24,10 @@ export class UserSettings {
       newMessages: [],
 
 
+      // Settings tied to user's account
+      decks: [],
 
+      // TODO Rethink this and the userprogress.ts module - they approach displaying new messages in a specific way that might not fit within the beta
       // List of all things user has accomplished (Beat Anubis, seen Discord, etc)
       userProgress: [],
 
@@ -32,10 +35,7 @@ export class UserSettings {
       inventory: getStartingInventory(),
 
       // List of each mission by its id, and if the player has completed it
-      completedMissions: [],//Array(1000).fill(true), // Tutorial complete Array(300).fill(true)
-      // inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
-
-      decks: [],
+      completedMissions: [],
     }
 
     for (var key in defaultSettings) {
