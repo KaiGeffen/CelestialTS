@@ -51,7 +51,7 @@ export default class Server {
 				case 'send_user_data':
 					// TODO If the token is bad, the value returned is null
 					// In that case, make the server instead send a 'logout' message to the client
-					if (msg.value === undefined) {
+					if (msg.value === null) {
 						wsServer.close()
 						wsServer = undefined
 						return
