@@ -207,12 +207,12 @@ export default class Server {
 	private static loadUserData(data): void {
 		// Put this data into the session storage so that UserSettings sees it before local storage
 		sessionStorage.setItem('userProgress', JSON.stringify(data[6]))
-		console.log(JSON.stringify(data[7]))
+		console.log(data[7])
 
 		// Map from binary string to bool array
-		const inventory = [...JSON.stringify(data[7])].map(c => c === '1')
+		const inventory = JSON.stringify([...data[7]].map(c => c === '1'))
 		sessionStorage.setItem('inventory', inventory)
-		const completedMissions = [...JSON.stringify(data[8])].map(c => c === '1')
+		const completedMissions = JSON.stringify([...data[8]].map(c => c === '1'))
 		sessionStorage.setItem('completedMissions', completedMissions)
 
 		// Decks must be translated from string, string to dictionary
