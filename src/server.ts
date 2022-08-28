@@ -159,6 +159,50 @@ export default class Server {
 		}
 	}
 
+	// Send server user's inventory of unlocked cards
+	static sendInventory(ary): void {
+		if (wsServer === undefined) {
+			throw 'Sending inventory when server ws doesnt exist.'
+		}
+		else {
+			let result = ''
+			for (let i = 0; i < ary.length; i++) {
+				result += ary[i] ? '1' : '0'
+			}
+
+			let message = JSON.stringify({
+				type: 'send_inventory',
+				value: result
+			})
+
+			console.log(message)
+
+			wsServer.send(message)
+		}
+	}
+
+	// Send server user's list of completed missions
+	static sendCompletedMission(ary): void {
+		if (wsServer === undefined) {
+			throw 'Sending completed missions when server ws doesnt exist.'
+		}
+		else {
+			let result = ''
+			for (let i = 0; i < ary.length; i++) {
+				result += ary[i] ? '1' : '0'
+			}
+
+			let message = JSON.stringify({
+				type: 'send_completed_missions',
+				value: result
+			})
+
+			console.log(message)
+
+			wsServer.send(message)
+		}
+	}
+
 	// Load user data that was sent from server into session storage
 	private static loadUserData(data): void {
 		// Put this data into the session storage so that UserSettings sees it before local storage

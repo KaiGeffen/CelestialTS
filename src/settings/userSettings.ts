@@ -68,6 +68,12 @@ export class UserSettings {
       else if (key === 'decks') {
         Server.sendDecks(value)
       }
+      else if (key === 'inventory') {
+        Server.sendInventory(value)
+      }
+      else if (key === 'completedMissions') {
+        Server.sendCompletedMissions(value)
+      }
     }
     else {
       localStorage.setItem(key, JSON.stringify(value))
