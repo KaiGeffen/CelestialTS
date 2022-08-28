@@ -28,6 +28,7 @@ export class UserSettings {
       // List of all things user has accomplished (Beat Anubis, seen Discord, etc)
       userProgress: [],
 
+      // Deprecated
       igc: 0,
 
       // For adventure mode, for each card, whether or not that card has been unlocked
@@ -38,10 +39,6 @@ export class UserSettings {
       // inventory: Array(baseCards.length).fill(15).concat(Array(100).fill(0)),
 
       decks: [],
-
-      draftDeckCode: '', // The user's current drafted deck
-      draftRecord: [0, 0], // The win/loss record with current deck
-      // loggedIn: false, // Whether or not the user is logged in to an account
     }
 
     for (var key in defaultSettings) {

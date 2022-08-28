@@ -73,11 +73,6 @@ Cards from the expansion come from the store.`, 'welcome'],
 choices on the left side of the screen.
 
 [color=${Color.cardReference}]Anubis[/color] is a great deck to start with.`, 'builder'],
-	draftNotice:
-[`Draft a deck of 15 cards from random choices
-of 4 cards each.
-
-Play as long as you like with the deck you make.`, 'draft'],
 	store: 
 [`In the store, you spend coins received from
 winning matchs to open up packs.
