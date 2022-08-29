@@ -207,7 +207,6 @@ export default class Server {
 	private static loadUserData(data): void {
 		// Put this data into the session storage so that UserSettings sees it before local storage
 		sessionStorage.setItem('userProgress', JSON.stringify(data[6]))
-		console.log(data[7])
 
 		// Map from binary string to bool array
 		const inventory = JSON.stringify([...data[7]].map(c => c === '1'))

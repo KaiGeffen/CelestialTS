@@ -87,6 +87,7 @@ export class SearchingRegionTutorial extends Region {
 	hasSecondPart: boolean
 
 	create(scene: BaseScene, tutorialNum: number): Region {
+		this.scene = scene
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
 		this.createImage(scene, tutorialNum)
@@ -105,26 +106,17 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createImage(scene: Phaser.Scene, tutorialNum: number): void {
-		let img = scene.add.image(Space.windowWidth/2, 0, `bg-Story ${tutorialNum === 0 ? 1 : 2}`)
+		this.img = scene.add.image(Space.windowWidth/2, 0, `bg-Story ${tutorialNum === 0 ? 1 : 3}`)
 		.setOrigin(0.5, 0)
 		.setInteractive()
 
-		const scale = Space.windowWidth / img.displayWidth
-		img.setScale(scale)
+		// Ensure that image fits perfectly in window
+		const scale = Space.windowWidth / this.img.displayWidth
+		this.img.setScale(scale)
 
-		// Scroll the image down from viewing the buildings to seeing the person
-		scene.add.tween({
-			targets: img,
-			duration: 4000,
-			y: Space.windowHeight - img.displayHeight,
-			onComplete: () => {
-				this.btn.enable()
-			}
-		})
-		
-		this.container.add(img)
+		this.container.add(this.img)
 
-		this.img = img
+		this.tweenImage()
 	}
 
 	private createText(scene: BaseScene, tutorialNum: number): void {
@@ -157,8 +149,8 @@ export class SearchingRegionTutorial extends Region {
 
 					// Change the background image
 					this.img.setTexture('bg-Story 2')
-					// const scale = Space.windowWidth / this.img.displayWidth
-					// this.img.setScale(scale)
+					
+					this.tweenImage()
 
 					// Change the text
 					const s = STORY_TEXT[tutorialNum][1]
@@ -169,6 +161,22 @@ export class SearchingRegionTutorial extends Region {
 				}
 			})
 		.disable()
+	}
+
+	private tweenImage(): void {
+		// Scroll the image going down
+		this.scene.add.tween({
+			targets: this.img,
+			duration: 4000,
+			y: Space.windowHeight - this.img.displayHeight,
+			onStart: () => {
+				this.img.y = 0
+				this.btn.disable()
+			},
+			onComplete: () => {
+				this.btn.enable()
+			}
+		})
 	}
 }
 
