@@ -29,7 +29,13 @@ export default class AdventureScene extends BaseScene {
 	create(params): void {
 		super.create()
 
+		params.stillframe = 4
+
 		this.params = params
+
+		if (params.stillframe !== undefined) {
+			this.createStillframe(params)
+		}
 
 		// Create the background
 		let background = this.add.image(0, 0, 'bg-Map')
@@ -226,6 +232,12 @@ export default class AdventureScene extends BaseScene {
 
 		params.txt = ''
 		params.card = undefined
+	}
+
+	// Create a stillframe animation specified in params
+	private createStillframe(params): void {
+		// TODO
+		params.stillframe = undefined
 	}
 
 	// Add all of the missions to the panel
