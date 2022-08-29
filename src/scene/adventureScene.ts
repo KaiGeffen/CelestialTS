@@ -46,46 +46,8 @@ export default class AdventureScene extends BaseScene {
 		this.enableScrolling(background)
 
 		// Make up pop-up for the card you just received, if there is one
-		let menu
 		if (params.card) {
-			const width = 1000
-			const height = 250
-			let menu = new Menu(
-				this,
-				width,
-				height)
-
-			let txt = this.add.text(0, 0, params.txt, Style.flavor).setOrigin(0)
-			let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
-			let textBox = this.rexUI.add.textBox({
-				x: 0,
-				y: 0,
-				width: width,
-				height: height,
-				icon: icon,
-				space: {
-					left: Space.pad,
-					right: Space.pad,
-					top: Space.pad,
-					bottom: Space.pad,
-					icon: Space.pad
-				},
-				text: txt
-			}).setOrigin(0.5)
-
-			textBox.start(params.txt, Time.vignetteSpeed())
-
-			menu.add([txt, icon, textBox])
-
-			// Reposition the menu to be visible to the camera
-			if (params.scrollX !== undefined && params.scrollY !== undefined) {
-				menu.container.setPosition(
-					params.scrollX + Space.windowWidth / 2,
-					params.scrollY + Space.windowHeight / 2)
-			}
-
-			params.txt = ''
-			params.card = undefined
+			this.createCardPopup(params)
 		}
 
 		// Scroll to the given position
@@ -222,6 +184,48 @@ export default class AdventureScene extends BaseScene {
 				that.panDirection = arrow.direction
 			})
 		}
+	}
+
+	// Create a popup for the card specified in params
+	private createCardPopup(params): void {
+		const width = 1000
+		const height = 250
+		let menu = new Menu(
+			this,
+			width,
+			height)
+
+		let txt = this.add.text(0, 0, params.txt, Style.flavor).setOrigin(0)
+		let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
+		let textBox = this.rexUI.add.textBox({
+			x: 0,
+			y: 0,
+			width: width,
+			height: height,
+			icon: icon,
+			space: {
+				left: Space.pad,
+				right: Space.pad,
+				top: Space.pad,
+				bottom: Space.pad,
+				icon: Space.pad
+			},
+			text: txt
+		}).setOrigin(0.5)
+
+		textBox.start(params.txt, Time.vignetteSpeed())
+
+		menu.add([txt, icon, textBox])
+
+		// Reposition the menu to be visible to the camera
+		if (params.scrollX !== undefined && params.scrollY !== undefined) {
+			menu.container.setPosition(
+				params.scrollX + Space.windowWidth / 2,
+				params.scrollY + Space.windowHeight / 2)
+		}
+
+		params.txt = ''
+		params.card = undefined
 	}
 
 	// Add all of the missions to the panel

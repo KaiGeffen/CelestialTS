@@ -1,5 +1,5 @@
 import "phaser"
-import { Color, Space, Style, Depth } from '../../settings/settings'
+import { Color, Space, Style, Depth, Ease } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import Button from '../../lib/buttons/button'
@@ -167,7 +167,8 @@ export class SearchingRegionTutorial extends Region {
 		// Scroll the image going down
 		this.scene.add.tween({
 			targets: this.img,
-			duration: 4000,
+			duration: 6000,
+			ease: Ease.stillframe,
 			y: Space.windowHeight - this.img.displayHeight,
 			onStart: () => {
 				this.img.y = 0

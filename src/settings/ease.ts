@@ -7,4 +7,7 @@ export const Ease: Record<string, string> = {
 
 	// Card moving between regions
 	card: 'Linear',
+
+	// Stillframes sliding down
+	stillframe: 'Quad.InOut',
 }
