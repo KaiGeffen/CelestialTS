@@ -365,6 +365,13 @@
       {"name": "Dove", "x": 6, "y": 112}
     ]
   },
+  {"name": "Moon", "id": 73,
+    "cost": 5, "points": 5,
+    "text": "Morning: trigger the morning abilities of the top 2 cards below this with morning.",
+    "keywords": [
+      {"name": "Morning", "x": 0, "y": 60}
+    ]
+  },
 
   {"name": "Boa", "id": 57,
     "cost": 6, "points": 6,
