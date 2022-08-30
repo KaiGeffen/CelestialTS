@@ -1,6 +1,6 @@
 import "phaser"
 import BaseScene from './baseScene'
-import { Style, Space, Color, UserSettings, Time, BBStyle } from '../settings/settings'
+import { Style, Space, Color, UserSettings, Time, BBStyle, Ease } from '../settings/settings'
 import Buttons from "../lib/buttons/buttons"
 import Icons from "../lib/buttons/icons"
 import Menu from "../lib/menu"
@@ -29,16 +29,10 @@ export default class AdventureScene extends BaseScene {
 	create(params): void {
 		super.create()
 
-		params.stillframe = 4
-
 		this.params = params
 
-		if (params.stillframe !== undefined) {
-			this.createStillframe(params)
-		}
-
 		// Create the background
-		let background = this.add.image(0, 0, 'bg-Map')
+		this.add.image(0, 0, 'bg-Map')
 			.setOrigin(0)
 			.setInteractive()
 
@@ -48,8 +42,13 @@ export default class AdventureScene extends BaseScene {
 		// Add all of the available nodes
 		this.addAdventureData()
 
-		// Add scroll functionality
-		this.enableScrolling(background)
+		if (params.stillframe !== undefined) {
+			this.createStillframe(params)
+		}
+		else {
+			// Add scroll functionality by default if not showing a stillframe
+			this.enableScrolling()
+		}
 
 		// Make up pop-up for the card you just received, if there is one
 		if (params.card) {
@@ -236,7 +235,63 @@ export default class AdventureScene extends BaseScene {
 
 	// Create a stillframe animation specified in params
 	private createStillframe(params): void {
-		// TODO
+		// TODO Make dry with the searching tutorial class implementation
+
+		let container = this.add.container().setDepth(11)
+
+		let img = this.add.image(Space.windowWidth/2, 0, `bg-Story 4`)
+		.setOrigin(0.5, 0)
+		.setInteractive()
+		.setDepth(12)
+
+		// Ensure that image fits perfectly in window
+		const scale = Space.windowWidth / img.displayWidth
+		img.setScale(scale)
+
+		// Add text
+		let txt = this.add.text(0, 0, '', Style.stillframe)
+
+		const s = "Impressive, all that life, all that wonder. You are welcomed in of course. But if I might share one thing that I've learned in my time here It's that someday, everything blows away."
+		this.rexUI.add.textBox({
+			text: txt,
+			x: Space.windowWidth/2,
+			y: Space.pad,
+			width: 1000,
+		})
+		.start(s, 50)
+		.setOrigin(0.5, 0)
+
+		container.add([img, txt])
+
+		// Add an okay button
+		let btn = new Buttons.Basic(
+			container,
+			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
+			Space.windowHeight - Space.pad - Space.largeButtonHeight/2,
+			'Continue',
+			() => {
+				container.setVisible(false)
+
+				// Allow scrolling once the stillframe is gone
+				this.enableScrolling()
+			})
+		.disable()
+
+		// Scroll the image going down
+		this.add.tween({
+			targets: img,
+			duration: 6000,
+			ease: Ease.stillframe,
+			y: Space.windowHeight - img.displayHeight,
+			onStart: () => {
+				img.y = 0
+			},
+			onComplete: () => {
+				btn.enable()
+			}
+		})
+
+		// Set the param to undefined so it doesn't persist
 		params.stillframe = undefined
 	}
 
@@ -325,7 +380,7 @@ export default class AdventureScene extends BaseScene {
 		// }
 	}
 
-	private enableScrolling(background: Phaser.GameObjects.GameObject): void {
+	private enableScrolling(): void {
 		let camera = this.cameras.main
 
 		this.input.on('gameobjectwheel', function(pointer, gameObject, dx, dy, dz, event) {
