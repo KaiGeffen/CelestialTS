@@ -116,13 +116,15 @@ export default class OurHandRegion extends Region {
 		if (this.hoveredCard !== undefined) {
 			let card = this.cards[this.hoveredCard]
 
-			// Check that the mouse is still over the card's x
-			const pointer = this.scene.input.activePointer
-			const pointerOverCard = card.image.getBounds().contains(pointer.x, pointer.y + HOVER_OFFSET)
-			console.log(pointerOverCard)
+			if (card !== undefined) {
 
-			if (card !== undefined && pointerOverCard) {
-				card.image.emit('pointerover')
+				// Check that the mouse is still over the card's x
+				const pointer = this.scene.input.activePointer
+				const pointerOverCard = card.image.getBounds().contains(pointer.x, pointer.y + HOVER_OFFSET)
+
+				if (pointerOverCard) {
+					card.image.emit('pointerover')					
+				}
 			}
 		}
 
