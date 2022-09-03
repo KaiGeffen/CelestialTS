@@ -123,19 +123,26 @@ export class SearchingRegionTutorial extends Region {
 	private createText(scene: BaseScene, tutorialNum: number): void {
 		let txt = scene.add.text(0, 0, '', Style.stillframe)
 
+		let background = this.scene.rexUI.add.roundRectangle(0, 0, 100, 100, 10, 0x000000, 0.5)
+
 		const s = STORY_TEXT[tutorialNum][0]
 		this.textbox = scene.rexUI.add.textBox({
 			text: txt,
-			x: Space.windowWidth/2,
+			x: Space.pad,
 			y: Space.pad,
-			width: 1000,
-			// Need to wrap the text
-			// wrapWidth: Space.windowWidth * 2/3,
+			space: {
+				left: Space.pad,
+				right: Space.pad,
+				top: Space.pad,
+				bottom: Space.pad,
+			},
+			// width: Space.stillframeTextWidth,
+			background: background,
 		})
 		.start(s, 50)
-		.setOrigin(0.5, 0)
+		.setOrigin(0)
 		
-		this.container.add([txt, this.textbox])
+		this.container.add([background, txt, this.textbox])
 	}
 
 	private createButton(scene, tutorialNum): void {

@@ -107,7 +107,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     color: '#fff',
     stroke: Color.basicText,
     strokeThickness: 4,
-    wordWrap: { width: 1000 },
+    wordWrap: { width: Space.stillframeTextWidth },
   },
 
   basic: {

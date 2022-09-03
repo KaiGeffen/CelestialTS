@@ -52,6 +52,9 @@ export var Space = {
   decklistPanelWidth: 240,
   deckPanelWidth: 320 + 50,
 
+  // Textbox text in the tutorial that plays while stillframes show
+  stillframeTextWidth: width - 120,
+
   // Dimensions for common buttons
   smallButtonWidth: 150,
   smallButtonHeight: 50,
