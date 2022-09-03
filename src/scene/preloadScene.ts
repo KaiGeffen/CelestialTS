@@ -43,6 +43,11 @@ export default class PreloadClass extends Phaser.Scene {
 
 	renderSigninButton(): void {
 		let that = this
+
+		// If in dev environment, don't render the button
+		if (location.port === '4949') {
+			return
+		}
 		
 		// Initialize Google Auth
 		gapi.load('auth2', function() {

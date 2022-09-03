@@ -184,6 +184,10 @@ export default class DecklistsRegion {
 		hintSizer.add(txtHint)
 		.addSpace()
 
+		let btnNew = new Icons.New(hintSizer, 0, 0, this.newDeckCallback())
+
+		hintSizer.addSpace()
+
 		let btnPaste = new Icons.Paste(hintSizer, 0, 0, this.pasteCallback())
 
 		return sizer
@@ -310,9 +314,6 @@ export default class DecklistsRegion {
 		// Remove any existing content in this panel
 		panel.removeAll(true)
 
-		// Create the 'New' button
-		panel['add'](this.createNewButton(panel))
-
 		// Instantiate list of deck buttons
 		this.decklistBtns = []
 
@@ -323,30 +324,19 @@ export default class DecklistsRegion {
 	}
 
 	// Create the "New" button which prompts user to make a new deck
-	private createNewButton(panel): ContainerLite {
-		let that = this
-		let scene = this.scene
-
-		function openNewDeckMenuCallback() {
+	private newDeckCallback(): () => void {
+		return () => {
 			// If user already has 9 decks, signal error instead
 			if (UserSettings._get('decks').length >= Mechanics.maxDecks) {
-				scene.signalError(`Reached max number of decks (${Mechanics.maxDecks}).`)
+				this.scene.signalError(`Reached max number of decks (${Mechanics.maxDecks}).`)
 			}
 			else {
-				scene.scene.launch('MenuScene', {
+				this.scene.scene.launch('MenuScene', {
 					menu: 'newDeck',
-					callback: that.createCallback(),
+					callback: this.createCallback(),
 				})
 			}
 		}
-
-		// TODO Width and height constants
-		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, 50)
-
-		let btn = new Buttons.NewDeck(container, 0, 0, 'New Deck', openNewDeckMenuCallback)
-		.setDepth(2)
-
-		return container
 	}
 
 	// Return a callback for when a deck is created (From paste or new deck)
