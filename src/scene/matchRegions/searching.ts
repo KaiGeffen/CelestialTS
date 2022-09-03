@@ -84,7 +84,8 @@ export class SearchingRegionTutorial extends Region {
 	img: Phaser.GameObjects.Image
 	textbox: any
 
-	hasSecondPart: boolean
+	// Number of the image frame currently shown, always end with the 3rd frame
+	currentFrame: number
 
 	create(scene: BaseScene, tutorialNum: number): Region {
 		this.scene = scene
@@ -99,8 +100,8 @@ export class SearchingRegionTutorial extends Region {
 		// Pause until button is pressed
 		scene['paused'] = true
 
-		// For the first tutorial, have 2 parts
-		this.hasSecondPart = tutorialNum === 0
+		// For the first tutorial, show first 3 frames
+		this.currentFrame = tutorialNum === 0 ? 1 : 3
 
 		return this
 	}
@@ -144,16 +145,16 @@ export class SearchingRegionTutorial extends Region {
 			Space.windowHeight - Space.pad - Space.largeButtonHeight/2,
 			'Continue',
 			() => {
-				if (this.hasSecondPart) {
-					this.hasSecondPart = false
+				if (this.currentFrame < 3) {
+					this.currentFrame += 1
 
 					// Change the background image
-					this.img.setTexture('bg-Story 2')
+					this.img.setTexture(`bg-Story ${this.currentFrame}`)
 					
 					this.tweenImage()
 
 					// Change the text
-					const s = STORY_TEXT[tutorialNum][1]
+					const s = STORY_TEXT[tutorialNum][this.currentFrame - 1]
 					this.textbox.start(s, 50)
 				}
 				else {
@@ -184,9 +185,9 @@ export class SearchingRegionTutorial extends Region {
 const STORY_TEXT = [
 [`We called out to the people of the world.
 In desperation, curiosity, and humor.
-Come to our city, teach us what you've learned.
+Come to our city, teach us what you've learned.`,
 
-One by one they arrived, guided by stars, and were greeted with excitement at the gate.`,
+`One by one they arrived, guided by stars, and were greeted with excitement at the gate.`,
 
 `Hey!
 Welcome to the city, we're glad you made it.
