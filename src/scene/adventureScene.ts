@@ -242,7 +242,6 @@ export default class AdventureScene extends BaseScene {
 		let img = this.add.image(Space.windowWidth/2, 0, `bg-Story 4`)
 		.setOrigin(0.5, 0)
 		.setInteractive()
-		.setDepth(12)
 
 		// Ensure that image fits perfectly in window
 		const scale = Space.windowWidth / img.displayWidth
@@ -251,17 +250,27 @@ export default class AdventureScene extends BaseScene {
 		// Add text
 		let txt = this.add.text(0, 0, '', Style.stillframe)
 
-		const s = "Impressive, all that life, all that wonder. You are welcomed in of course. But if I might share one thing that I've learned in my time here It's that someday, everything blows away."
-		this.rexUI.add.textBox({
+		const s = "Impressive, all that life, all that wonder. You are welcomed in of course. But if I might share one thing that I've learned in my time here... It's that someday, everything blows away."
+
+		let background = this.rexUI.add.roundRectangle(0, 0, 100, 100, 10, 0x000000, 0.5)
+
+		let textbox = this.rexUI.add.textBox({
 			text: txt,
-			x: Space.windowWidth/2,
+			x: Space.pad,
 			y: Space.pad,
-			width: 1000,
+			space: {
+				left: Space.pad,
+				right: Space.pad,
+				top: Space.pad,
+				bottom: Space.pad,
+			},
+			// width: Space.stillframeTextWidth,
+			background: background,
 		})
 		.start(s, 50)
-		.setOrigin(0.5, 0)
+		.setOrigin(0)
 
-		container.add([img, txt])
+		container.add([img, background, txt, textbox])
 
 		// Add an okay button
 		let btn = new Buttons.Basic(

@@ -10,4 +10,6 @@ export const Ease: Record<string, string> = {
 
 	// Stillframes sliding down
 	stillframe: 'Quad.InOut',
+	// Stillframe sliding up as it ends
+	stillframeEnd: 'Quad.Out',
 }

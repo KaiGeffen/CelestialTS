@@ -91,6 +91,9 @@ export class SearchingRegionTutorial extends Region {
 		this.scene = scene
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
+		// For the first tutorial, show first 3 frames
+		this.currentFrame = tutorialNum === 0 ? 1 : 3
+
 		this.createImage(scene, tutorialNum)
 
 		this.createText(scene, tutorialNum)
@@ -99,9 +102,6 @@ export class SearchingRegionTutorial extends Region {
 
 		// Pause until button is pressed
 		scene['paused'] = true
-
-		// For the first tutorial, show first 3 frames
-		this.currentFrame = tutorialNum === 0 ? 1 : 3
 
 		return this
 	}
@@ -165,27 +165,64 @@ export class SearchingRegionTutorial extends Region {
 					this.textbox.start(s, 50)
 				}
 				else {
-					scene['paused'] = false
+					this.textbox.setVisible(false)
+
+					this.btn.destroy()
+
+					// Tween the stillframe scrolling up to be flush with the top, then start the match
+					this.scene.add.tween({
+						targets: this.img,
+						duration: 2000,
+						ease: Ease.stillframeEnd,
+						y: 0,
+						onComplete: () => {
+							scene['paused'] = false
+						}
+					})
+
 				}
 			})
 		.disable()
 	}
 
 	private tweenImage(): void {
-		// Scroll the image going down
-		this.scene.add.tween({
-			targets: this.img,
-			duration: 6000,
-			ease: Ease.stillframe,
-			y: Space.windowHeight - this.img.displayHeight,
-			onStart: () => {
-				this.img.y = 0
-				this.btn.disable()
-			},
-			onComplete: () => {
-				this.btn.enable()
-			}
-		})
+		// Y of the image when flush with the bottom
+		const downFully = Space.windowHeight - this.img.displayHeight
+
+		if (this.currentFrame < 3) {
+			// Scroll the image going down
+			this.scene.add.tween({
+				targets: this.img,
+				duration: 6000,
+				ease: Ease.stillframe,
+				y: Space.windowHeight - this.img.displayHeight,
+				onStart: () => {
+					this.img.y = 0
+					this.btn.disable()
+				},
+				onComplete: () => {
+					this.btn.enable()
+				}
+			})
+		}
+		else {
+
+			// If this is the 3rd frame, animate going up slightly
+			// Scroll the image going down
+			this.scene.add.tween({
+				targets: this.img,
+				duration: 6000 * 1/3,
+				ease: Ease.stillframe,
+				y: (downFully) * 2/3,
+				onStart: () => {
+					this.img.y = downFully
+					this.btn.disable()
+				},
+				onComplete: () => {
+					this.btn.enable()
+				}
+			})
+		}
 	}
 }
 
@@ -196,28 +233,14 @@ Come to our city, teach us what you've learned.`,
 
 `One by one they arrived, guided by stars, and were greeted with excitement at the gate.`,
 
-`Hey!
+`"Traveler!
 Welcome to the city, we're glad you made it.
-What stories have you brought to tell us?
+What stories have you brought to tell us?"`],
 
-     Release, impetus, and charity.
+[`"Marvelous! Traveler, please tell us more.
+What have you seen out there in the world?"`],
 
-Ho ho, exciting!
-Please, show me.`],
-
-[`Marvelous! Traveler, please tell us more.
-What have you seen out there in the world?
-
-     Scenes of wonder and change
-
-*Gasp*
-Show me`],
-
-[`So vibrant your tales, they please so the ear and mind.
-Do you have any last ones to share?
-
-     The fields overflowing as the people stared up at the sky
-
-Traveler, is this true?
-Show me this, and I will open the gates, and welcome you into the city`],
+[`"So vibrant your tales, so vivid the dust of worlds you carry on your boots.
+Just once more traveler.
+One last story before we open the gate, and welcome you into the city."`],
 ]
