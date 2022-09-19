@@ -26,7 +26,7 @@ export default class SearchingRegion extends Region {
 	}
 
 	hide(): Region {
-		clearInterval(this.interval)
+		// clearInterval(this.interval)
 		return super.hide()
 	}
 
@@ -56,10 +56,12 @@ export default class SearchingRegion extends Region {
 		.setTint(0x222222)
 
 		let i = 0
-		this.interval = setInterval(() => {
-			i = (i + 1) % avatarNames.length
-			mysteryAvatar.setTexture(`avatar-${avatarNames[i]}Full`)
-		}, 2000)
+		// this.interval = setInterval(() => {
+		// 	// TODO If this scene has been closed, stop this interval
+			
+		// 	i = (i + 1) % avatarNames.length
+		// 	mysteryAvatar.setTexture(`avatar-${avatarNames[i]}Full`)
+		// }, 2000)
 
 		this.container.add([avatar, mysteryAvatar])
 	}
