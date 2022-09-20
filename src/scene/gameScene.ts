@@ -52,6 +52,8 @@ class GameScene extends BaseScene {
 		}
 
 		// Connect with the server
+		console.log('Searching for a match with params:')
+		console.log(params)
 		this.net = new Network(params.deck, this, mmCode, params.avatar)
 
 		// Create the view
