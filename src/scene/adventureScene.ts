@@ -11,8 +11,8 @@ import { getCard } from "../catalog/catalog"
 // adventureData.reverse()
 import { adventureData } from "../adventures/adventure"
 
-const MAP_WIDTH = 3900
-const MAP_HEIGHT = 2700
+const MAP_WIDTH = 6000
+const MAP_HEIGHT = 4800
 
 // TODO Make consistent with Journey (Change adventure to journey or vice verca)
 export default class AdventureScene extends BaseScene {
