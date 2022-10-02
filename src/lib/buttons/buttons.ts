@@ -5,6 +5,7 @@ import NewDeckButton from './newDeck'
 import DecklistButton from './decklist'
 import PremadeButton from './premade'
 import TextButton from './text'
+import MissionButton from './mission'
 import { DeckButton, DiscardButton } from './stacks'
 import { InspireButton, NourishButton, SightButton } from './keywords'
 
@@ -27,4 +28,5 @@ export default class Buttons {
 		Nourish: NourishButton,
 		Sight: SightButton,
 	}
+	static Mission = MissionButton
 }

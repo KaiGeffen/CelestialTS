@@ -329,10 +329,9 @@ export default class AdventureScene extends BaseScene {
 			name += mission.type === 'card' ? '🂡' : ''
 			name += mission.name
 
-			let btn = new Buttons.Basic(that,
+			let btn = new Buttons.Mission(that,
 				mission.x,
 				mission.y,
-				`${name}`,
 				that.missionOnClick(mission))
 		})
 	}
