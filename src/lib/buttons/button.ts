@@ -203,6 +203,18 @@ export default class Button {
 		}
 	}
 
+	setAlpha(value: number): Button {
+		if (this.txt !== undefined) {
+			this.txt.setAlpha(value)
+		}
+
+		if (this.icon !== undefined) {
+			this.icon.setAlpha(value)
+		}
+
+		return this
+	}
+
 
 	select(): Button {
 		this.icon.setTint(Color.buttonSelected)

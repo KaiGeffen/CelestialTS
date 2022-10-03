@@ -350,6 +350,9 @@ export default class AdventureScene extends BaseScene {
 			if (!completed[mission.id]) {
 				this.animatedBtns.push(btn)
 			}
+			else {
+				btn.setAlpha(0.5)
+			}
 		})
 	}
 
