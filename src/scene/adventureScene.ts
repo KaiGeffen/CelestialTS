@@ -63,12 +63,9 @@ export default class AdventureScene extends BaseScene {
 			this.cameras.main.scrollX = params.scrollX
 			this.cameras.main.scrollY = params.scrollY
 		}
-
-		// Animate all elements on the screen
-		this.animateElements()
 	}
 
-	update(): void {
+	update(time, delta): void {
 		// If pointer is released, stop panning
 		if (!this.input.activePointer.isDown) {
 			this.panDirection = undefined
@@ -77,6 +74,14 @@ export default class AdventureScene extends BaseScene {
 		if (this.panDirection !== undefined) {
 			AdventureScene.moveCamera(this.cameras.main, this.panDirection[0], this.panDirection[1])
 		}
+
+		// Switch the frame of the animated elements every frame
+		// Go back and forth from frame 0 to 1
+		this.animatedBtns.forEach(btn => {
+			// Switch every half second, roughly
+			let frame = Math.floor(2 * time / 1000) % 2 === 0 ? 0 : 1
+			btn.icon.setFrame(frame)
+		})
 	}
 
 	// Create the panel containing the missions
@@ -313,7 +318,7 @@ export default class AdventureScene extends BaseScene {
 	// Add all of the missions to the panel
 	private addAdventureData(): void {
 		let that = this
-		let completed = UserSettings._get('completedMissions')
+		let completed: boolean[] = UserSettings._get('completedMissions')
 
 		let unlockedMissions = adventureData.filter(function(mission) {
 			// Return whether any of the necessary conditions have been met
@@ -341,7 +346,10 @@ export default class AdventureScene extends BaseScene {
 				mission.y,
 				that.missionOnClick(mission))
 
-			this.animatedBtns.push(btn)
+			// If user hasn't completed this mission, animate it
+			if (!completed[mission.id]) {
+				this.animatedBtns.push(btn)
+			}
 		})
 	}
 
@@ -414,18 +422,5 @@ export default class AdventureScene extends BaseScene {
 			MAP_HEIGHT - Space.windowHeight,
 			Math.max(0, camera.scrollY + dy)
 			)
-	}
-
-	// Animate all elements on the map
-	private animateElements(): void {
-		// Go back and forth from frame 0 to 1
-		let frame = 0
-		setInterval(() => {
-			frame = frame === 0 ? 1 : 0
-
-			this.animatedBtns.forEach(btn => {
-				btn.icon.setFrame(frame)
-			})
-		}, 500)
 	}
 }
