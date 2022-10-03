@@ -160,7 +160,7 @@
     "cost": 0, "points": 0,
     "text": "When played, gain Sight 4.\nMorning: gain Sight 1.",
     "keywords": [
-      {"name": "Sight", "x": 0, "y": 78, "value": 4},
+      {"name": "Sight", "x": 0, "y": 74, "value": 4},
       {"name": "Morning", "x": -22, "y": 104},
       {"name": "Sight", "x": 0, "y": 130, "value": 1}
     ]
