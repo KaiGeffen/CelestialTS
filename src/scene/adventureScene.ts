@@ -332,19 +332,22 @@ export default class AdventureScene extends BaseScene {
 
 		// Add each of the adventures as its own line
 		this.animatedBtns = []
-		unlockedMissions.forEach(mission => {
-			// Get the string for this adventure
-			let id = mission.id
+		unlockedMissions.filter(mission => {
+			// Don't show unlocked cards that user has already received
+			if (mission.type === 'card' && UserSettings._get('completedMissions')[mission.id]) {
+				return false
+			}
 
-			// If it has been completed, filled in star, otherwise empty star
-			let name = completed[id] ? '★' : '☆'
-			name += mission.type === 'card' ? '🂡' : ''
-			name += mission.name
+			return true
+		}).forEach(mission => {
+			// Get the string for this adventure
+			let id = mission.id			
 
 			let btn = new Buttons.Mission(that,
 				mission.x,
 				mission.y,
-				that.missionOnClick(mission))
+				that.missionOnClick(mission),
+				mission.type)
 
 			// If user hasn't completed this mission, animate it
 			if (!completed[mission.id]) {

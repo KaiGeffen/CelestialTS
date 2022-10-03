@@ -10,12 +10,13 @@ import Button from './button'
 export default class MissionButton extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
-		f: () => void = function() {})
+		f: () => void = function() {},
+		nodeType: string)
 	{
 		super(within, x, y, 
 		{
 			icon: {
-				name: 'Mission',
+				name: nodeType.charAt(0).toUpperCase() + nodeType.slice(1),
 				interactive: true
 			},
 			callbacks: {
