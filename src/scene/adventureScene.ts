@@ -2,6 +2,7 @@ import "phaser"
 import BaseScene from './baseScene'
 import { Style, Space, Color, UserSettings, Time, BBStyle, Ease } from '../settings/settings'
 import Buttons from "../lib/buttons/buttons"
+import Button from "../lib/buttons/button"
 import Icons from "../lib/buttons/icons"
 import Menu from "../lib/menu"
 import { CardImage } from "../lib/cardImage"
@@ -19,6 +20,8 @@ export default class AdventureScene extends BaseScene {
 	params = {scrollX: 0, scrollY: 0};
 
 	panDirection
+
+	animatedBtns: Button[]
 
 	constructor() {
 		super({
@@ -60,6 +63,9 @@ export default class AdventureScene extends BaseScene {
 			this.cameras.main.scrollX = params.scrollX
 			this.cameras.main.scrollY = params.scrollY
 		}
+
+		// Animate all elements on the screen
+		this.animateElements()
 	}
 
 	update(): void {
@@ -320,6 +326,7 @@ export default class AdventureScene extends BaseScene {
 		})
 
 		// Add each of the adventures as its own line
+		this.animatedBtns = []
 		unlockedMissions.forEach(mission => {
 			// Get the string for this adventure
 			let id = mission.id
@@ -333,6 +340,8 @@ export default class AdventureScene extends BaseScene {
 				mission.x,
 				mission.y,
 				that.missionOnClick(mission))
+
+			this.animatedBtns.push(btn)
 		})
 	}
 
@@ -405,5 +414,18 @@ export default class AdventureScene extends BaseScene {
 			MAP_HEIGHT - Space.windowHeight,
 			Math.max(0, camera.scrollY + dy)
 			)
+	}
+
+	// Animate all elements on the map
+	private animateElements(): void {
+		// Go back and forth from frame 0 to 1
+		let frame = 0
+		setInterval(() => {
+			frame = frame === 0 ? 1 : 0
+
+			this.animatedBtns.forEach(btn => {
+				btn.icon.setFrame(frame)
+			})
+		}, 500)
 	}
 }

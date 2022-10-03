@@ -72,6 +72,9 @@ export default class Loader {
 		// Load the round results
 		Loader.loadResults(scene)
 
+		// Load the mission icon 2-frame
+		Loader.loadMissionIcon(scene)
+
 		// Load the rest of the assets
 		Loader.bulkLoad(scene)
 	}
@@ -109,6 +112,15 @@ export default class Loader {
 				frameWidth: Space.avatarSize,
 				frameHeight: Space.avatarSize,
 			})
+		})
+	}
+
+	// Loads the avatar portraits which are spritesheets
+	private static loadMissionIcon(scene): void {
+		// Load the spritesheet with basic + emotes
+		scene.load.spritesheet(`icon-Mission`, `icons/Mission.png`, {
+			frameWidth: 80,
+			frameHeight: 80,
 		})
 	}
 
