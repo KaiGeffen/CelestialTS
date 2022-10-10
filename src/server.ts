@@ -4,11 +4,10 @@ import Card from "./lib/card"
 import { decodeDeck } from "./lib/codec"
 
 
-const ip = '127.0.0.1' //'10.244.30.242'
-//'10.244.10.228'//'216.193.175.49'
-//'127.0.0.1'//'192.168.1.154' //'server-6d66b4ccc9-xc989'
+const ip = '127.0.0.1'
 const port = 5555
-// const internalPort = 4321
+// Custom code for closing websocket connection due to invalid token
+const code = 333
 
 // The websocket which is open with the main server (Authentication/pack opening)
 var wsServer: WebSocket = undefined
@@ -17,7 +16,7 @@ var packOpenCallback: (cards: Card[]) => void = undefined
 
 export default class Server {
 	// Log in with the server for user with given OAuth token
-	static login(token, scene?: Phaser.Scene) {
+	static login(token: string, scene?: Phaser.Scene) {
 		let that = this
 
 		// The first message sent to server once the match starts
@@ -49,14 +48,6 @@ export default class Server {
 					break
 
 				case 'send_user_data':
-					// TODO If the token is bad, the value returned is null
-					// In that case, make the server instead send a 'logout' message to the client
-					if (msg.value === null) {
-						wsServer.close()
-						wsServer = undefined
-						return
-					}
-					
 					that.loadUserData(msg.value)
 
 					// Reload the home scene if we just loaded
@@ -67,22 +58,29 @@ export default class Server {
 
 					break
 
-				case 'send_pack':
-					let ids: number[] = msg.value
-					// TODO Bad smell
-					let cards: Card[] = decodeDeck(ids.join('™'))
-					packOpenCallback(cards)
-					break
+				case 'invalid_token':
+					console.log('Server has indicated that sent token is invalid. Logging out.')
+					// TODO Signal error, can't do it this way because preload scene
+					// isnt of type baseScene
+					// if (scene) {
+					// 	scene['signalError']('Signed out from server.')
+					// }
+					
+					wsServer.close(code)
+					wsServer = undefined
+					return
 			}
 		})
 
 		// If the connection closes, login again with same args
-		wsServer.addEventListener('close', () => {
-			console.log('Logged in websocket is closing, signing in again')
+		wsServer.addEventListener('close', (event) => {
+			// Don't attempt to login again if the server explicitly logged us out
+			if (event.code !== code) {
+				console.log('Logged in websocket is closing, signing in again with token:')
+				console.log(token)
 
-			console.log(token)
-
-			Server.login(token)
+				Server.login(token)
+			}
 		})
 	}
 
