@@ -6,6 +6,7 @@ import avatarData from './avatars.json'
 import iconData from './icons.json'
 import backgroundData from './backgrounds.json'
 import keywordData from './keywords.json'
+import storyData from './stories.json'
 import sfxData from './sfx.json'
 import voiceData from './voice.json'
 import { Space } from '../settings/settings'
@@ -23,11 +24,6 @@ const prefixMap: PrefixEntry[] = [
 		fp: 'avatars/',
 		prefix: 'avatar-',
 		list: avatarData,
-	},
-	{
-		fp: 'backgrounds/',
-		prefix: 'bg-',
-		list: backgroundData,
 	},
 	{
 		fp: 'cards/',
@@ -48,6 +44,19 @@ const prefixMap: PrefixEntry[] = [
 		fp: 'keywords/',
 		prefix: 'kw-',
 		list: keywordData,
+	},
+	{
+		fp: 'backgrounds/',
+		prefix: 'bg-',
+		list: backgroundData,
+	},
+]
+
+const postLoadPrefixMap: PrefixEntry[] = [
+	{
+		fp: 'story/',
+		prefix: 'story-',
+		list: storyData,
 	},
 ]
 
@@ -77,6 +86,27 @@ export default class Loader {
 
 		// Load the rest of the assets
 		Loader.bulkLoad(scene)
+	}
+
+	// Whether the full version of resources has been loading
+	static postLoadStarted = false
+
+	// Load any textures that only start loading after the preload scene ends
+	static postLoad(scene: Phaser.Scene): void {
+		if (Loader.postLoadStarted) {
+			return
+		}
+		Loader.postLoadStarted = true
+
+		// Load all of the bg images as full sized version
+		postLoadPrefixMap.forEach((assetType: PrefixEntry) => {
+			assetType.list.forEach((name) => {
+				const s = `${assetType.prefix}${name}`
+				scene.load.image(s, `${assetType.fp}${name}.png`)
+			})
+		})
+
+		scene.load.start()
 	}
 
 	// TODO Group these events that happen after loading is complete

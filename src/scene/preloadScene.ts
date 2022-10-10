@@ -114,9 +114,15 @@ export default class PreloadClass extends Phaser.Scene {
 			that.scene.start('HomeScene')
 		}
 		this.load.on('complete', function () {
+			// Only do this the first time load completes
+			if (Loader.postLoadStarted) {
+				return
+			}
+
 			startWhenLoginComplete()
 
 			Loader.loadAnimations(that)
+			Loader.postLoad(that)
 		})
 	}
 }

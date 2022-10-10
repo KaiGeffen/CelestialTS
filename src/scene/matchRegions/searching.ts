@@ -109,7 +109,7 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createImage(scene: Phaser.Scene, tutorialNum: number): void {
-		this.img = scene.add.image(Space.windowWidth/2, 0, `bg-Story ${tutorialNum === 0 ? 1 : 3}`)
+		this.img = scene.add.image(Space.windowWidth/2, 0, `story-Story ${tutorialNum === 0 ? 1 : 3}`)
 		.setOrigin(0.5, 0)
 		.setInteractive()
 
@@ -158,7 +158,7 @@ export class SearchingRegionTutorial extends Region {
 					this.currentFrame += 1
 
 					// Change the background image
-					this.img.setTexture(`bg-Story ${this.currentFrame}`)
+					this.img.setTexture(`story-Story ${this.currentFrame}`)
 					
 					this.tweenImage()
 
