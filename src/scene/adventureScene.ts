@@ -333,10 +333,10 @@ export default class AdventureScene extends BaseScene {
 		// Add each of the adventures as its own line
 		this.animatedBtns = []
 		unlockedMissions.filter(mission => {
-			// Don't show unlocked cards that user has already received
-			if (mission.type === 'card' && UserSettings._get('completedMissions')[mission.id]) {
-				return false
-			}
+			// // Don't show unlocked cards that user has already received
+			// if (mission.type === 'card' && UserSettings._get('completedMissions')[mission.id]) {
+			// 	return false
+			// }
 
 			return true
 		}).forEach(mission => {

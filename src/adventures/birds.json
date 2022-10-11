@@ -12,8 +12,8 @@
   {
     "name": "Starling",
     "id": 101,
-    "x": 4630,
-    "y": 900,
+    "x": 4360,
+    "y": 393,
     "prereq": [[100]],
     "type": "card",
     "card": 7
@@ -31,8 +31,8 @@
   {
     "name": "Phoenix",
     "id": 103,
-    "x": 3890,
-    "y": 865,
+    "x": 3857,
+    "y": 265,
     "prereq": [[102]],
     "type": "card",
     "card": 51
@@ -50,8 +50,8 @@
   {
     "name": "Heron",
     "id": 105,
-    "x": 3412,
-    "y": 885,
+    "x": 3042,
+    "y": 728,
     "prereq": [[104]],
     "type": "card",
     "card": 65
@@ -69,8 +69,8 @@
   {
     "name": "Sun",
     "id": 121,
-    "x": 4090,
-    "y": 270,
+    "x": 4110,
+    "y": 155,
     "prereq": [[120]],
     "type": "card",
     "card": 56
@@ -88,8 +88,8 @@
   {
     "name": "Morning Dew",
     "id": 123,
-    "x": 4227,
-    "y": 866,
+    "x": 4142,
+    "y": 845,
     "prereq": [[122]],
     "type": "card",
     "card": 63
@@ -97,8 +97,8 @@
   {
     "name": "Birds Bonus 3 - Gamecock, after Mia, dew",
     "id": 124,
-    "x": 3080,
-    "y": 590,
+    "x": 1990,
+    "y": 1050,
     "prereq": [[105, 306, 123]],
     "type": "mission",
     "deck": "51:40:40:32:63:1:3",
@@ -107,8 +107,8 @@
   {
     "name": "Gamecock",
     "id": 125,
-    "x": 3080,
-    "y": 590,
+    "x": 4073,
+    "y": 1080,
     "prereq": [[124]],
     "type": "card",
     "card": 40
