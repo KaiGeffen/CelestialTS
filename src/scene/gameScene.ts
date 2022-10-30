@@ -113,6 +113,9 @@ class GameScene extends BaseScene {
 			// Set variables to a state where a recap isn't playing
 			that.queuedRecap = []
 			that.recapPlaying = false
+
+			// End the pause
+			that.paused = false
 		}
 
 		// Hand region
