@@ -66,8 +66,6 @@ export class Network {
 					return
 				}
 
-				console.log(msg)
-
 				switch (msg.type) {
 					case 'both_players_connected':
 					if (msg.value) {
