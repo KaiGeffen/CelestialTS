@@ -258,25 +258,30 @@ export default class AdventureScene extends BaseScene {
 		const scale = Space.windowWidth / img.displayWidth
 		img.setScale(scale)
 
+		// Text background
+		let background = this.add.image(0, Space.windowHeight - 225, 'bg-Texture')
+		.setOrigin(0)
+		.setAlpha(0.8)
+		this.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			shadowColor: 0x000000,
+		})
+
 		// Add text
 		let txt = this.add.text(0, 0, '', Style.stillframe)
 
-		const s = "Impressive, all that life, all that wonder. You are welcomed in of course. But if I might share one thing that I've learned in my time here... It's that someday, everything blows away."
-
-		let background = this.rexUI.add.roundRectangle(0, 0, 100, 100, 10, 0x000000, 0.5)
+		const s = "Impressive, all that life, all that wonder. You are welcomed in of course."//" But if I might share one thing that I've learned in my time here... It's that someday, everything blows away."
 
 		let textbox = this.rexUI.add.textBox({
 			text: txt,
 			x: Space.pad,
-			y: Space.pad,
+			y: background.y,
 			space: {
 				left: Space.pad,
 				right: Space.pad,
 				top: Space.pad,
 				bottom: Space.pad,
 			},
-			// width: Space.stillframeTextWidth,
-			background: background,
 		})
 		.start(s, 50)
 		.setOrigin(0)
@@ -295,7 +300,6 @@ export default class AdventureScene extends BaseScene {
 				// Allow scrolling once the stillframe is gone
 				this.enableScrolling()
 			})
-		.disable()
 
 		// Scroll the image going down
 		this.add.tween({
@@ -306,9 +310,6 @@ export default class AdventureScene extends BaseScene {
 			onStart: () => {
 				img.y = 0
 			},
-			onComplete: () => {
-				btn.enable()
-			}
 		})
 
 		// Set the param to undefined so it doesn't persist

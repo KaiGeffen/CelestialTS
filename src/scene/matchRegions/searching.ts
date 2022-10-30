@@ -191,7 +191,6 @@ export class SearchingRegionTutorial extends Region {
 
 				}
 			})
-		.disable()
 	}
 
 	private tweenImage(): void {
@@ -207,11 +206,7 @@ export class SearchingRegionTutorial extends Region {
 				y: downFully,
 				onStart: () => {
 					this.img.y = 0
-					this.btn.disable()
 				},
-				onComplete: () => {
-					this.btn.enable()
-				}
 			})
 		}
 		else {
@@ -225,11 +220,7 @@ export class SearchingRegionTutorial extends Region {
 				y: (downFully) * 2/3,
 				onStart: () => {
 					this.img.y = downFully
-					this.btn.disable()
 				},
-				onComplete: () => {
-					this.btn.enable()
-				}
 			})
 		}
 	}
