@@ -28,6 +28,10 @@ export default class StoryRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
+		if (isRecap) {
+			console.log(state)
+		}
+
 		let that = this
 
 		// If this is a recap, add the already played cards greyed out
@@ -58,7 +62,7 @@ export default class StoryRegion extends Region {
 
 			// Only allow jumping around in the recap if we are playing a recap
 			if (isRecap) {
-				card.setOnClick(that.callback(i))
+				card.setOnClick(that.callback(resolvedI + i))
 			}
 
 			cards.push(card)

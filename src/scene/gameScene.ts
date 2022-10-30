@@ -170,7 +170,7 @@ class GameScene extends BaseScene {
 		view.story.setCallback((i: number) => {
 			return function() {
 				// Get the series of states for this recap starting from the given index
-				let recap = that.lastRecap.slice(i + 1)
+				let recap = that.lastRecap.slice(i)
 
 				// Set that a recap is playing, queue the correct recap
 				that.recapPlaying = true
@@ -184,6 +184,9 @@ class GameScene extends BaseScene {
 				that.tweens.getAllTweens().forEach((tween) => {
 					tween.complete()
 				})
+
+				// TODO Execution of story jumps to the act then stays paused
+				that.paused = false
 			}
 		})
 
