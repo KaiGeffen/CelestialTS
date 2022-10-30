@@ -17,9 +17,11 @@ const MAP_HEIGHT = 4800
 
 // TODO Make consistent with Journey (Change adventure to journey or vice verca)
 export default class AdventureScene extends BaseScene {
-	params = {scrollX: 0, scrollY: 0};
+	params = {scrollX: 4650 - Space.windowWidth/2, scrollY: 700 - Space.windowHeight/2};
 
 	panDirection
+
+	map: Phaser.GameObjects.Image
 
 	animatedBtns: Button[]
 
@@ -32,15 +34,15 @@ export default class AdventureScene extends BaseScene {
 	create(params): void {
 		super.create()
 
-		this.params = params
+		this.params = {...this.params, ...params}
 
 		// Create the background
-		this.add.image(0, 0, 'story-Map')
+		this.map = this.add.image(0, 0, 'story-Map')
 			.setOrigin(0)
 			.setInteractive()
 
-		// Add navigation arrows
-		this.createArrows()
+		// Add navigation arrows + zoom
+		this.createNavigation()
 
 		// Add all of the available nodes
 		this.addAdventureData()
@@ -59,10 +61,8 @@ export default class AdventureScene extends BaseScene {
 		}
 
 		// Scroll to the given position
-		if (params.scrollX !== undefined) {
-			this.cameras.main.scrollX = params.scrollX
-			this.cameras.main.scrollY = params.scrollY
-		}
+		this.cameras.main.scrollX = this.params.scrollX
+		this.cameras.main.scrollY = this.params.scrollY
 	}
 
 	update(time, delta): void {
@@ -160,11 +160,31 @@ export default class AdventureScene extends BaseScene {
 		fullPanel.layout()
 	}
 
-	private createArrows(): void {
-		let that = this
-
+	private createNavigation(): void {
 		const mag = 25
 		const pad = 60
+
+		// Create zoom in button
+		// const camera = this.cameras.main
+		// new Buttons.Basic(this,
+		// 	Space.windowWidth - Space.largeButtonWidth/2 - Space.iconSize - Space.pad * 2,
+		// 	Space.largeButtonHeight/2 + Space.pad,
+		// 	'Zoom',
+		// 	() => {
+		// 		if (this.map.scale === 1) {
+		// 			this.map.setScale(1/2)
+		// 			camera.scrollX = camera.scrollX / 2
+		// 			camera.scrollY = camera.scrollY / 2
+		// 		}
+		// 		else {
+		// 			this.map.setScale(1)
+		// 			camera.scrollX = camera.scrollX * 2
+		// 			camera.scrollY = camera.scrollY * 2
+		// 		}
+		// 	}
+		// )
+		// .setNoScroll()
+		// .setDepth(10)
 
 		// Details for each arrow (North, East, South, West)
 		const arrows = [
@@ -197,7 +217,7 @@ export default class AdventureScene extends BaseScene {
 			.setDepth(10)
 			.setNoScroll()
 			.setOnClick(() => {
-				that.panDirection = arrow.direction
+				this.panDirection = arrow.direction
 			})
 		}
 	}
