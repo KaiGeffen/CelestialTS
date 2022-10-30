@@ -362,7 +362,7 @@ export default class DeckRegion {
 
 				// Reformat the panel
 				that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
-				that.panel.layout()
+				that.scrollablePanel.layout()
 			}
 
 			that.updateText()
