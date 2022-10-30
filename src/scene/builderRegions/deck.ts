@@ -361,8 +361,8 @@ export default class DeckRegion {
 				cutout.destroy()
 
 				// Reformat the panel
-				that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
 				that.scrollablePanel.layout()
+				that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
 			}
 
 			that.updateText()
