@@ -404,7 +404,7 @@
 
   {"name": "Paramountcy", "id": 62,
     "cost": 9, "points": 0,
-    "text": "Add the top 5 cards of your discard pile to the end of the story."
+    "text": "Add the top 5 cards of your discard pile to the story after this card."
   },
 
   {"name": "Hollow", "id": 76,

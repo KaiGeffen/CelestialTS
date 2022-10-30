@@ -80,6 +80,9 @@ export default class SearchingRegion extends Region {
 	}
 }
 
+// Height of the tutorial text
+const TEXT_HEIGHT = 225
+
 // A separate initial region seen during the tutorial
 export class SearchingRegionTutorial extends Region {
 	btn: Button
@@ -123,23 +126,27 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createText(scene: BaseScene, tutorialNum: number): void {
-		let txt = scene.add.text(0, 0, '', Style.stillframe)
+		let background = scene.add.image(0, Space.windowHeight - TEXT_HEIGHT, 'bg-Texture')
+		.setOrigin(0)
+		.setAlpha(0.8)
+		scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			shadowColor: 0x000000,
+		})
 
-		let background = this.scene.rexUI.add.roundRectangle(0, 0, 100, 100, 10, 0x000000, 0.5)
+		let txt = scene.add.text(0, 0, '', Style.stillframe)
 
 		const s = STORY_TEXT[tutorialNum][0]
 		this.textbox = scene.rexUI.add.textBox({
 			text: txt,
 			x: Space.pad,
-			y: Space.pad,
+			y: background.y,
 			space: {
 				left: Space.pad,
 				right: Space.pad,
 				top: Space.pad,
 				bottom: Space.pad,
 			},
-			// width: Space.stillframeTextWidth,
-			background: background,
 		})
 		.start(s, 50)
 		.setOrigin(0)
@@ -197,7 +204,7 @@ export class SearchingRegionTutorial extends Region {
 				targets: this.img,
 				duration: 6000,
 				ease: Ease.stillframe,
-				y: Space.windowHeight - this.img.displayHeight,
+				y: downFully,
 				onStart: () => {
 					this.img.y = 0
 					this.btn.disable()
