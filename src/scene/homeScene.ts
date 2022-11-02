@@ -8,6 +8,7 @@ import Icons from "../lib/buttons/icons"
 import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import intro from "../adventures/intro.json"
+import Loader from '../loader/loader'
 
 
 const headerHeight = Space.iconSize + Space.pad * 2
@@ -187,6 +188,12 @@ export default class HomeScene extends BaseScene {
   }
 
   private doAdventure(): void {
+    // If the loader hasn't finished loading the story assets, error
+    if (!Loader.postLoadComplete) {
+      this.signalError("Assets for story mode are still loading...")
+      return
+    }
+    
     this.beforeExit()
 
     // If user hasn't completed the tutorial, jump to the last tutorial they haven't completed

@@ -82,8 +82,6 @@ export default class PreloadClass extends Phaser.Scene {
 
 	// Create the which show user how much has loaded
 	private createProgressGraphics(): void {
-		let that = this
-
 		let width = 800
 		let height = 100
 		let x = (Space.windowWidth - width)/2
@@ -110,19 +108,18 @@ export default class PreloadClass extends Phaser.Scene {
 			progressBar.fillRect(x + Space.pad, y + Space.pad, (width - Space.pad*2) * value, height - Space.pad*2)
 		})
 
-		let startWhenLoginComplete = function() {
-			that.scene.start('HomeScene')
-		}
-		this.load.on('complete', function () {
+		this.load.on('complete', () => {
 			// Only do this the first time load completes
-			if (Loader.postLoadStarted) {
-				return
+			if (!Loader.postLoadStarted) {
+				this.scene.start('HomeScene')
+
+				Loader.loadAnimations(this)
+				Loader.postLoad(this)
 			}
-
-			startWhenLoginComplete()
-
-			Loader.loadAnimations(that)
-			Loader.postLoad(that)
+			// When the post load completes, set a flag
+			else if (!Loader.postLoadComplete) {
+				Loader.postLoadComplete = true
+			}
 		})
 	}
 }

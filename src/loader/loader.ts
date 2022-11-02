@@ -90,6 +90,7 @@ export default class Loader {
 
 	// Whether the full version of resources has been loading
 	static postLoadStarted = false
+	static postLoadComplete = false
 
 	// Load any textures that only start loading after the preload scene ends
 	static postLoad(scene: Phaser.Scene): void {
