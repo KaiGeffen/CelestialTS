@@ -79,7 +79,6 @@ export default class HomeScene extends BaseScene {
     let map = this.add.sprite(0, 0, 'bg-Map Small')
     .setOrigin(0)
     .setTint(0x444444)
-    .setScale(3)
 
     let tweens: Phaser.Tweens.Tween[] = []
     tweens.push(this.tweens.add({
@@ -193,7 +192,7 @@ export default class HomeScene extends BaseScene {
       this.signalError("Assets for story mode are still loading...")
       return
     }
-    
+
     this.beforeExit()
 
     // If user hasn't completed the tutorial, jump to the last tutorial they haven't completed
