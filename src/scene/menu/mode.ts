@@ -1,5 +1,6 @@
 import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import Button from '../../lib/buttons/button';
 import Buttons from '../../lib/buttons/buttons';
 import { Color, Space, Style } from '../../settings/settings';
 import Menu from './menu';
@@ -12,6 +13,9 @@ export default class ModeMenu extends Menu {
 	password: string
 
 	avatar: number
+
+	// Password button
+	btnPwd: Button
 
 	constructor(scene: MenuScene, params) {
 		super(scene)
@@ -52,11 +56,14 @@ export default class ModeMenu extends Menu {
 	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene, deck: string) {
 		panel.add(this.createHeader('Game Mode', width))
 		.addNewLine()
-
-		panel.add(this.createPasswordEntry(scene))
+		.add(this.createAI(scene, activeScene, deck))
 		.addNewLine()
-
-		panel.add(this.createButtons(scene, activeScene, deck))
+		.add(this.createPVP(scene, activeScene, deck))
+		.addNewLine()
+		.add(this.createPWD(scene, activeScene, deck))
+		.addNewLine()
+		.add(this.createPasswordEntry(scene))
+		.addNewLine()
 	}
 
 	// TODO Replace background with a prerendered visual?
@@ -78,32 +85,27 @@ export default class ModeMenu extends Menu {
 				id: 'search-field'
 			}).on('textchange', function(inputText) {
 				that.password = inputText.text
+
+				if (inputText.text === '') {
+					that.btnPwd.disable()
+				}
+				else {
+					that.btnPwd.enable()
+				}
 			})
 
 			return inputText
 	}
 
-	// Create the buttons at the bottom
-	private createButtons(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
+	private createAI(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
 		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad*2})
 
-		sizer
-		.add(this.createAI(scene, activeScene, deck))
-		.addSpace()
-		.add(this.createPVP(scene, activeScene, deck))
-		.addSpace()
-		.add(this.createPWD(scene, activeScene, deck))
+		const txt = scene.add.text(0, 0, 'Versus computer opponent', Style.basic)
 
-		return sizer
-	}
-
-	private createAI(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
 		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
-
 		new Buttons.Basic(container, 0, 0, 'AI', () => {
 			activeScene.scene.stop()
 
-			// Stop this scene and start the home scene
 			scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
@@ -113,17 +115,24 @@ export default class ModeMenu extends Menu {
 				}
 			)
 		})
+		
+		// Add the objects with correct spacing
+		sizer.add(txt)
+		.addSpace()
+		.add(container)
 
-		return container
+		return sizer
 	}
 
-	private createPVP(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+	private createPVP(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
+		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad*2})
 
+		const txt = scene.add.text(0, 0, 'Versus human opponent', Style.basic)
+
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
 		new Buttons.Basic(container, 0, 0, 'PVP', () => {
 			activeScene.scene.stop()
 
-			// Stop this scene and start the home scene
 			scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
@@ -132,28 +141,41 @@ export default class ModeMenu extends Menu {
 				}
 			)
 		})
+		
+		// Add the objects with correct spacing
+		sizer.add(txt)
+		.addSpace()
+		.add(container)
 
-		return container
+		return sizer
 	}
 
-	private createPWD(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string): ContainerLite {
-		let that = this
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+	private createPWD(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
+		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad*2})
 
-		new Buttons.Basic(container, 0, 0, 'PWD', () => {
+		const txt = scene.add.text(0, 0, 'Versus same password', Style.basic)
+
+		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+		this.btnPwd = new Buttons.Basic(container, 0, 0, 'PWD', () => {
 			activeScene.scene.stop()
 
-			// Stop this scene and start the home scene
+			// Start the home scene
 			scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
 					deck: deck,
-					mmCode: that.password,
+					mmCode: this.password,
 					avatar: this.avatar,
 				}
 			)
-		})//.disable()
+		}).disable()
+		
+		// Add the objects with correct spacing
+		sizer.add(txt)
+		.addSpace()
+		.add(container)
 
-		return container
+		return sizer
 	}
+
 }
