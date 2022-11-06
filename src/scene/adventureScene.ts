@@ -224,8 +224,8 @@ export default class AdventureScene extends BaseScene {
 
 	// Create a popup for the card specified in params
 	private createCardPopup(params): void {
-		const width = 1000
-		const height = 250
+		const width = 800
+		const height = Space.cardHeight + Space.pad*2
 		let menu = new Menu(
 			this,
 			width,

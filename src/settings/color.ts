@@ -174,6 +174,8 @@ export const Color: Record<string, any> = {
   rulebookText: CoreColors.black,
   rulebookBackground: "#aac",
 
+  // Adventure mode components
+  flavor: CoreColors.whiteS,
 
 
   // The highlight behind a card that is selected for mulligan

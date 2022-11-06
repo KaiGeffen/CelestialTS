@@ -53,7 +53,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   flavor: {
     fontFamily: fontFamily,
     fontSize: '28px',
-    color: '#B6B9C5',
+    color: Color.flavor,
   },
   // Pass button
   pass: {
