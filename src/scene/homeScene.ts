@@ -78,7 +78,6 @@ export default class HomeScene extends BaseScene {
 
     let map = this.add.sprite(0, 0, 'bg-Map Small')
     .setOrigin(0)
-    .setTint(0x444444)
 
     let tweens: Phaser.Tweens.Tween[] = []
     tweens.push(this.tweens.add({
@@ -103,10 +102,10 @@ export default class HomeScene extends BaseScene {
     // While not hovered, rectangle is greyed
     rectLeft.setInteractive()
     .on('pointerover', () => {
-      map.clearTint()
+      map.setTint(0x444444)
     })
     .on('pointerout', () => {
-      map.setTint(0x444444)
+      map.clearTint()
     })
     .on('pointerdown', () => {
       this.doAdventure()
@@ -134,15 +133,14 @@ export default class HomeScene extends BaseScene {
       rectRight.y,
       'bg-Free Play')
     .setOrigin(0)
-    .setTint(0x444444)
 
     // While not hovered, rectangle is greyed
     rectRight.setInteractive()
     .on('pointerover', () => {
-      freePlay.clearTint()
+      freePlay.setTint(0x444444)
     })
     .on('pointerout', () => {
-      freePlay.setTint(0x444444)
+      freePlay.clearTint()
     })
     .on('pointerdown', this.doStart())
 
