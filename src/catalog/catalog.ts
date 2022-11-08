@@ -1,5 +1,6 @@
 import data from "./catalog.json"
 import tokenData from "./tokens.json"
+import devData from "./devCatalog.json"
 
 import Card from "../lib/card"
 
@@ -10,7 +11,10 @@ function dataToCards(_data: any[]): Card[] {
 
 export const baseCards: Card[] = dataToCards(data)
 
-let availableCards = baseCards
+const devMode = new URLSearchParams(window.location.search).has('dev') || location.port === '4949'
+const devCards = devMode ? dataToCards(devData) : []
+
+let availableCards = [...baseCards, ...devCards]
 
 
 // Collectible cards are sorted by cost

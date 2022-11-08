@@ -233,7 +233,7 @@ class Pass extends Button {
 				offset: 9,
 			},
 			icon: {
-				name: 'Pass',
+				name: 'Sun',
 				interactive: true
 			},
 			callbacks: {

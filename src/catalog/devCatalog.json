@@ -1,0 +1,22 @@
+[
+  {"name": "Rat", "id": 2000,
+    "cost": 0, "points": 0,
+    "text": "Draw a card if your hand is empty. Extra 2: Worth +1 for each of your cards later in the story."
+  },
+  {"name": "Beggar", "id": 2001,
+    "cost": 0, "points": 0,
+    "text": "Draw a card with the same cost as the next card in the story. Extra 1: Worth +1 point."
+  },
+  {"name": "Fresh Air", "id": 2002,
+    "cost": 2, "points": 1,
+    "text": "Gain 3 breath. Draw a card if you have no cards later in the story."
+  },
+  {"name": "Possibilities", "id": 2003,
+    "cost": 2, "points": 2,
+    "text": "Extra 4:  Double your points. Extra 1: Worth +1 point. Extra 2: Worth +2 points."
+  },
+  {"name": "Hatchling", "id": 2004,
+    "cost": 0, "points": 0,
+    "text": "Extra 2: Create 2 Doves at the end of the story. Morning: This is permanently worth +1 point."
+  }
+]
