@@ -18,5 +18,13 @@
   {"name": "Hatchling", "id": 2004,
     "cost": 0, "points": 0,
     "text": "Extra 2: Create 2 Doves at the end of the story. Morning: This is permanently worth +1 point."
+  },
+  {"name": "Eyes", "id": 2005,
+    "cost": 1, "points": 0,
+    "text": "Draw a card. While this is in your hand, whenever you play a card, gain Sight 1."
+  },
+  {"name": "Capybara", "id": 2006,
+    "cost": 0, "points": 0,
+    "text": "Extra 1: Draw a card. Extra 4: Set both player's points to 0."
   }
 ]
