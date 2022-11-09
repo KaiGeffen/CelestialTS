@@ -26,6 +26,8 @@ export class UserSettings {
 
       // Settings tied to user's account
       decks: [],
+      // List to use when playing with in development content
+      devDecks: [],
 
       // TODO Rethink this and the userprogress.ts module - they approach displaying new messages in a specific way that might not fit within the beta
       // List of all things user has accomplished (Beat Anubis, seen Discord, etc)
@@ -48,6 +50,12 @@ export class UserSettings {
 
   // Get the given setting
   static _get(key: string) {
+    // NOTE If using cards in development, save the deck separately
+    const devMode = new URLSearchParams(window.location.search).has('dev')
+    if (key === 'decks' && devMode) {
+      key = 'devDecks'
+    }
+
     if (key in sessionStorage) {
       return JSON.parse(sessionStorage.getItem(key))
     }
@@ -57,6 +65,12 @@ export class UserSettings {
   }
 
   static _set(key: string, value: any) {
+    // NOTE If using cards in development, save the deck separately
+    const devMode = new URLSearchParams(window.location.search).has('dev')
+    if (key === 'decks' && devMode) {
+      key = 'devDecks'
+    }
+
     if (key in sessionStorage) {
       sessionStorage.setItem(key, JSON.stringify(value))
 
