@@ -34,5 +34,9 @@
   {"name": "Tragedy", "id": 2008,
     "cost": 3, "points": 1,
     "text": "todo"
+  },
+  {"name": "Hound", "id": 2009,
+    "cost": 2, "points": 2,
+    "text": "While the last card in the story has the same name as a card in the story last round, this costs 0."
   }
 ]
