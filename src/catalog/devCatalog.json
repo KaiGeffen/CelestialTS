@@ -38,5 +38,13 @@
   {"name": "Hound", "id": 2009,
     "cost": 2, "points": 2,
     "text": "While the last card in the story has the same name as a card in the story last round, this costs 0."
+  },
+  {"name": "Lullaby", "id": 2010,
+    "cost": 6, "points": 0,
+    "text": "Set both player's points to 0. Birth 1 for each point you lost this way."
+  },
+  {"name": "Longing", "id": 2011,
+    "cost": 1, "points": 0,
+    "text": "Shuffle each even-costed card from your discard pile into your deck. Extra 4: Nourish 1 TODO add N5."
   }
 ]
