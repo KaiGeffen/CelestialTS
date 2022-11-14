@@ -197,10 +197,6 @@ export default class DeckRegion {
 			totalCount += cutout.count
 		})
 
-		if (totalCount  >= Mechanics.deckSize) {
-			return 'Deck is full.'
-		}
-
 		// If this card exists in the deck already, increment it
 		let alreadyInDeck = false
 		this.deck.forEach(cutout => {
@@ -386,7 +382,6 @@ export default class DeckRegion {
 		{
 			this.btnStart.setText(`${totalCount}/${Mechanics.deckSize}`)
 
-			// TODO Grey out the button, have a disable method for button class
 			// For debugging, allow sub-15 card decks locally
 			if (location.port !== '4949') {
 				this.btnStart.disable()
