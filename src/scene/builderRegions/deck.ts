@@ -197,6 +197,11 @@ export default class DeckRegion {
 			totalCount += cutout.count
 		})
 
+		// NOTE Limit the max number of cards so that database doesn't get taxed
+		if (totalCount  >= Mechanics.deckSize * 2) {
+			return 'Deck is overfull.'
+		}
+
 		// If this card exists in the deck already, increment it
 		let alreadyInDeck = false
 		this.deck.forEach(cutout => {
