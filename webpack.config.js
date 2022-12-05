@@ -19,8 +19,9 @@ module.exports = {
             "Access-Control-Allow-Headers": "*"
         }
     },
-    
+
     mode: 'development',
+    devtool: false,
     resolve: {
         extensions: [ '.ts', '.tsx', '.js' ],
         alias: {
