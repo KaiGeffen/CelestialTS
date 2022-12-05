@@ -47,6 +47,7 @@ export var Space = {
   // For basic text
   maxTextWidth: 500, // Note must be more than twice cardWidth for hints
 
+  // Height of the filter bar in the deck editor
   filterBarHeight: 80,
 
   decklistPanelWidth: 240,

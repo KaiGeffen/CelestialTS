@@ -13,18 +13,6 @@ export default class MenuScene extends Phaser.Scene {
 		})
 	}
 
-	// TODO Create this api? See if what we have works
-	// Open the menu specified by string
-	static open(s: string): void {
-		// TODO if (s not in names) ....
-		// Check if the specified menu exists, if not, throw
-
-		// If a menu is already open, call its onClose
-		
-		// Open the given menu
-
-	}
-
 	create(params): void {
 		this.sound.play('open')
 

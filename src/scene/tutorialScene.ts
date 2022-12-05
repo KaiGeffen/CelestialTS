@@ -82,7 +82,6 @@ export default class TutorialGameScene extends AdventureGameScene {
 		this.pointer = this.add.image(0, 0, 'icon-Pointer')
 	}
 
-	// TODO When a winner is found, move on to the next stillframe of the tutorial
 	protected displayState(state: ClientState, isRecap: boolean): boolean {
 		// Remove unused animations
 		for (let i = 0; i < 2; i++) {

@@ -137,7 +137,6 @@ export default class ChoosePremade extends Menu {
 		// Hint on which information is displayed
 		let hint = new Hint(this.scene)
 
-		// TODO Displayed the selected one
 		this.txtName = this.scene.add.text(0, 0, '', Style.announcement)
 		this.txtSurname = this.scene.add.text(0, 0, '', Style.surname)
 		this.txtDescription = this.scene['rexUI'].add.BBCodeText({

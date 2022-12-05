@@ -12,7 +12,6 @@ import Regions from "./matchRegions/matchRegions";
 
 var storyHiddenLock: boolean = false
 
-// TODO Remove status bar file
 // TODO Rename to Match
 class GameScene extends BaseScene {
 	params: any

@@ -95,7 +95,6 @@ export default class TheirHandRegion extends Region {
 	}
 
 	private createAvatar(): Button {
-		// TODO Custom avatar
 		let btn = new Buttons.Avatar(this.container, 21, 5, 'Jules')
 		btn.setOrigin(0)
 

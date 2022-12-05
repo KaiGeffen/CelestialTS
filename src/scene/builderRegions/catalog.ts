@@ -8,9 +8,6 @@ import { Style, Color, UserSettings, Space, Mechanics, Time, Mobile, Scroll, Eas
 import { collectibleCards } from "../../catalog/catalog"
 
 
- // TODO FILTER_HEIGHT is the filter height
-const FILTER_HEIGHT = 70
-
 // Region where all of the available cards can be scrolled through
 export default class CatalogRegion {  
   // Overwrite the 'scene' property of container to specifically be a BuilderScene
@@ -69,7 +66,7 @@ export default class CatalogRegion {
           space: {
             left: Space.pad,
             right: Space.pad,
-            top: FILTER_HEIGHT + Space.pad,
+            top: Space.filterBarHeight + Space.pad,
             bottom: Space.pad - 10,
             item: Space.pad,
             line: Space.pad,
@@ -79,7 +76,7 @@ export default class CatalogRegion {
 
       space: {
         slider: {
-          top: FILTER_HEIGHT,
+          top: Space.filterBarHeight,
         }
       },
 

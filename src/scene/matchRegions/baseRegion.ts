@@ -47,8 +47,6 @@ export default class Region {
 		const x = -this.container.x
 		const y = -this.container.y
 
-		// TODO
-		// const s = text || "You look like you're in a hurry, so I'll speed things up. -Gives 2 wins to you"
 		let foo = this.scene.rexUI.add.textBox({
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
@@ -85,14 +83,12 @@ export default class Region {
 		// 	background.destroy()
 		// })
 
-		// TODO Reverse depth on state change
 
 		// Move this container above all others
 		// this.container.setDepth(Depth.aboveAll)
 	}
 
 	protected deleteTemp(): void {
-		// TODO At least BBCodeText isn't deleting, need to ensure that objects with active: false are gced
 		for (let i = 0; i < this.temp.length; i++) {
 			this.temp[i].destroy()
 		}

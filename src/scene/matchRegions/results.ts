@@ -109,16 +109,6 @@ export default class ResultsRegion extends Region {
 
 		// Replay
 		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Play Again', this.newMatchCallback())
-		
-		// TODO Hint
-		// let txtHint = this.scene.add.text(
-		// 	Space.windowWidth/2,
-		// 	y - Space.largeButtonHeight/2,
-		// 	'With the same deck',
-		// 	Style.small
-		// 	).setOrigin(0.5, 0)
-		// this.container.add(txtHint)
-		
 
 		// Review
 		new Buttons.Basic(this.container, Space.windowWidth/2 - Space.pad - Space.largeButtonWidth, y, 'Hide', this.reviewCallback())
