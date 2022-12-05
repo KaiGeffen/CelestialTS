@@ -3,8 +3,6 @@ import { decodeCard } from './codec'
 import { Status } from './status'
 
 
-// TODO Clean up redundant types
-
 export enum Zone {
 	Hand,
 	Deck,

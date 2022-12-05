@@ -78,8 +78,8 @@ export const Color: Record<string, any> = {
   // Colors for the cost and the background for it
   cardText: 0xFABD5D,
   cardTextBackground: CoreColors.black,
-  // The color of the mana if cost has been reduced
-  cardCostReduced: CoreColors.breath,
+  // The color of either stat if it has been changed
+  cardStatChanged: CoreColors.breath,
 
   // Hint text fill and background (What shows when you hover something that has an explanation)
   hintFill: CoreColors.white,

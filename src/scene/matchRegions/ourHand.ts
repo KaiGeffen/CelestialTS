@@ -259,7 +259,7 @@ export default class OurHandRegion extends Region {
 			that.cardClicked = true
 
 			// Revert the order of the cards in hand to not center this card
-			card.revertCentringInHand()
+			card.revertCenteringInHand()
 
 			// Remove this cards hover/exit behavior so it doesn't jump back to hand y
 			card.removeOnHover()

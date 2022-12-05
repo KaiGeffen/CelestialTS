@@ -200,7 +200,7 @@ export class CardImage {
         this.txtCost.setAlpha(1)
       }
 
-      this.txtCost.setText(`[stroke=${Color.cardCostReduced}]${cost}[/stroke]`)
+      this.txtCost.setText(`[stroke=${Color.cardStatChanged}]${cost}[/stroke]`)
     }
 
     return this
@@ -213,8 +213,7 @@ export class CardImage {
       this.txtPoints.setAlpha(0.001)
     }
 
-    // TODO Change color name
-    this.txtPoints.setText(`[stroke=${Color.cardCostReduced}]${amt}[/stroke]`)
+    this.txtPoints.setText(`[stroke=${Color.cardStatChanged}]${amt}[/stroke]`)
 
     return this
   }
@@ -282,27 +281,23 @@ export class CardImage {
     // This makes this appear above everything, and things to the right to be in reverse order
     let fHover = () => {
       // If the render index has already been set, we are already reversed
-      if (that.renderIndex !== undefined) {
+      if (this.renderIndex !== undefined) {
         return
       }
 
       // Remember the index that this was at
-      that.renderIndex = parentContainer.getIndex(container)
+      this.renderIndex = parentContainer.getIndex(container)
 
       // From the top of the list until this cardImage, reverse the order
-      for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
-        parentContainer.bringToTop(parentContainer.getAt(i))
-      }
+      this.revertCenteringInHand()
     }
 
     let fExit = () => {
       // From INDEX to the top is reversed, flip it back
-      for (let i = parentContainer.length - 1; i >= that.renderIndex; i--) {
-        parentContainer.bringToTop(parentContainer.getAt(i))
-      }
-
+      this.revertCenteringInHand()
+      
       // Reset the render index to show no longer reversed
-      that.renderIndex = undefined
+      this.renderIndex = undefined
     }
 
     this.setOnHover(fHover, fExit)
@@ -310,9 +305,8 @@ export class CardImage {
     return this
   }
 
-  // TODO Make this dry with the above
   // Reverse the depth ordering of cards in hand from this on
-  revertCentringInHand(): CardImage {
+  revertCenteringInHand(): CardImage {
     const parentContainer = this.container.parentContainer
 
     // From INDEX to the top is reversed, flip it back

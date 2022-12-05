@@ -40,7 +40,7 @@ export class Network {
 		// The first message sent to server once the match starts
 		initMessage = JSON.stringify({
 			type: 'init',
-			value: encodeDeck(deck), // .replace(':', '™') // TODO
+			value: encodeDeck(deck),
 			avatar: `${avatarID}`
 		})
 
