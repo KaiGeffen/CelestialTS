@@ -5,6 +5,7 @@ import { Space, Style, Time } from '../../settings/settings';
 import BaseScene from '../baseScene';
 import Region from './baseRegion';
 import CardLocation from './cardLocation';
+import Play from '../../lib/play'
 
 
 // This is slightly wrong, because the top hand is smaller than this hand height
@@ -37,10 +38,10 @@ export default class StoryRegion extends Region {
 		// If this is a recap, add the already played cards greyed out
 		let resolvedI = 0
 		for (; isRecap && resolvedI < state.recap.playList.length; resolvedI++) {
-			const play = state.recap.playList[resolvedI]
+			const play: Play = state.recap.playList[resolvedI]
 			
-			let card = this.addCard(play[0],
-				CardLocation.story(state, isRecap, resolvedI, this.container, play[1]))
+			let card = this.addCard(play.card,
+				CardLocation.story(state, isRecap, resolvedI, this.container, play.owner))
 			.setResolved()
 			.moveToTopOnHover()
 			.setOnClick(that.callback(resolvedI))

@@ -4,6 +4,7 @@ import Story from './story'
 import Recap from './recap'
 import ClientState from './clientState'
 import { Status } from './status'
+import Play from './play'
 
 
 const delims = ['¡', '™', '£']
@@ -140,16 +141,15 @@ function decodeRecap(s: string): Recap {
 
 	let plays = sections.slice(3)
 
-	function decodePlay(play: string): [Card, number, string] {
+	function decodePlay(play: string): Play {
 		let l = play.split(delims[1])
 
-		// TODO Make this a class, not a 3-tuple
 		let card = decodeCard(l[0])
 		let owner = +l[1]
 		// Text isn't used anymore
 		let text = l[2]
 
-		return [card, owner, text]
+		return new Play(card, owner, text)
 	}
 
 	let playList = plays.map(decodePlay)

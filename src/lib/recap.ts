@@ -2,19 +2,21 @@ import Story from './story'
 import ClientState from './clientState'
 import Card from './card'
 
+import Play from './play'
+
 
 export default class Recap {
 	sums: number[]
 	wins: number[]
 	safety: number[]
 	// The card, owner, and text (deprecated) for each play before this point
-	playList: [Card, number, string][]
+	playList: Play[]
 	stateList: ClientState[]
 
 	constructor(sums: number[],
 		wins: number[],
 		safety: number[],
-		playList: [Card, number, string][],
+		playList: Play[],
 		stateList: ClientState[]) {
 		
 		this.sums = sums
