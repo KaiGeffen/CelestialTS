@@ -12,6 +12,8 @@ import voiceData from './voice.json'
 import { Space } from '../settings/settings'
 
 
+const EXTENSION = 'webp'
+
 // Entry in the prefix map below
 interface PrefixEntry {
 	fp: string,
@@ -103,7 +105,7 @@ export default class Loader {
 		postLoadPrefixMap.forEach((assetType: PrefixEntry) => {
 			assetType.list.forEach((name) => {
 				const s = `${assetType.prefix}${name}`
-				scene.load.image(s, `${assetType.fp}${name}.png`)
+				scene.load.image(s, `${assetType.fp}${name}.${EXTENSION}`)
 			})
 		})
 
@@ -130,7 +132,7 @@ export default class Loader {
 
 			// For each asset of that type
 			assetType.list.forEach((name) => {
-				scene.load.image(`${assetType.prefix}${name}`, `${assetType.fp}${name}.png`)
+				scene.load.image(`${assetType.prefix}${name}`, `${assetType.fp}${name}.${EXTENSION}`)
 			})			
 		})
 	}
@@ -139,7 +141,7 @@ export default class Loader {
 	private static loadAvatarPortraits(scene): void {
 		avatarNames.forEach((name) => {
 			// Load the spritesheet with basic + emotes
-			scene.load.spritesheet(`avatar-${name}`, `avatars/${name}.png`, {
+			scene.load.spritesheet(`avatar-${name}`, `avatars/${name}.${EXTENSION}`, {
 				frameWidth: Space.avatarSize,
 				frameHeight: Space.avatarSize,
 			})
@@ -149,7 +151,7 @@ export default class Loader {
 	// Loads the avatar portraits which are spritesheets
 	private static loadMissionIcon(scene): void {
 		// Load the spritesheet with basic + emotes
-		scene.load.spritesheet(`icon-Mission`, `icons/Mission.png`, {
+		scene.load.spritesheet(`icon-Mission`, `icons/Mission.${EXTENSION}`, {
 			frameWidth: 80,
 			frameHeight: 80,
 		})
@@ -157,7 +159,7 @@ export default class Loader {
 
 	// Loads the basic button as a spritesheet
 	private static loadButton(scene): void {
-		scene.load.spritesheet(`icon-Button`, `icons/Button.png`, {
+		scene.load.spritesheet(`icon-Button`, `icons/Button.${EXTENSION}`, {
 			frameWidth: Space.smallButtonWidth,
 			frameHeight: Space.smallButtonHeight + 8, // 8 From dropshadow
 		})
@@ -186,7 +188,7 @@ export default class Loader {
 		['Win', 'Lose', 'Tie'].forEach(s => {
 			const name = `icon-Round${s}`
 
-			scene.load.spritesheet(name, `icons/Round${s}.png`, {
+			scene.load.spritesheet(name, `icons/Round${s}.${EXTENSION}`, {
 				frameWidth: 563,
 				frameHeight: 258,
 			})
