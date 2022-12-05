@@ -10,6 +10,7 @@ import { BuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 import AdventureScene from "./scene/adventureScene"
 
 import { Color, Space } from "./settings/settings"
+import addResizeHandler from "./loader/windowResizeManager"
 
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js'
@@ -99,25 +100,7 @@ export class CelestialGame extends Phaser.Game {
   constructor(config: Phaser.Types.Core.GameConfig) {
     super(config)
 
-    // TODO Move to its own file
-    // Adjust window display whenever resized
-    window.addEventListener('resize', () => {
-      const width = Math.floor(window.innerWidth)
-      const height = Math.floor(window.innerHeight)
-
-      this.scale.resize(width, height)
-
-      Space.windowWidth = width
-      Space.windowHeight = height
-
-      // Reload the active scene
-      this.scene.scenes.forEach(scene => {
-        if (this.scene.isActive(scene)) {
-          // TODO Come up with a redraw method to adjust to the new dimensions
-          // this.scene.start(scene)
-        }
-      })
-    });
+    addResizeHandler(this)
   }
 }
 
