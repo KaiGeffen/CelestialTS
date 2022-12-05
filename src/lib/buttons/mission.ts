@@ -4,8 +4,6 @@ import { Space, Style, Color } from '../../settings/settings'
 import Button from './button'
 
 
-// TODO Animate 2-frame
-
 // Exported buttons
 export default class MissionButton extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,

@@ -4,11 +4,10 @@ import { Network, versionNumber } from "../net";
 // Import Settings itself 
 import { UserSettings } from "../settings/settings";
 import BaseScene from "./baseScene";
+import Animator from './matchRegions/animator';
 import Region from './matchRegions/baseRegion';
-// TODO Remove unused
-import Regions from "./matchRegions/matchRegions"
+import Regions from "./matchRegions/matchRegions";
 
-import Animator from './matchRegions/animator'
 
 
 var storyHiddenLock: boolean = false

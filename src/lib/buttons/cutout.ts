@@ -65,7 +65,6 @@ export default class Cutout extends Button {
 		this.count = 1
 		this.container = within
 
-		// Update the displayed text (TODO Temporary until the images show appropriate cards)
 		this.updateText()
 	}
 

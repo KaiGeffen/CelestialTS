@@ -24,7 +24,6 @@ class Options extends Button {
 	}
 }
 
-// TODO Is this used?
 class X extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
