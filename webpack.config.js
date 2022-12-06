@@ -22,7 +22,7 @@ module.exports = {
     },
 
     mode: 'development',
-    devtool: false,
+    // devtool: false,
     resolve: {
         extensions: [ '.ts', '.tsx', '.js' ],
         alias: {

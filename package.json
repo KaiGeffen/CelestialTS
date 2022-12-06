@@ -37,16 +37,11 @@
     "dgram": "^1.0.1",
     "gapi": "^0.0.3",
     "is-mobile": "^3.0.0",
-    "live-server": "^1.1.0",
-    "nginx": "^1.0.8",
     "path-browserify": "^1.0.1",
     "phaser3-rex-plugins": "^1.1.72",
     "phaser3-rex-plugins-types": "^0.2.0",
     "process": "^0.11.10",
     "socket.io": "^3.1.2",
-    "socket.io-client": "^3.1.2",
-    "terser": "^5.16.1",
-    "webpack": "^5.23.0",
-    "webpack-merge": "^5.8.0"
+    "socket.io-client": "^3.1.2"
   }
 }
