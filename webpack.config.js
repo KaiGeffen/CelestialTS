@@ -1,6 +1,5 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
 
 
 module.exports = {
@@ -20,9 +19,7 @@ module.exports = {
             "Access-Control-Allow-Headers": "*"
         }
     },
-
     mode: 'development',
-    // devtool: false,
     resolve: {
         extensions: [ '.ts', '.tsx', '.js' ],
         alias: {
@@ -47,36 +44,33 @@ module.exports = {
   //       },
   //     },
   // },
-    optimization: {
-        minimize: true,
-        minimizer: [new TerserPlugin()],
-        
-        runtimeChunk: 'single',
-        splitChunks: {
-            chunks: 'all',
-            maxInitialRequests: Infinity,
-            minSize: 0,
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name(module) {
+  optimization: {
+  runtimeChunk: 'single',
+  splitChunks: {
+    chunks: 'all',
+    maxInitialRequests: Infinity,
+    minSize: 0,
+    cacheGroups: {
+      vendor: {
+        test: /[\\/]node_modules[\\/]/,
+        name(module) {
           // get the name. E.g. node_modules/packageName/not/this/part.js
           // or node_modules/packageName
-                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+          const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
 
           // npm package names are URL-safe, but some servers don't like @ symbols
-                        return `npm.${packageName.replace('@', '')}`;
-                    },
-                },
-            },
+          return `npm.${packageName.replace('@', '')}`;
         },
+      },
     },
+  },
+},
     plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Caching',
-            template: 'template.html',
-            filename: '../index.html',
-        })
-        ],
+      new HtmlWebpackPlugin({
+        title: 'Caching',
+        template: 'template.html',
+        filename: '../index.html',
+      })
+    ],
 
 };
