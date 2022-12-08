@@ -17,8 +17,6 @@ const MAP_HEIGHT = 4800
 
 // TODO Make consistent with Journey (Change adventure to journey or vice verca)
 export default class AdventureScene extends BaseScene {
-	params = {scrollX: 4650 - Space.windowWidth/2, scrollY: 700 - Space.windowHeight/2};
-
 	panDirection
 
 	map: Phaser.GameObjects.Image
@@ -33,8 +31,6 @@ export default class AdventureScene extends BaseScene {
 
 	create(params): void {
 		super.create()
-
-		this.params = {...this.params, ...params}
 
 		// Create the background
 		this.map = this.add.image(0, 0, 'story-Map')
@@ -61,8 +57,9 @@ export default class AdventureScene extends BaseScene {
 		}
 
 		// Scroll to the given position
-		this.cameras.main.scrollX = this.params.scrollX
-		this.cameras.main.scrollY = this.params.scrollY
+		const coords = UserSettings._get('adventureCoordinates')
+		this.cameras.main.scrollX = coords.x
+		this.cameras.main.scrollY = coords.y
 	}
 
 	update(time, delta): void {
@@ -254,11 +251,10 @@ export default class AdventureScene extends BaseScene {
 		menu.add([txt, icon, textBox])
 
 		// Reposition the menu to be visible to the camera
-		if (params.scrollX !== undefined && params.scrollY !== undefined) {
-			menu.container.setPosition(
-				params.scrollX + Space.windowWidth / 2,
-				params.scrollY + Space.windowHeight / 2)
-		}
+		const coords = UserSettings._get('adventureCoordinates')
+		menu.container.setPosition(
+			coords.x + Space.windowWidth / 2,
+			coords.y + Space.windowHeight / 2)
 
 		params.txt = ''
 		params.card = undefined
@@ -382,28 +378,18 @@ export default class AdventureScene extends BaseScene {
 
 	// Return the function for what happens when the given mission node is clicked on
 	private missionOnClick(mission): () => void {
-		let that = this
-
 		if (mission.type === 'tutorial') {
-			return function() {
-				that.params = {
-					scrollX: that.cameras.main.scrollX,
-					scrollY: that.cameras.main.scrollY,
-				}
-    			that.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${mission.id}`, missionID: mission.id})
+			return () => {
+    			this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${mission.id}`, missionID: mission.id})
 			}
 		}
 		else if (mission.type === 'mission') {
-			return function() {
-				that.params = {
-					scrollX: that.cameras.main.scrollX,
-					scrollY: that.cameras.main.scrollY,
-				}
-				that.scene.start("AdventureBuilderScene", mission)
+			return () => {
+				this.scene.start("AdventureBuilderScene", mission)
 			}
 		}
 		else if (mission.type === 'card') {
-			return function() {
+			return () => {
 				UserSettings._setIndex('inventory', mission.card, true)
 
 				// Complete this mission
@@ -414,8 +400,6 @@ export default class AdventureScene extends BaseScene {
 
 				// TODO Clean this impl
 				let params = {
-					scrollX: that.cameras.main.scrollX,
-					scrollY: that.cameras.main.scrollY,
 					txt: '',
 					card: undefined
 				}
@@ -426,14 +410,9 @@ export default class AdventureScene extends BaseScene {
 					params.card = card
 				}
 
-				that.scene.start("AdventureScene", params)
+				this.scene.start("AdventureScene", params)
 			}
 		}
-		// else if (mission.type === 'tutorial') {
-		// 	return function() {
-		// 		that.scene.start("AdventureBuilderScene", mission)
-		// 	}
-		// }
 	}
 
 	private enableScrolling(): void {
@@ -453,5 +432,17 @@ export default class AdventureScene extends BaseScene {
 			MAP_HEIGHT - Space.windowHeight,
 			Math.max(0, camera.scrollY + dy)
 			)
+
+		// Remember the camera position
+		AdventureScene.rememberCoordinates(camera)
+	}
+
+	// Remember the position of the camera so the next time this scene launches it's in the same place
+	private static rememberCoordinates(camera): void {
+		UserSettings._set('adventureCoordinates',
+		{
+			x: camera.scrollX,
+			y: camera.scrollY,
+		})
 	}
 }

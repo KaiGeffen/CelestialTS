@@ -1,5 +1,6 @@
 import Server from "../server"
 import { baseCards } from "../catalog/catalog"
+import { Space } from "./settings"
 
 
 // User settings will first look to see if the user is logged in
@@ -38,6 +39,12 @@ export class UserSettings {
 
       // List of each mission by its id, and if the player has completed it
       completedMissions: [],
+
+      // Coordinates for the camera in adventure mode
+      adventureCoordinates: {
+        x: 4650 - Space.windowWidth/2,
+        y: 700 - Space.windowHeight/2,
+      },
     }
 
     for (var key in defaultSettings) {
