@@ -197,6 +197,11 @@ export class SearchingRegionTutorial extends Region {
 		// Y of the image when flush with the bottom
 		const downFully = Space.windowHeight - this.img.displayHeight
 
+		// First end any tweens that are playing (Previous stillframes)
+		this.scene.tweens.getAllTweens().forEach((tween) => {
+			tween.complete()
+		})
+
 		if (this.currentFrame < 3) {
 			// Scroll the image going down
 			this.scene.add.tween({
