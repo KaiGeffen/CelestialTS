@@ -246,6 +246,5 @@ What stories have you brought to tell us?"`],
 What have you seen out there in the world?"`],
 
 [`"So vibrant your tales, so vivid the dust of worlds you carry on your boots.
-Just once more traveler.
 One last story before we open the gate, and welcome you into the city."`],
 ]
