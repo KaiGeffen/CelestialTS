@@ -88,6 +88,9 @@ export default class Region {
 		// this.container.setDepth(Depth.aboveAll)
 	}
 
+	// Do any update consistent with phaser scenes
+	update(time, delta) {}
+
 	protected deleteTemp(): void {
 		for (let i = 0; i < this.temp.length; i++) {
 			this.temp[i].destroy()

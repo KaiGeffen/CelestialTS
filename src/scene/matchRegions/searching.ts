@@ -7,9 +7,11 @@ import Buttons from '../../lib/buttons/buttons'
 import avatarNames from '../../lib/avatarNames'
 
 
+// Time in milliseconds between swaps of the mystery avatar
+const AVATAR_SWAP_TIME = 4000
+
 export default class SearchingRegion extends Region {
-	// Interval on which the opponent's avatar is shuffled
-	interval: NodeJS.Timeout
+	mysteryAvatar: Phaser.GameObjects.Image
 
 	create (scene: BaseScene, avatarId: number): Region {
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
@@ -28,6 +30,18 @@ export default class SearchingRegion extends Region {
 	hide(): Region {
 		// clearInterval(this.interval)
 		return super.hide()
+	}
+	
+	sum = 0
+	update(time, delta): void {
+		this.sum += delta
+
+		if (this.sum >= AVATAR_SWAP_TIME) {
+			this.sum = 0
+
+			const i = Math.floor(Math.random() * 6)
+			this.mysteryAvatar.setTexture(`avatar-${avatarNames[i]}Full`)
+		}
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
@@ -50,10 +64,10 @@ export default class SearchingRegion extends Region {
 		.setScale(scale)
 		.setOrigin(0, 0.5)
 
-		let mysteryAvatar = scene.add.image(Space.windowWidth, Space.windowHeight/2, `avatar-${avatarNames[0]}Full`)
+		this.mysteryAvatar = scene.add.image(Space.windowWidth, Space.windowHeight/2, `avatar-${avatarNames[0]}Full`)
 		.setScale(scale)
 		.setOrigin(1, 0.5)
-		.setTint(0x222222)
+		.setTint(0x555555)
 
 		let i = 0
 		// this.interval = setInterval(() => {
@@ -63,7 +77,7 @@ export default class SearchingRegion extends Region {
 		// 	mysteryAvatar.setTexture(`avatar-${avatarNames[i]}Full`)
 		// }, 2000)
 
-		this.container.add([avatar, mysteryAvatar])
+		this.container.add([avatar, this.mysteryAvatar])
 	}
 
 	private addButtons(scene: BaseScene, container: Phaser.GameObjects.Container): Button {

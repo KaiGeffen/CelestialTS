@@ -231,6 +231,9 @@ class GameScene extends BaseScene {
 
 	// Try to display the next queued state TODO Recovery if we've been waiting too long
 	update(time, delta): void {
+		// Enable the searching region visual update
+		this.view.searching.update(time, delta)
+
 		// Play the recap if one is queued
 		if (this.queuedRecap.length > 0) {
 			if (this.displayState(this.queuedRecap[0], true)) {
