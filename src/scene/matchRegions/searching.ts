@@ -245,6 +245,5 @@ What stories have you brought to tell us?"`],
 [`"Marvelous! Traveler, please tell us more.
 What have you seen out there in the world?"`],
 
-[`"So vibrant your tales, so vivid the dust of worlds you carry on your boots.
-One last story before we open the gate, and welcome you into the city."`],
+[`"So vibrant your tales, so vivid the dust of worlds you carry on your boots. One last story before we open the gate, and welcome you into the city."`],
 ]
