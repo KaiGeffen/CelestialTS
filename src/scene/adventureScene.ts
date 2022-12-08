@@ -228,7 +228,9 @@ export default class AdventureScene extends BaseScene {
 			width,
 			height)
 
-		let txt = this.add.text(0, 0, params.txt, Style.flavor).setOrigin(0)
+		let txt = this.add.text(0, 0, params.txt, Style.flavor)
+		.setOrigin(0)
+		.setWordWrapWidth(width - Space.cardWidth - Space.pad * 3)
 		let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
 		let textBox = this.rexUI.add.textBox({
 			x: 0,
