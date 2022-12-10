@@ -164,6 +164,8 @@ class AlterDeckMenu extends Menu {
 			// Select the right avatar
 			if (i === this.selectedAvatar) {
 				avatar.select()
+			} else {
+				avatar.deselect()
 			}
 		}
 

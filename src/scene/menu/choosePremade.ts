@@ -91,6 +91,8 @@ export default class ChoosePremade extends Menu {
 			// Select this avatar if appropriate
 			if (i === this.selectedAvatar) {
 				this.avatarsSmall[i].select()
+			} else {
+				this.avatarsSmall[i].deselect()
 			}
 			
 			panel.add(container)

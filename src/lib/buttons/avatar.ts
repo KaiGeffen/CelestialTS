@@ -57,9 +57,17 @@ export default class AvatarButton extends Button {
 
 	// Override the default select so it doesn't grey the image
 	select(): Button {
-		this.icon.setTint(Color.outline)
+		this.icon.clearTint()
 
 		this.selected = true
+		
+		return this
+	}
+
+	deselect(): Button {
+		this.icon.setTint(Color.avatarDeselected)
+
+		this.selected = false
 		
 		return this
 	}

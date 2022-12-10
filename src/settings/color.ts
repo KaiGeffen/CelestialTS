@@ -109,6 +109,7 @@ export const Color: Record<string, any> = {
   progressFill: CoreColors.white,
 
   avatar: CoreColors.goldenS,
+  avatarDeselected: CoreColors.grey,
 
   // Color of the text for results (End screen) of rounds you won
   resultsWin: CoreColors.goldenS,
