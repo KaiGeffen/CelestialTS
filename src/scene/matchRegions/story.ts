@@ -119,7 +119,7 @@ export default class StoryRegion extends Region {
 			`${getGain(1)}\n\n${getGain(0)}`,
 			Style.announcement)
 			.setOrigin(0.5)
-			.setAlpha(0)
+			// .setAlpha(0)
 
 		this.container.add(txtGain)
 		this.scene.add.tween({

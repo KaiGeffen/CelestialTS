@@ -24,6 +24,7 @@ interface Config {
 		interactive: boolean,
 		offset?: number,
 		noGlow?: boolean,
+		circular?: boolean,
 	},
 	callbacks?: {
 		click?: () => void,
@@ -48,6 +49,7 @@ const ConfigDefaults = {
 		name: '',
 		interactive: false,
 		offset: 0,
+		circular: false,
 	},
 	callbacks: {
 		click: () => {},
@@ -108,7 +110,11 @@ export default class Button {
 
 			// Set interactive
 			if (config.icon.interactive) {
-				this.icon.setInteractive()
+				// Center the circle over and down by half the circle's width
+				const x = this.icon.width/2
+				const hitarea = !config.icon.circular ? [] : [new Phaser.Geom.Circle(x, x, x), Phaser.Geom.Circle.Contains]
+				
+				this.icon.setInteractive(...hitarea)
 				.on('pointerdown', () => {this.onClick()})
 				.on('pointerover', () => {this.onHover()})
 				.on('pointerout', () => {this.onExit()})

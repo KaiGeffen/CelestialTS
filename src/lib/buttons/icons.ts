@@ -233,7 +233,8 @@ class Pass extends Button {
 			},
 			icon: {
 				name: 'Sun',
-				interactive: true
+				interactive: true,
+				circular: true,
 			},
 			callbacks: {
 				click: f
@@ -277,7 +278,8 @@ class Moon extends Button {
 			},
 			icon: {
 				name: 'Moon',
-				interactive: true
+				interactive: true,
+				circular: true,
 			},
 			callbacks: {
 				click: f
