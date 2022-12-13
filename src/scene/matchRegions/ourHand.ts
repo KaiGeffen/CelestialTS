@@ -198,7 +198,7 @@ export default class OurHandRegion extends Region {
 	private createAvatar(avatarId: number): Button {
 		let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
 		.setOrigin(0)
-		['setEmotive']()
+		.setQuality({emotive: true})
 
 		// Sight
 		this.btnSight = new Buttons.Keywords.Sight(this.container,

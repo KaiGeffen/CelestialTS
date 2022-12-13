@@ -177,7 +177,7 @@ export default class DeckRegion {
 
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, Space.avatarSize + Space.pad, Space.avatarSize)
-		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules')['setEmotive']()
+		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules')
 		sizer.add(containerAvatar)
 
 		// Give the background a drop shadow
@@ -286,7 +286,7 @@ export default class DeckRegion {
 
 		this.avatarNumber = id
 
-		this.avatar.setQuality(id)
+		this.avatar.setQuality({num: id, emotive: true})
 		.enable()
 
 		return this

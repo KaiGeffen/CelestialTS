@@ -48,9 +48,15 @@ export default class AvatarButton extends Button {
 		return super.setOnClick(fWithSound, once)
 	}
 
-	setQuality(num: number): Button {
-		this.name = avatarNames[num]
-		this.setTexture(`avatar-${this.name}`)
+	setQuality({num=undefined, emotive=false}): Button {
+		if (num !== undefined) {
+			this.name = avatarNames[num]
+			this.setTexture(`avatar-${this.name}`)
+		}
+
+		if (emotive) {
+			this.setEmotive()
+		}
 
 		return this
 	}
@@ -74,7 +80,7 @@ export default class AvatarButton extends Button {
 
 	timeout: NodeJS.Timeout
 	// Set it so the avatar emotes briefly when clicked
-	setEmotive(): Button {
+	private setEmotive(): Button {
 		this.setOnClick(() => {
 			// Stop the timeout if it exists
 			clearTimeout(this.timeout)

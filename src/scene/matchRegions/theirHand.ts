@@ -60,7 +60,7 @@ export default class TheirHandRegion extends Region {
 		this.deleteTemp()
 
 		// Avatar
-		this.avatar.setQuality(state.avatars[1])
+		this.avatar.setQuality({num: state.avatars[1]})
 
 		// Statuses
 		this.displayStatuses(state)

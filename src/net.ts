@@ -154,6 +154,17 @@ export class Network {
 		versionNumber = vn
 	}
 
+	// Signal to the server that we have emoted
+	signalEmote(emoteNumber=0): void {
+		// The first message sent to server once the match starts
+		const msg = JSON.stringify({
+			type: 'emote',
+			value: emoteNumber
+		})
+
+		this.socket.send(msg)
+	}
+
 	// Get the appropriate websocket for this environment / matchmaking code
 	// If user is logged in, use the existing ws instead of opening a new one
 	private getSocket(mmCode): WebSocket {
