@@ -18,59 +18,59 @@ export default class ModeMenu extends Menu {
 	btnPwd: Button
 
 	constructor(scene: MenuScene, params) {
-		super(scene)
+		super(scene, width)
 
 		this.avatar = params.avatar
 
-		let panel = this.createSizer(scene)
+		this.createSizer()
 
 		// The non-menu scene which is active, used for changing scenes
 		let activeScene = params.activeScene
 		let deck = params.deck
-		this.createContent(scene, panel, activeScene, deck)
+		this.createContent(activeScene, deck)
 
-		panel.layout()
+		this.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene): any {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
+	// private createSizer(scene: Phaser.Scene): any {
+	// 	let panel = scene['rexUI'].add.fixWidthSizer(
+	// 	{
+	// 		x: Space.windowWidth/2,
+	// 		y: Space.windowHeight/2,
 
-			align: 'center',
-			space: {
-				bottom: Space.padSmall,
-				line: Space.pad * 2,
-			},
-		}
-		)
+	// 		align: 'center',
+	// 		space: {
+	// 			bottom: Space.padSmall,
+	// 			line: Space.pad * 2,
+	// 		},
+	// 	}
+	// 	)
 
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
+	// 	// Add background
+	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+	// 	panel.addBackground(rect)
 
-		return panel
-	}
+	// 	return panel
+	// }
 
-	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene, deck: string) {
-		panel.add(this.createHeader('Game Mode', width))
+	private createContent(activeScene: Phaser.Scene, deck: string) {
+		this.sizer.add(this.createHeader('Game Mode', width))
 		.addNewLine()
-		.add(this.createAI(scene, activeScene, deck))
+		.add(this.createAI(activeScene, deck))
 		.addNewLine()
-		.add(this.createPVP(scene, activeScene, deck))
+		.add(this.createPVP(activeScene, deck))
 		.addNewLine()
-		.add(this.createPWD(scene, activeScene, deck))
+		.add(this.createPWD(activeScene, deck))
 		.addNewLine()
-		.add(this.createPasswordEntry(scene))
+		.add(this.createPasswordEntry())
 		.addNewLine()
 	}
 
 	// TODO Replace background with a prerendered visual?
-	private createPasswordEntry(scene: Phaser.Scene) {
+	private createPasswordEntry() {
 		let that = this
 
-		let inputText = scene.add['rexInputText'](
+		let inputText = this.scene.add['rexInputText'](
 			0, 0, width - Space.pad * 2, 40, {
 				type: 'text',
 				text: '', // Retain the last password
@@ -97,16 +97,16 @@ export default class ModeMenu extends Menu {
 			return inputText
 	}
 
-	private createAI(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
-		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad*2})
+	private createAI(activeScene: Phaser.Scene, deck: string) {
+		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad*2})
 
-		const txt = scene.add.text(0, 0, 'Versus computer opponent', Style.basic)
+		const txt = this.scene.add.text(0, 0, 'Versus computer opponent', Style.basic)
 
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
 		new Buttons.Basic(container, 0, 0, 'AI', () => {
 			activeScene.scene.stop()
 
-			scene.scene.start("StandardGameScene",
+			this.scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
 					deck: deck,
@@ -124,16 +124,16 @@ export default class ModeMenu extends Menu {
 		return sizer
 	}
 
-	private createPVP(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
-		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad*2})
+	private createPVP(activeScene: Phaser.Scene, deck: string) {
+		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad*2})
 
-		const txt = scene.add.text(0, 0, 'Versus human opponent', Style.basic)
+		const txt = this.scene.add.text(0, 0, 'Versus human opponent', Style.basic)
 
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
 		new Buttons.Basic(container, 0, 0, 'PVP', () => {
 			activeScene.scene.stop()
 
-			scene.scene.start("StandardGameScene",
+			this.scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
 					deck: deck,
@@ -150,17 +150,17 @@ export default class ModeMenu extends Menu {
 		return sizer
 	}
 
-	private createPWD(scene: Phaser.Scene, activeScene: Phaser.Scene, deck: string) {
-		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad*2})
+	private createPWD(activeScene: Phaser.Scene, deck: string) {
+		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad*2})
 
-		const txt = scene.add.text(0, 0, 'Versus same password', Style.basic)
+		const txt = this.scene.add.text(0, 0, 'Versus same password', Style.basic)
 
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
 		this.btnPwd = new Buttons.Basic(container, 0, 0, 'PWD', () => {
 			activeScene.scene.stop()
 
 			// Start the home scene
-			scene.scene.start("StandardGameScene",
+			this.scene.scene.start("StandardGameScene",
 			{
 					isTutorial: false,
 					deck: deck,

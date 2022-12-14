@@ -10,36 +10,36 @@ const width = 600
 
 export default class DCMenu extends Menu {
 	constructor(scene: MenuScene, params) {
-		super(scene)
+		super(scene, width)
 
-		let panel = this.createSizer(scene)
+		let panel = this.createSizer()
 
 		// The non-menu scene which is active, used for changing scenes
 		let activeScene = params.activeScene
 		// let deck = params.deck
 		this.createContent(scene, panel, activeScene)
 
-		panel.layout()
+		this.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			space: {
-				bottom: Space.pad/2,
-				line: Space.pad,
-			},
-		}
-		)
+	// private createSizer(scene: Phaser.Scene)  {
+	// 	let panel = scene['rexUI'].add.fixWidthSizer(
+	// 	{
+	// 		x: Space.windowWidth/2,
+	// 		y: Space.windowHeight/2,
+	// 		space: {
+	// 			bottom: Space.pad/2,
+	// 			line: Space.pad,
+	// 		},
+	// 	}
+	// 	)
 
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
+	// 	// Add background
+	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+	// 	panel.addBackground(rect)
 
-		return panel
-	}
+	// 	return panel
+	// }
 
 	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene) {
 		panel.add(this.createHeader('Opponent Disconnected', width))

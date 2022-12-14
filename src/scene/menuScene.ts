@@ -4,8 +4,8 @@ import { Style, Color, Space, Time } from "../settings/settings"
 import { createMenu } from "./menu/menu"
 
 
-// The scene which shows whichever menu is open, if any
-// on top of the other scenes
+// The scene showing whichever menu is open, if any
+// This scene is on top of any other active open scenes
 export default class MenuScene extends Phaser.Scene {
 	constructor() {
 		super({
@@ -65,12 +65,6 @@ export default class MenuScene extends Phaser.Scene {
 		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.7)
 		invisBackground.setInteractive()
 		invisBackground.on('pointerdown', this.endScene())
-
-		// Visible background, which does nothing when clicked
-		// let visibleBackground = this.add['rexRoundRectangle'](x, y, 1000, 600, 30, Color.menuBackground,
-		// ).setAlpha(0.95)
-		// visibleBackground.setInteractive()
-		// visibleBackground.setStrokeStyle(10, Color.menuBorder, 1)
 	}
 
 	// NOTE This is a fix for sizer objects not deleting properly in all cases

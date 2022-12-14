@@ -9,46 +9,46 @@ export default class RulebookMenu extends Menu {
 		super(scene)
 
 		// Make a fixed height sizer
-		let panel = this.createSizer(scene)
+		this.createSizer()
 
-		this.createContent(scene, panel)
+		this.createContent()
 
 		// Add panel to a scrollable panel
-		let scrollable = this.createScrollablePanel(scene, panel)
+		let scrollable = this.createScrollablePanel()
 		scrollable.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			space: {
-				left: Space.pad/2,
-				right: Space.pad/2,
-				top: Space.pad/2,
-				bottom: Space.pad/2,
-				item: Space.pad/2,
-				line: Space.pad/2,
-			},
-		}
-		)
+	// private createSizer(scene: Phaser.Scene)  {
+	// 	let panel = scene['rexUI'].add.fixWidthSizer(
+	// 	{
+	// 		x: Space.windowWidth/2,
+	// 		y: Space.windowHeight/2,
+	// 		space: {
+	// 			left: Space.pad/2,
+	// 			right: Space.pad/2,
+	// 			top: Space.pad/2,
+	// 			bottom: Space.pad/2,
+	// 			item: Space.pad/2,
+	// 			line: Space.pad/2,
+	// 		},
+	// 	}
+	// 	)
 
-		return panel
-	}
+	// 	return panel
+	// }
 
-	private createContent(scene: Phaser.Scene, panel) {
-		let txt = scene.add.text(0, 0, rulebookString, Style.basic)
+	private createContent() {
+		let txt = this.scene.add.text(0, 0, rulebookString, Style.basic)
 		.setWordWrapWidth(Space.windowWidth - Space.pad * 4)
 
-		panel.add(txt)
+		this.sizer.add(txt)
 	}
 
-	private createScrollablePanel(scene: Phaser.Scene, panel) {
-		let background = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background)
+	private createScrollablePanel() {
+		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background)
 		.setInteractive()
 
-		let scrollable = scene['rexUI'].add.scrollablePanel({
+		let scrollable = this.scene['rexUI'].add.scrollablePanel({
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			width: 50,
@@ -57,7 +57,7 @@ export default class RulebookMenu extends Menu {
 			header: this.createHeader('Rulebook', Space.maxTextWidth),
 			
 			panel: {
-				child: panel.setDepth(1)
+				child: this.sizer.setDepth(1)
 			},
 			background: background,
 

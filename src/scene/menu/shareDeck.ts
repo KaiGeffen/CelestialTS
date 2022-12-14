@@ -15,48 +15,44 @@ export default class ShareDeckMenu extends Menu {
 	selectedAvatar: number
 
 	constructor(scene: MenuScene, params) {
-		super(scene)
+		super(scene, width)
 
 		// Make a fixed height sizer
-		let panel = this.createSizer(scene)
+		this.createSizer()
 
-		this.createContent(scene, panel, params.callback, params.currentDeck)
+		this.createContent(params.callback, params.currentDeck)
 
-		panel.layout()
+		this.layout()
 	}
 
 	onClose(): void {
 		
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			width: width,
+	// private createSizer(scene: Phaser.Scene)  {
+	// 	let panel = scene['rexUI'].add.fixWidthSizer(
+	// 	{
+	// 		x: Space.windowWidth/2,
+	// 		y: Space.windowHeight/2,
+	// 		width: width,
 
-			align: 'center',
-			space: {
-				bottom: Space.pad,
-				line: Space.pad,
-			},
-		}
-		)
+	// 		align: 'center',
+	// 		space: {
+	// 			bottom: Space.pad,
+	// 			line: Space.pad,
+	// 		},
+	// 	}
+	// 	)
 
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
+	// 	// Add background
+	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+	// 	panel.addBackground(rect)
 
-		return panel
-	}
+	// 	return panel
+	// }
 
-	private createContent(scene: Phaser.Scene,
-		panel,
-		textChangeCallback: (inputText) => void,
-		currentDeck: string)
-	{
-		panel.add(this.createHeader('Share Deck', width))
+	private createContent(textChangeCallback: (inputText) => void, currentDeck: string) {
+		this.sizer.add(this.createHeader('Share Deck', width))
 		.addNewLine()
 
 		const padding = {space: {
@@ -65,20 +61,18 @@ export default class ShareDeckMenu extends Menu {
 		}}
 
 		// Add hint
-		let txtHint = scene.add.text(0, 0, 'Copy or paste your deck code here:', Style.basic)
-		panel.add(txtHint, padding)
+		let txtHint = this.scene.add.text(0, 0, 'Copy or paste your deck code here:', Style.basic)
+		this.sizer.add(txtHint, padding)
 		.addNewLine()
 
-		panel.add(this.createField(scene, textChangeCallback, currentDeck), padding)
+		this.sizer.add(this.createField(textChangeCallback, currentDeck), padding)
 	}
 
-	private createField(scene: Phaser.Scene, textChangeCallback: (inputText) => void, currentDeck: string) {
-		let that = this
-
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createField(textChangeCallback: (inputText) => void, currentDeck: string) {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 		sizer.addSpace()
 
-		let inputText = scene.add['rexInputText'](
+		let inputText = this.scene.add['rexInputText'](
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
 				text: currentDeck,

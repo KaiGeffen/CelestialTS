@@ -23,35 +23,25 @@ export default class ChoosePremade extends Menu {
 
 	constructor(scene: MenuScene, params) {
 		let callback: (number) => void = params.callback
-		super(scene, params)
+		super(scene, Space.windowWidth, params)
 
 		// Add a background rectangle
 		this.scene.add.image(0, 0, 'bg-Texture')
-		// this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.background)
 		.setOrigin(0)
 		.setInteractive()
 
 		this.selectedAvatar = params.selected | 0
 		this.avatarsSmall = []
 
-		this.createSizer(callback)
+		this.createSizer()
+		this.createContent(callback)
 
 		// Set the content based on the selected avatar
 		this.setContent(avatarDetails[this.selectedAvatar])
 	}
 
-	private createSizer(callback: (number) => void): void {
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			width: Space.windowWidth,
-			space: {
-				// left: Space.pad,
-				right: Space.pad,
-				bottom: Space.pad,
-				// line: Space.pad,
-			}
-		}).setOrigin(0)
-
-		sizer.add(this.createCustomHeader())
+	private createContent(callback: (number) => void): void {
+		this.sizer.add(this.createCustomHeader())
 		.addNewLine()
 		.add(this.createPanel())
 
@@ -59,8 +49,6 @@ export default class ChoosePremade extends Menu {
 
 		// Create chart showing details about selected deck
 		this.createChart()
-
-		sizer.layout()
 	}
 
 	private createCustomHeader(): any {
@@ -128,12 +116,12 @@ export default class ChoosePremade extends Menu {
 		this.avatarFull.setScale(ratio)
 
 		panel.add(this.avatarFull)
-		.add(this.createText(), {align: 'top'})
+		.add(this.createDescriptionText(), {align: 'top'})
 
 		return panel
 	}
 
-	private createText(): any {
+	private createDescriptionText(): any {
 		let panel = this.scene['rexUI'].add.fixWidthSizer()
 
 		// Hint on which information is displayed

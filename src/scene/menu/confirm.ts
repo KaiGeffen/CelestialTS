@@ -10,38 +10,38 @@ const width = 500
 
 export default class ConfirmMenu extends Menu {
 	constructor(scene: MenuScene, params) {
-		super(scene)
+		super(scene, width)
 
-		let panel = this.createSizer(scene)
+		this.createSizer()
 
 		let callback = params.callback
 		let hint = params.hint
-		this.createContent(scene, panel, callback, hint)
+		this.createContent(callback, hint)
 
-		panel.layout()
+		this.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			space: {
-				bottom: Space.pad/2,
-				line: Space.pad,
-			},
-		}
-		)
+	// private createSizer(scene: Phaser.Scene)  {
+	// 	let panel = scene['rexUI'].add.fixWidthSizer(
+	// 	{
+	// 		x: Space.windowWidth/2,
+	// 		y: Space.windowHeight/2,
+	// 		space: {
+	// 			bottom: Space.pad/2,
+	// 			line: Space.pad,
+	// 		},
+	// 	}
+	// 	)
 
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
+	// 	// Add background
+	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+	// 	panel.addBackground(rect)
 
-		return panel
-	}
+	// 	return panel
+	// }
 
-	private createContent(scene: Phaser.Scene, panel, callback: () => void, hint: string) {
-		panel.add(this.createHeader('Confirm', width))
+	private createContent(callback: () => void, hint: string) {
+		this.sizer.add(this.createHeader('Confirm', width))
 		.addNewLine()
 
 		const padding = {space: {
@@ -49,10 +49,10 @@ export default class ConfirmMenu extends Menu {
 			right: Space.pad/2,
 		}}
 
-		panel.add(this.createHint(scene, hint), padding)
+		this.sizer.add(this.createHint(this.scene, hint), padding)
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, callback), padding)
+		this.sizer.add(this.createButtons(this.scene, callback), padding)
 	}
 
 	private createHint(scene: Phaser.Scene, hint: string) {

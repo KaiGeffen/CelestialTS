@@ -1,14 +1,25 @@
 import "phaser"
-import { Style, Color } from '../../settings/settings'
+import { Style, Color, Space } from '../../settings/settings'
 import MenuScene from '../menuScene'
 
 
 export default class Menu {
+	// The scene which contains only this menu
 	scene: MenuScene
+
+	// The callback for when this menu is closed
 	exitCallback: () => void
 
-	constructor(scene: MenuScene, params?) {
+	// The width of this menu
+	width: number
+
+	// The main panel for this menu
+	sizer: any
+
+	constructor(scene: MenuScene, width: number = Space.windowWidth, params?) {
 		this.scene = scene
+
+		this.width = width
 
 		if (params) {
 			this.exitCallback = params.exitCallback
@@ -23,7 +34,12 @@ export default class Menu {
 		this.scene.endScene()()
 	}
 
-	createHeader(s: string, width: number): any {
+	protected layout(): void {
+		this.sizer.layout()
+	}
+
+	// Create the menu header
+	protected createHeader(s: string, width: number = this.width): any {
 		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
 		
 		let sizer = this.scene['rexUI'].add.sizer({width: width})
@@ -42,6 +58,23 @@ export default class Menu {
 		})
 
 		return sizer
+	}
+
+	protected createSizer(): void {
+		this.sizer = this.scene['rexUI'].add.fixWidthSizer({
+			width: Space.windowWidth,
+			space: {
+				// left: Space.pad,
+				right: Space.pad,
+				bottom: Space.pad,
+				// line: Space.pad,
+			}
+		}).setOrigin(0)
+	}
+
+	// Return a sizer with the given text
+	protected createText(s: string): void {
+
 	}
 }
 
@@ -77,8 +110,7 @@ const menus = {
 	'distribution': DistributionMenu,
 }
 
-// Allows for the creation and storing of custom menus not specified 
-// in separate ts files
+// Function exposed for the creation of custom menus
 export function createMenu(scene: Phaser.Scene, title: string, params): Menu {
 	// Check if the given menu exists, if not throw
 	if (!(title in menus)) {
@@ -87,33 +119,3 @@ export function createMenu(scene: Phaser.Scene, title: string, params): Menu {
 
 	return new menus[title](scene, params)
 }
-
-
-// export default class Menu {
-// 	contents: Phaser.GameObjects.GameObject[]
-
-// 	constructor(scene: Phaser.Scene) { }
-
-// 	// Function for what happens when menu closes
-// 	onClose(): void { }
-// }
-
-// import OptionsMenu from "./optionsMenu"
-// import PremadeDecks from "./premadeDecks"
-
-
-// const menus = {
-// 	'options': OptionsMenu,
-// 	'premadeDecks': PremadeDecks
-// }
-
-// // Allows for the creation and storing of custom menus not specified 
-// // in separate ts files
-// export function createMenu(scene: Phaser.Scene, title: string) {
-// 	// Check if the given menu exists, if not throw
-// 	if (!(title in menus)) {
-// 		throw `Given menu ${title} is not in list of implemented menus.`
-// 	}
-
-// 	new menus[title](scene)
-// }
