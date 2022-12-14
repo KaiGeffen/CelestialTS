@@ -72,6 +72,14 @@ export default class Server {
 			}
 		})
 
+		// TODO For testing purposed
+		// When \ key is pressed, toggle the menu open/closed
+		const devMode = new URLSearchParams(window.location.search).has('dev')
+		if (devMode) {
+			let zeroKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO)
+			zeroKey.on('down', () => {wsServer.close()})
+		}
+
 		// If the connection closes, login again with same args
 		wsServer.addEventListener('close', (event) => {
 			// Don't attempt to login again if the server explicitly logged us out
