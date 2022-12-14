@@ -20,25 +20,6 @@ export default class DCMenu extends Menu {
 		this.layout()
 	}
 
-	// private createSizer(scene: Phaser.Scene)  {
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-	// 		space: {
-	// 			bottom: Space.pad/2,
-	// 			line: Space.pad,
-	// 		},
-	// 	}
-	// 	)
-
-	// 	// Add background
-	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-	// 	panel.addBackground(rect)
-
-	// 	return panel
-	// }
-
 	private createContent(activeScene: Phaser.Scene) {
 		this.sizer.add(this.createHeader('Opponent Disconnected', width))
 		.addNewLine()

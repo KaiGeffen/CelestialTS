@@ -30,27 +30,6 @@ export default class ModeMenu extends Menu {
 		this.layout()
 	}
 
-	// private createSizer(scene: Phaser.Scene): any {
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-
-	// 		align: 'center',
-	// 		space: {
-	// 			bottom: Space.padSmall,
-	// 			line: Space.pad * 2,
-	// 		},
-	// 	}
-	// 	)
-
-	// 	// Add background
-	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-	// 	panel.addBackground(rect)
-
-	// 	return panel
-	// }
-
 	private createContent(activeScene: Phaser.Scene, deck: string) {
 		this.sizer.add(this.createHeader('Game Mode', width))
 		.addNewLine()

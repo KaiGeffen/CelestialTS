@@ -24,28 +24,6 @@ export default class SearchMenu extends Menu {
 		this.layout()
 	}
 
-	// private createSizer(scene: Phaser.Scene)  {
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-	// 		space: {
-	// 			left: Space.pad/2,
-	// 			right: Space.pad/2,
-	// 			top: Space.pad/2,
-	// 			bottom: Space.pad/2,
-	// 			line: Space.pad,
-	// 		},
-	// 	}
-	// 	)
-
-	// 	// Add background
-	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-	// 	panel.addBackground(rect)
-
-	// 	return panel
-	// }
-
 	private createContent(callback: (string) => void, start: string) {
 		this.sizer.add(this.createTitle())
 		.addNewLine()

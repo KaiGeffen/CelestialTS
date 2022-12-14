@@ -37,29 +37,6 @@ class AlterDeckMenu extends Menu {
 		this.layout()
 	}
 
-	// private createSizer(scene: Phaser.Scene)  {
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-	// 		width: width,
-
-	// 		align: 'center',
-	// 		space: {
-	// 			bottom: Space.padSmall,
-	// 			line: Space.pad,
-
-	// 		},
-	// 	}
-	// 	)
-
-	// 	// Add background
-	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-	// 	panel.addBackground(rect)
-
-	// 	return panel
-	// }
-
 	private createContent(createCallback: (name: string, avatar: number) => void) {
 		this.sizer.add(this.createHeader(this.titleString, width))
 		.addNewLine()

@@ -16,7 +16,10 @@ export default class Menu {
 	// The main panel for this menu
 	sizer: any
 
-	constructor(scene: MenuScene, width: number = Space.windowWidth, params?) {
+	constructor(scene: MenuScene,
+		width: number = Space.windowWidth - Space.pad*2,
+		params?
+		) {
 		this.scene = scene
 
 		this.width = width

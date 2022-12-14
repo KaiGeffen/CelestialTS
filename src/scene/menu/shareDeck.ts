@@ -26,28 +26,6 @@ export default class ShareDeckMenu extends Menu {
 		
 	}
 
-	// private createSizer(scene: Phaser.Scene)  {
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-	// 		width: width,
-
-	// 		align: 'center',
-	// 		space: {
-	// 			bottom: Space.pad,
-	// 			line: Space.pad,
-	// 		},
-	// 	}
-	// 	)
-
-	// 	// Add background
-	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-	// 	panel.addBackground(rect)
-
-	// 	return panel
-	// }
-
 	private createContent(textChangeCallback: (inputText) => void, currentDeck: string) {
 		this.sizer.add(this.createHeader('Share Deck', width))
 		.addNewLine()

@@ -22,29 +22,6 @@ export default class PasteMenu extends Menu {
 		this.layout()
 	}
 
-	// private createSizer(scene: Phaser.Scene)  {
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-	// 		width: width,
-
-	// 		align: 'center',
-	// 		space: {
-	// 			bottom: Space.padSmall,
-	// 			line: Space.pad,
-
-	// 		},
-	// 	}
-	// 	)
-
-	// 	// Add background
-	// 	let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-	// 	panel.addBackground(rect)
-
-	// 	return panel
-	// }
-
 	private createContent(createCallback: (name: string, avatar: number, deckCode?: string) => void) {
 		this.sizer.add(this.createHeader('Paste Deck Code', width))
 		.addNewLine()

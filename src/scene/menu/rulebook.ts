@@ -15,25 +15,6 @@ export default class RulebookMenu extends Menu {
 		scrollable.layout()
 	}
 
-	// private createSizer(scene: Phaser.Scene)  {
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-	// 		space: {
-	// 			left: Space.pad/2,
-	// 			right: Space.pad/2,
-	// 			top: Space.pad/2,
-	// 			bottom: Space.pad/2,
-	// 			item: Space.pad/2,
-	// 			line: Space.pad/2,
-	// 		},
-	// 	}
-	// 	)
-
-	// 	return panel
-	// }
-
 	private createContent() {
 		let txt = this.scene.add.text(0, 0, rulebookString, Style.basic)
 		.setWordWrapWidth(Space.windowWidth - Space.pad * 4)

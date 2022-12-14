@@ -29,37 +29,6 @@ export default class OptionsMenu extends Menu {
 		
 	}
 
-	// private createSizer()  {
-	// 	let background = scene.add.image(0, 0, 'bg-Texture')
-
-	// 	background['resize'] = (w, h) => {
-	// 		// background.setDisplaySize(w, h)
-	// 		const x = (background.displayWidth - w)/2
-	// 		const y = (background.displayHeight - h)/2
-			
-	// 		background.setCrop(x, y, w, h)
-	// 		.setInteractive(new Phaser.Geom.Rectangle(x, y, w, h), Phaser.Geom.Rectangle.Contains)
-	// 	}
-
-	// 	let panel = scene['rexUI'].add.fixWidthSizer(
-	// 	{
-	// 		x: Space.windowWidth/2,
-	// 		y: Space.windowHeight/2,
-	// 		width: width + Space.padSmall*2,
-
-	// 		space: {
-	// 			// left: Space.padSmall,
-	// 			// right: Space.padSmall,
-	// 			bottom: Space.padSmall,
-	// 			item: Space.padSmall,
-	// 			line: Space.padSmall,
-	// 		},
-	// 	})
-	// 	.addBackground(background)
-
-	// 	return panel
-	// }
-
 	private createContent(activeScene: BaseScene) {
 		this.sizer.add(this.createHeader('Options', width + Space.padSmall*2))
 		.addNewLine()
