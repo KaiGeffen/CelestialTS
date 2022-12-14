@@ -89,10 +89,6 @@ export default class Server {
 		return wsServer
 	}
 
-	static close() {
-		return wsServer.close(code - 1)
-	}
-
 	// Returns if the user is logged in
 	static loggedIn(): boolean {
 		return wsServer !== undefined
