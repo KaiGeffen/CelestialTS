@@ -88,7 +88,7 @@ export default class Menu {
 
 	}
 
-	// Return a sizer with the given text
+	// Add the given string as text to the sizer
 	protected createText(s: string): any {
 		let sizer = this.scene['rexUI'].add.sizer()
 
@@ -97,6 +97,15 @@ export default class Menu {
 		sizer.addSpace()
 		.add(txt)
 		.addSpace()
+
+		// Add this new sizer to the main sizer		
+		const padding = {space: {
+			left: Space.pad,
+			right: Space.pad,
+		}}
+
+		this.sizer.add(sizer, padding)
+		.addNewLine()
 
 		return sizer
 	}
@@ -116,6 +125,7 @@ import DCMenu from './disconnect'
 import ConfirmMenu from './confirm'
 import SearchMenu from './search'
 import DistributionMenu from './distribution'
+import MessageMenu from './message'
 
 
 const menus = {
@@ -132,6 +142,7 @@ const menus = {
 	'confirm': ConfirmMenu,
 	'search': SearchMenu,
 	'distribution': DistributionMenu,
+	'message': MessageMenu,
 }
 
 // Function exposed for the creation of custom menus

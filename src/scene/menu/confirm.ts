@@ -23,14 +23,8 @@ export default class ConfirmMenu extends Menu {
 		this.sizer.add(this.createHeader('Confirm', width))
 		.addNewLine()
 
-		const padding = {space: {
-			left: Space.pad,
-			right: Space.pad,
-		}}
-
 		const s = `Are you sure you want to ${hint}?`
-		this.sizer.add(this.createText(s), padding)
-		.addNewLine()
+		this.createText(s)
 
 		this.sizer.add(this.createButtons(this.scene, callback), padding)
 	}

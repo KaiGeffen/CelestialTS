@@ -24,14 +24,8 @@ export default class DCMenu extends Menu {
 		this.sizer.add(this.createHeader('Opponent Disconnected', width))
 		.addNewLine()
 
-		const padding = {space: {
-			left: Space.pad/2,
-			right: Space.pad/2,
-		}}
-
 		const s = 'Your opponent disconnected, you win!'
-		this.sizer.add(this.createText(s), padding)
-		.addNewLine()
+		this.createText(s)
 
 		this.sizer.add(this.createButtons(activeScene), padding)
 	}
