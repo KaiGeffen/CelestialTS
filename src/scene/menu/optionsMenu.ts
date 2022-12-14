@@ -30,8 +30,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createContent(activeScene: BaseScene) {
-		this.sizer.add(this.createHeader('Options', width + Space.padSmall*2))
-		.addNewLine()
+		this.createHeader('Options', width + Space.padSmall*2)
 
 		const padding = {padding: {left: Space.padSmall, right: Space.padSmall}}
 

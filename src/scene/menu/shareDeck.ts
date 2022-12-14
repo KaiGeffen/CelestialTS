@@ -27,8 +27,7 @@ export default class ShareDeckMenu extends Menu {
 	}
 
 	private createContent(textChangeCallback: (inputText) => void, currentDeck: string) {
-		this.sizer.add(this.createHeader('Share Deck', width))
-		.addNewLine()
+		this.createHeader('Share Deck', width)
 
 		const padding = {space: {
 			left: Space.pad/2,

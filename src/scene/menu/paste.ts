@@ -23,8 +23,7 @@ export default class PasteMenu extends Menu {
 	}
 
 	private createContent(createCallback: (name: string, avatar: number, deckCode?: string) => void) {
-		this.sizer.add(this.createHeader('Paste Deck Code', width))
-		.addNewLine()
+		this.createHeader('Paste Deck Code', width)
 
 		const padding = {space: {
 			left: Space.pad,

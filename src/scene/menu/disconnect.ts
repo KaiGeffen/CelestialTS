@@ -21,13 +21,12 @@ export default class DCMenu extends Menu {
 	}
 
 	private createContent(activeScene: Phaser.Scene) {
-		this.sizer.add(this.createHeader('Opponent Disconnected', width))
-		.addNewLine()
+		this.createHeader('Opponent Disconnected')
 
 		const s = 'Your opponent disconnected, you win!'
 		this.createText(s)
 
-		this.sizer.add(this.createButtons(activeScene), padding)
+		this.sizer.add(this.createButtons(activeScene))
 	}
 
 	// Create the buttons at the bottom

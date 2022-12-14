@@ -20,8 +20,7 @@ export default class ConfirmMenu extends Menu {
 	}
 
 	private createContent(callback: () => void, hint: string) {
-		this.sizer.add(this.createHeader('Confirm', width))
-		.addNewLine()
+		this.createHeader('Confirm')
 
 		const s = `Are you sure you want to ${hint}?`
 		this.createText(s)

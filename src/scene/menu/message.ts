@@ -10,6 +10,8 @@ export default class ConfirmMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
+		this.createHeader('Foooo')
+
 		const s = params.s
 		this.createText(s)
 

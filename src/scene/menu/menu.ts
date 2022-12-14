@@ -63,6 +63,10 @@ export default class Menu {
 			shadowColor: 0x000000,
 		})
 
+		// Add the sizer to the main menu sizer
+		this.sizer.add(sizer)
+		.addNewLine()
+
 		return sizer
 	}
 

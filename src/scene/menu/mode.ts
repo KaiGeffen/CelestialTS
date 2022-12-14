@@ -31,9 +31,8 @@ export default class ModeMenu extends Menu {
 	}
 
 	private createContent(activeScene: Phaser.Scene, deck: string) {
-		this.sizer.add(this.createHeader('Game Mode', width))
-		.addNewLine()
-		.add(this.createAI(activeScene, deck))
+		this.createHeader('Game Mode')
+		this.sizer.add(this.createAI(activeScene, deck))
 		.addNewLine()
 		.add(this.createPVP(activeScene, deck))
 		.addNewLine()

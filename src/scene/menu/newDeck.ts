@@ -38,8 +38,7 @@ class AlterDeckMenu extends Menu {
 	}
 
 	private createContent(createCallback: (name: string, avatar: number) => void) {
-		this.sizer.add(this.createHeader(this.titleString, width))
-		.addNewLine()
+		this.createHeader(this.titleString, width)
 
 		const padding = {space: {
 			left: Space.pad,
