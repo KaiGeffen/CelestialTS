@@ -25,7 +25,7 @@ export default class ConfirmMenu extends Menu {
 		const s = `Are you sure you want to ${hint}?`
 		this.createText(s)
 
-		this.sizer.add(this.createButtons(this.scene, callback), padding)
+		this.sizer.add(this.createButtons(this.scene, callback))
 	}
 
 	// Create the buttons at the bottom
