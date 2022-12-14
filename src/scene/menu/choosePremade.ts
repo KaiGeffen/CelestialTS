@@ -37,6 +37,21 @@ export default class ChoosePremade extends Menu {
 
 		// Set the content based on the selected avatar
 		this.setContent(avatarDetails[this.selectedAvatar])
+
+		this.layout()
+	}
+
+	// This menu has a custom sizer that fills the whole screen and has different spacing
+	protected createSizer(): void {
+		this.sizer = this.scene['rexUI'].add.fixWidthSizer({
+			width: Space.windowWidth,
+			space: {
+				// left: Space.pad,
+				right: Space.pad,
+				bottom: Space.pad,
+				// line: Space.pad,
+			}
+		}).setOrigin(0)
 	}
 
 	private createContent(callback: (number) => void): void {
