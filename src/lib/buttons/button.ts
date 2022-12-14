@@ -294,7 +294,13 @@ export default class Button {
 
 	// Set the on click callback for this button
 	// If once, only perform this callback once, then disable the button
-	setOnClick(f, once = false): Button {
+	// If overwrite, take away the onClick that existed before
+	setOnClick(f, once = false, overwrite = true): Button {
+		if (!overwrite) {
+			// TODO Issues with multiple 'click' sound playing
+			f = thisThenThat(this.onClick, f)
+		}
+
 		this.onClick = () => {
 			if (!this.muteClick) {
 				this.scene.sound.play('click')				
@@ -307,6 +313,8 @@ export default class Button {
 
 		return this
 	}
+
+
 
 	setOnHover(hoverCallback, exitCallback): Button {
 		this.onHover = hoverCallback
@@ -401,5 +409,12 @@ export default class Button {
 		}
 		
 		return this
+	}
+}
+
+function thisThenThat(f: () => void, g: () => void): () => void {
+	return function() {
+		f()
+		g()
 	}
 }

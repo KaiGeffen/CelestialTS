@@ -91,6 +91,10 @@ export class Network {
 					case 'dc':
 					scene.signalDC()
 					break
+
+					case 'opponent_emote':
+					scene.emote(msg.value)
+					break
 				}
 			})
 		}
@@ -159,7 +163,7 @@ export class Network {
 		// The first message sent to server once the match starts
 		const msg = JSON.stringify({
 			type: 'emote',
-			value: emoteNumber
+			value: emoteNumber,
 		})
 
 		this.socket.send(msg)

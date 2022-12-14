@@ -39,16 +39,16 @@ export default class AvatarButton extends Button {
 		this.name = name
 	}
 
-	setOnClick(f, once = false): Button {
+	setOnClick(f, once = false, overwrite = true): Button {
 		let fWithSound = () => {
 			f()
 			this.scene.sound.play(`voice-${this.name}`)
 		}
 
-		return super.setOnClick(fWithSound, once)
+		return super.setOnClick(fWithSound, once, overwrite)
 	}
 
-	setQuality({num=undefined, emotive=false}): Button {
+	setQuality({num=undefined, emotive=false, emoting=undefined}): Button {
 		if (num !== undefined) {
 			this.name = avatarNames[num]
 			this.setTexture(`avatar-${this.name}`)
@@ -56,6 +56,11 @@ export default class AvatarButton extends Button {
 
 		if (emotive) {
 			this.setEmotive()
+		}
+
+		if (emoting !== undefined) {
+			// TODO Use emoting number
+			this.doEmote()()
 		}
 
 		return this
@@ -81,18 +86,22 @@ export default class AvatarButton extends Button {
 	timeout: NodeJS.Timeout
 	// Set it so the avatar emotes briefly when clicked
 	private setEmotive(): Button {
-		this.setOnClick(() => {
+		this.onClick = this.doEmote()
+
+		return this
+	}
+
+	private doEmote(number = 1): () => void {
+		return () => {
 			// Stop the timeout if it exists
 			clearTimeout(this.timeout)
 			
-			this.icon.setFrame(1)
+			this.icon.setFrame(number)
 
 			// Keep track of this timeout
 			this.timeout = setTimeout(() => {
 				this.icon.setFrame(0)
 			}, Time.emote)
-		})
-
-		return this
+		}
 	}
 }

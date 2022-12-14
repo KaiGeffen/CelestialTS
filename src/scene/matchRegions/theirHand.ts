@@ -176,6 +176,11 @@ export default class TheirHandRegion extends Region {
 		.setText(`${amtNourish}`)
 	}
 
+	// They have used the given emote
+	emote(emoteNumber: number): void {
+		this.avatar.setQuality({emoting: emoteNumber})
+	}
+
 	// TUTORIAL FUNCTIONALITY
 	hideStacks(): Region {
 		this.btnDeck.setVisible(false)

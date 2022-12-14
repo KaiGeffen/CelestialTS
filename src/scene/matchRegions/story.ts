@@ -29,10 +29,6 @@ export default class StoryRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
-		if (isRecap) {
-			console.log(state)
-		}
-
 		let that = this
 
 		// If this is a recap, add the already played cards greyed out

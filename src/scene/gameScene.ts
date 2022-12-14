@@ -117,7 +117,7 @@ class GameScene extends BaseScene {
 		}
 
 		// Hand region
-		view.ourHand.setCallback((i: number) => {
+		view.ourHand.setCardClickCallback((i: number) => {
 			net.playCard(i)
 		})
 		view.ourHand.setDisplayCostCallback((cost: number) => {
@@ -125,15 +125,20 @@ class GameScene extends BaseScene {
 		})
 
 		// TODO This all has a bad smell
-		view.ourHand.btnDeck.setOnClick(() => {
-			that.hint.hide()
-			that.view.ourDeckOverlay.show()
-		})
-		view.ourHand.btnDiscard.setOnClick(() => {
-			that.hint.hide()
-			that.view.ourDiscardOverlay.show()
-		})
-
+		const ourDeckCallback = () => {
+			this.hint.hide()
+			this.view.ourDeckOverlay.show()
+		}
+		const ourDiscardCallback = () => {
+			this.hint.hide()
+			this.view.ourDiscardOverlay.show()
+		}
+		const ourEmoteCallback = () => {
+			this.net.signalEmote()
+		}
+		view.ourHand.setCallbacks(ourDeckCallback, ourDiscardCallback, ourEmoteCallback)
+		
+		// TODO Organize like the above passing of callbacks
 		view.theirHand.btnDeck.setOnClick(() => {
 			that.hint.hide()
 			that.view.theirDeckOverlay.show()
@@ -353,7 +358,10 @@ class GameScene extends BaseScene {
 		return false
 	}
 
-	// Display a given breath cost
+	// Opponent has used a given emote
+	emote(emoteNumber: number): void {
+		this.view.theirHand['emote'](emoteNumber)
+	}
 }
 
 

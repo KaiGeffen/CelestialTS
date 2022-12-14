@@ -34,7 +34,7 @@ export default class OurHandRegion extends Region {
 	hoveredCard: number
 
 	// Avatar image
-	avatar: Button
+	btnAvatar: Button
 
 	create (scene: BaseScene, avatarId: number): OurHandRegion {
 		let that = this
@@ -55,7 +55,7 @@ export default class OurHandRegion extends Region {
 		this.createStatusDisplay()
 
 		// Create our avatar
-		this.avatar = this.createAvatar(avatarId)
+		this.btnAvatar = this.createAvatar(avatarId)
 		
 		// Create a visual divider
 		// let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
@@ -130,6 +130,12 @@ export default class OurHandRegion extends Region {
 
 		// Show priority / not
 		// this.animatePriority(state, isRecap)
+	}
+
+	setCallbacks(fDeck: () => void, fDiscard: () => void, fEmote: () => void): void {
+		this.btnDeck.setOnClick(fDeck)
+		this.btnDiscard.setOnClick(fDiscard)
+		this.btnAvatar.setOnClick(fEmote, false, false)
 	}
 
 	// Set the callback / error message for when card is clicked
@@ -342,7 +348,7 @@ export default class OurHandRegion extends Region {
 	}
 
 	// Set the callback for when a card in this region is clicked on
-	setCallback(f: (x: number) => void): Region {
+	setCardClickCallback(f: (x: number) => void): Region {
 		this.callback = f
 		return this
 	}
