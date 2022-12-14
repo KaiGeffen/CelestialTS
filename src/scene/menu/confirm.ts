@@ -24,26 +24,15 @@ export default class ConfirmMenu extends Menu {
 		.addNewLine()
 
 		const padding = {space: {
-			left: Space.pad/2,
-			right: Space.pad/2,
+			left: Space.pad,
+			right: Space.pad,
 		}}
 
-		this.sizer.add(this.createHint(this.scene, hint), padding)
+		const s = `Are you sure you want to ${hint}?`
+		this.sizer.add(this.createText(s), padding)
 		.addNewLine()
 
 		this.sizer.add(this.createButtons(this.scene, callback), padding)
-	}
-
-	private createHint(scene: Phaser.Scene, hint: string) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		let txt = scene.add.text(0, 0, `Are you sure you want to ${hint}?`, Style.basic)
-
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
 	}
 
 	// Create the buttons at the bottom

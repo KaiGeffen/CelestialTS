@@ -29,21 +29,11 @@ export default class DCMenu extends Menu {
 			right: Space.pad/2,
 		}}
 
-		this.sizer.add(this.createHint(), padding)
+		const s = 'Your opponent disconnected, you win!'
+		this.sizer.add(this.createText(s), padding)
 		.addNewLine()
 
 		this.sizer.add(this.createButtons(activeScene), padding)
-	}
-
-	private createHint() {
-		let sizer = this.scene['rexUI'].add.sizer({width: width})
-
-		let txt = this.scene.add.text(0, 0, 'Your opponent disconnected, you win!', Style.basic)
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
 	}
 
 	// Create the buttons at the bottom
