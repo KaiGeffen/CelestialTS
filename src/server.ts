@@ -77,7 +77,11 @@ export default class Server {
 		const devMode = new URLSearchParams(window.location.search).has('dev')
 		if (devMode) {
 			let zeroKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO)
-			zeroKey.on('down', () => {wsServer.close()})
+			zeroKey.on('down', () => {
+				console.log('Trying to close the websocket connection')
+				console.log(wsServer)
+				wsServer.close(code - 1)
+			})
 		}
 
 		// If the connection closes, login again with same args
