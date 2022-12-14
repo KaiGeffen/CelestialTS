@@ -5,6 +5,7 @@ import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/se
 import Button from '../lib/buttons/button'
 import Icons from '../lib/buttons/icons'
 import Hint from '../lib/hint'
+import Server from '../server'
 
 
 export default class BaseScene extends Phaser.Scene {
@@ -49,6 +50,18 @@ export default class BaseScene extends Phaser.Scene {
 		// When esc key is pressed, toggle the menu open/closed
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		esc.on('down', this.openMenu(), this)
+
+		// TODO For testing purposed
+		// When \ key is pressed, toggle the menu open/closed
+		const devMode = new URLSearchParams(window.location.search).has('dev')
+		if (devMode) {
+			let zeroKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO)
+			zeroKey.on('down', () => {
+				console.log('Trying to close the websocket connection')
+				console.log(Server.close())
+			})
+		}
+
 	}
 
 	private createHintText(): RexUIPlugin.BBCodeText {

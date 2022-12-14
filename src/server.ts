@@ -72,18 +72,6 @@ export default class Server {
 			}
 		})
 
-		// TODO For testing purposed
-		// When \ key is pressed, toggle the menu open/closed
-		const devMode = new URLSearchParams(window.location.search).has('dev')
-		if (devMode) {
-			let zeroKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO)
-			zeroKey.on('down', () => {
-				console.log('Trying to close the websocket connection')
-				console.log(wsServer)
-				wsServer.close(code - 1)
-			})
-		}
-
 		// If the connection closes, login again with same args
 		wsServer.addEventListener('close', (event) => {
 			// Don't attempt to login again if the server explicitly logged us out
@@ -99,6 +87,10 @@ export default class Server {
 	// Get the open websocket, for use in playing a match
 	static getWS() {
 		return wsServer
+	}
+
+	static close() {
+		return wsServer.close(code - 1)
 	}
 
 	// Returns if the user is logged in
