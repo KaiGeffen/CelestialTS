@@ -94,7 +94,7 @@ export default class Menu {
 
 	// Add the given string as text to the sizer
 	protected createText(s: string): any {
-		let sizer = this.scene['rexUI'].add.sizer()
+		let sizer = this.scene['rexUI'].add.sizer({width: this.width - Space.pad*2})
 
 		let txt = this.scene.add.text(0, 0, s, Style.basic)
 

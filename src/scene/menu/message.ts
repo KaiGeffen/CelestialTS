@@ -4,13 +4,14 @@ import Menu from './menu';
 
 
 // A message to the user
-const width = 500
+const width = 700
 
 export default class ConfirmMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
-		this.createHeader('Foooo')
+		const title = params.title
+		this.createHeader(title)
 
 		const s = params.s
 		this.createText(s)

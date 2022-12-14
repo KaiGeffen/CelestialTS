@@ -33,15 +33,15 @@ export default class DeckRegion {
 
 	private txtChoice: Phaser.GameObjects.Text
 
-	create(scene: Phaser.Scene, startCallback: () => void, storyText: string) {
+	create(scene: Phaser.Scene, startCallback: () => void, storyTitle: string, storyText: string) {
 		this.scene = scene
 
-		this.createScrollable(startCallback, storyText)
+		this.createScrollable(startCallback, storyTitle, storyText)
 
 		return this
 	}
 
-	private createScrollable(startCallback: () => void, storyText: string) {
+	private createScrollable(startCallback: () => void, storyTitle: string, storyText: string) {
 		let background = this.scene.add.image(0, 0, 'bg-Texture')
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
@@ -56,7 +56,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			header: Mobile ? undefined : this.createHeader(startCallback, undefined, storyText),
+			header: Mobile ? undefined : this.createHeader(startCallback, undefined, storyTitle, storyText),
 
 			slider: Mobile ? Scroll(this.scene) : undefined,
 
@@ -69,7 +69,7 @@ export default class DeckRegion {
 
 		// If on mobile, header scrolls with the rest of content
 		if (Mobile) {
-			this.createHeader(startCallback, this.panel, storyText)
+			this.createHeader(startCallback, this.panel, storyTitle, storyText)
 		}
 
 		this.scrollablePanel.layout()
@@ -88,7 +88,7 @@ export default class DeckRegion {
 		return this.panel
 	}
 
-	private createHeader(startCallback: () => void, sizer?, storyText?: string): Phaser.GameObjects.GameObject {
+	private createHeader(startCallback: () => void, sizer?, storyTitle?: string, storyText?: string): Phaser.GameObjects.GameObject {
 		if (sizer === undefined) {
 			let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
 
@@ -123,6 +123,7 @@ export default class DeckRegion {
 			this.avatar.setOnClick(() => {
 				this.scene.scene.launch('MenuScene', {
 					menu: 'message',
+					title: storyTitle,
 					s: storyText,
 				})
 			}, false, false)

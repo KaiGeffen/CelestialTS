@@ -35,5 +35,6 @@ export interface Adventure {
   opponent?: string,
 
   // This mission's story, if any
+  storyTitle?: string,
   storyText?: string,
 }
