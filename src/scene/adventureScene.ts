@@ -362,13 +362,11 @@ export default class AdventureScene extends BaseScene {
 			// Get the string for this adventure
 			let id = mission.id			
 
-			// For now, it's all either the waving figure or ? icon
-			const nodeType = mission.type === 'mission' ? 'Mission' : 'QuestionMark'
 			let btn = new Buttons.Mission(that,
 				mission.x,
 				mission.y,
 				that.missionOnClick(mission),
-				nodeType)
+				mission.type)
 
 			// If user hasn't completed this mission, animate it
 			if (!completed[mission.id]) {
