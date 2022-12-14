@@ -15,53 +15,29 @@ export default class SearchMenu extends Menu {
 	textboxSearch
 
 	constructor(scene: MenuScene, params) {
-		super(scene)
-
-		let panel = this.createSizer(scene)
+		super(scene, width)
 
 		let callback = params.callback
 		let start = params.start
-		this.createContent(scene, panel, callback, start)
+		this.createContent(callback, start)
 
-		panel.layout()
+		this.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			space: {
-				left: Space.pad/2,
-				right: Space.pad/2,
-				top: Space.pad/2,
-				bottom: Space.pad/2,
-				line: Space.pad,
-			},
-		}
-		)
-
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
-
-		return panel
-	}
-
-	private createContent(scene: Phaser.Scene, panel, callback: (string) => void, start: string) {
-		panel.add(this.createTitle(scene))
+	private createContent(callback: (string) => void, start: string) {
+		this.sizer.add(this.createTitle())
 		.addNewLine()
 
-		panel.add(this.createSearch(scene, start))
+		this.sizer.add(this.createSearch(start))
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, callback))
+		this.sizer.add(this.createButtons(callback))
 	}
 
-	private createTitle(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createTitle() {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
-		let txt = scene.add.text(0, 0, 'Search', Style.announcement)
+		let txt = this.scene.add.text(0, 0, 'Search', Style.announcement)
 		sizer.addSpace()
 		.add(txt)
 		.addSpace()
@@ -69,8 +45,8 @@ export default class SearchMenu extends Menu {
 		return sizer
 	}
 
-	private createSearch(scene: Phaser.Scene, start: string) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createSearch(start: string) {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
 		this.textboxSearch = this.scene.add['rexInputText'](
 			215, 40, 308, 40, {
@@ -95,8 +71,8 @@ export default class SearchMenu extends Menu {
 	}
 
 	// Create the buttons at the bottom
-	private createButtons(scene: Phaser.Scene, callback: (string) => void) {
-		let sizer = scene['rexUI'].add.sizer({
+	private createButtons(callback: (string) => void) {
+		let sizer = this.scene['rexUI'].add.sizer({
 			width: width,
 			space: {
 				item: Space.pad
@@ -104,17 +80,17 @@ export default class SearchMenu extends Menu {
 		})
 
 		sizer
-		.add(this.createCancel(scene))
+		.add(this.createCancel())
 		.addSpace()
-		.add(this.createOkay(scene, () => {
+		.add(this.createOkay(() => {
 			callback(this.textboxSearch.text)
 		}))
 
 		return sizer
 	}
 
-	private createCancel(scene: Phaser.Scene): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+	private createCancel(): ContainerLite {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
 			this.close()
@@ -123,8 +99,8 @@ export default class SearchMenu extends Menu {
 		return container
 	}
 
-	private createOkay(scene: Phaser.Scene, callback: () => void): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+	private createOkay(callback: () => void): ContainerLite {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Okay', () => {
 			callback()

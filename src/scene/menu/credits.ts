@@ -9,56 +9,24 @@ import { Space, Color, Style, UserSettings } from '../../settings/settings'
 import MenuScene from '../menuScene'
 
 
-// TODO Change width
+const width = 600
+
 export default class CreditsMenu extends Menu {
-	// TODO This is a fix to an issue with GetAllChildrenSizers not working
-	// in the sizer child of scrollable panel, which is called when trying to destroy
-	// that object as the scene ends
-
 	constructor(scene: MenuScene, params) {
-		super(scene)
-
-		// Make a fixed height sizer
-		let panel = this.createSizer(scene)
-
-		this.createContent(scene, panel)
+		super(scene, width)
+		
+		this.createContent()
 
 		// Add panel to a scrollable panel
-		let scrollable = this.createScrollablePanel(scene, panel)
+		let scrollable = this.createScrollablePanel(scene, this.sizer)
 		scrollable.layout()
-
-		// this.contents = scrollable
 	}
 
-	// onClose() {
-	// 	this.contents.destroy()
-	// }
+	private createContent() {
+		let txt = this.scene.add.text(0, 0, creditsString, Style.basic)
+		.setWordWrapWidth(width - Space.pad * 2)
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-
-			space: {
-				left: Space.pad/2,
-				right: Space.pad/2,
-				top: Space.pad/2,
-				bottom: Space.pad/2,
-				item: Space.pad/2,
-				line: Space.pad/2,
-			},
-		}
-		)
-
-		return panel
-	}
-
-	private createContent(scene: Phaser.Scene, panel) {
-		let txt = scene.add.text(0, 0, creditsString, Style.basic)
-		.setWordWrapWidth(Space.windowWidth - Space.pad * 4)
-
-		panel.add(txt)
+		this.sizer.add(txt)
 	}
 
 	private createScrollablePanel(scene: Phaser.Scene, panel) {

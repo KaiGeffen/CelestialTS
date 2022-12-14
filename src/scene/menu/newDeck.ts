@@ -25,66 +25,37 @@ class AlterDeckMenu extends Menu {
 	btnConfirm: Button
 
 	constructor(scene: MenuScene, params, titleString, confirmString, deckName = '') {
-		super(scene)
+		super(scene, width)
 
 		this.name = params.deckName
 		this.selectedAvatar = params.selectedAvatar === undefined ? 0 : params.selectedAvatar
 		this.titleString = titleString
 		this.confirmString = confirmString
 
-		// Make a fixed height sizer
-		let panel = this.createSizer(scene)
+		this.createContent(params.callback)
 
-		this.createContent(scene, panel, params.callback)
-
-		panel.layout()
+		this.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			width: width,
-
-			align: 'center',
-			space: {
-				bottom: Space.padSmall,
-				line: Space.pad,
-
-			},
-		}
-		)
-
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
-
-		return panel
-	}
-
-	private createContent(scene: Phaser.Scene, panel, createCallback: (name: string, avatar: number) => void) {
-		panel.add(this.createHeader(this.titleString, width))
-		.addNewLine()
+	private createContent(createCallback: (name: string, avatar: number) => void) {
+		this.createHeader(this.titleString, width)
 
 		const padding = {space: {
 			left: Space.pad,
 			right: Space.pad,
 		}}
 
-		panel.add(this.createName(scene), padding)
+		this.sizer.add(this.createName(), padding)
 		.addNewLine()
-
-		panel.add(this.createAvatar(scene), padding)
+		.add(this.createAvatar(), padding)
 		.addNewLine()
-
-		panel.add(this.createButtons(scene, createCallback), padding)
+		.add(this.createButtons(createCallback), padding)
 	}
 
-	private createTitle(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createTitle() {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
-		let txt = scene.add.text(0, 0, this.titleString, Style.announcement)
+		let txt = this.scene.add.text(0, 0, this.titleString, Style.announcement)
 		sizer.addSpace()
 		.add(txt)
 		.addSpace()
@@ -92,13 +63,13 @@ class AlterDeckMenu extends Menu {
 		return sizer
 	}
 
-	private createName(scene: Phaser.Scene) {
+	private createName() {
 		let that = this
 
-		let sizer = scene['rexUI'].add.sizer({width: width - Space.pad * 2})
+		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad * 2})
 		sizer.addSpace()
 
-		let inputText = scene.add['rexInputText']
+		let inputText = this.scene.add['rexInputText']
 		(
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
@@ -128,22 +99,22 @@ class AlterDeckMenu extends Menu {
 		return sizer
 	}
 
-	private createAvatar(scene: Phaser.Scene) {
+	private createAvatar() {
 		let that = this
 
-		let fixSizer = scene['rexUI'].add.fixWidthSizer({
+		let fixSizer = this.scene['rexUI'].add.fixWidthSizer({
 			width: Space.avatarSize * 3 + Space.pad * 2,
 			space: { line: Space.pad },
 		})
 
-		let txtHint = scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
+		let txtHint = this.scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
 		fixSizer.add(txtHint)
 
 		let sizer
 		let avatars = []
 		for (let i = 0; i < 6; i++) {
 			if (i % 3 === 0) {
-				sizer = scene['rexUI'].add.sizer({
+				sizer = this.scene['rexUI'].add.sizer({
 					space: {item: Space.pad}
 				})
 
@@ -174,8 +145,8 @@ class AlterDeckMenu extends Menu {
 
 
 	// Create the buttons at the bottom which navigate to other scenes/menus
-	private createButtons(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
-		let sizer = scene['rexUI'].add.sizer({
+	private createButtons(createCallback: (name: string, avatar: number) => void) {
+		let sizer = this.scene['rexUI'].add.sizer({
 			width: width - Space.pad * 2,
 			space: {
 				item: Space.pad
@@ -183,33 +154,31 @@ class AlterDeckMenu extends Menu {
 		})
 
 		sizer
-		.add(this.createCancel(scene))
+		.add(this.createCancel())
 		.addSpace()
-		.add(this.createConfirm(scene, createCallback))
+		.add(this.createConfirm(createCallback))
 
 		return sizer
 	}
 
-	private createCancel(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+	private createCancel() {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
-			scene.scene.stop()
+			this.scene.scene.stop()
 		})
 
 		return container
 	}
 
-	private createConfirm(scene: Phaser.Scene, createCallback: (name: string, avatar: number) => void) {
-		let that = this
-
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+	private createConfirm(createCallback: (name: string, avatar: number) => void) {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		this.btnConfirm = new Buttons.Basic(container, 0, 0, this.confirmString, () => {
-			createCallback(that.name, that.selectedAvatar)
+			createCallback(this.name, this.selectedAvatar)
 
 			// Close this scene
-			scene.scene.stop()
+			this.scene.scene.stop()
 		})
 
 		// Can't create deck if it doesn't have a name

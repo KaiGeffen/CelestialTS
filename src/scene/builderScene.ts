@@ -91,7 +91,9 @@ export class AdventureBuilderScene extends BuilderBase {
     
     this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
 
-    this.journeyRegion = new JourneyRegion().create(this, this.startCallback())
+    // TODO Not just the 100s digit number
+    const avatar = (Math.floor(params.id / 100) - 1) % 6
+    this.journeyRegion = new JourneyRegion().create(this, this.startCallback(), avatar, this.params.storyTitle, this.params.storyText)
     this.journeyRegion.addRequiredCards(params.deck)
 
     this.filterRegion = new FilterRegion().create(this, true)

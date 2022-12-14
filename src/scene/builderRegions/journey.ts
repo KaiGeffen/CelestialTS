@@ -33,15 +33,15 @@ export default class DeckRegion {
 
 	private txtChoice: Phaser.GameObjects.Text
 
-	create(scene: Phaser.Scene, startCallback: () => void) {
+	create(scene: Phaser.Scene, startCallback: () => void, avatarID: number, storyTitle: string, storyText: string) {
 		this.scene = scene
 
-		this.createScrollable(startCallback)
+		this.createScrollable(startCallback, avatarID, storyTitle, storyText)
 
 		return this
 	}
 
-	private createScrollable(startCallback: () => void) {
+	private createScrollable(startCallback: () => void, avatarID: number, storyTitle: string, storyText: string) {
 		let background = this.scene.add.image(0, 0, 'bg-Texture')
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
@@ -56,7 +56,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			header: Mobile ? undefined : this.createHeader(startCallback),
+			header: Mobile ? undefined : this.createHeader(startCallback, undefined, avatarID, storyTitle, storyText),
 
 			slider: Mobile ? Scroll(this.scene) : undefined,
 
@@ -69,7 +69,7 @@ export default class DeckRegion {
 
 		// If on mobile, header scrolls with the rest of content
 		if (Mobile) {
-			this.createHeader(startCallback, this.panel)
+			this.createHeader(startCallback, this.panel, avatarID, storyTitle, storyText)
 		}
 
 		this.scrollablePanel.layout()
@@ -88,7 +88,7 @@ export default class DeckRegion {
 		return this.panel
 	}
 
-	private createHeader(startCallback: () => void, sizer?): Phaser.GameObjects.GameObject {
+	private createHeader(startCallback: () => void, sizer, avatarID: number, storyTitle?: string, storyText?: string): Phaser.GameObjects.GameObject {
 		if (sizer === undefined) {
 			let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
 
@@ -115,8 +115,19 @@ export default class DeckRegion {
 		
 		// Add this deck's avatar
 		let containerAvatar = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize)
-		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules') // TODO
+		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, avatarNames[avatarID])
 		.setQuality({emotive: true})
+		
+		// If this mission has text, show that when avatar is clicked
+		if (storyText !== undefined) {
+			this.avatar.setOnClick(() => {
+				this.scene.scene.launch('MenuScene', {
+					menu: 'message',
+					title: storyTitle,
+					s: storyText,
+				})
+			}, false, false)
+		}
 		sizer.add(containerAvatar)
 
 		return sizer

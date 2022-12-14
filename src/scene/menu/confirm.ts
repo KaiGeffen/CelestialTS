@@ -10,61 +10,22 @@ const width = 500
 
 export default class ConfirmMenu extends Menu {
 	constructor(scene: MenuScene, params) {
-		super(scene)
-
-		let panel = this.createSizer(scene)
+		super(scene, width)
 
 		let callback = params.callback
 		let hint = params.hint
-		this.createContent(scene, panel, callback, hint)
+		this.createContent(callback, hint)
 
-		panel.layout()
+		this.layout()
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			space: {
-				bottom: Space.pad/2,
-				line: Space.pad,
-			},
-		}
-		)
+	private createContent(callback: () => void, hint: string) {
+		this.createHeader('Confirm')
 
-		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
-		panel.addBackground(rect)
+		const s = `Are you sure you want to ${hint}?`
+		this.createText(s)
 
-		return panel
-	}
-
-	private createContent(scene: Phaser.Scene, panel, callback: () => void, hint: string) {
-		panel.add(this.createHeader('Confirm', width))
-		.addNewLine()
-
-		const padding = {space: {
-			left: Space.pad/2,
-			right: Space.pad/2,
-		}}
-
-		panel.add(this.createHint(scene, hint), padding)
-		.addNewLine()
-
-		panel.add(this.createButtons(scene, callback), padding)
-	}
-
-	private createHint(scene: Phaser.Scene, hint: string) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		let txt = scene.add.text(0, 0, `Are you sure you want to ${hint}?`, Style.basic)
-
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
+		this.sizer.add(this.createButtons(this.scene, callback))
 	}
 
 	// Create the buttons at the bottom

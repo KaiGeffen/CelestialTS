@@ -1,18 +1,35 @@
 import "phaser"
-import { Style, Color } from '../../settings/settings'
+import { Style, Color, Space } from '../../settings/settings'
 import MenuScene from '../menuScene'
 
 
 export default class Menu {
+	// The scene which contains only this menu
 	scene: MenuScene
+
+	// The callback for when this menu is closed
 	exitCallback: () => void
 
-	constructor(scene: MenuScene, params?) {
+	// The width of this menu
+	width: number
+
+	// The main panel for this menu
+	sizer: any
+
+	constructor(scene: MenuScene,
+		width: number = Space.windowWidth - Space.pad*2,
+		params?
+		) {
 		this.scene = scene
+
+		this.width = width
 
 		if (params) {
 			this.exitCallback = params.exitCallback
 		}
+
+		// Create the basic sizer
+		this.createSizer()
 	}
 
 	close() {
@@ -23,7 +40,12 @@ export default class Menu {
 		this.scene.endScene()()
 	}
 
-	createHeader(s: string, width: number): any {
+	protected layout(): void {
+		this.sizer.layout()
+	}
+
+	// Create the menu header
+	protected createHeader(s: string, width: number = this.width): any {
 		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
 		
 		let sizer = this.scene['rexUI'].add.sizer({width: width})
@@ -40,6 +62,54 @@ export default class Menu {
 			angle: -90,
 			shadowColor: 0x000000,
 		})
+
+		// Add the sizer to the main menu sizer
+		this.sizer.add(sizer)
+		.addNewLine()
+
+		return sizer
+	}
+
+	protected createSizer(): void {
+		this.sizer = this.scene['rexUI'].add.fixWidthSizer({
+			x: Space.windowWidth/2,
+			y: Space.windowHeight/2,
+			width: this.width,
+
+			align: 'center',
+
+			space: {
+				// left: Space.pad,
+				// right: Space.pad,
+				bottom: Space.pad,
+				line: Space.pad,
+			}
+		})
+
+		// Add background
+		let rect = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+		this.sizer.addBackground(rect)
+
+	}
+
+	// Add the given string as text to the sizer
+	protected createText(s: string): any {
+		let sizer = this.scene['rexUI'].add.sizer({width: this.width - Space.pad*2})
+
+		let txt = this.scene.add.text(0, 0, s, Style.basic)
+
+		sizer.addSpace()
+		.add(txt)
+		.addSpace()
+
+		// Add this new sizer to the main sizer		
+		const padding = {space: {
+			left: Space.pad,
+			right: Space.pad,
+		}}
+
+		this.sizer.add(sizer, padding)
+		.addNewLine()
 
 		return sizer
 	}
@@ -59,6 +129,7 @@ import DCMenu from './disconnect'
 import ConfirmMenu from './confirm'
 import SearchMenu from './search'
 import DistributionMenu from './distribution'
+import MessageMenu from './message'
 
 
 const menus = {
@@ -75,10 +146,10 @@ const menus = {
 	'confirm': ConfirmMenu,
 	'search': SearchMenu,
 	'distribution': DistributionMenu,
+	'message': MessageMenu,
 }
 
-// Allows for the creation and storing of custom menus not specified 
-// in separate ts files
+// Function exposed for the creation of custom menus
 export function createMenu(scene: Phaser.Scene, title: string, params): Menu {
 	// Check if the given menu exists, if not throw
 	if (!(title in menus)) {
@@ -87,33 +158,3 @@ export function createMenu(scene: Phaser.Scene, title: string, params): Menu {
 
 	return new menus[title](scene, params)
 }
-
-
-// export default class Menu {
-// 	contents: Phaser.GameObjects.GameObject[]
-
-// 	constructor(scene: Phaser.Scene) { }
-
-// 	// Function for what happens when menu closes
-// 	onClose(): void { }
-// }
-
-// import OptionsMenu from "./optionsMenu"
-// import PremadeDecks from "./premadeDecks"
-
-
-// const menus = {
-// 	'options': OptionsMenu,
-// 	'premadeDecks': PremadeDecks
-// }
-
-// // Allows for the creation and storing of custom menus not specified 
-// // in separate ts files
-// export function createMenu(scene: Phaser.Scene, title: string) {
-// 	// Check if the given menu exists, if not throw
-// 	if (!(title in menus)) {
-// 		throw `Given menu ${title} is not in list of implemented menus.`
-// 	}
-
-// 	new menus[title](scene)
-// }

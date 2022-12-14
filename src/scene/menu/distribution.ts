@@ -4,13 +4,13 @@ import { Color, Space, Time } from '../../settings/settings';
 import Menu from './menu';
 import MenuScene from '../menuScene'
 
-
+// TODO Use the inherited methods
 // TODO Add a header, general formatting / color
 const width = 700
 
 export default class DistributionMenu extends Menu {
 	constructor(scene: MenuScene, params) {
-		super(scene)
+		super(scene, width)
 
 		const costs = this.getCosts(params.currentDeck)
 

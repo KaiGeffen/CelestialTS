@@ -16,89 +16,55 @@ const width = 550
 
 export default class OptionsMenu extends Menu {
 	constructor(scene: MenuScene, params) {
-		super(scene)
-
-		// Make a fixed height sizer
-		let panel = this.createSizer(scene)
+		super(scene, width)
 
 		// The non-menu scene which is active, used for changing scenes
 		let activeScene = params.activeScene
-		this.createContent(scene, panel, activeScene)
+		this.createContent(activeScene)
 
-		panel.layout()
+		this.layout()
 	}
 
 	onClose(): void {
 		
 	}
 
-	private createSizer(scene: Phaser.Scene)  {
-		let background = scene.add.image(0, 0, 'bg-Texture')
-
-		background['resize'] = (w, h) => {
-			// background.setDisplaySize(w, h)
-			const x = (background.displayWidth - w)/2
-			const y = (background.displayHeight - h)/2
-			
-			background.setCrop(x, y, w, h)
-			.setInteractive(new Phaser.Geom.Rectangle(x, y, w, h), Phaser.Geom.Rectangle.Contains)
-		}
-
-		let panel = scene['rexUI'].add.fixWidthSizer(
-		{
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
-			width: width + Space.padSmall*2,
-
-			space: {
-				// left: Space.padSmall,
-				// right: Space.padSmall,
-				bottom: Space.padSmall,
-				item: Space.padSmall,
-				line: Space.padSmall,
-			},
-		})
-		.addBackground(background)
-
-		return panel
-	}
-
-	private createContent(scene: Phaser.Scene, panel, activeScene: BaseScene) {
-		panel.add(this.createHeader('Options', width + Space.padSmall*2))
-		.addNewLine()
+	private createContent(activeScene: BaseScene) {
+		this.createHeader('Options', width + Space.padSmall*2)
 
 		const padding = {padding: {left: Space.padSmall, right: Space.padSmall}}
 
-		panel.add(this.createVolume(scene), padding)
+		this.sizer.add(this.createVolume(), padding)
 		.addNewLine()
 
-		panel.add(this.createMusic(scene), padding)
+		this.sizer.add(this.createMusic(), padding)
 		.addNewLine()
 
-		panel.add(this.createSpeed(scene), padding)
+		this.sizer.add(this.createSpeed(), padding)
 		.addNewLine()
 		
-		panel.add(this.createAutopass(scene), padding)
+		this.sizer.add(this.createAutopass(), padding)
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, activeScene), padding)
+		this.sizer.add(this.createButtons(activeScene), padding)
 	}
 
-	private createVolume(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createVolume() {
+		let that = this
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
-		let txtVolumeHint = scene.add.text(0, 0, 'Volume:', Style.basic)
+		let txtVolumeHint = this.scene.add.text(0, 0, 'Volume:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
 
-		let slider = scene['rexUI'].add.slider({
+		let slider = this.scene['rexUI'].add.slider({
 			width: 200,
 			height: 20,
 			orientation: 'x',
 
-            track: scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
-            indicator: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
+            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
+            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
             space: {
                 right: 10
             },
@@ -107,7 +73,7 @@ export default class OptionsMenu extends Menu {
             value: UserSettings._get('volume'),
             valuechangeCallback: function (value) {
             	UserSettings._set('volume', value)
-                scene.sound.volume = value
+                that.scene.sound.volume = value
             },
         })
 		sizer.add(slider)
@@ -115,21 +81,21 @@ export default class OptionsMenu extends Menu {
 		return sizer
 	}
 
-	private createMusic(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createMusic() {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
-		let txtVolumeHint = scene.add.text(0, 0, 'Music:', Style.basic)
+		let txtVolumeHint = this.scene.add.text(0, 0, 'Music:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
 
-		let slider = scene['rexUI'].add.slider({
+		let slider = this.scene['rexUI'].add.slider({
 			width: 200,
 			height: 20,
 			orientation: 'x',
 
-            track: scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
-            indicator: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
+            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
+            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
             space: {
                 right: 10
             },
@@ -150,21 +116,21 @@ export default class OptionsMenu extends Menu {
 		return sizer
 	}
 
-	private createSpeed(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createSpeed() {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
-		let txtSpeedHint = scene.add.text(0, 0, 'Speed:', Style.basic)
+		let txtSpeedHint = this.scene.add.text(0, 0, 'Speed:', Style.basic)
 		sizer.add(txtSpeedHint)
 		sizer.addSpace()
 		
-		let slider = scene['rexUI'].add.slider({
+		let slider = this.scene['rexUI'].add.slider({
 			width: 200,
 			height: 20,
 			orientation: 'x',
 
-            track: scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
-            indicator: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
+            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
+            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
             space: {
                 right: 10
             },
@@ -180,15 +146,15 @@ export default class OptionsMenu extends Menu {
 		return sizer
 	}
 
-	private createAutopass(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createAutopass() {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
-		let txtVolumeHint = scene.add.text(0, 0, 'Autopass:', Style.basic)
+		let txtVolumeHint = this.scene.add.text(0, 0, 'Autopass:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
 
 		const s = UserSettings._get('autopass') ? 'Enabled' : 'Disabled'
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 		let btn = new Buttons.Basic(container, 0, 0, s, () => {
 			if (UserSettings._get('autopass')) {
 				btn.setText('Disabled')
@@ -205,8 +171,8 @@ export default class OptionsMenu extends Menu {
 	}
 
 	// Create the buttons at the bottom which navigate to other scenes/menus
-	private createButtons(scene: Phaser.Scene, activeScene: BaseScene) {
-		let sizer = scene['rexUI'].add.sizer({
+	private createButtons(activeScene: BaseScene) {
+		let sizer = this.scene['rexUI'].add.sizer({
 			width: width,
 			space: {
 				item: Space.pad
@@ -214,37 +180,37 @@ export default class OptionsMenu extends Menu {
 		})
 
 		sizer
-		.add(this.createReadRulebook(scene))
+		.add(this.createReadRulebook())
 		.addSpace()
-		.add(this.createCredits(scene))
+		.add(this.createCredits())
 		.addSpace()
-		.add(this.createQuit(scene, activeScene))
+		.add(this.createQuit(activeScene))
 
 		return sizer
 	}
 
-	private createReadRulebook(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+	private createReadRulebook() {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Rulebook', () => {
-			scene.scene.start('MenuScene', {menu: 'rulebook'})
+			this.scene.scene.start('MenuScene', {menu: 'rulebook'})
 		})
 
 		return container
 	}
 
-	private createCredits(scene: Phaser.Scene) {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+	private createCredits() {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Credits', () => {
-			scene.scene.start('MenuScene', {menu: 'credits'})
+			this.scene.scene.start('MenuScene', {menu: 'credits'})
 		})
 
 		return container
 	}
 
-	private createQuit(scene: Phaser.Scene, activeScene: BaseScene) {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+	private createQuit(activeScene: BaseScene) {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Quit', () => {
 			// Stop the other active scene
@@ -252,7 +218,7 @@ export default class OptionsMenu extends Menu {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
-			scene.scene.start("HomeScene")
+			this.scene.scene.start("HomeScene")
 		})
 
 		return container
