@@ -24,6 +24,9 @@ export default class Menu {
 		if (params) {
 			this.exitCallback = params.exitCallback
 		}
+
+		// Create the basic sizer
+		this.createSizer()
 	}
 
 	close() {
@@ -62,14 +65,24 @@ export default class Menu {
 
 	protected createSizer(): void {
 		this.sizer = this.scene['rexUI'].add.fixWidthSizer({
-			width: Space.windowWidth,
+			x: Space.windowWidth/2,
+			y: Space.windowHeight/2,
+			width: this.width,
+
+			align: 'center',
+
 			space: {
 				// left: Space.pad,
-				right: Space.pad,
+				// right: Space.pad,
 				bottom: Space.pad,
-				// line: Space.pad,
+				line: Space.pad,
 			}
-		}).setOrigin(0)
+		})
+
+		// Add background
+		let rect = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+		this.sizer.addBackground(rect)
+
 	}
 
 	// Return a sizer with the given text

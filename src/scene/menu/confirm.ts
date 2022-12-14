@@ -12,8 +12,6 @@ export default class ConfirmMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
-		this.createSizer()
-
 		let callback = params.callback
 		let hint = params.hint
 		this.createContent(callback, hint)

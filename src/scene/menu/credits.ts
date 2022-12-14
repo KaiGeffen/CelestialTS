@@ -17,8 +17,7 @@ export default class CreditsMenu extends Menu {
 
 	constructor(scene: MenuScene, params) {
 		super(scene)
-
-		this.createSizer()
+		
 		this.createContent()
 
 		// Add panel to a scrollable panel

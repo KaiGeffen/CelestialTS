@@ -17,9 +17,6 @@ export default class ShareDeckMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
-		// Make a fixed height sizer
-		this.createSizer()
-
 		this.createContent(params.callback, params.currentDeck)
 
 		this.layout()

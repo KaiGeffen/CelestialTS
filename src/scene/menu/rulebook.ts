@@ -8,9 +8,6 @@ export default class RulebookMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene)
 
-		// Make a fixed height sizer
-		this.createSizer()
-
 		this.createContent()
 
 		// Add panel to a scrollable panel

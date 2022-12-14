@@ -33,7 +33,6 @@ export default class ChoosePremade extends Menu {
 		this.selectedAvatar = params.selected | 0
 		this.avatarsSmall = []
 
-		this.createSizer()
 		this.createContent(callback)
 
 		// Set the content based on the selected avatar

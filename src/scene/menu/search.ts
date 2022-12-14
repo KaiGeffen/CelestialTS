@@ -17,8 +17,6 @@ export default class SearchMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
-		this.createSizer()
-
 		let callback = params.callback
 		let start = params.start
 		this.createContent(callback, start)

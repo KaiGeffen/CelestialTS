@@ -22,8 +22,6 @@ export default class ModeMenu extends Menu {
 
 		this.avatar = params.avatar
 
-		this.createSizer()
-
 		// The non-menu scene which is active, used for changing scenes
 		let activeScene = params.activeScene
 		let deck = params.deck

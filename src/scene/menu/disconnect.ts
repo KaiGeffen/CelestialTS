@@ -12,12 +12,10 @@ export default class DCMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
-		let panel = this.createSizer()
-
 		// The non-menu scene which is active, used for changing scenes
 		let activeScene = params.activeScene
 		// let deck = params.deck
-		this.createContent(scene, panel, activeScene)
+		this.createContent(activeScene)
 
 		this.layout()
 	}
@@ -41,8 +39,8 @@ export default class DCMenu extends Menu {
 	// 	return panel
 	// }
 
-	private createContent(scene: Phaser.Scene, panel, activeScene: Phaser.Scene) {
-		panel.add(this.createHeader('Opponent Disconnected', width))
+	private createContent(activeScene: Phaser.Scene) {
+		this.sizer.add(this.createHeader('Opponent Disconnected', width))
 		.addNewLine()
 
 		const padding = {space: {
@@ -50,27 +48,16 @@ export default class DCMenu extends Menu {
 			right: Space.pad/2,
 		}}
 
-		panel.add(this.createHint(scene), padding)
+		this.sizer.add(this.createHint(), padding)
 		.addNewLine()
 
-		panel.add(this.createButtons(scene, activeScene), padding)
+		this.sizer.add(this.createButtons(activeScene), padding)
 	}
 
-	private createTitle(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
+	private createHint() {
+		let sizer = this.scene['rexUI'].add.sizer({width: width})
 
-		let txt = scene.add.text(0, 0, 'Disconnect', Style.announcement)
-		sizer.addSpace()
-		.add(txt)
-		.addSpace()
-
-		return sizer
-	}
-
-	private createHint(scene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({width: width})
-
-		let txt = scene.add.text(0, 0, 'Your opponent disconnected, you win!', Style.basic)
+		let txt = this.scene.add.text(0, 0, 'Your opponent disconnected, you win!', Style.basic)
 		sizer.addSpace()
 		.add(txt)
 		.addSpace()
@@ -79,8 +66,8 @@ export default class DCMenu extends Menu {
 	}
 
 	// Create the buttons at the bottom
-	private createButtons(scene: Phaser.Scene, activeScene: Phaser.Scene) {
-		let sizer = scene['rexUI'].add.sizer({
+	private createButtons(activeScene: Phaser.Scene) {
+		let sizer = this.scene['rexUI'].add.sizer({
 			width: width,
 			space: {
 				item: Space.pad
@@ -88,15 +75,15 @@ export default class DCMenu extends Menu {
 		})
 
 		sizer
-		.add(this.createReview(scene))
+		.add(this.createReview())
 		.addSpace()
-		.add(this.createExit(scene, activeScene))
+		.add(this.createExit(activeScene))
 
 		return sizer
 	}
 
-	private createReview(scene: Phaser.Scene): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+	private createReview(): ContainerLite {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Review', () => {
 			this.close()
@@ -105,14 +92,14 @@ export default class DCMenu extends Menu {
 		return container
 	}
 
-	private createExit(scene: Phaser.Scene, activeScene: Phaser.Scene): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+	private createExit(activeScene: Phaser.Scene): ContainerLite {
+		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Exit', () => {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
-			scene.scene.start("HomeScene")
+			this.scene.scene.start("HomeScene")
 		})
 
 		return container

@@ -32,9 +32,6 @@ class AlterDeckMenu extends Menu {
 		this.titleString = titleString
 		this.confirmString = confirmString
 
-		// Make a fixed height sizer
-		this.createSizer()
-
 		this.createContent(params.callback)
 
 		this.layout()

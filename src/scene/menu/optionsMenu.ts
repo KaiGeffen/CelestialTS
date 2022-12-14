@@ -18,9 +18,6 @@ export default class OptionsMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
-		// Make a fixed height sizer
-		this.createSizer()
-
 		// The non-menu scene which is active, used for changing scenes
 		let activeScene = params.activeScene
 		this.createContent(activeScene)
