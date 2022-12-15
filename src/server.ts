@@ -2,6 +2,7 @@ import 'phaser'
 
 import Card from "./lib/card"
 import { decodeDeck } from "./lib/codec"
+import { UserSettings } from "./settings/settings"
 
 
 const ip = '127.0.0.1'
@@ -58,6 +59,13 @@ export default class Server {
 						scene.scene.start('HomeScene')
 					}
 
+					break
+
+				// Prompt the user to send initial values to set up their account
+				case 'prompt_user_init':
+					that.sendDecks(UserSettings._get('decks'))
+					that.sendUserProgress(UserSettings._get('userProgress'))
+					that.sendInventory(UserSettings._get('inventory'))
 					break
 
 				case 'invalid_token':
