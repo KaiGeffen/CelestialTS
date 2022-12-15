@@ -112,7 +112,7 @@
     "text": "Remove from the game the top 4 cards of your discard pile."
   },
 
-  {"name": "Clip Your Wings", "id": 16,
+  {"name": "Wing Clipping", "id": 16,
     "cost": 5, "points": 3,
     "text": "Your opponent puts the leftmost card of their hand on top of their deck.",
     "story": "We walked and ran and played then\nYou leave me behind\nI gasp as the space between us grows"
@@ -156,7 +156,7 @@
     ]
   },
 
-  {"name": "First Light", "id": 50,
+  {"name": "Dawn", "id": 50,
     "cost": 0, "points": 0,
     "text": "When played, gain Sight 4.\nMorning: gain Sight 1.",
     "keywords": [
