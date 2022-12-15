@@ -394,10 +394,10 @@
 
   {"name": "Sun", "id": 56,
     "cost": 8, "points": 8,
-    "text": "Visible.\nMorning: gain 1 extra breath this round.",
+    "text": "Inspire 1.\nMorning: gain 1 extra breath this round.",
     "story": "I raise my head over the horizon\nI begin\nJust like you",
     "keywords": [
-      {"name": "Visible", "x": 0, "y": 52},
+      {"name": "Inspire", "x": 0, "y": 52, "value": 1},
       {"name": "Morning", "x": 0, "y": 82}
     ]
   },
