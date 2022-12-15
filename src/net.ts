@@ -19,9 +19,6 @@ const port = 5555
 
 const MATCH_MAKING_PARAM = 'mm'
 
-// The init message that client should send in response to a request for user's deck
-var initMessage: string
-var listenerAdded = false
 // The version-number of that state that the client is displaying, for use with verifying with server
 export var versionNumber: number
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
@@ -38,7 +35,7 @@ export class Network {
 		versionNumber = -1
 
 		// The first message sent to server once the match starts
-		initMessage = JSON.stringify({
+		const initMessage = JSON.stringify({
 			type: 'init',
 			value: encodeDeck(deck),
 			avatar: `${avatarID}`
@@ -53,8 +50,9 @@ export class Network {
 			console.log('Socket open')
 		})
 
-		// NOTE Only add this listener if it hasn't been added already
-		if (!listenerAdded) {
+		// Add listener for a single-game connection
+		// Or if user is signed in but a listener has not yet been added
+		if (!Server.loggedIn() || !Server.hasInGameListener) {
 			// Listen for messages
 			socket.addEventListener('message', function (event) {
 				let msg
@@ -99,11 +97,10 @@ export class Network {
 			})
 		}
 
-		// If user is logged in, communicate that we are now searching for a match
+		// If user is logged in, communicate that we are now searching for a match and have a listener
 		if (Server.loggedIn()) {
-			// If logged in, this same ws/listener will get reused
-			listenerAdded = true
-
+			Server.hasInGameListener = true
+			
 			let message = JSON.stringify({
 				type: 'find_match',
 				value: mmCode,

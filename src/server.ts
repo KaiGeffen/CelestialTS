@@ -13,11 +13,13 @@ const code = 333
 var wsServer: WebSocket = undefined
 var packOpenCallback: (cards: Card[]) => void = undefined
 
-
 export default class Server {
 	// Log in with the server for user with given OAuth token
 	static login(token: string, scene?: Phaser.Scene) {
 		let that = this
+
+		// Set / reset that server ws does not have an in-game listener yet
+		Server.hasInGameListener = false
 
 		// The first message sent to server once the match starts
 		let tokenMessage = JSON.stringify({
@@ -93,6 +95,9 @@ export default class Server {
 	static loggedIn(): boolean {
 		return wsServer !== undefined
 	}
+
+	// If this ws already has an event listener for messages related to the match scene
+	static hasInGameListener = false
 
 	// Request a pack from the server, sets the callback for when the pack is sent
 	static requestPack(callback: (cards: Card[]) => void): void {
@@ -200,7 +205,7 @@ export default class Server {
 			wsServer.send(message)
 		}
 	}
-
+	
 	// Load user data that was sent from server into session storage
 	private static loadUserData(data): void {
 		// Put this data into the session storage so that UserSettings sees it before local storage
