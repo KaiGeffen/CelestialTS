@@ -8,7 +8,7 @@ import { Status } from "./status"
 
 export default class ClientState {
 	hand: Card[]
-	opponentHandSize: number
+	opponentHand: Card[]
 	deck: Card[]
 	opponentDeckSize: number
 	discard: Card[][]
@@ -46,7 +46,7 @@ export default class ClientState {
 
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
-		this.opponentHandSize = state.opp_hand
+		this.opponentHand = decodeDeck(state.opp_hand)
 		this.deck = decodeDeck(state.deck)
 		this.opponentDeckSize = state.opp_deck
 		this.discard = state.pile.map(pile => decodeDeck(pile))

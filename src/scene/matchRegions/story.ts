@@ -153,7 +153,7 @@ export default class StoryRegion extends Region {
 			const y = card.container.y
 
 			card.setPosition(
-				CardLocation.theirHand(state, state.opponentHandSize + 1, this.container))
+				CardLocation.theirHand(state, state.opponentHand.length + 1, this.container))
 			
 			// Animate moving x direction, appearing at start
 			this.scene.tweens.add({

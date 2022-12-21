@@ -63,7 +63,7 @@ export default class DCMenu extends Menu {
 			activeScene.scene.stop()
 
 			// Stop this scene and start the home scene
-			this.scene.scene.start("HomeScene")
+			this.scene.scene.start("BuilderScene")
 		})
 
 		return container

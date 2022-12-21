@@ -56,7 +56,7 @@ export default class ModeMenu extends Menu {
 				fontSize: '20px',
 				color: Color.textboxText,
 				backgroundColor: Color.textboxBackground,
-				maxLength: 10,
+				// maxLength: 10,
 				selectAll: true,
 				id: 'search-field'
 			}).on('textchange', function(inputText) {
