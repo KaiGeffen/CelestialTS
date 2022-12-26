@@ -4,6 +4,7 @@ import Story from "./story"
 import Recap from "./recap"
 import { Animation, decodeAnimationList } from "./animation"
 import { Status } from "./status"
+import { cardback } from "../catalog/catalog"
 
 
 export default class ClientState {
@@ -46,7 +47,16 @@ export default class ClientState {
 
 	constructor(state) {
 		this.hand = decodeDeck(state.hand)
-		this.opponentHand = decodeDeck(state.opp_hand)
+
+		// TODO Remove this once hand hiding happens server side
+		const devMode = new URLSearchParams(window.location.search).has('dev')
+	    this.opponentHand = decodeDeck(state.opp_hand)
+	    if (!devMode) {
+	    	const len = this.opponentHand.length
+
+	    	this.opponentHand = Array(len).fill(cardback)
+	    }
+		
 		this.deck = decodeDeck(state.deck)
 		this.opponentDeckSize = state.opp_deck
 		this.discard = state.pile.map(pile => decodeDeck(pile))
