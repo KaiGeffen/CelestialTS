@@ -3,6 +3,8 @@ import { Style, Color, Space } from '../settings/settings'
 import Menu from "../lib/menu"
 
 
+// @deprecated No longer used in buttons
+
 export default class Icon {
 	btn: Phaser.GameObjects.Image
 	txt: Phaser.GameObjects.Text
