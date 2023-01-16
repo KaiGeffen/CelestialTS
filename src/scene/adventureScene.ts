@@ -332,6 +332,12 @@ export default class AdventureScene extends BaseScene {
 
 		// Set the param to undefined so it doesn't persist
 		params.stillframe = undefined
+
+		// Reposition the stillframe to be visible to the camera
+		const coords = UserSettings._get('adventureCoordinates')
+		container.setPosition(
+			coords.x,
+			coords.y)
 	}
 
 	// Add all of the missions to the panel
