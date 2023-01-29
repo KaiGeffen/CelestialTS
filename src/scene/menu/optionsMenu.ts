@@ -49,7 +49,8 @@ export default class OptionsMenu extends Menu {
 		// this.create()
 
 		// Put the currently selected tab's contents in the main sizer
-		const view = this.createGeneralContents(activeScene)
+		// const view = this.createGeneralContents(activeScene)
+		const view = this.createAudioContents()
 		subSizer.add(view, {expand: true})
 	}
 
@@ -97,14 +98,24 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createAudioContents() {
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
+		let sizer = this.scene['rexUI'].add.sizer({
+			orientation: 'vertical',
+			space: {
+				line: Space.pad*2,
+				top: Space.pad,
+				bottom: Space.pad,
+				left: Space.pad/2,
+				right: Space.pad,
+			}
+		})
+		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
 
 		sizer
-		.add(this.createVolume())
-		.addNewLine()
-		.add(this.createMusic())
-		// .addNewLine()
-		// .add(this.createDialog())
+		.add(this.createMasterVolume(), {expand: true})
+		.addSpace()
+		.add(this.createMusicVolume(), {expand: true})
+		.addSpace()
+		.add(this.createDialogVolume(), {expand: true})
 
 		return sizer
 	}
@@ -128,11 +139,11 @@ export default class OptionsMenu extends Menu {
 	// 	this.sizer.add(this.createButtons(activeScene), padding)
 	// }
 
-	private createVolume() {
+	private createMasterVolume() {
 		let that = this
-		let sizer = this.scene['rexUI'].add.sizer({width: width})
+		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
-		let txtVolumeHint = this.scene.add.text(0, 0, 'Volume:', Style.basic)
+		let txtVolumeHint = this.scene.add.text(0, 0, 'Master Volume:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
 
@@ -160,10 +171,10 @@ export default class OptionsMenu extends Menu {
 		return sizer
 	}
 
-	private createMusic() {
-		let sizer = this.scene['rexUI'].add.sizer({width: width})
+	private createMusicVolume() {
+		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
-		let txtVolumeHint = this.scene.add.text(0, 0, 'Music:', Style.basic)
+		let txtVolumeHint = this.scene.add.text(0, 0, 'Music Volume:', Style.basic)
 		sizer.add(txtVolumeHint)
 		sizer.addSpace()
 
@@ -189,6 +200,43 @@ export default class OptionsMenu extends Menu {
             	music.volume = value
             	music.play()
             },
+        })
+		sizer.add(slider)
+
+		return sizer
+	}
+
+	private createDialogVolume() {
+		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+
+		let txtVolumeHint = this.scene.add.text(0, 0, 'Dialog Volume:', Style.basic)
+		sizer.add(txtVolumeHint)
+		sizer.addSpace()
+
+		let slider = this.scene['rexUI'].add.slider({
+			width: 200,
+			height: 20,
+			orientation: 'x',
+
+            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
+            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
+            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
+            space: {
+                right: 10
+            },
+            input: 'drag',
+
+            // TODO
+
+            // value: UserSettings._get('musicVolume'),
+            // valuechangeCallback: function (value) {
+            // 	UserSettings._set('musicVolume', value)
+
+            // 	let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
+
+            // 	music.volume = value
+            // 	music.play()
+            // },
         })
 		sizer.add(slider)
 
