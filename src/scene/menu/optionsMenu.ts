@@ -12,9 +12,9 @@ import Buttons from '../../lib/buttons/buttons'
 import MenuScene from '../menuScene'
 
 
-const width = 650
+const width = 700
 // Width of the subpanel that shows selected tab's contents
-const subWidth = 400
+const subWidth = 480
 
 export default class OptionsMenu extends Menu {
 	constructor(scene: MenuScene, params) {
@@ -33,6 +33,7 @@ export default class OptionsMenu extends Menu {
 		// Sizer with tabs on left, contents on right
 		let subSizer = this.scene['rexUI'].add.sizer({
 			space: {
+				item: Space.pad/2,
 				left: Space.pad,
 				right: Space.pad,
 			}
@@ -49,7 +50,7 @@ export default class OptionsMenu extends Menu {
 
 		// Put the currently selected tab's contents in the main sizer
 		const view = this.createGeneralContents(activeScene)
-		subSizer.add(view)
+		subSizer.add(view, {expand: true})
 	}
 
 	private createTabs()  {
@@ -73,21 +74,24 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createGeneralContents(activeScene: BaseScene) {
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({space: {
-			line: Space.pad*2,
-			top: Space.pad,
-			bottom: Space.pad,
-			left: Space.pad,
-			right: Space.pad,
-		}})
+		let sizer = this.scene['rexUI'].add.sizer({
+			orientation: 'vertical',
+			space: {
+				line: Space.pad*2,
+				top: Space.pad,
+				bottom: Space.pad,
+				left: Space.pad/2,
+				right: Space.pad,
+			}
+		})
 		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
 
 		sizer
-		.add(this.createAutopass())
-		.addNewLine()
-		.add(this.createSpeed())
-		.addNewLine()
-		.add(this.createQuit(activeScene))
+		.add(this.createAutopass(), {expand: true})
+		.addSpace()
+		.add(this.createSpeed(), {expand: true})
+		.addSpace()
+		.add(this.createQuit(activeScene), {expand: true})
 
 		return sizer
 	}
