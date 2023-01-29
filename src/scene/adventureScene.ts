@@ -40,6 +40,9 @@ export default class AdventureScene extends BaseScene {
 		// Add navigation arrows + zoom
 		this.createNavigation()
 
+		// Add button for help menu
+		this.createHelpButton()
+
 		// Add all of the available nodes
 		this.addAdventureData()
 
@@ -219,6 +222,19 @@ export default class AdventureScene extends BaseScene {
 		}
 	}
 
+	private createHelpButton(): void {
+		const x = Space.windowWidth - Space.largeButtonWidth/2 - (Space.iconSize + Space.pad * 2)
+		const y = Space.largeButtonHeight/2 + Space.pad
+		new Buttons.Basic(this, x, y, 'Help', () => {
+			this.scene.launch('MenuScene', {
+				menu: 'help',
+				callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t0`, missionID: 0})},
+			})
+		})
+		.setDepth(10)
+		.setNoScroll()	
+	}
+
 	// Create a popup for the card specified in params
 	private createCardPopup(params): void {
 		const width = 800
@@ -358,10 +374,9 @@ export default class AdventureScene extends BaseScene {
 		// Add each of the adventures as its own line
 		this.animatedBtns = []
 		unlockedMissions.filter(mission => {
-			// // Don't show unlocked cards that user has already received
-			// if (mission.type === 'card' && UserSettings._get('completedMissions')[mission.id]) {
-			// 	return false
-			// }
+			if (mission.type === 'tutorial') {
+				return false
+			}
 
 			return true
 		}).forEach(mission => {
@@ -388,12 +403,11 @@ export default class AdventureScene extends BaseScene {
 
 	// Return the function for what happens when the given mission node is clicked on
 	private missionOnClick(mission): () => void {
-		if (mission.type === 'tutorial') {
-			return () => {
-    			this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${mission.id}`, missionID: mission.id})
-			}
-		}
-		else if (mission.type === 'mission') {
+		// if (mission.type === 'tutorial') {
+		// 	return this.doTutorial(mission)
+		// }
+		// else 
+		if (mission.type === 'mission') {
 			return () => {
 				this.scene.start("AdventureBuilderScene", mission)
 			}

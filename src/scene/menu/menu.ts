@@ -120,6 +120,7 @@ import OptionsMenu from "./optionsMenu"
 import ChoosePremade from "./choosePremade"
 import CreditsMenu from "./credits"
 import RulebookMenu from "./rulebook"
+import HelpMenu from "./help"
 // TODO Rename since it includes both
 import { NewDeckMenu, EditDeckMenu } from "./newDeck"
 import ShareDeckMenu from "./shareDeck"
@@ -147,6 +148,7 @@ const menus = {
 	'search': SearchMenu,
 	'distribution': DistributionMenu,
 	'message': MessageMenu,
+	'help': HelpMenu,
 }
 
 // Function exposed for the creation of custom menus
