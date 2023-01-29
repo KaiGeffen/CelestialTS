@@ -16,7 +16,15 @@ const width = 700
 // Width of the subpanel that shows selected tab's contents
 const subWidth = 480
 
+var selectedTab = 'general'
+
 export default class OptionsMenu extends Menu {
+	// Each of the subpanels displayed based on which tab is selected
+	subpanels = {}
+
+	// The sizer which holds the tabs and active subpanel
+	subsizer
+
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
@@ -31,40 +39,55 @@ export default class OptionsMenu extends Menu {
 		this.createHeader('Options', width + Space.padSmall*2)
 
 		// Sizer with tabs on left, contents on right
-		let subSizer = this.scene['rexUI'].add.sizer({
+		this.subsizer = this.scene['rexUI'].add.sizer({
 			space: {
 				item: Space.pad/2,
 				left: Space.pad,
 				right: Space.pad,
 			}
 		})
-		this.sizer.add(subSizer)
+		this.sizer.add(this.subsizer)
 
 		// Create the different tabs that user can select
 		let tabs = this.createTabs()
-		subSizer.add(tabs)
+		this.subsizer.add(tabs)
 		.addSpace()
 
 		// Create a sizer for each of the tabs
-		// this.create()
-
+		
+		this.subpanels['general'] = this.createGeneralPanel(activeScene)
+		this.subpanels['audio'] = this.createAudioPanel()
+		
 		// Put the currently selected tab's contents in the main sizer
-		// const view = this.createGeneralContents(activeScene)
-		const view = this.createAudioContents()
-		subSizer.add(view, {expand: true})
+		const subpanel = this.subpanels[selectedTab]
+		this.subsizer.add(subpanel, {expand: true})
+		subpanel.show()
 	}
 
 	private createTabs()  {
 		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
 
-		const tabStrings = ['General', 'Audio', 'Rulebook', 'Credits']
+		const tabStrings = ['general', 'audio', 'rulebook', 'credits']
 
 		tabsSizer.addNewLine()
 		for (let i = 0; i < tabStrings.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.largeButtonWidth, Space.largeButtonHeight)
 			let btn = new Buttons.Basic(container, 0, 0, tabStrings[i])
 			.setOnClick(() => {
-				// TODO switch to right tab and remember
+				// Remove and hide the old subpanel
+				const oldPanel = this.subpanels[selectedTab]
+
+				this.subsizer.remove(oldPanel)
+				oldPanel.hide()
+				
+				// Remember which tab is newly selected and show that
+				selectedTab = tabStrings[i]
+				const newPanel = this.subpanels[tabStrings[i]]
+
+				this.subsizer.add(newPanel, {expand: true})
+				newPanel.show()
+
+				this.layout()
 			})
 
 			tabsSizer.add(container)
@@ -74,7 +97,7 @@ export default class OptionsMenu extends Menu {
 		return tabsSizer
 	}
 
-	private createGeneralContents(activeScene: BaseScene) {
+	private createGeneralPanel(activeScene: BaseScene) {
 		let sizer = this.scene['rexUI'].add.sizer({
 			orientation: 'vertical',
 			space: {
@@ -86,6 +109,7 @@ export default class OptionsMenu extends Menu {
 			}
 		})
 		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
+		.hide()
 
 		sizer
 		.add(this.createAutopass(), {expand: true})
@@ -97,7 +121,7 @@ export default class OptionsMenu extends Menu {
 		return sizer
 	}
 
-	private createAudioContents() {
+	private createAudioPanel() {
 		let sizer = this.scene['rexUI'].add.sizer({
 			orientation: 'vertical',
 			space: {
@@ -109,6 +133,7 @@ export default class OptionsMenu extends Menu {
 			}
 		})
 		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
+		.hide()
 
 		sizer
 		.add(this.createMasterVolume(), {expand: true})
@@ -119,25 +144,6 @@ export default class OptionsMenu extends Menu {
 
 		return sizer
 	}
-
-	// 	// Right side content
-
-	// 	const padding = {padding: {left: Space.padSmall, right: Space.padSmall}}
-
-	// 	this.sizer.add(this.createVolume(), padding)
-	// 	.addNewLine()
-
-	// 	this.sizer.add(this.createMusic(), padding)
-	// 	.addNewLine()
-
-	// 	this.sizer.add(this.createSpeed(), padding)
-	// 	.addNewLine()
-		
-	// 	this.sizer.add(this.createAutopass(), padding)
-	// 	.addNewLine()
-
-	// 	this.sizer.add(this.createButtons(activeScene), padding)
-	// }
 
 	private createMasterVolume() {
 		let that = this
