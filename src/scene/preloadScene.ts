@@ -20,44 +20,31 @@ export default class PreloadClass extends Phaser.Scene {
 		// Ensure that every user setting is either set, or set it to its default value
 		UserSettings._ensure()
 
-		// TODO Remove
-		this.renderSigninButton()
-
-		// Gain access to chart plugin
-		this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
-
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
 
 		this.sound.volume = UserSettings._get('volume')
 
-		// If the user is using mobile, ensure that the see the mobile message
-		if (Mobile) {
-			UserProgress.addAchievement('mobile')
-		}
+		// Load the assets used in this scene
+		Loader.preload(this)
 	}
 
 	create() {
+		// TODO Replace with Google GIS button as an option below
+		this.renderSigninButton()
+
+		// Gain access to chart plugin
+		this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
+
 		// Load all assets used throughout the game
+		// Create the graphics for how much of loading is complete and their listeners
+		this.createProgressGraphics()
+
 		// NOTE This does not block and these assets cannot won't be loaded in time for below code
 		Loader.loadAll(this)
 
-		// Create the graphics for how much of loading is complete and their listeners
-		this.createProgressGraphics()
-		this.load.start()
-
 		// Add buttons to sign in or play as a guest
-		const x = Space.windowWidth/2
-		const y = Space.windowHeight/2
-		
-		new Buttons.Basic(this, x, y, 'Guest', () => {
-			this.signedInOrGuest = true
-
-			// If the core assets have been loaded, start home scene
-			if (Loader.postLoadStarted) {
-				this.scene.start('HomeScene')
-			}
-		})
+		this.createButtons()
 	}
 
 	renderSigninButton(): void {
@@ -152,5 +139,22 @@ export default class PreloadClass extends Phaser.Scene {
 				Loader.postLoadComplete = true
 			}
 		})
+	}
+
+	// Create buttons for each of the signin options (Guest, OAuth)
+	private createButtons(): void {
+		const x = Space.windowWidth/2
+		const y = Space.windowHeight/2
+		
+		new Buttons.Basic(this, x, y, 'Guest', () => {
+			this.signedInOrGuest = true
+
+			// If the core assets have been loaded, start home scene
+			if (Loader.postLoadStarted) {
+				this.scene.start('HomeScene')
+			}
+		})
+
+		// TODO Google, Facebook
 	}
 }

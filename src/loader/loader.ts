@@ -64,15 +64,21 @@ const postLoadPrefixMap: PrefixEntry[] = [
 
 
 export default class Loader {
+	// Load any assets that are needed within the preload scene
+	static preload(scene: Phaser.Scene) {
+		// Set the load path
+		scene.load.path = 'assets/'
+
+		// Load button as a spritesheet
+		Loader.loadButton(scene)
+	}
+
 	static loadAll(scene: Phaser.Scene) {
 		// Set the load path
 		scene.load.path = 'assets/'
 
 		// Load the avatars as a spritesheet
 		Loader.loadAvatarPortraits(scene)
-
-		// Load button as a spritesheet
-		Loader.loadButton(scene)
 
 		// Load all audio
 		Loader.loadAudio(scene)
@@ -88,6 +94,8 @@ export default class Loader {
 
 		// Load the rest of the assets
 		Loader.bulkLoad(scene)
+
+		scene.load.start()
 	}
 
 	// Whether the full version of resources has been loaded
