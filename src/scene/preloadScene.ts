@@ -2,11 +2,12 @@ import 'phaser'
 import Loader from '../loader/loader'
 import Server from '../server'
 import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
+import Buttons from "../lib/buttons/buttons"
 
 
 export default class PreloadClass extends Phaser.Scene {
-	// True if could log in, false if couldn't, undefined until known
-	loginStatus: boolean = undefined
+	// True when user is signed or chose to be a guest
+	signedInOrGuest: boolean = false
 
 	constructor() {
 		super({
@@ -19,6 +20,7 @@ export default class PreloadClass extends Phaser.Scene {
 		// Ensure that every user setting is either set, or set it to its default value
 		UserSettings._ensure()
 
+		// TODO Remove
 		this.renderSigninButton()
 
 		// Gain access to chart plugin
@@ -36,9 +38,24 @@ export default class PreloadClass extends Phaser.Scene {
 		if (Mobile) {
 			UserProgress.addAchievement('mobile')
 		}
-		
+
 		// Add event listeners
 		this.createProgressGraphics()
+	}
+
+	create() {
+		// Add buttons to sign in or play as a guest
+		const x = Space.windowWidth/2
+		const y = Space.windowHeight/2 - 200
+		
+		new Buttons.Basic(this, x, y, 'Guest', () => {
+			this.signedInOrGuest = true
+
+			// If the core assets have been loaded, start home scene
+			if (Loader.postLoadStarted) {
+				this.scene.start('HomeScene')
+			}
+		})
 	}
 
 	renderSigninButton(): void {
@@ -103,18 +120,25 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Update the progress bar
 		this.load.on('progress', function (value) {
-			progressBar.clear()
-			progressBar.fillStyle(Color.progressFill, 1)
-			progressBar.fillRect(x + Space.pad, y + Space.pad, (width - Space.pad*2) * value, height - Space.pad*2)
+			if (!Loader.postLoadStarted) {
+				progressBar.clear()
+				progressBar.fillStyle(Color.progressFill, 1)
+				progressBar.fillRect(x + Space.pad, y + Space.pad, (width - Space.pad*2) * value, height - Space.pad*2)
+			}
 		})
 
 		this.load.on('complete', () => {
 			// Only do this the first time load completes
 			if (!Loader.postLoadStarted) {
-				this.scene.start('HomeScene')
-
 				Loader.loadAnimations(this)
 				Loader.postLoad(this)
+
+				txtLoading.setText('Loaded')
+
+				// If user has already signed in, start home scene
+				if (this.signedInOrGuest) {
+					this.scene.start('HomeScene')
+				}
 			}
 			// When the post load completes, set a flag
 			else if (!Loader.postLoadComplete) {
