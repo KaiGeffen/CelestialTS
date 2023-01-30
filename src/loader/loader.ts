@@ -64,7 +64,7 @@ const postLoadPrefixMap: PrefixEntry[] = [
 
 
 export default class Loader {
-	static loadAll(scene) {
+	static loadAll(scene: Phaser.Scene) {
 		// Set the load path
 		scene.load.path = 'assets/'
 
@@ -90,7 +90,7 @@ export default class Loader {
 		Loader.bulkLoad(scene)
 	}
 
-	// Whether the full version of resources has been loading
+	// Whether the full version of resources has been loaded
 	static postLoadStarted = false
 	static postLoadComplete = false
 
@@ -126,19 +126,19 @@ export default class Loader {
 	}
 
 	// Load all of the assets that load in a normal way
-	private static bulkLoad(scene): void {
+	private static bulkLoad(scene: Phaser.Scene): void {
 		// For each type of asset
 		prefixMap.forEach((assetType: PrefixEntry) => {
 
 			// For each asset of that type
 			assetType.list.forEach((name) => {
 				scene.load.image(`${assetType.prefix}${name}`, `${assetType.fp}${name}.${EXTENSION}`)
-			})			
+			})
 		})
 	}
 
 	// Loads the avatar portraits which are spritesheets
-	private static loadAvatarPortraits(scene): void {
+	private static loadAvatarPortraits(scene: Phaser.Scene): void {
 		avatarNames.forEach((name) => {
 			// Load the spritesheet with basic + emotes
 			scene.load.spritesheet(`avatar-${name}`, `avatars/${name}.${EXTENSION}`, {
@@ -149,7 +149,7 @@ export default class Loader {
 	}
 
 	// Loads the avatar portraits which are spritesheets
-	private static loadMissionIcon(scene): void {
+	private static loadMissionIcon(scene: Phaser.Scene): void {
 		// Load the spritesheet with basic + emotes
 		scene.load.spritesheet(`icon-Mission`, `icons/Mission.${EXTENSION}`, {
 			frameWidth: 80,
@@ -158,7 +158,7 @@ export default class Loader {
 	}
 
 	// Loads the basic button as a spritesheet
-	private static loadButton(scene): void {
+	private static loadButton(scene: Phaser.Scene): void {
 		scene.load.spritesheet(`icon-Button`, `icons/Button.${EXTENSION}`, {
 			frameWidth: Space.smallButtonWidth,
 			frameHeight: Space.smallButtonHeight + 8, // 8 From dropshadow
@@ -166,7 +166,7 @@ export default class Loader {
 	}
 
 	// Loads all audio
-	private static loadAudio(scene): void {
+	private static loadAudio(scene: Phaser.Scene): void {
 		// Load all sfx
 		sfxData.forEach((sound) => {
 			scene.load.audio(sound, `sfx/${sound}.mp3`)
@@ -179,7 +179,7 @@ export default class Loader {
 	}
 
 	// Loads all video textures
-	private static loadVideos(scene): void {
+	private static loadVideos(scene: Phaser.Scene): void {
 		// scene.load.video('priorityHighlight', 'priority.mp4')
 	}
 

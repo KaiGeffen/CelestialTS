@@ -26,9 +26,6 @@ export default class PreloadClass extends Phaser.Scene {
 		// Gain access to chart plugin
 		this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
 
-		// Load all of the assets
-		Loader.loadAll(this)
-
 		// Ensure that audio plays even when tab loses focus
 		this.sound.pauseOnBlur = false
 
@@ -38,12 +35,17 @@ export default class PreloadClass extends Phaser.Scene {
 		if (Mobile) {
 			UserProgress.addAchievement('mobile')
 		}
-
-		// Add event listeners
-		this.createProgressGraphics()
 	}
 
 	create() {
+		// Load all assets used throughout the game
+		// NOTE This does not block and these assets cannot won't be loaded in time for below code
+		Loader.loadAll(this)
+
+		// Create the graphics for how much of loading is complete and their listeners
+		this.createProgressGraphics()
+		this.load.start()
+
 		// Add buttons to sign in or play as a guest
 		const x = Space.windowWidth/2
 		const y = Space.windowHeight/2
