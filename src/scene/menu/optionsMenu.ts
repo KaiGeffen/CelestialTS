@@ -13,6 +13,7 @@ import MenuScene from '../menuScene'
 
 
 const width = 750
+const height = 350
 // Width of the subpanel that shows selected tab's contents
 const subWidth = 530
 
@@ -40,6 +41,7 @@ export default class OptionsMenu extends Menu {
 
 		// Sizer with tabs on left, contents on right
 		this.subsizer = this.scene['rexUI'].add.sizer({
+			height: height,
 			space: {
 				item: Space.pad/2,
 				left: Space.pad,

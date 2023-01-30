@@ -25,7 +25,7 @@ export default class Menu {
 		this.width = width
 
 		if (params) {
-			this.exitCallback = params.exitCallback
+			this.exitCallback = params.exitCallback				
 		}
 
 		// Create the basic sizer
