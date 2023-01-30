@@ -46,7 +46,7 @@ export default class PreloadClass extends Phaser.Scene {
 	create() {
 		// Add buttons to sign in or play as a guest
 		const x = Space.windowWidth/2
-		const y = Space.windowHeight/2 - 200
+		const y = Space.windowHeight/2
 		
 		new Buttons.Basic(this, x, y, 'Guest', () => {
 			this.signedInOrGuest = true
@@ -102,7 +102,7 @@ export default class PreloadClass extends Phaser.Scene {
 		let width = 800
 		let height = 100
 		let x = (Space.windowWidth - width)/2
-		let y = (Space.windowHeight - height)/2
+		let y = Space.windowHeight - height/2 - 200
 
 		// Add graphics to show information
 		let progressBox = this.add.graphics()
@@ -112,18 +112,23 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Add text
 		let txtLoading = this.make.text({
-			x: Space.windowWidth/2,
-			y: Space.windowHeight/2,
+			x: x + width/2,
+			y: y + height/2,
 			text: 'Loading...',
 			style: Style.announcement
-		}).setOrigin(0.5, 0.5)
+		}).setOrigin(0.5)
 
 		// Update the progress bar
 		this.load.on('progress', function (value) {
 			if (!Loader.postLoadStarted) {
 				progressBar.clear()
 				progressBar.fillStyle(Color.progressFill, 1)
-				progressBar.fillRect(x + Space.pad, y + Space.pad, (width - Space.pad*2) * value, height - Space.pad*2)
+				progressBar.fillRect(
+					x + Space.pad,
+					y + Space.pad,
+					(width - Space.pad*2) * value,
+					height - Space.pad*2
+					)
 			}
 		})
 
