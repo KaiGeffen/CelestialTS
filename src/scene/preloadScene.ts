@@ -4,6 +4,7 @@ import Server from '../server'
 import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
 import Buttons from "../lib/buttons/buttons"
 
+// const {google} = require('googleapis');
 
 export default class PreloadClass extends Phaser.Scene {
 	// True when user is signed or chose to be a guest
@@ -45,6 +46,22 @@ export default class PreloadClass extends Phaser.Scene {
 
 		// Add buttons to sign in or play as a guest
 		this.createButtons()
+	}
+
+	private createGoogleGSIButton(): void {
+		console.log(google)
+
+		google.accounts.id.initialize({
+      		client_id: '574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com',
+      		// callback: 
+	    });
+	    google.accounts.id.prompt();
+
+		// google.accounts.id.initialize({
+		// 	client_id: 'YOUR_GOOGLE_CLIENT_ID',
+		// 	callback: () => {console.log('fdshjkfdshjkfdhskj')}
+		// });
+		// google.accounts.id.prompt();
 	}
 
 	renderSigninButton(): void {
@@ -155,6 +172,8 @@ export default class PreloadClass extends Phaser.Scene {
 			}
 		})
 
-		// TODO Google, Facebook
+		// Google GIS
+		this.createGoogleGSIButton()
+
 	}
 }
