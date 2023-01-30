@@ -58,7 +58,6 @@ export default class OptionsMenu extends Menu {
 		.addSpace()
 
 		// Create a sizer for each of the tabs
-		
 		this.subpanels['general'] = this.createGeneralPanel(activeScene)
 		this.subpanels['audio'] = this.createAudioPanel()
 		this.subpanels['rulebook'] = this.createRulebookPanel()
@@ -155,8 +154,8 @@ export default class OptionsMenu extends Menu {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: subWidth})
 		let scrollable = this.scene['rexUI'].add.scrollablePanel({
 			space: {
-				top: Space.pad,
-				bottom: Space.pad,
+				// top: Space.pad,
+				// bottom: Space.pad,
 				left: Space.pad/2,
 				right: Space.pad,
 			},
@@ -185,8 +184,6 @@ export default class OptionsMenu extends Menu {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: subWidth})
 		let scrollable = this.scene['rexUI'].add.scrollablePanel({
 			space: {
-				top: Space.pad,
-				bottom: Space.pad,
 				left: Space.pad/2,
 				right: Space.pad,
 			},
@@ -214,8 +211,8 @@ export default class OptionsMenu extends Menu {
 	private createAutopass() {
 		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
-		let txtVolumeHint = this.scene.add.text(0, 0, 'Autopass:', Style.basic)
-		sizer.add(txtVolumeHint)
+		let txtHint = this.scene.add.text(0, 0, 'Autopass:', Style.basic)
+		sizer.add(txtHint)
 		sizer.addSpace()
 
 		const s = UserSettings._get('autopass') ? 'Enabled' : 'Disabled'
@@ -236,40 +233,26 @@ export default class OptionsMenu extends Menu {
 	}
 	
 	private createSpeed() {
-		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.sizer({
+			width: subWidth,
+			orientation: 'vertical',
+			space: {item: Space.pad},
+		})
 
-		let txtSpeedHint = this.scene.add.text(0, 0, 'Speed:', Style.basic)
-		sizer.add(txtSpeedHint)
-		sizer.addSpace()
+		let txtHint = this.scene.add.text(0, 0, 'Animation Speed:', Style.basic)
+		sizer.add(txtHint, {align: 'left'})
 		
-		let slider = this.scene['rexUI'].add.slider({
-			width: 200,
-			height: 20,
-			orientation: 'x',
-
-            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
-            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
-            space: {
-                right: 10
-            },
-            input: 'drag',
-
-            value: UserSettings._get('animationSpeed'),
-            valuechangeCallback: function (value) {
-            	UserSettings._set('animationSpeed', value)
-            },
-        })
+		let slider = this.getSlider(
+			UserSettings._get('animationSpeed'),
+			(value) => {UserSettings._set('animationSpeed', value)}
+        )
 		sizer.add(slider)
 
 		return sizer
 	}
 
 	private createQuit(activeScene: BaseScene) {
-		let sizer = this.scene['rexUI'].add.sizer({
-			width: subWidth,
-			space: {item: Space.pad},
-		})
+		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
 		let container = new ContainerLite(this.scene, 0, 0, Space.largeButtonWidth, 50)
 		sizer
@@ -291,105 +274,87 @@ export default class OptionsMenu extends Menu {
 
 	private createMasterVolume() {
 		let that = this
-		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.sizer({
+			width: subWidth,
+			orientation: 'vertical',
+			space: {item: Space.pad},
+		})
 
-		let txtVolumeHint = this.scene.add.text(0, 0, 'Master Volume:', Style.basic)
-		sizer.add(txtVolumeHint)
-		sizer.addSpace()
+		let txtHint = this.scene.add.text(0, 0, 'Master Volume:', Style.basic)
+		sizer.add(txtHint)
 
-		let slider = this.scene['rexUI'].add.slider({
-			width: 200,
-			height: 20,
-			orientation: 'x',
-
-            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
-            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
-            space: {
-                right: 10
-            },
-            input: 'drag',
-
-            value: UserSettings._get('volume'),
-            valuechangeCallback: function (value) {
-            	UserSettings._set('volume', value)
+		let slider = this.getSlider(
+			UserSettings._get('volume'),
+			(value) => {
+				UserSettings._set('volume', value)
                 that.scene.sound.volume = value
-            },
-        })
+			}
+        )
 		sizer.add(slider)
 
 		return sizer
 	}
 
 	private createMusicVolume() {
-		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.sizer({
+			width: subWidth,
+			orientation: 'vertical',
+			space: {item: Space.pad},
+		})
 
-		let txtVolumeHint = this.scene.add.text(0, 0, 'Music Volume:', Style.basic)
-		sizer.add(txtVolumeHint)
-		sizer.addSpace()
+		let txtHint = this.scene.add.text(0, 0, 'Music Volume:', Style.basic)
+		sizer.add(txtHint)
 
-		let slider = this.scene['rexUI'].add.slider({
-			width: 200,
-			height: 20,
-			orientation: 'x',
-
-            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
-            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
-            space: {
-                right: 10
-            },
-            input: 'drag',
-
-            value: UserSettings._get('musicVolume'),
-            valuechangeCallback: function (value) {
-            	UserSettings._set('musicVolume', value)
+		let slider = this.getSlider(
+			UserSettings._get('musicVolume'),
+			(value) => {
+				UserSettings._set('musicVolume', value)
 
             	let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
 
             	music.volume = value
             	music.play()
-            },
-        })
+			}
+        )
 		sizer.add(slider)
 
 		return sizer
 	}
 
 	private createDialogVolume() {
-		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.sizer({
+			width: subWidth,
+			orientation: 'vertical',
+			space: {item: Space.pad},
+		})
 
-		let txtVolumeHint = this.scene.add.text(0, 0, 'Dialog Volume:', Style.basic)
-		sizer.add(txtVolumeHint)
-		sizer.addSpace()
+		let txtHint = this.scene.add.text(0, 0, 'Dialog Volume:', Style.basic)
+		sizer.add(txtHint)
 
-		let slider = this.scene['rexUI'].add.slider({
-			width: 200,
-			height: 20,
-			orientation: 'x',
-
-            track: this.scene['rexUI'].add.roundRectangle(0, 0, 100, 8, 10, Color.sliderTrack),
-            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 8, Color.sliderIndicator),
-            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 10, Color.sliderThumb),
-            space: {
-                right: 10
-            },
-            input: 'drag',
-
-            // TODO
-
-            // value: UserSettings._get('musicVolume'),
-            // valuechangeCallback: function (value) {
-            // 	UserSettings._set('musicVolume', value)
-
-            // 	let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
-
-            // 	music.volume = value
-            // 	music.play()
-            // },
-        })
+		let slider = this.getSlider(
+			0, // TODO
+			(value) => {
+				// TODO
+			}
+        )
 		sizer.add(slider)
 
 		return sizer
+	}
+
+	private getSlider(value: number, callback: (value: number) => void) {
+		return this.scene['rexUI'].add.slider({
+			width: subWidth,
+			height: 20,
+			orientation: 'x',
+
+            track: this.scene['rexUI'].add.roundRectangle(0, 0, subWidth, 8, 10, Color.sliderTrack),
+            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 12, Color.sliderIndicator),
+            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 20, Color.sliderThumb),
+            input: 'drag',
+
+            value: value,
+            valuechangeCallback: callback,
+        })
 	}
 }
