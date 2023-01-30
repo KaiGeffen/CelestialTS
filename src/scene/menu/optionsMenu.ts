@@ -12,9 +12,9 @@ import Buttons from '../../lib/buttons/buttons'
 import MenuScene from '../menuScene'
 
 
-const width = 700
+const width = 750
 // Width of the subpanel that shows selected tab's contents
-const subWidth = 480
+const subWidth = 530
 
 var selectedTab = 'general'
 
@@ -58,7 +58,7 @@ export default class OptionsMenu extends Menu {
 		this.subpanels['general'] = this.createGeneralPanel(activeScene)
 		this.subpanels['audio'] = this.createAudioPanel()
 		this.subpanels['rulebook'] = this.createRulebookPanel()
-		// this.subpanels['credits'] = this.createRulebookPanel()
+		this.subpanels['credits'] = this.createCreditsPanel()
 		
 		// Put the currently selected tab's contents in the main sizer
 		const subpanel = this.subpanels[selectedTab]
@@ -150,18 +150,22 @@ export default class OptionsMenu extends Menu {
 	private createRulebookPanel() {
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: subWidth})
 		let scrollable = this.scene['rexUI'].add.scrollablePanel({
-			// width: subWidth,
-			// height: Space.windowHeight - Space.pad * 2,
+			space: {
+				top: Space.pad,
+				bottom: Space.pad,
+				left: Space.pad/2,
+				right: Space.pad,
+			},
 			
 			panel: {
 				child: sizer
 			},
-			// background: background,
 
 			mouseWheelScroller: {
 				speed: 1
 			},
 		})
+		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
 		.hide()
 
 		// Add text to the scrollable panel
@@ -173,6 +177,35 @@ export default class OptionsMenu extends Menu {
 		return scrollable
 	}
 
+	private createCreditsPanel() {
+		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: subWidth})
+		let scrollable = this.scene['rexUI'].add.scrollablePanel({
+			space: {
+				top: Space.pad,
+				bottom: Space.pad,
+				left: Space.pad/2,
+				right: Space.pad,
+			},
+			
+			panel: {
+				child: sizer
+			},
+
+			mouseWheelScroller: {
+				speed: 1
+			},
+		})
+		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
+		.hide()
+
+		// Add text to the scrollable panel
+		let txt = this.scene.add.text(0, 0, creditsString, Style.basic)
+		.setWordWrapWidth(subWidth)
+
+		sizer.add(txt)
+
+		return scrollable
+	}
 	// Elements within the panels:
 	private createAutopass() {
 		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
@@ -431,3 +464,17 @@ No, the true order of your deck is hidden from you. The order you see is sorted 
 
 Can cards that reset (ex: Hurricane) be worth points if they are Nourished?
 No, the card contributes points first, then its effect resets your points to 0.`
+
+const creditsString = 
+`Lead developer: Kai Geffen
+
+Artistic Director: Kiva Singh
+
+Artist: Elise Mahan
+
+UI Design: Alina Onishchenko
+
+Original score and music design by Ian Riley: www.ianrileymusic.tech
+
+Icons are from game-icons.net under CC BY 3.0
+Lorc: https://lorcblog.blogspot.com/ (Visible icon)`
