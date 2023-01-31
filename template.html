@@ -3,18 +3,28 @@
 <head>
   <meta name="description"
   content="Single or multiplayer digital collectible card game where players build a story and play around hidden information to win rounds.">
+
+
+
+
+  <!-- Related to Google sign-in -->
   <meta name="google-signin-client_id" content="574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <script id="my script">
-    console.log('hello world...')
-  </script>
-  <div id="g_id_onload"
+  <!-- <div id="g_id_onload"
        data-client_id="574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com "
        data-context="signin"
        data-ux_mode="popup"
        data-callback="my script"
        data-auto_prompt="false">
+  </div> -->
+  <div class="g_id_signin"
+       data-type="standard"
+       data-shape="pill"
+       data-theme="outline"
+       data-text="signin_with"
+       data-size="large"
+       data-logo_alignment="left">
   </div>
   <!-- data-login_uri="celestialtcg.com" -->
   <!-- <script>
@@ -28,14 +38,7 @@
   </script>
  -->
 
-  <div class="g_id_signin"
-       data-type="standard"
-       data-shape="pill"
-       data-theme="outline"
-       data-text="signin_with"
-       data-size="large"
-       data-logo_alignment="left">
-  </div>
+  
 
   <title>Celestial</title>
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">

@@ -4,7 +4,6 @@ import Server from '../server'
 import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
 import Buttons from "../lib/buttons/buttons"
 
-// const {google} = require('googleapis');
 
 export default class PreloadClass extends Phaser.Scene {
 	// True when user is signed or chose to be a guest
@@ -49,16 +48,20 @@ export default class PreloadClass extends Phaser.Scene {
 	}
 
 	private createGoogleGSIButton(): void {
-		return
-		// console.log(google)
 
-		// google.accounts.id.initialize({
-      	// 	client_id: '574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com',
-      	// 	callback: (foo) => {
-      	// 		console.log(foo)
-      	// 	}
-	    // });
-	    // google.accounts.id.prompt();
+		console.log(google)
+
+		google.accounts.id.initialize({
+      		client_id: Url.oauth,
+      		callback: (foo) => {
+      			console.log(foo)
+      		}
+	    })
+	    google.accounts.id.prompt()
+
+	    console.log('here')
+
+
 
 		// google.accounts.id.initialize({
 		// 	client_id: 'YOUR_GOOGLE_CLIENT_ID',

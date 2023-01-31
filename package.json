@@ -33,6 +33,8 @@
   "dependencies": {
     "@types/gapi": "^0.0.41",
     "@types/gapi.auth2": "^0.0.55",
+    "@types/google-one-tap": "^1.2.2",
+    "@types/google.accounts": "^0.0.5",
     "@types/socket.io": "^2.1.13",
     "dgram": "^1.0.1",
     "gapi": "^0.0.3",
