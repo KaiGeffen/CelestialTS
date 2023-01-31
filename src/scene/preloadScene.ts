@@ -49,15 +49,16 @@ export default class PreloadClass extends Phaser.Scene {
 	}
 
 	private createGoogleGSIButton(): void {
-		console.log(google)
+		return
+		// console.log(google)
 
-		google.accounts.id.initialize({
-      		client_id: '574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com',
-      		callback: (foo) => {
-      			console.log(foo)
-      		}
-	    });
-	    google.accounts.id.prompt();
+		// google.accounts.id.initialize({
+      	// 	client_id: '574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com',
+      	// 	callback: (foo) => {
+      	// 		console.log(foo)
+      	// 	}
+	    // });
+	    // google.accounts.id.prompt();
 
 		// google.accounts.id.initialize({
 		// 	client_id: 'YOUR_GOOGLE_CLIENT_ID',
