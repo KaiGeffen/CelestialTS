@@ -32,7 +32,7 @@ export default class PreloadClass extends Phaser.Scene {
 
 	create() {
 		// TODO Replace with Google GIS button as an option below
-		this.renderSigninButton()
+		// this.renderSigninButton()
 
 		// Gain access to chart plugin
 		this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
@@ -53,7 +53,9 @@ export default class PreloadClass extends Phaser.Scene {
 
 		google.accounts.id.initialize({
       		client_id: '574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com',
-      		// callback: 
+      		callback: (foo) => {
+      			console.log(foo)
+      		}
 	    });
 	    google.accounts.id.prompt();
 
