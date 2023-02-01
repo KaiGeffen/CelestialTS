@@ -57,7 +57,18 @@ export default class PreloadClass extends Phaser.Scene {
       			console.log(foo)
       		}
 	    })
-	    google.accounts.id.prompt()
+	    google.accounts.id.renderButton(
+            document.getElementById("game"),
+            {
+            	theme: "outline",
+            	size: "large",
+            	shape: "pill",
+            	width: Space.largeButtonWidth,
+            },
+	    )
+
+	    // This is one-tap, which isn't being used
+	    // google.accounts.id.prompt()
 
 	    console.log('here')
 
