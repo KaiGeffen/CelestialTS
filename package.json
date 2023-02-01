@@ -40,6 +40,7 @@
     "gapi": "^0.0.3",
     "googleapis": "^110.0.0",
     "is-mobile": "^3.0.0",
+    "jwt-decode": "^3.1.2",
     "path-browserify": "^1.0.1",
     "phaser": "^3.55.2",
     "phaser3-rex-plugins": "^1.1.72",

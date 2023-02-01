@@ -1,4 +1,6 @@
 import 'phaser'
+import jwt_decode from "jwt-decode"
+
 import Loader from '../loader/loader'
 import Server from '../server'
 import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
@@ -53,15 +55,24 @@ export default class PreloadClass extends Phaser.Scene {
 
 		google.accounts.id.initialize({
       		client_id: Url.oauth,
-      		callback: (response) => {
+      		callback: (token) => {
       			console.log('Signin succesful')
-
-      			// response.credential
 
 				// // Communicate with server, load data on response
 				// let token = user.getAuthResponse().id_token
+				const decoded: any  = jwt_decode(token.credential)
+				console.log(decoded)
+				const payload = decoded.payload
 
-				// Server.login(token, that)
+				Server.login(payload.sub, this)
+
+				// TODO Make dry with below button callback
+				this.signedInOrGuest = true
+
+				// If the core assets have been loaded, start home scene
+				if (Loader.postLoadStarted) {
+					this.scene.start('HomeScene')
+				}
       		}
 	    })
 	    const pageElement = document.getElementById("signin")
@@ -73,7 +84,7 @@ export default class PreloadClass extends Phaser.Scene {
             	theme: "outline",
             	size: "large",
             	shape: "pill",
-            	width: Space.largeButtonWidth,
+            	width: Space.smallButtonWidth,
             },
 	    )
 
@@ -81,7 +92,7 @@ export default class PreloadClass extends Phaser.Scene {
 	    // pageElement.style.verticalAlign = 'middle'
 	    // pageElement.style.align = 'middle'
 	    pageElement.style.top = `${y}px`
-	    pageElement.style.left = '70%'
+	    pageElement.style.left = '50%'
 	    pageElement.style.transform = 'translate(-50%, -50%)'
 	}
 
@@ -194,7 +205,7 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 
 		// Google GIS
-		this.createGoogleGSIButton(y)
+		this.createGoogleGSIButton(y - 100)
 
 	}
 }
