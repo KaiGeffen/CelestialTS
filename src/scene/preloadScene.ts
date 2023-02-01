@@ -58,6 +58,7 @@ export default class PreloadClass extends Phaser.Scene {
 				console.log('Signin succesful')
 
 				const payload: any  = jwt_decode(token.credential)
+				console.log(payload)
 
 				Server.login(payload.sub, this)
 
