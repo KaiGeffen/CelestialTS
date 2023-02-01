@@ -47,18 +47,28 @@ export default class PreloadClass extends Phaser.Scene {
 		this.createButtons()
 	}
 
-	private createGoogleGSIButton(): void {
+	private createGoogleGSIButton(y: number): void {
 
 		console.log(google)
 
 		google.accounts.id.initialize({
       		client_id: Url.oauth,
-      		callback: (foo) => {
-      			console.log(foo)
+      		callback: (response) => {
+      			console.log('Signin succesful')
+
+      			// response.credential
+
+				// // Communicate with server, load data on response
+				// let token = user.getAuthResponse().id_token
+
+				// Server.login(token, that)
       		}
 	    })
+	    const pageElement = document.getElementById("signin")
+
+	    // Render the button as the right element
 	    google.accounts.id.renderButton(
-            document.getElementById("game"),
+            pageElement,
             {
             	theme: "outline",
             	size: "large",
@@ -67,18 +77,12 @@ export default class PreloadClass extends Phaser.Scene {
             },
 	    )
 
-	    // This is one-tap, which isn't being used
-	    // google.accounts.id.prompt()
-
-	    console.log('here')
-
-
-
-		// google.accounts.id.initialize({
-		// 	client_id: 'YOUR_GOOGLE_CLIENT_ID',
-		// 	callback: () => {console.log('fdshjkfdshjkfdhskj')}
-		// });
-		// google.accounts.id.prompt();
+	    // Move that element to the correct location
+	    // pageElement.style.verticalAlign = 'middle'
+	    // pageElement.style.align = 'middle'
+	    pageElement.style.top = `${y}px`
+	    pageElement.style.left = '70%'
+	    pageElement.style.transform = 'translate(-50%, -50%)'
 	}
 
 	renderSigninButton(): void {
@@ -190,7 +194,7 @@ export default class PreloadClass extends Phaser.Scene {
 		})
 
 		// Google GIS
-		this.createGoogleGSIButton()
+		this.createGoogleGSIButton(y)
 
 	}
 }
