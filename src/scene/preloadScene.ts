@@ -4,12 +4,14 @@ import jwt_decode from "jwt-decode"
 import Loader from '../loader/loader'
 import Server from '../server'
 import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
+import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
 
 
 export default class PreloadClass extends Phaser.Scene {
 	// True when user is signed or chose to be a guest
 	signedInOrGuest: boolean = false
+	guestButton: Button
 
 	constructor() {
 		super({
@@ -50,50 +52,35 @@ export default class PreloadClass extends Phaser.Scene {
 	}
 
 	private createGoogleGSIButton(y: number): void {
-
-		console.log(google)
-
 		google.accounts.id.initialize({
-      		client_id: Url.oauth,
-      		callback: (token) => {
-      			console.log('Signin succesful')
+			client_id: Url.oauth,
+			callback: (token) => {
+				console.log('Signin succesful')
 
-				// // Communicate with server, load data on response
-				// let token = user.getAuthResponse().id_token
-				const decoded: any  = jwt_decode(token.credential)
-				console.log(decoded)
-				const payload = decoded.payload
+				const payload: any  = jwt_decode(token.credential)
 
 				Server.login(payload.sub, this)
 
-				// TODO Make dry with below button callback
-				this.signedInOrGuest = true
-
-				// If the core assets have been loaded, start home scene
-				if (Loader.postLoadStarted) {
-					this.scene.start('HomeScene')
-				}
-      		}
-	    })
-	    const pageElement = document.getElementById("signin")
+				this.onOptionClick()
+			}
+		})
+		const pageElement = document.getElementById("signin")
 
 	    // Render the button as the right element
-	    google.accounts.id.renderButton(
-            pageElement,
-            {
-            	theme: "outline",
-            	size: "large",
-            	shape: "pill",
-            	width: Space.smallButtonWidth,
-            },
-	    )
+		google.accounts.id.renderButton(
+			pageElement,
+			{
+				theme: "outline",
+				size: "large",
+				shape: "pill",
+				width: Space.smallButtonWidth,
+			},
+		)
 
 	    // Move that element to the correct location
-	    // pageElement.style.verticalAlign = 'middle'
-	    // pageElement.style.align = 'middle'
-	    pageElement.style.top = `${y}px`
-	    pageElement.style.left = '50%'
-	    pageElement.style.transform = 'translate(-50%, -50%)'
+		pageElement.style.top = `${y}px`
+		pageElement.style.left = '50%'
+		pageElement.style.transform = 'translate(-50%, -50%)'
 	}
 
 	renderSigninButton(): void {
@@ -195,17 +182,21 @@ export default class PreloadClass extends Phaser.Scene {
 		const x = Space.windowWidth/2
 		const y = Space.windowHeight/2
 		
-		new Buttons.Basic(this, x, y, 'Guest', () => {
-			this.signedInOrGuest = true
-
-			// If the core assets have been loaded, start home scene
-			if (Loader.postLoadStarted) {
-				this.scene.start('HomeScene')
-			}
-		})
+		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {this.onOptionClick()})
 
 		// Google GIS
 		this.createGoogleGSIButton(y - 100)
+	}
 
+	private onOptionClick(): void {
+		this.signedInOrGuest = true
+
+		// Make the buttons unclickable
+		this.guestButton.disable()
+
+		// If the core assets have been loaded, start home scene
+		if (Loader.postLoadStarted) {
+			this.scene.start('HomeScene')
+		}
 	}
 }

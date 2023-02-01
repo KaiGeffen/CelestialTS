@@ -22,16 +22,14 @@ export default class HomeScene extends BaseScene {
   }
 
   create(): void {
+    // Ensure signin button is hidden
+    document.getElementById("signin").hidden = true
+
     this.createHeader()
 
     this.createButtons()
     
     super.create()
-  }
-
-  // Hide the signin button
-  beforeExit(): void {
-    document.getElementById("signin").hidden = true
   }
 
   private createHeader(): void {
@@ -45,9 +43,6 @@ export default class HomeScene extends BaseScene {
       shadowColor: 0x000000,
     })
     
-    // Show the login button
-    document.getElementById("signin").hidden = false
-
     // Create Discord button
     let btnDiscord = new Icons.Discord(this, Space.smallButtonWidth + Space.pad, 9)
     .setOrigin(0)
