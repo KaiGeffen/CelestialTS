@@ -52,29 +52,56 @@ export default class PreloadClass extends Phaser.Scene {
 	}
 
 	private createGoogleGSIButton(y: number): void {
-		google.accounts.id.initialize({
+		google.accounts.oauth2.initCodeClient({
 			client_id: Url.oauth,
-			callback: (token) => {
+			scope: 'https://www.googleapis.com/auth/calendar.readonly',
+			ux_mode: 'popup',
+			callback: (response) => {
 				console.log('Signin succesful')
+				console.log(response)
 
-				const payload: any  = jwt_decode(token.credential)
-				console.log(payload)
-
-				Server.login(payload.sub, this)
+				Server.login(response.code, this)
 
 				this.onOptionClick()
-			}
+
+				
+	// 			const xhr = new XMLHttpRequest();
+	// 			xhr.open('POST', code_receiver_uri, true);
+	// 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // // Set custom header for CRSF
+	// 			xhr.setRequestHeader('X-Requested-With', 'XmlHttpRequest');
+	// 			xhr.onload = function() {
+	// 				console.log('Auth code response: ' + xhr.responseText);
+	// 			};
+	// 			xhr.send('code=' + response.code);
+			},
 		})
+
+		// google.accounts.id.initialize({
+		// 	client_id: Url.oauth,
+		// 	callback: (token) => {
+		// 		console.log('Signin succesful')
+
+		// 		const payload: any  = jwt_decode(token.credential)
+		// 		console.log(payload)
+
+		// 		Server.login(payload.sub, this)
+
+		// 		this.onOptionClick()
+		// 	}
+		// })
 		const pageElement = document.getElementById("signin")
+		google.accounts.id.prompt()
 
 	    // Render the button as the right element
 		google.accounts.id.renderButton(
 			pageElement,
 			{
+				type: "standard",
 				theme: "outline",
 				size: "large",
 				shape: "pill",
-				width: Space.smallButtonWidth,
+				width: `${Space.smallButtonWidth}`,
 			},
 		)
 
