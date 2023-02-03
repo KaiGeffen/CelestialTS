@@ -101,7 +101,7 @@ export default class PreloadClass extends Phaser.Scene {
 				theme: "outline",
 				size: "large",
 				shape: "pill",
-				width: `${Space.smallButtonWidth}`,
+				width: Space.smallButtonWidth,
 			},
 		)
 
