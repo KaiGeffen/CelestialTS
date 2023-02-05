@@ -15,9 +15,8 @@ export class SigninScene extends Phaser.Scene {
 	guestButton: Button
 
 	constructor(args) {
-		const key = args === undefined ? 'SigninScene' : args.key
 		super({
-			key: key
+			key: args === undefined ? 'SigninScene' : args.key
 		})
 	}
 
