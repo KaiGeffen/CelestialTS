@@ -181,7 +181,7 @@ export default class ChoosePremade extends Menu {
 			}
 		}).setOrigin(0, 1)
 
-		let c1 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let c1 = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 		let btnCancel = new Buttons.Basic(c1, 0, 0, 'Cancel', () => {
 			this.close()
 		})
@@ -189,7 +189,7 @@ export default class ChoosePremade extends Menu {
 		.add(c1)
 		.addSpace()
 
-		let c2 = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let c2 = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 		let btnSelect = new Buttons.Basic(c2, 0, 0, 'Select', () => {
 			callback(this.selectedAvatar)
 			this.close()

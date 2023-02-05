@@ -104,14 +104,14 @@ export default class ResultsRegion extends Region {
 
 	protected createButtons() {
 		// Exit
-		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
-		new Buttons.Basic(this.container, Space.windowWidth/2 + Space.pad + Space.largeButtonWidth, y, 'Exit Match', this.exitCallback())
+		let y = Space.windowHeight - (Space.pad + Space.buttonHeight/2)
+		new Buttons.Basic(this.container, Space.windowWidth/2 + Space.pad + Space.buttonWidth, y, 'Exit Match', this.exitCallback())
 
 		// Replay
 		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Play Again', this.newMatchCallback())
 
 		// Review
-		new Buttons.Basic(this.container, Space.windowWidth/2 - Space.pad - Space.largeButtonWidth, y, 'Hide', this.reviewCallback())
+		new Buttons.Basic(this.container, Space.windowWidth/2 - Space.pad - Space.buttonWidth, y, 'Hide', this.reviewCallback())
 	}
 
 	private createContent() {
@@ -277,7 +277,7 @@ export class ResultsRegionTutorial extends ResultsRegion {
 
 	protected createButtons() {
 		// Continue
-		let y = Space.windowHeight - (Space.pad + Space.largeButtonHeight/2)
+		let y = Space.windowHeight - (Space.pad + Space.buttonHeight/2)
 		new Buttons.Basic(this.container, Space.windowWidth/2, y, 'Continue', this.continueCallback())
 	}
 

@@ -57,11 +57,8 @@ export var Space = {
   stillframeTextWidth: width - 120,
 
   // Dimensions for common buttons
-  smallButtonWidth: 150,
-  smallButtonHeight: 50,
-
-  largeButtonWidth: 150,
-  largeButtonHeight: 45,
+  buttonWidth: 150,
+  buttonHeight: 58,
 
   cutoutHeight: 49,
 

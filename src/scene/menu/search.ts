@@ -90,7 +90,7 @@ export default class SearchMenu extends Menu {
 	}
 
 	private createCancel(): ContainerLite {
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
 			this.close()
@@ -100,7 +100,7 @@ export default class SearchMenu extends Menu {
 	}
 
 	private createOkay(callback: () => void): ContainerLite {
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Okay', () => {
 			callback()

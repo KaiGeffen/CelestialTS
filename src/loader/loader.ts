@@ -168,8 +168,8 @@ export default class Loader {
 	// Loads the basic button as a spritesheet
 	private static loadButton(scene: Phaser.Scene): void {
 		scene.load.spritesheet(`icon-Button`, `icons/Button.${EXTENSION}`, {
-			frameWidth: Space.smallButtonWidth,
-			frameHeight: Space.smallButtonHeight + 8, // 8 From dropshadow
+			frameWidth: Space.buttonWidth,
+			frameHeight: Space.buttonHeight,
 		})
 	}
 

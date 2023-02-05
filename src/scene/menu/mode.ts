@@ -78,7 +78,7 @@ export default class ModeMenu extends Menu {
 
 		const txt = this.scene.add.text(0, 0, 'Versus computer opponent', Style.basic)
 
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
 		new Buttons.Basic(container, 0, 0, 'AI', () => {
 			activeScene.scene.stop()
 
@@ -105,7 +105,7 @@ export default class ModeMenu extends Menu {
 
 		const txt = this.scene.add.text(0, 0, 'Versus human opponent', Style.basic)
 
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
 		new Buttons.Basic(container, 0, 0, 'PVP', () => {
 			activeScene.scene.stop()
 
@@ -131,7 +131,7 @@ export default class ModeMenu extends Menu {
 
 		const txt = this.scene.add.text(0, 0, 'Versus same password', Style.basic)
 
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, 50)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
 		this.btnPwd = new Buttons.Basic(container, 0, 0, 'PWD', () => {
 			activeScene.scene.stop()
 

@@ -167,8 +167,8 @@ export default class AdventureScene extends BaseScene {
 		// Create zoom in button
 		// const camera = this.cameras.main
 		// new Buttons.Basic(this,
-		// 	Space.windowWidth - Space.largeButtonWidth/2 - Space.iconSize - Space.pad * 2,
-		// 	Space.largeButtonHeight/2 + Space.pad,
+		// 	Space.windowWidth - Space.buttonWidth/2 - Space.iconSize - Space.pad * 2,
+		// 	Space.buttonHeight/2 + Space.pad,
 		// 	'Zoom',
 		// 	() => {
 		// 		if (this.map.scale === 1) {
@@ -223,8 +223,8 @@ export default class AdventureScene extends BaseScene {
 	}
 
 	private createHelpButton(): void {
-		const x = Space.windowWidth - Space.largeButtonWidth/2 - (Space.iconSize + Space.pad * 2)
-		const y = Space.largeButtonHeight/2 + Space.pad
+		const x = Space.windowWidth - Space.buttonWidth/2 - (Space.iconSize + Space.pad * 2)
+		const y = Space.buttonHeight/2 + Space.pad
 		new Buttons.Basic(this, x, y, 'Help', () => {
 			this.scene.launch('MenuScene', {
 				menu: 'help',
@@ -325,8 +325,8 @@ export default class AdventureScene extends BaseScene {
 		// Add an okay button
 		let btn = new Buttons.Basic(
 			container,
-			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
-			Space.windowHeight - Space.pad - Space.largeButtonHeight/2,
+			Space.windowWidth - Space.pad - Space.buttonWidth/2,
+			Space.windowHeight - Space.pad - Space.buttonHeight/2,
 			'Continue',
 			() => {
 				container.setVisible(false)

@@ -151,20 +151,20 @@ export default class DeckRegion {
 		.layout()
 
 		// Add a share button that allows user to copy/paste their deck code
-		let containerEdit = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth/3, Space.avatarSize/2)
+		let containerEdit = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		this.btnEdit = new Icons.Edit(containerEdit, 0, 0, this.openEditMenu())
 
 		// Add a share button that allows user to copy/paste their deck code
-		let containerShare = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth/3, Space.avatarSize/2)
+		let containerShare = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		this.btnShare = new Icons.Share(containerShare, 0, 0, this.shareCallback())
 
 		// Add a graph button for showing the distribution of costs in the deck
-		let containerDistribution = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth/3, Space.avatarSize/2)
+		let containerDistribution = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		new Icons.Distribution(containerDistribution, 0, 0, this.distributionCallback())
 		// TODO Remove if using a premade deck
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
-		let containerStart = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.avatarSize/2)
+		let containerStart = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.avatarSize/2)
 		this.btnStart = new Buttons.Basic(containerStart, 0, 0, '0/15', startCallback)
 		
 		// Make a container for all of the buttons

@@ -84,7 +84,7 @@ export default class OptionsMenu extends Menu {
 
 	private createTabs()  {
 		// Create a rectangle to show which tab is selected
-		this.highlight = this.scene.add.rectangle(0, 0, 200, Space.largeButtonHeight * 1.2, COLOR, 1)
+		this.highlight = this.scene.add.rectangle(0, 0, 200, Space.buttonHeight * 1.2, COLOR, 1)
 		.setOrigin(0, 0.5)
 
 		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
@@ -95,7 +95,7 @@ export default class OptionsMenu extends Menu {
 		// Add a button for each of the tabs
 		const tabStrings = ['general', 'audio', 'rulebook', 'credits']
 		for (let i = 0; i < tabStrings.length; i++) {
-			let container = new ContainerLite(this.scene, 0, 0, Space.largeButtonWidth, Space.largeButtonHeight)
+			let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 			let btn = new Buttons.Basic(container, 0, 0, tabStrings[i])
 			
 			btn.setOnClick(() => {
@@ -241,7 +241,7 @@ export default class OptionsMenu extends Menu {
 		sizer.addSpace()
 
 		const s = UserSettings._get('autopass') ? 'Enabled' : 'Disabled'
-		let container = new ContainerLite(this.scene, 0, 0, Space.largeButtonWidth, Space.largeButtonHeight)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 		let btn = new Buttons.Basic(container, 0, 0, s, () => {
 			if (UserSettings._get('autopass')) {
 				btn.setText('Disabled')
@@ -279,7 +279,7 @@ export default class OptionsMenu extends Menu {
 	private createQuit(activeScene: BaseScene) {
 		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
-		let container = new ContainerLite(this.scene, 0, 0, Space.largeButtonWidth, 50)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
 		sizer
 		.addSpace()
 		.add(container)

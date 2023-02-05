@@ -171,8 +171,8 @@ export class SearchingRegionTutorial extends Region {
 	private createButton(scene, tutorialNum): void {
 		this.btn = new Buttons.Basic(
 			this.container,
-			Space.windowWidth - Space.pad - Space.largeButtonWidth/2,
-			Space.windowHeight - Space.pad - Space.largeButtonHeight/2,
+			Space.windowWidth - Space.pad - Space.buttonWidth/2,
+			Space.windowHeight - Space.pad - Space.buttonHeight/2,
 			'Continue',
 			() => {
 				if (this.currentFrame < 3) {

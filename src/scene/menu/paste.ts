@@ -88,7 +88,7 @@ export default class PasteMenu extends Menu {
 	}
 
 	private createCancel() {
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
 			this.scene.scene.stop()
@@ -98,7 +98,7 @@ export default class PasteMenu extends Menu {
 	}
 
 	private createConfirm(createCallback: (name: string, avatar: number, deckCode?: string) => void) {
-		let container = new ContainerLite(this.scene, 0, 0, Space.smallButtonWidth, Space.smallButtonHeight)
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Create', () => {
 			createCallback('PASTED', 0, this.deckCode)

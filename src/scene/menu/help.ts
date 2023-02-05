@@ -44,7 +44,7 @@ export default class HelpMenu extends Menu {
 	}
 
 	private createTutorial(scene: Phaser.Scene, callback: () => void): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.smallButtonWidth, 50)
+		let container = new ContainerLite(scene, 0, 0, Space.buttonWidth, 50)
 
 		new Buttons.Basic(container, 0, 0, 'Tutorial', () => {
 			callback()

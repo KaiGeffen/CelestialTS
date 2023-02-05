@@ -45,7 +45,7 @@ export default class HomeScene extends BaseScene {
 
     // Create logout button
     let btnLogout = new Buttons.Basic(this,
-      Space.pad + Space.largeButtonWidth/2,
+      Space.pad + Space.buttonWidth/2,
       headerHeight/2,
       "Logout",
       () => {
@@ -58,7 +58,7 @@ export default class HomeScene extends BaseScene {
     
     // Create Discord button
     let btnDiscord = new Icons.Discord(this,
-      Space.largeButtonWidth + Space.pad * 2,
+      Space.buttonWidth + Space.pad * 2,
       headerHeight/2)
     .setOrigin(0, 0.5)
 

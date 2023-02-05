@@ -160,7 +160,7 @@ export default class DecklistsRegion {
 			}
 		}).addBackground(background)
 
-		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.largeButtonHeight)
+		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.buttonHeight)
 		this.btnPremade = new Buttons.Premade(container, 0, 0,
 			() => {
 				this.scene.setSearchVisible(false)

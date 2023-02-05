@@ -81,7 +81,7 @@ export class SigninScene extends Phaser.Scene {
 				theme: "outline",
 				size: "large",
 				shape: "pill",
-				width: Space.smallButtonWidth,
+				width: Space.buttonWidth,
 			},
 		)
 
@@ -163,8 +163,8 @@ export class PreloadScene extends SigninScene {
 		// Render login button
 		gapi.signin2.render("signin", {
 			// longtitle: true,
-			width: Space.smallButtonWidth,
-			height: Space.smallButtonHeight,
+			width: Space.buttonWidth,
+			height: Space.buttonHeight,
 			onsuccess: onSuccess,
 			onfailure: onFailure
 		})

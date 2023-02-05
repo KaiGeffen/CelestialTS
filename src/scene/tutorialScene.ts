@@ -287,7 +287,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.txt.setPosition(x, y)
 
 			// Move next button just below the text
-			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			y += this.txt.displayHeight/2 + Space.pad + Space.buttonHeight/2
 			this.btnNext.setPosition(x, y)
 			break
 
@@ -307,7 +307,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.txt.setPosition(x, y)
 
 			// Move next button just below the text
-			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			y += this.txt.displayHeight/2 + Space.pad + Space.buttonHeight/2
 			this.btnNext.setPosition(x, y)
 			break
 
@@ -326,8 +326,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.txt.setPosition(x, y)
 
 			// Move next button below and to the left of
-			x -= this.txt.displayWidth/2 - Space.smallButtonWidth/2 - Space.pad
-			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			x -= this.txt.displayWidth/2 - Space.buttonWidth/2 - Space.pad
+			y += this.txt.displayHeight/2 + Space.pad + Space.buttonHeight/2
 			this.btnNext.setPosition(x, y)
 			break
 
@@ -347,7 +347,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.txt.setPosition(x, y)
 
 			// Button just below text
-			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			y += this.txt.displayHeight/2 + Space.pad + Space.buttonHeight/2
 			this.btnNext.setPosition(x, y)
 
 			break
@@ -362,7 +362,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.txt.setPosition(x, y)
 
 			// Button just below text
-			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			y += this.txt.displayHeight/2 + Space.pad + Space.buttonHeight/2
 			this.btnNext.setPosition(x, y)
 
 			break
@@ -378,7 +378,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.txt.setPosition(x, y)
 
 			// Button just below text
-			y += this.txt.displayHeight/2 + Space.pad + Space.largeButtonHeight/2
+			y += this.txt.displayHeight/2 + Space.pad + Space.buttonHeight/2
 			this.btnNext.setPosition(x, y)
 
 			break
