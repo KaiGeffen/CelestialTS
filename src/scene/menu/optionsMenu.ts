@@ -48,7 +48,9 @@ export default class OptionsMenu extends Menu {
 		this.layout()
 
 		// After layout is complete, move the highlight to the selected tab button
-		this.tweenHighlight(this.tabBtns[selectedTab].getGlobalPosition()[1], true)
+		const x = (Space.windowWidth - width - Space.pad)/2
+		const y = this.tabBtns[selectedTab].getGlobalPosition()[1] - 4
+		this.highlight.setPosition(x, y)
 	}
 
 	private createContent(activeScene: BaseScene) {
@@ -84,7 +86,7 @@ export default class OptionsMenu extends Menu {
 
 	private createTabs()  {
 		// Create a rectangle to show which tab is selected
-		this.highlight = this.scene.add.rectangle(0, 0, 200, Space.buttonHeight * 1.2, COLOR, 1)
+		this.highlight = this.scene.add.rectangle(0, 0, 200, 50, COLOR, 1) // TODO 50 is button without drop shadow
 		.setOrigin(0, 0.5)
 
 		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
@@ -384,14 +386,13 @@ export default class OptionsMenu extends Menu {
 	}
 
 	// Tween the higlight moving to the given y (Flush with left side of menu)
-	private tweenHighlight(y: number, immediate = false): void {
+	private tweenHighlight(y: number): void {
 		this.scene.tweens.add({
 			targets: this.highlight,
 			x: (Space.windowWidth - width - Space.pad)/2,
-			// TODO Buttons aren't centered for some reason
 			y: y - 4,
 
-			duration: immediate ? 0 : Time.optionsTabSlide,
+			duration: Time.optionsTabSlide,
 			ease: 'Sine.easeInOut',
 		})
 	}
