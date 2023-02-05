@@ -42,10 +42,25 @@ export default class HomeScene extends BaseScene {
       angle: -90,
       shadowColor: 0x000000,
     })
+
+    // Create logout button
+    let btnLogout = new Buttons.Basic(this,
+      Space.pad + Space.largeButtonWidth/2,
+      headerHeight/2,
+      "Logout",
+      () => {
+        this.scene.launch('MenuScene', {
+          menu: 'confirm',
+          callback: () => { this.scene.start('SigninScene') },
+          hint: 'logout'
+        })
+      })
     
     // Create Discord button
-    let btnDiscord = new Icons.Discord(this, Space.smallButtonWidth + Space.pad, 9)
-    .setOrigin(0)
+    let btnDiscord = new Icons.Discord(this,
+      Space.largeButtonWidth + Space.pad * 2,
+      headerHeight/2)
+    .setOrigin(0, 0.5)
 
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
 

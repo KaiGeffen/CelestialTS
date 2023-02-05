@@ -8,11 +8,89 @@ import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
 
 
-export default class PreloadClass extends Phaser.Scene {
+// Scene for user to select a sign in option, without loading assets
+export class SigninScene extends Phaser.Scene {
 	// True when user is signed or chose to be a guest
 	signedInOrGuest: boolean = false
 	guestButton: Button
 
+	constructor(args) {
+		const key = args === undefined ? 'SigninScene' : args.key
+		super({
+			key: key
+		})
+	}
+
+	create(): void {
+		// Add buttons to sign in or play as a guest
+		this.createButtons()
+	}
+
+	// Create buttons for each of the signin options (Guest, OAuth)
+	private createButtons(): void {
+		const x = Space.windowWidth/2
+		const y = Space.windowHeight/2
+		
+		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {this.onOptionClick()})
+
+		// Google GIS
+		this.createGoogleGSIButton(y - 100)
+	}
+
+	private onOptionClick(): void {
+		this.signedInOrGuest = true
+
+		// Make the buttons unclickable
+		this.guestButton.disable()
+
+		// If the core assets have been loaded, start home scene
+		if (Loader.postLoadStarted) {
+			this.scene.start('HomeScene')
+		}
+	}
+
+	private createGoogleGSIButton(y: number): void {
+		google.accounts.id.initialize({
+			client_id: Url.oauth,
+			
+			callback: (token) => {
+				console.log('Signin succesful')
+
+				const payload: any  = jwt_decode(token.credential)
+				const jti = payload.jti
+				console.log(payload)
+
+				// Sub is the user's unique id
+				// Jti is the unique identifier 
+
+				Server.login(payload.sub, this)
+
+				this.onOptionClick()
+			}
+		})
+		const pageElement = document.getElementById("signin")
+		// google.accounts.id.prompt()
+
+	    // Render the button as the right element
+		google.accounts.id.renderButton(
+			pageElement,
+			{
+				type: "standard",
+				theme: "outline",
+				size: "large",
+				shape: "pill",
+				width: Space.smallButtonWidth,
+			},
+		)
+
+	    // Move that element to the correct location
+		pageElement.style.top = `${y}px`
+		pageElement.style.left = '50%'
+		pageElement.style.transform = 'translate(-50%, -50%)'
+	}
+}
+
+export class PreloadScene extends SigninScene {
 	constructor() {
 		super({
 			key: "PreloadScene"
@@ -47,74 +125,9 @@ export default class PreloadClass extends Phaser.Scene {
 		// NOTE This does not block and these assets cannot won't be loaded in time for below code
 		Loader.loadAll(this)
 
-		// Add buttons to sign in or play as a guest
-		this.createButtons()
+		super.create()
 	}
 
-	private createGoogleGSIButton(y: number): void {
-	// 	google.accounts.oauth2.initCodeClient({
-	// 		client_id: Url.oauth,
-	// 		scope: 'https://www.googleapis.com/auth/calendar.readonly',
-	// 		ux_mode: 'popup',
-	// 		callback: (response) => {
-	// 			console.log('Signin succesful')
-	// 			console.log(response)
-
-	// 			Server.login(response.code, this)
-
-	// 			this.onOptionClick()
-
-				
-	// // 			const xhr = new XMLHttpRequest();
-	// // 			xhr.open('POST', code_receiver_uri, true);
-	// // 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // // // Set custom header for CRSF
-	// // 			xhr.setRequestHeader('X-Requested-With', 'XmlHttpRequest');
-	// // 			xhr.onload = function() {
-	// // 				console.log('Auth code response: ' + xhr.responseText);
-	// // 			};
-	// // 			xhr.send('code=' + response.code);
-	// 		},
-	// 	})
-
-		google.accounts.id.initialize({
-			client_id: Url.oauth,
-			
-			callback: (token) => {
-				console.log('Signin succesful')
-
-				const payload: any  = jwt_decode(token.credential)
-				const jti = payload.jti
-				console.log(payload)
-
-				// Sub is the user's unique id
-				// Jti is the unique identifier 
-
-				Server.login(payload.sub, this)
-
-				this.onOptionClick()
-			}
-		})
-		const pageElement = document.getElementById("signin")
-		google.accounts.id.prompt()
-
-	    // Render the button as the right element
-		google.accounts.id.renderButton(
-			pageElement,
-			{
-				type: "standard",
-				theme: "outline",
-				size: "large",
-				shape: "pill",
-				width: Space.smallButtonWidth,
-			},
-		)
-
-	    // Move that element to the correct location
-		pageElement.style.top = `${y}px`
-		pageElement.style.left = '50%'
-		pageElement.style.transform = 'translate(-50%, -50%)'
-	}
 
 	renderSigninButton(): void {
 		let that = this
@@ -208,28 +221,5 @@ export default class PreloadClass extends Phaser.Scene {
 				Loader.postLoadComplete = true
 			}
 		})
-	}
-
-	// Create buttons for each of the signin options (Guest, OAuth)
-	private createButtons(): void {
-		const x = Space.windowWidth/2
-		const y = Space.windowHeight/2
-		
-		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {this.onOptionClick()})
-
-		// Google GIS
-		this.createGoogleGSIButton(y - 100)
-	}
-
-	private onOptionClick(): void {
-		this.signedInOrGuest = true
-
-		// Make the buttons unclickable
-		this.guestButton.disable()
-
-		// If the core assets have been loaded, start home scene
-		if (Loader.postLoadStarted) {
-			this.scene.start('HomeScene')
-		}
 	}
 }

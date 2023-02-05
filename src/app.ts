@@ -1,7 +1,7 @@
 import "phaser"
 
 import MenuScene from "./scene/menuScene"
-import PreloadScene from "./scene/preloadScene"
+import { PreloadScene, SigninScene } from "./scene/preloadScene"
 import HomeScene from "./scene/homeScene"
 import { StandardGameScene, AdventureGameScene } from "./scene/gameScene"
 import TutorialGameScene from "./scene/tutorialScene"
@@ -37,7 +37,8 @@ const config: Phaser.Types.Core.GameConfig = {
   dom: {
     createContainer: true
   },
-  scene: [PreloadScene, HomeScene,
+  scene: [PreloadScene, SigninScene,
+  HomeScene,
   MenuScene,
   StandardGameScene, AdventureGameScene, TutorialGameScene,
   AdventureBuilderScene,
