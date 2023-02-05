@@ -6,7 +6,8 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 import Menu from './menu'
 import BaseScene from '../../scene/baseScene'
-import { Space, Color, Style, UserSettings } from '../../settings/settings'
+import { Space, Color, Style, UserSettings, Time } from '../../settings/settings'
+import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import MenuScene from '../menuScene'
 import { rulebookString } from '../../catalog/rulebook'
@@ -18,15 +19,24 @@ const height = 350
 // Width of the subpanel that shows selected tab's contents
 const subWidth = 530
 
+// TODO Use a non-mock color for the menu background
+const COLOR = 0x435700
+
 // The currently selected tab, preserved if the menu is closed/opened
 var selectedTab = 'general'
 
 export default class OptionsMenu extends Menu {
 	// Each of the subpanels displayed based on which tab is selected
-	subpanels = {}
+	subpanels: Record<string, any> = {}
 
 	// The sizer which holds the tabs and active subpanel
 	subsizer
+
+	// Mapping from subpanel anem to the button for that tab
+	tabBtns: Record<string, Button> = {}
+
+	// The highlight for the selected tab
+	highlight: Phaser.GameObjects.Rectangle
 
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
@@ -36,6 +46,9 @@ export default class OptionsMenu extends Menu {
 		this.createContent(activeScene)
 
 		this.layout()
+
+		// After layout is complete, move the highlight to the selected tab button
+		this.tweenHighlight(this.tabBtns[selectedTab].getGlobalPosition()[1], true)
 	}
 
 	private createContent(activeScene: BaseScene) {
@@ -70,15 +83,22 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createTabs()  {
+		// Create a rectangle to show which tab is selected
+		this.highlight = this.scene.add.rectangle(0, 0, 200, Space.largeButtonHeight * 1.2, COLOR, 1)
+		.setOrigin(0, 0.5)
+
 		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
 
-		const tabStrings = ['general', 'audio', 'rulebook', 'credits']
 
 		tabsSizer.addNewLine()
+
+		// Add a button for each of the tabs
+		const tabStrings = ['general', 'audio', 'rulebook', 'credits']
 		for (let i = 0; i < tabStrings.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.largeButtonWidth, Space.largeButtonHeight)
 			let btn = new Buttons.Basic(container, 0, 0, tabStrings[i])
-			.setOnClick(() => {
+			
+			btn.setOnClick(() => {
 				// Remove and hide the old subpanel
 				const oldPanel = this.subpanels[selectedTab]
 
@@ -93,10 +113,15 @@ export default class OptionsMenu extends Menu {
 				newPanel.show()
 
 				this.layout()
+
+				this.tweenHighlight(btn.getGlobalPosition()[1])
 			})
 
 			tabsSizer.add(container)
 			.addNewLine()
+
+			// Add the btn to dictionary
+			this.tabBtns[tabStrings[i]] = btn
 		}
 
 		return tabsSizer
@@ -245,7 +270,7 @@ export default class OptionsMenu extends Menu {
 		let slider = this.getSlider(
 			UserSettings._get('animationSpeed'),
 			(value) => {UserSettings._set('animationSpeed', value)}
-        )
+			)
 		sizer.add(slider)
 
 		return sizer
@@ -287,9 +312,9 @@ export default class OptionsMenu extends Menu {
 			UserSettings._get('volume'),
 			(value) => {
 				UserSettings._set('volume', value)
-                that.scene.sound.volume = value
+				that.scene.sound.volume = value
 			}
-        )
+			)
 		sizer.add(slider)
 
 		return sizer
@@ -310,12 +335,12 @@ export default class OptionsMenu extends Menu {
 			(value) => {
 				UserSettings._set('musicVolume', value)
 
-            	let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
+				let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
 
-            	music.volume = value
-            	music.play()
+				music.volume = value
+				music.play()
 			}
-        )
+			)
 		sizer.add(slider)
 
 		return sizer
@@ -336,7 +361,7 @@ export default class OptionsMenu extends Menu {
 			(value) => {
 				// TODO
 			}
-        )
+			)
 		sizer.add(slider)
 
 		return sizer
@@ -348,13 +373,26 @@ export default class OptionsMenu extends Menu {
 			height: 20,
 			orientation: 'x',
 
-            track: this.scene['rexUI'].add.roundRectangle(0, 0, subWidth, 8, 10, Color.sliderTrack),
-            indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 12, Color.sliderIndicator),
-            thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 20, Color.sliderThumb),
-            input: 'drag',
+			track: this.scene['rexUI'].add.roundRectangle(0, 0, subWidth, 8, 10, Color.sliderTrack),
+			indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 12, Color.sliderIndicator),
+			thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 20, Color.sliderThumb),
+			input: 'drag',
 
-            value: value,
-            valuechangeCallback: callback,
-        })
+			value: value,
+			valuechangeCallback: callback,
+		})
+	}
+
+	// Tween the higlight moving to the given y (Flush with left side of menu)
+	private tweenHighlight(y: number, immediate = false): void {
+		this.scene.tweens.add({
+			targets: this.highlight,
+			x: (Space.windowWidth - width - Space.pad)/2,
+			// TODO Buttons aren't centered for some reason
+			y: y - 4,
+
+			duration: immediate ? 0 : Time.optionsTabSlide,
+			ease: 'Sine.easeInOut',
+		})
 	}
 }

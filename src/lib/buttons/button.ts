@@ -314,6 +314,22 @@ export default class Button {
 		return this
 	}
 
+	// Get the global position of this object
+	getGlobalPosition(): [number, number] {
+		const icon = this.icon
+		let x = icon.x
+		let y = icon.y
+
+		let container = icon.parentContainer
+		while (container !== null) {
+			x += container.x
+			y += container.y
+			container = container.parentContainer
+		}
+
+		return [x, y]
+	}
+
 
 
 	setOnHover(hoverCallback, exitCallback): Button {
