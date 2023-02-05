@@ -20,7 +20,7 @@ const height = 350
 const subWidth = 530
 
 // TODO Use a non-mock color for the menu background
-const COLOR = 0x435700
+const COLOR = Color.background2 //0x435700
 
 // The currently selected tab, preserved if the menu is closed/opened
 var selectedTab = 'general'
@@ -86,7 +86,7 @@ export default class OptionsMenu extends Menu {
 
 	private createTabs()  {
 		// Create a rectangle to show which tab is selected
-		this.highlight = this.scene.add.rectangle(0, 0, 200, 50, COLOR, 1) // TODO 50 is button without drop shadow
+		this.highlight = this.scene.add.rectangle(0, 0, 200, 88, COLOR, 1)
 		.setOrigin(0, 0.5)
 
 		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
@@ -98,8 +98,9 @@ export default class OptionsMenu extends Menu {
 		const tabStrings = ['general', 'audio', 'rulebook', 'credits']
 		for (let i = 0; i < tabStrings.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
-			let btn = new Buttons.Basic(container, 0, 0, tabStrings[i])
-			
+			const s = tabStrings[i].charAt(0).toUpperCase() + tabStrings[i].slice(1)
+			let btn = new Buttons.Text(container, 0, 0, s)
+
 			btn.setOnClick(() => {
 				// Remove and hide the old subpanel
 				const oldPanel = this.subpanels[selectedTab]
@@ -118,7 +119,7 @@ export default class OptionsMenu extends Menu {
 
 				this.tweenHighlight(btn.getGlobalPosition()[1])
 			})
-
+			
 			tabsSizer.add(container)
 			.addNewLine()
 

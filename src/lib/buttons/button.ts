@@ -316,11 +316,11 @@ export default class Button {
 
 	// Get the global position of this object
 	getGlobalPosition(): [number, number] {
-		const icon = this.icon
-		let x = icon.x
-		let y = icon.y
+		const obj = this.icon !== undefined ? this.icon : this.txt
+		let x = obj.x
+		let y = obj.y
 
-		let container = icon.parentContainer
+		let container = obj.parentContainer
 		while (container !== null) {
 			x += container.x
 			y += container.y

@@ -15,7 +15,11 @@ export default class TextButton extends Button {
 			text: {
 				text: text,
 				interactive: true,
-				style: Style.textButton
+				style: Style.textButton,
+				hitArea: [
+					new Phaser.Geom.Rectangle(0, 0, 100, 60),
+					Phaser.Geom.Rectangle.Contains
+					]
 			},
 			callbacks: {
 				click: f
