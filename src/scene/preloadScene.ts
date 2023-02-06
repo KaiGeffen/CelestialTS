@@ -54,31 +54,27 @@ export class SigninScene extends Phaser.Scene {
 	}
 
 	private createGoogleGSIButton(y: number): void {
-		const client = google.accounts['oauth2'].initTokenClient({
-			client_id: Url.oauth,
-			scope: 'https://www.googleapis.com/auth/userinfo.email',
-			callback: (tokenResponse) => {
-				console.log('This is google authorization response:')
-				console.log(tokenResponse)
+		// const client = google.accounts['oauth2'].initTokenClient({
+		// 	client_id: Url.oauth,
+		// 	scope: 'https://www.googleapis.com/auth/userinfo.email',
+		// 	callback: (tokenResponse) => {
+		// 		console.log('This is google authorization response:')
+		// 		console.log(tokenResponse)
 
-				Server.login(tokenResponse.access_token, this)
+		// 		Server.login(tokenResponse.access_token, this)
 
-				this.onOptionClick()
+		// 		this.onOptionClick()
 
-			},
-		})
+		// 	},
+		// })
 
 		google.accounts.id.initialize({
 			client_id: Url.oauth,
+
+			login_uri: 'https://celestialtcg.com/gapi',
 			
-			callback: (_) => {
+			callback: (token) => {
 				console.log('Signin succesful')
-
-				console.log(google.accounts['oauth2'])
-
-				google.accounts['oauth2'].requestAccessToken
-
-				client.requestAccessToken()
 
 				// TODO Type definitions
 				// google.accounts['oauth2'].initTokenClient({
@@ -95,16 +91,11 @@ export class SigninScene extends Phaser.Scene {
 				// 	},
 				// })
 
-				// const payload: any = jwt_decode(token.credential)
-				// const jti = payload.jti
-				// console.log(payload)
+				const payload: any = jwt_decode(token.credential)
+				console.log(payload)
 
-				// // Sub is the user's unique id
-				// // Jti is the unique identifier 
-
-				// Server.login(payload.sub, this)
-
-				
+				// Send the jti to confirm a connection
+				Server.login(payload.jti, this)
 			}
 		})
 		// google.accounts.id.prompt()
