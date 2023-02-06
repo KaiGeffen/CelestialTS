@@ -9,6 +9,7 @@ import Icon from "../lib/icon"
 import Menu from "../lib/menu"
 import intro from "../adventures/intro.json"
 import Loader from '../loader/loader'
+import Server from '../server'
 
 
 const headerHeight = Space.iconSize + Space.pad * 2
@@ -51,7 +52,10 @@ export default class HomeScene extends BaseScene {
       () => {
         this.scene.launch('MenuScene', {
           menu: 'confirm',
-          callback: () => { this.scene.start('SigninScene') },
+          callback: () => {
+            Server.logout()
+            this.scene.start('SigninScene')
+          },
           hint: 'logout'
         })
       })

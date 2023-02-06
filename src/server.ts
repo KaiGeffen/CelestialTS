@@ -8,7 +8,7 @@ import { UserSettings } from "./settings/settings"
 const ip = '127.0.0.1'
 const port = 5555
 // Custom code for closing websocket connection due to invalid token
-const code = 333
+const code = 1000
 
 // The websocket which is open with the main server (Authentication/pack opening)
 var wsServer: WebSocket = undefined
@@ -94,6 +94,12 @@ export default class Server {
 				Server.login(payload)
 			}
 		})
+	}
+
+	static logout(): void {
+		if (Server.loggedIn()) {
+			wsServer.close(code)			
+		}
 	}
 
 	// Get the open websocket, for use in playing a match
