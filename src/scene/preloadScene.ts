@@ -1,6 +1,5 @@
 import 'phaser'
 import jwt_decode from "jwt-decode"
-
 import Loader from '../loader/loader'
 import Server from '../server'
 import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
@@ -70,6 +69,7 @@ export class SigninScene extends Phaser.Scene {
 
 		google.accounts.id.initialize({
 			client_id: Url.oauth,
+			auto_select: true,
 
 			login_uri: 'https://celestialtcg.com/gapi',
 			
