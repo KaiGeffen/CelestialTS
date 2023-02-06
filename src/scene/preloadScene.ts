@@ -36,6 +36,9 @@ export class SigninScene extends Phaser.Scene {
 
 		// Google GIS
 		this.createGoogleGSIButton(y - 100)
+
+		// Facebook signin
+		this.createFacebookButton(y - 200)
 	}
 
 	private onOptionClick(): void {
@@ -69,26 +72,28 @@ export class SigninScene extends Phaser.Scene {
 				this.onOptionClick()
 			}
 		})
-		const pageElement = document.getElementById("signin")
 		// google.accounts.id.prompt()
 
 	    // Render the button as the right element
 		google.accounts.id.renderButton(
-			pageElement,
+			document.getElementById("signin_google"),
 			{
 				type: "standard",
 				theme: "outline",
 				size: "large",
 				shape: "pill",
-				width: Space.buttonWidth,
+				width: 220,
 			},
 		)
 
-	    // Move that element to the correct location
-		pageElement.style.top = `${y}px`
-		pageElement.style.left = '50%'
-		pageElement.style.transform = 'translate(-50%, -50%)'
+		// Center the sign in button
+		// document.getElementById("signin_google").style.transform = 'translate(-50%, -50%)'
 	}
+
+	private createFacebookButton(y: number): void {
+		return
+	}
+
 }
 
 export class PreloadScene extends SigninScene {

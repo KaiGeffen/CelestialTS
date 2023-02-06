@@ -7,9 +7,24 @@
 
 
 
-  <!-- Related to Google sign-in -->
+  <!-- Related to Google/Facebook sign-in -->
   <meta name="google-signin-client_id" content="574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0" nonce="yHBseuRh"></script> -->
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId            : 'your-app-id',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v16.0'
+      });
+    };
+  </script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
 
   <!-- <div id="g_id_onload"
        data-client_id="574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com "
@@ -60,7 +75,9 @@
     }
   </style>
   <div id="game">
-    <div id="signin" style="position: absolute;"></div>
+    <div id="signin" style="position: absolute; left: 50%; top: 50%">
+      <div id="signin_google"style="position: relative; left: -110px; top: -90px"></div>
+      <div id="signin_facebook" style="position: relative; left: -110px; top: -190px"><div class="fb-login-button" data-width="220" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div></div></div>
     <audio id=music loop>
       <source src="assets/music/background.mp3" type="audio/mpeg">
       Your browser does not support the audio tag
@@ -74,7 +91,6 @@
     <!-- <video id=v-recap loop muted width="0" height="0"
       style="position: absolute; z-index: -2; filter: opacity(0%);">
       <source src="assets/recap.mp4" type=video/mp4>
-    </video> -->
-  </div>
+      </video> -->
 </body>
 </html>
