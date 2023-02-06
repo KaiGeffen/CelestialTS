@@ -19,6 +19,9 @@ export default class Server {
 	static login(payload: any, scene?: Phaser.Scene) {
 		let that = this
 
+		console.log('Log in to server with payload:')
+		console.log(payload)
+
 		// Set / reset that server ws does not have an in-game listener yet
 		Server.hasInGameListener = false
 
@@ -101,6 +104,7 @@ export default class Server {
 		if (Server.loggedIn()) {
 			console.log('server was logged in and now its logging out...')
 			wsServer.close(code)
+			wsServer = undefined
 		}
 	}
 
