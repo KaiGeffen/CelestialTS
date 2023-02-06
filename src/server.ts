@@ -103,8 +103,11 @@ export default class Server {
 		console.log('Logging out')
 		if (Server.loggedIn()) {
 			console.log('server was logged in and now its logging out...')
+			
 			wsServer.close(code)
 			wsServer = undefined
+
+			UserSettings.onLogout()
 		}
 	}
 

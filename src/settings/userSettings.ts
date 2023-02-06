@@ -141,6 +141,11 @@ export class UserSettings {
       return amt
     }
   }
+
+  // User is logging out, clear the session storage
+  static onLogout(): void {
+    sessionStorage.clear()
+  }
 }
 
 function getStartingInventory(): boolean[] {
