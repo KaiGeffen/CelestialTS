@@ -54,6 +54,10 @@ export default class HomeScene extends BaseScene {
           menu: 'confirm',
           callback: () => {
             Server.logout()
+
+            var mGoogleSignInClient
+            mGoogleSignInClient.signOut()
+            
             this.scene.start('SigninScene')
           },
           hint: 'logout'

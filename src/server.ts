@@ -97,8 +97,10 @@ export default class Server {
 	}
 
 	static logout(): void {
+		console.log('Logging out')
 		if (Server.loggedIn()) {
-			wsServer.close(code)			
+			console.log('server was logged in and now its logging out...')
+			wsServer.close(code)
 		}
 	}
 

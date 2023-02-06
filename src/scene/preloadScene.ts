@@ -69,8 +69,6 @@ export class SigninScene extends Phaser.Scene {
 
 		google.accounts.id.initialize({
 			client_id: Url.oauth,
-			auto_select: true,
-
 			login_uri: 'https://celestialtcg.com/gapi',
 			
 			callback: (token) => {
