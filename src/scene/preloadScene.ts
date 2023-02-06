@@ -60,7 +60,7 @@ export class SigninScene extends Phaser.Scene {
 			callback: (token) => {
 				console.log('Signin succesful')
 
-				const payload: any  = jwt_decode(token.credential)
+				const payload: any = jwt_decode(token.credential)
 				const jti = payload.jti
 				console.log(payload)
 
@@ -81,7 +81,6 @@ export class SigninScene extends Phaser.Scene {
 				type: "standard",
 				theme: "outline",
 				size: "large",
-				shape: "pill",
 				width: 220,
 			},
 		)
@@ -91,12 +90,24 @@ export class SigninScene extends Phaser.Scene {
 	}
 
 	private createFacebookButton(y: number): void {
-		console.log(FB)
-		FB.getLoginStatus(function(response) {
-			console.log(response)
-		})
-		
-		return
+		// Window asynch initiates and then checks the login status
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '525279936367652',
+				cookie     : true,                     // Enable cookies to allow the server to access the session.
+				xfbml      : true,                     // Parse social plugins on this webpage.
+				version    : 'v16.0'		           // Use this Graph API version for this call.
+			})
+
+			FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+				console.log('statusChangeCallback')
+    			console.log(response)
+
+    			FB.api('/me', function(response: any) {
+    				console.log('Successful login for: ' + response.name);
+    			})
+			})
+		}
 	}
 
 }
