@@ -96,6 +96,8 @@ export class SigninScene extends Phaser.Scene {
 
 				// Send the jti to confirm a connection
 				Server.login(payload, this)
+
+				this.onOptionClick()
 			}
 		})
 		// google.accounts.id.prompt()
