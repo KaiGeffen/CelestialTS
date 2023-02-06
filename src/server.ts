@@ -107,7 +107,7 @@ export default class Server {
 			wsServer.close(code)
 			wsServer = undefined
 
-			UserSettings.onLogout()
+			UserSettings.clearSessionStorage()
 		}
 	}
 

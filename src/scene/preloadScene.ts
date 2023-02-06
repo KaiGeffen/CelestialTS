@@ -23,7 +23,7 @@ export class SigninScene extends Phaser.Scene {
 		document.getElementById("signin").hidden = false
 
 		// Ensure user is signed out
-		Server.logout()
+		UserSettings.clearSessionStorage()
 
 		// Add buttons to sign in or play as a guest
 		this.createButtons()

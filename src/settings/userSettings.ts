@@ -142,8 +142,7 @@ export class UserSettings {
     }
   }
 
-  // User is logging out, clear the session storage
-  static onLogout(): void {
+  static clearSessionStorage(): void {
     sessionStorage.clear()
   }
 }
