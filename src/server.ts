@@ -89,9 +89,9 @@ export default class Server {
 			// Don't attempt to login again if the server explicitly logged us out
 			if (event.code !== code) {
 				console.log('Logged in websocket is closing, signing in again with token:')
-				console.log(token)
+				console.log(payload)
 
-				Server.login(token)
+				Server.login(payload)
 			}
 		})
 	}
