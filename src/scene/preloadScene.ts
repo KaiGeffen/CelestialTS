@@ -57,19 +57,33 @@ export class SigninScene extends Phaser.Scene {
 		google.accounts.id.initialize({
 			client_id: Url.oauth,
 			
-			callback: (token) => {
+			callback: (_) => {
 				console.log('Signin succesful')
 
-				const payload: any = jwt_decode(token.credential)
-				const jti = payload.jti
-				console.log(payload)
+				// TODO Type definitions
+				google.accounts['oauth2'].initTokenClient({
+					client_id: Url.oauth,
+					callback: (tokenResponse) => {
+						console.log('This is google authorization response:')
+						console.log(tokenResponse)
 
-				// Sub is the user's unique id
-				// Jti is the unique identifier 
+						Server.login(tokenResponse.access_token, this)
 
-				Server.login(payload.sub, this)
+						this.onOptionClick()
 
-				this.onOptionClick()
+					},
+				})
+
+				// const payload: any = jwt_decode(token.credential)
+				// const jti = payload.jti
+				// console.log(payload)
+
+				// // Sub is the user's unique id
+				// // Jti is the unique identifier 
+
+				// Server.login(payload.sub, this)
+
+				
 			}
 		})
 		// google.accounts.id.prompt()
@@ -102,6 +116,10 @@ export class SigninScene extends Phaser.Scene {
 			FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
 				console.log('statusChangeCallback')
     			console.log(response)
+
+    			if (response.status === 'connected') {
+    				Server.login(response.authResponse.accessToken, this)
+    			}
 
     			FB.api('/me', function(response: any) {
     				console.log('Successful login for: ' + response.name);
