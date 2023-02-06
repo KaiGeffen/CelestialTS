@@ -53,8 +53,6 @@ export default class HomeScene extends BaseScene {
         this.scene.launch('MenuScene', {
           menu: 'confirm',
           callback: () => {
-            Server.logout()
-            
             this.scene.start('SigninScene')
           },
           hint: 'logout'
