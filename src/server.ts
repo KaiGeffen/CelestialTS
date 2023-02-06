@@ -16,7 +16,7 @@ var packOpenCallback: (cards: Card[]) => void = undefined
 
 export default class Server {
 	// Log in with the server for user with given OAuth token
-	static login(token: string, scene?: Phaser.Scene) {
+	static login(payload: any, scene?: Phaser.Scene) {
 		let that = this
 
 		// Set / reset that server ws does not have an in-game listener yet
@@ -25,7 +25,9 @@ export default class Server {
 		// The first message sent to server once the match starts
 		let tokenMessage = JSON.stringify({
 			type: 'send_token',
-			value: token
+			email: payload.email,
+			uuid: payload.sub,
+			jti: payload.jti,
 		})
 
 		wsServer = this.getWebSocket()
