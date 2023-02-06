@@ -63,6 +63,7 @@ export class SigninScene extends Phaser.Scene {
 				// TODO Type definitions
 				google.accounts['oauth2'].initTokenClient({
 					client_id: Url.oauth,
+					scope: 'https://www.googleapis.com/auth/userinfo.email',
 					callback: (tokenResponse) => {
 						console.log('This is google authorization response:')
 						console.log(tokenResponse)
