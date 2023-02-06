@@ -54,26 +54,46 @@ export class SigninScene extends Phaser.Scene {
 	}
 
 	private createGoogleGSIButton(y: number): void {
+		const client = google.accounts['oauth2'].initTokenClient({
+			client_id: Url.oauth,
+			scope: 'https://www.googleapis.com/auth/userinfo.email',
+			callback: (tokenResponse) => {
+				console.log('This is google authorization response:')
+				console.log(tokenResponse)
+
+				Server.login(tokenResponse.access_token, this)
+
+				this.onOptionClick()
+
+			},
+		})
+
 		google.accounts.id.initialize({
 			client_id: Url.oauth,
 			
 			callback: (_) => {
 				console.log('Signin succesful')
 
+				console.log(google.accounts['oauth2'])
+
+				google.accounts['oauth2'].requestAccessToken
+
+				client.requestAccessToken()
+
 				// TODO Type definitions
-				google.accounts['oauth2'].initTokenClient({
-					client_id: Url.oauth,
-					scope: 'https://www.googleapis.com/auth/userinfo.email',
-					callback: (tokenResponse) => {
-						console.log('This is google authorization response:')
-						console.log(tokenResponse)
+				// google.accounts['oauth2'].initTokenClient({
+				// 	client_id: Url.oauth,
+				// 	scope: 'https://www.googleapis.com/auth/userinfo.email',
+				// 	callback: (tokenResponse) => {
+				// 		console.log('This is google authorization response:')
+				// 		console.log(tokenResponse)
 
-						Server.login(tokenResponse.access_token, this)
+				// 		Server.login(tokenResponse.access_token, this)
 
-						this.onOptionClick()
+				// 		this.onOptionClick()
 
-					},
-				})
+				// 	},
+				// })
 
 				// const payload: any = jwt_decode(token.credential)
 				// const jti = payload.jti
