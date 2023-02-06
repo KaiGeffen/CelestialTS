@@ -91,6 +91,11 @@ export class SigninScene extends Phaser.Scene {
 	}
 
 	private createFacebookButton(y: number): void {
+		console.log(FB)
+		FB.getLoginStatus(function(response) {
+			console.log(response)
+		})
+		
 		return
 	}
 

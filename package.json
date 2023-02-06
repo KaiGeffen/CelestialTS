@@ -31,6 +31,7 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
+    "@types/facebook-js-sdk": "^3.3.6",
     "@types/gapi": "^0.0.41",
     "@types/gapi.auth2": "^0.0.55",
     "@types/google-one-tap": "^1.2.2",
