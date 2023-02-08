@@ -77,9 +77,7 @@ export default class AdventureScene extends BaseScene {
 		}
 
 		if (this.panDirection !== undefined) {
-			AdventureScene.moveCamera(this.cameras.main, this.panDirection[0], this.panDirection[1])
-
-			this.adjustIndicators()
+			AdventureScene.moveCamera(this.cameras.main, this.panDirection[0], this.panDirection[1])	
 		}
 
 		// Switch the frame of the animated elements every frame
@@ -89,6 +87,9 @@ export default class AdventureScene extends BaseScene {
 			let frame = Math.floor(2 * time / 1000) % 2 === 0 ? 0 : 1
 			btn.icon.setFrame(frame)
 		})
+
+		// Adjust alpha/location of each indicator
+		this.adjustIndicators()
 	}
 
 	// Create the panel containing the missions
@@ -287,6 +288,7 @@ export default class AdventureScene extends BaseScene {
 
 	// Create indicators for any incomplete nodes on the map out of the camera's view
 	private createIncompleteIndicators(): void {
+		this.incompleteIndicators = []
 		this.animatedBtns.forEach(_ => {
 			const circle = this.scene.scene.add.circle(0, 0, 25, Color.mapIndicator, 0.7)
 			this.incompleteIndicators.push(circle)
@@ -459,7 +461,6 @@ export default class AdventureScene extends BaseScene {
 
 		this.input.on('gameobjectwheel', (pointer, gameObject, dx, dy, dz, event) => {
 			AdventureScene.moveCamera(camera, dx, dy)
-			this.adjustIndicators()
 		})
 	}
 
@@ -486,10 +487,6 @@ export default class AdventureScene extends BaseScene {
 
 				this.incompleteIndicators[i].setAlpha(1)
 				.setPosition(intersect.x, intersect.y)
-			}
-
-			if (intersects.length > 1) {
-				console.log(intersects.length)
 			}
 		}
 	}
