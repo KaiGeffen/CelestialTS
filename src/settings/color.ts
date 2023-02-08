@@ -44,7 +44,8 @@ const CoreColors: Record<string, any> = {
   goldenS: '#FABD5D',
 
   // Breath icon, and things relating to breath
-  breath: '#5F99DC',
+  breath: 0x5F99DC,
+  breathS: '#5F99DC',
 
 
 }
@@ -79,7 +80,7 @@ export const Color: Record<string, any> = {
   cardText: 0xFABD5D,
   cardTextBackground: CoreColors.black,
   // The color of either stat if it has been changed
-  cardStatChanged: CoreColors.breath,
+  cardStatChanged: CoreColors.breathS,
 
   // Hint text fill and background (What shows when you hover something that has an explanation)
   hintFill: CoreColors.white,
@@ -146,7 +147,7 @@ export const Color: Record<string, any> = {
 
   // Color for the various charts
   radar: CoreColors.goldenS,
-  bar: CoreColors.breath + '99',
+  bar: CoreColors.breathS + '99',
   barBorder: CoreColors.goldenS,
 
   // Color for text that references anything
@@ -177,6 +178,7 @@ export const Color: Record<string, any> = {
 
   // Adventure mode components
   flavor: CoreColors.whiteS,
+  mapIndicator: CoreColors.breath,
 
 
   // The highlight behind a card that is selected for mulligan

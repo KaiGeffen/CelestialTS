@@ -23,6 +23,8 @@ export default class AdventureScene extends BaseScene {
 
 	animatedBtns: Button[]
 
+	incompleteIndicators: Phaser.GameObjects.Arc[] = []
+
 	constructor() {
 		super({
 			key: "AdventureScene"
@@ -63,6 +65,9 @@ export default class AdventureScene extends BaseScene {
 		const coords = UserSettings._get('adventureCoordinates')
 		this.cameras.main.scrollX = coords.x
 		this.cameras.main.scrollY = coords.y
+
+		// Create indicators for where incomplete missions are
+		this.createIncompleteIndicators()
 	}
 
 	update(time, delta): void {
@@ -73,6 +78,8 @@ export default class AdventureScene extends BaseScene {
 
 		if (this.panDirection !== undefined) {
 			AdventureScene.moveCamera(this.cameras.main, this.panDirection[0], this.panDirection[1])
+
+			this.adjustIndicators()
 		}
 
 		// Switch the frame of the animated elements every frame
@@ -278,6 +285,14 @@ export default class AdventureScene extends BaseScene {
 		params.card = undefined
 	}
 
+	// Create indicators for any incomplete nodes on the map out of the camera's view
+	private createIncompleteIndicators(): void {
+		this.animatedBtns.forEach(_ => {
+			const circle = this.scene.scene.add.circle(0, 0, 25, Color.mapIndicator, 0.7)
+			this.incompleteIndicators.push(circle)
+		})
+	}
+
 	// Create a stillframe animation specified in params
 	private createStillframe(params): void {
 		// TODO Make dry with the searching tutorial class implementation
@@ -442,9 +457,41 @@ export default class AdventureScene extends BaseScene {
 	private enableScrolling(): void {
 		let camera = this.cameras.main
 
-		this.input.on('gameobjectwheel', function(pointer, gameObject, dx, dy, dz, event) {
+		this.input.on('gameobjectwheel', (pointer, gameObject, dx, dy, dz, event) => {
 			AdventureScene.moveCamera(camera, dx, dy)
+			this.adjustIndicators()
 		})
+	}
+
+	private adjustIndicators(): void {
+		// Adjust each indicator
+		for (let i = 0; i < this.animatedBtns.length; i++) {
+			const btn = this.animatedBtns[i]
+
+			// Find the intersection between a line from the btn to camer's center
+			const camera = this.cameras.main
+			const rect = camera.worldView
+			// TODO Use set bounds of camera to lock it to the map image instead of math
+			const line = new Phaser.Geom.Line(btn.icon.x, btn.icon.y, camera.scrollX + camera.centerX, camera.scrollY + camera.centerY)
+
+			const intersects = Phaser.Geom.Intersects.GetLineToRectangle(line, rect)
+
+			// If btn is on screen, hide this button's indicator indicator
+			if (intersects.length === 0) {
+				this.incompleteIndicators[i].setAlpha(0)
+			}
+			// Otherwise, place the indicator at the intersection of worldview and line to camera's center
+			else {
+				const intersect = intersects[0]
+
+				this.incompleteIndicators[i].setAlpha(1)
+				.setPosition(intersect.x, intersect.y)
+			}
+
+			if (intersects.length > 1) {
+				console.log(intersects.length)
+			}
+		}
 	}
 
 	private static moveCamera(camera, dx, dy): void {
