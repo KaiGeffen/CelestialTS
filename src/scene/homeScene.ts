@@ -45,11 +45,19 @@ export default class HomeScene extends BaseScene {
     })
 
     // Create logout button
+    const s = Server.loggedIn() ? 'Logout' : 'Login'
     let btnLogout = new Buttons.Basic(this,
       Space.pad + Space.buttonWidth/2,
       headerHeight/2,
-      "Logout",
+      s,
       () => {
+        // If we aren't logged in, go to login scene
+        if (!Server.loggedIn()) {
+          this.scene.start('SigninScene')
+          return
+        }
+
+        // Otherwise ask to confirm user wants to log out
         this.scene.launch('MenuScene', {
           menu: 'confirm',
           callback: () => {
