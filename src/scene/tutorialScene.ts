@@ -111,9 +111,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			case 0:
 			this.view.decks.hide()
 			this.view.discardPiles.hide()
-			this.view.pass.hide()
 			this.view.commands.hide()
-			
 			this.displayHints1()
 			break
 
@@ -176,6 +174,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 		// Hide different elements on the screen based on progress
 		switch (this.progress) {
 			case 0:
+			this.view.pass.hide()
 			this.view.theirHand.hide()
 			this.view.theirScore.hide()
 			this.view.ourHand.hide()
@@ -210,6 +209,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.view.theirScore.show()
 			this.view.theirHand.show()
 			['hideStacks']()
+
+			this.view.pass.show()
+			['tutorialDisablePass']()
 			break
 		}
 	}
@@ -226,10 +228,10 @@ export default class TutorialGameScene extends AdventureGameScene {
 		this.view.theirHand['hideStacks']()
 
 		// Hide pass until a point
-		if (this.progress < 8) {
-			this.view.pass.hide()
-		} else {
-			this.view.pass.show()
+		if (this.progress === 0) {
+			this.view.pass['tutorialDisablePass']()
+		} else if (this.progress === 8) {
+			this.view.pass['tutorialEnablePass']()
 		}
 
 		// Hide different elements on the screen based on progress

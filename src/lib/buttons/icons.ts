@@ -247,6 +247,12 @@ class Pass extends Button {
 	}
 
 	enable() {
+		// For the tutorial, disable pass button
+		if (this.tutorialSimplifiedPass) {
+			this.icon.setAlpha(1)
+			return this
+		}
+
 		this.setText('PASS')
 		super.enable()
 
@@ -261,6 +267,9 @@ class Pass extends Button {
 
 		return this
 	}
+
+	// Used in the tutorial to reduce the functionality while player is learning
+	tutorialSimplifiedPass = false
 }
 
 class Moon extends Button {
