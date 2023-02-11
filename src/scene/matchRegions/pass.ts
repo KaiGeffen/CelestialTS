@@ -193,9 +193,9 @@ export default class PassRegion extends Region {
 		.disable()
 		['tutorialSimplifiedPass'] = true
 
-		// Enable it, with simplified utility
+		// Enable it, with simplified uses
 		this.btnPass.enable()
-		
+
 		// this.btnPass.setAlpha(0)
 		// this.oldCallback = this.btnPass.onClick
 		// this.btnPass.setOnClick(() => {})

@@ -98,6 +98,11 @@ export default class TutorialGameScene extends AdventureGameScene {
 			})
 		}
 
+		// If player has won/lost, ensure pass button is enabled
+		if (state.winner !== null) {
+			this.view.pass['tutorialEnablePass']()
+		}
+
 		let result = super.displayState(state, isRecap)
 
 		if (!result) { return false }
