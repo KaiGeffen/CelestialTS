@@ -72,7 +72,7 @@ export default class HomeScene extends BaseScene {
     // Create Discord button
     let btnDiscord = new Icons.Discord(this,
       Space.buttonWidth + Space.pad * 2,
-      headerHeight/2)
+      headerHeight/2 - 5)
     .setOrigin(0, 0.5)
 
     btnDiscord.setOnClick(this.doDiscord(btnDiscord))
