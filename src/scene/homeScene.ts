@@ -213,14 +213,29 @@ export default class HomeScene extends BaseScene {
     container.add(img)
 
     // Tween
+    const duration = Time.recapTween()
+    const durationFall = Time.recapTween() * 2
     const hold = 6000
     const repeatDelay = Time.recapTweenWithPause() * 3
+
+    const fallConfig = {
+      targets: img,
+      y: top ? y - Space.cardHeight : y + Space.cardHeight,
+      delay: (duration + hold) - durationFall,
+      duration: durationFall,
+      ease: Ease.cardFall,
+      onComplete: () => {
+        // Reset the y
+        img.setY(y)
+      }
+    }
+
     this.tweens.add({
       targets: img,
       x: x,
       delay: Time.recapTweenWithPause() * delay,
       repeat: -1,
-      duration: Time.recapTween(),
+      duration: duration,
       hold: hold,
       repeatDelay: repeatDelay,
       ease: Ease.basic,
@@ -230,17 +245,7 @@ export default class HomeScene extends BaseScene {
         img.setTexture(card)
 
         // When holding completes, tween the card dropping offscreen
-        this.tweens.add({
-          targets: img,
-          y: y + Space.cardHeight,
-          delay: hold,
-          duration: repeatDelay,
-          ease: Ease.basic,
-          onComplete: () => {
-            // Reset the y
-            img.setY(y)
-          }
-        })
+        this.tweens.add(fallConfig)
       },
       
       onRepeat: () => {
@@ -248,19 +253,8 @@ export default class HomeScene extends BaseScene {
         const card = baseCards[cardNum].name
         img.setTexture(card)
 
-        // TODO Not dry with the above identical code
         // When holding completes, tween the card dropping offscreen
-        this.tweens.add({
-          targets: img,
-          y: y + Space.cardHeight,
-          delay: hold,
-          duration: repeatDelay,
-          ease: Ease.basic,
-          onComplete: () => {
-            // Reset the y
-            img.setY(y)
-          }
-        })
+        this.tweens.add(fallConfig)
       },
     })
   }

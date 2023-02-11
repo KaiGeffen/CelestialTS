@@ -12,4 +12,7 @@ export const Ease: Record<string, string> = {
 	stillframe: 'Quad.InOut',
 	// Stillframe sliding up as it ends
 	stillframeEnd: 'Quad.Out',
+
+	// Cards falling on the title scene
+	cardFall: 'Quart.easeIn',
 }
