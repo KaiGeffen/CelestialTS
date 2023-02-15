@@ -163,6 +163,11 @@ export class BuilderScene extends BuilderBase {
   }
 
   addCardToDeck(card: Card): string {
+    // If a premade deck is selected, return an error string
+    if (this.decklistsRegion.savedPremadeIndex !== undefined) {
+      return `Can't add cards to a premade deck.`
+    }
+
     // If no deck is selected, make a new deck and add this card
     if (this.decklistsRegion.savedDeckIndex === undefined) {
       // If creating an empty deck failed, return an error string
