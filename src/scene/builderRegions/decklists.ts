@@ -8,6 +8,7 @@ import { Color, Mechanics, Space, Style, UserSettings, Mobile, Scroll } from "..
 
 
 const width = Space.decklistPanelWidth
+const DEFAULT_DECK_NAME = 'Deck'
 
 // Region of the deck builder which contains all the decklists
 export default class DecklistsRegion {  
@@ -342,11 +343,17 @@ export default class DecklistsRegion {
 	// Return a callback for when a deck is created (From paste or new deck)
 	createCallback(): (name: string, avatar: number, deckCode?: string) => void {
 		return (name: string, avatar: number, deckCode?: string) => {
+			// Use a default deck name if it's not specified
+			if (name === undefined) {
+				const number = this.decklistBtns.length + 1
+				name = `${DEFAULT_DECK_NAME} ${number}`
+			}
+
 			// Create the deck in storage
 			UserSettings._push('decks', {
 				name: name,
 				value: '',
-				avatar: avatar,
+				avatar: avatar === undefined ? 0 : avatar,
 			})
 
 			// Create a new button
@@ -365,6 +372,18 @@ export default class DecklistsRegion {
 			if (deckCode !== undefined) {
 				this.scene.setDeck(deckCode)
 			}
+		}
+	}
+
+	// Create a new deck for the user, return success status
+	createEmptyDeck(): boolean {
+		// If user already has MAX decks, signal error instead
+		if (UserSettings._get('decks').length >= Mechanics.maxDecks) {
+			return false
+		}
+		else {
+			this.createCallback()(undefined, undefined, '')
+			return true
 		}
 	}
 

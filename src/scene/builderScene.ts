@@ -7,15 +7,15 @@ import DeckRegion from './builderRegions/deck'
 import DecklistsRegion from './builderRegions/decklists'
 import FilterRegion from './builderRegions/filter'
 import JourneyRegion from './builderRegions/journey'
-import { Space } from '../settings/settings'
+import { Space, Mechanics } from '../settings/settings'
 
 
 // Features common between all builders
 export class BuilderBase extends BaseScene {
-  catalogRegion
-  deckRegion
-  decklistsRegion
-  filterRegion
+  catalogRegion: CatalogRegion
+  deckRegion: DeckRegion
+  decklistsRegion: DecklistsRegion
+  filterRegion: FilterRegion
 
   // The params with which this class was invoked
   params
@@ -163,10 +163,14 @@ export class BuilderScene extends BuilderBase {
   }
 
   addCardToDeck(card: Card): string {
-    // If no deck is selected, don't add the card
+    // If no deck is selected, make a new deck and add this card
     if (this.decklistsRegion.savedDeckIndex === undefined) {
-      // TODO What should happen here? Zoom up the card?
-      return 'No deck selected.'
+      // If creating an empty deck failed, return an error string
+      if (!this.decklistsRegion.createEmptyDeck()) {
+        return `Reached max number of decks (${Mechanics.maxDecks}).`
+      }
+
+      // NOTE Card gets added below (Deck starts empty)
     }
 
     let result = this.deckRegion.addCardToDeck(card)
@@ -197,7 +201,8 @@ export class BuilderScene extends BuilderBase {
   }
 
   setSearchVisible(value: boolean): void {
-    this.filterRegion.searchObj.setVisible(value)
+    // TODO Better integrate rexUI types
+    this.filterRegion.searchObj['setVisible'](value)
   }
 
   // Remember what deck / decklist was selected

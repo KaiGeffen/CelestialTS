@@ -101,7 +101,7 @@ export default class PasteMenu extends Menu {
 		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 
 		new Buttons.Basic(container, 0, 0, 'Create', () => {
-			createCallback('PASTED', 0, this.deckCode)
+			createCallback(undefined, undefined, this.deckCode)
 
 			// Close this scene
 			this.scene.scene.stop()
