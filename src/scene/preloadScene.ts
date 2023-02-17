@@ -34,7 +34,12 @@ export class SigninScene extends Phaser.Scene {
 		const x = Space.windowWidth/2
 		const y = Space.windowHeight/2
 		
-		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {this.onOptionClick()})
+		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {
+			// Ensure that any other automatic sign-ins are cancelled
+			google.accounts.id.cancel()
+
+			this.onOptionClick()
+		})
 
 		// Google GIS
 		this.createGoogleGSIButton(y - 100)
