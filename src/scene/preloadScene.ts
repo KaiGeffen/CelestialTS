@@ -104,18 +104,18 @@ export class SigninScene extends Phaser.Scene {
 				this.onOptionClick()
 			}
 		})
-		google.accounts.id.prompt()
+		// google.accounts.id.prompt()
 
 	    // Render the button as the right element
-		// google.accounts.id.renderButton(
-		// 	document.getElementById("signin_google"),
-		// 	{
-		// 		type: "standard",
-		// 		theme: "outline",
-		// 		size: "large",
-		// 		width: 220,
-		// 	},
-		// )
+		google.accounts.id.renderButton(
+			document.getElementById("signin_google"),
+			{
+				type: "standard",
+				theme: "outline",
+				size: "large",
+				width: 220,
+			},
+		)
 
 		// Center the sign in button
 		// document.getElementById("signin_google").style.transform = 'translate(-50%, -50%)'
