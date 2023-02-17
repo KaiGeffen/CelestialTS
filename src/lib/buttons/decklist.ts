@@ -48,4 +48,18 @@ export default class DecklistButton extends Button {
 
 		return result
 	}
+
+	enable() {
+		this.btnX.enable()
+		super.enable()
+
+		return this
+	}
+
+	disable() {
+		this.btnX.disable()
+		super.disable()
+
+		return this
+	}
 }

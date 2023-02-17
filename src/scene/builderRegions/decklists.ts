@@ -244,6 +244,8 @@ export default class DecklistsRegion {
 			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
 			that.scrollablePanel.t = Math.max(0, that.scrollablePanel.t)
 			that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
+
+			that.refreshBtns()
 		})
 	}
 
@@ -372,6 +374,9 @@ export default class DecklistsRegion {
 			if (deckCode !== undefined) {
 				this.scene.setDeck(deckCode)
 			}
+
+			// Refresh each btn based on screen position
+			this.refreshBtns()
 		}
 	}
 
@@ -405,6 +410,9 @@ export default class DecklistsRegion {
 			// Format panel, then ensure we aren't below the panel
 			that.scrollablePanel.layout()
 			that.scrollablePanel.t = Math.min(1, that.scrollablePanel.t)
+
+			// Refresh each btn based on screen position
+			this.refreshBtns()
 		}
 
 		return function() {
@@ -414,5 +422,25 @@ export default class DecklistsRegion {
 				hint: 'delete this deck'
 			})
 		}
+	}
+
+	// Refresh each decklist button so it's enabled iff it's entirely visible in the panel
+	// NOTE Workaround for bug with scrollable panels
+	private refreshBtns() {
+		this.decklistBtns.forEach(btn => {
+			// Stop hovering the button
+
+			btn.stopGlow()
+
+			// TODO 173 is the height of the header, but that could change so this needs to be generalized
+			const headerBottom = 173 + Space.filterBarHeight
+
+			if (btn.icon.getBounds().top < headerBottom) {
+				btn.disable()
+			}
+			else {
+				btn.enable()
+			}
+		})
 	}
 }
