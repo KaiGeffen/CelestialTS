@@ -72,7 +72,10 @@ export class SigninScene extends Phaser.Scene {
 
 		google.accounts.id.initialize({
 			client_id: Url.oauth,
-			login_uri: 'https://celestialtcg.com/gapi',
+			log_level: 'debug',
+			auto_select: true,
+			
+			// login_uri: 'https://celestialtcg.com/gapi',
 			
 			callback: (token) => {
 				console.log('Signin succesful')
@@ -101,18 +104,18 @@ export class SigninScene extends Phaser.Scene {
 				this.onOptionClick()
 			}
 		})
-		// google.accounts.id.prompt()
+		google.accounts.id.prompt()
 
 	    // Render the button as the right element
-		google.accounts.id.renderButton(
-			document.getElementById("signin_google"),
-			{
-				type: "standard",
-				theme: "outline",
-				size: "large",
-				width: 220,
-			},
-		)
+		// google.accounts.id.renderButton(
+		// 	document.getElementById("signin_google"),
+		// 	{
+		// 		type: "standard",
+		// 		theme: "outline",
+		// 		size: "large",
+		// 		width: 220,
+		// 	},
+		// )
 
 		// Center the sign in button
 		// document.getElementById("signin_google").style.transform = 'translate(-50%, -50%)'
