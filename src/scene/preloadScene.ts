@@ -74,7 +74,7 @@ export class SigninScene extends Phaser.Scene {
 			client_id: Url.oauth,
 			log_level: 'debug',
 			auto_select: true,
-			
+
 			// login_uri: 'https://celestialtcg.com/gapi',
 			
 			callback: (token) => {
@@ -104,6 +104,10 @@ export class SigninScene extends Phaser.Scene {
 				this.onOptionClick()
 			}
 		})
+
+		// NOTE Ensure that one-tap appears even if the user has closed it in the past
+		document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`
+		
 		google.accounts.id.prompt()
 
 	    // Render the button as the right element
