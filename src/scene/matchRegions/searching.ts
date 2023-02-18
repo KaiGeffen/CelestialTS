@@ -1,5 +1,5 @@
 import "phaser"
-import { Color, Space, Style, Depth, Ease } from '../../settings/settings'
+import { Color, Space, Style, Depth, Ease, Time } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import Button from '../../lib/buttons/button'
@@ -102,6 +102,7 @@ export class SearchingRegionTutorial extends Region {
 	btn: Button
 	img: Phaser.GameObjects.Image
 	textbox: any
+	background: Phaser.GameObjects.Image
 
 	// Number of the image frame currently shown, always end with the 3rd frame
 	currentFrame: number
@@ -140,10 +141,10 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createText(scene: BaseScene, tutorialNum: number): void {
-		let background = scene.add.image(0, Space.windowHeight - TEXT_HEIGHT, 'bg-Texture')
+		this.background = scene.add.image(0, Space.windowHeight - TEXT_HEIGHT, 'bg-Texture')
 		.setOrigin(0)
 		.setAlpha(0.8)
-		scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+		scene.plugins.get('rexDropShadowPipeline')['add'](this.background, {
 			distance: 3,
 			shadowColor: 0x000000,
 		})
@@ -154,7 +155,7 @@ export class SearchingRegionTutorial extends Region {
 		this.textbox = scene.rexUI.add.textBox({
 			text: txt,
 			x: Space.pad,
-			y: background.y,
+			y: this.background.y,
 			space: {
 				left: Space.pad,
 				right: Space.pad,
@@ -165,7 +166,7 @@ export class SearchingRegionTutorial extends Region {
 		.start(s, 50)
 		.setOrigin(0)
 		
-		this.container.add([background, txt, this.textbox])
+		this.container.add([this.background, txt, this.textbox])
 	}
 
 	private createButton(scene, tutorialNum): void {
@@ -189,17 +190,25 @@ export class SearchingRegionTutorial extends Region {
 				}
 				else {
 					this.textbox.setVisible(false)
+					this.background.setVisible(false)
 
 					this.btn.destroy()
 
 					// Tween the stillframe scrolling up to be flush with the top, then start the match
 					this.scene.add.tween({
 						targets: this.img,
-						duration: 2000,
+						duration: Time.stillframeScroll,
 						ease: Ease.stillframeEnd,
 						y: 0,
 						onComplete: () => {
-							scene['paused'] = false
+							this.scene.tweens.add({
+								targets: this.img,
+								alpha: 0,
+								duration: Time.stillframeFade,
+								onComplete: () => {
+									scene['paused'] = false
+								}
+							})
 						}
 					})
 

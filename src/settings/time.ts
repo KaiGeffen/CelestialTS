@@ -55,4 +55,11 @@ export class Time {
 
   // Time for menu to open / close
   static menuTransition = 100
+
+  // Stillframes in adventure mode scrolling
+  static stillframeScroll = 2000
+
+  // Stillframes in adventure mode fading out
+  static stillframeFade = 500
+
 }

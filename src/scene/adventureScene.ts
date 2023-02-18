@@ -346,7 +346,15 @@ export default class AdventureScene extends BaseScene {
 			Space.windowHeight - Space.pad - Space.buttonHeight/2,
 			'Continue',
 			() => {
-				container.setVisible(false)
+				this.tweens.add({
+					targets: container,
+					alpha: 0,
+					duration: Time.stillframeFade,
+					onComplete: () => {
+						container.setVisible(false)
+						container.alpha = 1
+					}
+				})
 
 				// Allow scrolling once the stillframe is gone
 				this.enableScrolling()
