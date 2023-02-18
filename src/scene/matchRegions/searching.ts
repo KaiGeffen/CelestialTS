@@ -201,14 +201,7 @@ export class SearchingRegionTutorial extends Region {
 						ease: Ease.stillframeEnd,
 						y: 0,
 						onComplete: () => {
-							this.scene.tweens.add({
-								targets: this.img,
-								alpha: 0,
-								duration: Time.stillframeFade,
-								onComplete: () => {
-									scene['paused'] = false
-								}
-							})
+							scene['paused'] = false
 						}
 					})
 
