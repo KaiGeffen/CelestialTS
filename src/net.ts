@@ -23,6 +23,8 @@ const MATCH_MAKING_PARAM = 'mm'
 export var versionNumber: number
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
 var scene
+// NOTE This can change, but the listener is only created once, so it needs to reference this var
+var initMessage
 
 export class Network {
 	socket: WebSocket
@@ -35,7 +37,7 @@ export class Network {
 		versionNumber = -1
 
 		// The first message sent to server once the match starts
-		const initMessage = JSON.stringify({
+		initMessage = JSON.stringify({
 			type: 'init',
 			value: encodeDeck(deck),
 			avatar: `${avatarID}`
