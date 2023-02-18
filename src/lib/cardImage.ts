@@ -411,8 +411,13 @@ export class CardImage {
     }
   }
 
+  /**
+ * @deprecated The method should not be used
+ */
   // Show which player controls the card while it's in the story
   showController(player: number): CardImage {
+    return this
+
     let color, angle
     if (player === 0) {
       color = 0x0000ff
