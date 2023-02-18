@@ -12,6 +12,7 @@ import Buttons from '../../lib/buttons/buttons'
 import MenuScene from '../menuScene'
 import { rulebookString } from '../../catalog/rulebook'
 import { creditsString } from '../../catalog/credits'
+import Icons from "../../lib/buttons/icons"
 
 
 const width = 750
@@ -86,10 +87,13 @@ export default class OptionsMenu extends Menu {
 
 	private createTabs()  {
 		// Create a rectangle to show which tab is selected
-		this.highlight = this.scene.add.rectangle(0, 0, 200, 88, COLOR, 1)
+		this.highlight = this.scene.add.rectangle(0, 0, 200, 90, COLOR, 1)
 		.setOrigin(0, 0.5)
 
-		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {line: Space.pad}})
+		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {
+			top: Space.pad,
+			line: Space.pad,
+		}})
 
 
 		tabsSizer.addNewLine()
@@ -126,6 +130,11 @@ export default class OptionsMenu extends Menu {
 			// Add the btn to dictionary
 			this.tabBtns[tabStrings[i]] = btn
 		}
+
+		// Add the discord button
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
+		new Icons.Discord(container, 0, 0)
+		tabsSizer.add(container)
 
 		return tabsSizer
 	}

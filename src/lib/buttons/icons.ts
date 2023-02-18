@@ -1,6 +1,6 @@
 import "phaser"
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import { Space, Style, Color } from '../../settings/settings'
+import { Space, Style, Color, Url } from '../../settings/settings'
 import Button from './button'
 
 
@@ -322,7 +322,7 @@ class Search extends Button {
 }
 
 class Discord extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
+	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
 		f: () => void = function() {},
 		playSound: boolean = true)
@@ -334,7 +334,7 @@ class Discord extends Button {
 				interactive: true
 			},
 			callbacks: {
-				click: f
+				click: () => { window.open(Url.discord) }
 			}
 		})
 	}

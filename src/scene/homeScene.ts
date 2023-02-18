@@ -1,5 +1,5 @@
 import "phaser"
-import { Style, Color, Space, Time, Ease, UserProgress, Url, UserSettings } from "../settings/settings"
+import { Style, Color, Space, Time, Ease, UserProgress, UserSettings } from "../settings/settings"
 import { allCards } from "../catalog/catalog"
 import BaseScene from "./baseScene"
 import Button from "../lib/buttons/button"
@@ -71,14 +71,6 @@ export default class HomeScene extends BaseScene {
         })
       })
     
-    // Create Discord button
-    let btnDiscord = new Icons.Discord(this,
-      Space.buttonWidth + Space.pad * 2,
-      headerHeight/2 - 5)
-    .setOrigin(0, 0.5)
-
-    btnDiscord.setOnClick(this.doDiscord(btnDiscord))
-
     // Create title
     this.add.text(Space.windowWidth/2, headerHeight/2, "Celestial", Style.homeTitle)
     .setOrigin(0.5)
@@ -314,13 +306,5 @@ export default class HomeScene extends BaseScene {
 
     // Otherwise, go to the adventure scene map
     this.scene.start("AdventureScene")
-  }
-
-  private doDiscord(btnDiscord: Button): () => void {
-    return function() {
-      UserProgress.addAchievement('discord')
-    
-      window.open(Url.discord)
-    }
   }
 }
