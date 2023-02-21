@@ -8,7 +8,7 @@ export default class TextButton extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number, text: string,
 		f: () => void = function() {},
-		playSound: boolean = true)
+		width = 100, height = 60)
 	{
 		super(within, x, y, 
 		{
@@ -16,14 +16,24 @@ export default class TextButton extends Button {
 				text: text,
 				interactive: true,
 				style: Style.textButton,
-				hitArea: [
-					new Phaser.Geom.Rectangle(0, 0, 100, 60),
-					Phaser.Geom.Rectangle.Contains
-					]
+				// hitArea: [
+				// 	new Phaser.Geom.Rectangle(0, 0, width, height),
+				// 	Phaser.Geom.Rectangle.Contains
+				// 	]
 			},
 			callbacks: {
 				click: f
 			}
 		})
+
+		this.setOrigin(0.5)
+
+		// Set the hitarea, first 2 points are the x and y of the top left corner
+		this.txt.input.hitArea.setTo(
+			this.txt.width/2 - width/2,
+			this.txt.height/2 - height/2,
+			width,
+			height
+			)
 	}
 }

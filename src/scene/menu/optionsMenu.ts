@@ -103,7 +103,8 @@ export default class OptionsMenu extends Menu {
 		for (let i = 0; i < tabStrings.length; i++) {
 			let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 			const s = tabStrings[i].charAt(0).toUpperCase() + tabStrings[i].slice(1)
-			let btn = new Buttons.Text(container, 0, 0, s)
+			const height = Space.buttonHeight + Space.pad
+			let btn = new Buttons.Text(container, 0, 0, s, () => {}, Space.buttonWidth, height)
 
 			btn.setOnClick(() => {
 				// Remove and hide the old subpanel
