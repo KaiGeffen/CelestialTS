@@ -33,7 +33,9 @@ export default class ConfirmMenu extends Menu {
 		let sizer = scene['rexUI'].add.sizer({
 			width: width,
 			space: {
-				item: Space.pad
+				item: Space.pad,
+				left: Space.pad,
+				right: Space.pad,
 			}
 		})
 
