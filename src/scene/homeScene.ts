@@ -5,8 +5,6 @@ import BaseScene from "./baseScene"
 import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
 import Icons from "../lib/buttons/icons"
-import Icon from "../lib/icon"
-import Menu from "../lib/menu"
 import intro from "../adventures/intro.json"
 import Loader from '../loader/loader'
 import Server from '../server'
@@ -249,24 +247,6 @@ export default class HomeScene extends BaseScene {
         this.tweens.add(fallConfig)
       },
     })
-  }
-
-  private displayMessage(message: string): void {
-    return
-
-    // TODO Rework all this
-    let menu = new Menu(
-      this,
-      1000,
-      300,
-      true,
-      25)
-
-    // TODO Don't always say Congratulations, make the first line of message the title?
-    let txtTitle = this.add.text(0, -110, 'Congratulations!', Style.announcement).setOrigin(0.5)
-    let txtMessage = this.add.text(0, -50, message, Style.basic).setOrigin(0.5, 0)
-    
-    menu.add([txtTitle, txtMessage])
   }
 
   // Do everything that occurs when the start button is pressed - either start, or prompt tutorial

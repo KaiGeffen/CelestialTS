@@ -2,11 +2,15 @@ import "phaser"
 
 import { Style, Color, Space, Time } from "../settings/settings"
 import { createMenu } from "./menu/menu"
+import Hint from '../lib/hint'
 
 
 // The scene showing whichever menu is open, if any
 // This scene is on top of any other active open scenes
 export default class MenuScene extends Phaser.Scene {
+	// Text explaining whatever the user is hovering over
+	hint: Hint
+
 	constructor() {
 		super({
 			key: "MenuScene"
@@ -14,6 +18,8 @@ export default class MenuScene extends Phaser.Scene {
 	}
 
 	create(params): void {
+		this.hint = new Hint(this)
+
 		this.sound.play('open')
 
 		this.addBackground()

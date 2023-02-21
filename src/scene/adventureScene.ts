@@ -4,7 +4,6 @@ import { Style, Space, Color, UserSettings, Time, BBStyle, Ease } from '../setti
 import Buttons from "../lib/buttons/buttons"
 import Button from "../lib/buttons/button"
 import Icons from "../lib/buttons/icons"
-import Menu from "../lib/menu"
 import { CardImage } from "../lib/cardImage"
 
 import { getCard } from "../catalog/catalog"
@@ -245,43 +244,14 @@ export default class AdventureScene extends BaseScene {
 
 	// Create a popup for the card specified in params
 	private createCardPopup(params): void {
-		const width = 800
-		const height = Space.cardHeight + Space.pad*2
-		let menu = new Menu(
-			this,
-			width,
-			height)
+		this.scene.launch('MenuScene', {
+			menu: 'message',
+			title: 'Card Unlocked!',
+			s: params.txt,
+			card: params.card,
+		})
 
-		let txt = this.add.text(0, 0, params.txt, Style.flavor)
-		.setOrigin(0)
-		.setWordWrapWidth(width - Space.cardWidth - Space.pad * 3)
-		let icon = this.add.image(0, 0, params.card.name) //new CardImage(params.card, menu.container).image//
-		let textBox = this.rexUI.add.textBox({
-			x: 0,
-			y: 0,
-			width: width,
-			height: height,
-			icon: icon,
-			space: {
-				left: Space.pad,
-				right: Space.pad,
-				top: Space.pad,
-				bottom: Space.pad,
-				icon: Space.pad
-			},
-			text: txt
-		}).setOrigin(0.5)
-
-		textBox.start(params.txt, Time.vignetteSpeed())
-
-		menu.add([txt, icon, textBox])
-
-		// Reposition the menu to be visible to the camera
-		const coords = UserSettings._get('adventureCoordinates')
-		menu.container.setPosition(
-			coords.x + Space.windowWidth / 2,
-			coords.y + Space.windowHeight / 2)
-
+		// Clear params
 		params.txt = ''
 		params.card = undefined
 	}
