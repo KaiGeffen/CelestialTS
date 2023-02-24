@@ -346,7 +346,7 @@ export default class DecklistsRegion {
 	createCallback(): (name: string, avatar: number, deckCode?: string) => void {
 		return (name: string, avatar: number, deckCode?: string) => {
 			// Use a default deck name if it's not specified
-			if (name === undefined) {
+			if (name === undefined || name === '') {
 				const number = this.decklistBtns.length + 1
 				name = `${DEFAULT_DECK_NAME} ${number}`
 			}

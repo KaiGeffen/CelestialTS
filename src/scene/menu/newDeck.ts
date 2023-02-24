@@ -85,11 +85,6 @@ class AlterDeckMenu extends Menu {
 				id: 'search-field'
 			}
 		).on('textchange', function(inputText) {
-			if (inputText.text.length === 0) {
-				that.btnConfirm.disable()
-			} else {
-				that.btnConfirm.enable()
-			}
 			that.name = inputText.text
 		})
 
@@ -180,11 +175,6 @@ class AlterDeckMenu extends Menu {
 			// Close this scene
 			this.scene.scene.stop()
 		})
-
-		// Can't create deck if it doesn't have a name
-		if (!this.name) {
-			this.btnConfirm.disable()
-		}
 
 		return container
 	}
