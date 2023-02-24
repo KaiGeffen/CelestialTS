@@ -288,6 +288,8 @@ export default class DecklistsRegion {
 			// Otherwise select this button
 			else {
 				that.savedDeckIndex = i
+				that.savedPremadeIndex = undefined
+				
 				btn.select()
 
 				let deck = UserSettings._get('decks')[i]
