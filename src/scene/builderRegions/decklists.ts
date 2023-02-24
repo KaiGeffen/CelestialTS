@@ -289,7 +289,7 @@ export default class DecklistsRegion {
 			else {
 				that.savedDeckIndex = i
 				that.savedPremadeIndex = undefined
-				
+
 				btn.select()
 
 				let deck = UserSettings._get('decks')[i]
@@ -396,29 +396,37 @@ export default class DecklistsRegion {
 
 	// Callback for deleting deck with given index
 	private deleteDeck(deckIndex: number, container: ContainerLite): () => void {
-		let that = this
 		let callback = () => {
-			that.savedDeckIndex = undefined
+			// Adjust which deck index is now selected
+			if (this.savedDeckIndex === deckIndex) {
+				// Deselect the current deck, since it is being deleted
+				this.scene.deselect()
+			}
+			else if (this.savedDeckIndex > deckIndex) {
+				this.savedDeckIndex--
+			}
 			
 			// Adjusted the saved user data
 			UserSettings._pop('decks', deckIndex)
 
-			// Adjust values stored in this deck region
-			that.scene.deselect()
-
 			// Refresh the decklist panel
-			that.createDecklistPanel()
+			this.createDecklistPanel()
 
 			// Format panel, then ensure we aren't below the panel
-			that.scrollablePanel.layout()
-			that.scrollablePanel.t = Math.min(1, that.scrollablePanel.t)
+			this.scrollablePanel.layout()
+			this.scrollablePanel.t = Math.min(1, this.scrollablePanel.t)
 
 			// Refresh each btn based on screen position
 			this.refreshBtns()
+
+			// Select whichever deck is selected
+			if (this.savedDeckIndex !== undefined) {
+				this.selectDeck(this.savedDeckIndex)
+			}
 		}
 
-		return function() {
-			that.scene.scene.launch('MenuScene', {
+		return () => {
+			this.scene.scene.launch('MenuScene', {
 				menu: 'confirm',
 				callback: callback,
 				hint: 'delete this deck'
