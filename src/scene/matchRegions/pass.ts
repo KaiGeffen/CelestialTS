@@ -50,13 +50,6 @@ export default class PassRegion extends Region {
 		const s = `${state.score[1]}\n\n${state.score[0]}`
 		this.btnMoon.setText(s)
 
-		// Once the game is over, change the callback to instead show results of match
-		if (state.winner !== null) {
-			this.btnPass.setOnClick(() => {	
-				this.showResultsCallback()
-			})
-		}
-
 		// Rotate to the right day/night
 		this.showDayNight(isRecap)
 
@@ -84,13 +77,30 @@ export default class PassRegion extends Region {
 
 		// Enable/disable button based on who has priority
 		if (state.winner !== null) {
+			// Once the game is over, change the callback to instead show results of match
 			this.btnPass.enable()
-
-			// This displays the correct alternate text
-			this.btnPass.setText('EXIT')
+			.setText('EXIT')
+			.setOnClick(() => {	
+				this.showResultsCallback()
+			})
 		}
 		else if (state.priority === 0 && !isRecap) {
-			this.btnPass.enable()
+			// Under the special condition where:
+			// Max breath reached, can play card, start of round
+			// The player is not allowed to pass
+			const canPlay = state.cardsPlayable.some(x => x)
+			if (state.maxMana[0] === 10 && canPlay && state.story.acts.length === 0) {
+				this.btnPass.setOnClick(() => {
+					const s = "You can't pass to start the 10th or later round."
+					this.scene.signalError(s)
+				})
+				.enable()
+			}
+			// Otherwise, allow them to pass as normal
+			else {
+				this.btnPass.enable()
+				.setOnClick(() => {this.callback()}, true)
+			}
 		}
 		else {
 			this.btnPass.disable()
@@ -128,9 +138,6 @@ export default class PassRegion extends Region {
 				this.btnMoon.setText(this.btnMoon.txt.text.replace('\n\n', '\nPaused\n'))
 			}
 		})
-		
-		// Set on click to be the callback, but only once
-		this.btnPass.setOnClick(() => {that.callback()}, true)
 	}
 
 	private createText(): void {
