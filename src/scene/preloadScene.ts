@@ -10,8 +10,8 @@ import Buttons from "../lib/buttons/buttons"
 // Scene for user to select a sign in option, without loading assets
 export class SigninScene extends Phaser.Scene {
 	// True when user is signed or chose to be a guest
-	signedInOrGuest: boolean = false
-	guestButton: Button
+	private signedInOrGuest: boolean
+	private btnGuest: Button
 
 	constructor(args) {
 		super({
@@ -20,6 +20,8 @@ export class SigninScene extends Phaser.Scene {
 	}
 
 	create(): void {
+		this.signedInOrGuest = false
+
 		document.getElementById("signin").hidden = false
 
 		// Ensure user is signed out
@@ -34,7 +36,7 @@ export class SigninScene extends Phaser.Scene {
 		const x = Space.windowWidth/2
 		const y = Space.windowHeight/2
 		
-		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {
+		this.btnGuest = new Buttons.Basic(this, x, y, 'Guest', () => {
 			// Ensure that any other automatic sign-ins are cancelled
 			google.accounts.id.cancel()
 
@@ -49,14 +51,16 @@ export class SigninScene extends Phaser.Scene {
 	}
 
 	private onOptionClick(): void {
-		this.signedInOrGuest = true
+		if (!this.signedInOrGuest) {
+			this.signedInOrGuest = true
 
-		// Make the buttons unclickable
-		this.guestButton.disable()
+			// Make the buttons unclickable
+			this.btnGuest.disable()
 
-		// If the core assets have been loaded, start home scene
-		if (Loader.postLoadStarted) {
-			this.scene.start('HomeScene')
+			// If the core assets have been loaded, start home scene
+			if (Loader.postLoadStarted) {
+				this.scene.start('HomeScene')
+			}
 		}
 	}
 
