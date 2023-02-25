@@ -63,7 +63,7 @@ export default class HomeScene extends BaseScene {
           callback: () => {
             Server.logout()
             
-            this.scene.start('SigninScene')
+            this.scene.start('SigninScene', {autoSelect: false})
           },
           hint: 'logout'
         })

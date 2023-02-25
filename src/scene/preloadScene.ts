@@ -12,11 +12,17 @@ export class SigninScene extends Phaser.Scene {
 	// True when user is signed or chose to be a guest
 	signedInOrGuest: boolean = false
 	guestButton: Button
+	// Whether the gsi element should automatically login
+	autoSelect: boolean
 
 	constructor(args) {
 		super({
 			key: args === undefined ? 'SigninScene' : args.key
 		})
+	}
+
+	init (params = {autoSelect: true}) {
+		this.autoSelect = params.autoSelect
 	}
 
 	create(): void {
@@ -77,31 +83,13 @@ export class SigninScene extends Phaser.Scene {
 
 		google.accounts.id.initialize({
 			client_id: Url.oauth,
-			log_level: 'debug',
-			auto_select: true,
+			// log_level: 'debug',
+			auto_select: this.autoSelect,
 
 			// login_uri: 'https://celestialtcg.com/gapi',
 			
 			callback: (token) => {
-				console.log('Signin succesful')
-
-				// TODO Type definitions
-				// google.accounts['oauth2'].initTokenClient({
-				// 	client_id: Url.oauth,
-				// 	scope: 'https://www.googleapis.com/auth/userinfo.email',
-				// 	callback: (tokenResponse) => {
-				// 		console.log('This is google authorization response:')
-				// 		console.log(tokenResponse)
-
-				// 		Server.login(tokenResponse.access_token, this)
-
-				// 		this.onOptionClick()
-
-				// 	},
-				// })
-
 				const payload: any = jwt_decode(token.credential)
-				console.log(payload)
 
 				// Send the jti to confirm a connection
 				Server.login(payload, this.game)
@@ -114,20 +102,6 @@ export class SigninScene extends Phaser.Scene {
 		document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`
 		
 		google.accounts.id.prompt()
-
-	    // Render the button as the right element
-		// google.accounts.id.renderButton(
-		// 	document.getElementById("signin_google"),
-		// 	{
-		// 		type: "standard",
-		// 		theme: "outline",
-		// 		size: "large",
-		// 		width: 220,
-		// 	},
-		// )
-
-		// Center the sign in button
-		// document.getElementById("signin_google").style.transform = 'translate(-50%, -50%)'
 	}
 
 	private createFacebookButton(y: number): void {

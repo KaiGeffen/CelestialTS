@@ -88,7 +88,12 @@ export default class Server {
 					Server.logout()
 
 					// TODO Make this a part of the static logout method
-					game.scene.getScenes(true)[0].scene.start('SigninScene')
+					game.scene.getScenes(true)[0].scene.start('SigninScene', {autoSelect: false})
+					.launch('MenuScene', {
+						menu: 'message',
+						title: 'ERROR',
+						s: 'The selected account is already logged in on another device or tab. Please select another account option.',
+					})
 
 					break
 			}
@@ -115,8 +120,6 @@ export default class Server {
 			wsServer = undefined
 
 			UserSettings.clearSessionStorage()
-
-			google.accounts.id.disableAutoSelect()
 		}
 	}
 
