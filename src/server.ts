@@ -3,6 +3,7 @@ import 'phaser'
 import Card from "./lib/card"
 import { decodeDeck } from "./lib/codec"
 import { UserSettings } from "./settings/settings"
+import BaseScene from './scene/baseScene'
 
 
 const ip = '127.0.0.1'
@@ -16,7 +17,7 @@ var packOpenCallback: (cards: Card[]) => void = undefined
 
 export default class Server {
 	// Log in with the server for user with given OAuth token
-	static login(payload: any, scene?: Phaser.Scene) {
+	static login(payload: any, game: Phaser.Game) {
 		let that = this
 
 		console.log('Log in to server with payload:')
@@ -57,13 +58,6 @@ export default class Server {
 
 				case 'send_user_data':
 					that.loadUserData(msg.value)
-
-					// Reload the home scene if we just loaded
-					// TODO Call onExit for the current scene?
-					if (scene !== undefined && scene.scene.isActive('HomeScene')) {
-						scene.scene.start('HomeScene')
-					}
-
 					break
 
 				// Prompt the user to send initial values to set up their account
@@ -75,15 +69,25 @@ export default class Server {
 
 				case 'invalid_token':
 					console.log('Server has indicated that sent token is invalid. Logging out.')
-					// TODO Signal error, can't do it this way because preload scene
-					// isnt of type baseScene
-					// if (scene) {
-					// 	scene['signalError']('Signed out from server.')
-					// }
+
+					game.scene.getScenes(true).forEach(scene => {
+						if (scene instanceof BaseScene) {
+							scene.signalError('Invalid login token.')
+						}
+					})
 					
 					wsServer.close(code)
 					wsServer = undefined
-					return
+					break
+				
+				case 'already_signed_in':
+					console.log('Server indicated that the given uuid is already signed in. Logging out.')
+					wsServer.close(code)
+					wsServer = undefined
+
+					game.scene.start('SigninScene')
+
+					break
 			}
 		})
 
@@ -94,7 +98,7 @@ export default class Server {
 				console.log('Logged in websocket is closing, signing in again with token:')
 				console.log(payload)
 
-				Server.login(payload)
+				Server.login(payload, game)
 			}
 		})
 	}

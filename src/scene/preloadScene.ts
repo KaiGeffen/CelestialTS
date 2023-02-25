@@ -104,7 +104,7 @@ export class SigninScene extends Phaser.Scene {
 				console.log(payload)
 
 				// Send the jti to confirm a connection
-				Server.login(payload, this)
+				Server.login(payload, this.game)
 
 				this.onOptionClick()
 			}
