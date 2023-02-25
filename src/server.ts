@@ -85,7 +85,10 @@ export default class Server {
 					wsServer.close(code)
 					wsServer = undefined
 
-					game.scene.start('SigninScene')
+					Server.logout()
+
+					// TODO Make this a part of the static logout method
+					game.scene.getScenes(true)[0].scene.start('SigninScene')
 
 					break
 			}
@@ -112,6 +115,8 @@ export default class Server {
 			wsServer = undefined
 
 			UserSettings.clearSessionStorage()
+
+			google.accounts.id.disableAutoSelect()
 		}
 	}
 
