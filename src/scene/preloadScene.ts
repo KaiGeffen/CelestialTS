@@ -145,7 +145,7 @@ export class SigninScene extends Phaser.Scene {
     			console.log(response)
 
     			if (response.status === 'connected') {
-    				Server.login(response.authResponse.accessToken, this)
+    				Server.login(response.authResponse.accessToken, this.game)
     			}
 
     			FB.api('/me', function(response: any) {
@@ -217,7 +217,7 @@ export class PreloadScene extends SigninScene {
 			// Communicate with server, load data on response
 			let token = user.getAuthResponse().id_token
 
-			Server.login(token, that)
+			Server.login(token, that.game)
 		}
 
 		function onFailure(): void {
