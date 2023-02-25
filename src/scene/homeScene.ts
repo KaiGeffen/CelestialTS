@@ -53,7 +53,7 @@ export default class HomeScene extends BaseScene {
       () => {
         // If we aren't logged in, go to login scene
         if (!Server.loggedIn()) {
-          this.scene.start('SigninScene')
+          this.scene.start('SigninScene', {autoSelect: true})
           return
         }
 
