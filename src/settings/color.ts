@@ -24,8 +24,8 @@ const CoreColors: Record<string, any> = {
 
 
   // Trial colors
-  background: 0xF5F2EB,
-  background2: 0xffffff,
+  background: 0xCBC1A8,
+  background2: 0xF5F2EB,
 
   c1: 0x664930,
   c1s: '#664930', // Basic text brown color
@@ -70,9 +70,9 @@ export const Color: Record<string, any> = {
 
   backgroundAlt: CoreColors.c2,
 
-  sliderTrack: 0xE0E3EE,
-  sliderIndicator: 0x5F5555,
-  sliderThumb: 0x9F9999,
+  sliderTrack: CoreColors.black,
+  sliderIndicator: CoreColors.golden,
+  sliderThumb: CoreColors.golden,
 
   cardCount: CoreColors.goldenS,
 
