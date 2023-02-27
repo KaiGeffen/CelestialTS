@@ -42,7 +42,7 @@ export default class DeckRegion {
 	private btnEdit: Button
 	private btnShare: Button
 
-	create(scene: Phaser.Scene,
+	create(scene: BuilderScene,
 		startCallback: () => void,
 		editCallback?: (name: string, avatar: number) => void
 		) {
@@ -131,7 +131,7 @@ export default class DeckRegion {
 			width: width,
 			align: Mobile ? 'left' : 'center',
 		})
-		sizer.add(sizerTop, {space: {top: 100}})
+		sizer.add(sizerTop)
 
 		// Add the deck's name
 		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement)
@@ -173,7 +173,11 @@ export default class DeckRegion {
 			width: width - (Space.avatarSize + Space.pad * 2),
 			align: 'center',
 		})
-		sizerButtons.add([containerEdit, containerShare, containerDistribution, containerStart])
+		sizerButtons
+		.add(containerEdit)
+		.add(containerShare)
+		.add(containerDistribution)
+		.add(containerStart)
 		sizer.add(sizerButtons)
 
 		// Add this deck's avatar
@@ -310,9 +314,8 @@ export default class DeckRegion {
 			cutout.setRequired()
 		})
 
-		// Disable the edit and share icons
+		// Disable the edit button
 		this.btnEdit.disable()
-		this.btnShare.disable()
 
 		return this
 	}
