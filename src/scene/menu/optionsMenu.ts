@@ -388,7 +388,7 @@ export default class OptionsMenu extends Menu {
 
 			track: this.scene['rexUI'].add.roundRectangle(0, 0, subWidth, 8, 10, Color.sliderTrack),
 			indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 12, Color.sliderIndicator),
-			thumb: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 20, Color.sliderThumb),
+			thumb: this.scene.add.image(0, 0, 'icon-Thumb'),
 			input: 'drag',
 
 			value: value,

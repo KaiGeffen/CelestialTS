@@ -2,8 +2,9 @@
 import "phaser"
 import { Space, Color } from "./settings"
 
-// The main font used
-const fontFamily = 'Mulish'
+// All fonts used
+const mainFont = 'Mulish'
+const altFont = 'Bellefair'
 
 // Settings for the font sizes
 const FontSettings: Record<string, Record<string, string>> = {
@@ -18,20 +19,20 @@ const FontSettings: Record<string, Record<string, string>> = {
 
 export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   filter: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '16px',
     color: '#B6B9C5',
   },
   // Cost hint text
   builder: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '18px',
     color: Color.basicText,
     fontStyle: "Bold",
   },
   // Count of a card in the deck
   cardCount: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '24px',
     color: Color.cardCount,
     stroke: '#0009',
@@ -39,25 +40,25 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Cost numbers in filter
   textButton: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '20px',
     color: Color.altText,
   },
   // My Decks:
   header: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '24px',
     color: Color.header,
   },
   // Adventure mode flavor text
   flavor: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '28px',
     color: Color.flavor,
   },
   // Pass button
   pass: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '40px',
     color: Color.passText,
     stroke: Color.passStroke,
@@ -65,7 +66,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Moon button
   moon: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '60px',
     color: Color.passText,
     stroke: Color.passStroke,
@@ -73,7 +74,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Text for the deck title at the bottom of the avatar
   avatar: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '24px',
     color: Color.avatar,
     stroke: '#0009',
@@ -82,19 +83,19 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Matching the size of text on the card images for hitareas
   reference: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '14px',
     color: '#FFC0CB00',
   },
   // Surname for characters in premade deck
   surname: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '34px',
     color: Color.basicText,
   },
   // The text saying if you won/lost/tied
   roundResult: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '60px',
     color: '#fff',
     stroke: Color.basicText,
@@ -102,7 +103,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Text that plays over the stillframes in journey
   stillframe: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.huge.size,
     color: '#fff',
     stroke: Color.basicText,
@@ -111,33 +112,33 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
 
   basic: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
     wordWrap: { width: Space.maxTextWidth }
   },
   button: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '20px',
     color: Color.button,
     stroke: '#000000',
     strokeThickness: 3,
   },
   small: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.small.size,
     color: Color.smallText,
     wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: false }
   },
   announcement: {
-    fontFamily: fontFamily,
+    fontFamily: altFont,
     fontSize: FontSettings.huge.size,
-    color: '#fff',
-    stroke: Color.basicText,
-    strokeThickness: 4
+    color: '#353F4E',//Color.basicText,
+    // stroke: '#000',
+    // strokeThickness: 1
   },
   tutorial: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.large.size,
     color: '#fff',
     backgroundColor: Color.tutorialBackground,
@@ -148,7 +149,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     strokeThickness: 3
   },
   stack: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.stack.size,
     color: Color.stackText,
     fixedWidth: Space.cardSize,
@@ -156,12 +157,12 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     align: 'center'
   },
   // filter: {
-  //   fontFamily: fontFamily,
+  //   fontFamily: mainFont,
   //   fontSize: FontSettings.standard.size
   // },
   // Title for menus
   menutitle: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.title.size,
     color: '#fff',
     stroke: '#000',
@@ -169,14 +170,14 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Title for the home scene
   homeTitle: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '70px',
     color: '#fff',
     stroke: '#000',
     strokeThickness: 3
   },
   credits: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.credits.size,
     color: "#fff",
     wordWrap: { width: 1000, useAdvancedWrap: false },
@@ -184,14 +185,14 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     strokeThickness: 1
   },
   checkMark: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.huge.size,
     color: Color.checkMark,
     stroke: '#000',
     strokeThickness: 4
   },
   new: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.standard.size,
     // fontStyle: "Bold",
     color: '#ff0',
@@ -203,7 +204,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
 // The styling for BBCode objects, from the rexui module
 export const BBStyle: Record<string, any> = {
   // cardText: {
-  //   fontFamily: fontFamily,
+  //   fontFamily: mainFont,
   //   fontSize: '20px',
   //   color: Color.cardText,
   //   backgroundColor: Color.cardTextBackground,
@@ -230,7 +231,7 @@ export const BBStyle: Record<string, any> = {
   // },
   // Cost / Points shown above each card
   cardStats: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: '36px',
     color: Color.cardText,
     backgroundColor: Color.cardTextBackground,
@@ -247,7 +248,7 @@ export const BBStyle: Record<string, any> = {
     }
   },
   basic: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
     wordWrap: { width: Space.maxTextWidth },
@@ -264,7 +265,7 @@ export const BBStyle: Record<string, any> = {
   },
   // Hint text shown when something onscreen is hovered
   hint: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.standard.size,
     color: Color.hintFill,
     backgroundColor: Color.hintBackground,
@@ -285,7 +286,7 @@ export const BBStyle: Record<string, any> = {
     // lineSpacing: Space.cardHeight - Space.pad,
   },  // Error text that appears in the center of the screen
   error: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.huge.size,
     color: Color.error,
     backgroundColor: Color.errorBackground,
@@ -307,7 +308,7 @@ export const BBStyle: Record<string, any> = {
   },
   // Text shown during the tutorial which animates
   tutorial: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.large.size,
     color: '#fff',
     stroke: '#000',
@@ -330,7 +331,7 @@ export const BBStyle: Record<string, any> = {
   },
   // Description for avatars
   description: {
-    fontFamily: fontFamily,
+    fontFamily: mainFont,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
     backgroundColor: Color.background2,
