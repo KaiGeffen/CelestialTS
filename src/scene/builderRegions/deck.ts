@@ -16,7 +16,7 @@ import { BuilderScene } from '../builderScene'
 const width = Space.deckPanelWidth// + Space.pad * 2
 
 // Where the panel starts
-const X_START = Mobile ? -Space.deckPanelWidth - Space.pad - Space.scrollWidth : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
+const X_START = Mobile ? -Space.deckPanelWidth - Space.pad - Space.sliderWidth : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
 
 export default class DeckRegion {
 	private scene: BuilderScene

@@ -187,7 +187,7 @@ export default class CatalogRegion {
   shiftLeft(): void {
     let that = this
 
-    const x = Space.decklistPanelWidth + (Mobile ? Space.scrollWidth : 0)
+    const x = Space.decklistPanelWidth + (Mobile ? Space.sliderWidth : 0)
     const width = Space.windowWidth - x
 
     // Ratio of how much panel has been scrolled
