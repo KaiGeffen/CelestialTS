@@ -154,8 +154,7 @@ export const Color: Record<string, any> = {
   reference: CoreColors.goldenS,
 
   // Pass button
-  passText: '#fff',//'#a467e6',
-  strokeText: '#000',
+  passText: '#353F4E',
 
 
   // Card components

@@ -58,19 +58,15 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Pass button
   pass: {
-    fontFamily: mainFont,
+    fontFamily: altFont,
     fontSize: '40px',
     color: Color.passText,
-    stroke: Color.passStroke,
-    strokeThickness: 3,
   },
   // Moon button
   moon: {
-    fontFamily: mainFont,
+    fontFamily: altFont,
     fontSize: '60px',
     color: Color.passText,
-    stroke: Color.passStroke,
-    strokeThickness: 4,
   },
   // Text for the deck title at the bottom of the avatar
   avatar: {
