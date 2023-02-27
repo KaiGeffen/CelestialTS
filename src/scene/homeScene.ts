@@ -134,7 +134,7 @@ export default class HomeScene extends BaseScene {
     map.mask = new Phaser.Display.Masks.BitmapMask(this, rectLeft)
 
     // Text over the rectangle
-    this.add.text(rectLeft.x - rectLeft.displayWidth/2, rectLeft.y + rectLeft.displayHeight/2, 'Adventure', Style.homeTitle)
+    this.add.text(rectLeft.x - rectLeft.displayWidth/2, rectLeft.y + rectLeft.displayHeight/2, 'Adventure', Style.titleButtonText)
     .setOrigin(0.5)
   }
 
@@ -188,7 +188,7 @@ export default class HomeScene extends BaseScene {
     container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight)
 
     // Text over the rectangle
-    this.add.text(rectRight.x + rectRight.displayWidth/2, rectRight.y + rectRight.displayHeight/2, 'Free Play', Style.homeTitle)
+    this.add.text(rectRight.x + rectRight.displayWidth/2, rectRight.y + rectRight.displayHeight/2, 'Free Play', Style.titleButtonText)
     .setOrigin(0.5)
   }
 

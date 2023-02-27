@@ -170,11 +170,14 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Title for the home scene
   homeTitle: {
-    fontFamily: mainFont,
+    fontFamily: altFont,
     fontSize: '70px',
-    color: '#fff',
-    stroke: '#000',
-    strokeThickness: 3
+    color: '#353F4E'
+  },
+  titleButtonText: {
+    fontFamily: altFont,
+    fontSize: '70px',
+    color: '#F5F2EB'
   },
   credits: {
     fontFamily: mainFont,
