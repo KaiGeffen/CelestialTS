@@ -52,7 +52,7 @@ export default class PasteMenu extends Menu {
 				type: 'text',
 				text: '',
 				placeholder: 'Deck code',
-				tooltip: 'Copy/paste deck codes here.',
+				tooltip: 'Paste the code for a deck here.',
 				fontFamily: 'Mulish',
 				fontSize: '20px',
 				color: Color.textboxText,

@@ -215,7 +215,7 @@ export default class DecklistsRegion {
 	// When paste button is clicked
 	private pasteCallback(): () => void {
 		return () => {
-			// If user already has 9 decks, signal error instead
+			// If user already has MAX decks, signal error instead
 			if (UserSettings._get('decks').length >= Mechanics.maxDecks) {
 				this.scene.signalError(`Reached max number of decks (${Mechanics.maxDecks}).`)
 			}

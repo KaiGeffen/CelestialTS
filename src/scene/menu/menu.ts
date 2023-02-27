@@ -125,7 +125,6 @@ import RulebookMenu from "./rulebook"
 import HelpMenu from "./help"
 // TODO Rename since it includes both
 import { NewDeckMenu, EditDeckMenu } from "./newDeck"
-import ShareDeckMenu from "./shareDeck"
 import PasteMenu from "./paste"
 import ModeMenu from "./mode"
 import DCMenu from './disconnect'
@@ -141,7 +140,6 @@ const menus = {
 	'credits': CreditsMenu,
 	'rulebook': RulebookMenu,
 	'newDeck': NewDeckMenu,
-	'shareDeck': ShareDeckMenu,
 	'paste': PasteMenu,
 	'mode': ModeMenu,
 	'editDeck': EditDeckMenu,

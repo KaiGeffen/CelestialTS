@@ -9,6 +9,7 @@ import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard } from '../../lib/codec';
 import { Color, Mechanics, Space, Style, Time, Mobile, Scroll, Ease } from '../../settings/settings';
+import { BuilderScene } from '../builderScene'
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -17,7 +18,7 @@ const width = Space.deckPanelWidth// + Space.pad * 2
 const X_START = Mobile ? -Space.deckPanelWidth - Space.pad - Space.scrollWidth : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
 
 export default class DeckRegion {
-	private scene
+	private scene: BuilderScene
 
 	// Callback for when the deck's avatar or name is edited
 	editCallback: (name: string, avatar: number) => void
@@ -150,11 +151,11 @@ export default class DeckRegion {
 		sizerTop.add(this.txtDeckName)
 		.layout()
 
-		// Add a share button that allows user to copy/paste their deck code
+		// Add an edit button that allows user to change details about their deck
 		let containerEdit = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		this.btnEdit = new Icons.Edit(containerEdit, 0, 0, this.openEditMenu())
 
-		// Add a share button that allows user to copy/paste their deck code
+		// Add a copy button that allows user to copy their deck code
 		let containerShare = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		this.btnShare = new Icons.Share(containerShare, 0, 0, this.shareCallback())
 
@@ -449,17 +450,13 @@ export default class DeckRegion {
 	}
 
 	private shareCallback(): () => void {
-		let that = this
+		return () => {
+			// Copy the deck's code to clipboard
+  			navigator.clipboard.writeText(this.scene.getDeckCode())
 
-		return function() {
-			that.scene.scene.launch('MenuScene', {
-				menu: 'shareDeck',
-				// Called when the text changes in the menu
-				currentDeck: that.scene.getDeckCode(),
-				callback: function(inputText) {
-					that.scene.setDeck(inputText.text)
-				}
-			})
+  			// TODO This isn't an error, misuse of function
+  			// Inform user deck code was copied
+  			this.scene.signalError('Deck code copied to clipboard.')
 		}
 	}
 
