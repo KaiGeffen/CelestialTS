@@ -48,8 +48,11 @@ export default class Menu {
 	protected createHeader(s: string, width: number = this.width): any {
 		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
 		
-		let sizer = this.scene['rexUI'].add.sizer({width: width})
-		.addBackground(background)
+		let sizer = this.scene['rexUI'].add.sizer({
+			width: width,
+			space: {top: Space.padSmall, bottom: Space.padSmall},
+		})
+		sizer.addBackground(background)
 
 		let txt = this.scene.add.text(0, 0, s, Style.announcement)
 		sizer.addSpace()
