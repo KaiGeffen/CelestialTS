@@ -187,10 +187,6 @@ export default class DecklistsRegion {
 
 		let btnNew = new Icons.New(hintSizer, 0, 0, this.newDeckCallback())
 
-		hintSizer.addSpace()
-
-		let btnPaste = new Icons.Paste(hintSizer, 0, 0, this.pasteCallback())
-
 		return sizer
 	}
 
@@ -209,22 +205,6 @@ export default class DecklistsRegion {
 			
 			// Set the current deck to premade list
 			that.scene.setPremade(i)
-		}
-	}
-
-	// When paste button is clicked
-	private pasteCallback(): () => void {
-		return () => {
-			// If user already has MAX decks, signal error instead
-			if (UserSettings._get('decks').length >= Mechanics.maxDecks) {
-				this.scene.signalError(`Reached max number of decks (${Mechanics.maxDecks}).`)
-			}
-			else {
-				this.scene.scene.launch('MenuScene', {
-					menu: 'paste',
-					callback: this.createCallback(),
-				})
-			}
 		}
 	}
 
@@ -344,7 +324,7 @@ export default class DecklistsRegion {
 		}
 	}
 
-	// Return a callback for when a deck is created (From paste or new deck)
+	// Return a callback for when a deck is created
 	createCallback(): (name: string, avatar: number, deckCode: string) => void {
 		return (name: string, avatar: number, deckCode: string) => {
 			// Use a default deck name if it's not specified
