@@ -93,4 +93,8 @@ export default class MenuScene extends Phaser.Scene {
 		}
 			
 	}
+
+	signalError(s: string): void {
+		console.log('TODO Implement signal error for menu scene!!!!')
+	}
 }

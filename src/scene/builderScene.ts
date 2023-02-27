@@ -235,10 +235,10 @@ export class BuilderScene extends BuilderBase {
   }
 
   // Update the avatar or name for the current deck
-  private updateDeckCallback(): (name: string, avatar: number) => void {
+  private updateDeckCallback(): (name: string, avatar: number, deckCode: string) => void {
     let that = this
 
-    return function(name: string, avatar: number) {
+    return function(name: string, avatar: number, deckCode: string) {
       that.updateSavedDeck(undefined, name, avatar)
 
       // Update the avatar
@@ -246,6 +246,9 @@ export class BuilderScene extends BuilderBase {
 
       // Update the name
       that.setName(name)
+
+      // Update the cards in the deck
+      that.setDeck(deckCode)
     }
   }
 

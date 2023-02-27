@@ -3,7 +3,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
 import Buttons from '../../lib/buttons/buttons'
 import Button from '../../lib/buttons/button'
-import { Color, Space, Style } from '../../settings/settings'
+import { Color, Space, Style, Mechanics } from '../../settings/settings'
 import Menu from './menu'
 import MenuScene from '../menuScene'
 
@@ -17,6 +17,9 @@ class AlterDeckMenu extends Menu {
 
 	// The user selected avatar number
 	selectedAvatar: number
+
+	// The deck code for this deck, if any
+	deckCode = ''
 
 	// The names for different elements, which differ in different menus
 	titleString: string
@@ -37,7 +40,7 @@ class AlterDeckMenu extends Menu {
 		this.layout()
 	}
 
-	private createContent(createCallback: (name: string, avatar: number) => void) {
+	private createContent(createCallback: (name: string, avatar: number, deckCode: string) => void) {
 		this.createHeader(this.titleString, width)
 
 		const padding = {space: {
@@ -48,6 +51,8 @@ class AlterDeckMenu extends Menu {
 		this.sizer.add(this.createName(), padding)
 		.addNewLine()
 		.add(this.createAvatar(), padding)
+		.addNewLine()
+		.add(this.createImport(), padding)
 		.addNewLine()
 		.add(this.createButtons(createCallback), padding)
 	}
@@ -138,9 +143,37 @@ class AlterDeckMenu extends Menu {
 		return fixSizer
 	}
 
+	private createImport() {
+		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad * 2})
+		sizer.addSpace()
+
+		let inputText = this.scene.add['rexInputText']
+		(
+			0, 0, inputTextWidth, 40, {
+				type: 'text',
+				text: this.deckCode,
+				placeholder: 'Import deck code',
+				tooltip: 'Import a deck from clipboard.',
+				fontFamily: 'Mulish',
+				fontSize: '20px',
+				color: Color.textboxText,
+				backgroundColor: Color.textboxBackground,
+				maxLength: Mechanics.deckSize * 4,
+				selectAll: true,
+				id: 'search-field'
+			}
+		).on('textchange', (inputText) => {
+			this.deckCode = inputText.text
+		})
+
+		sizer.add(inputText)
+		.addSpace()
+
+		return sizer
+	}
 
 	// Create the buttons at the bottom which navigate to other scenes/menus
-	private createButtons(createCallback: (name: string, avatar: number) => void) {
+	private createButtons(createCallback: (name: string, avatar: number, deckCode: string) => void) {
 		let sizer = this.scene['rexUI'].add.sizer({
 			width: width - Space.pad * 2,
 			space: {
@@ -166,11 +199,11 @@ class AlterDeckMenu extends Menu {
 		return container
 	}
 
-	private createConfirm(createCallback: (name: string, avatar: number) => void) {
+	private createConfirm(createCallback: (name: string, avatar: number, deckCode: string) => void) {
 		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 
 		this.btnConfirm = new Buttons.Basic(container, 0, 0, this.confirmString, () => {
-			createCallback(this.name, this.selectedAvatar)
+			createCallback(this.name, this.selectedAvatar, this.deckCode)
 
 			// Close this scene
 			this.scene.scene.stop()

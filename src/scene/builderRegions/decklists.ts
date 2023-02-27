@@ -345,8 +345,8 @@ export default class DecklistsRegion {
 	}
 
 	// Return a callback for when a deck is created (From paste or new deck)
-	createCallback(): (name: string, avatar: number, deckCode?: string) => void {
-		return (name: string, avatar: number, deckCode?: string) => {
+	createCallback(): (name: string, avatar: number, deckCode: string) => void {
+		return (name: string, avatar: number, deckCode: string) => {
 			// Use a default deck name if it's not specified
 			if (name === undefined || name === '') {
 				const number = this.decklistBtns.length + 1
@@ -372,13 +372,13 @@ export default class DecklistsRegion {
 			// Scroll down to show the new deck
 			this.scrollablePanel.t = 1
 
+			// Refresh each btn based on screen position
+			this.refreshBtns()
+
 			// If a deck code was included, populate it
 			if (deckCode !== undefined) {
 				this.scene.setDeck(deckCode)
 			}
-
-			// Refresh each btn based on screen position
-			this.refreshBtns()
 		}
 	}
 
@@ -389,7 +389,7 @@ export default class DecklistsRegion {
 			return false
 		}
 		else {
-			this.createCallback()(undefined, undefined, '')
+			this.createCallback()(undefined, undefined, undefined)
 			return true
 		}
 	}

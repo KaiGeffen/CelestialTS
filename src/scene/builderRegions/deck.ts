@@ -21,7 +21,7 @@ export default class DeckRegion {
 	private scene: BuilderScene
 
 	// Callback for when the deck's avatar or name is edited
-	editCallback: (name: string, avatar: number) => void
+	editCallback: (name: string, avatar: number, deckCode: string) => void
 
 	// The panel within which all of the cards are
 	private panel
@@ -44,7 +44,7 @@ export default class DeckRegion {
 
 	create(scene: BuilderScene,
 		startCallback: () => void,
-		editCallback?: (name: string, avatar: number) => void
+		editCallback?: (name: string, avatar: number, deckCode: string) => void
 		) {
 		this.scene = scene
 
