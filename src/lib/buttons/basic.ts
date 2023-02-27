@@ -46,4 +46,16 @@ export default class BasicButton extends Button {
 
 		return this
 	}
+
+	// Button is a spritesheet with different states
+	glow(): this {
+		this.icon.setFrame(2)
+
+		return this
+	}
+	stopGlow(): this {
+		this.icon.setFrame(0)
+
+		return this
+	}
 }
