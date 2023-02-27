@@ -50,5 +50,9 @@
   {"name": "Dwindle", "id": 2012,
     "cost": 2, "points": 0,
     "text": "Visible, Insuspension bridge two. Extra 3: Set both player’s points to 0. Extra 2: Draw a card.."
+  },
+  {"name": "Cloud", "id": 2013,
+    "cost": 3, "points": 2,
+    "text": "Draw a card.\nMorning: if your hand is full, your cards cost 0 this round."
   }
 ]
