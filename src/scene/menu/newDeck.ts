@@ -6,6 +6,7 @@ import Button from '../../lib/buttons/button'
 import { Color, Space, Style, Mechanics } from '../../settings/settings'
 import Menu from './menu'
 import MenuScene from '../menuScene'
+import { encodeShareableDeckCode, decodeShareableDeckCode } from "../../lib/codec"
 
 
 const width = 500
@@ -163,7 +164,14 @@ class AlterDeckMenu extends Menu {
 				id: 'search-field'
 			}
 		).on('textchange', (inputText) => {
-			this.deckCode = inputText.text
+			const result = decodeShareableDeckCode(inputText.text)
+			if (result === undefined) {
+				this.scene.signalError('Invalid deck code.')
+				this.deckCode = ''
+			}
+			else {
+				this.deckCode = result
+			}
 		})
 
 		sizer.add(inputText)

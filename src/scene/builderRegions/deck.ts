@@ -7,9 +7,10 @@ import Buttons from '../../lib/buttons/buttons';
 import Cutout from '../../lib/buttons/cutout';
 import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
-import { decodeCard } from '../../lib/codec';
+import { decodeCard, encodeShareableDeckCode } from '../../lib/codec';
 import { Color, Mechanics, Space, Style, Time, Mobile, Scroll, Ease } from '../../settings/settings';
 import { BuilderScene } from '../builderScene'
+
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -455,7 +456,8 @@ export default class DeckRegion {
 	private shareCallback(): () => void {
 		return () => {
 			// Copy the deck's code to clipboard
-  			navigator.clipboard.writeText(this.scene.getDeckCode())
+			const encodedDeck = encodeShareableDeckCode(this.scene.getDeckCode())
+  			navigator.clipboard.writeText(encodedDeck)
 
   			// TODO This isn't an error, misuse of function
   			// Inform user deck code was copied

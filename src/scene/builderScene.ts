@@ -247,8 +247,10 @@ export class BuilderScene extends BuilderBase {
       // Update the name
       that.setName(name)
 
-      // Update the cards in the deck
-      that.setDeck(deckCode)
+      if (deckCode) {
+        // Update the cards in the deck
+        that.setDeck(deckCode)
+      }
     }
   }
 

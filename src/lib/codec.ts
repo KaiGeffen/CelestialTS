@@ -157,4 +157,26 @@ function decodeRecap(s: string): Recap {
 	return new Recap(sums, wins, safety, playList, stateList)
 }
 
-export { encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses, decodeRecap }
+// Random 1-to-1 function that obfuscates the id scheme for cards
+// and ensures that a deck with n cards always has a string of n * c chars (And vice-verca)
+
+// Encode / decode a string for deck's code such that user can copy / paste it
+function encodeShareableDeckCode(s: string): string {
+	return s.split(':').map( cardId => {
+		let hexString = parseInt(cardId).toString(16).toUpperCase()
+		let padded = hexString.padStart(3, '0')
+		return padded
+	}).join('')
+}
+function decodeShareableDeckCode(s: string): string {
+	try {
+		return (s.match(/.{1,3}/g) ?? []).map(charTuple => {
+			return encodeCard(getCard(parseInt(charTuple, 16)))
+		}).join(':')
+	} catch (error) {
+		return undefined
+	}
+	
+}
+
+export { encodeCard, decodeCard, encodeDeck, decodeDeck, decodeStory, decodeStatuses, decodeRecap, encodeShareableDeckCode, decodeShareableDeckCode }
