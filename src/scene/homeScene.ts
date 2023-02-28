@@ -136,6 +136,7 @@ export default class HomeScene extends BaseScene {
     // Text over the rectangle
     this.add.text(rectLeft.x - rectLeft.displayWidth/2, rectLeft.y + rectLeft.displayHeight/2, 'Adventure', Style.titleButtonText)
     .setOrigin(0.5)
+    .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
   }
 
   private createDeckbuilderButton(width: number, height: number): void {
@@ -190,6 +191,7 @@ export default class HomeScene extends BaseScene {
     // Text over the rectangle
     this.add.text(rectRight.x + rectRight.displayWidth/2, rectRight.y + rectRight.displayHeight/2, 'Free Play', Style.titleButtonText)
     .setOrigin(0.5)
+    .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
   }
 
   private addCard(container: Phaser.GameObjects.Container, x: number,y: number, delay: number): void {
