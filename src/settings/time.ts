@@ -54,7 +54,7 @@ export class Time {
   static chart = 600
 
   // Time for menu to open / close
-  static menuTransition = 100
+  static menuTransition = 200
 
   // Stillframes in adventure mode scrolling
   static stillframeScroll = 2000

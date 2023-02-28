@@ -87,7 +87,8 @@ export default class OptionsMenu extends Menu {
 
 	private createTabs()  {
 		// Create a rectangle to show which tab is selected
-		this.highlight = this.scene.add.rectangle(0, 0, 200, 90, COLOR, 1)
+		const highlightWidth = Space.buttonWidth + Space.pad * 2
+		this.highlight = this.scene.add.rectangle(0, 0, highlightWidth, 90, COLOR, 1)
 		.setOrigin(0, 0.5)
 
 		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {
