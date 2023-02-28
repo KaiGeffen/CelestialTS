@@ -353,4 +353,14 @@ export const BBStyle: Record<string, any> = {
       offset: 7,
     },
   },
+  // Blocks of text in the options menu
+  optionsBlock: {
+    fontFamily: mainFont,
+    fontSize: FontSettings.standard.size,
+    color: Color.basicText,
+    wrap: {
+      mode: 'word',
+      width: Space.maxTextWidth,
+    },
+  },
 }

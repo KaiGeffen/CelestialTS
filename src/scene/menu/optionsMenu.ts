@@ -6,7 +6,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 import Menu from './menu'
 import BaseScene from '../../scene/baseScene'
-import { Space, Color, Style, UserSettings, Time } from '../../settings/settings'
+import { Space, Color, Style, BBStyle, UserSettings, Time } from '../../settings/settings'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import MenuScene from '../menuScene'
@@ -211,8 +211,8 @@ export default class OptionsMenu extends Menu {
 		.hide()
 
 		// Add text to the scrollable panel
-		let txt = this.scene.add.text(0, 0, rulebookString, Style.basic)
-		.setWordWrapWidth(subWidth)
+		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, rulebookString, BBStyle.optionsBlock)
+		.setWrapWidth(subWidth)
 
 		sizer.add(txt)
 
@@ -239,9 +239,9 @@ export default class OptionsMenu extends Menu {
 		.hide()
 
 		// Add text to the scrollable panel
-		let txt = this.scene.add.text(0, 0, creditsString, Style.basic)
-		.setWordWrapWidth(subWidth)
-
+		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, creditsString, BBStyle.optionsBlock)
+		.setWrapWidth(subWidth)
+		
 		sizer.add(txt)
 
 		return scrollable

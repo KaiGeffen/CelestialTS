@@ -1,13 +1,13 @@
 export const creditsString = 
-`Lead developer: Kai Geffen
+`Lead developer: [b]Kai Geffen[/b]
 
-Artistic Director: Kiva Singh
+Artistic Director: [b]Kiva Singh[/b]
 
-Artist: Elise Mahan
+Artist: [b]Elise Mahan[/b]
 
-UI Design: Alina Onishchenko
+UI Design: [b]Alina Onishchenko[/b]
 
-Original score and music design by Ian Riley: www.ianrileymusic.tech
+Original score and music design by [b]Ian Riley[/b]: www.ianrileymusic.tech
 
 Icons are from game-icons.net under CC BY 3.0
-Lorc: https://lorcblog.blogspot.com/ (Visible icon)`
+[b]Lorc[/b]: https://lorcblog.blogspot.com/ (Visible icon)`
