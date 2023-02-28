@@ -11,6 +11,7 @@ const width = 550
 
 export default class ModeMenu extends Menu {
 	password: string
+	inputText
 
 	avatar: number
 
@@ -28,6 +29,8 @@ export default class ModeMenu extends Menu {
 		this.createContent(activeScene, deck)
 
 		this.layout()
+
+		this.reskinInputText()
 	}
 
 	private createContent(activeScene: Phaser.Scene, deck: string) {
@@ -42,21 +45,20 @@ export default class ModeMenu extends Menu {
 		.addNewLine()
 	}
 
-	// TODO Replace background with a prerendered visual?
 	private createPasswordEntry() {
 		let that = this
 
-		let inputText = this.scene.add['rexInputText'](
+		this.inputText = this.scene.add['rexInputText'](
 			0, 0, width - Space.pad * 2, 40, {
 				type: 'text',
 				text: '', // Retain the last password
+				align: 'center',
 				placeholder: 'Password',
 				tooltip: 'Password for PWD mode.',
 				fontFamily: 'Mulish',
-				fontSize: '20px',
+				fontSize: '24px',
 				color: Color.textboxText,
-				backgroundColor: Color.textboxBackground,
-				// maxLength: 10,
+				maxLength: 10,
 				selectAll: true,
 				id: 'search-field'
 			}).on('textchange', function(inputText) {
@@ -70,7 +72,7 @@ export default class ModeMenu extends Menu {
 				}
 			})
 
-			return inputText
+			return this.inputText
 	}
 
 	private createAI(activeScene: Phaser.Scene, deck: string) {
@@ -154,4 +156,10 @@ export default class ModeMenu extends Menu {
 		return sizer
 	}
 
+	// Change the way each of this scene's input texts look
+	private reskinInputText(): void {
+		this.scene.add.image(this.inputText.x,
+			this.inputText.y,
+			'icon-InputText')
+	}
 }

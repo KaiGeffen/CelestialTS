@@ -15,12 +15,14 @@ const inputTextWidth = 200
 class AlterDeckMenu extends Menu {
 	// The user inputted name for the deck
 	name: string
+	nameInputText
 
 	// The user selected avatar number
 	selectedAvatar: number
 
 	// The deck code for this deck, if any
 	deckCode = ''
+	deckCodeInputText
 
 	// The names for different elements, which differ in different menus
 	titleString: string
@@ -39,6 +41,9 @@ class AlterDeckMenu extends Menu {
 		this.createContent(params.callback)
 
 		this.layout()
+
+		// Reskin all of the input texts
+		this.reskinInputText()
 	}
 
 	private createContent(createCallback: (name: string, avatar: number, deckCode: string) => void) {
@@ -75,17 +80,17 @@ class AlterDeckMenu extends Menu {
 		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad * 2})
 		sizer.addSpace()
 
-		let inputText = this.scene.add['rexInputText']
+		this.nameInputText = this.scene.add['rexInputText']
 		(
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
 				text: that.name,
+				align: 'center',
 				placeholder: 'Deck Name',
 				tooltip: 'Name for the new deck.',
 				fontFamily: 'Mulish',
-				fontSize: '20px',
+				fontSize: '24px',
 				color: Color.textboxText,
-				backgroundColor: Color.textboxBackground,
 				maxLength: 10,
 				selectAll: true,
 				id: 'search-field'
@@ -94,7 +99,7 @@ class AlterDeckMenu extends Menu {
 			that.name = inputText.text
 		})
 
-		sizer.add(inputText)
+		sizer.add(this.nameInputText)
 		.addSpace()
 
 		return sizer
@@ -148,17 +153,17 @@ class AlterDeckMenu extends Menu {
 		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad * 2})
 		sizer.addSpace()
 
-		let inputText = this.scene.add['rexInputText']
+		this.deckCodeInputText = this.scene.add['rexInputText']
 		(
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
 				text: this.deckCode,
+				align: 'center',
 				placeholder: 'Import deck code',
 				tooltip: 'Import a deck from clipboard.',
 				fontFamily: 'Mulish',
-				fontSize: '20px',
+				fontSize: '24px',
 				color: Color.textboxText,
-				backgroundColor: Color.textboxBackground,
 				maxLength: Mechanics.deckSize * 4,
 				selectAll: true,
 				id: 'search-field'
@@ -174,7 +179,7 @@ class AlterDeckMenu extends Menu {
 			}
 		})
 
-		sizer.add(inputText)
+		sizer.add(this.deckCodeInputText)
 		.addSpace()
 
 		return sizer
@@ -218,6 +223,16 @@ class AlterDeckMenu extends Menu {
 		})
 
 		return container
+	}
+
+	// Change the way each of this scene's input texts look
+	private reskinInputText(): void {
+		this.scene.add.image(this.nameInputText.x,
+			this.nameInputText.y,
+			'icon-InputText')
+		this.scene.add.image(this.deckCodeInputText.x,
+			this.deckCodeInputText.y,
+			'icon-InputText')
 	}
 }
 

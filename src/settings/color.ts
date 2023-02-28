@@ -64,8 +64,9 @@ export const Color: Record<string, any> = {
   filterSelected: CoreColors.filterSelected,
   buttonTxtSelected: CoreColors.whiteS,
 
-  textboxText: CoreColors.c1,
-  textboxBackground: CoreColors.c2s,
+  textboxText: '#ffffff',
+  textboxTextAlt: CoreColors.c1, // For builder text input
+  textboxBackground: CoreColors.c2s, // TODO Remove
   header: CoreColors.c1,
 
   backgroundAlt: CoreColors.c2,

@@ -112,7 +112,7 @@ export default class FilterRegion {
 				tooltip: 'Search for cards by text.',
 				fontFamily: 'Mulish',
 				fontSize: '20px',
-				color: Color.textboxText,
+				color: Color.textboxTextAlt,
 				maxLength: 40,
 				selectAll: true,
 				id: 'search-field'
