@@ -247,10 +247,11 @@ export class PreloadScene extends SigninScene {
 		this.load.on('complete', () => {
 			// Only do this the first time load completes
 			if (!Loader.postLoadStarted) {
-				Loader.loadAnimations(this)
 				Loader.postLoad(this)
 
-				txtLoading.setText('Loaded')
+				progressBox.destroy()
+				progressBar.destroy()
+				txtLoading.destroy()
 
 				// If user has already signed in, start home scene
 				if (this.signedInOrGuest) {

@@ -109,6 +109,9 @@ export default class Loader {
 		}
 		Loader.postLoadStarted = true
 
+		// Generate the animations for a match results
+		Loader.loadAnimations(scene)
+
 		// Load all of the bg images as full sized version
 		postLoadPrefixMap.forEach((assetType: PrefixEntry) => {
 			assetType.list.forEach((name) => {
@@ -120,7 +123,6 @@ export default class Loader {
 		scene.load.start()
 	}
 
-	// TODO Group these events that happen after loading is complete
 	static loadAnimations(scene: Phaser.Scene): void {
 		['Win', 'Lose', 'Tie'].forEach(s => {
 			const name = `icon-Round${s}`
