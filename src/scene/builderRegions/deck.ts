@@ -59,6 +59,7 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.image(0, 0, 'bg-Texture')
+		.setAlpha(0)
 		background['resize'] = (w, h) => {
 			const x = (background.displayWidth - w)/2
 			const y = (background.displayHeight - h)/2
@@ -120,7 +121,7 @@ export default class DeckRegion {
 	}
 
 	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
-		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background2)
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({

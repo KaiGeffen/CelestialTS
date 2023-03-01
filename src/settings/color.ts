@@ -1,5 +1,11 @@
 // The base colors used throughout this app (Primary, secondary, variant)
 const CoreColors: Record<string, any> = {
+  black: 0x353F4E,
+  blackS: '#353F4E',
+  
+  white: 0xF5F2EB, // TODO Same as background 1
+  whiteS: '#F5F2EB',
+
   primary: 0x202070,
   primaryS: '#202070',
   
@@ -14,10 +20,8 @@ const CoreColors: Record<string, any> = {
   green: 0x007000,
   greenS: '#070',
 
-  black: 0x000000,
-  blackS: '#000',
-  white: 0xffffff,
-  whiteS: '#ffffff',
+  // black: 0x000000,
+  
 
   grey: 0x555555,
   greyA: 0x555555e0,
@@ -53,6 +57,15 @@ const CoreColors: Record<string, any> = {
 
 // The colors for each component of the app (Ex: Slider)
 export const Color: Record<string, any> = {
+  
+  // TODO Reorganize, don't expose these
+  black: CoreColors.black,
+  white: CoreColors.white,
+  whiteS: CoreColors.whiteS,
+  goldenS: CoreColors.goldenS,
+
+
+
   // TODO Trial
   smallText: CoreColors.c2s,
   basicText: CoreColors.c1s,
@@ -96,7 +109,7 @@ export const Color: Record<string, any> = {
   outline: CoreColors.golden,
 
   // Lines used throughout ui
-  line: 0xeeeeee,
+  line: CoreColors.black,
 
   // A translucent background that draws attention to one element on the screen
   focusBackground: CoreColors.grey,

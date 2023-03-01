@@ -48,6 +48,7 @@ export default class DecklistsRegion {
 	// Move lower TODO
 	private createScrollable() {
 		let background = this.scene.add.image(0, 0, 'bg-Texture')
+		.setAlpha(0)
 		background['resize'] = (w, h) => {
 			const x = (background.displayWidth - w)/2
 			const y = (background.displayHeight - h)/2
@@ -144,7 +145,7 @@ export default class DecklistsRegion {
 	
 	private createHeader(): Phaser.GameObjects.GameObject {
 		// Make a background with a drop shadow straight down
-		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background)
 		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
 			distance: 3,
 			angle: -90,

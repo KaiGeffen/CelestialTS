@@ -34,6 +34,7 @@ export default class DecklistButton extends Button {
 		})
 
 		// Adjust the font 
+		this.txt.setColor('#FABD5D')
 
 		// Also add an x button on top
 		this.btnX = new Icons.SmallX(within, x - 75, y, xCallback)
@@ -59,6 +60,22 @@ export default class DecklistButton extends Button {
 	disable() {
 		this.btnX.disable()
 		super.disable()
+
+		return this
+	}
+
+	select() {
+		super.select()
+
+		this.txt.setColor(Color.whiteS)
+
+		return this
+	}
+
+	deselect() {
+		super.deselect()
+
+		this.txt.setColor(Color.goldenS)
 
 		return this
 	}
