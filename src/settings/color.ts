@@ -84,7 +84,7 @@ export const Color: Record<string, any> = {
 
   backgroundAlt: CoreColors.c2,
 
-  sliderTrack: CoreColors.black,
+  sliderTrack: CoreColors.background,
   sliderIndicator: CoreColors.golden,
   sliderThumb: CoreColors.golden,
 
