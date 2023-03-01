@@ -11,6 +11,9 @@ export default class MenuScene extends Phaser.Scene {
 	// Text explaining whatever the user is hovering over
 	hint: Hint
 
+	// Whether the scene has started ending, to ensure it only does so once
+	sceneEnding: boolean
+
 	constructor() {
 		super({
 			key: "MenuScene"
@@ -19,6 +22,7 @@ export default class MenuScene extends Phaser.Scene {
 
 	create(params): void {
 		this.hint = new Hint(this)
+		this.sceneEnding = false
 
 		this.sound.play('open')
 
@@ -73,11 +77,18 @@ export default class MenuScene extends Phaser.Scene {
 		invisBackground.on('pointerdown', this.endScene())
 	}
 
-	// NOTE This is a fix for sizer objects not deleting properly in all cases
+	
 	endScene(): () => void {
 		let that = this
-
+		
 		return () => {
+			// Ensures that scene will only end (Sounds etc) once
+			if (this.sceneEnding) {
+				return
+			}
+			this.sceneEnding = true
+
+			// NOTE This is a fix for sizer objects not deleting properly in all cases
 			let top = this.children.getByName('top')
 			if (top !== null) {
 				top.destroy()
@@ -90,8 +101,7 @@ export default class MenuScene extends Phaser.Scene {
 				onStart: () => {this.sound.play('close')},
 				onComplete: () => {this.scene.stop()},
 			})
-		}
-			
+		}	
 	}
 
 	signalError(s: string): void {
