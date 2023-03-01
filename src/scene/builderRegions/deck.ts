@@ -59,7 +59,6 @@ export default class DeckRegion {
 
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.image(0, 0, 'bg-Texture')
-		.setAlpha(0)
 		background['resize'] = (w, h) => {
 			const x = (background.displayWidth - w)/2
 			const y = (background.displayHeight - h)/2
