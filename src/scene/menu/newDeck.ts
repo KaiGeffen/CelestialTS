@@ -56,9 +56,12 @@ class AlterDeckMenu extends Menu {
 
 		this.sizer.add(this.createName(), padding)
 		.addNewLine()
+		.addNewLine()
 		.add(this.createAvatar(), padding)
 		.addNewLine()
+		.addNewLine()
 		.add(this.createImport(), padding)
+		.addNewLine()
 		.addNewLine()
 		.add(this.createButtons(createCallback), padding)
 	}
@@ -112,9 +115,14 @@ class AlterDeckMenu extends Menu {
 			width: Space.avatarSize * 3 + Space.pad * 2,
 			space: { line: Space.pad },
 		})
+		// .addNewLine()
+		// .addNewLine()
+		// .addNewLine()
+		// .addNewLine()
 
-		let txtHint = this.scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
-		fixSizer.add(txtHint)
+
+		// let txtHint = this.scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
+		// fixSizer.add(txtHint)
 
 		let sizer
 		let avatars = []
@@ -125,7 +133,7 @@ class AlterDeckMenu extends Menu {
 				})
 
 				fixSizer.add(sizer)
-				.addNewLine()
+				// .addNewLine()
 			}
 
 			let name = avatarNames[i]
@@ -155,7 +163,7 @@ class AlterDeckMenu extends Menu {
 
 		this.deckCodeInputText = this.scene.add['rexInputText']
 		(
-			0, 0, inputTextWidth, 40, {
+			0, 0, inputTextWidth, 50, {
 				type: 'text',
 				text: this.deckCode,
 				align: 'center',
@@ -189,9 +197,6 @@ class AlterDeckMenu extends Menu {
 	private createButtons(createCallback: (name: string, avatar: number, deckCode: string) => void) {
 		let sizer = this.scene['rexUI'].add.sizer({
 			width: width - Space.pad * 2,
-			space: {
-				item: Space.pad
-			}
 		})
 
 		sizer
