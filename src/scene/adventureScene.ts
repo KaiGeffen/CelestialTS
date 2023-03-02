@@ -269,6 +269,9 @@ export default class AdventureScene extends BaseScene {
 	private createStillframe(params): void {
 		// TODO Make dry with the searching tutorial class implementation
 
+		// Height of the tutorial text
+		const TEXT_HEIGHT = 225
+
 		let container = this.add.container().setDepth(11)
 
 		let img = this.add.image(Space.windowWidth/2, 0, `story-Story 4`)
@@ -280,7 +283,9 @@ export default class AdventureScene extends BaseScene {
 		img.setScale(scale)
 
 		// Text background
-		let background = this.add.rectangle(0, 0, 1, 1, Color.background)
+		let background = this.add.rectangle(0, Space.windowHeight - TEXT_HEIGHT, Space.windowWidth, TEXT_HEIGHT, Color.background2)
+		.setOrigin(0)
+		.setAlpha(0.8)
 		this.plugins.get('rexDropShadowPipeline')['add'](background, {
 			distance: 3,
 			shadowColor: 0x000000,
