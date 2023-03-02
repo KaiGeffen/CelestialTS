@@ -113,7 +113,7 @@ export default class StoryRegion extends Region {
 		const txtGain = this.scene.add.text(
 			...loc,
 			`${getGain(1)}\n\n${getGain(0)}`,
-			Style.announcement)
+			Style.cardResolution)
 			.setOrigin(0.5)
 			// .setAlpha(0)
 

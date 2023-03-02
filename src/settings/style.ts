@@ -23,6 +23,12 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '16px',
     color: '#B6B9C5',
   },
+  // When a card resolves in the story, show the points it earns
+  cardResolution: {
+    fontFamily: mainFont,
+    fontSize: FontSettings.huge.size,
+    color: Color.whiteS,
+  },
   // Cost hint text
   builder: {
     fontFamily: mainFont,
