@@ -4,7 +4,7 @@ import { Space, Color } from "./settings"
 
 // All fonts used
 const mainFont = 'Mulish'
-const altFont = 'Bellefair'
+const altFont = 'Cinzel'
 
 // Settings for the font sizes
 const FontSettings: Record<string, Record<string, string>> = {
