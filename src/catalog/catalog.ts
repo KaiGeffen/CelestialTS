@@ -12,7 +12,7 @@ function dataToCards(_data: any[]): Card[] {
 export const baseCards: Card[] = dataToCards(data)
 
 const devMode = new URLSearchParams(window.location.search).has('dev') || location.port === '4949'
-const devCards = devMode ? dataToCards(devData) : []
+const devCards = [] // devMode ? dataToCards(devData) : []
 
 let availableCards = [...baseCards, ...devCards]
 

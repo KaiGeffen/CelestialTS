@@ -335,8 +335,8 @@ export const BBStyle: Record<string, any> = {
     color: Color.basicText,
     backgroundColor: Color.background2,
     backgroundCornerRadius: 5,
-    backgroundStrokeColor: Color.outline,
-    backgroundStrokeLineWidth: 2,
+    // backgroundStrokeColor: Color.outline,
+    // backgroundStrokeLineWidth: 2,
     padding: { 
       left: Space.padSmall,
       right: Space.padSmall,
