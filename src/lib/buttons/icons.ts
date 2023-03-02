@@ -24,25 +24,6 @@ class Options extends Button {
 	}
 }
 
-class X extends Button {
-	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
-		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
-	{
-		super(within, x, y, 
-		{
-			icon: {
-				name: 'X',
-				interactive: true
-			},
-			callbacks: {
-				click: f
-			}
-		})
-	}
-}
-
 class SmallX extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -324,7 +305,6 @@ class Discord extends Button {
 // Export all of the available icons, which are subtype of buttons
 export default class Icons {
 	static Options = Options
-	static X = X
 	static SmallX = SmallX
 	static Share = Share
 	static Edit = Edit

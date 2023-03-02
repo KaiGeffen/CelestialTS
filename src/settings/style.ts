@@ -26,9 +26,9 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Cost hint text
   builder: {
     fontFamily: mainFont,
-    fontSize: '18px',
+    fontSize: '22px',
     color: Color.basicText,
-    fontStyle: "Bold",
+    // fontStyle: "Bold",
   },
   // Count of a card in the deck
   cardCount: {

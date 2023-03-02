@@ -23,7 +23,7 @@ export default class FilterRegion {
 	// The costs and string that cards in the catalog are filtered for
 	filterCostAry: boolean[] = []
 	searchText: string = ""
-	searchObj: Phaser.GameObjects.GameObject
+	searchObj
 	filterUnowned: boolean
 
 	// Create this region, offset by the given width
@@ -36,7 +36,11 @@ export default class FilterRegion {
 
 		this.createBackground(container)
 
-		new Buttons.Text(container, Space.pad, 40, '<   Back', () => {scene.doBack()}, 100, 70).setOrigin(0, 0.5)
+		new Buttons.Basic(container,
+			Space.pad + Space.buttonWidth/2,
+			40,
+			'Back',
+			() => {scene.doBack()})
 
 		this.createFilterButtons(container)
 
@@ -68,7 +72,7 @@ export default class FilterRegion {
 
 	private createFilterButtons(container: Phaser.GameObjects.Container) {
 		// Where the filter buttons start
-		const x0 = !Mobile ? 645 : Space.windowWidth - 470
+		const x0 = !Mobile ? 620 : Space.windowWidth - 470
 		const y = 40
 
 		// Cost filters
@@ -82,7 +86,7 @@ export default class FilterRegion {
 
 			btns.push(btn)
 		}
-		let btnX = new Icons.X(container, x0 + 35 + 8 * 41, y, this.onClearFilters(btns))
+		let btnX = new Icons.SmallX(container, x0 + 44 + 8 * 41, y + 3, this.onClearFilters(btns))
 	}
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {
@@ -105,14 +109,15 @@ export default class FilterRegion {
 		}
 
 		this.searchObj = this.scene.add['rexInputText'](
-			215, 40, 308, 40, {
+			369, 40, 255, 40, {
 				type: 'text',
 				text: this.searchText,
+				align: 'center',
 				placeholder: 'Search',
 				tooltip: 'Search for cards by text.',
 				fontFamily: 'Mulish',
-				fontSize: '20px',
-				color: Color.textboxTextAlt,
+				fontSize: '24px',
+				color: Color.textboxText,
 				maxLength: 40,
 				selectAll: true,
 				id: 'search-field'
@@ -122,10 +127,14 @@ export default class FilterRegion {
 			this.searchText = inputText.text
 			this.scene.filter()
 		}, this)
-		.setOrigin(0, 0.5)
 		.removeInteractive()
 
-		container.add(this.searchObj)
+		// Reskin for text input
+		let icon = this.scene.add.image(this.searchObj.x,
+			this.searchObj.y,
+			'icon-InputText')
+
+		container.add([this.searchObj, icon])
 	}
 
 	private onClickFilterButton(thisI: number, btns: UButton[]): () => void {

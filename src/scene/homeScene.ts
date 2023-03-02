@@ -148,7 +148,7 @@ export default class HomeScene extends BaseScene {
       y,
       width,
       height,
-      0xE9DFCE,
+      Color.background2,
       1)
     .setOrigin(0)
 
