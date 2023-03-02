@@ -42,7 +42,7 @@ export default class DeckRegion {
 	}
 
 	private createScrollable(startCallback: () => void, avatarID: number, storyTitle: string, storyText: string) {
-		let background = this.scene.add.image(0, 0, 'bg-Texture')
+		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
 
 		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
 			x: 0,
@@ -90,7 +90,7 @@ export default class DeckRegion {
 
 	private createHeader(startCallback: () => void, sizer, avatarID: number, storyTitle?: string, storyText?: string): Phaser.GameObjects.GameObject {
 		if (sizer === undefined) {
-			let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+			let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background)
 
 			sizer = this.scene['rexUI'].add.fixWidthSizer({
 				space: {

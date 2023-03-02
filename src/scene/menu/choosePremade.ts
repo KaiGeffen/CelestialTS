@@ -26,7 +26,7 @@ export default class ChoosePremade extends Menu {
 		super(scene, Space.windowWidth, params)
 
 		// Add a background rectangle
-		this.scene.add.image(0, 0, 'bg-Texture')
+		this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.background)
 		.setOrigin(0)
 		.setInteractive()
 
