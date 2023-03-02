@@ -120,7 +120,7 @@ export default class DeckRegion {
 	}
 
 	private createHeader(startCallback: () => void): Phaser.GameObjects.GameObject {
-		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background2)
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background)
 		.setInteractive()
 
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
