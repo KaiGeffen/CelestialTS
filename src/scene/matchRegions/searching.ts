@@ -102,7 +102,7 @@ export class SearchingRegionTutorial extends Region {
 	btn: Button
 	img: Phaser.GameObjects.Image
 	textbox: any
-	background: Phaser.GameObjects.Image
+	background: Phaser.GameObjects.Rectangle
 
 	// Number of the image frame currently shown, always end with the 3rd frame
 	currentFrame: number
@@ -141,7 +141,7 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createText(scene: BaseScene, tutorialNum: number): void {
-		this.background = scene.add.image(0, Space.windowHeight - TEXT_HEIGHT, 'bg-Texture')
+		this.background = scene.add.rectangle(0, Space.windowHeight - TEXT_HEIGHT, Space.windowWidth, TEXT_HEIGHT, Color.background2)
 		.setOrigin(0)
 		.setAlpha(0.8)
 		scene.plugins.get('rexDropShadowPipeline')['add'](this.background, {
