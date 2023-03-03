@@ -13,6 +13,8 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
 
 
+const WIDTH = 300
+
 export default class ResultsRegion extends Region {
 	// Whether the results have been seen already
 	seen: boolean
@@ -20,8 +22,8 @@ export default class ResultsRegion extends Region {
 	// Text saying if you won or lost
 	txtResult: Phaser.GameObjects.Text
 
-	// Longer text describing how each round went
-	txtRoundResults: Phaser.GameObjects.Text
+	// Scrollable panel containing details about the results of each round
+	scrollablePanel
 
 	// Avatar images for both players
 	ourAvatar: Phaser.GameObjects.Image
@@ -45,10 +47,8 @@ export default class ResultsRegion extends Region {
 		.on('pointerdown', () => {this.hide()})
 		this.container.add(background)
 
-		// Images
 		this.createContent()
 
-		// Buttons 
 		this.createButtons()
 
 		return this
@@ -84,8 +84,8 @@ export default class ResultsRegion extends Region {
 		// Text saying if you won or lost
 		this.txtResult.setText(state.winner === 0 ? 'Victory' : 'Defeat')
 
-		// Text describing the results of each round
-		this.txtRoundResults.setText(this.getRoundResults(state))
+		// Further detail how each round went
+		this.displayRoundResults(state)
 
 		this.show()
 		this.seen = true
@@ -122,9 +122,9 @@ export default class ResultsRegion extends Region {
 		this.createResultsPanel()
 
 		// Your avatar
-		this.ourAvatar = this.scene.add.image(Space.windowWidth/2 - 300, Space.windowHeight/2, 'avatar-JulesFull')
+		this.ourAvatar = this.scene.add.image(Space.windowWidth/2 - WIDTH, Space.windowHeight/2, 'avatar-JulesFull')
 		.setInteractive()
-		this.theirAvatar = this.scene.add.image(Space.windowWidth/2 + 300, Space.windowHeight/2, 'avatar-MiaFull')
+		this.theirAvatar = this.scene.add.image(Space.windowWidth/2 + WIDTH, Space.windowHeight/2, 'avatar-MiaFull')
 		.setInteractive()
 
 		this.container.add([
@@ -137,12 +137,10 @@ export default class ResultsRegion extends Region {
 	private createResultsPanel() {
 		let background = this.createBackground()
 
-		let panel = this.createPanel()
-
 		this.panel = this.scene['rexUI'].add.scrollablePanel({
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
-			width: 300,
+			width: WIDTH,
 			height: 600,
 
 			background: background,
@@ -150,15 +148,12 @@ export default class ResultsRegion extends Region {
 			header: this.createHeader(),
 
 			panel: {
-				child: panel
+				child: this.createScrollablePanel()
 			},
-			space: {
-				bottom: Space.padSmall
-			}
 			})
 		.setDepth(Depth.results)
 
-		this.updateOnScroll(panel, this.panel)
+		this.updateOnScroll(this.scrollablePanel, this.panel)
 	}
 
 	private createBackground() {
@@ -176,6 +171,7 @@ export default class ResultsRegion extends Region {
 
 	private createHeader(): ContainerLite {
 		const background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+		.setInteractive()
 		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
 			distance: 3,
 			angle: -90,
@@ -183,7 +179,7 @@ export default class ResultsRegion extends Region {
 		})
 
 		let sizer = this.scene.rexUI.add.fixWidthSizer({
-			width: 300,
+			width: WIDTH,
 			align: 'center',
 			space: {
 				top: Space.pad,
@@ -199,19 +195,15 @@ export default class ResultsRegion extends Region {
 		return sizer
 	}
 
-	private createPanel() {
-		let panel = this.scene['rexUI'].add.fixWidthSizer({
+	private createScrollablePanel() {
+		this.scrollablePanel = this.scene['rexUI'].add.fixWidthSizer({
 			align: 'center',
 			space: {
-				left: Space.pad,
-				right: Space.pad,
+				top: Space.pad,
 			}
 		})
 
-		this.txtRoundResults = this.scene.add['rexBBCodeText'](0, 0, '', BBStyle.basic)
-		panel.add(this.txtRoundResults)
-
-		return panel
+		return this.scrollablePanel
 	}
 
 	private exitCallback(): () => void {
@@ -236,31 +228,49 @@ export default class ResultsRegion extends Region {
 		}
 	}
 
-	private getRoundResults(state: ClientState): string {
+	// Display details about how each round went in the scrollable panel
+	private displayRoundResults(state: ClientState): void {
 		let result = ''
 
 		for (let i = 0; i < state.roundResults[0].length; i++) {
 			const round = i + 1
-			result += `Round ${round}\n`
-			
-			// Add the scores, with the higher score golden
+
+			// Container containing elements for this round
+			let sizer = this.scene.rexUI.add.fixWidthSizer({
+				width: WIDTH,
+				align: 'center',
+				space: {
+					top: Space.pad,
+					bottom: Space.pad,
+				},
+			})
+			.setDepth(Depth.results)
+
+			// Our points vs their points
 			const ours = state.roundResults[0][i]
 			const theirs = state.roundResults[1][i]
+			const s = `Round ${round}\n${ours} - ${theirs}`
+			let txt = this.scene.add['rexBBCodeText'](0, 0, s, BBStyle.basic)
+			.setDepth(Depth.results)
+			
+			// Visual to show who is the winner
+			let background
 			if (ours > theirs) {
-				result += `[color=${Color.resultsWin}]${ours}[/color] - ${theirs}\n\n`
+				background = this.scene.add.image(0, 0, 'icon-ResultGlow')
+				.setDepth(Depth.results)
+				.setRotation(Math.PI)
 			}
 			else if (theirs > ours) {
-				result += `${ours} - [color=${Color.resultsWin}]${theirs}[/color]\n\n`
+				background = this.scene.add.image(0, 0, 'icon-ResultGlow')
+				.setDepth(Depth.results)
 			}
-			else {
-				result += `${ours} - ${theirs}\n\n`
+			if (background) {
+				sizer.addBackground(background)
 			}
+			
+			sizer.add(txt)
+			this.scrollablePanel.add(sizer)
 		}
-
-		// Trim the last 2 newlines from string
-		result = result.trim()
-
-		return result
 	}
 
 	// TODO Make dry with other scenes
