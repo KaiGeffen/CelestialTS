@@ -162,7 +162,7 @@ export default class ResultsRegion extends Region {
 	}
 
 	private createBackground() {
-		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 50, Color.background)
+		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
 		let postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
@@ -175,13 +175,28 @@ export default class ResultsRegion extends Region {
 	}
 
 	private createHeader(): ContainerLite {
-		let container = new ContainerLite(this.scene, 0, 0, 300, 50)
+		const background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			angle: -90,
+			shadowColor: 0x000000,
+		})
+
+		let sizer = this.scene.rexUI.add.fixWidthSizer({
+			width: 300,
+			align: 'center',
+			space: {
+				top: Space.pad,
+				bottom: Space.pad,
+			},
+		})
+		.addBackground(background)
 
 		let txt = this.scene.add['rexBBCodeText'](0, 0, '[size=30][u]Results:[/u][/size]', BBStyle.basic).setOrigin(0.5)
 
-		container.add(txt)
+		sizer.add(txt)
 
-		return container
+		return sizer
 	}
 
 	private createPanel() {
