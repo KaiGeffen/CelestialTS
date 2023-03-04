@@ -6,7 +6,6 @@ import Icons from '../../lib/buttons/icons'
 import { Color, Mechanics, Space, Style, UserSettings, Mobile, Scroll } from "../../settings/settings"
 
 
-
 const width = Space.decklistPanelWidth
 const DEFAULT_DECK_NAME = 'Deck'
 

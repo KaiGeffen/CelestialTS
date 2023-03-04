@@ -67,6 +67,8 @@ export default class DecklistButton extends Button {
 	select() {
 		super.select()
 
+		this.icon.clearTint()
+
 		this.txt.setColor(Color.whiteS)
 
 		return this
