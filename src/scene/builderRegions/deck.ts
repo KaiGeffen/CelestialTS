@@ -131,7 +131,6 @@ export default class DeckRegion {
 		sizer.add(sizerTop)
 
 		// Add the deck's name
-		console.log(BBStyle.deckName)
 		this.txtDeckName = this.scene.rexUI.add.BBCodeText()
 		.setStyle({...BBStyle.deckName, ...{fixedWidth: width}})
 		.setOrigin(0.5)
