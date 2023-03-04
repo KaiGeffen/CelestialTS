@@ -369,4 +369,12 @@ export const BBStyle: Record<string, any> = {
       width: Space.maxTextWidth,
     },
   },
+  // Deck names in builder
+  deckName: {
+    fontFamily: altFont,
+    fontSize: FontSettings.huge.size,
+    color: '#353F4E',
+    halign: 'center',
+    fixedHeight: 50,
+  },
 }

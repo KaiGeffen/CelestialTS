@@ -1,4 +1,6 @@
 import 'phaser';
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import premadeDecklists from '../../catalog/premadeDecklists';
 import avatarNames from '../../lib/avatarNames';
@@ -8,7 +10,7 @@ import Cutout from '../../lib/buttons/cutout';
 import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard, encodeShareableDeckCode } from '../../lib/codec';
-import { Color, Mechanics, Space, Style, Time, Mobile, Scroll, Ease } from '../../settings/settings';
+import { Color, Mechanics, Space, Style, BBStyle, Time, Mobile, Scroll, Ease } from '../../settings/settings';
 import { BuilderScene } from '../builderScene'
 
 
@@ -37,7 +39,7 @@ export default class DeckRegion {
 	// The avatar button
 	avatarNumber: number
 	private avatar: Button
-	private txtDeckName: Phaser.GameObjects.Text
+	private txtDeckName: RexUIPlugin.BBCodeText
 
 	// Buttons
 	private btnEdit: Button
@@ -104,6 +106,7 @@ export default class DeckRegion {
 
 	private createPanel(startCallback: () => void): Phaser.GameObjects.GameObject {
 		this.panel = this.scene['rexUI'].add.fixWidthSizer({
+			width: width,
 			space: {
 				top: Space.padSmall
 			}
@@ -128,7 +131,9 @@ export default class DeckRegion {
 		sizer.add(sizerTop)
 
 		// Add the deck's name
-		this.txtDeckName = this.scene.add.text(0, 0, '', Style.announcement)
+		console.log(BBStyle.deckName)
+		this.txtDeckName = this.scene.rexUI.add.BBCodeText()
+		.setStyle({...BBStyle.deckName, ...{fixedWidth: width}})
 		.setOrigin(0.5)
 
 		// If on mobile, add a back button
