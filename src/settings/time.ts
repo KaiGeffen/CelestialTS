@@ -11,10 +11,6 @@ export class Time {
     return 1000 / (UserSettings._get('animationSpeed') * 2 + 0.5)
   }
 
-  static errorMsgTime(): number {
-    return 2500
-  }
-
   static recapTween(): number {
     return 500 / (UserSettings._get('animationSpeed') * 2 + 0.5)
   }
@@ -43,6 +39,9 @@ export class Time {
   static optionsTabSlide(): number {
     return 300
   }
+
+  // How long an onscreen message lingers
+  static onscreenMessage = 2500
 
   // How long the avatar emote lasts
   static emote = 1000

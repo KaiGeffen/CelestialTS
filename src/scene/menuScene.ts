@@ -1,16 +1,13 @@
 import "phaser"
 
+import { BaseMenuScene } from './baseScene'
 import { Style, Color, Space, Time } from "../settings/settings"
 import { createMenu } from "./menu/menu"
-import Hint from '../lib/hint'
 
 
 // The scene showing whichever menu is open, if any
 // This scene is on top of any other active open scenes
-export default class MenuScene extends Phaser.Scene {
-	// Text explaining whatever the user is hovering over
-	hint: Hint
-
+export default class MenuScene extends BaseMenuScene {
 	// Whether the scene has started ending, to ensure it only does so once
 	sceneEnding: boolean
 
@@ -21,7 +18,8 @@ export default class MenuScene extends Phaser.Scene {
 	}
 
 	create(params): void {
-		this.hint = new Hint(this)
+		super.create(params)
+
 		this.sceneEnding = false
 
 		this.sound.play('open')
@@ -102,9 +100,5 @@ export default class MenuScene extends Phaser.Scene {
 				onComplete: () => {this.scene.stop()},
 			})
 		}	
-	}
-
-	signalError(s: string): void {
-		console.log('TODO Implement signal error for menu scene!!!!')
 	}
 }

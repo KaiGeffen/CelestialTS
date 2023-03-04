@@ -7,17 +7,63 @@ import Icons from '../lib/buttons/icons'
 import Hint from '../lib/hint'
 
 
-export default class BaseScene extends Phaser.Scene {
-	private btnOptions: Button
-
+// Functionality shared between BaseScene and MenuBaseScene
+class SharedBaseScene extends Phaser.Scene {
 	// Allows for typing objects in RexUI library
 	rexUI: RexUIPlugin
 
 	// Message explaining to user what they did wrong
-	txtError: RexUIPlugin.BBCodeText
+	txtMessage: RexUIPlugin.BBCodeText
+
+	// Timeout for displaying a message onscreen
+	msgTimeout: NodeJS.Timeout
 
 	// Text explaining whatever the user is hovering over
 	hint: Hint
+
+	create(params = {}): void {
+		this.hint = new Hint(this)
+
+	    // Text for when user does something and gets a message
+	    this.txtMessage = this.createMessageText()
+	}
+
+	private createMessageText(): RexUIPlugin.BBCodeText {
+		return this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
+	    	.setOrigin(0.5)
+	    	.setDepth(50)
+	    	.setVisible(false)
+	}
+
+	// Show the user a message onscreen
+	showMessage(msg = ''): void {
+		this.txtMessage
+			.setText(`[stroke=black]${msg}[/stroke]`)
+			.setVisible(true)
+
+		// Remove previous timeout, create a new one
+		if (this.msgTimeout !== undefined) {
+			clearTimeout(this.msgTimeout)
+		}
+
+		this.msgTimeout = setTimeout(() => { this.txtMessage.setText('').setVisible(false) }, Time.onscreenMessage)
+	}
+
+	// Alert the user that they have taken an illegal or impossible action
+	signalError(msg = ''): void {
+      	this.sound.play('failure')
+
+      	this.showMessage(msg)
+	}
+
+	// Overwritten by the scenes that extend this
+	beforeExit(): void {}
+}
+
+
+// What scenes on the bottom (Not menus) inherit their common functionality from
+export default class BaseScene extends SharedBaseScene {
+	private btnOptions: Button
 
 	// The last scene before this one
 	private lastScene: string
@@ -28,8 +74,8 @@ export default class BaseScene extends Phaser.Scene {
 	}
 
 	create(params = {}): void {
-		this.hint = new Hint(this)
-
+		super.create(params)
+		
 		// Play music
 		if (UserSettings._get('musicVolume') > 0) {
 			let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
@@ -43,73 +89,9 @@ export default class BaseScene extends Phaser.Scene {
 		.setDepth(10)
 		.setNoScroll()
 
-	    // Error text, for when the user does something wrong they get an explanation
-	    this.txtError = this.createErrorText()
-
 		// When esc key is pressed, toggle the menu open/closed
 		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
 		esc.on('down', this.openMenu(), this)
-	}
-
-	private createHintText(): RexUIPlugin.BBCodeText {
-		let txt = this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, 'Hello world', BBStyle.error) // TODO
-	    	.setOrigin(0.5)
-	    	.setDepth(40)
-	    	// .setVisible(false)
-
-	    this.input.on('pointermove', (pointer) => {
-	    	txt.copyPosition(pointer.position)
-	    })
-
-	    return txt
-	}
-
-	private createErrorText(): RexUIPlugin.BBCodeText {
-		return this.rexUI.add.BBCodeText(Space.windowWidth/2, Space.windowHeight/2, '', BBStyle.error)
-	    	.setOrigin(0.5)
-	    	.setDepth(50)
-	    	.setVisible(false)
-	}
-
-	// Alert the user that they have taken an illegal or impossible action
-	errorMsgTimeout: NodeJS.Timeout
-	signalError(msg: string = ''): void {
-      	this.sound.play('failure')
-
-		// this.cameras.main.flash(300, 0, 0, 0.1)
-
-		this.txtError
-			.setText(`[stroke=black]${msg}[/stroke]`)
-			.setVisible(true)
-
-		// Remove previous timeout, create a new one
-		if (this.errorMsgTimeout !== undefined) {
-			clearTimeout(this.errorMsgTimeout)
-		}
-
-		let that = this
-		this.errorMsgTimeout = setTimeout(function() { that.txtError.setText('').setVisible(false) }, Time.errorMsgTime())
-	}
-
-	// Overwritten by the scenes that extend this
-	beforeExit(): void {}
-
-	private openMenu(): () => void {
-		let that = this
-
-		return function() {
-			// TODO This check for multiple open menus should be handled in menuScene.ts
-
-			// Don't open the menu if it's open already
-			if (that.scene.isActive('MenuScene')) {
-				return
-			}
-
-			that.scene.launch('MenuScene', {
-				menu: 'options',
-				activeScene: that
-			})
-		}
 	}
 
 	doExit(): () => void {
@@ -132,4 +114,26 @@ export default class BaseScene extends Phaser.Scene {
 			this.scene.start(this.lastScene)
 		}
 	}
+
+	private openMenu(): () => void {
+		let that = this
+
+		return function() {
+			// TODO This check for multiple open menus should be handled in menuScene.ts
+
+			// Don't open the menu if it's open already
+			if (that.scene.isActive('MenuScene')) {
+				return
+			}
+
+			that.scene.launch('MenuScene', {
+				menu: 'options',
+				activeScene: that
+			})
+		}
+	}
 }
+
+
+// The common functionality shared by menu scenes
+export class BaseMenuScene extends SharedBaseScene {}

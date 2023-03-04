@@ -452,9 +452,8 @@ export default class DeckRegion {
 			const encodedDeck = encodeShareableDeckCode(this.scene.getDeckCode())
   			navigator.clipboard.writeText(encodedDeck)
 
-  			// TODO This isn't an error, misuse of function
   			// Inform user deck code was copied
-  			this.scene.signalError('Deck code copied to clipboard.')
+  			this.scene.showMessage('Deck code copied to clipboard.')
 		}
 	}
 
