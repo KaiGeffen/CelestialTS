@@ -24,9 +24,6 @@ const CoreColors: Record<string, number | string> = {
   backgroundDark: 0xCBC1A8,
   backgroundLight: 0xF5F2EB,
 
-
-  alts: '#817467',
-
   darken: 0x333333,
 
   buttonSelected: 0xBCB4B4,
@@ -36,107 +33,80 @@ const CoreColors: Record<string, number | string> = {
 
 // The colors for each component of the app (Ex: Slider)
 export const Color: Record<string, any> = {
-  
-  // TODO Reorganize, don't expose these
+  // CORE COLORS
   black: CoreColors.black,
   white: CoreColors.white,
   whiteS: CoreColors.whiteS,
-  // TODO Rename
-  goldenS: CoreColors.goldS,
+  goldS: CoreColors.goldS,
 
-
+  // GENERAL
   header: CoreColors.brown,
-
-  // TODO Trial
   basicText: CoreColors.brownS,
-  altText: CoreColors.alts,
   border: CoreColors.brown,
+  outline: CoreColors.gold,
   darken: CoreColors.darken,
 
+  // Backgrounds
+  backgroundDark: CoreColors.backgroundDark,
+  backgroundLight: CoreColors.backgroundLight,
+
+  // Error messages
+  error: CoreColors.whiteS,
+  errorBackground: CoreColors.blackS,
+  errorStroke: CoreColors.gold,
+
+  // Button
+  button: CoreColors.whiteS,
+  buttonHighlight: 0xaaaaaa,
   buttonSelected: CoreColors.buttonSelected,
   filterSelected: CoreColors.filterSelected,
   buttonTxtSelected: CoreColors.whiteS,
-  
+  textButton: '#817467',
+
+  // Input text
   textboxText: '#ffffff',
 
-  // Slider ui element
+  // Line
+  line: CoreColors.black,
+
+  // Slider
   sliderTrack: CoreColors.backgroundDark,
   sliderIndicator: CoreColors.gold,
-
-
-  // Builder
-  cardCount: CoreColors.goldS,
-
-  // TODO Refactor dynamic card displays, remove the background color
-  // Colors for the cost and the background for it
-  cardTextSecondary: '#5A5',
-  cardTextBackground: CoreColors.black,
-  // The color of either stat if it has been changed
-  cardStatChanged: CoreColors.blueS,
 
   // Hint text fill and background (What shows when you hover something that has an explanation)
   hintFill: CoreColors.white,
   hintBackground: CoreColors.greyA,
 
-  // Colors for any error messages that pop up
-  error: CoreColors.whiteS,
-  errorBackground: CoreColors.blackS,
-  errorStroke: CoreColors.gold,
+  // TODO Refactor dynamic card displays, remove the background color
+  // Card Image
+  cardTextSecondary: '#5A5',
+  cardTextBackground: 0x000000,
+  // The color of either stat if it has been changed
+  cardStatChanged: CoreColors.blueS,
+  cardGreyed: CoreColors.lightGrey,
 
-
-
-  // Outline plugin color
-  outline: CoreColors.gold,
-
-  // Lines used throughout ui
-  line: CoreColors.black,
-
-
-  // Background of the webpage
-  backgroundDark: CoreColors.backgroundDark,
-  backgroundLight: CoreColors.backgroundLight,
-
-
-
-
-
-
-
-
-  // Fill color of progress bar in loading screen
-  progressBackground: CoreColors.backgroundDark,
-  progressFill: CoreColors.white,
-
-  avatarDeselected: CoreColors.grey,
-
-  // Button components
-  button: CoreColors.whiteS,
-  buttonHighlight: 0xaaaaaa,
-  buttonBorder: CoreColors.white,
-
-  // Color for the various charts
+  // Charts
   radar: CoreColors.goldS,
   bar: CoreColors.blueS + '99',
   barBorder: CoreColors.goldS,
 
-  // Pass button
+  // SCENES
+  // Builder
+  cardCount: CoreColors.goldS,
+
+  // Preload
+  progressBackground: CoreColors.backgroundDark,
+  progressFill: CoreColors.white,
+  avatarDeselected: CoreColors.grey,
+
+  // Match
   passText: CoreColors.blackS,
 
-
-  // Card components
-  cardGreyed: CoreColors.lightGrey,
-
-  // Adventure mode components
+  // Adventure
   mapIndicator: CoreColors.blue,
 
-
-
-
-  // TUTORIAL
-  // Background for the tutorial text
+  // Tutorial
   tutorialBackground: '#aace',
-
   // A translucent background that draws attention to one element on the screen
   focusBackground: CoreColors.grey,
-
 }

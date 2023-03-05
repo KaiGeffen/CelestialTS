@@ -50,7 +50,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   textButton: {
     fontFamily: mainFont,
     fontSize: '20px',
-    color: Color.altText,
+    color: Color.textButton,
   },
   
   // Pass button

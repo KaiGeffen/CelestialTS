@@ -77,7 +77,7 @@ export default class DecklistButton extends Button {
 	deselect() {
 		super.deselect()
 
-		this.txt.setColor(Color.goldenS)
+		this.txt.setColor(Color.goldS)
 
 		return this
 	}
