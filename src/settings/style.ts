@@ -8,21 +8,23 @@ const altFont = 'Cinzel'
 
 // Settings for the font sizes
 const FontSettings: Record<string, Record<string, string>> = {
-  standard: {size: '24px'}, // TODO trial
-  small: {size: '12px'},
-  large: {size: '44px'},
+  standard: {size: '24px'},
   huge: {size: '50px'},
-  stack: {size: '85px'},
+  large: {size: '44px'},
   title: {size: '128px'},
-  credits: {size: '19px'},
 }
 
 export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
-  filter: {
+  
+  // Header text
+  header: {
     fontFamily: mainFont,
-    fontSize: '16px',
-    color: '#B6B9C5',
+    fontSize: '24px',
+    color: Color.header,
   },
+
+
+
   // When a card resolves in the story, show the points it earns
   cardResolution: {
     fontFamily: mainFont,
@@ -44,24 +46,13 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     stroke: '#0009',
     strokeThickness: 3,
   },
-  // Cost numbers in filter
+  // Text for the buttons that are just text
   textButton: {
     fontFamily: mainFont,
     fontSize: '20px',
     color: Color.altText,
   },
-  // My Decks:
-  header: {
-    fontFamily: mainFont,
-    fontSize: '24px',
-    color: Color.header,
-  },
-  // Adventure mode flavor text
-  flavor: {
-    fontFamily: mainFont,
-    fontSize: '28px',
-    color: Color.flavor,
-  },
+  
   // Pass button
   pass: {
     fontFamily: altFont,
@@ -74,20 +65,11 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '60px',
     color: Color.passText,
   },
-  // Text for the deck title at the bottom of the avatar
-  avatar: {
-    fontFamily: mainFont,
-    fontSize: '24px',
-    color: Color.avatar,
-    stroke: '#0009',
-    strokeThickness: 3,
-    backgroundColor: '#0009',
-  },
-  // Matching the size of text on the card images for hitareas
+  // Text on cards that references other cards
   reference: {
     fontFamily: mainFont,
     fontSize: '14px',
-    color: '#FFC0CB00',
+    color: '#11223300',
   },
   // Surname for characters in premade deck
   surname: {
@@ -126,12 +108,6 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     stroke: '#000000',
     strokeThickness: 3,
   },
-  small: {
-    fontFamily: mainFont,
-    fontSize: FontSettings.small.size,
-    color: Color.smallText,
-    wordWrap: { width: Space.cardSize - Space.stackOverlap, useAdvancedWrap: false }
-  },
   announcement: {
     fontFamily: altFont,
     fontSize: FontSettings.huge.size,
@@ -155,18 +131,6 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     stroke: '#000',
     strokeThickness: 3
   },
-  stack: {
-    fontFamily: mainFont,
-    fontSize: FontSettings.stack.size,
-    color: Color.stackText,
-    fixedWidth: Space.cardSize,
-    fixedHeight: Space.cardSize,
-    align: 'center'
-  },
-  // filter: {
-  //   fontFamily: mainFont,
-  //   fontSize: FontSettings.standard.size
-  // },
   // Title for menus
   menutitle: {
     fontFamily: mainFont,
@@ -181,64 +145,31 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '70px',
     color: '#353F4E'
   },
-  titleButtonText: {
+  homeButtonText: {
     fontFamily: altFont,
     fontSize: '70px',
     color: '#F5F2EB'
-  },
-  credits: {
-    fontFamily: mainFont,
-    fontSize: FontSettings.credits.size,
-    color: "#fff",
-    wordWrap: { width: 1000, useAdvancedWrap: false },
-    stroke: '#000',
-    strokeThickness: 1
-  },
-  checkMark: {
-    fontFamily: mainFont,
-    fontSize: FontSettings.huge.size,
-    color: Color.checkMark,
-    stroke: '#000',
-    strokeThickness: 4
-  },
-  new: {
-    fontFamily: mainFont,
-    fontSize: FontSettings.standard.size,
-    // fontStyle: "Bold",
-    color: '#ff0',
-    stroke: '#000',
-    strokeThickness: 2
   },
 }
 
 // The styling for BBCode objects, from the rexui module
 export const BBStyle: Record<string, any> = {
-  // cardText: {
-  //   fontFamily: mainFont,
-  //   fontSize: '20px',
-  //   color: Color.cardText,
-  //   backgroundColor: Color.cardTextBackground,
-  //   backgroundStrokeColor: "#0005",
-  //   backgroundStrokeLineWidth: 2,
-  //   backgroundCornerRadius: 5,
-  //   backgroundHorizontalGradient: false,
-  //   padding: { 
-  //     left: 10,
-  //     right: 10,
-  //     top: 5,
-  //     bottom: 5
-  //   },
-  //   underline: {
-  //     color: Color.cardText,
-  //     thickness: 2,
-  //     offset: 8
-  //   },
-  //   strokeThickness: 3,
-  //   wrap: {
-  //     mode: 'word',
-  //     width: 500
-  //   }
-  // },
+  basic: {
+    fontFamily: mainFont,
+    fontSize: FontSettings.standard.size,
+    color: Color.basicText,
+    wordWrap: { width: Space.maxTextWidth },
+    underline: {
+      color: Color.basicText,
+      thickness: 3,
+      offset: 7,
+    },
+    halign: 'center',
+    wrap: {
+      mode: 'word',
+      width: Space.maxTextWidth
+    },
+  },
   // Cost / Points shown above each card
   cardStats: {
     fontFamily: mainFont,
@@ -256,22 +187,6 @@ export const BBStyle: Record<string, any> = {
       top: -5,
       bottom: -5
     }
-  },
-  basic: {
-    fontFamily: mainFont,
-    fontSize: FontSettings.standard.size,
-    color: Color.basicText,
-    wordWrap: { width: Space.maxTextWidth },
-    underline: {
-      color: Color.basicText,
-      thickness: 3,
-      offset: 7,
-    },
-    halign: 'center',
-    wrap: {
-      mode: 'word',
-      width: Space.maxTextWidth
-    },
   },
   // Hint text shown when something onscreen is hovered
   hint: {
@@ -316,30 +231,7 @@ export const BBStyle: Record<string, any> = {
       width: Space.windowWidth - Space.pad * 2
     }
   },
-  // Text shown during the tutorial which animates
-  tutorial: {
-    fontFamily: mainFont,
-    fontSize: FontSettings.large.size,
-    color: '#fff',
-    stroke: '#000',
-    strokeThickness: 3,
-    backgroundColor: Color.cardTextBackground,
-    backgroundStrokeColor: Color.tutorialBorder,
-    backgroundStrokeLineWidth: 3,
-    backgroundCornerRadius: 5,
-    backgroundHorizontalGradient: false,
-    padding: { 
-      left: 10,
-      right: 10,
-      top: 5,
-      bottom: 5
-    },
-    wrap: {
-      mode: 'word',
-      width: 1000
-    }
-  },
-  // Description for avatars
+  // Description for avatars in premade menu
   description: {
     fontFamily: mainFont,
     fontSize: FontSettings.standard.size,

@@ -1,21 +1,27 @@
 // The base colors used throughout this app (Primary, secondary, variant)
-const CoreColors: Record<string, any> = {
-  black: 0x353F4E,
-  blackS: '#353F4E',
-  
+const CoreColors: Record<string, number | string> = {
   white: 0xF5F2EB,
   whiteS: '#F5F2EB',
+
+  black: 0x353F4E,
+  blackS: '#353F4E',
+
+  gold: 0xFABD5D,
+  goldS: '#FABD5D',
+  
+  blue: 0x5F99DC,
+  blueS: '#5F99DC',
+
+
 
   primary: 0x202070,
   primaryS: '#202070',
   
   secondary: 0x43438a,
-  secondaryS: "#43438a",
+  secondaryS: '#43438a',
   
   variant: 0xb3b320, // 0xa0a034
   variantS: '#b3b320',
-
-  red: 0xffaaaa,
 
   green: 0x007000,
   greenS: '#070',
@@ -42,16 +48,6 @@ const CoreColors: Record<string, any> = {
 
   buttonSelected: 0xBCB4B4,
   filterSelected: 0x3C67FF,
-
-  // Golden icon, for trophy
-  golden: 0xFABD5D,
-  goldenS: '#FABD5D',
-
-  // Breath icon, and things relating to breath
-  breath: 0x5F99DC,
-  breathS: '#5F99DC',
-
-
 }
 
 
@@ -62,12 +58,12 @@ export const Color: Record<string, any> = {
   black: CoreColors.black,
   white: CoreColors.white,
   whiteS: CoreColors.whiteS,
-  goldenS: CoreColors.goldenS,
+  goldenS: CoreColors.goldS,
 
 
+  header: CoreColors.c1,
 
   // TODO Trial
-  smallText: CoreColors.c2s,
   basicText: CoreColors.c1s,
   altText: CoreColors.alts,
   border: CoreColors.c1,
@@ -76,22 +72,19 @@ export const Color: Record<string, any> = {
   buttonSelected: CoreColors.buttonSelected,
   filterSelected: CoreColors.filterSelected,
   buttonTxtSelected: CoreColors.whiteS,
-
+  
   textboxText: '#ffffff',
-  textboxTextAlt: CoreColors.c1, // For builder text input
-  textboxBackground: CoreColors.c2s, // TODO Remove
-  header: CoreColors.c1,
 
-  backgroundAlt: CoreColors.c2,
-
+  // Slider ui element
   sliderTrack: CoreColors.background,
-  sliderIndicator: CoreColors.golden,
-  sliderThumb: CoreColors.golden,
+  sliderIndicator: CoreColors.gold,
 
-  cardCount: CoreColors.goldenS,
+
+  // Builder
+  cardCount: CoreColors.goldS,
 
   // Colors for the cost and the background for it
-  cardText: 0xFABD5D,
+  cardTextSecondary: '#5A5',
   cardTextBackground: CoreColors.black,
   // The color of either stat if it has been changed
   cardStatChanged: CoreColors.breathS,
@@ -106,7 +99,7 @@ export const Color: Record<string, any> = {
   errorStroke: '#c00',
 
   // Outline plugin color
-  outline: CoreColors.golden,
+  outline: CoreColors.gold,
 
   // Lines used throughout ui
   line: CoreColors.black,
@@ -116,27 +109,21 @@ export const Color: Record<string, any> = {
 
 
   // Background of the webpage
-  background: CoreColors.background, //CoreColors.primary,
+  background: CoreColors.background,
   background2: CoreColors.background2,
 
   // Fill color of progress bar in loading screen
   progressBackground: CoreColors.background,
   progressFill: CoreColors.white,
 
-  avatar: CoreColors.goldenS,
+  avatar: CoreColors.goldS,
   avatarDeselected: CoreColors.grey,
 
   // Color of the text for results (End screen) of rounds you won
-  resultsWin: CoreColors.goldenS,
+  resultsWin: CoreColors.goldS,
 
   // Background color for any search bars
   searchBackground: '#F2F2F2',
-
-
-  // Menu components
-  menuBackground: CoreColors.secondary,
-  menuBorder: CoreColors.primary,
-  menuHeader: CoreColors.primary,
 
   // Button components
   button: CoreColors.whiteS,//CoreColors.variantS,
@@ -160,12 +147,12 @@ export const Color: Record<string, any> = {
   textAreaBackgroundAlt: CoreColors.secondaryS,
 
   // Color for the various charts
-  radar: CoreColors.goldenS,
+  radar: CoreColors.goldS,
   bar: CoreColors.breathS + '99',
-  barBorder: CoreColors.goldenS,
+  barBorder: CoreColors.goldS,
 
   // Color for text that references anything
-  reference: CoreColors.goldenS,
+  reference: CoreColors.goldS,
 
   // Pass button
   passText: '#353F4E',
@@ -174,7 +161,6 @@ export const Color: Record<string, any> = {
   // Card components
   // cardText: CoreColors.primary,
   // Text color for the reminders in card text (References, keywords)
-  cardTextSecondary: '#555',
   // cardTextBackground: '#aace',
   cardUnplayable: 0x888888,
   cardHighlight: CoreColors.variant,
@@ -194,20 +180,13 @@ export const Color: Record<string, any> = {
   mapIndicator: CoreColors.breath,
 
 
-  // The highlight behind a card that is selected for mulligan
-  mulliganHighlight: CoreColors.red,
-
   // The shadow of a stack text that is highlighted
-  stackText: CoreColors.greenS,
   stackHighlight: CoreColors.variantS,
 
   // Rectangle showing which player has priority
   priorityRectangle: 0xf0f0f0,
 
 
-
-  // The highlight behind a card that is selected in the catalog
-  catalogHighlight: CoreColors.red,
 
   // Credits components
   creditsText: CoreColors.black,
