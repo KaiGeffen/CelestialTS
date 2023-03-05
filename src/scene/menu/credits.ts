@@ -30,7 +30,7 @@ export default class CreditsMenu extends Menu {
 	}
 
 	private createScrollablePanel(scene: Phaser.Scene, panel) {
-		let background = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background)
+		let background = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.backgroundDark)
 		.setInteractive()
 
 		let scrollable = scene['rexUI'].add.scrollablePanel({

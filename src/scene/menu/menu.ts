@@ -46,7 +46,7 @@ export default class Menu {
 
 	// Create the menu header
 	protected createHeader(s: string, width: number = this.width): any {
-		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight)
 		
 		let sizer = this.scene['rexUI'].add.sizer({
 			width: width,
@@ -90,7 +90,7 @@ export default class Menu {
 		})
 
 		// Add background
-		let rect = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+		let rect = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.backgroundDark, 1).setInteractive()
 		this.sizer.addBackground(rect)
 
 	}

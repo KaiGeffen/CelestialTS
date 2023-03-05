@@ -45,7 +45,7 @@ export default class SearchingRegion extends Region {
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
-		let background = scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.background)
+		let background = scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.backgroundDark)
 		.setOrigin(0)
 
 		return background
@@ -141,7 +141,7 @@ export class SearchingRegionTutorial extends Region {
 	}
 
 	private createText(scene: BaseScene, tutorialNum: number): void {
-		this.background = scene.add.rectangle(0, Space.windowHeight - TEXT_HEIGHT, Space.windowWidth, TEXT_HEIGHT, Color.background2)
+		this.background = scene.add.rectangle(0, Space.windowHeight - TEXT_HEIGHT, Space.windowWidth, TEXT_HEIGHT, Color.backgroundLight)
 		.setOrigin(0)
 		.setAlpha(0.8)
 		scene.plugins.get('rexDropShadowPipeline')['add'](this.background, {

@@ -27,7 +27,7 @@ export default class DistributionMenu extends Menu {
 		)
 
 		// Add background
-		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background, 1).setInteractive()
+		let rect = scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.backgroundDark, 1).setInteractive()
 		panel.addBackground(rect)
 
 		// Header

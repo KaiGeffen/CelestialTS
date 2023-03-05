@@ -236,7 +236,7 @@ export const BBStyle: Record<string, any> = {
     fontFamily: mainFont,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
-    backgroundColor: Color.background2,
+    backgroundColor: Color.backgroundLight,
     backgroundCornerRadius: 5,
     // backgroundStrokeColor: Color.outline,
     // backgroundStrokeLineWidth: 2,

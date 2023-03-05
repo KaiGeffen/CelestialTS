@@ -157,7 +157,7 @@ export default class ResultsRegion extends Region {
 	}
 
 	private createBackground() {
-		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background)
+		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.backgroundDark)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
 		let postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
@@ -170,7 +170,7 @@ export default class ResultsRegion extends Region {
 	}
 
 	private createHeader(): ContainerLite {
-		const background = this.scene.add.rectangle(0, 0, 1, 1, Color.background2)
+		const background = this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight)
 		.setInteractive()
 		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
 			distance: 3,

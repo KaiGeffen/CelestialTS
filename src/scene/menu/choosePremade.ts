@@ -26,7 +26,7 @@ export default class ChoosePremade extends Menu {
 		super(scene, Space.windowWidth, params)
 
 		// Add a background rectangle
-		this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.background)
+		this.scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.backgroundDark)
 		.setOrigin(0)
 		.setInteractive()
 
@@ -66,7 +66,7 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createCustomHeader(): any {
-		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.background2)
+		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.backgroundLight)
 
 		let panel = this.scene['rexUI'].add.sizer({
 			width: Space.windowWidth,

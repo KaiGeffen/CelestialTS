@@ -35,7 +35,7 @@ export default class HomeScene extends BaseScene {
 
   private createHeader(): void {
     // Make the background
-    let background = this.add.rectangle(0, 0, Space.windowWidth, headerHeight, Color.background2)
+    let background = this.add.rectangle(0, 0, Space.windowWidth, headerHeight, Color.backgroundLight)
     .setOrigin(0)
 
     this.plugins.get('rexDropShadowPipeline')['add'](background, {
@@ -148,7 +148,7 @@ export default class HomeScene extends BaseScene {
       y,
       width,
       height,
-      Color.background2,
+      Color.backgroundLight,
       1)
     .setOrigin(0)
 

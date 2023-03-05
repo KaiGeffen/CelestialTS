@@ -1,4 +1,4 @@
-// The base colors used throughout this app (Primary, secondary, variant)
+// The base colors used throughout this app
 const CoreColors: Record<string, number | string> = {
   white: 0xF5F2EB,
   whiteS: '#F5F2EB',
@@ -21,8 +21,8 @@ const CoreColors: Record<string, number | string> = {
 
 
   // TODO Change to background light/dark
-  background: 0xCBC1A8,
-  background2: 0xF5F2EB,
+  backgroundDark: 0xCBC1A8,
+  backgroundLight: 0xF5F2EB,
 
 
   alts: '#817467',
@@ -60,7 +60,7 @@ export const Color: Record<string, any> = {
   textboxText: '#ffffff',
 
   // Slider ui element
-  sliderTrack: CoreColors.background,
+  sliderTrack: CoreColors.backgroundDark,
   sliderIndicator: CoreColors.gold,
 
 
@@ -72,7 +72,7 @@ export const Color: Record<string, any> = {
   cardTextSecondary: '#5A5',
   cardTextBackground: CoreColors.black,
   // The color of either stat if it has been changed
-  cardStatChanged: CoreColors.breathS,
+  cardStatChanged: CoreColors.blueS,
 
   // Hint text fill and background (What shows when you hover something that has an explanation)
   hintFill: CoreColors.white,
@@ -93,8 +93,8 @@ export const Color: Record<string, any> = {
 
 
   // Background of the webpage
-  background: CoreColors.background,
-  background2: CoreColors.background2,
+  backgroundDark: CoreColors.backgroundDark,
+  backgroundLight: CoreColors.backgroundLight,
 
 
 
@@ -104,7 +104,7 @@ export const Color: Record<string, any> = {
 
 
   // Fill color of progress bar in loading screen
-  progressBackground: CoreColors.background,
+  progressBackground: CoreColors.backgroundDark,
   progressFill: CoreColors.white,
 
   avatarDeselected: CoreColors.grey,
@@ -116,7 +116,7 @@ export const Color: Record<string, any> = {
 
   // Color for the various charts
   radar: CoreColors.goldS,
-  bar: CoreColors.breathS + '99',
+  bar: CoreColors.blueS + '99',
   barBorder: CoreColors.goldS,
 
   // Pass button
@@ -127,7 +127,7 @@ export const Color: Record<string, any> = {
   cardGreyed: CoreColors.lightGrey,
 
   // Adventure mode components
-  mapIndicator: CoreColors.breath,
+  mapIndicator: CoreColors.blue,
 
 
 

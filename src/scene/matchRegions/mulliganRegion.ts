@@ -103,7 +103,7 @@ export default class MulliganRegion extends Region {
 			3 * Space.cardWidth + 4 * Space.pad,
 			Space.cardHeight + 2 * Space.pad + 200,
 			Space.corner,
-			Color.background
+			Color.backgroundDark
 			)
 
 		// Add a border around the shape TODO Make a class for this to keep it dry

@@ -57,7 +57,7 @@ export default class FilterRegion {
 			.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth - 40, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
 		}
 		else {
-			background = this.scene.add.rectangle(0, 0, Space.windowWidth, Space.filterBarHeight, Color.background)
+			background = this.scene.add.rectangle(0, 0, Space.windowWidth, Space.filterBarHeight, Color.backgroundDark)
 			.setOrigin(0)
 			.setInteractive()
 

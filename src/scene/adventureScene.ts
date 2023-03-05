@@ -207,7 +207,7 @@ export default class AdventureScene extends BaseScene {
 		img.setScale(scale)
 
 		// Text background
-		let background = this.add.rectangle(0, Space.windowHeight - TEXT_HEIGHT, Space.windowWidth, TEXT_HEIGHT, Color.background2)
+		let background = this.add.rectangle(0, Space.windowHeight - TEXT_HEIGHT, Space.windowWidth, TEXT_HEIGHT, Color.backgroundLight)
 		.setOrigin(0)
 		.setAlpha(0.8)
 		this.plugins.get('rexDropShadowPipeline')['add'](background, {

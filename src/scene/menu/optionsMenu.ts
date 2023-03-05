@@ -21,7 +21,7 @@ const height = 350
 const subWidth = 530
 
 // TODO Use a non-mock color for the menu background
-const COLOR = Color.background2 //0x435700
+const COLOR = Color.backgroundLight
 
 // The currently selected tab, preserved if the menu is closed/opened
 var selectedTab = 'general'
@@ -151,7 +151,7 @@ export default class OptionsMenu extends Menu {
 				right: Space.pad,
 			}
 		})
-		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
+		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight))
 		.hide()
 
 		sizer
@@ -174,7 +174,7 @@ export default class OptionsMenu extends Menu {
 				right: Space.pad,
 			}
 		})
-		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
+		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight))
 		.hide()
 
 		sizer
@@ -205,7 +205,7 @@ export default class OptionsMenu extends Menu {
 				speed: 1
 			},
 		})
-		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
+		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight))
 		.hide()
 
 		// Add text to the scrollable panel
@@ -233,7 +233,7 @@ export default class OptionsMenu extends Menu {
 				speed: 1
 			},
 		})
-		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.background2))
+		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight))
 		.hide()
 
 		// Add text to the scrollable panel

@@ -23,7 +23,7 @@ export default class RulebookMenu extends Menu {
 	}
 
 	private createScrollablePanel() {
-		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.background)
+		let background = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.backgroundDark)
 		.setInteractive()
 
 		let scrollable = this.scene['rexUI'].add.scrollablePanel({
