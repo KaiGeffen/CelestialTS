@@ -54,7 +54,10 @@ export default class DistributionMenu extends Menu {
 	private createChart(costs: number[]): any {
 		const chartWidth = width - Space.pad * 2
 
-		return this.scene['rexUI'].add.chart(
+		// NOTE Necessary because type definition has wrong list of parameters for chart
+		const factory: any = this.scene.rexUI.add
+
+		return factory.chart(
 			Space.windowWidth/2,
 			Space.windowHeight/2,
 			chartWidth,

@@ -3,7 +3,7 @@ const CoreColors: Record<string, any> = {
   black: 0x353F4E,
   blackS: '#353F4E',
   
-  white: 0xF5F2EB, // TODO Same as background 1
+  white: 0xF5F2EB,
   whiteS: '#F5F2EB',
 
   primary: 0x202070,
@@ -120,7 +120,7 @@ export const Color: Record<string, any> = {
   background2: CoreColors.background2,
 
   // Fill color of progress bar in loading screen
-  progressBackground: CoreColors.secondary,
+  progressBackground: CoreColors.background,
   progressFill: CoreColors.white,
 
   avatar: CoreColors.goldenS,

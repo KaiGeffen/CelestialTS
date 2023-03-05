@@ -112,14 +112,12 @@ export default class ChoosePremade extends Menu {
 	}
 
 	// Create all of the content about the selected character
-	private createPanel(): void {
+	private createPanel(): any {
 		let panel = this.scene['rexUI'].add.sizer({
-			// width: Space.windowWidth,
 			space: {
 				left: Space.pad,
 				item: Space.pad,
 			},
-			align: 'top',
 		})
 
 		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarDetails[0].name}Full`)
@@ -143,9 +141,7 @@ export default class ChoosePremade extends Menu {
 
 		this.txtName = this.scene.add.text(0, 0, '', Style.announcement)
 		this.txtSurname = this.scene.add.text(0, 0, '', Style.surname)
-		this.txtDescription = this.scene['rexUI'].add.BBCodeText({
-			style: BBStyle.description,
-		})
+		this.txtDescription = this.scene['rexUI'].add.BBCodeText(0, 0, '', BBStyle.description)
 		.setFixedSize(Space.maxTextWidth + Space.padSmall*2, 360)
 		.setInteractive()
 		.on('areaover', function (key: string) {
@@ -201,7 +197,9 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createChart(): void {
-		this.chart = this.scene['rexUI'].add.chart(
+		// NOTE Necessary because type definition has wrong list of parameters for chart
+		const factory: any = this.scene.rexUI.add
+		this.chart = factory.chart(
 			Space.windowWidth,
 			Space.avatarSize + Space.pad * 2,
 			450,

@@ -142,9 +142,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   announcementOverBlack: {
     fontFamily: altFont,
     fontSize: FontSettings.huge.size,
-    color: Color.whiteS,//Color.basicText,
-    // stroke: '#000',
-    // strokeThickness: 1
+    color: Color.whiteS,
   },
   tutorial: {
     fontFamily: mainFont,

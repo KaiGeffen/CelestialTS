@@ -145,7 +145,6 @@ export default class OptionsMenu extends Menu {
 		let sizer = this.scene['rexUI'].add.sizer({
 			orientation: 'vertical',
 			space: {
-				line: Space.pad*2,
 				top: Space.pad,
 				bottom: Space.pad,
 				left: Space.pad/2,
@@ -169,7 +168,6 @@ export default class OptionsMenu extends Menu {
 		let sizer = this.scene['rexUI'].add.sizer({
 			orientation: 'vertical',
 			space: {
-				line: Space.pad*2,
 				top: Space.pad,
 				bottom: Space.pad,
 				left: Space.pad/2,
