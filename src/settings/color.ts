@@ -12,36 +12,18 @@ const CoreColors: Record<string, number | string> = {
   blue: 0x5F99DC,
   blueS: '#5F99DC',
 
-
-
-  primary: 0x202070,
-  primaryS: '#202070',
-  
-  secondary: 0x43438a,
-  secondaryS: '#43438a',
-  
-  variant: 0xb3b320, // 0xa0a034
-  variantS: '#b3b320',
-
-  green: 0x007000,
-  greenS: '#070',
-
-  // black: 0x000000,
-  
+  brown: 0x664930,
+  brownS: '#664930',
 
   grey: 0x555555,
   greyA: 0x555555e0,
   lightGrey: 0x888888,
 
 
-  // Trial colors
+  // TODO Change to background light/dark
   background: 0xCBC1A8,
   background2: 0xF5F2EB,
 
-  c1: 0x664930,
-  c1s: '#664930', // Basic text brown color
-  c2: 0xAE9E8D,
-  c2s: '#ae9e8d',
 
   alts: '#817467',
 
@@ -63,12 +45,12 @@ export const Color: Record<string, any> = {
   goldenS: CoreColors.goldS,
 
 
-  header: CoreColors.c1,
+  header: CoreColors.brown,
 
   // TODO Trial
-  basicText: CoreColors.c1s,
+  basicText: CoreColors.brownS,
   altText: CoreColors.alts,
-  border: CoreColors.c1,
+  border: CoreColors.brown,
   darken: CoreColors.darken,
 
   buttonSelected: CoreColors.buttonSelected,
@@ -85,6 +67,7 @@ export const Color: Record<string, any> = {
   // Builder
   cardCount: CoreColors.goldS,
 
+  // TODO Refactor dynamic card displays, remove the background color
   // Colors for the cost and the background for it
   cardTextSecondary: '#5A5',
   cardTextBackground: CoreColors.black,
@@ -98,7 +81,9 @@ export const Color: Record<string, any> = {
   // Colors for any error messages that pop up
   error: CoreColors.whiteS,
   errorBackground: CoreColors.blackS,
-  errorStroke: '#c00',
+  errorStroke: CoreColors.gold,
+
+
 
   // Outline plugin color
   outline: CoreColors.gold,
@@ -106,23 +91,23 @@ export const Color: Record<string, any> = {
   // Lines used throughout ui
   line: CoreColors.black,
 
-  // A translucent background that draws attention to one element on the screen
-  focusBackground: CoreColors.grey,
-
 
   // Background of the webpage
   background: CoreColors.background,
   background2: CoreColors.background2,
 
+
+
+
+
+
+
+
   // Fill color of progress bar in loading screen
   progressBackground: CoreColors.background,
   progressFill: CoreColors.white,
 
-  avatar: CoreColors.goldS,
   avatarDeselected: CoreColors.grey,
-
-  // Color of the text for results (End screen) of rounds you won
-  resultsWin: CoreColors.goldS,
 
   // Button components
   button: CoreColors.whiteS,
@@ -144,6 +129,14 @@ export const Color: Record<string, any> = {
   // Adventure mode components
   mapIndicator: CoreColors.breath,
 
+
+
+
+  // TUTORIAL
   // Background for the tutorial text
   tutorialBackground: '#aace',
+
+  // A translucent background that draws attention to one element on the screen
+  focusBackground: CoreColors.grey,
+
 }
