@@ -110,9 +110,6 @@ export default class Card {
       result += this.text
     }
 
-    // All reference/reminder text is grey
-    result += `[color=${Color.cardTextSecondary}][i]`
-
     result = this.replaceReferences(result)
     result = this.explainKeywords(result)
 
@@ -126,8 +123,6 @@ export default class Card {
         result += " points"
       }
     }
-
-    result += '[/i][/color]'
 
     // Add any hidden text that the search will find but won't be displayed
     result += '[size=0]'

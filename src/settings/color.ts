@@ -19,8 +19,6 @@ const CoreColors: Record<string, number | string> = {
   greyA: 0x555555e0,
   lightGrey: 0x888888,
 
-
-  // TODO Change to background light/dark
   backgroundDark: 0xCBC1A8,
   backgroundLight: 0xF5F2EB,
 
@@ -79,11 +77,11 @@ export const Color: Record<string, any> = {
 
   // TODO Refactor dynamic card displays, remove the background color
   // Card Image
-  cardTextSecondary: '#5A5',
-  cardTextBackground: 0x000000,
-  // The color of either stat if it has been changed
-  cardStatChanged: CoreColors.blueS,
   cardGreyed: CoreColors.lightGrey,
+  // The color of either stat if it has been changed
+  cardText: CoreColors.goldS,
+  cardStatChanged: CoreColors.blueS,
+  cardTextBackground: 0x000000,
 
   // Charts
   radar: CoreColors.goldS,

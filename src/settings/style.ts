@@ -176,9 +176,6 @@ export const BBStyle: Record<string, any> = {
     fontSize: '36px',
     color: Color.cardText,
     backgroundColor: Color.cardTextBackground,
-    // backgroundStrokeColor: "#0005",
-    // backgroundStrokeLineWidth: 2,
-    // backgroundCornerRadius: 5,
     backgroundHorizontalGradient: false,
     strokeThickness: 3,
     padding: { 
