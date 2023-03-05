@@ -116,7 +116,7 @@ export default class ResultsRegion extends Region {
 
 	private createContent() {
 		// Win/Lose text
-		this.txtResult = this.scene.add.text(Space.windowWidth/2, Space.pad, 'Victory', Style.announcement).setOrigin(0.5, 0)
+		this.txtResult = this.scene.add.text(Space.windowWidth/2, Space.pad, 'Victory', Style.announcementOverBlack).setOrigin(0.5, 0)
 
 		// Create the panel with more details about the results
 		this.createResultsPanel()
