@@ -91,22 +91,22 @@ export default class FilterRegion {
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {
 		// TODO Have an icon instead of full search bar on mobile
-		if (Mobile) {
-			// Minimum x is 170 for a 760 screen
-			let x = 170 + Math.max(0, Space.windowWidth - 760)/2
-			new Icons.Search(container, x, 40, () => {
-				this.scene.scene.launch('MenuScene', {
-	        menu: 'search',
-	        callback: (s: string) => {
-	        	// Filter the visible cards based on the text
-						this.searchText = s
-						this.scene.filter()
-	        },
-	        start: this.searchText,
-	      })
-			})
-			return
-		}
+		// if (Mobile) {
+		// 	// Minimum x is 170 for a 760 screen
+		// 	let x = 170 + Math.max(0, Space.windowWidth - 760)/2
+		// 	new Icons.Search(container, x, 40, () => {
+		// 		this.scene.scene.launch('MenuScene', {
+	  //       menu: 'search',
+	  //       callback: (s: string) => {
+	  //       	// Filter the visible cards based on the text
+		// 				this.searchText = s
+		// 				this.scene.filter()
+	  //       },
+	  //       start: this.searchText,
+	  //     })
+		// 	})
+		// 	return
+		// }
 
 		this.searchObj = this.scene.add['rexInputText'](
 			369, 40, 255, 40, {

@@ -131,7 +131,6 @@ import { NewDeckMenu, EditDeckMenu } from "./newDeck"
 import ModeMenu from "./mode"
 import DCMenu from './disconnect'
 import ConfirmMenu from './confirm'
-import SearchMenu from './search'
 import DistributionMenu from './distribution'
 import MessageMenu from './message'
 
@@ -146,7 +145,6 @@ const menus = {
 	'editDeck': EditDeckMenu,
 	'disconnect': DCMenu,
 	'confirm': ConfirmMenu,
-	'search': SearchMenu,
 	'distribution': DistributionMenu,
 	'message': MessageMenu,
 	'help': HelpMenu,

@@ -31,6 +31,7 @@ const CoreColors: Record<string, number | string> = {
 
   grey: 0x555555,
   greyA: 0x555555e0,
+  lightGrey: 0x888888,
 
 
   // Trial colors
@@ -58,6 +59,7 @@ export const Color: Record<string, any> = {
   black: CoreColors.black,
   white: CoreColors.white,
   whiteS: CoreColors.whiteS,
+  // TODO Rename
   goldenS: CoreColors.goldS,
 
 
@@ -122,83 +124,26 @@ export const Color: Record<string, any> = {
   // Color of the text for results (End screen) of rounds you won
   resultsWin: CoreColors.goldS,
 
-  // Background color for any search bars
-  searchBackground: '#F2F2F2',
-
   // Button components
-  button: CoreColors.whiteS,//CoreColors.variantS,
+  button: CoreColors.whiteS,
   buttonHighlight: 0xaaaaaa,
   buttonBorder: CoreColors.white,
-
-  // Icon components
-  iconHighlight: CoreColors.variant,
-
-  // Slider components
-  // sliderIndicator: CoreColors.primary,
-  // sliderThumb: CoreColors.primary,
-
-  // Radio button components
-  radioOutline: CoreColors.primary,
-  radioFill: CoreColors.variant,
-
-  // Text entered within text areas
-  textArea: CoreColors.variantS,
-  textAreaBackground: '#444',
-  textAreaBackgroundAlt: CoreColors.secondaryS,
 
   // Color for the various charts
   radar: CoreColors.goldS,
   bar: CoreColors.breathS + '99',
   barBorder: CoreColors.goldS,
 
-  // Color for text that references anything
-  reference: CoreColors.goldS,
-
   // Pass button
-  passText: '#353F4E',
+  passText: CoreColors.blackS,
 
 
   // Card components
-  // cardText: CoreColors.primary,
-  // Text color for the reminders in card text (References, keywords)
-  // cardTextBackground: '#aace',
-  cardUnplayable: 0x888888,
-  cardHighlight: CoreColors.variant,
-
-
-
-  // Color for text that references a button
-  buttonReference: CoreColors.variantS,
-
-
-  // Rulebook components
-  rulebookText: CoreColors.black,
-  rulebookBackground: "#aac",
+  cardGreyed: CoreColors.lightGrey,
 
   // Adventure mode components
-  flavor: CoreColors.whiteS,
   mapIndicator: CoreColors.breath,
-
-
-  // The shadow of a stack text that is highlighted
-  stackHighlight: CoreColors.variantS,
-
-  // Rectangle showing which player has priority
-  priorityRectangle: 0xf0f0f0,
-
-
-
-  // Credits components
-  creditsText: CoreColors.black,
-  creditsBackground: "#aac",
-
-  // The color of the background while searching for an opponent
-  searchingBackground: CoreColors.primary,
 
   // Background for the tutorial text
   tutorialBackground: '#aace',
-  tutorialBorder: CoreColors.greenS,
-
-  // Check mark for when a tutorial is complete
-  checkMark: '#0f0',
 }

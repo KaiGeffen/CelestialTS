@@ -173,13 +173,13 @@ export class CardImage {
       this.image.clearTint()
     }
     else {
-      this.image.setTint(Color.cardUnplayable)
+      this.image.setTint(Color.cardGreyed)
     }
   }
 
   // Set that a card has resolved (In the story)
   setResolved(): CardImage {
-    this.image.setTint(Color.cardUnplayable)
+    this.image.setTint(Color.cardGreyed)
     
     return this
   }
