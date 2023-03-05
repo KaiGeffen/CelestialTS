@@ -85,7 +85,7 @@ export const Color: Record<string, any> = {
 
   // Charts
   radar: CoreColors.goldS,
-  bar: CoreColors.blueS + '99',
+  bar: CoreColors.brownS + '99',
   barBorder: CoreColors.goldS,
 
   // SCENES
