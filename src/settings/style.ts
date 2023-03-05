@@ -139,6 +139,13 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     // stroke: '#000',
     // strokeThickness: 1
   },
+  announcementOverBlack: {
+    fontFamily: altFont,
+    fontSize: FontSettings.huge.size,
+    color: Color.whiteS,//Color.basicText,
+    // stroke: '#000',
+    // strokeThickness: 1
+  },
   tutorial: {
     fontFamily: mainFont,
     fontSize: FontSettings.large.size,

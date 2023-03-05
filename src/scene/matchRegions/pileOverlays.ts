@@ -18,8 +18,6 @@ class OverlayRegion extends Region {
 		.setDepth(Depth.pileOverlays)
 		.setVisible(false)
 
-		let that = this
-
 		// Create the background
 		let background = scene.add.rectangle(0, 0,
 			Space.windowWidth, Space.windowHeight,
@@ -27,13 +25,13 @@ class OverlayRegion extends Region {
 			)
 		.setOrigin(0)
 		.setInteractive()
-		.on('pointerdown', () => {that.container.setVisible(false)})
+		.on('pointerdown', () => {this.container.setVisible(false)})
 
 		// TODO Hide during mulligan, adjust to pile sizes, text specific to each pile
 		this.txtTitle = scene.add.text(Space.windowWidth/2,
 			Space.windowHeight/2 + Space.cardHeight/2,
 			title,
-			Style.announcement).setOrigin(0.5, 0)
+			Style.announcementOverBlack).setOrigin(0.5, 0)
 
 		this.container.add([background, this.txtTitle])
 
