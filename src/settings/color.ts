@@ -99,6 +99,7 @@ export const Color: Record<string, any> = {
 
   // Match
   passText: CoreColors.blackS,
+  roundResult: CoreColors.whiteS,
 
   // Adventure
   mapIndicator: CoreColors.blue,

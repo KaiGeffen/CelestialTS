@@ -79,11 +79,11 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // The text saying if you won/lost/tied
   roundResult: {
-    fontFamily: mainFont,
+    fontFamily: altFont,
     fontSize: '60px',
-    color: '#fff',
-    stroke: Color.basicText,
-    strokeThickness: 4
+    color: Color.roundResult,
+    // stroke: Color.roundResult,
+    // strokeThickness: 4
   },
   // Text that plays over the stillframes in journey
   stillframe: {
