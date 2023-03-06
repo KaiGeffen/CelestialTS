@@ -33,6 +33,7 @@ const CoreColors: Record<string, number | string> = {
 export const Color: Record<string, any> = {
   // CORE COLORS
   black: CoreColors.black,
+  blackS: CoreColors.blackS,
   white: CoreColors.white,
   whiteS: CoreColors.whiteS,
   goldS: CoreColors.goldS,

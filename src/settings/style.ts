@@ -87,11 +87,11 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   },
   // Text that plays over the stillframes in journey
   stillframe: {
-    fontFamily: mainFont,
+    fontFamily: altFont,
     fontSize: FontSettings.huge.size,
-    color: '#fff',
-    stroke: Color.basicText,
-    strokeThickness: 4,
+    color: Color.blackS,
+    // stroke: Color.basicText,
+    // strokeThickness: 4,
     wordWrap: { width: Space.stillframeTextWidth },
   },
 
