@@ -188,7 +188,7 @@ export default class ResultsRegion extends Region {
 		})
 		.addBackground(background)
 
-		let txt = this.scene.add['rexBBCodeText'](0, 0, '[size=30][u]Results:[/u][/size]', BBStyle.basic).setOrigin(0.5)
+		let txt = this.scene.add['rexBBCodeText'](0, 0, '[size=30]Results:[/size]', BBStyle.basic).setOrigin(0.5)
 
 		sizer.add(txt)
 

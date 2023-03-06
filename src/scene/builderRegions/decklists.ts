@@ -154,7 +154,7 @@ export default class DecklistsRegion {
 		}).addBackground(background)
 
 		let container = new ContainerLite(this.scene, 0, 0, width - Space.pad*2, Space.buttonHeight)
-		this.btnPremade = new Buttons.Premade(container, 0, 0,
+		this.btnPremade = new Buttons.Basic(container, 0, 0, 'Premade',
 			() => {
 				this.scene.setSearchVisible(false)
 				this.scene.scene.launch('MenuScene', {
@@ -192,9 +192,6 @@ export default class DecklistsRegion {
 			// Deselect decklist buttons
 			that.decklistBtns.forEach(btn => btn.deselect())
 
-			// Select premade button (Ensure only selected once)
-			that.btnPremade.deselect().select()
-			
 			// Set the current deck to premade list
 			that.scene.setPremade(i)
 		}
@@ -251,7 +248,6 @@ export default class DecklistsRegion {
 					that.decklistBtns[j].deselect()
 				}
 			}
-			that.btnPremade.deselect()
 
 			// If it's already selected, deselect it
 			if (btn.selected) {

@@ -303,7 +303,7 @@ export default class DeckRegion {
 
 	// Set the deck's to be the given premade deck
 	setPremade(id: number): DeckRegion {
-		this.txtDeckName.setText(`${avatarNames[id]}`)
+		this.txtDeckName.setText(`${avatarNames[id]} Premade`)
 		this.setAvatar(id)
 		this.setDeck(premadeDecklists[id])
 
