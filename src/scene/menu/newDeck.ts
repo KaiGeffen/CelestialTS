@@ -42,6 +42,9 @@ class AlterDeckMenu extends Menu {
 
 		this.layout()
 
+		// Focus the name field
+		this.nameInputText.setFocus()
+
 		// Reskin all of the input texts
 		this.reskinInputText()
 	}
@@ -67,7 +70,7 @@ class AlterDeckMenu extends Menu {
 	}
 
 	private createTitle() {
-		let sizer = this.scene['rexUI'].add.sizer({width: width})
+		let sizer = this.scene.rexUI.add.sizer({width: width})
 
 		let txt = this.scene.add.text(0, 0, this.titleString, Style.announcement)
 		sizer.addSpace()
@@ -80,10 +83,10 @@ class AlterDeckMenu extends Menu {
 	private createName() {
 		let that = this
 
-		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad * 2})
+		let sizer = this.scene.rexUI.add.sizer({width: width - Space.pad * 2})
 		sizer.addSpace()
 
-		this.nameInputText = this.scene.add['rexInputText']
+		this.nameInputText = this.scene.add.rexInputText
 		(
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
@@ -111,7 +114,7 @@ class AlterDeckMenu extends Menu {
 	private createAvatar() {
 		let that = this
 
-		let fixSizer = this.scene['rexUI'].add.fixWidthSizer({
+		let fixSizer = this.scene.rexUI.add.fixWidthSizer({
 			width: Space.avatarSize * 3 + Space.pad * 2,
 			space: { line: Space.pad },
 		})
@@ -128,7 +131,7 @@ class AlterDeckMenu extends Menu {
 		let avatars = []
 		for (let i = 0; i < 6; i++) {
 			if (i % 3 === 0) {
-				sizer = this.scene['rexUI'].add.sizer({
+				sizer = this.scene.rexUI.add.sizer({
 					space: {item: Space.pad}
 				})
 
@@ -158,10 +161,10 @@ class AlterDeckMenu extends Menu {
 	}
 
 	private createImport() {
-		let sizer = this.scene['rexUI'].add.sizer({width: width - Space.pad * 2})
+		let sizer = this.scene.rexUI.add.sizer({width: width - Space.pad * 2})
 		sizer.addSpace()
 
-		this.deckCodeInputText = this.scene.add['rexInputText']
+		this.deckCodeInputText = this.scene.add.rexInputText
 		(
 			0, 0, inputTextWidth, 50, {
 				type: 'text',
@@ -195,7 +198,7 @@ class AlterDeckMenu extends Menu {
 
 	// Create the buttons at the bottom which navigate to other scenes/menus
 	private createButtons(createCallback: (name: string, avatar: number, deckCode: string) => void) {
-		let sizer = this.scene['rexUI'].add.sizer({
+		let sizer = this.scene.rexUI.add.sizer({
 			width: width - Space.pad * 2,
 		})
 
