@@ -22,7 +22,7 @@ export default class AdventureScene extends BaseScene {
 
 	animatedBtns: Button[]
 
-	incompleteIndicators: Phaser.GameObjects.Arc[] = []
+	incompleteIndicators: Phaser.GameObjects.Image[] = []
 
 	constructor() {
 		super({
@@ -81,10 +81,10 @@ export default class AdventureScene extends BaseScene {
 
 		// Switch the frame of the animated elements every frame
 		// Go back and forth from frame 0 to 1
-		this.animatedBtns.forEach(btn => {
+		[...this.animatedBtns, ...this.incompleteIndicators].forEach(btn => {
 			// Switch every half second, roughly
 			let frame = Math.floor(2 * time / 1000) % 2 === 0 ? 0 : 1
-			btn.icon.setFrame(frame)
+			btn.setFrame(frame)
 		})
 
 		// Adjust alpha/location of each indicator
@@ -184,8 +184,9 @@ export default class AdventureScene extends BaseScene {
 	private createIncompleteIndicators(): void {
 		this.incompleteIndicators = []
 		this.animatedBtns.forEach(_ => {
-			const circle = this.scene.scene.add.circle(0, 0, 25, Color.mapIndicator, 0.7)
-			this.incompleteIndicators.push(circle)
+			const indicator = this.scene.scene.add.image(0, 0, 'icon-Mission')
+			.setScale(0.5)
+			this.incompleteIndicators.push(indicator)
 		})
 	}
 

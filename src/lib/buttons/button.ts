@@ -426,6 +426,16 @@ export default class Button {
 		
 		return this
 	}
+
+	setFrame(frame: number): this {
+		if (this.icon === undefined) {
+			throw new Error('Tried to set frame for a button that doesnt have frames.')
+		}
+
+		this.icon.setFrame(frame)
+
+		return this
+	}
 }
 
 function thisThenThat(f: () => void, g: () => void): () => void {
