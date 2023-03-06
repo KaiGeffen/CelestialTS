@@ -127,6 +127,7 @@ export default class DeckRegion {
 		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
 			width: width,
 			align: Mobile ? 'left' : 'center',
+			space: {bottom: Space.padSmall},
 		})
 		sizer.add(sizerTop)
 
@@ -160,7 +161,6 @@ export default class DeckRegion {
 		// Add a graph button for showing the distribution of costs in the deck
 		let containerDistribution = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		new Icons.Distribution(containerDistribution, 0, 0, this.distributionCallback())
-		// TODO Remove if using a premade deck
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		let containerStart = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.avatarSize/2)
