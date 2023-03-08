@@ -170,16 +170,16 @@ export class CardImage {
   // Set whether this card is playable
   setPlayable(isPlayable: Boolean): void {
     if (isPlayable) {
-      this.image.clearTint()
+      this.clearTint()
     }
     else {
-      this.image.setTint(Color.cardGreyed)
+      this.setTint(Color.cardGreyed)
     }
   }
 
   // Set that a card has resolved (In the story)
   setResolved(): CardImage {
-    this.image.setTint(Color.cardGreyed)
+    this.setTint(Color.cardGreyed)
     
     return this
   }
@@ -210,6 +210,11 @@ export class CardImage {
   setPoints(amt: number): CardImage {
     // If this is the default of the card, don't display any custom point value
     if(this.card.dynamicText === '') {
+      this.txtPoints.setAlpha(0.001)
+    }
+
+    // TODO Generalize once it's not just pet and child that have dynamic version
+    if ((this.card.name === 'Child' && amt === 0) || (this.card.name === 'Pet' && amt === 1)) {
       this.txtPoints.setAlpha(0.001)
     }
 
@@ -409,6 +414,22 @@ export class CardImage {
       // Set the parameter to no longer hovered
       this.hovered = false
     }
+  }
+
+  private setTint(color: number): void {
+    this.image.setTint(color)
+    this.txtCost.setTint(color)
+    this.txtPoints.setTint(color)
+
+    this.keywords.forEach(keyword => keyword.setTint(color))
+  }
+
+  private clearTint(): void {
+    this.image.clearTint()
+    this.txtCost.clearTint()
+    this.txtPoints.clearTint() 
+
+    this.keywords.forEach(keyword => keyword.clearTint())
   }
 
   /**
