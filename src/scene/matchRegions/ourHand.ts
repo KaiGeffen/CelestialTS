@@ -204,7 +204,7 @@ export default class OurHandRegion extends Region {
 		// Sight
 		this.btnSight = new Buttons.Keywords.Sight(this.container,
 			btn.icon.x + Space.avatarSize/2,
-			btn.icon.y + Space.avatarSize)
+			btn.icon.y + Space.avatarSize - Space.padSmall)
 		.setOrigin(0.5, 1)
 		.setVisible(false)
 		
