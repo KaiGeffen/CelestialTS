@@ -46,13 +46,6 @@ export default class TheirHandRegion extends Region {
 		this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 1)
 		this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 1)
 
-		let avatarBorder = scene.add.image(0, -12 + 177 - 7, 'icon-BottomAvatar')
-		.setOrigin(0)
-		.setScale(1, -1)
-
-		// Add each of these objects to container
-		this.container.add(avatarBorder)
-
 		return this
 	}
 

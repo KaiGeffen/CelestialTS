@@ -66,11 +66,6 @@ export default class OurHandRegion extends Region {
 		this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 0)
 		this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 0)
 
-		// Chrome border for avatar
-		let avatarBorder = scene.add.image(0, -12, 'icon-BottomAvatar')
-		.setOrigin(0)
-		this.container.add(avatarBorder)
-
 		return this
 	}
 
