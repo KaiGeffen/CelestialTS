@@ -99,18 +99,25 @@ export default class Cutout extends Button {
 	setRequired(): Cutout {
 		this.required = true
 
-		// Ensure that a lock is used instead of the X
-		this.updateText()
-
 		this.onClick = () => {
 			this.scene['signalError']("Can't remove a required card.")
 		}
+
+		return this
+	}
+
+	// Set that this card is a part of a premade deck
+	setPremade(): Cutout {
+		this.onClick = () => {
+			this.scene['signalError']("Can't make changes to premade decks.")
+		}
+
 		return this
 	}
 
 	private updateText(): Cutout {	
-		const char = this.required ? '🔒' : 'x'
-		// this.setText(`             ${this.name} ${char}${this.count}`)
+		const char = 'x'
+		
 		this.setText(`${char}${this.count}`)
 
 		return this

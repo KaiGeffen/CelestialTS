@@ -309,7 +309,7 @@ export default class DeckRegion {
 
 		// Disable cards from being removed from the deck
 		this.deck.forEach(cutout => {
-			cutout.setRequired()
+			cutout.setPremade()
 		})
 
 		// Disable the edit button
