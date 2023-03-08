@@ -7,55 +7,52 @@ import Buttons from '../../lib/buttons/buttons'
 import avatarNames from '../../lib/avatarNames'
 
 
-// Time in milliseconds between swaps of the mystery avatar
-const AVATAR_SWAP_TIME = 4000
-
 export default class SearchingRegion extends Region {
 	mysteryAvatar: Phaser.GameObjects.Image
+
+	startTime: number
+	txtTime: Phaser.GameObjects.Text
 
 	create (scene: BaseScene, avatarId: number): Region {
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
-		this.container.add(this.createBackground(scene))
-
-		this.container.add(this.createText(scene))
+		this.createBackground(scene)
 
 		this.createAvatars(scene, avatarId)
 
-		this.addButtons(scene, this.container)
+		this.createText(scene)
+
+		this.addButtons(scene)
 
 		return this
 	}
 
-	hide(): Region {
-		// clearInterval(this.interval)
-		return super.hide()
-	}
-	
 	sum = 0
 	update(time, delta): void {
 		this.sum += delta
 
-		if (this.sum >= AVATAR_SWAP_TIME) {
+		if (this.sum >= Time.avatarSwap) {
 			this.sum = 0
 
 			const i = Math.floor(Math.random() * 6)
 			this.mysteryAvatar.setTexture(`avatar-${avatarNames[i]}Full`)
 		}
+
+		// Format the timer text
+		if (this.startTime === undefined) {
+			this.startTime = time
+		}
+
+		const seconds = Math.floor((time - this.startTime) / 1000)
+		const minutes = Math.floor(seconds / 60)
+		this.txtTime.setText(`${minutes}:${seconds % 60}`)
 	}
 
-	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
-		let background = scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.backgroundDark)
+	private createBackground(scene: Phaser.Scene): void {
+		let background = scene.add.rectangle(0, 0, Space.windowWidth, Space.windowHeight, Color.backgroundLight)
 		.setOrigin(0)
 
-		return background
-	}
-
-	private createText(scene: Phaser.Scene): Phaser.GameObjects.Text {
-		let txt = scene.add.text(Space.windowWidth/2, Space.windowHeight/2, 'Searching for an opponent', Style.header)
-		.setOrigin(0.5)
-
-		return txt
+		this.container.add(background)
 	}
 
 	private createAvatars(scene: Phaser.Scene, avatarId: number): void {
@@ -67,30 +64,42 @@ export default class SearchingRegion extends Region {
 		this.mysteryAvatar = scene.add.image(Space.windowWidth, Space.windowHeight/2, `avatar-${avatarNames[0]}Full`)
 		.setScale(scale)
 		.setOrigin(1, 0.5)
-		.setTint(0x555555)
-
-		let i = 0
-		// this.interval = setInterval(() => {
-		// 	// TODO If this scene has been closed, stop this interval
-			
-		// 	i = (i + 1) % avatarNames.length
-		// 	mysteryAvatar.setTexture(`avatar-${avatarNames[i]}Full`)
-		// }, 2000)
+		.setTint(Color.grey)
 
 		this.container.add([avatar, this.mysteryAvatar])
 	}
 
-	private addButtons(scene: BaseScene, container: Phaser.GameObjects.Container): Button {
-		let btn = new Buttons.Basic(container, Space.windowWidth/2, Space.windowHeight/2 + 100, 'Cancel', () => {
+	private createText(scene: Phaser.Scene): void {
+		let txt = scene.add.text(
+			Space.windowWidth/2,
+			Space.windowHeight/2 - 100,
+			'Searching for an opponent',
+			Style.announcement)
+		.setOrigin(0.5)
+
+		// Time text
+		this.txtTime = scene.add.text(
+			Space.windowWidth/2,
+			Space.windowHeight/2,
+			'',
+			Style.announcement)
+		.setOrigin(0.5)
+
+		// Background for text
+		const width = Space.windowWidth - 2 * this.mysteryAvatar.width
+		const height = Space.windowHeight // this.mysteryAvatar.height
+
+		this.container.add([txt, this.txtTime])
+	}
+
+	private addButtons(scene: BaseScene): void {
+		let btn = new Buttons.Basic(this.container, Space.windowWidth/2, Space.windowHeight/2 + 100, 'Cancel', () => {
 			// Do any necessary cleanup
 			scene.beforeExit()
 
 			// Return to the last scene
 			scene.doBack()
 		})
-
-
-		return btn
 	}
 }
 

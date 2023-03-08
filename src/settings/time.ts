@@ -61,4 +61,6 @@ export class Time {
   // Stillframes in adventure mode fading out
   static stillframeFade = 500
 
+  // On the searching scene, how long between when the avatar swaps
+  static avatarSwap = 4000
 }

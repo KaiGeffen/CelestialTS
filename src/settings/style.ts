@@ -15,16 +15,6 @@ const FontSettings: Record<string, Record<string, string>> = {
 }
 
 export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
-  
-  // Header text
-  header: {
-    fontFamily: mainFont,
-    fontSize: '24px',
-    color: Color.header,
-  },
-
-
-
   // When a card resolves in the story, show the points it earns
   cardResolution: {
     fontFamily: mainFont,
