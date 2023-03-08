@@ -88,7 +88,7 @@ export default class TheirHandRegion extends Region {
 	}
 
 	private createAvatar(): Button {
-		let btn = new Buttons.Avatar(this.container, 21, 5, 'Jules')
+		let btn = new Buttons.Avatar(this.container, 21, 14, 'Jules')
 		btn.setOrigin(0)
 
 		return btn
@@ -98,7 +98,7 @@ export default class TheirHandRegion extends Region {
 		let x = 21 + Space.avatarSize - 10
 
 		// Inspire
-		let y = 5
+		let y = 14
 		this.btnInspire = new Buttons.Keywords.Inspire(this.container, x - 15, y)
 		.setOrigin(0)
 		.setVisible(false)
