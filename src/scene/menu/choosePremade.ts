@@ -122,11 +122,6 @@ export default class ChoosePremade extends Menu {
 
 		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarDetails[0].name}Full`)
 		
-		// Scale to fit in the window
-		let space = Space.windowHeight - Space.pad * 3 - Space.avatarSize
-		let ratio = space / this.avatarFull.height
-		this.avatarFull.setScale(ratio)
-
 		panel.add(this.avatarFull)
 		.add(this.createDescriptionText(), {align: 'top'})
 
@@ -197,13 +192,20 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createChart(): void {
+		const availableWidth = Space.windowWidth - (this.txtDescription.getBounds().right + Space.pad)
+		const width = Math.min(450, availableWidth)
+		const height = width
+		// let space = Space.windowHeight - Space.pad * 3 - Space.avatarSize
+		// let ratio = space / this.avatarFull.height
+		// this.avatarFull.setScale(ratio)
+
 		// NOTE Necessary because type definition has wrong list of parameters for chart
 		const factory: any = this.scene.rexUI.add
 		this.chart = factory.chart(
 			Space.windowWidth,
 			Space.avatarSize + Space.pad * 2,
-			450,
-			450,
+			width,
+			height,
 			{
 			type: 'radar',
 			data: {
@@ -244,6 +246,7 @@ export default class ChoosePremade extends Menu {
                 }
             }
 		}).setOrigin(1, 0)
+		.setAlpha(width <= 100 ? 0 : 1)
 	}
 
 	// Populate the content objects with the given avatar details
