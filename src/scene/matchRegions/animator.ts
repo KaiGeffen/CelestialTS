@@ -236,7 +236,8 @@ export default class Animator {
 			{
 				card.show()
 				if (sound) {
-					that.scene.sound.play(sound)					
+					console.log(sound)
+					that.scene.playSound(sound)
 				}
 			},
 			onComplete: function (tween, targets, _)
@@ -266,7 +267,7 @@ export default class Animator {
 		let end = this.getEnd(animation, state, owner)
 
 		let permanentCard = this.getCard(animation, owner)
-		this.animateCard(card, end, iAnimation, permanentCard, 'play')
+		this.animateCard(card, end, iAnimation, permanentCard, 'draw')
 	}
 
 	// Animate the given player's deck shuffling

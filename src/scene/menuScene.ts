@@ -22,7 +22,7 @@ export default class MenuScene extends BaseMenuScene {
 
 		this.sceneEnding = false
 
-		this.sound.play('open')
+		this.playSound('open')
 
 		this.addBackground()
 
@@ -96,7 +96,7 @@ export default class MenuScene extends BaseMenuScene {
 				targets: this.cameras.main,
 				alpha: 0,
 				duration: Time.menuTransition,
-				onStart: () => {this.sound.play('close')},
+				onStart: () => {this.playSound('close')},
 				onComplete: () => {this.scene.stop()},
 			})
 		}	

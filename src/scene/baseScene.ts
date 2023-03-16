@@ -58,6 +58,30 @@ class SharedBaseScene extends Phaser.Scene {
 
 	// Overwritten by the scenes that extend this
 	beforeExit(): void {}
+
+	// Play the given sound, or one of its variants if it has any
+	playSound(s: string): void {
+		const amt_variants = {
+			'open': 2,
+			'close': 2,
+			'play': 4,
+			'play them': 4,
+			'discard': 3,
+			'create': 3,
+			'resolve': 5,
+		}
+		if (s in amt_variants) {
+			s += ` ${this.getRandomInRange(amt_variants[s])}`
+		}
+		console.log(s)
+
+		this.sound.play(s)
+	}
+
+	// Get a random number from 1 to max, inclusive
+	private getRandomInRange(max: number): number {
+		return 1 + Math.floor(Math.random() * max)
+	}
 }
 
 

@@ -475,7 +475,7 @@ export class View {
 
 		// Play whatever sound this new state brings
 		if (state.soundEffect !== null) {
-			this.scene.sound.play(state.soundEffect)
+			this.scene.playSound(state.soundEffect)
 		}
 	}
 }

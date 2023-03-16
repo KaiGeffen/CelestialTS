@@ -164,7 +164,7 @@ export default class StoryRegion extends Region {
 				onStart: function (tween, targets, _)
 				{
 					card.show()
-					that.scene.sound.play('play them')
+					that.scene.playSound('play them')
 				}
 			})
 		}
