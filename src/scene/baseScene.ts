@@ -73,7 +73,6 @@ class SharedBaseScene extends Phaser.Scene {
 		if (s in amt_variants) {
 			s += ` ${this.getRandomInRange(amt_variants[s])}`
 		}
-		console.log(s)
 
 		this.sound.play(s)
 	}

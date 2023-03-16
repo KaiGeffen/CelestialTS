@@ -236,7 +236,6 @@ export default class Animator {
 			{
 				card.show()
 				if (sound) {
-					console.log(sound)
 					that.scene.playSound(sound)
 				}
 			},
@@ -267,7 +266,7 @@ export default class Animator {
 		let end = this.getEnd(animation, state, owner)
 
 		let permanentCard = this.getCard(animation, owner)
-		this.animateCard(card, end, iAnimation, permanentCard, 'draw')
+		this.animateCard(card, end, iAnimation, permanentCard, 'discard')
 	}
 
 	// Animate the given player's deck shuffling
@@ -350,8 +349,6 @@ export default class Animator {
 			}
 			break
 		}
-
-		console.log(obj)
 
 		this.scene.tweens.add({
 			targets: obj.icon,
@@ -472,6 +469,8 @@ export default class Animator {
 			return 'draw'
 			case Zone.Discard:
 			return 'discard'
+			case Zone.Mulligan:
+			return 'draw'
 		}
 		return undefined
 	}
