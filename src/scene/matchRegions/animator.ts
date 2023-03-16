@@ -266,7 +266,7 @@ export default class Animator {
 		let end = this.getEnd(animation, state, owner)
 
 		let permanentCard = this.getCard(animation, owner)
-		this.animateCard(card, end, iAnimation, permanentCard, 'discard')
+		this.animateCard(card, end, iAnimation, permanentCard, this.getSound(animation.to))
 	}
 
 	// Animate the given player's deck shuffling
@@ -468,6 +468,9 @@ export default class Animator {
 			case Zone.Hand:
 			return 'draw'
 			case Zone.Discard:
+			return 'discard'
+			// TODO Some other sound?
+			case Zone.Deck:
 			return 'discard'
 			case Zone.Mulligan:
 			return 'draw'
