@@ -49,8 +49,6 @@ export default class BasicButton extends Button {
 
 	// Button is a spritesheet with different states
 	glow(): this {
-		this.scene.sound.play('hover')
-		
 		this.icon.setFrame(2)
 
 		return this

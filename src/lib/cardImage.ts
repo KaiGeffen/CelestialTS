@@ -369,9 +369,6 @@ export class CardImage {
       }
       this.hovered = true
 
-      // Play a sound
-      this.scene.sound.play('hover')
-
       // Apply the highlight effect
       doHighlight()
 
