@@ -159,7 +159,7 @@ export default class AdventureScene extends BaseScene {
 		new Buttons.Basic(this, x, y, 'Help', () => {
 			this.scene.launch('MenuScene', {
 				menu: 'help',
-				callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t2`, missionID: 2})},
+				callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t0`, missionID: 0})},
 			})
 		})
 		.setDepth(10)
