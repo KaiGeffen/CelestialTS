@@ -128,6 +128,7 @@ export default class HomeScene extends BaseScene {
       map.clearTint()
     })
     .on('pointerdown', () => {
+      this.sound.play('click')
       this.doAdventure()
     })
 
@@ -184,7 +185,10 @@ export default class HomeScene extends BaseScene {
         child.clearTint()
       })
     })
-    .on('pointerdown', this.doStart())
+    .on('pointerdown', () => {
+      this.sound.play('click')
+      this.doStart()
+    })
 
     container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight)
 
@@ -252,11 +256,8 @@ export default class HomeScene extends BaseScene {
   }
 
   // Do everything that occurs when the start button is pressed - either start, or prompt tutorial
-  private doStart(): () => void {
-    let that = this
-    return function() {
-      that.doDeckbuilder()
-    }
+  private doStart(): void {
+    this.doDeckbuilder()
   }
 
   private doDeckbuilder(): void {
