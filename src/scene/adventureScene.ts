@@ -189,7 +189,10 @@ export default class AdventureScene extends BaseScene {
 			.setInteractive()
 			.on('pointerdown', () => {
 				this.sound.play('click')
-				this.cameras.main.centerOn(btn.icon.x, btn.icon.y)
+				
+				const camera = this.cameras.main
+				camera.centerOn(btn.icon.x, btn.icon.y)
+				AdventureScene.rememberCoordinates(camera)
 			})
 			this.incompleteIndicators.push(indicator)
 		})
