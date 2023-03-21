@@ -11,9 +11,6 @@ import { getCard } from "../catalog/catalog"
 // adventureData.reverse()
 import { adventureData } from "../adventures/adventure"
 
-const MAP_WIDTH = 6000
-const MAP_HEIGHT = 4800
-
 // TODO Make consistent with Journey (Change adventure to journey or vice verca)
 export default class AdventureScene extends BaseScene {
 	panDirection
@@ -37,6 +34,9 @@ export default class AdventureScene extends BaseScene {
 		this.map = this.add.image(0, 0, 'story-Map')
 			.setOrigin(0)
 			.setInteractive()
+
+		// Bound camera on this map
+		this.cameras.main.setBounds(0, 0, this.map.width, this.map.height)
 
 		// Add navigation arrows + zoom
 		this.createNavigation()
@@ -183,9 +183,14 @@ export default class AdventureScene extends BaseScene {
 	// Create indicators for any incomplete nodes on the map out of the camera's view
 	private createIncompleteIndicators(): void {
 		this.incompleteIndicators = []
-		this.animatedBtns.forEach(_ => {
+		this.animatedBtns.forEach(btn => {
 			const indicator = this.scene.scene.add.image(0, 0, 'icon-Mission')
 			.setScale(0.5)
+			.setInteractive()
+			.on('pointerdown', () => {
+				this.sound.play('click')
+				this.cameras.main.centerOn(btn.icon.x, btn.icon.y)
+			})
 			this.incompleteIndicators.push(indicator)
 		})
 	}
@@ -398,14 +403,8 @@ export default class AdventureScene extends BaseScene {
 	}
 
 	private static moveCamera(camera, dx, dy): void {
-		camera.scrollX = Math.min(
-			MAP_WIDTH - Space.windowWidth,
-			Math.max(0, camera.scrollX + dx)
-			)
-		camera.scrollY = Math.min(
-			MAP_HEIGHT - Space.windowHeight,
-			Math.max(0, camera.scrollY + dy)
-			)
+		camera.scrollX = Math.max(0, camera.scrollX + dx)
+		camera.scrollY = Math.max(0, camera.scrollY + dy)
 
 		// Remember the camera position
 		AdventureScene.rememberCoordinates(camera)
