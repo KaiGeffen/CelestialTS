@@ -249,18 +249,25 @@ export default class AdventureScene extends BaseScene {
 			Space.windowHeight - Space.pad - Space.buttonHeight/2,
 			'Continue',
 			() => {
-				this.tweens.add({
-					targets: container,
-					alpha: 0,
-					duration: Time.stillframeFade,
-					onComplete: () => {
-						container.setVisible(false)
-						container.alpha = 1
-					}
-				})
+				// If typing isn't complete, complete it
+				if (textbox.isTyping) {
+					textbox.stop(true)
+				}
+				// Otherwise move on to the next frame
+				else {
+					this.tweens.add({
+						targets: container,
+						alpha: 0,
+						duration: Time.stillframeFade,
+						onComplete: () => {
+							container.setVisible(false)
+							container.alpha = 1
+						}
+					})
 
-				// Allow scrolling once the stillframe is gone
-				this.enableScrolling()
+					// Allow scrolling once the stillframe is gone
+					this.enableScrolling()
+				}
 			})
 
 		// Scroll the image going down

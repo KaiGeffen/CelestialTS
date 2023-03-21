@@ -185,7 +185,12 @@ export class SearchingRegionTutorial extends Region {
 			Space.windowHeight - Space.pad - Space.buttonHeight/2,
 			'Continue',
 			() => {
-				if (this.currentFrame < 3) {
+				// If typing isn't complete, complete it
+				if (this.textbox.isTyping) {
+					this.textbox.stop(true)
+				}
+				// Otherwise move on to the next frame
+				else if (this.currentFrame < 3) {
 					this.currentFrame += 1
 
 					// Change the background image
@@ -197,6 +202,7 @@ export class SearchingRegionTutorial extends Region {
 					const s = STORY_TEXT[tutorialNum][this.currentFrame - 1]
 					this.textbox.start(s, 50)
 				}
+				// Otherwise hide the stillframe contents and transition away the image
 				else {
 					this.textbox.setVisible(false)
 					this.background.setVisible(false)
