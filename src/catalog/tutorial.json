@@ -75,16 +75,16 @@
   {
     "italic": "",
     "bold": "If you play a card with Inspire, you will have extra breath on the next round.\n\nPlay Stars now so you can afford Mercy next round.",
-    "align": "bottom"
+    "align": "bottom",
+    "final": true
   },
-  null,
   null,
   null,
   null,
   null,
   {
     "italic": "",
-    "bold": "With your 3 breath you can afford Mercy.\n\nBut gaining extra breath here would probably just be a waste...",
+    "bold": "With your 3 breath you can afford Mercy.\n\nBut if you gained extra breath from Stars, you might have nothing to spend it on next round...",
     "align": "center",
     "final": true
   },
@@ -101,7 +101,8 @@
   {
     "italic": "",
     "bold": "With just a Dove, you probably can't win this round. But if you play enough Stars you can play Uprising next round to win for sure!",
-    "align": "center"
+    "align": "center",
+    "final": true
   },
   null
 ],
@@ -121,15 +122,16 @@
     "bold": "If your deck is empty when you would draw a card, your discard pile is shuffled to form a new deck.",
     "align": "center"
   },
-  null,
-  null,
-  null,
-  null,
-  null,
   {
     "italic": "",
     "bold": "Nourish will make the next card you resolve worth extra points, even if that card is played on a future round. Use it carefully to get points when you need them.",
     "align": "center"
+  },
+  {
+    "italic": "",
+    "bold": "From here on it's up to you, show me what you've learned!",
+    "align": "center",
+    "final": true
   },
   null
 ]]

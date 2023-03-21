@@ -235,22 +235,22 @@ export default class TutorialGameScene extends AdventureGameScene {
 		// Hide pass until a point
 		if (this.progress === 0) {
 			this.view.pass['tutorialDisablePass']()
-		} else if (this.progress === 8) {
+		} else if (this.progress === 7) {
 			this.view.pass['tutorialEnablePass']()
 		}
 
 		// Hide different elements on the screen based on progress
 		switch (this.progress) {
-			case 6:
+			case 5:
 			this.view.ourHand.cards[1].setOnClick(() => {
-				this.signalError("It's better to play Mercy then pass...")
+				this.signalError("Try playing Mercy then passing...")
 			})
 			break
 
-			case 8:
-			case 10:
+			case 7:
+			case 9:
 			this.view.ourHand.cards[0].setOnClick(() => {
-				this.signalError("It's better to pass...")
+				this.signalError("Try passing instead...")
 			})
 			break
 		}

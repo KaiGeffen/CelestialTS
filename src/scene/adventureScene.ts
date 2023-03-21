@@ -159,7 +159,7 @@ export default class AdventureScene extends BaseScene {
 		new Buttons.Basic(this, x, y, 'Help', () => {
 			this.scene.launch('MenuScene', {
 				menu: 'help',
-				callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t0`, missionID: 0})},
+				callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t2`, missionID: 2})},
 			})
 		})
 		.setDepth(10)
@@ -189,7 +189,7 @@ export default class AdventureScene extends BaseScene {
 			.setInteractive()
 			.on('pointerdown', () => {
 				this.sound.play('click')
-				
+
 				const camera = this.cameras.main
 				camera.centerOn(btn.icon.x, btn.icon.y)
 				AdventureScene.rememberCoordinates(camera)
