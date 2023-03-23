@@ -80,8 +80,15 @@ export default class HomeScene extends BaseScene {
     const width = (Space.windowWidth - Space.pad * 3)/2
     const height = Space.windowHeight - headerHeight - Space.pad * 2
 
-    this.createAdventureButton(width, height)
-    this.createDeckbuilderButton(width, height)
+    // If tutorial complete, show normal buttons, otherwise show tutorial button
+    const missions = UserSettings._get('completedMissions')
+    if (missions[intro.length - 1]) {
+      this.createAdventureButton(width, height)
+      this.createDeckbuilderButton(width, height)
+    }
+    else {
+      this.createTutorialButton(height)      
+    }
   }
 
   private createAdventureButton(width: number, height: number): void {
@@ -136,6 +143,56 @@ export default class HomeScene extends BaseScene {
 
     // Text over the rectangle
     this.add.text(rectLeft.x - rectLeft.displayWidth/2, rectLeft.y + rectLeft.displayHeight/2, 'Adventure', Style.homeButtonText)
+    .setOrigin(0.5)
+    .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
+  }
+
+  private createTutorialButton(height: number): void {
+    const x = Space.pad
+    const y = headerHeight + Space.pad
+    const width = Space.windowWidth - Space.pad * 2
+
+    // Free Play button
+    let rectRight = this.add.rectangle(x,
+      y,
+      width,
+      height,
+      Color.backgroundLight,
+      1)
+    .setOrigin(0)
+
+    // Container with visual elements of the button
+    let container = this.add.container(x, y)
+
+    const names = ['Jules', 'Mia', 'Kitz']
+    for (let i = 0; i < names.length; i++) {
+      const offset = (i - 1) * (Space.avatarWidth + Space.pad)
+      const avatar = this.add.sprite(width/2 + offset, height/2, `avatar-${names[i]}Full`)
+
+      container.add(avatar)
+    }
+
+    // While not hovered, rectangle is greyed
+    rectRight.setInteractive()
+    .on('pointerover', () => {
+      container.iterate((child) => {
+        child.setTint(0x444444)
+      })
+    })
+    .on('pointerout', () => {
+      container.iterate((child) => {
+        child.clearTint()
+      })
+    })
+    .on('pointerdown', () => {
+      this.sound.play('click')
+      this.doTutorial()
+    })
+
+    container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight)
+
+    // Text over the rectangle
+    this.add.text(rectRight.x + rectRight.displayWidth/2, rectRight.y + rectRight.displayHeight/2, 'Tutorial', Style.homeButtonText)
     .setOrigin(0.5)
     .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
   }
@@ -276,18 +333,26 @@ export default class HomeScene extends BaseScene {
 
     this.beforeExit()
 
-    // If user hasn't completed the tutorial, jump to the last tutorial they haven't completed
+    // Otherwise, go to the adventure scene map
+    this.scene.start("AdventureScene")
+  }
+
+  private doTutorial(): void {
+    // If the loader hasn't finished loading the story assets, error
+    if (!Loader.postLoadComplete) {
+      this.signalError("Assets for story mode are still loading...")
+      return
+    }
+
+    this.beforeExit()
+    
     const missions = UserSettings._get('completedMissions')
     for (let i = 0; i < intro.length; i++) {
-
       // If this tutorial mission hasn't been completed, jump to that mission
       if (!missions[i]) {
         this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${i}`, missionID: i})
         return
       }
     }
-
-    // Otherwise, go to the adventure scene map
-    this.scene.start("AdventureScene")
   }
 }

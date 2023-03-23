@@ -11,6 +11,9 @@ import { getCard } from "../catalog/catalog"
 // adventureData.reverse()
 import { adventureData } from "../adventures/adventure"
 
+
+// TODO Remove the arrow images because drag is now default
+
 // TODO Make consistent with Journey (Change adventure to journey or vice verca)
 export default class AdventureScene extends BaseScene {
 	panDirection
@@ -87,8 +90,8 @@ export default class AdventureScene extends BaseScene {
 			const camera = this.cameras.main
 			const pointer = this.input.activePointer
 
-			const dx = (pointer.x - pointer.downX) * delta / 20
-			const dy = (pointer.y - pointer.downY) * delta / 20
+			const dx = (pointer.x - pointer.downX) * delta / 100
+			const dy = (pointer.y - pointer.downY) * delta / 100
 
 			AdventureScene.moveCamera(camera, dx, dy)
 		}
@@ -164,6 +167,7 @@ export default class AdventureScene extends BaseScene {
 			.setOnClick(() => {
 				this.panDirection = arrow.direction
 			})
+			.setAlpha(0)
 		}
 	}
 
