@@ -13,6 +13,7 @@ import MenuScene from '../menuScene'
 import { rulebookString } from '../../catalog/rulebook'
 import { creditsString } from '../../catalog/credits'
 import Icons from "../../lib/buttons/icons"
+import intro from "../../adventures/intro.json"
 
 
 const width = 750
@@ -154,6 +155,13 @@ export default class OptionsMenu extends Menu {
 		.addBackground(this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight))
 		.hide()
 
+		// Allow user to skip Tutorial, if they haven't completed it
+		const missions = UserSettings._get('completedMissions')
+		if (!missions[intro.length - 1]) {
+			sizer.add(this.createSkipTutorial(), {expand: true})
+			.addSpace()
+		}
+
 		sizer
 		.add(this.createAutopass(), {expand: true})
 		.addSpace()
@@ -244,7 +252,33 @@ export default class OptionsMenu extends Menu {
 
 		return scrollable
 	}
+	
 	// Elements within the panels:
+	private createSkipTutorial() {
+		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+
+		let txtHint = this.scene.add.text(0, 0, 'Skip Tutorial:', Style.basic)
+		sizer.add(txtHint)
+		sizer.addSpace()
+
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
+		let btn = new Buttons.Basic(container, 0, 0, 'Skip', () => {
+			for (let i = 0; i < intro.length; i++) {
+				this.scene.scene.start('MenuScene', {
+		          menu: 'confirm',
+		          callback: () => {
+		            UserSettings._setIndex('completedMissions', i, true)
+					this.scene.scene.start('HomeScene')
+		          },
+		          hint: 'skip the tutorial'
+		        })
+			}
+		})
+		sizer.add(container)
+
+		return sizer
+	}
+	
 	private createAutopass() {
 		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
