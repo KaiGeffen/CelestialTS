@@ -158,7 +158,7 @@ export default class OptionsMenu extends Menu {
 		// Allow user to skip Tutorial, if they haven't completed it
 		const missions = UserSettings._get('completedMissions')
 		if (!missions[intro.length - 1]) {
-			sizer.add(this.createSkipTutorial(), {expand: true})
+			sizer.add(this.createSkipTutorial(activeScene), {expand: true})
 			.addSpace()
 		}
 
@@ -254,7 +254,7 @@ export default class OptionsMenu extends Menu {
 	}
 	
 	// Elements within the panels:
-	private createSkipTutorial() {
+	private createSkipTutorial(activeScene: BaseScene) {
 		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
 		let txtHint = this.scene.add.text(0, 0, 'Skip Tutorial:', Style.basic)
@@ -268,7 +268,13 @@ export default class OptionsMenu extends Menu {
 		          menu: 'confirm',
 		          callback: () => {
 		            UserSettings._setIndex('completedMissions', i, true)
-					this.scene.scene.start('HomeScene')
+					
+					// Stop the other active scene
+					activeScene.beforeExit()
+					activeScene.scene.stop()
+
+					// Stop this scene and start the home scene
+					this.scene.scene.start("HomeScene")
 		          },
 		          hint: 'skip the tutorial'
 		        })
