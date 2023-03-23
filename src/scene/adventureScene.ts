@@ -21,6 +21,8 @@ export default class AdventureScene extends BaseScene {
 
 	incompleteIndicators: Button[] = []
 
+	isDragging = false
+
 	constructor() {
 		super({
 			key: "AdventureScene"
@@ -34,7 +36,8 @@ export default class AdventureScene extends BaseScene {
 		this.map = this.add.image(0, 0, 'story-Map')
 			.setOrigin(0)
 			.setInteractive()
-
+		this.enableDrag()
+		
 		// Bound camera on this map
 		this.cameras.main.setBounds(0, 0, this.map.width, this.map.height)
 
@@ -79,6 +82,17 @@ export default class AdventureScene extends BaseScene {
 			AdventureScene.moveCamera(this.cameras.main, this.panDirection[0], this.panDirection[1])	
 		}
 
+		// Dragging
+		if (this.isDragging && this.panDirection === undefined) {
+			const camera = this.cameras.main
+			const pointer = this.input.activePointer
+
+			const dx = (pointer.x - pointer.downX) * delta / 20
+			const dy = (pointer.y - pointer.downY) * delta / 20
+
+			AdventureScene.moveCamera(camera, dx, dy)
+		}
+		
 		// Switch the frame of the animated elements every frame
 		// Go back and forth from frame 0 to 1
 		[...this.animatedBtns, ...this.incompleteIndicators].forEach(btn => {
@@ -384,6 +398,17 @@ export default class AdventureScene extends BaseScene {
 
 		this.input.on('gameobjectwheel', (pointer, gameObject, dx, dy, dz, event) => {
 			AdventureScene.moveCamera(camera, dx, dy)
+		})
+	}
+
+	private enableDrag(): void {
+		// Map can be dragged
+		this.input.setDraggable(this.map)
+		.on('dragstart', () => {
+			this.isDragging = true
+		})
+		.on('dragend', () => {
+			this.isDragging = false
 		})
 	}
 
