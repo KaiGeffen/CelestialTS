@@ -325,12 +325,6 @@ export default class HomeScene extends BaseScene {
   }
 
   private doAdventure(): void {
-    // If the loader hasn't finished loading the story assets, error
-    if (!Loader.postLoadComplete) {
-      this.signalError("Assets for story mode are still loading...")
-      return
-    }
-
     this.beforeExit()
 
     // Otherwise, go to the adventure scene map
@@ -338,12 +332,6 @@ export default class HomeScene extends BaseScene {
   }
 
   private doTutorial(): void {
-    // If the loader hasn't finished loading the story assets, error
-    if (!Loader.postLoadComplete) {
-      this.signalError("Assets for story mode are still loading...")
-      return
-    }
-
     this.beforeExit()
     
     const missions = UserSettings._get('completedMissions')

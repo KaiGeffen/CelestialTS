@@ -52,9 +52,6 @@ const prefixMap: PrefixEntry[] = [
 		prefix: 'bg-',
 		list: backgroundData,
 	},
-]
-
-const postLoadPrefixMap: PrefixEntry[] = [
 	{
 		fp: 'story/',
 		prefix: 'story-',
@@ -96,31 +93,12 @@ export default class Loader {
 		Loader.bulkLoad(scene)
 
 		scene.load.start()
-	}
 
-	// Whether the full version of resources has been loaded
-	static postLoadStarted = false
-	static postLoadComplete = false
-
-	// Load any textures that only start loading after the preload scene ends
-	static postLoad(scene: Phaser.Scene): void {
-		if (Loader.postLoadStarted) {
-			return
-		}
-		Loader.postLoadStarted = true
-
-		// Generate the animations for a match results
-		Loader.loadAnimations(scene)
-
-		// Load all of the bg images as full sized version
-		postLoadPrefixMap.forEach((assetType: PrefixEntry) => {
-			assetType.list.forEach((name) => {
-				const s = `${assetType.prefix}${name}`
-				scene.load.image(s, `${assetType.fp}${name}.${EXTENSION}`)
-			})
+		// After loading is complete, do anything that relies on the loaded resources
+		scene.load.on('complete', () => {
+			// Generate the animations for a match results
+			Loader.loadAnimations(scene)
 		})
-
-		scene.load.start()
 	}
 
 	static loadAnimations(scene: Phaser.Scene): void {

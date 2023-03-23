@@ -10,7 +10,7 @@ export default class BasicButton extends Button {
 		y: number,
 		text: string,
 		f: () => void = function() {},
-		playSound: boolean = true
+		muteClick: boolean = false
 		)
 	{
 		super(within, x, y, 
@@ -25,7 +25,8 @@ export default class BasicButton extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			muteClick: muteClick,
 		})
 	}
 

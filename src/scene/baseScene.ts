@@ -107,7 +107,7 @@ export default class BaseScene extends SharedBaseScene {
 		}
 
 		// Menu button
-		this.btnOptions = new Icons.Options(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu(), false)
+		this.btnOptions = new Icons.Options(this, Space.windowWidth - Space.pad, Space.pad, this.openMenu(), true)
 		.setOrigin(1, 0)
 		.setDepth(10)
 		.setNoScroll()

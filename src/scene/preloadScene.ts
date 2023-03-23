@@ -60,10 +60,7 @@ export class SigninScene extends Phaser.Scene {
 		// Make the buttons unclickable
 		this.guestButton.disable()
 
-		// If the core assets have been loaded, start home scene
-		if (Loader.postLoadStarted) {
-			this.scene.start('HomeScene')
-		}
+		this.scene.start('HomeScene')
 	}
 
 	private createGoogleGSIButton(y: number): void {
@@ -232,35 +229,24 @@ export class PreloadScene extends SigninScene {
 
 		// Update the progress bar
 		this.load.on('progress', function (value) {
-			if (!Loader.postLoadStarted) {
-				progressBar.clear()
-				progressBar.fillStyle(Color.progressFill, 1)
-				progressBar.fillRect(
-					x + Space.pad,
-					y + Space.pad,
-					(width - Space.pad*2) * value,
-					height - Space.pad*2
-					)
-			}
+			progressBar.clear()
+			progressBar.fillStyle(Color.progressFill, 1)
+			progressBar.fillRect(
+				x + Space.pad,
+				y + Space.pad,
+				(width - Space.pad*2) * value,
+				height - Space.pad*2
+				)
 		})
 
 		this.load.on('complete', () => {
-			// Only do this the first time load completes
-			if (!Loader.postLoadStarted) {
-				Loader.postLoad(this)
+			progressBox.destroy()
+			progressBar.destroy()
+			txtLoading.destroy()
 
-				progressBox.destroy()
-				progressBar.destroy()
-				txtLoading.destroy()
-
-				// If user has already signed in, start home scene
-				if (this.signedInOrGuest) {
-					this.scene.start('HomeScene')
-				}
-			}
-			// When the post load completes, set a flag
-			else if (!Loader.postLoadComplete) {
-				Loader.postLoadComplete = true
+			// If user has already signed in, start home scene
+			if (this.signedInOrGuest) {
+				this.scene.start('HomeScene')
 			}
 		})
 	}
