@@ -103,7 +103,8 @@ export default class HomeScene extends BaseScene {
     // Add tweens that make the map circle
     const time = 30000
 
-    let map = this.add.sprite(0, 0, 'bg-Map Small')
+    let map = this.add.sprite(0, 0, 'story-Map')
+    .setScale(0.5)
     .setOrigin(0)
 
     let tweens: Phaser.Tweens.Tween[] = []
