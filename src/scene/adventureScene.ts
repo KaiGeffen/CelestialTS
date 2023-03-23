@@ -19,7 +19,7 @@ export default class AdventureScene extends BaseScene {
 
 	animatedBtns: Button[]
 
-	incompleteIndicators: Phaser.GameObjects.Image[] = []
+	incompleteIndicators: Button[] = []
 
 	constructor() {
 		super({
@@ -184,16 +184,18 @@ export default class AdventureScene extends BaseScene {
 	private createIncompleteIndicators(): void {
 		this.incompleteIndicators = []
 		this.animatedBtns.forEach(btn => {
-			const indicator = this.scene.scene.add.image(0, 0, 'icon-Mission')
-			.setScale(0.5)
-			.setInteractive()
-			.on('pointerdown', () => {
-				this.sound.play('click')
+			const indicator = new Buttons.Mission(this,
+				0,
+				0,
+				() => {
+					const camera = this.cameras.main
+					camera.centerOn(btn.icon.x, btn.icon.y)
+					AdventureScene.rememberCoordinates(camera)
+				},
+				'mission',
+				true)
+			.setNoScroll()
 
-				const camera = this.cameras.main
-				camera.centerOn(btn.icon.x, btn.icon.y)
-				AdventureScene.rememberCoordinates(camera)
-			})
 			this.incompleteIndicators.push(indicator)
 		})
 	}
@@ -386,13 +388,14 @@ export default class AdventureScene extends BaseScene {
 	}
 
 	private adjustIndicators(): void {
+		// Find the intersection between a line from the btn to camer's center
+		const camera = this.cameras.main
+		const rect = camera.worldView
+
 		// Adjust each indicator
 		for (let i = 0; i < this.animatedBtns.length; i++) {
 			const btn = this.animatedBtns[i]
 
-			// Find the intersection between a line from the btn to camer's center
-			const camera = this.cameras.main
-			const rect = camera.worldView
 			// TODO Use set bounds of camera to lock it to the map image instead of math
 			const line = new Phaser.Geom.Line(btn.icon.x, btn.icon.y, camera.scrollX + camera.centerX, camera.scrollY + camera.centerY)
 
@@ -407,7 +410,9 @@ export default class AdventureScene extends BaseScene {
 				const intersect = intersects[0]
 
 				this.incompleteIndicators[i].setAlpha(1)
-				.setPosition(intersect.x, intersect.y)
+				.setPosition(
+					intersect.x - camera.scrollX,
+					intersect.y - camera.scrollY)
 			}
 		}
 	}

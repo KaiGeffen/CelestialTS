@@ -198,7 +198,9 @@ class GameScene extends BaseScene {
 
 		// Pass button
 		view.pass.setCallback(() => {
-			net.playCard(10)
+			if (!this.paused) {
+				net.playCard(10)
+			}
 		})
 		view.pass.setShowResultsCallback(() => {
 			that.view.results.show()

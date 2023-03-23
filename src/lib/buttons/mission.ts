@@ -9,7 +9,8 @@ export default class MissionButton extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
 		f: () => void = function() {},
-		nodeType: string)
+		nodeType: string,
+		small = false)
 	{
 		super(within, x, y, 
 		{
@@ -21,5 +22,9 @@ export default class MissionButton extends Button {
 				click: f
 			}
 		})
+
+		if (small) {
+			this.icon.setScale(0.5)
+		}
 	}
 }
