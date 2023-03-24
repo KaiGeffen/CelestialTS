@@ -263,22 +263,23 @@ export default class OptionsMenu extends Menu {
 
 		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
 		let btn = new Buttons.Basic(container, 0, 0, 'Skip', () => {
-			for (let i = 0; i < intro.length; i++) {
-				this.scene.scene.start('MenuScene', {
-		          menu: 'confirm',
-		          callback: () => {
-		            UserSettings._setIndex('completedMissions', i, true)
-					
-					// Stop the other active scene
-					activeScene.beforeExit()
-					activeScene.scene.stop()
+			this.scene.scene.start('MenuScene', {
+	          menu: 'confirm',
+	          callback: () => {
+	          	// Complete each mission in the intro
+	          	for (let i = 0; i < intro.length; i++) {
+	            	UserSettings._setIndex('completedMissions', i, true)
+	            }
+				
+				// Stop the other active scene
+				activeScene.beforeExit()
+				activeScene.scene.stop()
 
-					// Stop this scene and start the home scene
-					this.scene.scene.start("HomeScene")
-		          },
-		          hint: 'skip the tutorial'
-		        })
-			}
+				// Stop this scene and start the home scene
+				this.scene.scene.start("HomeScene")
+	          },
+	          hint: 'skip the tutorial'
+	        })
 		})
 		sizer.add(container)
 
