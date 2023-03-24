@@ -33,12 +33,13 @@ export default class DecklistButton extends Button {
 			}
 		})
 
-		// Adjust the font 
-		this.txt.setColor('#FABD5D')
-
 		// Also add an x button on top
 		this.btnX = new Icons.SmallX(within, x - 75, y, xCallback)
 		this.txt.setOrigin(0, 0.5)
+
+		// Adjust the font 
+		this.txt.setColor('#FABD5D')
+		.setFixedSize(this.icon.width/2 - this.txt.x - 5, 0)
 	}
 
 	setDepth(value: number): Button {
