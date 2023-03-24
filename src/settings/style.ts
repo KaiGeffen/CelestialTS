@@ -259,6 +259,5 @@ export const BBStyle: Record<string, any> = {
     fontSize: FontSettings.huge.size,
     color: '#353F4E',
     halign: 'center',
-    fixedHeight: 50,
   },
 }

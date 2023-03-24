@@ -127,13 +127,16 @@ export default class DeckRegion {
 		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
 			width: width,
 			align: Mobile ? 'left' : 'center',
-			space: {bottom: Space.padSmall},
 		})
 		sizer.add(sizerTop)
 
 		// Add the deck's name
 		this.txtDeckName = this.scene.rexUI.add.BBCodeText()
-		.setStyle({...BBStyle.deckName, ...{fixedWidth: width}})
+		.setStyle({...BBStyle.deckName, ...{
+			fixedWidth: width,
+			// NOTE This handles the padding, and prevents text cropping
+			fixedHeight: 50 + Space.padSmall,
+		}})
 		.setOrigin(0.5)
 
 		// If on mobile, add a back button
