@@ -87,7 +87,7 @@ export default class CatalogRegion {
     let panel = superPanel.getElement('panel')
     scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
       // Return if the pointer is outside of the panel
-      if (!panel.getBounds().contains(pointer.x, pointer.y)) {
+      if (pointer.x < panel.getLeftCenter().x) {
         return
       }
 
