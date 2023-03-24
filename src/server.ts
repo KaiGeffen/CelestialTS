@@ -17,7 +17,7 @@ var packOpenCallback: (cards: Card[]) => void = undefined
 
 export default class Server {
 	// Log in with the server for user with given OAuth token
-	static login(payload: any, game: Phaser.Game) {
+	static login(payload: any, game: Phaser.Game, callback = () => {}) {
 		let that = this
 
 		console.log('Log in to server with payload:')
@@ -58,6 +58,7 @@ export default class Server {
 
 				case 'send_user_data':
 					that.loadUserData(msg.value)
+					callback()
 					break
 
 				// Prompt the user to send initial values to set up their account
