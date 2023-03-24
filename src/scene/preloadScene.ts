@@ -60,7 +60,9 @@ export class SigninScene extends Phaser.Scene {
 		// Make the buttons unclickable
 		this.guestButton.disable()
 
-		this.scene.start('HomeScene')
+		if (!this.load.isLoading()) {
+			this.scene.start('HomeScene')
+		}
 	}
 
 	private createGoogleGSIButton(y: number): void {
