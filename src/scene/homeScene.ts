@@ -87,7 +87,7 @@ export default class HomeScene extends BaseScene {
       this.createDeckbuilderButton(width, height)
     }
     else {
-      this.createTutorialButton(height)      
+      this.createTutorialButton()      
     }
   }
 
@@ -148,10 +148,16 @@ export default class HomeScene extends BaseScene {
     .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
   }
 
-  private createTutorialButton(height: number): void {
-    const x = Space.pad
-    const y = headerHeight + Space.pad
-    const width = Space.windowWidth - Space.pad * 2
+  private createTutorialButton(): void {
+    const names = ['Jules', 'Mia', 'Kitz']
+
+    const x = Space.windowWidth/2
+    const y = headerHeight + (Space.windowHeight - headerHeight)/2
+    const width = Math.min(
+      Space.windowWidth - Space.pad * 2,
+      Space.avatarWidth * (names.length) + Space.pad * (names.length + 1)
+      )
+    const height = Space.avatarHeight + Space.pad * 2
 
     // Free Play button
     let rectRight = this.add.rectangle(x,
@@ -160,15 +166,13 @@ export default class HomeScene extends BaseScene {
       height,
       Color.backgroundLight,
       1)
-    .setOrigin(0)
 
     // Container with visual elements of the button
     let container = this.add.container(x, y)
 
-    const names = ['Jules', 'Mia', 'Kitz']
     for (let i = 0; i < names.length; i++) {
       const offset = (i - 1) * (Space.avatarWidth + Space.pad)
-      const avatar = this.add.sprite(width/2 + offset, height/2, `avatar-${names[i]}Full`)
+      const avatar = this.add.sprite(offset, 0, `avatar-${names[i]}Full`)
 
       container.add(avatar)
     }
@@ -193,7 +197,10 @@ export default class HomeScene extends BaseScene {
     container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight)
 
     // Text over the rectangle
-    this.add.text(rectRight.x + rectRight.displayWidth/2, rectRight.y + rectRight.displayHeight/2, 'Tutorial', Style.homeButtonText)
+    this.add.text(rectRight.x,
+      rectRight.y,
+      'Tutorial',
+      Style.homeButtonText)
     .setOrigin(0.5)
     .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
   }

@@ -63,6 +63,7 @@ export var Space = {
   cutoutHeight: 49,
 
   avatarWidth: 400,
+  avatarHeight: 600,
   avatarSize: 130,
   iconSize: 32,
 
