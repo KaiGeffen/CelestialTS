@@ -89,7 +89,8 @@ export class SigninScene extends Phaser.Scene {
 				const payload: any = jwt_decode(token.credential)
 
 				// Send the jti to confirm a connection
-				Server.login(payload, this.game, this.onOptionClick)
+				// After server responds, complete login
+				Server.login(payload, this.game, () => this.onOptionClick())
 			}
 		})
 
