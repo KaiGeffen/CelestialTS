@@ -20,7 +20,9 @@ class Options extends Button {
 			callbacks: {
 				click: f
 			},
-			muteClick: true,
+			sound: {
+				mute: true,
+			},
 		})
 	}
 }
@@ -28,7 +30,8 @@ class Options extends Button {
 class SmallX extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = () => {})
+		f: () => void = () => {},
+		muteClick: boolean = false)
 	{
 		super(within, x, y, 
 		{
@@ -39,7 +42,9 @@ class SmallX extends Button {
 			callbacks: {
 				click: f
 			},
-			muteClick: true,
+			sound: {
+				mute: muteClick,
+			},
 		})
 	}
 }
@@ -78,7 +83,9 @@ class Edit extends Button {
 			callbacks: {
 				click: f
 			},
-			muteClick: true,
+			sound: {
+				mute: true,
+			},
 		})
 	}
 }
@@ -98,7 +105,9 @@ class Distribution extends Button {
 			callbacks: {
 				click: f
 			},
-			muteClick: true,
+			sound: {
+				mute: true,
+			},
 		})
 	}
 }
@@ -118,7 +127,9 @@ class New extends Button {
 			callbacks: {
 				click: f
 			},
-			muteClick: true,
+			sound: {
+				mute: true,
+			},
 		})
 	}
 }

@@ -29,11 +29,11 @@ export default class DecklistButton extends Button {
 			},
 			callbacks: {
 				click: mainCallback
-			}
+			},
 		})
 
 		// Also add an x button on top
-		this.btnX = new Icons.SmallX(within, x - 75, y, xCallback)
+		this.btnX = new Icons.SmallX(within, x - 75, y, xCallback, true)
 		this.txt.setOrigin(0, 0.5)
 
 		// Adjust the font 

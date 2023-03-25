@@ -31,7 +31,9 @@ export default class AvatarButton extends Button {
 					this.scene.sound.play(`voice-${this.name}`)
 				}
 			},
-			muteClick: true,
+			sound: {
+				mute: true,
+			},
 		})
 
 		this.name = name

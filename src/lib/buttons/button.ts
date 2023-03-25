@@ -31,7 +31,9 @@ interface Config {
 		hover?: () => void,		
 		exit?: () => void,
 	},
-	muteClick?: boolean,
+	sound?: {
+		mute?: boolean,
+	},
 }
 
 const ConfigDefaults = {
@@ -40,13 +42,12 @@ const ConfigDefaults = {
 		interactive: false,
 		style: Style.button,
 		hitArea: undefined,
-		// TODO Call this offsetY
 		offsetX: 0,
 		offsetY: 0,
 		noGlow: false,
 	},
 	icon: {
-		name: '',
+		name: undefined,
 		interactive: false,
 		offsetY: 0,
 		circular: false,
@@ -56,7 +57,9 @@ const ConfigDefaults = {
 		hover: () => {},
 		exit: () => {},
 	},
-	muteClick: false,
+	sound: {
+		mute: false,
+	},
 }
 
 export default class Button {
@@ -85,10 +88,11 @@ export default class Button {
 		)
 	{
 		// Load config defaults
+		config = {...ConfigDefaults, ...config}
 		for (const [key, value] of Object.entries(config)) {
 			config[key] = {...ConfigDefaults[key], ...value}
 		}
-		this.muteClick = config.muteClick
+		this.muteClick = config.sound.mute
 
 		// Define scene
 		if (within instanceof Phaser.Scene) {
@@ -99,7 +103,7 @@ export default class Button {
 		}
 
 		// Create icon if it exists
-		if (config.icon !== undefined) {
+		if (config.icon.name !== undefined) {
 			let filename = config.icon.name.includes('-') ? config.icon.name : `icon-${config.icon.name}`
 			this.icon = this.scene.add.image(x, y + config.icon.offsetY, filename)
 			

@@ -9,7 +9,7 @@ export default class BasicButton extends Button {
 		x: number,
 		y: number,
 		text: string,
-		f: () => void = function() {},
+		f: () => void = () => {},
 		muteClick: boolean = false
 		)
 	{
@@ -26,7 +26,9 @@ export default class BasicButton extends Button {
 			callbacks: {
 				click: f
 			},
-			muteClick: muteClick,
+			sound: {
+				mute: muteClick,
+			},
 		})
 	}
 
