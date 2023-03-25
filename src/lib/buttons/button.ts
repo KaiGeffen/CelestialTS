@@ -15,14 +15,14 @@ interface Config {
 		text: string,
 		interactive: boolean,
 		style?: Phaser.Types.GameObjects.Text.TextStyle,
-		offset?: number,
 		offsetX?: number,
+		offsetY?: number,
 		hitArea?: any // TODO
 	},
 	icon?: {
 		name: string,
 		interactive: boolean,
-		offset?: number,
+		offsetY?: number,
 		noGlow?: boolean,
 		circular?: boolean,
 	},
@@ -41,14 +41,14 @@ const ConfigDefaults = {
 		style: Style.button,
 		hitArea: undefined,
 		// TODO Call this offsetY
-		offset: 0,
 		offsetX: 0,
+		offsetY: 0,
 		noGlow: false,
 	},
 	icon: {
 		name: '',
 		interactive: false,
-		offset: 0,
+		offsetY: 0,
 		circular: false,
 	},
 	callbacks: {
@@ -100,10 +100,8 @@ export default class Button {
 
 		// Create icon if it exists
 		if (config.icon !== undefined) {
-			let offset = config.icon.offset === undefined ? 0 : config.icon.offset
-			
 			let filename = config.icon.name.includes('-') ? config.icon.name : `icon-${config.icon.name}`
-			this.icon = this.scene.add.image(x, y + offset, filename)
+			this.icon = this.scene.add.image(x, y + config.icon.offsetY, filename)
 			
 			if (!config.icon.noGlow) {
 				this.icon.on('pointerover', () => this.glow())
@@ -129,7 +127,7 @@ export default class Button {
 		if (config.text !== undefined) {
 			this.txt = this.scene.add.text(
 				x + config.text.offsetX,
-				y + config.text.offset,
+				y + config.text.offsetY,
 				config.text.text,
 				config.text.style)
 			.setOrigin(0.5)

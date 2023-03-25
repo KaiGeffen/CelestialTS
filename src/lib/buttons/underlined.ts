@@ -22,7 +22,7 @@ export default class UButton extends Button {
 			icon: {
 				name: 'Underline',
 				interactive: false,
-				offset: 20
+				offsetY: 20
 			},
 			callbacks: {
 				click: f

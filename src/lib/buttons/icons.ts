@@ -191,7 +191,7 @@ class Pass extends Button {
 				interactive: false,
 				style: Style.pass,
 				offsetX: 7,
-				offset: 9,
+				offsetY: 9,
 			},
 			icon: {
 				name: 'Sun',

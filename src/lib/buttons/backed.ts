@@ -19,7 +19,7 @@ export default class BackedButton extends Button {
 			text: {
 				text: text.toUpperCase(),
 				interactive: false,
-				offset: -4,
+				offsetY: -4,
 			},
 			icon: {
 				name: image,
