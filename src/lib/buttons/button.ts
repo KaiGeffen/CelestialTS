@@ -106,9 +106,10 @@ export default class Button {
 			if (!config.icon.noGlow) {
 				this.icon.on('pointerover', () => this.glow())
 				.on('pointerout', () => this.stopGlow())
+
+				// When menu opens, stop glow
+				this.scene.scene.get('MenuScene').events.on('start', () => this.stopGlow())
 			}
-			// TODO Add a config option to clear glow (Useful if a menu is opening onclick)
-			// .on('pointerdown', () => this.icon.clearTint(), this)
 
 			// Set interactive
 			if (config.icon.interactive) {
