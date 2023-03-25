@@ -1,7 +1,6 @@
 import BasicButton from './basic'
 import BackedButton from './backed'
 import AvatarButton from './avatar'
-import NewDeckButton from './newDeck'
 import DecklistButton from './decklist'
 import TextButton from './text'
 import MissionButton from './mission'
@@ -14,7 +13,6 @@ export default class Buttons {
 	static Basic = BasicButton
 	static Backed = BackedButton
 	static Avatar = AvatarButton
-	static NewDeck = NewDeckButton
 	static Decklist = DecklistButton
 	static Text = TextButton
 	static Stacks = {

@@ -7,7 +7,6 @@ import { Space, Style, Color } from '../../settings/settings'
 import Icons from './icons'
 
 
-// TODO Temporary
 export default class DecklistButton extends Button {
 	btnX: Button
 

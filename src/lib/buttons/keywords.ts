@@ -126,7 +126,6 @@ export class SightButton extends KeywordButton {
 			}
 		})
 
-		// TODO Make Sight button look better
 		this.txt.setPosition(x + 11, y - 15)
 	}
 
