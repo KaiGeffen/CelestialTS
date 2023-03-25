@@ -110,7 +110,7 @@ export default class DeckRegion {
 
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
 		let containerStart = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize)
-		this.btnStart = new Buttons.Basic(containerStart, 0, 0, '0/15', startCallback)
+		this.btnStart = new Buttons.Basic(containerStart, 0, 0, '0/15', startCallback, true)
 		sizer.add(containerStart)
 		
 		// Add this deck's avatar

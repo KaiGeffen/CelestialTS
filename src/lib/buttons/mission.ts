@@ -20,7 +20,10 @@ export default class MissionButton extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			sound: {
+				mute: nodeType === 'Mission' ? false : true
+			},
 		})
 
 		if (small) {

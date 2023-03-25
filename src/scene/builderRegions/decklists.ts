@@ -163,8 +163,7 @@ export default class DecklistsRegion {
 					callback: this.premadeCallback(),
 					exitCallback: () => this.scene.setSearchVisible(true)
 				})
-			}
-			)
+			}, true)
 		sizer.add(container)
 
 		let line = this.scene.add.line(0, 0, 0, 0, Space.iconSeparation + Space.pad, 0, Color.line)
