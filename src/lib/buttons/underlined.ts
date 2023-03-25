@@ -8,8 +8,7 @@ export default class UButton extends Button {
 
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number, text: string,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {})
 	{
 		super(within, x, y, 
 		{

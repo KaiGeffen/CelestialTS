@@ -8,8 +8,8 @@ import Button from './button'
 class Options extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -19,7 +19,8 @@ class Options extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			muteClick: true,
 		})
 	}
 }
@@ -27,7 +28,7 @@ class Options extends Button {
 class SmallX extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {})
+		f: () => void = () => {})
 	{
 		super(within, x, y, 
 		{
@@ -37,7 +38,8 @@ class SmallX extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			muteClick: true,
 		})
 	}
 }
@@ -45,8 +47,8 @@ class SmallX extends Button {
 class Share extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -64,8 +66,8 @@ class Share extends Button {
 class Edit extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -75,7 +77,8 @@ class Edit extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			muteClick: true,
 		})
 	}
 }
@@ -83,8 +86,8 @@ class Edit extends Button {
 class Distribution extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -94,7 +97,8 @@ class Distribution extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			muteClick: true,
 		})
 	}
 }
@@ -102,8 +106,8 @@ class Distribution extends Button {
 class New extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -113,7 +117,8 @@ class New extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			muteClick: true,
 		})
 	}
 }
@@ -121,8 +126,8 @@ class New extends Button {
 class Recap extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -140,8 +145,8 @@ class Recap extends Button {
 class Skip extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -160,7 +165,7 @@ class Arrow extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
 		theta: number, // In 90 degree increments from north
-		f: () => void = function() {})
+		f: () => void = () => {})
 	{
 		super(within, x, y, 
 		{
@@ -181,8 +186,8 @@ class Arrow extends Button {
 class Pass extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -237,8 +242,8 @@ class Pass extends Button {
 class Moon extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -267,8 +272,8 @@ class Moon extends Button {
 class Search extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
@@ -286,8 +291,8 @@ class Search extends Button {
 class Discord extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
-		f: () => void = function() {},
-		playSound: boolean = true)
+		f: () => void = () => {},
+		)
 	{
 		super(within, x, y, 
 		{
