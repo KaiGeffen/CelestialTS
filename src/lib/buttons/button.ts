@@ -38,7 +38,7 @@ const ConfigDefaults = {
 	text: {
 		text: '',
 		interactive: false,
-		style: Style.basic,
+		style: Style.button,
 		hitArea: undefined,
 		// TODO Call this offsetY
 		offset: 0,
@@ -52,8 +52,8 @@ const ConfigDefaults = {
 		circular: false,
 	},
 	callbacks: {
-		click: () => {},
-		hover: () => {},		
+		// click:, // NOTE Needed so that no-op + click sound doesnt play
+		hover: () => {},
 		exit: () => {},
 	},
 	muteClick: false,
@@ -84,6 +84,10 @@ export default class Button {
 		config: Config,
 		)
 	{
+		// Load config defaults
+		for (const [key, value] of Object.entries(config)) {
+			config[key] = {...ConfigDefaults[key], ...value}
+		}
 		this.muteClick = config.muteClick
 
 		// Define scene
@@ -123,11 +127,12 @@ export default class Button {
 
 		// Create text if it exists
 		if (config.text !== undefined) {
-			let offsetX = config.text.offsetX === undefined ? 0 : config.text.offsetX
-			let offset = config.text.offset === undefined ? 0 : config.text.offset
-
-			let style = config.text.style ? config.text.style : Style.button
-			this.txt = this.scene.add.text(x + offsetX, y + offset, config.text.text, style).setOrigin(0.5)
+			this.txt = this.scene.add.text(
+				x + config.text.offsetX,
+				y + config.text.offset,
+				config.text.text,
+				config.text.style)
+			.setOrigin(0.5)
 
 			// Set interactive
 			if (config.text.interactive) {
@@ -150,8 +155,8 @@ export default class Button {
 					this.scene.sound.play('click')				
 				}
 				} : () => {}
-			this.onHover = config.callbacks.hover ? config.callbacks.hover : () => {}
-			this.onExit = config.callbacks.exit ? config.callbacks.exit : () => {}
+			this.onHover = config.callbacks.hover
+			this.onExit = config.callbacks.exit
 		}
 
 		// If within a container, add the objects to that container
