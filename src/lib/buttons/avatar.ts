@@ -6,8 +6,6 @@ import { Color, Time } from '../../settings/settings'
 
 
 // Used when selected an avatar, when editing an avatar, and in a match
-// These have different callbacks, and edit has an additional icon
-// TODO Separate or clarify these roles
 export default class AvatarButton extends Button {
 	name: string
 
