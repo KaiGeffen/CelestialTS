@@ -62,6 +62,10 @@ class GameScene extends BaseScene {
 		this.setCallbacks(this.view, this.net)
 	}
 
+	restart(): void {
+		this.view = new View(this, this.params.avatar || 0)
+	}
+
 	beforeExit() {
 		this.net.exitMatch()
 	}
