@@ -38,7 +38,7 @@ interface Config {
 
 const ConfigDefaults = {
 	text: {
-		text: '',
+		text: undefined,
 		interactive: false,
 		style: Style.button,
 		hitArea: undefined,
@@ -129,7 +129,7 @@ export default class Button {
 		}
 
 		// Create text if it exists
-		if (config.text !== undefined) {
+		if (config.text.text !== undefined) {
 			this.txt = this.scene.add.text(
 				x + config.text.offsetX,
 				y + config.text.offsetY,

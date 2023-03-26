@@ -52,21 +52,16 @@ class AlterDeckMenu extends Menu {
 	private createContent(createCallback: (name: string, avatar: number, deckCode: string) => void) {
 		this.createHeader(this.titleString, width)
 
-		const padding = {space: {
-			left: Space.pad,
-			right: Space.pad,
-		}}
-
-		this.sizer.add(this.createName(), padding)
+		this.sizer.add(this.createName())
 		.addNewLine()
 		.addNewLine()
-		.add(this.createAvatar(), padding)
+		.add(this.createAvatar())
 		.addNewLine()
 		.addNewLine()
-		.add(this.createImport(), padding)
+		.add(this.createImport())
 		.addNewLine()
 		.addNewLine()
-		.add(this.createButtons(createCallback), padding)
+		.add(this.createButtons(createCallback))
 	}
 
 	private createTitle() {
@@ -115,28 +110,20 @@ class AlterDeckMenu extends Menu {
 		let that = this
 
 		let fixSizer = this.scene.rexUI.add.fixWidthSizer({
-			width: Space.avatarSize * 3 + Space.pad * 2,
 			space: { line: Space.pad },
 		})
-		// .addNewLine()
-		// .addNewLine()
-		// .addNewLine()
-		// .addNewLine()
-
-
-		// let txtHint = this.scene.add.text(0, 0, 'Deck Avatar:', Style.basic)
-		// fixSizer.add(txtHint)
 
 		let sizer
 		let avatars = []
 		for (let i = 0; i < 6; i++) {
 			if (i % 3 === 0) {
 				sizer = this.scene.rexUI.add.sizer({
-					space: {item: Space.pad}
+					space: {
+						item: Space.pad,
+					}
 				})
 
 				fixSizer.add(sizer)
-				// .addNewLine()
 			}
 
 			let name = avatarNames[i]
