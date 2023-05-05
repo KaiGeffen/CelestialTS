@@ -88,7 +88,7 @@ export default class MulliganRegion extends Region {
 		let that = this
 
 		return function() {
-			that.scene.sound.play('click')
+			that.scene.playSound('click')
 
 			that.mulliganChoices[i] = !that.mulliganChoices[i]
 			

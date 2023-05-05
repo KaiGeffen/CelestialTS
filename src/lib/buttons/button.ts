@@ -155,7 +155,7 @@ export default class Button {
 				config.callbacks.click()
 
 				if (!this.muteClick) {
-					this.scene.sound.play('click')				
+					this.scene.sound.play('click')
 				}
 				} : () => {}
 			this.onHover = config.callbacks.hover

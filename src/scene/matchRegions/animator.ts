@@ -294,7 +294,7 @@ export default class Animator {
 			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
 			{
 				topCard.show()
-				that.scene.sound.play('shuffle')
+				that.scene.playSound('shuffle')
 			},
 			onComplete: function (tween, targets, _)
 			{
