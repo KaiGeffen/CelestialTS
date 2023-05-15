@@ -365,7 +365,7 @@ export default class OptionsMenu extends Menu {
 			UserSettings._get('volume'),
 			(value) => {
 				UserSettings._set('volume', value)
-				that.scene.sound.volume = value
+				that.scene.sound.volume = value * 5
 			}
 			)
 		sizer.add(slider)
