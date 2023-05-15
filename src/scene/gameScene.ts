@@ -50,8 +50,6 @@ class GameScene extends BaseScene {
 		}
 
 		// Connect with the server
-		console.log('Searching for a match with params:')
-		console.log(params)
 		this.net = new Network(params.deck, this, mmCode, params.avatar)
 
 		// Create the view
@@ -456,7 +454,7 @@ export class View {
 
 	displayState(state: ClientState, isRecap: boolean) {
 		this.searching.hide()
-
+		
 		this.mulligan.displayState(state, isRecap)
 		this.commands.displayState(state, isRecap)
 		
@@ -492,6 +490,10 @@ export class StandardGameScene extends GameScene {
 	constructor (args = {key: 'StandardGameScene', lastScene: 'BuilderScene'}) {
 		super(args)
 	}
+
+	signalMatchFound(): void {
+		this.view.searching.displayState(undefined, undefined)
+	}
 }
 
 export class AdventureGameScene extends GameScene {
@@ -517,6 +519,8 @@ export class AdventureGameScene extends GameScene {
 		}
 		super.queueState(state)
 	}
+
+	signalMatchFound(): void {}
 
 	private unlockMissionRewards(): void {
 		console.log(this.params)

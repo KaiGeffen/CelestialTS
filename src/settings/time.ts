@@ -63,4 +63,7 @@ export class Time {
 
   // On the searching scene, how long between when the avatar swaps
   static avatarSwap = 4000
+
+  // On the searching scene when a match is found, how long for text to fade in/out
+  static searchFlash = 500
 }

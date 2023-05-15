@@ -5,15 +5,19 @@ import Region from './baseRegion'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import avatarNames from '../../lib/avatarNames'
+import ClientState from '../../lib/clientState'
 
 
 export default class SearchingRegion extends Region {
 	mysteryAvatar: Phaser.GameObjects.Image
 
 	startTime: number
+	txtTitle: Phaser.GameObjects.Text
 	txtTime: Phaser.GameObjects.Text
+	matchFound: boolean
 
 	create (scene: BaseScene, avatarId: number): Region {
+		this.scene = scene
 		this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
 		this.createBackground(scene)
@@ -29,6 +33,9 @@ export default class SearchingRegion extends Region {
 
 	sum = 0
 	update(time, delta): void {
+		// If a match has been found, stop counting
+		if (this.matchFound) { return }
+
 		this.sum += delta
 
 		if (this.sum >= Time.avatarSwap) {
@@ -46,6 +53,31 @@ export default class SearchingRegion extends Region {
 		const seconds = Math.floor((time - this.startTime) / 1000)
 		const minutes = Math.floor(seconds / 60)
 		this.txtTime.setText(`${minutes}:${seconds % 60}`)
+	}
+
+	displayState(state: ClientState, isRecap: boolean): void {
+		this.matchFound = true
+
+		// If player has been waiting trivial time, don't bother
+		if (parseInt(this.txtTime.text.replace(':', '')) <= 3) {
+			this.hide()
+			return
+		}
+
+		// Change the text and have it flash, then hide this region
+		this.txtTitle.setText('Opponent found')
+		this.scene.playSound('match found')
+		// this.mysteryAvatar.setTexture(`avatar-${avatarNames[state.avatars[1]]}Full`)
+
+		this.scene.tweens.add({
+			targets: this.txtTitle,
+			alpha: 0,
+			time: Time.searchFlash,
+			yoyo: true,
+			onComplete: () => {
+				this.hide()
+			}
+		})
 	}
 
 	private createBackground(scene: Phaser.Scene): void {
@@ -70,7 +102,7 @@ export default class SearchingRegion extends Region {
 	}
 
 	private createText(scene: Phaser.Scene): void {
-		let txt = scene.add.text(
+		this.txtTitle = scene.add.text(
 			Space.windowWidth/2,
 			Space.windowHeight/2 - 100,
 			'Searching for an opponent',
@@ -89,7 +121,7 @@ export default class SearchingRegion extends Region {
 		const width = Space.windowWidth - 2 * this.mysteryAvatar.width
 		const height = Space.windowHeight // this.mysteryAvatar.height
 
-		this.container.add([txt, this.txtTime])
+		this.container.add([this.txtTitle, this.txtTime])
 	}
 
 	private addButtons(scene: BaseScene): void {
@@ -133,6 +165,10 @@ export class SearchingRegionTutorial extends Region {
 		scene['paused'] = true
 
 		return this
+	}
+
+	displayState(state: ClientState, isRecap: boolean): void {
+		this.hide()
 	}
 
 	private createImage(scene: Phaser.Scene, tutorialNum: number): void {

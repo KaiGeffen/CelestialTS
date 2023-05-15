@@ -71,6 +71,9 @@ export class Network {
 					if (msg.value) {
 						// Send the initial message, including things like the deck we are using
 						socket.send(initMessage)
+
+						// Signal that a match has been found
+						scene.signalMatchFound()
 					}
 					break
 
