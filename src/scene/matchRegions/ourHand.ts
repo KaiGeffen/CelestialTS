@@ -297,8 +297,10 @@ export default class OurHandRegion extends Region {
 					// Trigger the callback function for this card
 					that.callback(i)
 				}, 10)},
-				// Remember which card is being hovered
+				// Play 'play' sound, remember which card is being hovered
 				onComplete: () => {
+					this.scene.playSound('play')
+
 					if (that.hoveredCard !== undefined) {
 						// If the played card was hovered, forget that
 						if (that.hoveredCard === i) {

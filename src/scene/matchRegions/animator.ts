@@ -60,7 +60,7 @@ export default class Animator {
 						let permanentCard = this.getCard(animation, owner)
 
 						// Show the card in motion between start and end
-						this.animateCard(card, end, i, permanentCard, this.getSound(animation.to))
+						this.animateCard(card, end, i, permanentCard, this.getSound(animation))
 					}
 					else {
 						// Emphasize the card if it stayed in the same zone
@@ -266,7 +266,7 @@ export default class Animator {
 		let end = this.getEnd(animation, state, owner)
 
 		let permanentCard = this.getCard(animation, owner)
-		this.animateCard(card, end, iAnimation, permanentCard, this.getSound(animation.to))
+		this.animateCard(card, end, iAnimation, permanentCard, this.getSound(animation))
 	}
 
 	// Animate the given player's deck shuffling
@@ -463,9 +463,16 @@ export default class Animator {
 		return result
 	}
 
-	private getSound(to: Zone): string {
-		switch (to) {
+	private getSound(animation: Animation): string {
+		switch (animation.to) {
 			case Zone.Hand:
+				switch (animation.from) {
+					case Zone.Deck:
+					case Zone.Mulligan:
+					return 'draw'
+					default:
+					return 'create'
+				}
 			return 'draw'
 			case Zone.Discard:
 			return 'discard'

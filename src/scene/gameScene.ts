@@ -304,6 +304,8 @@ class GameScene extends BaseScene {
 			this.net.passTurn()
 		}
 
+		console.log(state.versionNumber)
+
 		// State was displayed
 		return true
 	}
