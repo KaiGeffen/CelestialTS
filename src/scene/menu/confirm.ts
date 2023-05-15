@@ -12,17 +12,17 @@ export default class ConfirmMenu extends Menu {
 	constructor(scene: MenuScene, params) {
 		super(scene, width)
 
-		let callback = params.callback
-		let hint = params.hint
-		this.createContent(callback, hint)
+		this.createContent(params)
 
 		this.layout()
 	}
 
-	private createContent(callback: () => void, hint: string) {
+	private createContent(params) {
+		const { callback, hint, text } = params
+		
 		this.createHeader('Confirm')
 
-		const s = `Are you sure you want to ${hint}?`
+		let s = text || `Are you sure you want to ${hint}?`
 		this.createText(s)
 
 		this.sizer.add(this.createButtons(this.scene, callback))
