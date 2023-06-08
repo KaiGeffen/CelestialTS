@@ -499,10 +499,7 @@ export class TutorialCardImage extends CardImage {
           this.components.splice(index, 1)
         }
 
-        console.log(this.components)
-
         if (this.components.length === 0) {
-          console.log(callback)
           callback()
         }
       })
