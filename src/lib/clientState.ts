@@ -5,6 +5,7 @@ import Recap from "./recap"
 import { Animation, decodeAnimationList } from "./animation"
 import { Status } from "./status"
 import { cardback } from "../catalog/catalog"
+import { Flags } from "../settings/settings"
 
 
 export default class ClientState {
@@ -49,9 +50,8 @@ export default class ClientState {
 		this.hand = decodeDeck(state.hand)
 
 		// TODO Remove this once hand hiding happens server side
-		const devMode = new URLSearchParams(window.location.search).has('dev')
 	    this.opponentHand = decodeDeck(state.opp_hand)
-	    if (!devMode) {
+	    if (!Flags.peek) {
 	    	const len = this.opponentHand.length
 
 	    	this.opponentHand = Array(len).fill(cardback)

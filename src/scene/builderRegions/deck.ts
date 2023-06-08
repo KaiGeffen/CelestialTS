@@ -10,7 +10,7 @@ import Cutout from '../../lib/buttons/cutout';
 import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard, encodeShareableDeckCode } from '../../lib/codec';
-import { Color, Mechanics, Space, Style, BBStyle, Time, Mobile, Scroll, Ease } from '../../settings/settings';
+import { Color, Mechanics, Space, Style, BBStyle, Time, Mobile, Scroll, Ease, Flags } from '../../settings/settings';
 import { BuilderScene } from '../builderScene'
 
 
@@ -393,7 +393,7 @@ export default class DeckRegion {
 			this.btnStart.setText(`${totalCount}/${Mechanics.deckSize}`)
 
 			// For debugging, allow sub-15 card decks locally
-			if (location.port !== '4949') {
+			if (!Flags.local) {
 				this.btnStart.disable()
 			}
 		}

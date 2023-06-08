@@ -4,6 +4,8 @@ import { encodeDeck } from "./lib/codec"
 import ClientState from "./lib/clientState"
 import Server from "./server"
 
+import { Flags } from "./settings/settings"
+
 
 const messageHeaders = {
 	init: 'Init'
@@ -174,12 +176,12 @@ export class Network {
 	// Get the appropriate websocket for this environment / matchmaking code
 	// If user is logged in, use the existing ws instead of opening a new one
 	private getSocket(mmCode): WebSocket {
-		// Establish a websocket based on the environment (Dev runs on 4949)
+		// Establish a websocket based on the environment
 		let socket
 		if (Server.loggedIn()) {
 			socket = Server.getWS()
 		}
-		else if (location.port === '4949') {
+		else if (Flags.local) {
 			socket = new WebSocket(`ws://${ip}:${port}/${mmCode}`)
 		}
 		else {

@@ -1,6 +1,7 @@
 import Server from "../server"
 import { baseCards } from "../catalog/catalog"
 import { Space } from "./settings"
+import { Flags } from "./flags"
 
 
 // User settings will first look to see if the user is logged in
@@ -16,7 +17,7 @@ export class UserSettings {
       mmCode: '',
       volume: 0.3,
       musicVolume: 0.0,
-      animationSpeed: location.port === '4949' ? 1 : 0.25, // Max speed if playing locally
+      animationSpeed: Flags.local ? 1 : 0.25, // Max speed if playing locally
       // Whether the player should pass automatically if there's nothing they can play
       autopass: true,
 
@@ -57,9 +58,8 @@ export class UserSettings {
 
   // Get the given setting
   static _get(key: string) {
-    // NOTE If using cards in development, save the deck separately
-    const devMode = new URLSearchParams(window.location.search).has('dev')
-    if (key === 'decks' && devMode) {
+    // If using cards in development, save the deck separately
+    if (key === 'decks' && Flags.devCards) {
       key = 'devDecks'
     }
 
@@ -72,9 +72,8 @@ export class UserSettings {
   }
 
   static _set(key: string, value: any) {
-    // NOTE If using cards in development, save the deck separately
-    const devMode = new URLSearchParams(window.location.search).has('dev')
-    if (key === 'decks' && devMode) {
+    // If using cards in development, save the deck separately
+    if (key === 'decks' && Flags.devCards) {
       key = 'devDecks'
     }
 

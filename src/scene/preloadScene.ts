@@ -2,7 +2,7 @@ import 'phaser'
 import jwt_decode from "jwt-decode"
 import Loader from '../loader/loader'
 import Server from '../server'
-import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings } from '../settings/settings'
+import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings, Flags } from '../settings/settings'
 import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
 
@@ -41,17 +41,21 @@ export class SigninScene extends Phaser.Scene {
 		const y = Space.windowHeight/2
 		
 		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {
-			// Ensure that any other automatic sign-ins are cancelled
-			google.accounts.id.cancel()
-
+			if (!Flags.local) {
+				// Ensure that any other automatic sign-ins are cancelled
+				google.accounts.id.cancel()
+			}
+			
 			this.onOptionClick()
 		})
 
-		// Google GIS
-		this.createGoogleGSIButton(y - 100)
+		if (!Flags.local) {
+			// Google GIS
+			this.createGoogleGSIButton(y - 100)
 
-		// Facebook signin
-		this.createFacebookButton(y - 200)
+			// Facebook signin
+			this.createFacebookButton(y - 200)
+		}
 	}
 
 	private onOptionClick(): void {
@@ -151,12 +155,11 @@ export class PreloadScene extends SigninScene {
 	}
 
 	create() {
-		// TODO Replace with Google GIS button as an option below
-		// this.renderSigninButton()
-
-		// Gain access to chart plugin
-		this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
-
+		if (!Flags.local) {
+			// Gain access to chart plugin
+			this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
+		}
+		
 		// Load all assets used throughout the game
 		// Create the graphics for how much of loading is complete and their listeners
 		this.createProgressGraphics()
@@ -165,46 +168,6 @@ export class PreloadScene extends SigninScene {
 		Loader.loadAll(this)
 
 		super.create()
-	}
-
-
-	renderSigninButton(): void {
-		let that = this
-
-		// If in dev environment, don't render the button
-		if (location.port === '4949') {
-			return
-		}
-		
-		// Initialize Google Auth
-		gapi.load('auth2', function() {
-			gapi.auth2.init({
-				client_id: Url.oauth
-			})
-		})
-
-		function onSuccess(user: gapi.auth2.GoogleUser): void {
-			console.log('Signin succesful')
-
-			// Communicate with server, load data on response
-			let token = user.getAuthResponse().id_token
-
-			Server.login(token, that.game)
-		}
-
-		function onFailure(): void {
-			// TODO Add some behavior
-			console.log('Failed to signin')
-		}
-
-		// Render login button
-		gapi.signin2.render("signin", {
-			// longtitle: true,
-			width: Space.buttonWidth,
-			height: Space.buttonHeight,
-			onsuccess: onSuccess,
-			onfailure: onFailure
-		})
 	}
 
 	// Create the which show user how much has loaded
