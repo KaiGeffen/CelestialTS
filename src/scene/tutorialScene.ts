@@ -7,7 +7,7 @@ import data from '../catalog/tutorial.json'
 import { Space, BBStyle, Time, Depth } from '../settings/settings'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
-import { CardImage } from '../lib/cardImage'
+import { TutorialCardImage } from '../lib/cardImage'
 import { getCard } from '../catalog/catalog'
 import { ResultsRegionTutorial } from './matchRegions/results'
 import { SearchingRegionTutorial } from './matchRegions/searching'
@@ -28,7 +28,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 	pointer: Phaser.GameObjects.Image
 
 	// A card that is being shown
-	card: CardImage
+	card: TutorialCardImage
 
 	isTutorial = true
 
@@ -193,7 +193,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 			break
 
 			case 2:
-			this.addCard('Dove')
+			this.addCardWithRequiredHover('Dove')
 			break
 
 			case 4:
@@ -392,13 +392,25 @@ export default class TutorialGameScene extends AdventureGameScene {
 		}
 	}
 
-	private addCard(name: string): void {
+	private addCard(name: string): TutorialCardImage {
 		if (this.card !== undefined) {
 			this.card.destroy()
 		}
 
 		const x = Space.windowWidth/2
 		const y = Space.windowHeight/2
-		this.card = new CardImage(getCard(name), this.add.container(x, y))
+		this.card = new TutorialCardImage(getCard(name), this.add.container(x, y))
+
+		return this.card
+	}
+
+	// Add a card that must have each hoverable component hovered before continuing
+	private addCardWithRequiredHover(name: string): void {
+		let card = this.addCard(name)
+
+		// Disable the next button until each component has been hovered
+		this.btnNext.disable()
+
+		card.highlightComponents(() => this.btnNext.enable())
 	}
 }

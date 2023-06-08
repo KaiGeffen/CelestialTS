@@ -455,3 +455,58 @@ export class CardImage {
   }
 
 }
+
+// A CardImage whose components are highlighted and send a callback once they have each been hovered
+export class TutorialCardImage extends CardImage {
+  // Highlighted components that must be hovered before moving on
+  components = []
+
+  // Takes a callback for when each component has been hovered
+  highlightComponents(callback: () => void) {
+    // Make cost and points visible
+    this.txtCost.setAlpha(1)
+    .setText(`${this.card.cost}`)
+    this.txtPoints.setAlpha(1)
+    .setText(`${this.card.points}`)
+
+    // Define components
+    this.components = [this.txtCost, this.txtPoints, ...this.keywords];
+
+    // Highlight each component
+    var postFxPlugin = this.scene.plugins.get('rexOutlinePipeline')
+    this.components.forEach(component => {
+      postFxPlugin['add'](component,
+      {
+        thickness: Space.highlightWidth,
+        outlineColor: Color.outline,
+        quality: 0.3,
+      })
+
+      // When a component is hovered, stop highlighting and check if all highlights are gone
+      component.setInteractive()
+      .on('pointerover', () => {
+        // Make text invisible (Normal)
+        if (component === this.txtCost || component === this.txtPoints) {
+          component.setAlpha(0.001)
+        }
+
+        // Remove highlight
+        postFxPlugin['remove'](component)
+        
+        // Remove component from list of components
+        const index = this.components.indexOf(component)
+        if (index > -1) {
+          this.components.splice(index, 1)
+        }
+
+        console.log(this.components)
+
+        if (this.components.length === 0) {
+          console.log(callback)
+          callback()
+        }
+      })
+    })
+
+  }
+}
