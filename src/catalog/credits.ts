@@ -7,7 +7,7 @@ Artist: [b]Elise Mahan[/b]
 
 UI Design: [b]Alina Onishchenko[/b]
 
-Sound Effects: Eduardo Zolhof
+Sound Effects: [b]Eduardo Zolhof[/b]
 Original score and music design by [b]Ian Riley[/b]: www.ianrileymusic.tech
 
 Icons are from game-icons.net under CC BY 3.0
