@@ -32,7 +32,7 @@ Each round has the following structure: start phase, action phase, end phase.
 [b]Start Phase[/b]
 In the start phase, the following things occur in the following order:
 * Any 'start of round' effects trigger (ex: Sun).
-* If one player has won more rounds than the other, that player receives priority. Otherwise, priority is determined at random.
+* The last player who played a card receives priority.
 * Each player's maximum breath increases by 1 if it is less than 10.
 * Each player's current breath is set to their maximum breath.
 * Each player draws 2 cards.
@@ -46,6 +46,7 @@ At this time, any 'when played' effects of the card activate (ex: Night Vision).
 Their opponent is then given priority.
 The action phase ends when both players pass in a row.
 During this phase, each player cannot see the cards their opponent has played.
+Starting on the 10th round, the player that starts with priority cannot pass if they have a card in hand they can play.
 
 [b]End Phase[/b]
 During the end phase, cards in the story resolve from left to right.
@@ -70,4 +71,8 @@ Is my deck in the order that I see when hovering over it?
 No, the true order of your deck is hidden from you. The order you see is sorted by cost.
 
 Can cards that reset (ex: Hurricane) be worth points if they are Nourished?
-No, the card contributes points first, then its effect resets your points to 0.`
+No, the card contributes points first, then its effect resets your points to 0.
+
+What does it mean for a card to alter its cost (ex: Shadow)?
+The effect only affects the breath that it takes to play the card from your hand.
+It does NOT affect other effects that reference a card's cost (ex: Cling).`
