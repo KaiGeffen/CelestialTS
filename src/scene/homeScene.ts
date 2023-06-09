@@ -274,10 +274,10 @@ export default class HomeScene extends BaseScene {
     container.add(img)
 
     // Tween
-    const duration = Time.recapTween()
-    const durationFall = Time.recapTween() * 2
+    const duration = 300
+    const durationFall = 300 * 2
     const hold = 6000
-    const repeatDelay = Time.recapTweenWithPause() * 3
+    const repeatDelay = 350 * 3
 
     const fallConfig = {
       targets: img,
@@ -294,7 +294,7 @@ export default class HomeScene extends BaseScene {
     this.tweens.add({
       targets: img,
       x: x,
-      delay: Time.recapTweenWithPause() * delay,
+      delay: 350 * delay,
       repeat: -1,
       duration: duration,
       hold: hold,
