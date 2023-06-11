@@ -203,8 +203,6 @@ export default class DeckRegion {
 			totalCount += cutout.count
 		})
 
-		console.log(totalCount)
-
 		// NOTE Limit the max number of cards so that database doesn't get taxed
 		if (totalCount  >= Mechanics.deckSize * 2) {
 			return 'Deck is overfull.'
