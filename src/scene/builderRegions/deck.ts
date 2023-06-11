@@ -203,6 +203,8 @@ export default class DeckRegion {
 			totalCount += cutout.count
 		})
 
+		console.log(totalCount)
+
 		// NOTE Limit the max number of cards so that database doesn't get taxed
 		if (totalCount  >= Mechanics.deckSize * 2) {
 			return 'Deck is overfull.'
@@ -221,7 +223,7 @@ export default class DeckRegion {
 			// If it doesn't, create a new cutout
 			let container = new ContainerLite(this.scene, 0, 0, Space.deckPanelWidth, Space.cutoutHeight)
 			let cutout = new Cutout(container, card)
-			cutout.setOnClick(this.removeCardFromDeck(cutout))
+			cutout.setOnClick(this.onClickCutout(cutout))
 			if (Mobile) {
 				cutout.setDepth(2)
 			}
@@ -343,18 +345,22 @@ export default class DeckRegion {
 		return txt
 	}
 
-	// Remove the card from deck which has given index
-	private removeCardFromDeck(cutout: Cutout): () => void {
-		let that = this
-		return function() {
-			// Decrement, if fully gone, remove from deck list
-			if (cutout.decrement().count === 0) {
+	// Remove the card from deck which has given index, or add another if right-click
+	private onClickCutout(cutout: Cutout): () => void {
+		return () => {
+			let pointer: Phaser.Input.Pointer = this.scene.input.activePointer
 
+			// If right clicking, add another copy
+			if (pointer.rightButtonDown()) {
+				this.scene.addCardToDeck(cutout.card)
+			}
+			// Decrement, if fully gone, remove from deck list
+			else if (cutout.decrement().count === 0) {
 				// Find the index of it within the deck list, remove that after
 				let index
 
-				for (let i = 0; i < that.deck.length && index === undefined; i++) {
-					const cutoutI = that.deck[i]
+				for (let i = 0; i < this.deck.length && index === undefined; i++) {
+					const cutoutI = this.deck[i]
 					if (cutoutI.id === cutout.id) {
 						index = i
 					}
@@ -365,19 +371,19 @@ export default class DeckRegion {
 				}
 
 				// Remove from the deck list
-				that.deck.splice(index, 1)
+				this.deck.splice(index, 1)
 
 				// Destroy the cutout and its container
 				cutout.destroy()
 
 				// Reformat the panel
-				that.scrollablePanel.layout()
-				that.scrollablePanel.t = Math.min(0.999999, that.scrollablePanel.t)
+				this.scrollablePanel.layout()
+				this.scrollablePanel.t = Math.min(0.999999, this.scrollablePanel.t)
 			}
 
-			that.updateText()
+			this.updateText()
 
-			that.scene['updateSavedDeck'](that.getDeckCode())
+			this.scene['updateSavedDeck'](this.getDeckCode())
 		}
 	}
 
