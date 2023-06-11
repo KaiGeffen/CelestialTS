@@ -279,6 +279,10 @@ export default class DeckRegion {
 				this.addCardToDeck(card, panel)
 			}
 
+			// TODO Decouple this from cutout
+			// Stop cutouts from flashing
+			this.deck.forEach( (cutout) => cutout.stopFlash())
+
 			// Scroll to the top of the page
 			this.scrollablePanel.t = 0
 

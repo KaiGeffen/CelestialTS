@@ -43,6 +43,9 @@ export class Time {
   // How long an onscreen message lingers
   static onscreenMessage = 2500
 
+  // How fast components flash to draw attention
+  static flash = 100
+
   // How long the avatar emote lasts
   static emote = 1000
 

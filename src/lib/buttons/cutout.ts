@@ -1,7 +1,7 @@
 import "phaser"
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
-import { Space, Style, Color } from '../../settings/settings'
+import { Space, Style, Color, Time } from '../../settings/settings'
 import Button from './button'
 import Card from '../card'
 import Hint from '../hint'
@@ -113,10 +113,28 @@ export default class Cutout extends Button {
 		return this
 	}
 
+	tween: Phaser.Tweens.Tween
+	stopFlash(): void {
+		if (this.tween) {
+			this.tween.stop()
+		}
+	}
+
 	private updateText(): Cutout {	
 		const char = 'x'
 		
 		this.setText(`${char}${this.count}`)
+
+		this.stopFlash()
+		this.tween = this.scene.tweens.add({
+			targets: this.txt,
+			alpha: 0,
+			duration: Time.flash,
+			yoyo: true,
+			onStart: () => {
+				this.txt.alpha = 1
+			}
+		})
 
 		return this
 	}
