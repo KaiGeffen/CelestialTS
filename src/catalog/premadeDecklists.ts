@@ -1,5 +1,5 @@
 // List of the premade decks for the 6 characters
-// Jules, Adonis, Mia, Kitz, Imani, Mona
+// Jules, Adonis, Mia, Kitz, Imani, Mitra
 const premadeDecklists = [
 '56:65:65:51:12:12:7:7:7:4:4:4:4:4:4',
 '21:20:20:17:17:14:14:6:3:3:3:3:3:0:0',

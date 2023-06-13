@@ -4,7 +4,7 @@ const avatarNames = [
 'Mia',
 'Kitz',
 'Imani',
-'Mona',
+'Mitra',
 ]
 
 export default avatarNames
