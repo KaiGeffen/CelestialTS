@@ -61,7 +61,6 @@ class SharedBaseScene extends Phaser.Scene {
 
 	// Play the given sound, or one of its variants if it has any
 	playSound(s: string): void {
-		console.log(s)
 		const amt_variants = {
 			'open': 2,
 			'close': 2,
