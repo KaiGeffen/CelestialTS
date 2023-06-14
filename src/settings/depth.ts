@@ -1,18 +1,21 @@
 // The depth of each layer in the match scene
 export const Depth: Record<string, number> = {
-	// ourButtons: 2,
-	theirHand: 1,
-	pileOverlays: 8,
-	ourHand: 1,
-	results: 10,
-	ourScore: 3,
-	mulligan: 4,
 	discardPiles: -1,
-	searching: 9,
+	
+	ourHand: 1,
+	theirHand: 1,
+	ourScore: 3,
 	theirScore: 3,
+	mulligan: 4,
+
+
+	// Above all other layers with cards
+	aboveOtherCards: 5,
+
+
 	commands: 7,
 	tutorial: 7,
-
-	// Above all other layers
-	aboveAll: 9.5,
+	pileOverlays: 8,
+	searching: 9,
+	results: 10,
 }

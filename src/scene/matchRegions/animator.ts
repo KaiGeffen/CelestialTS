@@ -21,7 +21,7 @@ export default class Animator {
 	constructor(scene: BaseScene, view: View) {
 		this.scene = scene
 		this.view = view
-		this.container = scene.add.container().setDepth(Depth.aboveAll)
+		this.container = scene.add.container().setDepth(Depth.aboveOtherCards)
 	}
 
 	animate(state: ClientState, isRecap: boolean): void {
