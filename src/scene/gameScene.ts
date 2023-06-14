@@ -302,8 +302,6 @@ class GameScene extends BaseScene {
 			this.net.passTurn()
 		}
 
-		console.log(state.versionNumber)
-
 		// State was displayed
 		return true
 	}
@@ -513,7 +511,6 @@ export class AdventureGameScene extends GameScene {
 	// When the player wins for the first time, unlock appropriately
 	queueState(state: ClientState): void {
 		if (!this.winSeen && state.winner === 0) {
-			console.log('here')
 			this.winSeen = true
 			this.unlockMissionRewards()
 		}
@@ -523,7 +520,6 @@ export class AdventureGameScene extends GameScene {
 	signalMatchFound(): void {}
 
 	private unlockMissionRewards(): void {
-		console.log(this.params)
 		// Set that user has completed the missions with this id
 		if (this.params.missionID !== undefined) {
 			UserSettings._setIndex(

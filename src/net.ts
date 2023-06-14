@@ -49,11 +49,6 @@ export class Network {
 
 		let socket = this.socket = this.getSocket(mmCode)
 
-		// Connection opened
-		socket.addEventListener('open', function (event) {
-			console.log('Socket open')
-		})
-
 		// Add listener for a single-game connection
 		// Or if user is signed in but a listener has not yet been added
 		if (!Server.loggedIn() || !Server.hasInGameListener) {
@@ -188,6 +183,7 @@ export class Network {
 			// The WS location on DO
 			let loc = window.location
 			let fullPath = `wss://${loc.host}${loc.pathname}ws/${mmCode}`
+			console.log(`Full path to WSS: ${fullPath}`)
 			socket = new WebSocket(fullPath)
 		}
 

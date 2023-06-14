@@ -210,7 +210,6 @@ export default class Animator {
 			// case Zone.Create:
 			// default:
 			default:
-			console.log(animation)
 			break
 		}
 		return card

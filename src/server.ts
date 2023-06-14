@@ -169,8 +169,6 @@ export default class Server {
 				value: value
 			})
 
-			console.log(message)
-
 			wsServer.send(message)
 		}
 	}
@@ -194,8 +192,6 @@ export default class Server {
 				value: decksAsList
 			})
 
-			console.log(message)
-
 			wsServer.send(message)
 		}
 	}
@@ -216,8 +212,6 @@ export default class Server {
 				value: result
 			})
 
-			console.log(message)
-
 			wsServer.send(message)
 		}
 	}
@@ -237,8 +231,6 @@ export default class Server {
 				type: 'send_completed_missions',
 				value: result
 			})
-
-			console.log(message)
 
 			wsServer.send(message)
 		}
