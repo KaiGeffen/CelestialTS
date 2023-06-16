@@ -37,6 +37,11 @@ export default class Menu {
 			this.exitCallback()
 		}
 
+		this.endScene()
+	}
+
+	protected endScene(): void {
+		// TODO Confusing that it returns a callback that has to be called
 		this.scene.endScene()()
 	}
 
@@ -133,6 +138,7 @@ import DCMenu from './disconnect'
 import ConfirmMenu from './confirm'
 import DistributionMenu from './distribution'
 import MessageMenu from './message'
+import FocusMenu from './focus'
 
 
 const menus = {
@@ -148,6 +154,7 @@ const menus = {
 	'distribution': DistributionMenu,
 	'message': MessageMenu,
 	'help': HelpMenu,
+	'focus': FocusMenu,
 }
 
 // Function exposed for the creation of custom menus
