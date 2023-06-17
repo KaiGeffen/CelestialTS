@@ -28,8 +28,10 @@ export default class Menu {
 			this.exitCallback = params.exitCallback				
 		}
 
-		// Create the basic sizer
-		this.createSizer()
+		if (width > 0) {
+			// Create the basic sizer
+			this.createSizer()
+		}
 	}
 
 	close() {
