@@ -71,8 +71,6 @@ export default class DeckRegion {
 			panel: {
 				child: this.createPanel(startCallback)
 			},
-
-			slider: Flags.mobile ? undefined : Scroll(this.scene),
 			
 			header: this.createHeader(startCallback),
 			background: background,

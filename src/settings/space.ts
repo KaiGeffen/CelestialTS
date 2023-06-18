@@ -38,8 +38,8 @@ export var Space = {
   textAreaHeight: 60,
 
   // These values are experimental and related to the 3/15 gui pass
-  cardWidth: Flags.mobile ? 196 * 0.7 : 336 * 7/10 * 3/4,
-  cardHeight: Flags.mobile ? 280 * 0.7 : 336 * 3/4,
+  cardWidth: Flags.mobile ? 196 * 0.7 : 336 * 7/10,
+  cardHeight: Flags.mobile ? 280 * 0.7 : 336,
   storyXOverlap: 30,
   storyYOverlap: 120, // If this is more than half of cardHeight, mistake
   // Height of the hand regions

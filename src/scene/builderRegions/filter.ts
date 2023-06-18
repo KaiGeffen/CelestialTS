@@ -3,7 +3,7 @@ import 'phaser'
 import { Color } from "../../settings/settings"
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, UserSettings, Space, Mechanics, Mobile } from "../../settings/settings"
+import { Style, UserSettings, Space, Mechanics, Flags } from "../../settings/settings"
 import Buttons from '../../lib/buttons/buttons'
 import Icons from '../../lib/buttons/icons'
 import UButton from '../../lib/buttons/underlined'
@@ -31,50 +31,52 @@ export default class FilterRegion {
 		this.scene = scene
 		this.filterUnowned = filterUnowned
 
-		let that = this
-		let container = scene.add.container().setDepth(2)
+		if (Flags.mobile) {
+			const x = Space.windowWidth - Space.pad*2 - Space.iconSize*3/2
+			const y = Space.pad + Space.iconSize/2
+			let container = scene.add.container(x, y)
+			let btnSearch = new Icons.Search(container, 0, 0, () => {
+				this.scene.scene.launch('MenuScene', {
+					menu: 'search',
+					callback: (s: string) => {
+	        	// Filter the visible cards based on the text
+						this.searchText = s
+						this.scene.filter()
+					},
+					start: this.searchText,
+				})})
+		}
+		else {
+			let container = scene.add.container().setDepth(2)
 
-		this.createBackground(container)
+			this.createBackground(container)
 
-		new Buttons.Basic(container,
-			Space.pad + Space.buttonWidth/2,
-			40,
-			'Back',
-			() => {scene.doBack()})
+			new Buttons.Basic(container,
+				Space.pad + Space.buttonWidth/2,
+				40,
+				'Back',
+				() => {scene.doBack()})
 
-		this.createFilterButtons(container)
+			this.createFilterButtons(container)
 
-		this.createTextSearch(container)
-
-		container.setVisible(false)
+			this.createTextSearch(container)
+		}
 
 		return this
 	}
 
 	private createBackground(container: Phaser.GameObjects.Container) {
 		let background
-		if (!Mobile) {
-			background = this.scene.add.image(0, 0, 'icon-Search')
-			.setOrigin(0)
-			.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth - 40, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
-		}
-		else {
-			background = this.scene.add.rectangle(0, 0, Space.windowWidth, Space.filterBarHeight, Color.backgroundDark)
-			.setOrigin(0)
-			.setInteractive()
-
-			this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-				distance: 3,
-				shadowColor: 0x000000,
-			})
-		}
-
+		background = this.scene.add.image(0, 0, 'icon-SearchBar')
+		.setOrigin(0)
+		.setInteractive(new Phaser.Geom.Rectangle(0, 0, Space.windowWidth - 40, Space.filterBarHeight), Phaser.Geom.Rectangle.Contains)
+		
 		container.add(background)
 	}
 
 	private createFilterButtons(container: Phaser.GameObjects.Container) {
 		// Where the filter buttons start
-		const x0 = !Mobile ? 620 : Space.windowWidth - 470
+		const x0 = 620
 		const y = 40
 
 		// Cost filters
@@ -92,24 +94,6 @@ export default class FilterRegion {
 	}
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {
-		// TODO Have an icon instead of full search bar on mobile
-		// if (Mobile) {
-		// 	// Minimum x is 170 for a 760 screen
-		// 	let x = 170 + Math.max(0, Space.windowWidth - 760)/2
-		// 	new Icons.Search(container, x, 40, () => {
-		// 		this.scene.scene.launch('MenuScene', {
-	  //       menu: 'search',
-	  //       callback: (s: string) => {
-	  //       	// Filter the visible cards based on the text
-		// 				this.searchText = s
-		// 				this.scene.filter()
-	  //       },
-	  //       start: this.searchText,
-	  //     })
-		// 	})
-		// 	return
-		// }
-
 		this.searchObj = this.scene.add['rexInputText'](
 			369, 40, 255, 40, {
 				type: 'text',

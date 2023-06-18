@@ -279,7 +279,7 @@ class Moon extends Button {
 	}
 }
 
-// The search bar on Mobile
+// The search icon
 class Search extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -289,7 +289,7 @@ class Search extends Button {
 		super(within, x, y, 
 		{
 			icon: {
-				name: 'SearchMobile',
+				name: 'Search',
 				interactive: true
 			},
 			callbacks: {
