@@ -118,24 +118,7 @@ export default class DeckRegion {
 			space: {top: Space.padSmall, bottom: Space.padSmall},
 		}).addBackground(background)
 
-		// Sizer for the top of the header
-		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
-			width: width,
-			align: Flags.mobile ? 'left' : 'center',
-		})
-		sizer.add(sizerTop)
-
-		// Add the deck's name
-		const backWidth = 40
-		this.txtDeckName = this.scene.rexUI.add.BBCodeText()
-		.setStyle({...BBStyle.deckName, 
-			fixedWidth: width - (Flags.mobile ? backWidth : 0),
-			// NOTE This handles the padding, and prevents text cropping
-			fixedHeight: 50 + Space.padSmall,
-		})
-		.setOrigin(0.5)
-
-		// sizerTop.add(this.txtDeckName)
+		sizer.add(this.createTitle())
 
 		sizer.add(this.createButtons(startCallback))
 
@@ -157,6 +140,32 @@ export default class DeckRegion {
 		})
 
 		return sizer
+	}
+
+	// Create title text, return a sizer with all of them
+	private createTitle() {
+		// Sizer for the top of the header
+		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
+			width: width,
+			align: Flags.mobile ? 'left' : 'center',
+		})
+
+		// Add the deck's name
+		this.txtDeckName = this.scene.rexUI.add.BBCodeText()
+		.setStyle({...BBStyle.deckName, 
+			fixedWidth: width,
+			// NOTE This handles the padding, and prevents text cropping
+			fixedHeight: 50 + Space.padSmall,
+		})
+		.setOrigin(0.5)
+
+		if (Flags.mobile) {
+			this.txtDeckName.setVisible(false)
+		} else {
+			sizerTop.add(this.txtDeckName)			
+		}
+
+		return sizerTop
 	}
 
 	// Create buttons, return a sizer with all of them
@@ -196,7 +205,7 @@ export default class DeckRegion {
 		.add(containerEdit)
 		.add(containerShare)
 		.add(containerDistribution)
-		.add(containerStart, {padding: {left: Space.padSmall}})
+		.add(containerStart, Flags.mobile ? {padding: {left: Space.padSmall}} : {})
 
 		return sizerButtons
 	}
