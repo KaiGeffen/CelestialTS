@@ -46,6 +46,8 @@ export default class FilterRegion {
 
 		this.createTextSearch(container)
 
+		container.setVisible(false)
+
 		return this
 	}
 
