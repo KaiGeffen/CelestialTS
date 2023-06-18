@@ -170,6 +170,11 @@ export default class DeckRegion {
 
 	// Create buttons, return a sizer with all of them
 	private createButtons(startCallback: () => void) {
+		// TODO Abstract each of these to make it more clear what mobile looks like
+		// TODO Add a back button for mobile
+		let containerBack = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
+		new Icons.Distribution(containerBack, 0, 0, this.backCallback())
+
 		// Add an edit button that allows user to change details about their deck
 		let containerEdit = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		this.btnEdit = new Icons.Edit(containerEdit, 0, 0, this.openEditMenu())
@@ -193,19 +198,14 @@ export default class DeckRegion {
 		})
 
 		if (Flags.mobile) {
-			const backWidth = 40
-			let backContainer = new ContainerLite(this.scene, 0, 0, backWidth, this.txtDeckName.displayHeight)
-			new Buttons.Text(backContainer, 0, 0, '<', () => {
-				this.scene.deselect()
-			}).txt.setFontSize(backWidth)
-			sizerButtons.add(backContainer)
+			sizerButtons.add(containerBack)
 		}
-
-		sizerButtons
-		.add(containerEdit)
-		.add(containerShare)
-		.add(containerDistribution)
-		.add(containerStart, Flags.mobile ? {padding: {left: Space.padSmall}} : {})
+		sizerButtons.add(containerEdit)
+		sizerButtons.add(containerShare)
+		if (!Flags.mobile) {
+			sizerButtons.add(containerDistribution)
+		}
+		sizerButtons.add(containerStart, Flags.mobile ? {padding: {left: Space.pad}} : {})
 
 		return sizerButtons
 	}
@@ -495,6 +495,12 @@ export default class DeckRegion {
 				// Used to form the graph
 				currentDeck: that.deck,
 			})
+		}
+	}
+
+	private backCallback(): () => void {
+		return () => {
+			this.scene.deselect()
 		}
 	}
 

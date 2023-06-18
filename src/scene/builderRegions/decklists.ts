@@ -3,7 +3,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import Icons from '../../lib/buttons/icons'
-import { Color, Mechanics, Space, Style, UserSettings, Mobile, Scroll } from "../../settings/settings"
+import { Color, Mechanics, Space, Style, UserSettings, Scroll, Flags } from "../../settings/settings"
 
 
 const width = Space.decklistPanelWidth
@@ -62,7 +62,7 @@ export default class DecklistsRegion {
 
 			header: this.createHeader(),
 
-			slider: Mobile ? Scroll(this.scene) : undefined,
+			slider: Flags.mobile ? Scroll(this.scene) : undefined,
 
 			space: {
 				top: Space.filterBarHeight,
