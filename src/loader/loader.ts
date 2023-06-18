@@ -9,7 +9,7 @@ import keywordData from './keywords.json'
 import storyData from './stories.json'
 import sfxData from './sfx.json'
 import voiceData from './voice.json'
-import { Space } from '../settings/settings'
+import { Space, Flags } from '../settings/settings'
 
 
 const EXTENSION = 'webp'
@@ -28,7 +28,7 @@ const prefixMap: PrefixEntry[] = [
 		list: avatarData,
 	},
 	{
-		fp: 'cards/',
+		fp: Flags.mobile ? 'cards/mobile/' : 'cards/',
 		prefix: '',
 		list: allCards.map((card) => card.name),
 	},
