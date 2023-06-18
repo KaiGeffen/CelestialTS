@@ -10,7 +10,7 @@ import Cutout from '../../lib/buttons/cutout';
 import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard, encodeShareableDeckCode } from '../../lib/codec';
-import { Color, Mechanics, Space, Style, BBStyle, Time, Mobile, Scroll, Ease, Flags } from '../../settings/settings';
+import { Color, Mechanics, Space, Style, BBStyle, Time, Scroll, Ease, Flags } from '../../settings/settings';
 import { BuilderScene } from '../builderScene'
 
 
@@ -18,7 +18,7 @@ import { BuilderScene } from '../builderScene'
 const width = Space.deckPanelWidth// + Space.pad * 2
 
 // Where the panel starts
-const X_START = Mobile ? -Space.deckPanelWidth - Space.pad - Space.sliderWidth : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
+const X_START = Flags.mobile ? -Space.deckPanelWidth - Space.pad - Space.sliderWidth : Space.decklistPanelWidth - Space.deckPanelWidth - Space.pad
 
 export default class DeckRegion {
 	private scene: BuilderScene
@@ -72,9 +72,9 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			slider: Mobile ? Scroll(this.scene) : undefined,
+			slider: Flags.mobile ? undefined : Scroll(this.scene),
 			
-			header: Mobile ? undefined : this.createHeader(startCallback),
+			header: this.createHeader(startCallback),
 			background: background,
 
 			space: {
@@ -84,14 +84,9 @@ export default class DeckRegion {
 
 		this.updateOnScroll(this.panel, this.scrollablePanel)
 
-		// If on mobile, header scrolls with the rest of content
-		if (Mobile) {
-			this.panel.add(this.createHeader(startCallback), {
-				padding: {bottom: Space.pad}
-			})
-
+		// If on mobile, must be over the decklist region
+		if (Flags.mobile) {
 			this.scrollablePanel.setDepth(2)
-			// TODO
 		}
 
 		this.scrollablePanel.layout()
@@ -126,33 +121,46 @@ export default class DeckRegion {
 		// Sizer for the top of the header
 		let sizerTop = this.scene['rexUI'].add.fixWidthSizer({
 			width: width,
-			align: Mobile ? 'left' : 'center',
+			align: Flags.mobile ? 'left' : 'center',
 		})
 		sizer.add(sizerTop)
 
 		// Add the deck's name
+		const backWidth = 40
 		this.txtDeckName = this.scene.rexUI.add.BBCodeText()
-		.setStyle({...BBStyle.deckName, ...{
-			fixedWidth: width,
+		.setStyle({...BBStyle.deckName, 
+			fixedWidth: width - (Flags.mobile ? backWidth : 0),
 			// NOTE This handles the padding, and prevents text cropping
 			fixedHeight: 50 + Space.padSmall,
-		}})
+		})
 		.setOrigin(0.5)
 
-		// If on mobile, add a back button
-		if (Mobile) {
-			let backContainer = new ContainerLite(this.scene, 0, 0, 40, this.txtDeckName.displayHeight)
-			new Buttons.Text(backContainer, 0, 0, '<', () => {
-				this.scene.deselect()
-			}).txt.setFontSize(40)
-			sizerTop.add(backContainer)
+		// sizerTop.add(this.txtDeckName)
 
-			this.txtDeckName.setOrigin(0, 0.5)
+		sizer.add(this.createButtons(startCallback))
+
+		// Add this deck's avatar
+		let containerAvatar = new ContainerLite(this.scene, 0, 0, Space.avatarSize + Space.pad, Space.avatarSize)
+		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules')
+		if (Flags.mobile) {
+			containerAvatar.setVisible(false)
+		}
+		else {
+			sizer.add(containerAvatar)			
 		}
 
-		sizerTop.add(this.txtDeckName)
-		.layout()
+		// Give the background a drop shadow
+		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
+			distance: 3,
+			angle: -90,
+			shadowColor: 0x000000,
+		})
 
+		return sizer
+	}
+
+	// Create buttons, return a sizer with all of them
+	private createButtons(startCallback: () => void) {
 		// Add an edit button that allows user to change details about their deck
 		let containerEdit = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
 		this.btnEdit = new Icons.Edit(containerEdit, 0, 0, this.openEditMenu())
@@ -171,29 +179,26 @@ export default class DeckRegion {
 		
 		// Make a container for all of the buttons
 		let sizerButtons = this.scene['rexUI'].add.fixWidthSizer({
-			width: width - (Space.avatarSize + Space.pad * 2),
+			width: width - Space.pad - (Flags.mobile ? 0 : Space.avatarSize + Space.pad),
 			align: 'center',
 		})
+
+		if (Flags.mobile) {
+			const backWidth = 40
+			let backContainer = new ContainerLite(this.scene, 0, 0, backWidth, this.txtDeckName.displayHeight)
+			new Buttons.Text(backContainer, 0, 0, '<', () => {
+				this.scene.deselect()
+			}).txt.setFontSize(backWidth)
+			sizerButtons.add(backContainer)
+		}
+
 		sizerButtons
 		.add(containerEdit)
 		.add(containerShare)
 		.add(containerDistribution)
-		.add(containerStart)
-		sizer.add(sizerButtons)
+		.add(containerStart, {padding: {left: Space.padSmall}})
 
-		// Add this deck's avatar
-		let containerAvatar = new ContainerLite(this.scene, 0, 0, Space.avatarSize + Space.pad, Space.avatarSize)
-		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, 'Jules')
-		sizer.add(containerAvatar)
-
-		// Give the background a drop shadow
-		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-			distance: 3,
-			angle: -90,
-			shadowColor: 0x000000,
-		})
-
-		return sizer
+		return sizerButtons
 	}
 
 	// Add the given card and return the created cardImage
@@ -222,7 +227,7 @@ export default class DeckRegion {
 			let container = new ContainerLite(this.scene, 0, 0, Space.deckPanelWidth, Space.cutoutHeight)
 			let cutout = new Cutout(container, card)
 			cutout.setOnClick(this.onClickCutout(cutout))
-			if (Mobile) {
+			if (Flags.mobile) {
 				cutout.setDepth(2)
 			}
 
@@ -436,14 +441,14 @@ export default class DeckRegion {
 					(cutout.card.name > card.name))
 				)
 			{
-				let index = i + (Mobile ? 1 : 0)
+				let index = i + (Flags.mobile ? 1 : 0)
 				panel.insert(index, child)
 				return index
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		let index = this.deck.length + (Mobile ? 1 : 0)
+		let index = this.deck.length + (Flags.mobile ? 1 : 0)
 		panel.insert(index, child)
 		return index
 	}
@@ -495,7 +500,7 @@ export default class DeckRegion {
 	}
 
 	showPanel(): void {
-		const x = Mobile ? 0 : Space.decklistPanelWidth
+		const x = Flags.mobile ? 0 : Space.decklistPanelWidth
 		// this.scrollablePanel.x = x
 		this.scene.tweens.add({
 			targets: this.scrollablePanel,
