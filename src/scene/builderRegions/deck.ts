@@ -84,7 +84,7 @@ export default class DeckRegion {
 
 		// If on mobile, must be over the decklist region
 		if (Flags.mobile) {
-			this.scrollablePanel.setDepth(2)
+			this.scrollablePanel.setDepth(3)
 		}
 
 		this.scrollablePanel.layout()

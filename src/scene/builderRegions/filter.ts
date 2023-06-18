@@ -95,7 +95,7 @@ export default class FilterRegion {
 
 	private createTextSearch(container: Phaser.GameObjects.Container) {
 		this.searchObj = this.scene.add['rexInputText'](
-			369, 40, 255, 40, {
+			369, 40, Space.textboxWidth, Space.textboxHeight, {
 				type: 'text',
 				text: this.searchText,
 				align: 'center',

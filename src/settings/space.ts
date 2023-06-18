@@ -62,6 +62,8 @@ export var Space = {
   // Dimensions for common buttons
   buttonWidth: 150,
   buttonHeight: 58,
+  textboxWidth: 255,
+  textboxHeight: 40,
 
   cutoutHeight: 49,
 
