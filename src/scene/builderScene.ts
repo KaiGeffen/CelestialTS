@@ -206,8 +206,10 @@ export class BuilderScene extends BuilderBase {
   }
 
   setSearchVisible(value: boolean): void {
-    // TODO Better integrate rexUI types
-    this.filterRegion.searchObj['setVisible'](value)
+    if (this.filterRegion.searchObj !== undefined) {
+      // TODO Better integrate rexUI types
+      this.filterRegion.searchObj['setVisible'](value)
+    }
   }
 
   // Remember what deck / decklist was selected

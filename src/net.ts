@@ -182,8 +182,7 @@ export class Network {
 		else {
 			// The WS location on DO
 			let loc = window.location
-			let fullPath = `wss://${loc.host}${loc.pathname}ws/${mmCode}`
-			console.log(`Full path to WSS: ${fullPath}`)
+			const fullPath = `wss://celestialtcg.com/ws/${mmCode}`
 			socket = new WebSocket(fullPath)
 		}
 

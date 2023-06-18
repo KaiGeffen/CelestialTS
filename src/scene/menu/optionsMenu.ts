@@ -6,7 +6,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 import Menu from './menu'
 import BaseScene from '../../scene/baseScene'
-import { Space, Color, Style, BBStyle, UserSettings, Time } from '../../settings/settings'
+import { Space, Color, Style, BBStyle, UserSettings, Time, Flags } from '../../settings/settings'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import MenuScene from '../menuScene'
@@ -16,10 +16,10 @@ import Icons from "../../lib/buttons/icons"
 import intro from "../../adventures/intro.json"
 
 
-const width = 750
-const height = 350
+const width = Math.min(750, Space.windowWidth - Space.pad * 2)
+const height = Math.min(350, Space.windowHeight - 200)
 // Width of the subpanel that shows selected tab's contents
-const subWidth = 530
+const subWidth = width - 220
 
 // TODO Use a non-mock color for the menu background
 const COLOR = Color.backgroundLight
@@ -89,13 +89,17 @@ export default class OptionsMenu extends Menu {
 	private createTabs()  {
 		// Create a rectangle to show which tab is selected
 		const highlightWidth = Space.buttonWidth + Space.pad * 2
-		this.highlight = this.scene.add.rectangle(0, 0, highlightWidth, 90, COLOR, 1)
+		const height = Flags.mobile ? 50 : 90
+		this.highlight = this.scene.add.rectangle(0, 0, highlightWidth, height, COLOR, 1)
 		.setOrigin(0, 0.5)
 
-		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer({space: {
-			top: Space.pad,
-			line: Space.pad,
-		}})
+		let tabsSizer = this.scene['rexUI'].add.fixWidthSizer(
+			Flags.mobile ? {} : {
+				space: {
+					top: Space.pad,
+					line: Space.pad,
+				}
+			})
 
 
 		tabsSizer.addNewLine()

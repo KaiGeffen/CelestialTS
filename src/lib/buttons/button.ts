@@ -1,7 +1,7 @@
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
 
-import { Style, Color } from '../../settings/settings'
+import { Style, Color, Flags } from '../../settings/settings'
 
 
 // Base abstraction of all buttons within the game
@@ -107,7 +107,7 @@ export default class Button {
 			let filename = config.icon.name.includes('-') ? config.icon.name : `icon-${config.icon.name}`
 			this.icon = this.scene.add.image(x, y + config.icon.offsetY, filename)
 			
-			if (!config.icon.noGlow) {
+			if (!config.icon.noGlow && !Flags.mobile) {
 				this.icon.on('pointerover', () => this.glow())
 				.on('pointerout', () => this.stopGlow())
 
@@ -121,10 +121,17 @@ export default class Button {
 				const x = this.icon.width/2
 				const hitarea = !config.icon.circular ? [] : [new Phaser.Geom.Circle(x, x, x), Phaser.Geom.Circle.Contains]
 				
-				this.icon.setInteractive(...hitarea)
-				.on('pointerdown', () => {this.onClick()})
-				.on('pointerover', () => {this.onHover()})
-				.on('pointerout', () => {this.onExit()})
+				if (!Flags.mobile) {
+					this.icon.setInteractive(...hitarea)
+					.on('pointerdown', () => {this.onClick()})
+					.on('pointerover', () => {this.onHover()})
+					.on('pointerout', () => {this.onExit()})
+				}
+				else {
+					this.scene['rexGestures'].add.tap(this.icon, {tapInterval: 0})
+			        .on('tap', () => {this.onClick()})
+				}
+				
 			}
 		}
 
@@ -140,11 +147,19 @@ export default class Button {
 			// Set interactive
 			if (config.text.interactive) {
 				this.txt.setInteractive(...config.text.hitArea)
-				.on('pointerover', () => this.txt.setTint(Color.buttonHighlight), this)
-				.on('pointerout', () => this.txt.clearTint(), this)
-				.on('pointerdown', () => {this.onClick()})
-				.on('pointerover', () => {this.onHover()})
-				.on('pointerout', () => {this.onExit()})
+				
+				if (!Flags.mobile) {
+					this.txt
+					.on('pointerover', () => this.txt.setTint(Color.buttonHighlight), this)
+					.on('pointerout', () => this.txt.clearTint(), this)
+					.on('pointerdown', () => {this.onClick()})
+					.on('pointerover', () => {this.onHover()})
+					.on('pointerout', () => {this.onExit()})
+				}
+				else {
+					this.scene['rexGestures'].add.tap(this.txt, {tapInterval: 0})
+			        .on('tap', () => {this.onClick()})
+				}
 			}
 		}
 

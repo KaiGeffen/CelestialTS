@@ -1,5 +1,6 @@
 import "phaser"
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+import GesturesPlugin from 'phaser3-rex-plugins/plugins/gestures-plugin.js';
 
 import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
 import Button from '../lib/buttons/button'
@@ -11,6 +12,7 @@ import Hint from '../lib/hint'
 class SharedBaseScene extends Phaser.Scene {
 	// Allows for typing objects in RexUI library
 	rexUI: RexUIPlugin
+	rexGestures: GesturesPlugin
 
 	// Message explaining to user what they did wrong
 	txtMessage: RexUIPlugin.BBCodeText
@@ -61,7 +63,6 @@ class SharedBaseScene extends Phaser.Scene {
 
 	// Play the given sound, or one of its variants if it has any
 	playSound(s: string): void {
-		console.log(s)
 		const amt_variants = {
 			'open': 2,
 			'close': 2,

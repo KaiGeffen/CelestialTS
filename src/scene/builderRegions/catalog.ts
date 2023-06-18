@@ -4,7 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, Color, UserSettings, Space, Mechanics, Time, Mobile, Scroll, Ease } from "../../settings/settings"
+import { Style, Color, UserSettings, Space, Mechanics, Time, Scroll, Ease, Flags } from "../../settings/settings"
 import { collectibleCards } from "../../catalog/catalog"
 
 
@@ -80,7 +80,7 @@ export default class CatalogRegion {
         }
       },
 
-      slider: Scroll(scene),
+      slider: Flags.mobile ? undefined : Scroll(scene),
     }).setOrigin(1, 0)
 
     // Update panel when mousewheel scrolls
@@ -164,7 +164,7 @@ export default class CatalogRegion {
   shiftRight(): void {
     let that = this
 
-    const x = Mobile ? Space.deckPanelWidth + 60 : Space.decklistPanelWidth + Space.deckPanelWidth
+    const x = Flags.mobile ? Space.deckPanelWidth : Space.decklistPanelWidth + Space.deckPanelWidth
     const width = Space.windowWidth - x
 
     // Ratio of how much panel has been scrolled
@@ -189,7 +189,7 @@ export default class CatalogRegion {
   shiftLeft(): void {
     let that = this
 
-    const x = Space.decklistPanelWidth + (Mobile ? Space.sliderWidth : 0)
+    const x = Space.decklistPanelWidth// + (Flags.mobile ? Space.sliderWidth : 0)
     const width = Space.windowWidth - x
 
     // Ratio of how much panel has been scrolled

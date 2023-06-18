@@ -1,3 +1,5 @@
+import { Flags } from './settings'
+
 // Determine if height or width is the limiting factor for this window
 // 1100 x 650 is the size of the background
 let heightIsLimiting = window.innerHeight < (650 / 1100) * window.innerWidth 
@@ -36,8 +38,8 @@ export var Space = {
   textAreaHeight: 60,
 
   // These values are experimental and related to the 3/15 gui pass
-  cardWidth: 336 * 7/10,
-  cardHeight: 336,
+  cardWidth: Flags.mobile ? 196 * 0.7 : 336 * 7/10,
+  cardHeight: Flags.mobile ? 280 * 0.7 : 336,
   storyXOverlap: 30,
   storyYOverlap: 120, // If this is more than half of cardHeight, mistake
   // Height of the hand regions
@@ -48,10 +50,11 @@ export var Space = {
   maxTextWidth: 500, // Note must be more than twice cardWidth for hints
 
   // Height of the filter bar in the deck editor
-  filterBarHeight: 80,
+  filterBarHeight: Flags.mobile ? 0 : 80,
 
   decklistPanelWidth: 240,
-  deckPanelWidth: 320 + 50,
+  // NOTE cutout width is 350
+  deckPanelWidth: 350 + (Flags.mobile ? 0 : 10),
 
   // Textbox text in the tutorial that plays while stillframes show
   stillframeTextWidth: width - 120,
@@ -59,6 +62,8 @@ export var Space = {
   // Dimensions for common buttons
   buttonWidth: 150,
   buttonHeight: 58,
+  textboxWidth: 255,
+  textboxHeight: 40,
 
   cutoutHeight: 49,
 
