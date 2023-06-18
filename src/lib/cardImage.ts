@@ -93,7 +93,7 @@ export class CardImage {
         .on('pointerdown', () => this.clickCallback())
       }
       else {
-        this.scene.rexGestures.add.tap(this.image)
+        this.scene.rexGestures.add.tap(this.image, {tapInterval: 0})
         .on('tap', () => {
           this.clickCallback()
         })
