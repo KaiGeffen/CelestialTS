@@ -1,6 +1,6 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { Color, Style, BBStyle, Time, Space } from "../settings/settings"
+import { Color, Style, BBStyle, Time, Space, Flags } from "../settings/settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
@@ -46,7 +46,7 @@ export class CardImage {
     this.scene = scene
 
     // Card image
-    this.image = scene.add.image(0, 0, card.name)
+    this.image = this.scene.add.image(0, 0, card.name)
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
@@ -61,7 +61,7 @@ export class CardImage {
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card costs ${this.txtCost.text} breath to play.`))
     .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
-    .on('pointerdown', () => that.clickCallback())
+    .on('pointerdown', () => this.clickCallback())
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
       -Space.cardWidth/2 + 25,
@@ -72,7 +72,7 @@ export class CardImage {
     .setInteractive()
     .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
     .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
-    .on('pointerdown', () => that.clickCallback())
+    .on('pointerdown', () => this.clickCallback())
     this.setPoints(card.points)
 
     // Add keywords and references
@@ -86,7 +86,7 @@ export class CardImage {
       this.image.setInteractive()
       .on('pointerover', this.onHover())
       .on('pointerout', this.onHoverExit())
-      .on('pointerdown', () => that.clickCallback())
+      .on('pointerdown', () => this.clickCallback())
 
       // If the mouse moves outside of the game, exit the hover also
       // NOTE This logic won't run until the frame after user interacts with the canvas
@@ -94,6 +94,7 @@ export class CardImage {
       // this.scene.input.on('gameout', this.onHoverExit(true))
     }
   }
+
 
   destroy(): void {
     [

@@ -30,8 +30,8 @@ export default class FocusMenu extends Menu {
 	}
 
 	private createKeywords(card: Card): void {
-		const x = Space.windowWidth/6
 		const width = Space.windowWidth/2 - Space.cardWidth/2 - Space.pad*2
+		const x = Space.windowWidth/2 - Space.cardWidth/2 - Space.pad - width/2
 		let txt = this.scene.rexUI.add.BBCodeText(
 			x,
 			Space.windowHeight/2,

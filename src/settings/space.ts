@@ -36,8 +36,8 @@ export var Space = {
   textAreaHeight: 60,
 
   // These values are experimental and related to the 3/15 gui pass
-  cardWidth: 336 * 7/10,
-  cardHeight: 336,
+  cardWidth: 196 * 0.7,//336 * 7/10 * 3/4,
+  cardHeight: 280 * 0.7,//336 * 3/4,
   storyXOverlap: 30,
   storyYOverlap: 120, // If this is more than half of cardHeight, mistake
   // Height of the hand regions
