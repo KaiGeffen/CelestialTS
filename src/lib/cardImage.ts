@@ -6,10 +6,11 @@ import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
 import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import BaseScene from '../scene/baseScene'
 
 
 export class CardImage {
-  scene: Phaser.Scene
+  scene: BaseScene
 
   card: Card
   image: Phaser.GameObjects.Image
@@ -42,7 +43,7 @@ export class CardImage {
     let that = this
     this.card = card
 
-    let scene: Phaser.Scene = outerContainer.scene
+    let scene: BaseScene = outerContainer.scene
     this.scene = scene
 
     // Card image
@@ -75,23 +76,28 @@ export class CardImage {
     .on('pointerdown', () => this.clickCallback())
     this.setPoints(card.points)
 
-    // Add keywords and references
-    this.addKeywords()
-    this.addReferences()
-
+    if (!Flags.mobile) {
+      // Add keywords and references
+      this.addKeywords()
+      this.addReferences()  
+    }
+    
     // This container
     this.container = this.createContainer(outerContainer)
 
     if (interactive) {
-      this.image.setInteractive()
-      .on('pointerover', this.onHover())
-      .on('pointerout', this.onHoverExit())
-      .on('pointerdown', () => this.clickCallback())
-
-      // If the mouse moves outside of the game, exit the hover also
-      // NOTE This logic won't run until the frame after user interacts with the canvas
-      // Removed, phaser does this anyways on returning to focus
-      // this.scene.input.on('gameout', this.onHoverExit(true))
+      if (!Flags.mobile) {
+        this.image.setInteractive()
+        .on('pointerover', this.onHover())
+        .on('pointerout', this.onHoverExit())
+        .on('pointerdown', () => this.clickCallback())
+      }
+      else {
+        this.scene.rexGestures.add.tap(this.image)
+        .on('tap', () => {
+          this.clickCallback()
+        })
+      }
     }
   }
 

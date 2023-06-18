@@ -30,11 +30,11 @@ export default class HomeScene extends BaseScene {
 
     this.createButtons()
 
-    this.scene.launch('MenuScene', {
-        menu: 'focus',
-        card: baseCards[4],
-        // callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t0`, missionID: 0})},
-      })
+    // this.scene.launch('MenuScene', {
+    //     menu: 'focus',
+    //     card: baseCards[4],
+    //     // callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t0`, missionID: 0})},
+    //   })
     
     super.create()
   }
