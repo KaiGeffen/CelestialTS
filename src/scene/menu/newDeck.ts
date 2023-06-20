@@ -3,13 +3,13 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
 import Buttons from '../../lib/buttons/buttons'
 import Button from '../../lib/buttons/button'
-import { Color, Space, Style, Mechanics } from '../../settings/settings'
+import { Color, Space, Style, Mechanics, Flags } from '../../settings/settings'
 import Menu from './menu'
 import MenuScene from '../menuScene'
 import { encodeShareableDeckCode, decodeShareableDeckCode } from "../../lib/codec"
 
 
-const width = 500
+const width = Flags.mobile ? Space.avatarSize*6 + Space.pad*7 : 500
 const inputTextWidth = 200
 
 class AlterDeckMenu extends Menu {
@@ -52,16 +52,31 @@ class AlterDeckMenu extends Menu {
 	private createContent(createCallback: (name: string, avatar: number, deckCode: string) => void) {
 		this.createHeader(this.titleString, width)
 
-		this.sizer.add(this.createName())
-		.addNewLine()
-		.addNewLine()
-		.add(this.createAvatar())
-		.addNewLine()
-		.addNewLine()
-		.add(this.createImport())
-		.addNewLine()
-		.addNewLine()
-		.add(this.createButtons(createCallback))
+		if (!Flags.mobile) {
+			this.sizer.add(this.createName())
+			.addNewLine()
+			.addNewLine()
+			.add(this.createAvatar())
+			.addNewLine()
+			.addNewLine()
+			.add(this.createImport())
+			.addNewLine()
+			.addNewLine()
+			.add(this.createButtons(createCallback))
+		}
+		else {
+			let namePlusImport = this.scene.rexUI.add.sizer({space: {item: Space.pad}})
+			.add(this.createName())
+			.add(this.createImport())
+
+			this.sizer.add(namePlusImport)
+			.addNewLine()
+			.addNewLine()
+			.add(this.createAvatar())
+			.addNewLine()
+			.addNewLine()
+			.add(this.createButtons(createCallback))
+		}
 	}
 
 	private createTitle() {
@@ -76,16 +91,13 @@ class AlterDeckMenu extends Menu {
 	}
 
 	private createName() {
-		let that = this
-
-		let sizer = this.scene.rexUI.add.sizer({width: width - Space.pad * 2})
-		sizer.addSpace()
+		let sizer = this.scene.rexUI.add.sizer()
 
 		this.nameInputText = this.scene.add.rexInputText
 		(
 			0, 0, inputTextWidth, 40, {
 				type: 'text',
-				text: that.name,
+				text: this.name,
 				align: 'center',
 				placeholder: 'Deck Name',
 				tooltip: 'Name for the new deck.',
@@ -96,11 +108,13 @@ class AlterDeckMenu extends Menu {
 				selectAll: true,
 				id: 'search-field'
 			}
-		).on('textchange', function(inputText) {
-			that.name = inputText.text
+		).on('textchange', (inputText) => {
+			this.name = inputText.text
 		})
 
-		sizer.add(this.nameInputText)
+		let container = new ContainerLite(this.scene, 0, 0, Space.textboxWidth, Space.textboxHeight, this.nameInputText)
+		sizer.addSpace()
+		.add(container)
 		.addSpace()
 
 		return sizer
@@ -116,7 +130,8 @@ class AlterDeckMenu extends Menu {
 		let sizer
 		let avatars = []
 		for (let i = 0; i < 6; i++) {
-			if (i % 3 === 0) {
+			// On mobile, all avatars are on 1 line
+			if (Flags.mobile ? i === 0 : i % 3 === 0) {
 				sizer = this.scene.rexUI.add.sizer({
 					space: {
 						item: Space.pad,
@@ -148,8 +163,7 @@ class AlterDeckMenu extends Menu {
 	}
 
 	private createImport() {
-		let sizer = this.scene.rexUI.add.sizer({width: width - Space.pad * 2})
-		sizer.addSpace()
+		let sizer = this.scene.rexUI.add.sizer()
 
 		this.deckCodeInputText = this.scene.add.rexInputText
 		(
@@ -177,7 +191,9 @@ class AlterDeckMenu extends Menu {
 			}
 		})
 
-		sizer.add(this.deckCodeInputText)
+		let container = new ContainerLite(this.scene, 0, 0, Space.textboxWidth, Space.textboxHeight, this.deckCodeInputText)
+		sizer.addSpace()
+		.add(container)
 		.addSpace()
 
 		return sizer
