@@ -62,8 +62,8 @@ export default class OurHandRegion extends Region {
 
 		// Deck and discard pile totals
 		if (Flags.mobile) {
-			this.btnDeck = new Buttons.Stacks.Deck(this.container, Space.windowWidth - 155, Space.handHeight/2, 0)
-			this.btnDiscard = new Buttons.Stacks.Discard(this.container, Space.windowWidth - 97, Space.handHeight/2, 0)
+			this.btnDeck = new Buttons.Stacks.Deck(this.container, Space.windowWidth - 169, Space.handHeight/2, 0)
+			this.btnDiscard = new Buttons.Stacks.Discard(this.container, Space.windowWidth - 111, Space.handHeight/2, 0)
 		}
 		else {
 			const x = Space.windowWidth - 294
