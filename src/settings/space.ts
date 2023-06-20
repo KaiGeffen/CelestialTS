@@ -34,7 +34,7 @@ export var Space = {
   highlightWidth: 5,
   iconSeparation: 180,
   // The maximum height that something can be and still fit within the standard 780 browser height
-  maxHeight: 750,
+  maxHeight: Flags.mobile ? 375 : 750,
   textAreaHeight: 60,
 
   // These values are experimental and related to the 3/15 gui pass
@@ -42,8 +42,8 @@ export var Space = {
   cardHeight: Flags.mobile ? 280 * 0.7 : 336,
   storyXOverlap: 30,
   storyYOverlap: 120, // If this is more than half of cardHeight, mistake
-  // Height of the hand regions
-  handHeight: 160,
+  // Dimensions of the hand regions
+  handHeight: Flags.mobile ? 80 : 160,
   // Standard corner width for rounded rectangles
   corner: 10,
   // For basic text

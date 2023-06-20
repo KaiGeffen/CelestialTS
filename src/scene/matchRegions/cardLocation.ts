@@ -3,10 +3,10 @@
 import 'phaser'
 
 import ClientState from '../../lib/clientState'
-import { Space } from '../../settings/settings'
+import { Space, Flags } from '../../settings/settings'
 
 // Amount of room to leave to the right of the last card in either hand
-const minRoom = 342 + Space.cardWidth/2
+const minRoom = (Flags.mobile ? 225 : 342) + Space.cardWidth/2
 
 // This describes where on screen each card in each region should appear
 // so that regions can move their cards to the appropriate locations for
@@ -14,7 +14,7 @@ const minRoom = 342 + Space.cardWidth/2
 export default class CardLocation {
 	static ourHand(state: ClientState, i: number, container?: Phaser.GameObjects.Container): [number, number] {
 		// X of the first card in their hand
-		const x0 = 220 + Space.cardWidth/2
+		const x0 = (Flags.mobile ? 100 : 220) + Space.cardWidth/2
 
 		let dx = (Space.cardWidth + Space.pad)
 
@@ -49,7 +49,7 @@ export default class CardLocation {
 
 	static theirHand(state: ClientState, i: number, container: Phaser.GameObjects.Container): [number, number] {
 		// X of the first card in their hand
-		const x0 = 220 + Space.cardWidth/2
+		const x0 = (Flags.mobile ? 100 : 220) + Space.cardWidth/2
 
 		let dx = (Space.cardWidth + Space.pad)
 

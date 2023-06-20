@@ -3,7 +3,7 @@ import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import { CardImage } from '../../lib/cardImage'
 import ClientState from '../../lib/clientState'
-import { Depth, Space, Style, Time } from '../../settings/settings'
+import { Depth, Space, Style, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -197,7 +197,26 @@ export default class OurHandRegion extends Region {
 	// }
 
 	private createAvatar(avatarId: number): Button {
+		if (Flags.mobile) {
+			return this.createAvatarMobile(avatarId)
+		}
+
 		let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
+		.setOrigin(0)
+		.setQuality({emotive: true})
+
+		// Sight
+		this.btnSight = new Buttons.Keywords.Sight(this.container,
+			btn.icon.x + Space.avatarSize/2,
+			btn.icon.y + Space.avatarSize - Space.padSmall)
+		.setOrigin(0.5, 1)
+		.setVisible(false)
+		
+		return btn
+	}
+
+	private createAvatarMobile(avatarId: number): Button {
+		let btn = new Buttons.Avatar(this.container, 10, -10, avatarId)
 		.setOrigin(0)
 		.setQuality({emotive: true})
 
