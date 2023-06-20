@@ -336,13 +336,15 @@ export default class OptionsMenu extends Menu {
 	private createQuit(activeScene: BaseScene) {
 		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
 
-		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
+		let containerQuit = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
 		sizer
 		.addSpace()
-		.add(container)
+		.add(this.createCancelButton())
+		.addSpace()
+		.add(containerQuit)
 		.addSpace()
 
-		new Buttons.Basic(container, 0, 0, 'Quit', () => {
+		new Buttons.Basic(containerQuit, 0, 0, 'Quit', () => {
 			// Stop the other active scene
 			activeScene.beforeExit()
 			activeScene.scene.stop()

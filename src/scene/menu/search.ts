@@ -73,23 +73,13 @@ export default class SearchMenu extends Menu {
 		})
 
 		sizer
-		.add(this.createCancel())
+		.add(this.createCancelButton())
 		.addSpace()
 		.add(this.createOkay(() => {
 			callback(this.textboxSearch.text)
 		}))
 
 		return sizer
-	}
-
-	private createCancel(): ContainerLite {
-		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
-
-		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
-			this.close()
-		})
-
-		return container
 	}
 
 	private createOkay(callback: () => void): ContainerLite {

@@ -190,21 +190,11 @@ class AlterDeckMenu extends Menu {
 		})
 
 		sizer
-		.add(this.createCancel())
+		.add(this.createCancelButton())
 		.addSpace()
 		.add(this.createConfirm(createCallback))
 
 		return sizer
-	}
-
-	private createCancel() {
-		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.buttonHeight)
-
-		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
-			this.scene.scene.stop()
-		})
-
-		return container
 	}
 
 	private createConfirm(createCallback: (name: string, avatar: number, deckCode: string) => void) {
