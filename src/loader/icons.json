@@ -18,6 +18,7 @@
 	"Recap",
 	"Skip",
 	"Bottom", "Top", "Bottom Score",
+	"MobileBottom",
 	"BreathBasic", "BreathSpent", "BreathExtra", "BreathHover", "BreathOom", 
 	"Arrow", "Pointer",
 	"Discord",
