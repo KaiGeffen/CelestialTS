@@ -4,6 +4,7 @@
 	"Deck", "Discard",
 	"Nourish", "Inspire", "Sight",
 	"Sun", "Moon",
+	"MobileSun", "MobileMoon",
 	"ResultGlow",
 	"Options", "SmallX",
 	"SearchBar", "Underline",

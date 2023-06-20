@@ -41,7 +41,8 @@ export var Space = {
   cardWidth: Flags.mobile ? 196 * 0.7 : 336 * 7/10,
   cardHeight: Flags.mobile ? 280 * 0.7 : 336,
   storyXOverlap: 30,
-  storyYOverlap: 120, // If this is more than half of cardHeight, mistake
+  // If this is more than half of cardHeight, mistake
+  storyYOverlap: Flags.mobile ? 80 : 120,
   // Dimensions of the hand regions
   handHeight: Flags.mobile ? 80 : 160,
   // Standard corner width for rounded rectangles

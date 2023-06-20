@@ -75,10 +75,12 @@ export default class CardLocation {
 	}
 
 	static story(state: ClientState, isRecap: boolean, i: number, container: Phaser.GameObjects.Container, owner: number): [number, number] {
-		const x0 = 300
+		const x0 = Flags.mobile ? Space.iconSize + Space.pad*2 + Space.cardWidth/2 : 300
 		let dx = Space.cardWidth - Space.storyXOverlap
 		
-		const maxOffset = Space.windowWidth - x0 - Space.cardWidth/2 - 260 // Space to the right of the last card
+		// Space to the right of the last card
+		const rightPad = Flags.mobile ? 200 : 260
+		const maxOffset = Space.windowWidth - x0 - Space.cardWidth/2 - rightPad
 		if (state !== undefined) {
 			// Find the amount that we must scale down by
 			// This may be multiplied by a constant to fit within the max

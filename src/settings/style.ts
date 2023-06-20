@@ -46,13 +46,13 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Pass button
   pass: {
     fontFamily: altFont,
-    fontSize: '40px',
+    fontSize: Flags.mobile ? '30px' : '40px',
     color: Color.passText,
   },
   // Moon button
   moon: {
     fontFamily: altFont,
-    fontSize: '60px',
+    fontSize: Flags.mobile ? '40px' : '60px',
     color: Color.passText,
   },
   // Text on cards that references other cards
