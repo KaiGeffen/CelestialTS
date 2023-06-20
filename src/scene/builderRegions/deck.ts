@@ -112,8 +112,9 @@ export default class DeckRegion {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.backgroundDark)
 		.setInteractive()
 
+		const pad = Space.padSmall + (Flags.mobile ? Space.pad : 0)
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			space: {top: Space.padSmall, bottom: Space.padSmall},
+			space: {top: pad, bottom: pad},
 		}).addBackground(background)
 
 		sizer.add(this.createTitle())
