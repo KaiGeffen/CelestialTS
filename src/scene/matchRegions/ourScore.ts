@@ -31,7 +31,8 @@ export default class ScoreRegion extends Region {
 		this.createBreathIcons()
 
 		const x = Space.windowWidth - (Flags.mobile ? 40 : 124)
-		this.txtWins = scene.add.text(x, Space.windowHeight - 114, '', Style.basic).setOrigin(0)
+		const y = Space.windowHeight - (Flags.mobile ? 110 : 114)
+		this.txtWins = scene.add.text(x, y, '', Style.basic).setOrigin(0)
 		this.txtBreath = scene.add.text(breathCenterX, breathCenterY, '', Style.basic).setOrigin(0.5)
 		
 		// Add each of these objects to container

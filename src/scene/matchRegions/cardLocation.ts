@@ -69,9 +69,7 @@ export default class CardLocation {
 		// Offset from the first card
 		const xOffset = dx * i
 		const x = x0 + xOffset
-
-		// y = regionHeight - h/2
-		const y = 150 - Space.cardHeight/2
+		let y = Space.handHeight - Space.cardHeight/2
 
 		return [x - container.x, y - container.y]
 	}

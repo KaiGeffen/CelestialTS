@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Style, Depth } from '../../settings/settings'
+import { Space, Color, Style, Depth, Flags } from '../../settings/settings'
 import { CardImage } from '../../lib/cardImage'
 import { cardback } from '../../catalog/catalog'
 import ClientState from '../../lib/clientState'
@@ -20,7 +20,9 @@ export default class TheirScoreRegion extends Region {
 		.setDepth(Depth.theirScore)
 
 		// Wins
-		this.txtWins = scene.add.text(Space.windowWidth - 140, 53, '', Style.basic)
+		const x = Space.windowWidth - (Flags.mobile ? 40 : 124)
+		const y = Flags.mobile ? 110 : 53
+		this.txtWins = scene.add.text(x, y, '', Style.basic)
 		.setOrigin(0)
 
 		// Add each of these objects to container

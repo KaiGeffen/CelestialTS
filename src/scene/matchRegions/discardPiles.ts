@@ -2,7 +2,7 @@ import "phaser"
 import { Zone } from '../../lib/animation'
 import { CardImage } from '../../lib/cardImage'
 import ClientState from '../../lib/clientState'
-import { Depth, Space, Time } from '../../settings/settings'
+import { Depth, Space, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -15,7 +15,9 @@ export default class DiscardPilesRegion extends Region {
 	create (scene: BaseScene): DiscardPilesRegion {
 		this.scene = scene
 
-		this.container = scene.add.container(Space.windowWidth, Space.windowHeight/2).setDepth(Depth.discardPiles)
+		this.container = scene.add.container(Space.windowWidth, Space.windowHeight/2)
+		.setDepth(Depth.discardPiles)
+		.setVisible(!Flags.mobile)
 
 		return this
 	}
