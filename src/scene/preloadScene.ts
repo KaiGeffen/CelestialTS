@@ -172,10 +172,10 @@ export class PreloadScene extends SigninScene {
 
 	// Create the which show user how much has loaded
 	private createProgressGraphics(): void {
-		let width = 800
+		let width = Space.windowWidth - Space.pad * 2
 		let height = 100
 		let x = (Space.windowWidth - width)/2
-		let y = Space.windowHeight - height/2 - 200
+		let y = Space.windowHeight - height - Space.pad
 
 		// Add graphics to show information
 		let progressBox = this.add.graphics()
