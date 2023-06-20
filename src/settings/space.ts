@@ -21,8 +21,8 @@ export var Space = {
   windowWidth: width,
   windowHeight: height,
   cardSize: 100,
-  padSmall: 10,
-  pad: 20,
+  padSmall: Flags.mobile ? 7 : 10,
+  pad: Flags.mobile ? 14 : 20,
   rowsPerPage: 4,
   cardsPerPage: 8 * 4,
   stackOffset: 30,
@@ -69,7 +69,7 @@ export var Space = {
 
   avatarWidth: 400,
   avatarHeight: 600,
-  avatarSize: 130,
+  avatarSize: Flags.mobile ? 80 : 130,
   iconSize: 32,
 
   sliderWidth: 40,

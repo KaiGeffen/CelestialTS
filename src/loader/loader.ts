@@ -127,9 +127,10 @@ export default class Loader {
 
 	// Loads the avatar portraits which are spritesheets
 	private static loadAvatarPortraits(scene: Phaser.Scene): void {
+		const folder = `avatars/${Flags.mobile ? 'mobile' : ''}`
 		avatarNames.forEach((name) => {
 			// Load the spritesheet with basic + emotes
-			scene.load.spritesheet(`avatar-${name}`, `avatars/${name}.${EXTENSION}`, {
+			scene.load.spritesheet(`avatar-${name}`, `${folder}/${name}.${EXTENSION}`, {
 				frameWidth: Space.avatarSize,
 				frameHeight: Space.avatarSize,
 			})

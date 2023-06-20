@@ -1,6 +1,6 @@
 // Settings relating to styles of text or bbcode throughout the app
 import "phaser"
-import { Space, Color } from "./settings"
+import { Space, Color, Flags } from "./settings"
 
 // All fonts used
 const mainFont = 'Mulish'
@@ -8,9 +8,9 @@ const altFont = 'Cinzel'
 
 // Settings for the font sizes
 const FontSettings: Record<string, Record<string, string>> = {
-  standard: {size: '24px'},
-  huge: {size: '50px'},
-  large: {size: '44px'},
+  standard: {size: Flags.mobile ? '20px' : '24px'},
+  huge: {size: Flags.mobile ? '40px' : '50px'},
+  large: {size: Flags.mobile ? '44px' : '44px'},
   title: {size: '128px'},
 }
 
