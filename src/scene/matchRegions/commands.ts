@@ -19,7 +19,7 @@ export default class CommandsRegion extends Region {
 
 	create (scene: BaseScene): CommandsRegion {
 		this.scene = scene
-		const x = Flags.mobile ? Space.pad + Space.iconSize/2 : Space.windowWidth - Space.pad - Space.iconSize/2,
+		const x = Flags.mobile ? Space.pad + Space.iconSize/2 : Space.windowWidth - Space.pad - Space.iconSize/2
 		const y = Flags.mobile ? Space.windowHeight/2 : Space.pad*2 + Space.iconSize * 3/2
 		this.container = scene.add.container(x, y)
 		.setDepth(Depth.commands)
