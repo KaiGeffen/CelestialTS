@@ -1,9 +1,12 @@
 import "phaser"
 import ClientState from '../../lib/clientState'
-import { Depth, Space, Style } from '../../settings/settings'
+import { Depth, Space, Style, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 
+// Center at 163, 53 from right bottom corner
+const breathCenterX = Space.windowWidth - (Flags.mobile ? 40 : 163)
+const breathCenterY = Space.windowHeight - (Flags.mobile ? Space.handHeight/2 : 53)
 
 export default class ScoreRegion extends Region {
 	// For the current state, the maximum and current amount of breath we have
@@ -20,16 +23,16 @@ export default class ScoreRegion extends Region {
 	breathHover: Phaser.GameObjects.Image[] = []
 	breathOom: Phaser.GameObjects.Image[] = []
 
-	create (scene: BaseScene): ScoreRegion {
+	create(scene: BaseScene): ScoreRegion {
 		this.scene = scene
 		this.container = scene.add.container().setDepth(Depth.ourScore)
 
 		// Create all of the breath icons
 		this.createBreathIcons()
 
-		const x = Space.windowWidth - 124
+		const x = Space.windowWidth - (Flags.mobile ? 40 : 124)
 		this.txtWins = scene.add.text(x, Space.windowHeight - 114, '', Style.basic).setOrigin(0)
-		this.txtBreath = scene.add.text(x + 6, Space.windowHeight - 60, '', Style.basic).setOrigin(0)
+		this.txtBreath = scene.add.text(breathCenterX, breathCenterY, '', Style.basic).setOrigin(0.5)
 		
 		// Add each of these objects to container
 		this.container.add([
@@ -82,8 +85,7 @@ export default class ScoreRegion extends Region {
 	}
 
 	private createBreathSubtype(key: string, images: Phaser.GameObjects.Image[]): void {
-		//Center at 163, 53 from right bottom corner
-		const center = [Space.windowWidth - 163, Space.windowHeight - 53]
+		const center = [breathCenterX, breathCenterY]
 		const radius = 30
 
 		// 10 is the max displayed breath, but player could have more

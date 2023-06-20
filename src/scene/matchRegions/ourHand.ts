@@ -61,11 +61,16 @@ export default class OurHandRegion extends Region {
 		// let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
 		// Deck and discard pile totals
-		// TODO Font size as a part of a style
-		const x = Space.windowWidth - 294
-		this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 0)
-		this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 0)
-
+		if (Flags.mobile) {
+			this.btnDeck = new Buttons.Stacks.Deck(this.container, Space.windowWidth - 155, Space.handHeight/2, 0)
+			this.btnDiscard = new Buttons.Stacks.Discard(this.container, Space.windowWidth - 97, Space.handHeight/2, 0)
+		}
+		else {
+			const x = Space.windowWidth - 294
+			this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 0)
+			this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 0)
+		}
+		
 		return this
 	}
 
