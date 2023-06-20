@@ -4,6 +4,7 @@ import ClientState from '../../lib/clientState'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
+import { Flags } from '../../settings/settings'
 
 
 export default class DecksRegion extends Region {
@@ -14,6 +15,7 @@ export default class DecksRegion extends Region {
 		this.scene = scene
 
 		this.container = scene.add.container(0, 150)
+		.setVisible(!Flags.mobile)
 
 		return this
 	}

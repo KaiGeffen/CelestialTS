@@ -112,8 +112,9 @@ export default class DeckRegion {
 		let background = this.scene.add.rectangle(0, 0, 420, 420, Color.backgroundDark)
 		.setInteractive()
 
+		const pad = Space.padSmall + (Flags.mobile ? Space.pad : 0)
 		let sizer = this.scene['rexUI'].add.fixWidthSizer({
-			space: {top: Space.padSmall, bottom: Space.padSmall},
+			space: {top: pad, bottom: pad},
 		}).addBackground(background)
 
 		sizer.add(this.createTitle())
@@ -171,7 +172,7 @@ export default class DeckRegion {
 		// TODO Abstract each of these to make it more clear what mobile looks like
 		// TODO Add a back button for mobile
 		let containerBack = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)
-		new Icons.Distribution(containerBack, 0, 0, this.backCallback())
+		new Icons.Recap(containerBack, 0, 0, this.backCallback())
 
 		// Add an edit button that allows user to change details about their deck
 		let containerEdit = new ContainerLite(this.scene, 0, 0, Space.buttonWidth/3, Space.avatarSize/2)

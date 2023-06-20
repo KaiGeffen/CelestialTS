@@ -1,6 +1,9 @@
 import "phaser"
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+
 import { Style, Color, Space } from '../../settings/settings'
 import MenuScene from '../menuScene'
+import Buttons from '../../lib/buttons/buttons'
 
 
 export default class Menu {
@@ -100,6 +103,17 @@ export default class Menu {
 		let rect = this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, Space.corner, Color.backgroundDark, 1).setInteractive()
 		this.sizer.addBackground(rect)
 
+	}
+
+	// Create a generic cancel button
+	protected createCancelButton(): ContainerLite {
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
+
+		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
+			this.close()
+		})
+
+		return container
 	}
 
 	// Add the given string as text to the sizer

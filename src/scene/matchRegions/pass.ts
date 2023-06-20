@@ -3,7 +3,7 @@ import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 import Button from '../../lib/buttons/button';
 import Icons from '../../lib/buttons/icons'
 import ClientState from '../../lib/clientState';
-import { Style, Color, Space, Time, Ease } from '../../settings/settings';
+import { Style, Color, Space, Time, Ease, Flags } from '../../settings/settings';
 import BaseScene from '../baseScene';
 import Region from './baseRegion';
 
@@ -127,8 +127,9 @@ export default class PassRegion extends Region {
 	private createButtons(): void {
 		let that = this
 
-		this.btnPass = new Icons.Pass(this.container, -156, 0)
-		this.btnMoon = new Icons.Moon(this.container, 156, 0, () => {
+		const x = Flags.mobile ? 100 : 156
+		this.btnPass = new Icons.Pass(this.container, -x, 0)
+		this.btnMoon = new Icons.Moon(this.container, x, 0, () => {
 			if (this.scene['paused']) {
 				this.scene['paused'] = false
 				this.btnMoon.setText(this.btnMoon.txt.text.replace('\nPaused\n', '\n\n'))

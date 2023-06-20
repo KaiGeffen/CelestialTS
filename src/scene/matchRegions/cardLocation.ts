@@ -3,10 +3,10 @@
 import 'phaser'
 
 import ClientState from '../../lib/clientState'
-import { Space } from '../../settings/settings'
+import { Space, Flags } from '../../settings/settings'
 
 // Amount of room to leave to the right of the last card in either hand
-const minRoom = 342 + Space.cardWidth/2
+const minRoom = (Flags.mobile ? 210 : 342) + Space.cardWidth/2
 
 // This describes where on screen each card in each region should appear
 // so that regions can move their cards to the appropriate locations for
@@ -14,7 +14,7 @@ const minRoom = 342 + Space.cardWidth/2
 export default class CardLocation {
 	static ourHand(state: ClientState, i: number, container?: Phaser.GameObjects.Container): [number, number] {
 		// X of the first card in their hand
-		const x0 = 220 + Space.cardWidth/2
+		const x0 = (Flags.mobile ? 100 : 220) + Space.cardWidth/2
 
 		let dx = (Space.cardWidth + Space.pad)
 
@@ -49,7 +49,7 @@ export default class CardLocation {
 
 	static theirHand(state: ClientState, i: number, container: Phaser.GameObjects.Container): [number, number] {
 		// X of the first card in their hand
-		const x0 = 220 + Space.cardWidth/2
+		const x0 = (Flags.mobile ? 100 : 220) + Space.cardWidth/2
 
 		let dx = (Space.cardWidth + Space.pad)
 
@@ -69,18 +69,18 @@ export default class CardLocation {
 		// Offset from the first card
 		const xOffset = dx * i
 		const x = x0 + xOffset
-
-		// y = regionHeight - h/2
-		const y = 150 - Space.cardHeight/2
+		let y = Space.handHeight - Space.cardHeight/2
 
 		return [x - container.x, y - container.y]
 	}
 
 	static story(state: ClientState, isRecap: boolean, i: number, container: Phaser.GameObjects.Container, owner: number): [number, number] {
-		const x0 = 300
+		const x0 = Flags.mobile ? Space.iconSize + Space.pad*2 + Space.cardWidth/2 : 300
 		let dx = Space.cardWidth - Space.storyXOverlap
 		
-		const maxOffset = Space.windowWidth - x0 - Space.cardWidth/2 - 260 // Space to the right of the last card
+		// Space to the right of the last card
+		const rightPad = Flags.mobile ? 200 : 260
+		const maxOffset = Space.windowWidth - x0 - Space.cardWidth/2 - rightPad
 		if (state !== undefined) {
 			// Find the amount that we must scale down by
 			// This may be multiplied by a constant to fit within the max

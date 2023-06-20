@@ -21,8 +21,8 @@ export var Space = {
   windowWidth: width,
   windowHeight: height,
   cardSize: 100,
-  padSmall: 10,
-  pad: 20,
+  padSmall: Flags.mobile ? 7 : 10,
+  pad: Flags.mobile ? 14 : 20,
   rowsPerPage: 4,
   cardsPerPage: 8 * 4,
   stackOffset: 30,
@@ -34,16 +34,17 @@ export var Space = {
   highlightWidth: 5,
   iconSeparation: 180,
   // The maximum height that something can be and still fit within the standard 780 browser height
-  maxHeight: 750,
+  maxHeight: Flags.mobile ? 375 : 750,
   textAreaHeight: 60,
 
   // These values are experimental and related to the 3/15 gui pass
   cardWidth: Flags.mobile ? 196 * 0.7 : 336 * 7/10,
   cardHeight: Flags.mobile ? 280 * 0.7 : 336,
   storyXOverlap: 30,
-  storyYOverlap: 120, // If this is more than half of cardHeight, mistake
-  // Height of the hand regions
-  handHeight: 160,
+  // If this is more than half of cardHeight, mistake
+  storyYOverlap: Flags.mobile ? 80 : 120,
+  // Dimensions of the hand regions
+  handHeight: Flags.mobile ? 80 : 160,
   // Standard corner width for rounded rectangles
   corner: 10,
   // For basic text
@@ -69,7 +70,7 @@ export var Space = {
 
   avatarWidth: 400,
   avatarHeight: 600,
-  avatarSize: 130,
+  avatarSize: Flags.mobile ? 80 : 130,
   iconSize: 32,
 
   sliderWidth: 40,

@@ -1,6 +1,6 @@
 // Settings relating to styles of text or bbcode throughout the app
 import "phaser"
-import { Space, Color } from "./settings"
+import { Space, Color, Flags } from "./settings"
 
 // All fonts used
 const mainFont = 'Mulish'
@@ -8,9 +8,9 @@ const altFont = 'Cinzel'
 
 // Settings for the font sizes
 const FontSettings: Record<string, Record<string, string>> = {
-  standard: {size: '24px'},
-  huge: {size: '50px'},
-  large: {size: '44px'},
+  standard: {size: Flags.mobile ? '20px' : '24px'},
+  huge: {size: Flags.mobile ? '40px' : '50px'},
+  large: {size: Flags.mobile ? '44px' : '44px'},
   title: {size: '128px'},
 }
 
@@ -31,7 +31,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Count of a card in the deck
   cardCount: {
     fontFamily: mainFont,
-    fontSize: '24px',
+    fontSize: FontSettings.standard.size,
     color: Color.cardCount,
     stroke: '#0009',
     strokeThickness: 3,
@@ -46,13 +46,13 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Pass button
   pass: {
     fontFamily: altFont,
-    fontSize: '40px',
+    fontSize: Flags.mobile ? '30px' : '40px',
     color: Color.passText,
   },
   // Moon button
   moon: {
     fontFamily: altFont,
-    fontSize: '60px',
+    fontSize: Flags.mobile ? '40px' : '60px',
     color: Color.passText,
   },
   // Text on cards that references other cards
