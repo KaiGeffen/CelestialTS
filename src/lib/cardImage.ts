@@ -8,6 +8,9 @@ import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import BaseScene from '../scene/baseScene'
 
+// The offset of cost / points
+const statOffset1 = Flags.mobile ? 15 : 25
+const statOffset2 = Flags.mobile ? 42 : 77
 
 export class CardImage {
   scene: BaseScene
@@ -26,6 +29,9 @@ export class CardImage {
 
   // Whether or not this object is hovered currently
   hovered = false
+
+  // The card's cost, if it has been changed
+  cost: number
 
   hoverCallback = () => {}
   exitCallback = () => {}
@@ -53,8 +59,8 @@ export class CardImage {
     // Stat text
     let hint = this.scene['hint']
     this.txtCost = this.scene.add['rexBBCodeText'](
-      -Space.cardWidth/2 + 25,
-      -Space.cardHeight/2 + 25,
+      -Space.cardWidth/2 + statOffset1,
+      -Space.cardHeight/2 + statOffset1,
       `${card.cost}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
@@ -64,8 +70,8 @@ export class CardImage {
     .on('pointerdown', () => this.clickCallback())
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
-      -Space.cardWidth/2 + 25,
-      -Space.cardHeight/2 + 77,
+      -Space.cardWidth/2 + statOffset1,
+      -Space.cardHeight/2 + statOffset2,
       `${card.points}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
@@ -78,7 +84,7 @@ export class CardImage {
       // Make cost and points interactive
       this.txtCost.setInteractive()
       this.txtPoints.setInteractive()
-      
+
       // Add keywords and references
       this.addKeywords()
       this.addReferences()  
@@ -100,6 +106,7 @@ export class CardImage {
           this.scene.scene.launch('MenuScene', {
             menu: 'focus',
             card: this.card,
+            cost: this.cost,
             callback: () => this.clickCallback(),
           })
         })
@@ -206,6 +213,8 @@ export class CardImage {
   // Set the displayed cost of this card, don't change the cost if cost is null
   setCost(cost: number): CardImage {
     if (cost !== null) {
+      this.cost = cost
+      
       if (cost === this.card.cost) {
         this.txtCost.setAlpha(0.001)
       }
