@@ -1,7 +1,7 @@
 import "phaser";
 import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js';
 import ClientState from '../../lib/clientState';
-import { Color, Space, Style, Time } from '../../settings/settings';
+import { Color, Space, Style, Depth, Time } from '../../settings/settings';
 import BaseScene from '../baseScene';
 import Region from './baseRegion';
 
@@ -14,10 +14,12 @@ export default class RoundResultRegion extends Region {
 	create (scene: BaseScene): RoundResultRegion {
 		this.scene = scene
 		this.container = scene.add.container()
+		.setDepth(Depth.roundResult)
 
 		// Image in the center saying if you won/lost/tied
 		this.roundResult = scene.add.sprite(Space.windowWidth/2, Space.windowHeight/2, 'icon-RoundWin', 2)
 		.setAlpha(0)
+		.setInteractive()
 		
 		this.container.add(this.roundResult)
 
