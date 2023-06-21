@@ -51,7 +51,12 @@ export default class FocusMenu extends Menu {
 
 	private createButtons(callback: () => void): void {
 		const x = Space.windowWidth * 5/6
-		new Buttons.Basic(this.scene, x, Space.windowHeight/3, 'Play', callback, true)
-		new Buttons.Basic(this.scene, x, 2 * Space.windowHeight/3, 'Cancel', () => { this.endScene() }, true)
+		new Buttons.Basic(this.scene, x, Space.windowHeight/3, 'Play', () => {
+			callback()
+			this.endScene()
+		}, true)
+		new Buttons.Basic(this.scene, x, 2 * Space.windowHeight/3, 'Cancel', () => {
+			this.endScene()
+		}, true)
 	}
 }

@@ -1,7 +1,7 @@
 import "phaser";
 import { CardImage } from '../../lib/cardImage';
 import ClientState from '../../lib/clientState';
-import { Space, Style, Depth, Time } from '../../settings/settings';
+import { Space, Style, Depth, Time, Flags } from '../../settings/settings';
 import BaseScene from '../baseScene';
 import Region from './baseRegion';
 import CardLocation from './cardLocation';
@@ -60,7 +60,7 @@ export default class StoryRegion extends Region {
 			.showController(act.owner)
 
 			// Only allow jumping around in the recap if we are playing a recap
-			if (isRecap) {
+			if (isRecap && !Flags.mobile) {
 				card.setOnClick(this.callback(resolvedI + i))
 			}
 

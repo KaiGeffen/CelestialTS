@@ -59,7 +59,6 @@ export class CardImage {
       BBStyle.cardStats)
     .setOrigin(0.5)
     .setAlpha(0.001)
-    .setInteractive()
     .on('pointerover', () => hint.showText(`This card costs ${this.txtCost.text} breath to play.`))
     .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
     .on('pointerdown', () => this.clickCallback())
@@ -70,13 +69,16 @@ export class CardImage {
       `${card.points}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
-    .setInteractive()
     .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
     .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
     .on('pointerdown', () => this.clickCallback())
     this.setPoints(card.points)
 
     if (!Flags.mobile) {
+      // Make cost and points interactive
+      this.txtCost.setInteractive()
+      this.txtPoints.setInteractive()
+      
       // Add keywords and references
       this.addKeywords()
       this.addReferences()  
@@ -95,7 +97,11 @@ export class CardImage {
       else {
         this.scene.rexGestures.add.tap(this.image, {tapInterval: 0})
         .on('tap', () => {
-          this.clickCallback()
+          this.scene.scene.launch('MenuScene', {
+            menu: 'focus',
+            card: this.card,
+            callback: () => this.clickCallback(),
+          })
         })
       }
     }
