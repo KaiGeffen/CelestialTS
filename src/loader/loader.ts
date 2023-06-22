@@ -1,5 +1,6 @@
 import avatarNames from '../lib/avatarNames'
 import { allCards, collectibleCards } from '../catalog/catalog'
+import Card from '../lib/card'
 
 // Json data
 import avatarData from './avatars.json'
@@ -64,6 +65,15 @@ const imagePrefixMap: PrefixEntry[] = [
 },
 ]
 
+// Assets to load that don't block transition to title screen
+const lazyPrefixMap: PrefixEntry[] = Flags.mobile ? [
+{
+	fp: 'cards/',
+	prefix: 'fullCard-',
+	list: allCards.map((card) => card.name),
+},
+] : []
+
 // NOTE Button preloaded to use in scene
 const spritesheetPrefixMap: PrefixEntry[] = [
 {
@@ -87,7 +97,6 @@ const spritesheetPrefixMap: PrefixEntry[] = [
 ]
 
 const prefixMap: PrefixEntry[] = [...imagePrefixMap, ...spritesheetPrefixMap]
-
 
 export default class Loader {
 	// Load any assets that are needed within the preload scene
@@ -115,13 +124,24 @@ export default class Loader {
 		scene.load.start()
 
 		// After loading is complete, do anything that relies on the loaded resources
+		let lazyLoadDone = false
 		scene.load.on('complete', () => {
-			// Generate the animations for a match results
-			Loader.loadAnimations(scene)
+			// Only do this once
+			if (!lazyLoadDone) {
+				lazyLoadDone = true
+				
+				// Generate the animations for a match results
+				Loader.loadAnimations(scene)
+
+				// Lazy load any other resources
+				this.bulkLoad(scene, lazyPrefixMap)
+
+				scene.load.start()
+			}		
 		})
 	}
 
-	static loadAnimations(scene: Phaser.Scene): void {
+	private static loadAnimations(scene: Phaser.Scene): void {
 		['Win', 'Lose', 'Tie'].forEach(s => {
 			const name = `icon-Round${s}`
 
@@ -134,9 +154,9 @@ export default class Loader {
 	}
 
 	// Load all of the assets that load in a normal way
-	private static bulkLoad(scene: Phaser.Scene): void {
+	private static bulkLoad(scene: Phaser.Scene, map: PrefixEntry[] = prefixMap): void {
 		// For each type of asset
-		prefixMap.forEach((assetType: PrefixEntry) => {
+		map.forEach((assetType: PrefixEntry) => {
 			// For each asset of that type
 			assetType.list.forEach((name) => {
 				let key = `${assetType.prefix}${name}`

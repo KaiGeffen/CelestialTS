@@ -40,6 +40,8 @@ export var Space = {
   // These values are experimental and related to the 3/15 gui pass
   cardWidth: Flags.mobile ? 196 * 0.7 : 336 * 7/10,
   cardHeight: Flags.mobile ? 280 * 0.7 : 336,
+  fullCardWidth: 336 * 7/10,
+  fullCardHeight: 336,
   storyXOverlap: 30,
   // If this is more than half of cardHeight, mistake
   storyYOverlap: Flags.mobile ? 80 : 120,

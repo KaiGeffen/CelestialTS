@@ -7,6 +7,7 @@ import { StatusBar } from "../lib/status"
 import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import BaseScene from '../scene/baseScene'
+import Loader from '../loader/loader'
 
 // The offset of cost / points
 const statOffset1 = Flags.mobile ? 15 : 25
@@ -45,7 +46,7 @@ export class CardImage {
     this.init(card, container, interactive)
   }
 
-  init(card: Card, outerContainer: any, interactive: Boolean) {
+  private init(card: Card, outerContainer: any, interactive: Boolean) {
     let that = this
     this.card = card
 
@@ -527,5 +528,15 @@ export class TutorialCardImage extends CardImage {
       })
     })
 
+  }
+}
+
+// For mobile, the larger, full-sized CardImage
+export class FullSizeCardImage extends CardImage {
+  constructor(card: Card, container: any, interactive: Boolean = true) {
+    super(card, container, interactive)
+
+    this.image.setTexture(`fullCard-${card.name}`)
+    .setDisplaySize(Space.fullCardWidth, Space.fullCardHeight)
   }
 }
