@@ -2,7 +2,7 @@ import 'phaser';
 import MenuScene from '../menuScene'
 import Menu from './menu'
 import Card from '../../lib/card'
-import { FullSizeCardImage } from '../../lib/cardImage'
+import { CardImage, FullSizeCardImage } from '../../lib/cardImage'
 import { Style, BBStyle, Space } from '../../settings/settings'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Buttons from '../../lib/buttons/buttons'
@@ -27,6 +27,12 @@ export default class FocusMenu extends Menu {
 	}
 
 	private createContent(card: Card, callback: () => void, cost: number): void {
+		// TODO Generalize when cards have more than 1 reference max
+		let refs = card.getReferencedCards()
+		if (refs.length > 0) {
+			this.createReferenceContent(card, refs[0])
+		}
+
 		this.createKeywords(card)
 		this.createCard(card, cost)
 		this.createButtons(callback)
@@ -49,7 +55,7 @@ export default class FocusMenu extends Menu {
 		.setVisible(s !== '')
 	}
 
-	private createCard(card: Card, cost): void {
+	private createCard(card: Card, cost: number): Phaser.GameObjects.Container {
 		// Full size CardImage within a container
 		let container = this.scene.add.container(cardX, Space.windowHeight/2)
 		let cardImage = new FullSizeCardImage(card, container, true)
@@ -58,6 +64,8 @@ export default class FocusMenu extends Menu {
 		if (cost !== undefined) {
 			cardImage.setCost(cost)
 		}
+
+		return container
 	}
 
 	private createButtons(callback: () => void): void {
@@ -69,5 +77,28 @@ export default class FocusMenu extends Menu {
 		new Buttons.Basic(this.scene, x, 2 * Space.windowHeight/3, 'Cancel', () => {
 			this.endScene()
 		}, true)
+	}
+
+	private createReferenceContent(card: Card, ref: Card): void {
+		let container = this.createCard(ref, undefined)
+		.setDepth(-1)
+		container.setX(container.x + Space.pad)
+		.setY(container.y - Space.pad)
+		
+		// Button to switch between card and reference
+		const x = Space.windowWidth - Space.pad - Space.buttonWidth/2
+		let btn = new Buttons.Basic(this.scene, x, Space.windowHeight/2, `${ref.name}`)
+		btn.setOnClick(() => {
+			// Flip referenced card above/below focused card
+			container.setDepth(container.depth * -1)
+
+			// Set the name of card to see
+			if (container.depth < 0) {
+				btn.setText(`${ref.name}`)
+			}
+			else {
+				btn.setText(`${card.name}`)
+			}
+		})
 	}
 }

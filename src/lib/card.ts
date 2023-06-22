@@ -1,4 +1,4 @@
-import { cardback,  } from "../catalog/catalog"
+import { cardback, getCard } from "../catalog/catalog"
 import { Color } from "../settings/settings"
 import { keywords, Keyword } from "../catalog/keywords"
 import { decodeCard } from "./codec"
@@ -80,12 +80,12 @@ export default class Card {
     return hintText
   }
 
-  getReferencedCards(): string {
-    let result = ''
+  getReferencedCards(): Card[] {
+    let result = []
     
     this.references.forEach(reference => {
       if (this.name !== reference.name) {
-        result += ` [img=${reference.name}]`
+        result.push(getCard(reference.name))
       }
     })
 
