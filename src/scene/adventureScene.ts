@@ -291,14 +291,7 @@ export default class AdventureScene extends BaseScene {
 					// Allow scrolling once the stillframe is gone
 					this.enableScrolling()
 
-					// Open a pop-up window explaining adventure / normal modes
-					this.scene.launch('MenuScene', {
-						menu: 'confirm',
-						callback: () => {
-							this.scene.start('HomeScene')
-						},
-						text: "Having completed the tutorial, you'll now return to the title screen where you can either continue this adventure or build and play a deck with all of the cards unlocked.\n\nThis adventure slowly introduces you to the cards and characters over 4-10 hours of gameplay.\n\nPress 'esc' or click the gear icon in the upper-right at any time to exit or adjust settings, and please let us know any of your thoughts in the Discord.\n\nThanks so much for playing!",
-					})
+					this.scene.start('PlaceholderScene')
 				}
 			})
 

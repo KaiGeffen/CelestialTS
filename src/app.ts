@@ -8,6 +8,7 @@ import TutorialGameScene from "./scene/tutorialScene"
 import { BuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 
 import AdventureScene from "./scene/adventureScene"
+import PlaceholderScene from "./scene/placeholderScene"
 
 import { Color, Space } from "./settings/settings"
 import addResizeHandler from "./loader/windowResizeManager"
@@ -42,7 +43,7 @@ const config: Phaser.Types.Core.GameConfig = {
   HomeScene,
   MenuScene,
   StandardGameScene, AdventureGameScene, TutorialGameScene,
-  AdventureBuilderScene,
+  AdventureBuilderScene, PlaceholderScene,
   BuilderScene,
   AdventureScene],
   // scale: {
