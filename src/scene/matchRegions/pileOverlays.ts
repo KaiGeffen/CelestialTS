@@ -17,7 +17,7 @@ export default class OverlayRegion extends Region {
 	create (scene: BaseScene, title: string): OverlayRegion {
 		this.scene = scene
 
-		this.container = scene.add.container(0, 0)
+		this.container = scene.add.container()
 		.setDepth(Depth.pileOverlays)
 		.setVisible(false)
 
@@ -47,7 +47,7 @@ export default class OverlayRegion extends Region {
 	setSwitch(callback: () => void): this {
 		new Buttons.Basic(this.container,
 			Space.windowWidth/2,
-			Space.windowHeight - Space.pad,
+			Space.windowHeight - Space.pad - Space.buttonHeight/2,
 			'More',
 			callback)
 
@@ -122,7 +122,7 @@ export class TheirDiscardOverlay extends OverlayRegion {
 
 export class OurExpendedOverlay extends OverlayRegion {
 	create(scene: BaseScene): OverlayRegion {
-		super.create(scene, 'Your removed from game cards')
+		super.create(scene, 'Your Removed From Game Cards')
 
 		return this
 	}
@@ -134,7 +134,7 @@ export class OurExpendedOverlay extends OverlayRegion {
 
 export class TheirExpendedOverlay extends OverlayRegion {
 	create(scene: BaseScene): OverlayRegion {
-		return super.create(scene, 'Their removed from game cards')
+		return super.create(scene, 'Their Removed From Game Cards')
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
