@@ -20,7 +20,7 @@ export default class TheirScoreRegion extends Region {
 		.setDepth(Depth.theirScore)
 
 		// Wins
-		const x = Space.windowWidth - (Flags.mobile ? 40 : 124)
+		const x = Space.windowWidth - (Flags.mobile ? 40 : 140)
 		const y = Flags.mobile ? 110 : 53
 		this.txtWins = scene.add.text(x, y, '', Style.basic)
 		.setOrigin(0)
