@@ -467,6 +467,8 @@ export class View {
 		this.theirDeckOverlay.displayState(state, isRecap)
 		this.ourDiscardOverlay.displayState(state, isRecap)
 		this.theirDiscardOverlay.displayState(state, isRecap)
+		this.ourExpendedOverlay.displayState(state, isRecap)
+		this.theirExpendedOverlay.displayState(state, isRecap)
 
 		this.results.displayState(state, isRecap)
 
