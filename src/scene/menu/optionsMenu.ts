@@ -221,8 +221,10 @@ export default class OptionsMenu extends Menu {
 		.hide()
 
 		// Add text to the scrollable panel
-		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, rulebookString, BBStyle.optionsBlock)
-		.setWrapWidth(subWidth)
+		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, rulebookString, {
+			...BBStyle.optionsBlock,
+			wrap: { width: subWidth },
+		})
 
 		sizer.add(txt)
 
@@ -249,9 +251,11 @@ export default class OptionsMenu extends Menu {
 		.hide()
 
 		// Add text to the scrollable panel
-		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, creditsString, BBStyle.optionsBlock)
-		.setWrapWidth(subWidth)
-		
+		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, creditsString, {
+			...BBStyle.optionsBlock,
+			wrap: { width: subWidth },
+		})
+
 		sizer.add(txt)
 
 		return scrollable

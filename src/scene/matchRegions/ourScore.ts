@@ -33,7 +33,13 @@ export default class ScoreRegion extends Region {
 		const x = Space.windowWidth - (Flags.mobile ? 40 : 124)
 		const y = Space.windowHeight - (Flags.mobile ? 110 : 114)
 		this.txtWins = scene.add.text(x, y, '', Style.basic).setOrigin(0)
-		this.txtBreath = scene.add.text(breathCenterX, breathCenterY, '', Style.basic).setOrigin(0.5)
+		// On mobile, center the text, otherwise have it aligned with wins text
+		this.txtBreath = scene.add.text(
+			(Flags.mobile ? breathCenterX : x),
+			breathCenterY + (Flags.mobile ? 0 : 5),
+			'',
+			Style.basic)
+		.setOrigin((Flags.mobile ? 0.5 : 0), 0.5)
 		
 		// Add each of these objects to container
 		this.container.add([
