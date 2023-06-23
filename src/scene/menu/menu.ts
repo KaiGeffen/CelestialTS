@@ -1,6 +1,9 @@
 import "phaser"
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+
 import { Style, Color, Space } from '../../settings/settings'
 import MenuScene from '../menuScene'
+import Buttons from '../../lib/buttons/buttons'
 
 
 export default class Menu {
@@ -28,8 +31,10 @@ export default class Menu {
 			this.exitCallback = params.exitCallback				
 		}
 
-		// Create the basic sizer
-		this.createSizer()
+		if (width > 0) {
+			// Create the basic sizer
+			this.createSizer()
+		}
 	}
 
 	close() {
@@ -37,6 +42,11 @@ export default class Menu {
 			this.exitCallback()
 		}
 
+		this.endScene()
+	}
+
+	protected endScene(): void {
+		// TODO Confusing that it returns a callback that has to be called
 		this.scene.endScene()()
 	}
 
@@ -95,6 +105,17 @@ export default class Menu {
 
 	}
 
+	// Create a generic cancel button
+	protected createCancelButton(): ContainerLite {
+		let container = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
+
+		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
+			this.close()
+		})
+
+		return container
+	}
+
 	// Add the given string as text to the sizer
 	protected createText(s: string): any {
 		const width = this.width - Space.pad*2
@@ -133,6 +154,8 @@ import DCMenu from './disconnect'
 import ConfirmMenu from './confirm'
 import DistributionMenu from './distribution'
 import MessageMenu from './message'
+import FocusMenu from './focus'
+import SearchMenu from './search'
 
 
 const menus = {
@@ -148,6 +171,8 @@ const menus = {
 	'distribution': DistributionMenu,
 	'message': MessageMenu,
 	'help': HelpMenu,
+	'focus': FocusMenu,
+	'search': SearchMenu,
 }
 
 // Function exposed for the creation of custom menus

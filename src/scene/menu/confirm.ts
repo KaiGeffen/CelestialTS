@@ -40,21 +40,11 @@ export default class ConfirmMenu extends Menu {
 		})
 
 		sizer
-		.add(this.createCancel(scene))
+		.add(this.createCancelButton())
 		.addSpace()
 		.add(this.createOkay(scene, callback))
 
 		return sizer
-	}
-
-	private createCancel(scene: Phaser.Scene): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.buttonWidth, 50)
-
-		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
-			this.close()
-		})
-
-		return container
 	}
 
 	private createOkay(scene: Phaser.Scene, callback: () => void): ContainerLite {

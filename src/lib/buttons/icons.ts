@@ -1,6 +1,6 @@
 import "phaser"
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import { Space, Style, Color, Url } from '../../settings/settings'
+import { Space, Style, Color, Url, Flags } from '../../settings/settings'
 import Button from './button'
 
 
@@ -206,11 +206,11 @@ class Pass extends Button {
 				text: 'PASS',
 				interactive: false,
 				style: Style.pass,
-				offsetX: 7,
-				offsetY: 9,
+				offsetX: Flags.mobile ? -3 : 7,
+				offsetY: Flags.mobile ? 4 : 9,
 			},
 			icon: {
-				name: 'Sun',
+				name: `${Flags.mobile ? 'Mobile' : ''}Sun`,
 				interactive: true,
 				circular: true,
 			},
@@ -264,7 +264,7 @@ class Moon extends Button {
 				style: Style.moon,
 			},
 			icon: {
-				name: 'Moon',
+				name: `${Flags.mobile ? 'Mobile' : ''}Moon`,
 				interactive: true,
 				circular: true,
 			},
@@ -279,7 +279,7 @@ class Moon extends Button {
 	}
 }
 
-// The search bar on Mobile
+// The search icon
 class Search extends Button {
 	constructor(within: Phaser.Scene | Phaser.GameObjects.Container | ContainerLite,
 		x: number, y: number,
@@ -289,7 +289,7 @@ class Search extends Button {
 		super(within, x, y, 
 		{
 			icon: {
-				name: 'SearchMobile',
+				name: 'Search',
 				interactive: true
 			},
 			callbacks: {

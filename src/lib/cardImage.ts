@@ -1,15 +1,19 @@
 import "phaser"
 import { cardback } from "../catalog/catalog"
-import { Color, Style, BBStyle, Time, Space } from "../settings/settings"
+import { Color, Style, BBStyle, Time, Space, Flags } from "../settings/settings"
 import Card from './card'
 import { allCards } from "../catalog/catalog"
 import { StatusBar } from "../lib/status"
 import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import BaseScene from '../scene/baseScene'
 
+// The offset of cost / points
+const statOffset1 = Flags.mobile ? 15 : 25
+const statOffset2 = Flags.mobile ? 42 : 77
 
 export class CardImage {
-  scene: Phaser.Scene
+  scene: BaseScene
 
   card: Card
   image: Phaser.GameObjects.Image
@@ -25,6 +29,9 @@ export class CardImage {
 
   // Whether or not this object is hovered currently
   hovered = false
+
+  // The card's cost, if it has been changed
+  cost: number
 
   hoverCallback = () => {}
   exitCallback = () => {}
@@ -42,58 +49,71 @@ export class CardImage {
     let that = this
     this.card = card
 
-    let scene: Phaser.Scene = outerContainer.scene
+    let scene: BaseScene = outerContainer.scene
     this.scene = scene
 
     // Card image
-    this.image = scene.add.image(0, 0, card.name)
+    this.image = this.scene.add.image(0, 0, card.name)
     this.image.setDisplaySize(Space.cardWidth, Space.cardHeight)
 
     // Stat text
     let hint = this.scene['hint']
     this.txtCost = this.scene.add['rexBBCodeText'](
-      -Space.cardWidth/2 + 25,
-      -Space.cardHeight/2 + 25,
+      -Space.cardWidth/2 + statOffset1,
+      -Space.cardHeight/2 + statOffset1,
       `${card.cost}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
     .setAlpha(0.001)
-    .setInteractive()
     .on('pointerover', () => hint.showText(`This card costs ${this.txtCost.text} breath to play.`))
     .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
-    .on('pointerdown', () => that.clickCallback())
+    .on('pointerdown', () => this.clickCallback())
 
     this.txtPoints = this.scene.add['rexBBCodeText'](
-      -Space.cardWidth/2 + 25,
-      -Space.cardHeight/2 + 77,
+      -Space.cardWidth/2 + statOffset1,
+      -Space.cardHeight/2 + statOffset2,
       `${card.points}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
-    .setInteractive()
     .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
     .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
-    .on('pointerdown', () => that.clickCallback())
+    .on('pointerdown', () => this.clickCallback())
     this.setPoints(card.points)
 
-    // Add keywords and references
-    this.addKeywords()
-    this.addReferences()
+    if (!Flags.mobile) {
+      // Make cost and points interactive
+      this.txtCost.setInteractive()
+      this.txtPoints.setInteractive()
 
+      // Add keywords and references
+      this.addKeywords()
+      this.addReferences()  
+    }
+    
     // This container
     this.container = this.createContainer(outerContainer)
 
     if (interactive) {
-      this.image.setInteractive()
-      .on('pointerover', this.onHover())
-      .on('pointerout', this.onHoverExit())
-      .on('pointerdown', () => that.clickCallback())
-
-      // If the mouse moves outside of the game, exit the hover also
-      // NOTE This logic won't run until the frame after user interacts with the canvas
-      // Removed, phaser does this anyways on returning to focus
-      // this.scene.input.on('gameout', this.onHoverExit(true))
+      if (!Flags.mobile) {
+        this.image.setInteractive()
+        .on('pointerover', this.onHover())
+        .on('pointerout', this.onHoverExit())
+        .on('pointerdown', () => this.clickCallback())
+      }
+      else {
+        this.scene.rexGestures.add.tap(this.image, {tapInterval: 0})
+        .on('tap', () => {
+          this.scene.scene.launch('MenuScene', {
+            menu: 'focus',
+            card: this.card,
+            cost: this.cost,
+            callback: () => this.clickCallback(),
+          })
+        })
+      }
     }
   }
+
 
   destroy(): void {
     [
@@ -193,6 +213,8 @@ export class CardImage {
   // Set the displayed cost of this card, don't change the cost if cost is null
   setCost(cost: number): CardImage {
     if (cost !== null) {
+      this.cost = cost
+      
       if (cost === this.card.cost) {
         this.txtCost.setAlpha(0.001)
       }

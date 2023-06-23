@@ -9,7 +9,7 @@ import keywordData from './keywords.json'
 import storyData from './stories.json'
 import sfxData from './sfx.json'
 import voiceData from './voice.json'
-import { Space } from '../settings/settings'
+import { Space, Flags } from '../settings/settings'
 
 
 const EXTENSION = 'webp'
@@ -19,45 +19,74 @@ interface PrefixEntry {
 	fp: string,
 	prefix: string,
 	list: string[],
+	// Spritesheet specification
+	sheet?: {
+		width: number,
+		height: number,
+	},
 }
 
-const prefixMap: PrefixEntry[] = [
-	{
-		fp: 'avatars/',
-		prefix: 'avatar-',
-		list: avatarData,
-	},
-	{
-		fp: 'cards/',
-		prefix: '',
-		list: allCards.map((card) => card.name),
-	},
-	{
-		fp: 'cutouts/',
-		prefix: 'cutout-',
-		list: collectibleCards.map((card) => card.name),
-	},
-	{
-		fp: 'icons/',
-		prefix: 'icon-',
-		list: iconData,
-	},
-	{
-		fp: 'keywords/',
-		prefix: 'kw-',
-		list: keywordData,
-	},
-	{
-		fp: 'backgrounds/',
-		prefix: 'bg-',
-		list: backgroundData,
-	},
-	{
-		fp: 'story/',
-		prefix: 'story-',
-		list: storyData,
-	},
+const imagePrefixMap: PrefixEntry[] = [
+{
+	fp: 'avatars/',
+	prefix: 'avatar-',
+	list: avatarData,
+},
+{
+	fp: `cards/${Flags.mobile ? 'mobile/' : ''}`,
+	prefix: '',
+	list: allCards.map((card) => card.name),
+},
+{
+	fp: 'cutouts/',
+	prefix: 'cutout-',
+	list: collectibleCards.map((card) => card.name),
+},
+{
+	fp: 'icons/',
+	prefix: 'icon-',
+	list: iconData,
+},
+{
+	fp: 'keywords/',
+	prefix: 'kw-',
+	list: keywordData,
+},
+{
+	fp: 'backgrounds/',
+	prefix: 'bg-',
+	list: backgroundData,
+},
+{
+	fp: 'story/',
+	prefix: 'story-',
+	list: storyData,
+},
 ]
+
+// NOTE Button preloaded to use in scene
+const spritesheetPrefixMap: PrefixEntry[] = [
+{
+	fp: `avatars/${Flags.mobile ? 'mobile/' : ''}`,
+	prefix: 'avatar-',
+	list: avatarNames,
+	sheet: {
+		width: Space.avatarSize,
+		height: Space.avatarSize,
+	},
+},
+{
+	fp: 'spritesheet/',
+	prefix: 'icon-',
+	list: ['Mission'],
+	sheet: {
+		width: 80,
+		height: 80,
+	},
+},
+]
+
+const prefixMap: PrefixEntry[] = [...imagePrefixMap, ...spritesheetPrefixMap]
 
 
 export default class Loader {
@@ -71,12 +100,6 @@ export default class Loader {
 	}
 
 	static loadAll(scene: Phaser.Scene) {
-		// Set the load path
-		scene.load.path = 'assets/'
-
-		// Load the avatars as a spritesheet
-		Loader.loadAvatarPortraits(scene)
-
 		// Load all audio
 		Loader.loadAudio(scene)
 
@@ -85,9 +108,6 @@ export default class Loader {
 
 		// Load the round results
 		Loader.loadResults(scene)
-
-		// Load the mission icon 2-frame
-		Loader.loadMissionIcon(scene)
 
 		// Load the rest of the assets
 		Loader.bulkLoad(scene)
@@ -117,37 +137,27 @@ export default class Loader {
 	private static bulkLoad(scene: Phaser.Scene): void {
 		// For each type of asset
 		prefixMap.forEach((assetType: PrefixEntry) => {
-
 			// For each asset of that type
 			assetType.list.forEach((name) => {
-				scene.load.image(`${assetType.prefix}${name}`, `${assetType.fp}${name}.${EXTENSION}`)
+				let key = `${assetType.prefix}${name}`
+				let filepath = `${assetType.fp}${name}.${EXTENSION}`
+				
+				if (assetType.sheet === undefined) {
+					let load = scene.load.image(key, filepath)
+				}
+				else {
+					scene.load.spritesheet(key, filepath, {
+						frameWidth: assetType.sheet.width,
+						frameHeight: assetType.sheet.height,
+					})
+				}
 			})
-		})
-	}
-
-	// Loads the avatar portraits which are spritesheets
-	private static loadAvatarPortraits(scene: Phaser.Scene): void {
-		avatarNames.forEach((name) => {
-			// Load the spritesheet with basic + emotes
-			scene.load.spritesheet(`avatar-${name}`, `avatars/${name}.${EXTENSION}`, {
-				frameWidth: Space.avatarSize,
-				frameHeight: Space.avatarSize,
-			})
-		})
-	}
-
-	// Loads the avatar portraits which are spritesheets
-	private static loadMissionIcon(scene: Phaser.Scene): void {
-		// Load the spritesheet with basic + emotes
-		scene.load.spritesheet(`icon-Mission`, `icons/Mission.${EXTENSION}`, {
-			frameWidth: 80,
-			frameHeight: 80,
 		})
 	}
 
 	// Loads the basic button as a spritesheet
 	private static loadButton(scene: Phaser.Scene): void {
-		scene.load.spritesheet(`icon-Button`, `icons/Button.${EXTENSION}`, {
+		scene.load.spritesheet(`icon-Button`, `spritesheet/Button.${EXTENSION}`, {
 			frameWidth: Space.buttonWidth,
 			frameHeight: Space.buttonHeight,
 		})

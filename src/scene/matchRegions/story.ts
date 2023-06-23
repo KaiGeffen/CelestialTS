@@ -1,7 +1,7 @@
 import "phaser";
 import { CardImage } from '../../lib/cardImage';
 import ClientState from '../../lib/clientState';
-import { Space, Style, Time } from '../../settings/settings';
+import { Space, Style, Depth, Time, Flags } from '../../settings/settings';
 import BaseScene from '../baseScene';
 import Region from './baseRegion';
 import CardLocation from './cardLocation';
@@ -22,6 +22,7 @@ export default class StoryRegion extends Region {
 		this.lastScores = [0, 0]
 
 		this.container = scene.add.container(0, Space.handHeight)
+		.setDepth(Depth.storyAtDay)
 
 		return this
 	}
@@ -29,7 +30,8 @@ export default class StoryRegion extends Region {
 	displayState(state: ClientState, isRecap: boolean): void {
 		this.deleteTemp()
 
-		let that = this
+		// Set the correct depth based on day/night
+		this.container.setDepth(isRecap ? Depth.storyAtNight : Depth.storyAtDay)
 
 		// If this is a recap, add the already played cards greyed out
 		let resolvedI = 0
@@ -40,7 +42,7 @@ export default class StoryRegion extends Region {
 				CardLocation.story(state, isRecap, resolvedI, this.container, play.owner))
 			.setResolved()
 			.moveToTopOnHover()
-			.setOnClick(that.callback(resolvedI))
+			.setOnClick(this.callback(resolvedI))
 			// .showController(play[1])
 
 			this.temp.push(card)
@@ -58,8 +60,8 @@ export default class StoryRegion extends Region {
 			.showController(act.owner)
 
 			// Only allow jumping around in the recap if we are playing a recap
-			if (isRecap) {
-				card.setOnClick(that.callback(resolvedI + i))
+			if (isRecap && !Flags.mobile) {
+				card.setOnClick(this.callback(resolvedI + i))
 			}
 
 			cards.push(card)

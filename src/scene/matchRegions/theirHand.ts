@@ -4,7 +4,7 @@ import { keywords } from "../../catalog/keywords"
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import ClientState from '../../lib/clientState'
-import { Depth, Space, Style, Time } from '../../settings/settings'
+import { Depth, Space, Style, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -42,9 +42,15 @@ export default class TheirHandRegion extends Region {
 		this.avatar = this.createAvatar()
 
 		// Create stack buttons
-		const x = Space.windowWidth - 300
-		this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 1)
-		this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 1)
+		if (Flags.mobile) {
+			this.btnDeck = new Buttons.Stacks.Deck(this.container, Space.windowWidth - 169, Space.handHeight/2, 0)
+			this.btnDiscard = new Buttons.Stacks.Discard(this.container, Space.windowWidth - 111, Space.handHeight/2, 0)
+		}
+		else {
+			const x = Space.windowWidth - 300
+			this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 1)
+			this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 1)
+		}
 
 		return this
 	}
@@ -78,9 +84,14 @@ export default class TheirHandRegion extends Region {
 	}
 
 	private createBackground(): void {
-		let background = this.scene.add.image(Space.windowWidth, 0, 'icon-Top')
+		const s = `icon-${Flags.mobile ? 'MobileBottom' : 'Top'}`
+		let background = this.scene.add.image(Space.windowWidth, 0, s)
 		.setOrigin(1, 0)
 		.setInteractive()
+
+		if (Flags.mobile) {
+			background.setFlipY(true)
+		}
 
 		this.container.add(background)
 	}
@@ -93,7 +104,9 @@ export default class TheirHandRegion extends Region {
 	}
 
 	private createAvatar(): Button {
-		let btn = new Buttons.Avatar(this.container, 21, 14, 'Jules')
+		const x = Flags.mobile ? 10 : 21
+		const y = Flags.mobile ? 10 : 14
+		let btn = new Buttons.Avatar(this.container, x, y, 'Jules')
 		btn.setOrigin(0)
 
 		return btn

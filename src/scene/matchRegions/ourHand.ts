@@ -3,7 +3,7 @@ import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import { CardImage } from '../../lib/cardImage'
 import ClientState from '../../lib/clientState'
-import { Depth, Space, Style, Time } from '../../settings/settings'
+import { Depth, Space, Style, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
@@ -61,11 +61,16 @@ export default class OurHandRegion extends Region {
 		// let divide = scene.add.image(Space.windowWidth - 300 - Space.cardWidth/2, Space.handHeight/2, 'icon-Divide')
 
 		// Deck and discard pile totals
-		// TODO Font size as a part of a style
-		const x = Space.windowWidth - 294
-		this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 0)
-		this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 0)
-
+		if (Flags.mobile) {
+			this.btnDeck = new Buttons.Stacks.Deck(this.container, Space.windowWidth - 169, Space.handHeight/2, 0)
+			this.btnDiscard = new Buttons.Stacks.Discard(this.container, Space.windowWidth - 111, Space.handHeight/2, 0)
+		}
+		else {
+			const x = Space.windowWidth - 294
+			this.btnDeck = new Buttons.Stacks.Deck(this.container, x, Space.handHeight * 1/4, 0)
+			this.btnDiscard = new Buttons.Stacks.Discard(this.container, x, Space.handHeight * 3/4, 0)
+		}
+		
 		return this
 	}
 
@@ -173,7 +178,9 @@ export default class OurHandRegion extends Region {
 	}
 
 	private createBackground(scene: Phaser.Scene): Phaser.GameObjects.GameObject {
-		let renderedBackground = scene.add.image(Space.windowWidth, -50, 'icon-Bottom')
+		const s = `icon-${Flags.mobile ? 'Mobile' : ''}Bottom`
+		const y = Flags.mobile ? 0 : -50
+		let renderedBackground = scene.add.image(Space.windowWidth, y, s)
 		.setOrigin(1, 0)
 		.setInteractive()
 
@@ -196,7 +203,26 @@ export default class OurHandRegion extends Region {
 	// }
 
 	private createAvatar(avatarId: number): Button {
+		if (Flags.mobile) {
+			return this.createAvatarMobile(avatarId)
+		}
+
 		let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
+		.setOrigin(0)
+		.setQuality({emotive: true})
+
+		// Sight
+		this.btnSight = new Buttons.Keywords.Sight(this.container,
+			btn.icon.x + Space.avatarSize/2,
+			btn.icon.y + Space.avatarSize - Space.padSmall)
+		.setOrigin(0.5, 1)
+		.setVisible(false)
+		
+		return btn
+	}
+
+	private createAvatarMobile(avatarId: number): Button {
+		let btn = new Buttons.Avatar(this.container, 10, -10, avatarId)
 		.setOrigin(0)
 		.setQuality({emotive: true})
 
