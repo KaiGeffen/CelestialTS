@@ -127,10 +127,9 @@ export default class OurHandRegion extends Region {
 		// this.animatePriority(state, isRecap)
 	}
 
-	setCallbacks(fDeck: () => void, fDiscard: () => void, fEmote: () => void): void {
+	setOverlayCallbacks(fDeck: () => void, fDiscard: () => void): void {
 		this.btnDeck.setOnClick(fDeck)
 		this.btnDiscard.setOnClick(fDiscard)
-		this.btnAvatar.setOnClick(fEmote, false, false)
 	}
 
 	// Set the callback / error message for when card is clicked
@@ -353,6 +352,10 @@ export default class OurHandRegion extends Region {
 	// Set the callback for showing how much breath a card costs
 	setDisplayCostCallback(f: (cost: number) => void): void {
 		this.displayCostCallback = f
+	}
+
+	setEmoteCallback(fEmote: () => void): void {
+		this.btnAvatar.setOnClick(fEmote, false, false)
 	}
 
 	private displayStatuses(state: ClientState): void {

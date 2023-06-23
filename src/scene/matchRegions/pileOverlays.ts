@@ -6,11 +6,14 @@ import { Color, Depth, Space, Style } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
+import Buttons from "../../lib/buttons/buttons"
+import Button from "../../lib/buttons/button"
 
 
-class OverlayRegion extends Region {
+export default class OverlayRegion extends Region {
 	txtTitle: Phaser.GameObjects.Text
 
+	// fSwitch is the callback for if this overlay switches to another overlay
 	create (scene: BaseScene, title: string): OverlayRegion {
 		this.scene = scene
 
@@ -40,8 +43,30 @@ class OverlayRegion extends Region {
 
 	displayState(state: ClientState, isRecap: boolean): void {}
 
+	// Set the callback for this overlay switching to another
+	setSwitch(callback: () => void): this {
+		new Buttons.Basic(this.container,
+			Space.windowWidth/2,
+			Space.windowHeight - Space.pad,
+			'More',
+			callback)
+
+		return this
+	}
+
+	protected displayCards(cards: Card[]): void {
+		this.deleteTemp()
+
+		const total = cards.length
+		for (let i = 0; i < total; i++) {
+			this.addOverlayCard(cards[i], i, total)
+		}
+
+		this.txtTitle.setVisible(total <= 15)
+	}
+
 	// Add a card to this overlay
-	protected addOverlayCard(card: Card, i: number, total: number): CardImage {
+	private addOverlayCard(card: Card, i: number, total: number): CardImage {
 		const titleHeight = this.txtTitle.height
 		let position = CardLocation.overlay(this.container, i, total, titleHeight)
 
@@ -59,14 +84,7 @@ export class OurDeckOverlay extends OverlayRegion {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
-		this.deleteTemp()
-
-		const total = state.deck.length
-		for (let i = 0; i < total; i++) {
-			this.addOverlayCard(state.deck[i], i, total)
-		}
-
-		this.txtTitle.setVisible(total <= 15)
+		this.displayCards(state.deck)
 	}
 }
 
@@ -76,31 +94,19 @@ export class TheirDeckOverlay extends OverlayRegion {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
-		this.deleteTemp()
-
-		const total = state.lastShuffle.length
-		for (let i = 0; i < total; i++) {
-			this.addOverlayCard(state.lastShuffle[i], i, total)
-		}
-
-		this.txtTitle.setVisible(total <= 15)
+		this.displayCards(state.lastShuffle)
 	}
 }
 
 export class OurDiscardOverlay extends OverlayRegion {
 	create(scene: BaseScene): OverlayRegion {
-		return super.create(scene, 'Your Discard Pile')
+		super.create(scene, 'Your Discard Pile')
+
+		return this
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
-		this.deleteTemp()
-
-		const total = state.discard[0].length
-		for (let i = 0; i < total; i++) {
-			this.addOverlayCard(state.discard[0][i], i, total)
-		}
-
-		this.txtTitle.setVisible(total <= 15)
+		this.displayCards(state.discard[0])
 	}
 }
 
@@ -110,13 +116,28 @@ export class TheirDiscardOverlay extends OverlayRegion {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
-		this.deleteTemp()
+		this.displayCards(state.discard[1])
+	}
+}
 
-		const total = state.discard[1].length
-		for (let i = 0; i < total; i++) {
-			this.addOverlayCard(state.discard[1][i], i, total)
-		}
+export class OurExpendedOverlay extends OverlayRegion {
+	create(scene: BaseScene): OverlayRegion {
+		super.create(scene, 'Your removed from game cards')
 
-		this.txtTitle.setVisible(total <= 15)
+		return this
+	}
+
+	displayState(state: ClientState, isRecap: boolean): void {
+		this.displayCards(state.expended[0])
+	}
+}
+
+export class TheirExpendedOverlay extends OverlayRegion {
+	create(scene: BaseScene): OverlayRegion {
+		return super.create(scene, 'Their removed from game cards')
+	}
+
+	displayState(state: ClientState, isRecap: boolean): void {
+		this.displayCards(state.expended[1])
 	}
 }

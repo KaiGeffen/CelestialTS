@@ -7,7 +7,7 @@ import BaseScene from "./baseScene";
 import Animator from './matchRegions/animator';
 import Region from './matchRegions/baseRegion';
 import Regions from "./matchRegions/matchRegions";
-
+import OverlayRegion from "./matchRegions/pileOverlays";
 
 
 var storyHiddenLock: boolean = false
@@ -125,31 +125,19 @@ class GameScene extends BaseScene {
 		view.ourHand.setDisplayCostCallback((cost: number) => {
 			that.view.ourScore.displayCost(cost)
 		})
+		view.ourHand.setEmoteCallback(() => {this.net.signalEmote()})
 
-		// TODO This all has a bad smell
-		const ourDeckCallback = () => {
-			this.hint.hide()
-			this.view.ourDeckOverlay.show()
-		}
-		const ourDiscardCallback = () => {
-			this.hint.hide()
-			this.view.ourDiscardOverlay.show()
-		}
-		const ourEmoteCallback = () => {
-			this.net.signalEmote()
-		}
-		view.ourHand.setCallbacks(ourDeckCallback, ourDiscardCallback, ourEmoteCallback)
+		// Set the callbacks for overlays
+		view.ourHand.setOverlayCallbacks(
+			() => {this.view.showOverlay(this.view.ourDeckOverlay)},
+			() => {this.view.showOverlay(this.view.ourDiscardOverlay)},
+			)
+
+		view.theirHand.setOverlayCallbacks(
+			() => {this.view.showOverlay(this.view.theirDeckOverlay)},
+			() => {this.view.showOverlay(this.view.theirDiscardOverlay)},
+			)
 		
-		// TODO Organize like the above passing of callbacks
-		view.theirHand.btnDeck.setOnClick(() => {
-			that.hint.hide()
-			that.view.theirDeckOverlay.show()
-		})
-		view.theirHand.btnDiscard.setOnClick(() => {
-			that.hint.hide()
-			that.view.theirDiscardOverlay.show()
-		})
-
 		// Buttons TODO Rework these
 		// view.ourButtons.setRecapCallback(() => {
 		// 	that.recapPlaying = true
@@ -389,10 +377,12 @@ export class View {
 	pass: Region
 	scores: Region
 
-	ourDeckOverlay: Region
-	theirDeckOverlay: Region
-	ourDiscardOverlay: Region
-	theirDiscardOverlay: Region
+	ourDeckOverlay: OverlayRegion
+	theirDeckOverlay: OverlayRegion
+	ourDiscardOverlay: OverlayRegion
+	theirDiscardOverlay: OverlayRegion
+	ourExpendedOverlay: OverlayRegion
+	theirExpendedOverlay: OverlayRegion
 
 	// Region shown during mulligan phase
 	mulligan: Region
@@ -438,8 +428,14 @@ export class View {
 		this.ourDeckOverlay = new Regions.OurDeck().create(scene)
 		this.theirDeckOverlay = new Regions.TheirDeck().create(scene)
 		this.ourDiscardOverlay = new Regions.OurDiscard().create(scene)
+		.setSwitch(() => {this.showOverlay(this.ourExpendedOverlay)})
 		this.theirDiscardOverlay = new Regions.TheirDiscard().create(scene)
-
+		.setSwitch(() => {this.showOverlay(this.theirExpendedOverlay)})
+		this.ourExpendedOverlay = new Regions.OurExpended().create(scene)
+		.setSwitch(() => {this.showOverlay(this.ourDiscardOverlay)})
+		this.theirExpendedOverlay = new Regions.TheirExpended().create(scene)
+		.setSwitch(() => {this.showOverlay(this.theirDiscardOverlay)})
+		
 		// These regions are only visible during certain times
 		this.mulligan = new Regions.Mulligan().create(scene)
 
@@ -481,6 +477,23 @@ export class View {
 		if (state.soundEffect !== null) {
 			this.scene.playSound(state.soundEffect)
 		}
+	}
+
+	// Show the given overlay and hide all others
+	showOverlay(overlay: OverlayRegion): void {
+		// Hide the hint, in case it's describing something now moot
+		this.scene.hint.hide()
+
+		// Hide all overlays
+		this.ourDeckOverlay.hide()
+		this.theirDeckOverlay.hide()
+		this.ourDiscardOverlay.hide()
+		this.theirDiscardOverlay.hide()
+		this.ourExpendedOverlay.hide()
+		this.theirExpendedOverlay.hide()
+
+		// Show the given overlay
+		overlay.show()
 	}
 }
 

@@ -8,7 +8,7 @@ import OurScoreRegion from "./ourScore"
 import DecksRegion from "./decks"
 import DiscardPilesRegion from "./discardPiles"
 import TheirScoreRegion from "./theirScore"
-import { OurDeckOverlay, TheirDeckOverlay, OurDiscardOverlay, TheirDiscardOverlay } from "./pileOverlays"
+import * as Overlay from "./pileOverlays"
 import PassRegion from './pass'
 import RoundResultRegion from './roundResult'
 
@@ -26,10 +26,14 @@ export default class Regions {
 	static TheirScore = TheirScoreRegion
 	static Decks = DecksRegion
 	static DiscardPiles = DiscardPilesRegion
-	static OurDeck = OurDeckOverlay
-	static TheirDeck = TheirDeckOverlay
-	static OurDiscard = OurDiscardOverlay
-	static TheirDiscard = TheirDiscardOverlay
+	
+	static OurDeck = Overlay.OurDeckOverlay
+	static TheirDeck = Overlay.TheirDeckOverlay
+	static OurDiscard = Overlay.OurDiscardOverlay
+	static TheirDiscard = Overlay.TheirDiscardOverlay
+	static OurExpended = Overlay.OurExpendedOverlay
+	static TheirExpended = Overlay.TheirExpendedOverlay
+
 	static Pass = PassRegion
 	static RoundResult = RoundResultRegion
 

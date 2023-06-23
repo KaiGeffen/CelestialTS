@@ -72,6 +72,11 @@ export default class TheirHandRegion extends Region {
 		this.btnDiscard.setText(`${state.discard[1].length}`)
 	}
 
+	setOverlayCallbacks(fDeck: () => void, fDiscard: () => void, fExpended: () => void): void {
+		this.btnDeck.setOnClick(fDeck)
+		this.btnDiscard.setOnClick(fDiscard, fExpended)
+	}
+
 	private createBackground(): void {
 		let background = this.scene.add.image(Space.windowWidth, 0, 'icon-Top')
 		.setOrigin(1, 0)
