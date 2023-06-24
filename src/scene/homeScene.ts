@@ -30,12 +30,6 @@ export default class HomeScene extends BaseScene {
 
     this.createButtons()
 
-    // this.scene.launch('MenuScene', {
-    //     menu: 'focus',
-    //     card: baseCards[4],
-    //     // callback: () => {this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t0`, missionID: 0})},
-    //   })
-    
     super.create()
   }
 
@@ -163,7 +157,10 @@ export default class HomeScene extends BaseScene {
       Space.windowWidth - Space.pad * 2,
       Space.avatarWidth * (names.length) + Space.pad * (names.length + 1)
       )
-    const height = Space.avatarHeight + Space.pad * 2
+    const height = Math.min(
+      Space.avatarHeight,
+      Space.windowHeight - headerHeight,
+      )
 
     // Free Play button
     let rectRight = this.add.rectangle(x,
