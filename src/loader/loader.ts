@@ -29,7 +29,7 @@ interface PrefixEntry {
 
 const imagePrefixMap: PrefixEntry[] = [
 {
-	fp: 'avatars/',
+	fp: `avatars//${Flags.mobile ? 'mobile/' : ''}`,
 	prefix: 'avatar-',
 	list: avatarData,
 },

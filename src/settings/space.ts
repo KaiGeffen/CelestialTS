@@ -70,8 +70,8 @@ export var Space = {
 
   cutoutHeight: 49,
 
-  avatarWidth: 400,
-  avatarHeight: 600,
+  avatarWidth: Flags.mobile ? 200 : 400,
+  avatarHeight: Flags.mobile ? 300 : 600,
   avatarSize: Flags.mobile ? 80 : 130,
   iconSize: 32,
 

@@ -10,7 +10,7 @@ const altFont = 'Cinzel'
 const FontSettings: Record<string, Record<string, string>> = {
   standard: {size: Flags.mobile ? '20px' : '24px'},
   huge: {size: Flags.mobile ? '40px' : '50px'},
-  large: {size: Flags.mobile ? '44px' : '44px'},
+  large: {size: Flags.mobile ? '32px' : '44px'},
   title: {size: '128px'},
 }
 
@@ -78,7 +78,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Text that plays over the stillframes in journey
   stillframe: {
     fontFamily: altFont,
-    fontSize: FontSettings.huge.size,
+    fontSize: Flags.mobile ? FontSettings.large.size : FontSettings.huge.size,
     color: Color.blackS,
     // stroke: Color.basicText,
     // strokeThickness: 4,
