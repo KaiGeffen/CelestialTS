@@ -113,6 +113,12 @@ export default class Loader {
 		Loader.bulkLoad(scene)
 
 		scene.load.start()
+
+		// After loading is complete, do anything that relies on the loaded resources
+		scene.load.on('complete', () => {
+			// Generate the animations for a match results
+			Loader.loadAnimations(scene)
+		})
 	}
 
 	private static loadAnimations(scene: Phaser.Scene): void {
