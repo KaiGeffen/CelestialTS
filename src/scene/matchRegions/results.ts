@@ -129,7 +129,7 @@ export default class ResultsRegion extends Region {
 			'avatar-JulesFull')
 		.setInteractive()
 		this.theirAvatar = this.scene.add.image(
-			Flags.mobile ? Space.windowWidth - Space.avatarWidth/2 : Space.windowWidth/2 - WIDTH,
+			Flags.mobile ? Space.windowWidth - Space.avatarWidth/2 : Space.windowWidth/2 + WIDTH,
 			Space.windowHeight/2,
 			'avatar-MiaFull')
 		.setInteractive()
