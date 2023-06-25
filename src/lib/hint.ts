@@ -83,7 +83,7 @@ export default class Hint {
 			.setFixedSize(0, 0)
 		}
 		else {
-			const width = card.getReferencedCards() === [] ? Space.cardWidth + Space.pad : Space.maxTextWidth + Space.pad
+			const width = card.getReferencedCards().length > 0 ? Space.maxTextWidth + Space.pad : Space.cardWidth + Space.pad
 			this.txt.setText(`[img=${card.name}]`)
 			.appendText(`${referencedImages}`)
 			.setFixedSize(
