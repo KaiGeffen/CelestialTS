@@ -157,7 +157,11 @@ export default class TutorialGameScene extends AdventureGameScene {
 		}
 
 		// Set the appropriate text
-		let s = `[i]${datum.italic}[/i]${datum.italic !== '' ? '\n\n' : ''}[b]${datum.bold}[/b]`
+		let s = `[i]${datum.italic}[/i]`
+		if (datum.italic) s+= '\n\n'
+		if (Flags.mobile && datum.mobile) s += `[b]${datum.mobile}[/b]`
+		else s += `[b]${datum.bold}[/b]`
+
 		this.txt.setText(s)
 		.setVisible(s !== '')
 
