@@ -4,7 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import ClientState from "../lib/clientState";
 import { AdventureGameScene } from './gameScene';
 import data from '../catalog/tutorial.json'
-import { Space, BBStyle, Time, Depth } from '../settings/settings'
+import { Space, Color, BBStyle, Time, Depth, Flags } from '../settings/settings'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
 import { TutorialCardImage } from '../lib/cardImage'
@@ -57,8 +57,15 @@ export default class TutorialGameScene extends AdventureGameScene {
 			Space.windowHeight/2,
 			'',
 			BBStyle.basic)
-		.setOrigin(0.5)
-		.setDepth(Depth.Tutorial)
+		.setOrigin(0.5, (Flags.mobile ? 0 : 0.5))
+		.setDepth(Depth.tutorial)
+		
+		// On mobile, add a background
+		if (Flags.mobile) {
+			this.txt.setBackgroundColor(Color.backgroundLight, Color.backgroundDark)
+			.setBackgroundCornerRadius(Space.corner)
+			.setPadding(Space.padSmall, Space.padSmall)
+		}
 
 		// Next button for tutorial text
 		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next',
@@ -80,6 +87,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 
 		// Pointer for showing area of interest to user
 		this.pointer = this.add.image(0, 0, 'icon-Pointer')
+		.setAlpha(Flags.mobile ? 0.0001 : 1)
 	}
 
 	protected displayState(state: ClientState, isRecap: boolean): boolean {
@@ -184,8 +192,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.view.theirScore.hide()
 			this.view.ourHand.hide()
 			this.view.ourScore.hideAll()
-			.showBackground()
 			.showWins()
+			if (!Flags.mobile) {this.view.ourScore.showBackground()}
 			break
 
 			case 1:
@@ -278,6 +286,17 @@ export default class TutorialGameScene extends AdventureGameScene {
 	private align(datum): void {
 		// Reset flipping the pointer
 		this.pointer.resetFlip()
+
+		// On mobile, text always in top left
+		if (Flags.mobile) {
+			const x = Space.windowWidth/2
+			this.txt.setPosition(x, Space.pad)
+
+			// Button just below text
+			const y = this.txt.displayHeight + Space.pad*2 + Space.buttonHeight/2
+			this.btnNext.setPosition(x, y)
+			return
+		}
 
 		let x, y
 		switch (datum.align) {
@@ -397,8 +416,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 			this.card.destroy()
 		}
 
-		const x = Space.windowWidth/2
-		const y = Space.windowHeight/2
+		const x = Flags.mobile ? Space.cardWidth/2 : Space.windowWidth/2
+		const y = Flags.mobile ? Space.windowHeight - Space.cardHeight/2 : Space.windowHeight/2
 		this.card = new TutorialCardImage(getCard(name), this.add.container(x, y))
 
 		return this.card
@@ -407,6 +426,11 @@ export default class TutorialGameScene extends AdventureGameScene {
 	// Add a card that must have each hoverable component hovered before continuing
 	private addCardWithRequiredHover(name: string): void {
 		let card = this.addCard(name)
+
+		// TODO On mobile possibly force some other interaction
+		if (Flags.mobile) {
+			return
+		}
 
 		// Disable the next button until each component has been hovered
 		this.btnNext.disable()
