@@ -2,7 +2,7 @@ import "phaser"
 
 import Region from './baseRegion'
 
-import { Space, Color, Style, BBStyle, Depth } from '../../settings/settings'
+import { Space, Color, Style, BBStyle, Depth, Flags } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
 // import { CardImage } from '../../lib/cardImage'
 // import { cardback } from '../../catalog/catalog'
@@ -14,6 +14,7 @@ import avatarNames from '../../lib/avatarNames'
 
 
 const WIDTH = 300
+const HEIGHT = Math.min(600, Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2)
 
 export default class ResultsRegion extends Region {
 	// Whether the results have been seen already
@@ -122,9 +123,15 @@ export default class ResultsRegion extends Region {
 		this.createResultsPanel()
 
 		// Your avatar
-		this.ourAvatar = this.scene.add.image(Space.windowWidth/2 - WIDTH, Space.windowHeight/2, 'avatar-JulesFull')
+		this.ourAvatar = this.scene.add.image(
+			Flags.mobile ? Space.avatarWidth/2 : Space.windowWidth/2 - dx,
+			Space.windowHeight/2,
+			'avatar-JulesFull')
 		.setInteractive()
-		this.theirAvatar = this.scene.add.image(Space.windowWidth/2 + WIDTH, Space.windowHeight/2, 'avatar-MiaFull')
+		this.theirAvatar = this.scene.add.image(
+			Flags.mobile ? Space.windowWidth - Space.avatarWidth/2 : Space.windowWidth/2 - dx,
+			Space.windowHeight/2,
+			'avatar-MiaFull')
 		.setInteractive()
 
 		this.container.add([
@@ -141,7 +148,7 @@ export default class ResultsRegion extends Region {
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
 			width: WIDTH,
-			height: 600,
+			height: HEIGHT,
 
 			background: background,
 
@@ -188,7 +195,9 @@ export default class ResultsRegion extends Region {
 		})
 		.addBackground(background)
 
-		let txt = this.scene.add['rexBBCodeText'](0, 0, '[size=30]Results:[/size]', BBStyle.basic).setOrigin(0.5)
+		let txt = this.scene.add['rexBBCodeText'](0, 0, 'Results:',
+			{...BBStyle.basic, fontSize: '30px'}
+			).setOrigin(0.5)
 
 		sizer.add(txt)
 
