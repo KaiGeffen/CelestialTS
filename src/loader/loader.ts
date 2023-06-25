@@ -65,15 +65,6 @@ const imagePrefixMap: PrefixEntry[] = [
 },
 ]
 
-// Assets to load that don't block transition to title screen
-const lazyPrefixMap: PrefixEntry[] = Flags.mobile ? [
-{
-	fp: 'cards/',
-	prefix: 'fullCard-',
-	list: allCards.map((card) => card.name),
-},
-] : []
-
 // NOTE Button preloaded to use in scene
 const spritesheetPrefixMap: PrefixEntry[] = [
 {
@@ -122,23 +113,6 @@ export default class Loader {
 		Loader.bulkLoad(scene)
 
 		scene.load.start()
-
-		// After loading is complete, do anything that relies on the loaded resources
-		let lazyLoadDone = false
-		scene.load.on('complete', () => {
-			// Only do this once
-			if (!lazyLoadDone) {
-				lazyLoadDone = true
-				
-				// Generate the animations for a match results
-				Loader.loadAnimations(scene)
-
-				// Lazy load any other resources
-				this.bulkLoad(scene, lazyPrefixMap)
-
-				scene.load.start()
-			}		
-		})
 	}
 
 	private static loadAnimations(scene: Phaser.Scene): void {

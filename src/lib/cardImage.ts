@@ -536,7 +536,22 @@ export class FullSizeCardImage extends CardImage {
   constructor(card: Card, container: any, interactive: Boolean = true) {
     super(card, container, interactive)
 
-    this.image.setTexture(`fullCard-${card.name}`)
-    .setDisplaySize(Space.fullCardWidth, Space.fullCardHeight)
+    const s = `fullCard-${card.name}`
+    if (this.scene.textures.exists(s)) {
+      this.image.setTexture(s)
+      .setDisplaySize(Space.fullCardWidth, Space.fullCardHeight)
+    }
+    else {
+      this.scene.load.image(s, `assets/cards/${card.name}.webp`)
+      .start()
+
+      // When image loads, set image texture
+      this.scene.load.once('complete', () => {
+        if (this.image) {
+          this.image.setTexture(s)
+          .setDisplaySize(Space.fullCardWidth, Space.fullCardHeight)
+        }
+      })
+    }
   }
 }
