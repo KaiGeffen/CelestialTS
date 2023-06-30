@@ -137,6 +137,7 @@ export default class CatalogRegion {
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.container)
     .setOnClick(this.onClickCatalogCard(card))
+    .setFocusString('Add')
 
     // Add this cardImage to the maintained list of cardImages in the catalog
     this.cardCatalog.push(cardImage)

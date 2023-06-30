@@ -99,6 +99,7 @@ export default class OurHandRegion extends Region {
 		for (let i = 0; i < state.hand.length; i++) {
 			let card = this.addCard(state.hand[i], CardLocation.ourHand(state, i, this.container))
 			.setCost(state.costs[i])
+			.setFocusString('Play')
 			.moveToTopOnHover()
 
 			const cost = state.costs[i]

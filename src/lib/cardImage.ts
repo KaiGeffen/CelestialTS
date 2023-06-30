@@ -41,6 +41,9 @@ export class CardImage {
   // The index of this container within its parent container before it was brought to top
   renderIndex: number = undefined
 
+  // In focus menu, the string describing what action to take with this card
+  private focusString = ''
+
   constructor(card: Card, container: any, interactive: Boolean = true) {
     card = card || cardback
     this.init(card, container, interactive)
@@ -108,6 +111,7 @@ export class CardImage {
             menu: 'focus',
             card: this.card,
             cost: this.cost,
+            btnString: this.focusString,
             callback: () => this.clickCallback(),
           })
         })
@@ -242,6 +246,12 @@ export class CardImage {
     }
 
     this.txtPoints.setText(`[stroke=${Color.cardStatChanged}]${amt}[/stroke]`)
+
+    return this
+  }
+
+  setFocusString(s: string): CardImage {
+    this.focusString = s
 
     return this
   }
