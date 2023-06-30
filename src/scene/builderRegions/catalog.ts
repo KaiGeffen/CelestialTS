@@ -148,7 +148,7 @@ export default class CatalogRegion {
   private onClickCatalogCard(card: Card): () => void {
     return () => {
       // NOTE If a new deck is created by clicking this card, the new decklist's button will be clicked and make a sound. In that case, do nothing.
-      const muteSound = this.scene.decklistsRegion.savedDeckIndex === undefined
+      const muteSound = this.scene.journeyRegion || this.scene.decklistsRegion.savedDeckIndex === undefined
       const errorMsg = this.scene.addCardToDeck(card)
 
       if (errorMsg !== undefined) {
