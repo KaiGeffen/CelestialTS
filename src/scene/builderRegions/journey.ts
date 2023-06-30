@@ -8,7 +8,7 @@ import Cutout from '../../lib/buttons/cutout';
 import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard } from '../../lib/codec';
-import { Color, Mechanics, Space, Style, Time, Mobile, Scroll } from '../../settings/settings';
+import { Color, Mechanics, Space, Style, Time, Flags } from '../../settings/settings';
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -56,9 +56,7 @@ export default class DeckRegion {
 				child: this.createPanel(startCallback)
 			},
 
-			header: Mobile ? undefined : this.createHeader(startCallback, undefined, avatarID, storyTitle, storyText),
-
-			slider: Mobile ? Scroll(this.scene) : undefined,
+			header: this.createHeader(startCallback, undefined, avatarID, storyTitle, storyText),
 
 			space: {
 				top: Space.filterBarHeight,
@@ -66,11 +64,6 @@ export default class DeckRegion {
 			}).setOrigin(0)
 
 		this.updateOnScroll(this.panel, this.scrollablePanel)
-
-		// If on mobile, header scrolls with the rest of content
-		if (Mobile) {
-			this.createHeader(startCallback, this.panel, avatarID, storyTitle, storyText)
-		}
 
 		this.scrollablePanel.layout()
 
@@ -92,8 +85,10 @@ export default class DeckRegion {
 		if (sizer === undefined) {
 			let background = this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundDark)
 
-			sizer = this.scene['rexUI'].add.fixWidthSizer({
+			sizer = this.scene['rexUI'].add.sizer({
 				space: {
+					left: Space.pad,
+					right: Space.pad,
 					top: Space.pad,
 					bottom: Space.pad,
 				}
@@ -108,13 +103,22 @@ export default class DeckRegion {
 			})
 		}
 
+		// Back button - on Mobile
+		if (Flags.mobile) {
+			let container = new ContainerLite(this.scene, 0, 0, Space.iconSize, Space.avatarSize)
+			new Icons.Recap(container, 0, 0, () => {this.scene.doBack()})
+			sizer.add(container)
+			.addSpace()
+		}
+
 		// Start button - Show how many cards are in deck, and enable user to start if deck is full
-		let containerStart = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize)
+		let containerStart = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, Space.avatarSize)
 		this.btnStart = new Buttons.Basic(containerStart, 0, 0, '0/15', startCallback, true)
 		sizer.add(containerStart)
+		.addSpace()
 		
 		// Add this deck's avatar
-		let containerAvatar = new ContainerLite(this.scene, 0, 0, width/2, Space.avatarSize)
+		let containerAvatar = new ContainerLite(this.scene, 0, 0, Space.avatarSize, Space.avatarSize)
 		this.avatar = new Buttons.Avatar(containerAvatar, 0, 0, avatarNames[avatarID])
 		.setQuality({emotive: true})
 		
