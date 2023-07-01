@@ -31,7 +31,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Count of a card in the deck
   cardCount: {
     fontFamily: mainFont,
-    fontSize: FontSettings.standard.size,
+    fontSize: '24px',//FontSettings.standard.size,
     color: Color.cardCount,
     stroke: '#0009',
     strokeThickness: 3,
