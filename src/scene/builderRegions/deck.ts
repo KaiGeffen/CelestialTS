@@ -449,16 +449,15 @@ export default class DeckRegion {
 					(cutout.card.name > card.name))
 				)
 			{
-				let index = i + (Flags.mobile ? 1 : 0)
-				panel.insert(index, child)
-				return index
+				panel.insert(i, child)
+				return i
 			}
 		}
 
 		// Default insertion is at the end, if it's not before any existing element
-		let index = this.deck.length + (Flags.mobile ? 1 : 0)
-		panel.insert(index, child)
-		return index
+		let end = this.deck.length
+		panel.insert(end, child)
+		return end
 	}
 
 	private openEditMenu(): () => void {
