@@ -57,6 +57,9 @@ export default class Cutout extends Button {
 					hint.hide().enableWaitTime()
 					this.icon.clearTint()
 				}
+			},
+			sound: {
+				mute: Flags.mobile,
 			}
 		})
 
