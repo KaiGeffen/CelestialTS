@@ -294,7 +294,10 @@ class Search extends Button {
 			},
 			callbacks: {
 				click: f
-			}
+			},
+			sound: {
+				mute: true,
+			},
 		})
 	}
 }
