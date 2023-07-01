@@ -106,6 +106,7 @@ export default class MulliganRegion extends Region {
 			Space.corner,
 			Color.backgroundDark
 			)
+		.setInteractive()
 
 		// Add a border around the shape TODO Make a class for this to keep it dry
 		let postFxPlugin = scene.plugins.get('rexOutlinePipeline')
