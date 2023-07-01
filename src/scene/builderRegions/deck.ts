@@ -522,5 +522,14 @@ export default class DeckRegion {
 			ease: Ease.slide,
 		})
 	}
+
+	isOverfull(): boolean {
+		let totalCount = 0
+		this.deck.forEach(cutout => {
+			totalCount += cutout.count
+		})
+		
+		return totalCount >= 30
+	}
 }
 

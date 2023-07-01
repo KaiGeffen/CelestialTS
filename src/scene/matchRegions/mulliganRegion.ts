@@ -74,7 +74,7 @@ export default class MulliganRegion extends Region {
 			let card = this.addCard(state.hand[i], CardLocation.mulligan(this.container, i))
 			.setCost(state.costs[i])
 			.setOnClick(this.onCardClick(i))
-			.setFocusOptions('Toggle', true)
+			.setFocusOptions('Toggle')
 
 			this.cards.push(card)
 		}

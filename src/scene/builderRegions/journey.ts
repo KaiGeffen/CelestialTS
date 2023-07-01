@@ -397,4 +397,13 @@ export default class DeckRegion {
 		panel.insert(index, child)
 		return index
 	}
+
+	isOverfull(): boolean {
+		let totalCount = 0
+		this.deck.forEach(cutout => {
+			totalCount += cutout.count
+		})
+		
+		return totalCount >= 30
+	}
 }

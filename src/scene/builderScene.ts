@@ -74,6 +74,9 @@ export class BuilderBase extends BaseScene {
   getDeckCode(): string {
     return this.deckRegion.getDeckCode()
   }
+
+  // Check whether the deck is overfull
+  isOverfull(): boolean { return this.deckRegion.isOverfull() }
 }
 
 export class AdventureBuilderScene extends BuilderBase {
@@ -129,6 +132,8 @@ export class AdventureBuilderScene extends BuilderBase {
         })
     }
   }
+  
+  isOverfull(): boolean { return this.journeyRegion.isOverfull() }
 }
 
 export class BuilderScene extends BuilderBase {

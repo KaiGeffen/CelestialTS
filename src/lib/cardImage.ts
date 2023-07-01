@@ -43,7 +43,7 @@ export class CardImage {
 
   // In focus menu, the string describing what action to take with this card
   private focusString = ''
-  private focusCloseOnClick = false
+  private focusCloseOnClick = () => { return true }
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
     card = card || cardback
@@ -252,9 +252,11 @@ export class CardImage {
     return this
   }
 
-  setFocusOptions(s: string, closeOnClick: boolean): CardImage {
+  setFocusOptions(s: string, closeOnClick?: () => boolean): CardImage {
     this.focusString = s
-    this.focusCloseOnClick = closeOnClick
+    if (closeOnClick) {
+      this.focusCloseOnClick = closeOnClick
+    }
 
     return this
   }
@@ -549,6 +551,7 @@ export class FullSizeCardImage extends CardImage {
   constructor(card: Card, container: any, interactive: Boolean = true) {
     super(card, container, interactive)
 
+    // Load the full sized image and use it once loaded
     const s = `fullCard-${card.name}`
     if (this.scene.textures.exists(s)) {
       this.image.setTexture(s)

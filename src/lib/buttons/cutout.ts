@@ -43,7 +43,9 @@ export default class Cutout extends Button {
 						card: card,
 						cost: undefined,
 						btnString: 'Remove',
-						closeOnClick: false,
+						closeOnClick: () => {
+							return this.count === 0
+						},
 						callback: f,
 					})
 				} : f,
@@ -86,6 +88,9 @@ export default class Cutout extends Button {
 						card: this.card,
 						cost: undefined,
 						btnString: 'Remove',
+						closeOnClick: () => {
+							return this.count === 0
+						},
 						callback: f,
 					})
 			})
