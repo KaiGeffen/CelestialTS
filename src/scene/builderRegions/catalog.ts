@@ -138,7 +138,7 @@ export default class CatalogRegion {
     let cardImage = new CardImage(card, this.container)
     .setOnClick(this.onClickCatalogCard(card))
     .setFocusOptions('Add', () => {
-      return this.scene.deckRegion.isOverfull()
+      return this.scene.isOverfull()
     })
 
     // Add this cardImage to the maintained list of cardImages in the catalog

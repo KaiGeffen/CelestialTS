@@ -84,6 +84,9 @@ export default class FocusMenu extends Menu {
 				if (closeOnClick()) {
 					this.endScene()
 				}
+				else {
+					this.scene.playSound('click')
+				}
 			}, true)
 		}
 		new Buttons.Basic(this.scene, x, 2 * Space.windowHeight/3, 'Cancel', () => {

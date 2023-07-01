@@ -403,7 +403,7 @@ export default class DeckRegion {
 		this.deck.forEach(cutout => {
 			totalCount += cutout.count
 		})
-		
-		return totalCount >= 30
+
+		return totalCount >= Mechanics.deckSize
 	}
 }
