@@ -43,6 +43,7 @@ export class CardImage {
 
   // In focus menu, the string describing what action to take with this card
   private focusString = ''
+  private focusCloseOnClick = false
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
     card = card || cardback
@@ -112,6 +113,7 @@ export class CardImage {
             card: this.card,
             cost: this.cost,
             btnString: this.focusString,
+            closeOnClick: this.focusCloseOnClick,
             callback: () => this.clickCallback(),
           })
         })
@@ -250,8 +252,9 @@ export class CardImage {
     return this
   }
 
-  setFocusString(s: string): CardImage {
+  setFocusOptions(s: string, closeOnClick: boolean): CardImage {
     this.focusString = s
+    this.focusCloseOnClick = closeOnClick
 
     return this
   }

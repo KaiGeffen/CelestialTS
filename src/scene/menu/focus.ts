@@ -21,13 +21,14 @@ export default class FocusMenu extends Menu {
 		let callback = params.callback
 		let cost = params.cost
 		let btnString = params.btnString
+		let closeOnClick = params.closeOnClick
 
-		this.createContent(card, callback, cost, btnString)
+		this.createContent(card, callback, cost, btnString, closeOnClick)
 		
 		// this.layout()
 	}
 
-	private createContent(card: Card, callback: () => void, cost: number, btnString: string): void {
+	private createContent(card: Card, callback: () => void, cost: number, btnString: string, closeOnClick: boolean): void {
 		// TODO Generalize when cards have more than 1 reference max
 		let refs = card.getReferencedCards()
 		if (refs.length > 0) {
@@ -36,7 +37,7 @@ export default class FocusMenu extends Menu {
 
 		this.createKeywords(card)
 		this.createCard(card, cost)
-		this.createButtons(callback, btnString)
+		this.createButtons(callback, btnString, closeOnClick)
 	}
 
 	private createKeywords(card: Card): void {
@@ -69,14 +70,13 @@ export default class FocusMenu extends Menu {
 		return container
 	}
 
-	private createButtons(callback: () => void, btnString: string): void {
+	private createButtons(callback: () => void, btnString: string, closeOnClick: boolean): void {
 		const x = Space.windowWidth - Space.pad - Space.buttonWidth/2
 		if (btnString !== '') {
 			new Buttons.Basic(this.scene, x, Space.windowHeight/3, btnString, () => {
 				callback()
 
-				// TODO Terrible smellll
-				if (btnString === 'Play') {
+				if (closeOnClick) {
 					this.endScene()
 				}
 			}, true)

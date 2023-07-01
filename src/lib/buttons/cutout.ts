@@ -1,7 +1,7 @@
 import "phaser"
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
-import { Space, Style, Color, Time } from '../../settings/settings'
+import { Space, Style, Color, Time, Flags } from '../../settings/settings'
 import Button from './button'
 import Card from '../card'
 import Hint from '../hint'
@@ -37,7 +37,16 @@ export default class Cutout extends Button {
 				noGlow: true,
 			},
 			callbacks: {
-				click: f,
+				click: Flags.mobile ? () => {
+					this.scene.scene.launch('MenuScene', {
+						menu: 'focus',
+						card: card,
+						cost: undefined,
+						btnString: 'Remove',
+						closeOnClick: false,
+						callback: f,
+					})
+				} : f,
 				// When hovered, show the given cards
 				hover: () => {
 					hint.leftPin = this.icon.getRightCenter().x
@@ -64,6 +73,25 @@ export default class Cutout extends Button {
 		this.container = within
 
 		this.updateText()
+	}
+
+	setOnClick(f: () => void): Cutout {
+		if (Flags.mobile) {
+			super.setOnClick(() => {
+				this.scene.scene.launch('MenuScene', {
+						menu: 'focus',
+						card: this.card,
+						cost: undefined,
+						btnString: 'Remove',
+						callback: f,
+					})
+			})
+		}
+		else {
+			super.setOnClick(f)
+		}
+
+		return this
 	}
 
 	// Increment the count of this card
