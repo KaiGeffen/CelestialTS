@@ -59,10 +59,10 @@ export default class ResultsRegion extends Region {
 		this.deleteTemp()
 
 		// If the game isn't over, hide this
-		// if (state.winner === null) {
-		// 	this.hide()
-		// 	return
-		// }
+		if (state.winner === null) {
+			this.hide()
+			return
+		}
 
 		// If we are in a recap, hide this
 		if (isRecap) {
