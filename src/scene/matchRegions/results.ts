@@ -14,7 +14,7 @@ import avatarNames from '../../lib/avatarNames'
 
 
 const WIDTH = 300
-const HEIGHT = Math.min(600, Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2)
+const HEIGHT = Flags.mobile ? Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2 : Space.avatarHeight
 
 export default class ResultsRegion extends Region {
 	// Whether the results have been seen already
@@ -59,10 +59,10 @@ export default class ResultsRegion extends Region {
 		this.deleteTemp()
 
 		// If the game isn't over, hide this
-		if (state.winner === null) {
-			this.hide()
-			return
-		}
+		// if (state.winner === null) {
+		// 	this.hide()
+		// 	return
+		// }
 
 		// If we are in a recap, hide this
 		if (isRecap) {
