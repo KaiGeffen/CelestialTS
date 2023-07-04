@@ -181,16 +181,22 @@ export default class PassRegion extends Region {
 	private showDayNight(isRecap: boolean) {
 		let target = this.container
 
-		if (!isRecap) {
-			target.rotation += .001
+		// If day and sun not centered
+		if (!isRecap && target.rotation !== 0) {
+			this.scene.tweens.add({
+				targets: target,
+				rotation: 0,
+				ease: Ease.basic,
+			})
 		}
-
-		// NOTE Target just below PI so that it doesn't flip to -PI and then rotate a full 2PI
-		this.scene.tweens.add({
-			targets: target,
-			rotation: isRecap ? Math.PI - .001 : 0,
-			ease: Ease.basic,
-		})
+		// If night and moon not centered
+		else if (isRecap && (target.rotation !== Math.PI && target.rotation !== -Math.PI)) {
+			this.scene.tweens.add({
+				targets: target,
+				rotation: Math.PI,
+				ease: Ease.basic,
+			})
+		}
 	}
 
 	// For tutorial, disable the option to pass, but still show the sun
