@@ -3,6 +3,7 @@
 	"Divide",
 	"Deck", "Discard",
 	"Nourish", "Inspire", "Sight",
+	"MobileNourish", "MobileInspire",
 	"Sun", "Moon",
 	"MobileSun", "MobileMoon",
 	"ResultGlow",
@@ -23,5 +24,5 @@
 	"BreathBasic", "BreathSpent", "BreathExtra", "BreathHover", "BreathOom", 
 	"Arrow", "Pointer",
 	"Discord",
-	"QuestionMark"
+	"QuestionMark"	
 ]

@@ -1,7 +1,7 @@
 import 'phaser'
 import Button from './button'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import { Style } from '../../settings/settings'
+import { Style, Space, Flags } from '../../settings/settings'
 import { keywords } from '../../catalog/keywords'
 
 
@@ -54,7 +54,7 @@ export class InspireButton extends KeywordButton {
 				style: Style.basic,
 			},
 			icon: {
-				name: `Inspire`,
+				name: Flags.mobile ? `MobileInspire` : `Inspire`,
 				interactive: true,
 			},
 			callbacks: {
@@ -62,7 +62,12 @@ export class InspireButton extends KeywordButton {
 			}
 		})
 
-		this.txt.setPosition(x + 52, y + 17)
+		// TODO This is a hacky way to make their mobile status flip
+		const flipY = y > Space.avatarSize
+		const dx = Flags.mobile ? 0 : 52
+		const dy = Flags.mobile ? -24 * (flipY ? -1 : 1) : 17
+
+		this.txt.setPosition(x + dx, y + dy)
 	}
 
 	makeHintable(): Button {
@@ -86,7 +91,7 @@ export class NourishButton extends KeywordButton {
 				style: Style.basic,
 			},
 			icon: {
-				name: `Nourish`,
+				name: Flags.mobile ? `MobileNourish` : `Nourish`,
 				interactive: true
 			},
 			callbacks: {
@@ -94,7 +99,12 @@ export class NourishButton extends KeywordButton {
 			}
 		})
 
-		this.txt.setPosition(x + 52, y + 17)
+		// TODO This is a hacky way to make their mobile status flip
+		const flipY = y > Space.avatarSize
+		const dx = Flags.mobile ? 0 : 52
+		const dy = Flags.mobile ? -24 * (flipY ? -1 : 1) : 17
+
+		this.txt.setPosition(x + dx, y + dy)
 	}
 
 	makeHintable(): Button {

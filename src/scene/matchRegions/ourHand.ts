@@ -223,19 +223,34 @@ export default class OurHandRegion extends Region {
 	}
 
 	private createStatusDisplay(): void {
-		let x = 21 + Space.avatarSize - 10
+		if (!Flags.mobile) {
+			let x = 21 + Space.avatarSize - 10
 
-		// Inspire
-		let y = 11
-		this.btnInspire = new Buttons.Keywords.Inspire(this.container, x - 15, y)
-		.setOrigin(0)
-		.setVisible(false)
+			// Inspire
+			let y = 11
+			this.btnInspire = new Buttons.Keywords.Inspire(this.container, x - 15, y)
+			.setOrigin(0)
+			.setVisible(false)
 
-		// Nourish
-		y += Space.avatarSize/2
-		this.btnNourish = new Buttons.Keywords.Nourish(this.container, x - 15, y)
-		.setOrigin(0)
-		.setVisible(false)
+			// Nourish
+			y += Space.avatarSize/2
+			this.btnNourish = new Buttons.Keywords.Nourish(this.container, x - 15, y)
+			.setOrigin(0)
+			.setVisible(false)
+		}
+		else {
+			// Top center of avatar
+			let x = 10 + Space.avatarSize/2
+			const dx = Space.avatarSize/4
+			let y = -10
+
+			this.btnInspire = new Buttons.Keywords.Inspire(
+				this.container, x + dx, y - 10)
+			.setVisible(false)
+			this.btnNourish = new Buttons.Keywords.Nourish(
+				this.container, x - dx, y - 10)
+			.setVisible(false)
+		}
 	}
 
 	// Return the function that runs when card with given index is clicked on
