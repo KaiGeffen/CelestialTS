@@ -9,6 +9,7 @@ import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard } from '../../lib/codec';
 import { Color, Mechanics, Space, Style, Time, Flags } from '../../settings/settings';
+import ScrollablePanel from '../../lib/scrollablePanel'
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -18,7 +19,7 @@ export default class DeckRegion {
 
 	// The panel within which all of the cards are
 	private panel
-	private scrollablePanel
+	private scrollablePanel: ScrollablePanel
 	// Panel populated with cutouts of cards user has chosen
 	private chosenPanel
 
@@ -36,24 +37,12 @@ export default class DeckRegion {
 	create(scene: Phaser.Scene, startCallback: () => void, avatarID: number, storyTitle: string, storyText: string) {
 		this.scene = scene
 
-		this.createScrollable(startCallback, avatarID, storyTitle, storyText)
-
-		return this
-	}
-
-	private createScrollable(startCallback: () => void, avatarID: number, storyTitle: string, storyText: string) {
-		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight)
-
-		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
-			x: 0,
-			y: 0,
+		this.scrollablePanel = new ScrollablePanel(scene, {
 			width: width,
 			height: Space.windowHeight,
 
-			background: background,
-
 			panel: {
-				child: this.createPanel(startCallback)
+				child: this.createPanel(startCallback),
 			},
 
 			header: this.createHeader(startCallback, undefined, avatarID, storyTitle, storyText),
@@ -61,36 +50,9 @@ export default class DeckRegion {
 			space: {
 				top: Space.filterBarHeight,
 			},
-			}).setOrigin(0)
-
-		this.updateOnScroll(this.panel, this.scrollablePanel)
-
-		this.scrollablePanel.layout()
-
-		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-			distance: 3,
-			shadowColor: 0x000000,
 		})
 
-		// TODO Make dry with other places
-		// Allows scroll unless children are tapped
-		this.scrollablePanel.setChildrenInteractive({
-			targets: [this.panel],
-			tap: {tapInterval: 0},
-		})
-		.on('child.click', (child) => {
-      		// Tap on any images in the container
-			if (child instanceof ContainerLite) {
-				child.getChildren().filter((o) => {
-					console.log(o)
-					return o instanceof Phaser.GameObjects.Image
-				}).forEach(image => {
-					image.emit('pointerdown')
-				})
-			}
-		})
-
-		return this.scrollablePanel
+		return this
 	}
 
 	private createPanel(startCallback: () => void): Phaser.GameObjects.GameObject {
@@ -370,26 +332,6 @@ export default class DeckRegion {
 				this.btnStart.disable()
 			}
 		}
-	}
-
-	// TODO Make dry with other scenes
-	// Update the panel when user scrolls with their mouse wheel
-	private updateOnScroll(panel, scrollablePanel) {
-		let that = this
-
-		this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-			// Return if the pointer is outside of the panel
-			if (!panel.getBounds().contains(pointer.x, pointer.y)) {
-				return
-			}
-
-			// Scroll panel down by amount wheel moved
-			scrollablePanel.childOY -= dy
-
-			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-			scrollablePanel.t = Math.max(0, scrollablePanel.t)
-			scrollablePanel.t = Math.min(0.999999, scrollablePanel.t)
-		})
 	}
 
 	private addToPanelSorted(child: ContainerLite, card: Card, panel): number {
