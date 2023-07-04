@@ -188,21 +188,6 @@ export default class OurHandRegion extends Region {
 		return renderedBackground
 	}
 
-	// private createPriorityHighlight(): Phaser.GameObjects.Video {
-	// 	console.log(this.scene.add.video(Space.windowWidth/2,
-	// 		Space.windowHeight/2,
-	// 		'priorityHighlight')
-	// 	.play(true))
-
-	// 	this.scene.add.video(0, 0, 'priorityHighlight').play(true).setDepth(100)
-
-	// 	return this.scene.add.video(Space.windowWidth - 341,
-	// 		-12,
-	// 		'priorityHighlight')
-	// 	.setOrigin(1, 0)
-	// 	.play(true)
-	// }
-
 	private createAvatar(avatarId: number): Button {
 		if (Flags.mobile) {
 			return this.createAvatarMobile(avatarId)
@@ -253,37 +238,24 @@ export default class OurHandRegion extends Region {
 		.setVisible(false)
 	}
 
-	// Animate us getting or losing priority
-	// private animatePriority(state: ClientState, isRecap: boolean): void {
-	// 	const targetAlpha = state.priority === 0 && !isRecap ? 1 : 0
-
-	// 	this.scene.tweens.add({
-	// 		targets: this.priorityHighlight,
-	// 		alpha: targetAlpha,
-	// 		duration: Time.recapTweenWithPause()
-	// 	})
-	// }
-
 	// Return the function that runs when card with given index is clicked on
 	private onCardClick(i: number, card: CardImage, hand: CardImage[], state: ClientState, isRecap: boolean): () => void {
-		let that = this
-
 		// The position these cards will move to if played
 		const nextStoryPosition = CardLocation.story(state, isRecap, state.story.acts.length, this.container, 0)
 
-		return function() {
+		return () => {
 			// If the match is paused, do nothing
-			if (that.scene['paused']) {
+			if (this.scene['paused']) {
 				return
 			}
 
 			// If we have already played a card, do nothing when clicking on another
-			if (that.cardClicked) {
+			if (this.cardClicked) {
 				return
 			}
 
-			// Remember that we have clicked a card already
-			that.cardClicked = true
+			// Remember this we have clicked a card already
+			this.cardClicked = true
 
 			// Revert the order of the cards in hand to not center this card
 			card.revertCenteringInHand()
@@ -292,49 +264,52 @@ export default class OurHandRegion extends Region {
 			card.removeOnHover()
 
 			// Hide any hints
-			that.scene['hint'].hide()
+			this.scene['hint'].hide()
 
 			// Send this card to its place in the story
-			that.scene.tweens.add({
+			this.scene.tweens.add({
 				targets: card.container,
 				x: nextStoryPosition[0],
 				y: nextStoryPosition[1],
 				duration: Time.playCard(),
 				ease: "Sine.easeInOut",
 				// After brief delay, tell network, hide info, shift cards to fill its spot
-				onStart: function () {setTimeout(function() {
+				onStart: () => {setTimeout(() => {
 					// Hide any hint that might be showing
-					that.scene['hint'].hide()
+					this.scene.hint.hide()
 
 					// Fill in the hole where the card was
 					// For every card later than i, move to the right
 					for (let j = i + 1; j < hand.length; j++) {
 						let adjustedCard = hand[j]
 
-						that.scene.tweens.add({
+						this.scene.tweens.add({
 							targets: adjustedCard.container,
 							// TODO Fix this to be in general (Space to move might be smaller if cards squished)
-							x: CardLocation.ourHand(state, j - 1, that.container)[0],
+							x: CardLocation.ourHand(state, j - 1, this.container)[0],
 							duration: Time.playCard() - 10,
 							ease: "Sine.easeInOut"
 						})
 					}
 
 					// Trigger the callback function for this card
-					that.callback(i)
+					this.callback(i)
 				}, 10)},
 				// Play 'play' sound, remember which card is being hovered
 				onComplete: () => {
 					this.scene.playSound('play')
 
-					if (that.hoveredCard !== undefined) {
+					// Slip card behind the hand background
+					card.container.parentContainer.sendToBack(card.container)
+
+					if (this.hoveredCard !== undefined) {
 						// If the played card was hovered, forget that
-						if (that.hoveredCard === i) {
-							that.hoveredCard = undefined
+						if (this.hoveredCard === i) {
+							this.hoveredCard = undefined
 						}
 						// If a later card was hovered, adjust down to fill this card leaving hand
-						else if (that.hoveredCard > i) {
-							that.hoveredCard -= 1
+						else if (this.hoveredCard > i) {
+							this.hoveredCard -= 1
 						}
 					}
 				},
