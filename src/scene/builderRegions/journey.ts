@@ -1,5 +1,7 @@
 import 'phaser';
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
+
 import premadeDecklists from '../../catalog/premadeDecklists';
 import avatarNames from '../../lib/avatarNames';
 import Button from '../../lib/buttons/button';
@@ -9,7 +11,7 @@ import Icons from '../../lib/buttons/icons';
 import Card from '../../lib/card';
 import { decodeCard } from '../../lib/codec';
 import { Color, Mechanics, Space, Style, Time, Flags } from '../../settings/settings';
-import ScrollablePanel from '../../lib/scrollablePanel'
+import newScrollablePanel from '../../lib/scrollablePanel'
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -37,9 +39,11 @@ export default class DeckRegion {
 	create(scene: Phaser.Scene, startCallback: () => void, avatarID: number, storyTitle: string, storyText: string) {
 		this.scene = scene
 
-		this.scrollablePanel = new ScrollablePanel(scene, {
+		this.scrollablePanel = newScrollablePanel(scene, {
 			width: width,
 			height: Space.windowHeight,
+
+			background: this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight),
 
 			panel: {
 				child: this.createPanel(startCallback),

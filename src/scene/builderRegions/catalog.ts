@@ -1,12 +1,14 @@
 import 'phaser'
 
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
 
 import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
 import { Style, Color, UserSettings, Space, Mechanics, Time, Scroll, Ease, Flags } from "../../settings/settings"
 import { collectibleCards } from "../../catalog/catalog"
 import { BuilderBase } from '../builderScene'
+import newScrollablePanel from '../../lib/scrollablePanel'
 
 
 // Region where all of the available cards can be scrolled through
@@ -16,7 +18,7 @@ export default class CatalogRegion {
   container: ContainerLite
 
   // The scrollable panel on which the catalog exists
-  private scrollablePanel
+  private scrollablePanel: ScrollablePanel
   panel
 
   // Full list of all cards in the catalog (Even those invisible)
@@ -64,7 +66,7 @@ export default class CatalogRegion {
         line: Space.pad,
       }
     })
-    let superPanel = this.scrollablePanel = scene['rexUI'].add.scrollablePanel({
+    let superPanel = this.scrollablePanel = newScrollablePanel(scene, {
       x: Space.windowWidth,
       y: 0,
       width: width,
@@ -77,13 +79,14 @@ export default class CatalogRegion {
       },
 
       space: {
-        // slider: Was how this was done? TODO
-        top: Space.filterBarHeight,
+        //@ts-ignore
+        slider: { top: Space.filterBarHeight },
       },
 
       slider: Flags.mobile ? undefined : Scroll(scene),
     }).setOrigin(1, 0)
 
+    // TODO
     // Update panel when mousewheel scrolls
     scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
       // Return if the pointer is outside of the panel
@@ -100,24 +103,6 @@ export default class CatalogRegion {
       // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
       superPanel.t = Math.max(0, superPanel.t)
       superPanel.t = Math.min(0.999999, superPanel.t)
-    })
-
-    // Allows scroll unless children are tapped
-    superPanel.setChildrenInteractive({
-      targets: [panel],
-      tap: {tapInterval: 0},
-      })
-    superPanel.on('child.click', (child) => {
-      // Tap on any images in the container
-      if (child instanceof ContainerLite) {
-        child.getChildren().filter((o) => {
-          return o instanceof Phaser.GameObjects.Image
-        }).forEach(image => {
-          image.disableInteractive()
-          image.emit('tap')
-          image.emit('pointerdown')
-        })
-      }
     })
 
     return superPanel
@@ -153,7 +138,7 @@ export default class CatalogRegion {
   }
 
   private addCardToCatalog(card: Card, index: number): CardImage {
-    let cardImage = new CardImage(card, this.container, false)
+    let cardImage = new CardImage(card, this.container, !Flags.mobile)
     .setOnClick(this.onClickCatalogCard(card))
     .setFocusOptions('Add', () => {
       return this.scene.isOverfull()
@@ -169,7 +154,7 @@ export default class CatalogRegion {
   private onClickCatalogCard(card: Card): () => void {
     return () => {
       // NOTE If a new deck is created by clicking this card, the new decklist's button will be clicked and make a sound. In that case, do nothing.
-      const muteSound = this.scene.journeyRegion || this.scene.decklistsRegion.savedDeckIndex === undefined
+      const muteSound = this.scene['journeyRegion'] || this.scene.decklistsRegion.savedDeckIndex === undefined
       const errorMsg = this.scene.addCardToDeck(card)
 
       if (errorMsg !== undefined) {

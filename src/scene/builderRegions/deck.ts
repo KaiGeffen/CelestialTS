@@ -1,7 +1,8 @@
 import 'phaser';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
+
 import premadeDecklists from '../../catalog/premadeDecklists';
 import avatarNames from '../../lib/avatarNames';
 import Button from '../../lib/buttons/button';
@@ -12,7 +13,7 @@ import Card from '../../lib/card';
 import { decodeCard, encodeShareableDeckCode } from '../../lib/codec';
 import { Color, Mechanics, Space, Style, BBStyle, Time, Scroll, Ease, Flags } from '../../settings/settings';
 import { BuilderScene } from '../builderScene'
-
+import newScrollablePanel from '../../lib/scrollablePanel'
 
 
 const width = Space.deckPanelWidth// + Space.pad * 2
@@ -27,8 +28,8 @@ export default class DeckRegion {
 	editCallback: (name: string, avatar: number, deckCode: string) => void
 
 	// The panel within which all of the cards are
+	private scrollablePanel: ScrollablePanel
 	private panel
-	private scrollablePanel
 
 	// Button allowing user to Start, or showing the count of cards in their deck
 	private btnStart: Button
@@ -53,7 +54,6 @@ export default class DeckRegion {
 
 		this.editCallback = editCallback
 
-		// TODO Make everything in a panel
 		this.createScrollable(startCallback)
 
 		return this
@@ -62,7 +62,7 @@ export default class DeckRegion {
 	private createScrollable(startCallback: () => void) {
 		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight)
 
-		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
+		this.scrollablePanel = newScrollablePanel(this.scene, {
 			x: X_START,
 			y: 0,
 			width: width,
@@ -78,38 +78,12 @@ export default class DeckRegion {
 			space: {
 				top: Space.filterBarHeight,
 			},
-			}).setOrigin(0)
-
-		this.updateOnScroll(this.panel, this.scrollablePanel)
+			})
 
 		// If on mobile, must be over the decklist region
 		if (Flags.mobile) {
 			this.scrollablePanel.setDepth(3)
 		}
-
-		this.scrollablePanel.layout()
-
-		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-			distance: 3,
-			shadowColor: 0x000000,
-		})
-
-		// TODO Make dry with other places
-		// Allows scroll unless children are tapped
-		this.scrollablePanel.setChildrenInteractive({
-			targets: [this.panel],
-			tap: {tapInterval: 0},
-		})
-		.on('child.click', (child) => {
-      	// Tap on any images in the container
-			if (child instanceof ContainerLite) {
-				child.getChildren().filter((o) => {
-					return o instanceof Phaser.GameObjects.Image
-				}).forEach(image => {
-					image.emit('pointerdown')
-				})
-			}
-		})
 
 		return this.scrollablePanel
 	}

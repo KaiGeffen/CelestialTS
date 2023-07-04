@@ -1,9 +1,13 @@
 import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
+import FixWidthSizer from 'phaser3-rex-plugins/templates/ui/fixwidthsizer/FixWidthSizer'
+
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import Icons from '../../lib/buttons/icons'
 import { Color, Mechanics, Space, Style, UserSettings, Scroll, Flags } from "../../settings/settings"
+import newScrollablePanel from '../../lib/scrollablePanel'
 
 
 const width = Space.decklistPanelWidth
@@ -14,7 +18,7 @@ export default class DecklistsRegion {
 	scene
 	container: ContainerLite
 
-	scrollablePanel
+	scrollablePanel: ScrollablePanel
 	panel
 
 	// The index of the currently selected deck
@@ -153,15 +157,13 @@ export default class DecklistsRegion {
 
 	// Create the full panel
 	private createPanel() {
-		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight)
-
-		this.scrollablePanel = this.scene['rexUI'].add.scrollablePanel({
+		this.scrollablePanel = newScrollablePanel(this.scene, {
 			x: 0,
 			y: 0,
 			width: width,
 			height: Space.windowHeight,
 
-			background: background,
+			background: this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundLight),
 
 			panel: {
 				child: this.createChildPanel()
@@ -170,47 +172,13 @@ export default class DecklistsRegion {
 			header: this.createHeader(),
 
 			space: {
-				// TODO
 				top: Space.filterBarHeight,
 			},
 			}).setOrigin(0)
 
-		this.scrollablePanel.layout()
-
-		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
-			distance: 3,
-			shadowColor: 0x000000,
-		})
-
 		// TODO This is populating the existing panel with necessary contents
 		this.createDecklistPanel()
-
 		this.scrollablePanel.layout()
-
-		// TODO Make dry with other places
-		// Allows scroll unless children are tapped
-		this.scrollablePanel.setChildrenInteractive({
-			targets: [this.panel],
-			tap: {tapInterval: 0},
-		})
-		.on('child.click', (child: Phaser.GameObjects.GameObject, pointer: Phaser.Input.Pointer) => {
-      		// Tap on any images in the container
-			if (child instanceof ContainerLite) {
-				child.getChildren().filter((o) => {
-					// Object is an image
-					if (o instanceof Phaser.GameObjects.Image) {
-						// TODO This is a hack to hit all images besides ones that "block"
-						// A better implementation is to check if pointer is in the image's bounds
-						if (!o.input) {
-							return true
-						}
-					}
-					return false
-				}).forEach(image => {
-					image.emit('pointerdown')
-				})
-			}
-		})
 
 		return this.scrollablePanel
 	}
@@ -232,7 +200,7 @@ export default class DecklistsRegion {
 		return this.panel
 	}
 
-	private createHeader(): Phaser.GameObjects.GameObject {
+	private createHeader(): FixWidthSizer {
 		// Make a background with a drop shadow straight down
 		let background = this.scene.add.rectangle(0, 0, 1, 1, Color.backgroundDark)
 		this.scene.plugins.get('rexDropShadowPipeline')['add'](background, {
@@ -364,7 +332,7 @@ export default class DecklistsRegion {
 
 	// Create a button for each deck that user has created
 	private createDecklistPanel() {
-		let panel = this.scrollablePanel.getElement('panel')
+		let panel = this.scrollablePanel.getElement('panel') as FixWidthSizer
 
 		// Remove any existing content in this panel
 		panel.removeAll(true)
