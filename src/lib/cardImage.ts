@@ -552,6 +552,9 @@ export class FullSizeCardImage extends CardImage {
   constructor(card: Card, container: any, interactive: Boolean = true) {
     super(card, container, interactive)
 
+    // Move cost and points back to their normal location
+    this.revertStatsLocation()
+
     // Load the full sized image and use it once loaded
     const s = `fullCard-${card.name}`
     if (this.scene.textures.exists(s)) {
@@ -570,5 +573,17 @@ export class FullSizeCardImage extends CardImage {
         }
       })
     }
+  }
+
+  // TODO Lots of constants pulled from different places
+  revertStatsLocation(): void {
+    const x = -(336 * 7/10)/2 + 25
+    const y = -(336)/2 + 77
+    
+    this.txtCost.setPosition(x, x)
+    .setFontSize(36)
+
+    this.txtPoints.setPosition(x, y)
+    .setFontSize(36)
   }
 }
