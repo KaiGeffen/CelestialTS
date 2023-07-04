@@ -60,20 +60,28 @@ function updateOnScroll(panel: ScrollablePanel, childPanel: FixWidthSizer): void
 
 // Allow clicks that hit children to scroll the panel
 function enableMobileScroll(panel: ScrollablePanel, childPanel: FixWidthSizer): void {
+	// If image, click. If container, seek recursively to find images
+	function clickImagesRecursive(obj: Phaser.GameObjects.GameObject) {
+		if (obj instanceof ContainerLite) {
+			obj.getChildren().forEach((child) => {
+				clickImagesRecursive(child)
+			})
+		}
+		else if (obj instanceof Phaser.GameObjects.Image) {
+			// TODO Check for pointer over image instead of this hack to prevent buttons with multiple images
+			if (!obj.input) {
+				obj.emit('pointerdown')				
+			}
+		}
+	}
+
 	// Allows scroll unless children are tapped
 	panel.setChildrenInteractive({
 		targets: [childPanel],
 		tap: {tapInterval: 0},
 	})
-	.on('child.click', (child) => {
-  		// Tap on any images in the container
-		if (child instanceof ContainerLite) {
-			child.getChildren().filter((o) => {
-				return o instanceof Phaser.GameObjects.Image
-			}).forEach(image => {
-				image.emit('pointerdown')
-			})
-		}
+	.on('child.click', (child: Phaser.GameObjects.GameObject) => {
+		clickImagesRecursive(child)
 	})
 }
 
