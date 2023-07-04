@@ -187,6 +187,31 @@ export default class DecklistsRegion {
 
 		this.scrollablePanel.layout()
 
+		// TODO Make dry with other places
+		// Allows scroll unless children are tapped
+		this.scrollablePanel.setChildrenInteractive({
+			targets: [this.panel],
+			tap: {tapInterval: 0},
+		})
+		.on('child.click', (child: Phaser.GameObjects.GameObject, pointer: Phaser.Input.Pointer) => {
+      		// Tap on any images in the container
+			if (child instanceof ContainerLite) {
+				child.getChildren().filter((o) => {
+					// Object is an image
+					if (o instanceof Phaser.GameObjects.Image) {
+						// TODO This is a hack to hit all images besides ones that "block"
+						// A better implementation is to check if pointer is in the image's bounds
+						if (!o.input) {
+							return true
+						}
+					}
+					return false
+				}).forEach(image => {
+					image.emit('pointerdown')
+				})
+			}
+		})
+
 		return this.scrollablePanel
 	}
 

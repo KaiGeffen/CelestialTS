@@ -72,6 +72,24 @@ export default class DeckRegion {
 			shadowColor: 0x000000,
 		})
 
+		// TODO Make dry with other places
+		// Allows scroll unless children are tapped
+		this.scrollablePanel.setChildrenInteractive({
+			targets: [this.panel],
+			tap: {tapInterval: 0},
+		})
+		.on('child.click', (child) => {
+      		// Tap on any images in the container
+			if (child instanceof ContainerLite) {
+				child.getChildren().filter((o) => {
+					console.log(o)
+					return o instanceof Phaser.GameObjects.Image
+				}).forEach(image => {
+					image.emit('pointerdown')
+				})
+			}
+		})
+
 		return this.scrollablePanel
 	}
 

@@ -2,7 +2,7 @@ import 'phaser'
 import Button from './button'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
 
-import { Space, Style, Color } from '../../settings/settings'
+import { Space, Style, Color, Flags } from '../../settings/settings'
 
 import Icons from './icons'
 
@@ -25,7 +25,8 @@ export default class DecklistButton extends Button {
 			},
 			icon: {
 				name: 'CustomDeck',
-				interactive: true
+				// On mobile, interactive through scrollable panel
+				interactive: !Flags.mobile,
 			},
 			callbacks: {
 				click: mainCallback

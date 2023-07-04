@@ -33,7 +33,8 @@ export default class Cutout extends Button {
 			},
 			icon: {
 				name: `cutout-${card.name}`,
-				interactive: true,
+				// On mobile, interactive through scrollable panel
+				interactive: !Flags.mobile,
 				noGlow: true,
 			},
 			callbacks: {
@@ -67,7 +68,6 @@ export default class Cutout extends Button {
 
 		// The base scene's hint text object
 		let hint: Hint = within.scene['hint']
-
 
 		// Set variables
 		this.name = card.name

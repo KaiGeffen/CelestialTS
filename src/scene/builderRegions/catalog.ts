@@ -6,12 +6,13 @@ import Card from '../../lib/card'
 import { CardImage } from '../../lib/cardImage'
 import { Style, Color, UserSettings, Space, Mechanics, Time, Scroll, Ease, Flags } from "../../settings/settings"
 import { collectibleCards } from "../../catalog/catalog"
+import { BuilderBase } from '../builderScene'
 
 
 // Region where all of the available cards can be scrolled through
 export default class CatalogRegion {  
   // Overwrite the 'scene' property of container to specifically be a BuilderScene
-  scene// TODO: BuilderSceneShell
+  scene: BuilderBase
   container: ContainerLite
 
   // The scrollable panel on which the catalog exists
@@ -22,7 +23,7 @@ export default class CatalogRegion {
   cardCatalog: CardImage[]
 
   // Create this region, offset by the given width
-  create(scene: Phaser.Scene, x: number) {
+  create(scene: BuilderBase, x: number) {
     this.scene = scene
     this.container = new ContainerLite(scene)
 
@@ -43,7 +44,7 @@ export default class CatalogRegion {
     return this
   }
 
-  private createPanel(scene: Phaser.Scene, x: number) {
+  private createPanel(scene: BuilderBase, x: number) {
     // NOTE Scroller is in both environments
     // x += Mobile ? Space.scrollWidth : 0
 
@@ -53,6 +54,16 @@ export default class CatalogRegion {
     const height = Space.windowHeight
 
     // Make the object
+    let panel = scene.rexUI.add.fixWidthSizer({
+      space: {
+        left: Space.pad,
+        right: Space.pad,
+        top: Space.filterBarHeight + Space.pad,
+        bottom: Space.pad - 10,
+        item: Space.pad,
+        line: Space.pad,
+      }
+    })
     let superPanel = this.scrollablePanel = scene['rexUI'].add.scrollablePanel({
       x: Space.windowWidth,
       y: 0,
@@ -62,29 +73,18 @@ export default class CatalogRegion {
       scrollMode: 0,
 
       panel: {
-        child: scene['rexUI'].add.fixWidthSizer({
-          space: {
-            left: Space.pad,
-            right: Space.pad,
-            top: Space.filterBarHeight + Space.pad,
-            bottom: Space.pad - 10,
-            item: Space.pad,
-            line: Space.pad,
-          }
-        })
+        child: panel
       },
 
       space: {
-        slider: {
-          top: Space.filterBarHeight,
-        }
+        // slider: Was how this was done? TODO
+        top: Space.filterBarHeight,
       },
 
       slider: Flags.mobile ? undefined : Scroll(scene),
     }).setOrigin(1, 0)
 
     // Update panel when mousewheel scrolls
-    let panel = superPanel.getElement('panel')
     scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
       // Return if the pointer is outside of the panel
       if (pointer.x < panel.getLeftCenter().x) {
@@ -100,6 +100,24 @@ export default class CatalogRegion {
       // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
       superPanel.t = Math.max(0, superPanel.t)
       superPanel.t = Math.min(0.999999, superPanel.t)
+    })
+
+    // Allows scroll unless children are tapped
+    superPanel.setChildrenInteractive({
+      targets: [panel],
+      tap: {tapInterval: 0},
+      })
+    superPanel.on('child.click', (child) => {
+      // Tap on any images in the container
+      if (child instanceof ContainerLite) {
+        child.getChildren().filter((o) => {
+          return o instanceof Phaser.GameObjects.Image
+        }).forEach(image => {
+          image.disableInteractive()
+          image.emit('tap')
+          image.emit('pointerdown')
+        })
+      }
     })
 
     return superPanel
@@ -135,7 +153,7 @@ export default class CatalogRegion {
   }
 
   private addCardToCatalog(card: Card, index: number): CardImage {
-    let cardImage = new CardImage(card, this.container)
+    let cardImage = new CardImage(card, this.container, false)
     .setOnClick(this.onClickCatalogCard(card))
     .setFocusOptions('Add', () => {
       return this.scene.isOverfull()

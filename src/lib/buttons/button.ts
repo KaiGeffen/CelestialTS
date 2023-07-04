@@ -115,23 +115,20 @@ export default class Button {
 				this.scene.scene.get('MenuScene').events.on('start', () => this.stopGlow())
 			}
 
+			// Add events (Even if not interactive)
+			this.icon.on('pointerdown', () => {this.onClick()})
+			if (!Flags.mobile) {
+				this.icon.on('pointerover', () => {this.onHover()})
+				.on('pointerout', () => {this.onExit()})
+			}
+			
 			// Set interactive
 			if (config.icon.interactive) {
 				// Center the circle over and down by half the circle's width
 				const x = this.icon.width/2
 				const hitarea = !config.icon.circular ? [] : [new Phaser.Geom.Circle(x, x, x), Phaser.Geom.Circle.Contains]
 				
-				if (!Flags.mobile) {
-					this.icon.setInteractive(...hitarea)
-					.on('pointerdown', () => {this.onClick()})
-					.on('pointerover', () => {this.onHover()})
-					.on('pointerout', () => {this.onExit()})
-				}
-				else {
-					this.scene['rexGestures'].add.tap(this.icon, {tapInterval: 0})
-			        .on('tap', () => {this.onClick()})
-				}
-				
+				this.icon.setInteractive(...hitarea)
 			}
 		}
 

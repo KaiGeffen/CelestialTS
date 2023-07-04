@@ -98,26 +98,27 @@ export class CardImage {
     // This container
     this.container = this.createContainer(outerContainer)
 
-    if (interactive) {
-      if (!Flags.mobile) {
-        this.image.setInteractive()
-        .on('pointerover', this.onHover())
-        .on('pointerout', this.onHoverExit())
-        .on('pointerdown', () => this.clickCallback())
-      }
-      else {
-        this.scene.rexGestures.add.tap(this.image, {tapInterval: 0})
-        .on('tap', () => {
-          this.scene.scene.launch('MenuScene', {
-            menu: 'focus',
-            card: this.card,
-            cost: this.cost,
-            btnString: this.focusString,
-            closeOnClick: this.focusCloseOnClick,
-            callback: () => this.clickCallback(),
-          })
+    if (!Flags.mobile) {
+      this.image
+      .on('pointerover', this.onHover())
+      .on('pointerout', this.onHoverExit())
+      .on('pointerdown', () => this.clickCallback())
+    }
+    else {
+      this.image.on('pointerdown', () => {
+        this.scene.scene.launch('MenuScene', {
+          menu: 'focus',
+          card: this.card,
+          cost: this.cost,
+          btnString: this.focusString,
+          closeOnClick: this.focusCloseOnClick,
+          callback: () => this.clickCallback(),
         })
-      }
+      })
+    }
+
+    if (interactive) {
+      this.image.setInteractive()
     }
   }
 
