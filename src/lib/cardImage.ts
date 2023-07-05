@@ -577,13 +577,16 @@ export class FullSizeCardImage extends CardImage {
 
   // TODO Lots of constants pulled from different places
   revertStatsLocation(): void {
-    const x = -(336 * 7/10)/2 + 25
-    const y = -(336)/2 + 77
-    
-    this.txtCost.setPosition(x, x)
+    this.txtCost.setPosition(
+      -(336 * 7/10)/2 + 27,
+      -336/2 + 25
+      )
     .setFontSize(36)
 
-    this.txtPoints.setPosition(x, y)
+    this.txtPoints.setPosition(
+      -(336 * 7/10)/2 + 27,
+      -336/2 + 75
+      )
     .setFontSize(36)
   }
 }
