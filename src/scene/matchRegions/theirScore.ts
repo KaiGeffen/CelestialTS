@@ -12,18 +12,17 @@ export default class TheirScoreRegion extends Region {
 	txtWins: Phaser.GameObjects.Text
 
 	create (scene: Phaser.Scene): TheirScoreRegion {
-		const width = 150
-		const height = 100
-		const overlap = 20
-		
 		this.container = scene.add.container(0, 0)
 		.setDepth(Depth.theirScore)
 
 		// Wins
-		const x = Space.windowWidth - (Flags.mobile ? 40 : 140)
-		const y = Flags.mobile ? 110 : 53
+		const x = Space.windowWidth - (Flags.mobile ? 5 : 140)
+		const y = Flags.mobile ? Space.handHeight - 15 : 53
 		this.txtWins = scene.add.text(x, y, '', Style.basic)
-		.setOrigin(0)
+		.setOrigin(
+			Flags.mobile ? 1 : 0,
+			Flags.mobile ? 0.5 : 0
+			)
 
 		// Add each of these objects to container
 		this.container.add([
@@ -34,6 +33,7 @@ export default class TheirScoreRegion extends Region {
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
-		this.txtWins.setText(`${state.wins[1]}/5`)
+		this.txtWins.setText(`${Flags.mobile ? 'Wins: ' : ''}${state.wins[1]}/5`)
+
 	}
 }

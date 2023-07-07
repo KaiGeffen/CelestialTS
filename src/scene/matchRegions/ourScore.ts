@@ -30,9 +30,14 @@ export default class ScoreRegion extends Region {
 		// Create all of the breath icons
 		this.createBreathIcons()
 
-		const x = Space.windowWidth - (Flags.mobile ? 40 : 124)
-		const y = Space.windowHeight - (Flags.mobile ? 110 : 114)
-		this.txtWins = scene.add.text(x, y, '', Style.basic).setOrigin(0)
+		const x = Space.windowWidth - (Flags.mobile ? 5 : 124)
+		const y = Space.windowHeight - (Flags.mobile ? Space.handHeight + 15 : 114)
+		this.txtWins = scene.add.text(x, y, '', Style.basic)
+		.setOrigin(
+			Flags.mobile ? 1 : 0,
+			Flags.mobile ? 0.5 : 0
+			)
+		
 		// On mobile, center the text, otherwise have it aligned with wins text
 		this.txtBreath = scene.add.text(
 			(Flags.mobile ? breathCenterX : x),
@@ -60,7 +65,7 @@ export default class ScoreRegion extends Region {
 		const s = `${state.mana}/${state.maxMana[0]}`
 		this.txtBreath.setText(s)
 
-		this.txtWins.setText(`${state.wins[0]}/5`)
+		this.txtWins.setText(`${Flags.mobile ? 'Wins: ' : ''}${state.wins[0]}/5`)
 	}
 
 	// Display a given breath cost
