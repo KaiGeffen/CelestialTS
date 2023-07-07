@@ -16,8 +16,7 @@ import Icons from "../../lib/buttons/icons"
 import intro from "../../adventures/intro.json"
 
 
-const width = Math.min(750, Space.windowWidth - Space.pad * 2)
-const height = Math.min(350, Space.windowHeight - 200)
+const width = Math.min(750, Space.windowWidth)
 // Width of the subpanel that shows selected tab's contents
 const subWidth = width - 220
 
@@ -50,17 +49,19 @@ export default class OptionsMenu extends Menu {
 		this.layout()
 
 		// After layout is complete, move the highlight to the selected tab button
-		const x = (Space.windowWidth - width - Space.pad)/2
+		const x = (Space.windowWidth - width - Space.pad*2)/2
 		const y = this.tabBtns[selectedTab].getGlobalPosition()[1] - 4
 		this.highlight.setPosition(x, y)
 	}
 
 	private createContent(activeScene: BaseScene) {
-		this.createHeader('Options', width + Space.padSmall*2)
+		// Only add header if it fits
+		if (Space.windowHeight >= 375) {
+			let header = this.createHeader('Options', width + Space.pad*2)			
+		}
 
 		// Sizer with tabs on left, contents on right
 		this.subsizer = this.scene['rexUI'].add.sizer({
-			height: height,
 			space: {
 				item: Space.pad/2,
 				left: Space.pad,
@@ -88,7 +89,7 @@ export default class OptionsMenu extends Menu {
 
 	private createTabs()  {
 		// Create a rectangle to show which tab is selected
-		const highlightWidth = Space.buttonWidth + Space.pad * 2
+		const highlightWidth = Space.buttonWidth + Space.pad*2 + Space.padSmall + (Flags.mobile ? 10 : 0)
 		const height = Flags.mobile ? 50 : 90
 		this.highlight = this.scene.add.rectangle(0, 0, highlightWidth, height, COLOR, 1)
 		.setOrigin(0, 0.5)
@@ -451,7 +452,7 @@ export default class OptionsMenu extends Menu {
 	private tweenHighlight(y: number): void {
 		this.scene.tweens.add({
 			targets: this.highlight,
-			x: (Space.windowWidth - width - Space.pad)/2,
+			x: (Space.windowWidth - width - Space.pad*2)/2,
 			y: y - 4,
 
 			duration: Time.optionsTabSlide,
