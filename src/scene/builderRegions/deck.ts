@@ -411,26 +411,6 @@ export default class DeckRegion {
 		}
 	}
 
-	// TODO Make dry with other scenes
-	// Update the panel when user scrolls with their mouse wheel
-	private updateOnScroll(panel, scrollablePanel) {
-		let that = this
-
-		this.scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-			// Return if the pointer is outside of the panel
-			if (!panel.getBounds().contains(pointer.x, pointer.y)) {
-				return
-			}
-
-			// Scroll panel down by amount wheel moved
-			scrollablePanel.childOY -= dy
-
-			// Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-			scrollablePanel.t = Math.max(0, scrollablePanel.t)
-			scrollablePanel.t = Math.min(0.999999, scrollablePanel.t)
-		})
-	}
-
 	private addToPanelSorted(child: ContainerLite, card: Card, panel): number {
 		for (let i = 0; i < this.deck.length; i++) {
 			const cutout = this.deck[i]
