@@ -46,9 +46,9 @@ export default class OverlayRegion extends Region {
 	// Set the callback for this overlay switching to another
 	setSwitch(callback: () => void): this {
 		new Buttons.Basic(this.container,
-			Space.windowWidth/2,
-			Space.windowHeight - Space.pad - Space.buttonHeight/2,
-			'More',
+			Space.pad + Space.buttonWidth/2,
+			Space.pad + Space.buttonHeight/2,
+			'Other',
 			callback)
 
 		return this
