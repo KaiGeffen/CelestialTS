@@ -43,6 +43,7 @@ export default class Cutout extends Button {
 						menu: 'focus',
 						card: card,
 						cost: undefined,
+						getCount: () => { return this.count },
 						btnString: 'Remove',
 						closeOnClick: () => {
 							return this.count === 0
@@ -87,6 +88,7 @@ export default class Cutout extends Button {
 						menu: 'focus',
 						card: this.card,
 						cost: undefined,
+						getCount: () => { return this.count },
 						btnString: 'Remove',
 						closeOnClick: () => {
 							return this.count === 0
@@ -152,6 +154,7 @@ export default class Cutout extends Button {
 						menu: 'focus',
 						card: this.card,
 						cost: undefined,
+						getCount: () => { return this.count },
 						btnString: 'Remove',
 						closeOnClick: () => {
 							return true

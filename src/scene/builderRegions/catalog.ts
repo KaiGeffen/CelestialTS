@@ -140,9 +140,10 @@ export default class CatalogRegion {
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.container, !Flags.mobile)
     .setOnClick(this.onClickCatalogCard(card))
-    .setFocusOptions('Add', () => {
-      return this.scene.isOverfull()
-    })
+    .setFocusOptions('Add',
+      () => { return this.scene.isOverfull() },
+      () => { return this.scene.getCount(card) },
+      )
 
     // Add this cardImage to the maintained list of cardImages in the catalog
     this.cardCatalog.push(cardImage)

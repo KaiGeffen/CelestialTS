@@ -502,5 +502,18 @@ export default class DeckRegion {
 		
 		return totalCount >= 30
 	}
+
+	// Return the amount of a card in this deck
+	getCount(card: Card): number {
+		let count = 0
+
+		this.deck.forEach(cutout => {
+			if (cutout.name === card.name) {
+				count = cutout.count
+			}
+		})
+		
+		return count
+	}
 }
 

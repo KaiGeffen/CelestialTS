@@ -22,8 +22,9 @@ export default class FocusMenu extends Menu {
 		let cost = params.cost
 		let btnString = params.btnString
 		let closeOnClick = params.closeOnClick
+		let getCount = params.getCount
 
-		this.createContent(card, callback, cost, btnString, closeOnClick)
+		this.createContent(card, callback, cost, btnString, closeOnClick, getCount)
 		
 		// this.layout()
 	}
@@ -32,7 +33,9 @@ export default class FocusMenu extends Menu {
 		callback: () => void,
 		cost: number,
 		btnString: string,
-		closeOnClick: () => boolean): void
+		closeOnClick: () => boolean,
+		getCount: () => number,
+		): void
 	{
 		// TODO Generalize when cards have more than 1 reference max
 		let refs = card.getReferencedCards()
@@ -42,7 +45,7 @@ export default class FocusMenu extends Menu {
 
 		this.createKeywords(card)
 		this.createCard(card, cost)
-		this.createButtons(callback, btnString, closeOnClick)
+		this.createButtons(callback, btnString, closeOnClick, getCount)
 	}
 
 	private createKeywords(card: Card): void {
@@ -75,8 +78,17 @@ export default class FocusMenu extends Menu {
 		return container
 	}
 
-	private createButtons(callback: () => void, btnString: string, closeOnClick: () => boolean): void {
+	private createButtons(callback: () => void, btnString: string, closeOnClick: () => boolean, getCount: () => number): void {
 		const x = Space.windowWidth - Space.pad - Space.buttonWidth/2
+
+		// If the count function is given, include a count of how many of the card there are
+		let txt
+		if (getCount) {
+			const y = Space.windowHeight/3 - Space.buttonHeight/2 - Space.pad
+			txt = this.scene.add.text(x, y, `x${getCount()}`, Style.announcementOverBlack)
+			.setOrigin(0.5, 1)
+		}
+		
 		if (btnString !== '') {
 			new Buttons.Basic(this.scene, x, Space.windowHeight/3, btnString, () => {
 				callback()
@@ -85,6 +97,9 @@ export default class FocusMenu extends Menu {
 					this.endScene()
 				}
 				else {
+					if (getCount) {
+						txt.setText(`x${getCount()}`)
+					}
 					this.scene.playSound('click')
 				}
 			}, true)
@@ -115,5 +130,12 @@ export default class FocusMenu extends Menu {
 				btn.setText(`${card.name}`)
 			}
 		})
+	}
+
+	// Create a count for how many of the card are present
+	private createCount(): void {
+		const x = Space.windowWidth - Space.pad - Space.buttonWidth/2
+
+		
 	}
 }

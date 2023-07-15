@@ -77,6 +77,11 @@ export class BuilderBase extends BaseScene {
 
   // Check whether the deck is overfull
   isOverfull(): boolean { return this.deckRegion.isOverfull() }
+
+  // Get the amt of a given card in the current deck
+  getCount(card: Card): number {
+    return this.deckRegion.getCount(card)
+  }
 }
 
 export class AdventureBuilderScene extends BuilderBase {
