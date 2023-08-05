@@ -14,7 +14,9 @@ import avatarNames from '../../lib/avatarNames'
 
 
 const WIDTH = 300
-const HEIGHT = Flags.mobile ? Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2 : Space.avatarHeight
+const HEIGHT = Flags.mobile ? 
+	Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2 :
+	Math.min(Space.avatarHeight, Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2)
 
 export default class ResultsRegion extends Region {
 	// Whether the results have been seen already
