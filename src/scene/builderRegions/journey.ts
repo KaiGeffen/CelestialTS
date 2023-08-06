@@ -370,4 +370,18 @@ export default class DeckRegion {
 
 		return totalCount >= Mechanics.deckSize
 	}
+
+
+	// Get the amt of a given card in the current deck
+	getCount(card: Card): number {
+		let count = 0
+
+		this.deck.forEach(cutout => {
+			if (cutout.name === card.name && !cutout.required) {
+				count = cutout.count
+			}
+		})
+		
+		return count
+	}
 }
