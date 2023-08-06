@@ -111,7 +111,7 @@ export default class Menu {
 
 		new Buttons.Basic(container, 0, 0, 'Cancel', () => {
 			this.close()
-		})
+		}, true)
 
 		return container
 	}
