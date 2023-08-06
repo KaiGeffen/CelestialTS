@@ -5,9 +5,10 @@ import avatarDetails from '../../catalog/avatarDetails.json';
 import Button from '../../lib/buttons/button';
 import Buttons from '../../lib/buttons/buttons';
 import Hint from '../../lib/hint';
-import { BBStyle, Color, Space, Style, Time } from '../../settings/settings';
+import { BBStyle, Color, Space, Style, Time, Flags } from '../../settings/settings';
 import MenuScene from '../menuScene';
 import Menu from './menu';
+import newScrollablePanel from '../../lib/scrollablePanel'
 
 
 export default class ChoosePremade extends Menu {
@@ -118,12 +119,13 @@ export default class ChoosePremade extends Menu {
 				left: Space.pad,
 				item: Space.pad,
 			},
+
 		})
 
 		this.avatarFull = this.scene.add.image(0, 0, `avatar-${avatarDetails[0].name}Full`)
 		
-		panel.add(this.avatarFull)
-		.add(this.createDescriptionText(), {align: 'top'})
+		panel.add(this.avatarFull, {align: 'top'})
+		.add(this.createDescriptionText(), {align: 'top', expand: Flags.mobile})
 
 		return panel
 	}
@@ -136,8 +138,13 @@ export default class ChoosePremade extends Menu {
 
 		this.txtName = this.scene.add.text(0, 0, '', Style.announcement)
 		this.txtSurname = this.scene.add.text(0, 0, '', Style.surname)
+
+		const width = Math.min(
+			Space.maxTextWidth + Space.padSmall*2,
+			Space.windowWidth - Space.avatarWidth - Space.pad * 3)
 		this.txtDescription = this.scene['rexUI'].add.BBCodeText(0, 0, '', BBStyle.description)
-		.setFixedSize(Space.maxTextWidth + Space.padSmall*2, 360)
+		.setFixedSize(width, 360)
+		.setWrapWidth(width - BBStyle.description.padding.left - BBStyle.description.padding.right)
 		.setInteractive()
 		.on('areaover', function (key: string) {
 			if (key[0] === '_') {
@@ -157,7 +164,14 @@ export default class ChoosePremade extends Menu {
 		.addNewLine()
 		.add(this.txtDescription)
 
-		return panel
+		return Flags.mobile ?
+			newScrollablePanel(this.scene, {
+				width: width,
+				panel: {
+					child: panel
+				},
+			}) :
+			panel
 	}
 
 	private createButtons(callback: (number) => void): any {
