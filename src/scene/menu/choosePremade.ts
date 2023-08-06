@@ -63,7 +63,11 @@ export default class ChoosePremade extends Menu {
 		this.createButtons(callback).layout()
 
 		// Create chart showing details about selected deck
-		this.createChart()
+		if (!Flags.mobile) {
+			// Must layout first to tell chart dimensions
+			this.sizer.layout()
+			this.createChart()
+		}
 	}
 
 	private createCustomHeader(): any {
@@ -117,6 +121,7 @@ export default class ChoosePremade extends Menu {
 		let panel = this.scene['rexUI'].add.sizer({
 			space: {
 				left: Space.pad,
+				bottom: Space.buttonHeight + Space.padSmall,
 				item: Space.pad,
 			},
 
@@ -146,16 +151,18 @@ export default class ChoosePremade extends Menu {
 		.setFixedSize(width, 360)
 		.setWrapWidth(width - BBStyle.description.padding.left - BBStyle.description.padding.right)
 		.setInteractive()
-		.on('areaover', function (key: string) {
-			if (key[0] === '_') {
-				hint.showCard(key.slice(1))
-			} else {
-				hint.showKeyword(key)
-			}
-		})
-		.on('areaout', () => {
-			hint.hide()
-		})
+		if (!Flags.mobile) {
+			this.txtDescription.on('areaover', function (key: string) {
+					if (key[0] === '_') {
+						hint.showCard(key.slice(1))
+					} else {
+						hint.showKeyword(key)
+					}
+				})
+				.on('areaout', () => {
+					hint.hide()
+				})
+		}
 
 		// Add all this text to the panel
 		panel.add(this.txtName)
@@ -260,7 +267,7 @@ export default class ChoosePremade extends Menu {
                 }
             }
 		}).setOrigin(1, 0)
-		.setAlpha(width <= 100 ? 0 : 1)
+		.setAlpha(width <= 300 ? 0 : 1)
 	}
 
 	// Populate the content objects with the given avatar details
@@ -274,9 +281,11 @@ export default class ChoosePremade extends Menu {
 		this.txtDescription.setText(`${details.description}`)
 
 		// Chart
-		for (let i = 0; i < details.chart.length; i++) {
-			this.chart.setChartData(0, i, details.chart[i])
+		if (this.chart) {
+			for (let i = 0; i < details.chart.length; i++) {
+				this.chart.setChartData(0, i, details.chart[i])
+			}
+			this.chart.updateChart()
 		}
-		this.chart.updateChart()
 	}
 }
