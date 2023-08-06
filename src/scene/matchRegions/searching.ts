@@ -52,7 +52,7 @@ export default class SearchingRegion extends Region {
 
 		const seconds = Math.floor((time - this.startTime) / 1000)
 		const minutes = Math.floor(seconds / 60)
-		this.txtTime.setText(`${minutes}:${seconds % 60}`)
+		this.txtTime.setText(`${minutes}:${seconds < 10 ? '0' : ''}${seconds % 60}`)
 	}
 
 	displayState(state: ClientState, isRecap: boolean): void {
