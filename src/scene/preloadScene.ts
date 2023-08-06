@@ -155,7 +155,7 @@ export class PreloadScene extends SigninScene {
 	}
 
 	create() {
-		if (!Flags.local) {
+		if (Flags.online) {
 			// Gain access to chart plugin
 			this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
 		}
