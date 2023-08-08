@@ -46,9 +46,6 @@ const config: Phaser.Types.Core.GameConfig = {
   AdventureBuilderScene, PlaceholderScene,
   BuilderScene,
   AdventureScene],
-  // scale: {
-  //   autoCenter: Phaser.Scale.CENTER_BOTH
-  // },
   plugins: {
     scene: [{
       key: 'rexUI',

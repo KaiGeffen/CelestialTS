@@ -15,6 +15,9 @@ export default function addResizeHandler(game: Phaser.Game) {
       refreshSpace()
       
       game.scale.setGameSize(Space.windowWidth, Space.windowHeight)
+      .refresh()
+      // game.scale.displaySize.setAspectRatio(Space.windowWidth / Space.windowHeight)
+      // game.scale.refresh()
 
       // If in a match, don't reload
       // TODO Do reload, but better handle disconnects/reconnects

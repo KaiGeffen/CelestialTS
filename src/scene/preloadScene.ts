@@ -75,11 +75,14 @@ export class SigninScene extends Phaser.Scene {
 		.setVisible(screen.orientation.type !== 'landscape-primary')
 
 		screen.orientation.onchange = () => {
-			// Center guest button
-			const x = window.innerWidth/2
-			const y = window.innerHeight/2
-			this.guestButton.setPosition(x, y)
-			txt.setPosition(x, y)
+			// Brief delay to ensure that dimensions have changed
+			setTimeout(() => {
+			  	// Center guest button
+				const x = window.innerWidth/2
+				const y = window.innerHeight/2
+				this.guestButton.setPosition(x, y)
+				txt.setPosition(x, y)
+			}, 5);
 
 			// Set blocking text visibility based on new orientation
 			txt.setVisible(screen.orientation.type !== 'landscape-primary')
