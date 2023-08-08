@@ -48,7 +48,7 @@ export default class ConfirmMenu extends Menu {
 		.add(txt)
 
 		// Add this new sizer to the main sizer		
-		const padding = {space: {
+		const padding = {padding: {
 			left: Space.pad,
 			right: Space.pad,
 		}}

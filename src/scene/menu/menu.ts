@@ -130,7 +130,7 @@ export default class Menu {
 		.addSpace()
 
 		// Add this new sizer to the main sizer		
-		const padding = {space: {
+		const padding = {padding: {
 			left: Space.pad,
 			right: Space.pad,
 		}}
