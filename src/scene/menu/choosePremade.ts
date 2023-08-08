@@ -22,6 +22,8 @@ export default class ChoosePremade extends Menu {
 
 	chart: any
 
+	scrollablePanel: RexUIPlugin.ScrollablePanel
+
 	constructor(scene: MenuScene, params) {
 		let callback: (number) => void = params.callback
 		super(scene, Space.windowWidth, params)
@@ -93,6 +95,10 @@ export default class ChoosePremade extends Menu {
 
 				// Adjust displayed content
 				this.setContent(avatarDetails[i])
+
+				// Scroll up the content
+				this.scrollablePanel.scrollToTop()
+				this.sizer.layout()
 			})
 
 			// Select this avatar if appropriate
@@ -136,7 +142,11 @@ export default class ChoosePremade extends Menu {
 	}
 
 	private createDescriptionText(): any {
-		let panel = this.scene['rexUI'].add.fixWidthSizer()
+		let panel = this.scene['rexUI'].add.fixWidthSizer({
+			space: {
+				bottom: Flags.mobile ? Space.buttonHeight*2 : 0
+			}
+		})
 
 		// Hint on which information is displayed
 		let hint = new Hint(this.scene)
@@ -148,11 +158,11 @@ export default class ChoosePremade extends Menu {
 			Space.maxTextWidth + Space.padSmall*2,
 			Space.windowWidth - Space.avatarWidth - Space.pad * 3)
 		this.txtDescription = this.scene['rexUI'].add.BBCodeText(0, 0, '', BBStyle.description)
-		.setFixedSize(width, 360)
 		.setWrapWidth(width - BBStyle.description.padding.left - BBStyle.description.padding.right)
 		.setInteractive()
 		if (!Flags.mobile) {
-			this.txtDescription.on('areaover', function (key: string) {
+			this.txtDescription.setFixedSize(width, 360)
+			.on('areaover', function (key: string) {
 					if (key[0] === '_') {
 						hint.showCard(key.slice(1))
 					} else {
@@ -171,18 +181,21 @@ export default class ChoosePremade extends Menu {
 		.addNewLine()
 		.add(this.txtDescription)
 
-		return Flags.mobile ?
-			newScrollablePanel(this.scene, {
+		// On mobile panel is within a scroller
+		if (Flags.mobile) {
+			return this.scrollablePanel = newScrollablePanel(this.scene, {
 				width: width,
 				panel: {
 					child: panel
 				},
-			}) :
-			panel
+			})
+		}
+
+		return panel
 	}
 
 	private createButtons(callback: (number) => void): any {
-		const width = this.txtDescription.displayWidth
+		const width = Flags.mobile ? this.scrollablePanel.width : this.txtDescription.displayWidth
 
 		let panel = this.scene['rexUI'].add.sizer({
 			x: this.avatarFull.displayWidth + Space.pad*2,

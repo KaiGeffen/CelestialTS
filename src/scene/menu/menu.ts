@@ -1,5 +1,6 @@
 import "phaser"
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 import { Style, Color, Space } from '../../settings/settings'
 import MenuScene from '../menuScene'
@@ -17,7 +18,7 @@ export default class Menu {
 	width: number
 
 	// The main panel for this menu
-	sizer: any
+	sizer: RexUIPlugin.FixWidthSizer
 
 	constructor(scene: MenuScene,
 		width: number = Space.windowWidth - Space.pad*2,
