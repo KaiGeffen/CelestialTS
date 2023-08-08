@@ -10,7 +10,7 @@ import { BuilderScene, AdventureBuilderScene } from "./scene/builderScene"
 import AdventureScene from "./scene/adventureScene"
 import PlaceholderScene from "./scene/placeholderScene"
 
-import { Color, Space } from "./settings/settings"
+import { Color, Space, Flags } from "./settings/settings"
 import addResizeHandler from "./loader/windowResizeManager"
 
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'

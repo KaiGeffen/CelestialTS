@@ -1,5 +1,5 @@
 import 'phaser'
-import { Space } from "../settings/settings"
+import { Space, refreshSpace } from "../settings/space"
 
 
 var timeout: NodeJS.Timeout = undefined
@@ -12,13 +12,11 @@ export default function addResizeHandler(game: Phaser.Game) {
     clearTimeout(timeout)
 
     timeout = setTimeout(() => {
-      const width = Math.floor(window.innerWidth)
-      const height = Math.floor(window.innerHeight)
+      refreshSpace()
+      
+      game.scale.resize(Space.windowWidth, Space.windowHeight)
 
-      game.scale.resize(width, height)
-
-      Space.windowWidth = width
-      Space.windowHeight = height
+      console.log([Space.windowWidth, Space.windowHeight])
 
       // If in a match, don't reload
       // TODO Do reload, but better handle disconnects/reconnects
