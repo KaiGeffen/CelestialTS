@@ -10,8 +10,6 @@ import Button from '../../lib/buttons/button'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 
-const cardX = Space.windowWidth - Space.buttonWidth - Space.pad*2 - Space.fullCardWidth/2
-
 // A card is focused and has its options available
 export default class FocusMenu extends Menu {
 	constructor(scene: MenuScene, params) {
@@ -49,6 +47,7 @@ export default class FocusMenu extends Menu {
 	}
 
 	private createKeywords(card: Card): void {
+		const cardX = Space.windowWidth - Space.buttonWidth - Space.pad*2 - Space.fullCardWidth/2
 		const width = cardX - Space.fullCardWidth/2 - Space.pad*2
 		const x = cardX - Space.fullCardWidth/2 - Space.pad
 		const s = card.getHintText()
@@ -67,6 +66,7 @@ export default class FocusMenu extends Menu {
 
 	private createCard(card: Card, cost: number): Phaser.GameObjects.Container {
 		// Full size CardImage within a container
+		const cardX = Space.windowWidth - Space.buttonWidth - Space.pad*2 - Space.fullCardWidth/2
 		let container = this.scene.add.container(cardX, Space.windowHeight/2)
 		let cardImage = new FullSizeCardImage(card, container, true)
 		
