@@ -16,10 +16,6 @@ import Icons from "../../lib/buttons/icons"
 import intro from "../../adventures/intro.json"
 
 
-const width = Math.min(750, Space.windowWidth)
-// Width of the subpanel that shows selected tab's contents
-const subWidth = width - 220
-
 // TODO Use a non-mock color for the menu background
 const COLOR = Color.backgroundLight
 
@@ -27,6 +23,9 @@ const COLOR = Color.backgroundLight
 var selectedTab = 'general'
 
 export default class OptionsMenu extends Menu {
+	// Width of the subpanel that shows selected tab's contents
+	subwidth: number
+
 	// Each of the subpanels displayed based on which tab is selected
 	subpanels: Record<string, any> = {}
 
@@ -40,7 +39,9 @@ export default class OptionsMenu extends Menu {
 	highlight: Phaser.GameObjects.Rectangle
 
 	constructor(scene: MenuScene, params) {
-		super(scene, width)
+		super(scene, Math.min(750, Space.windowWidth))
+
+		this.subwidth = this.width - 220
 
 		// The non-menu scene which is active, used for changing scenes
 		let activeScene = params.activeScene
@@ -49,7 +50,7 @@ export default class OptionsMenu extends Menu {
 		this.layout()
 
 		// After layout is complete, move the highlight to the selected tab button
-		const x = (Space.windowWidth - width - Space.pad*2)/2
+		const x = (Space.windowWidth - this.width - Space.pad*2)/2
 		const y = this.tabBtns[selectedTab].getGlobalPosition()[1] - 4
 		this.highlight.setPosition(x, y)
 	}
@@ -57,7 +58,7 @@ export default class OptionsMenu extends Menu {
 	private createContent(activeScene: BaseScene) {
 		// Only add header if it fits
 		if (Space.windowHeight >= 375) {
-			let header = this.createHeader('Options', width + Space.pad*2)			
+			let header = this.createHeader('Options', this.width + Space.pad*2)			
 		}
 
 		// Sizer with tabs on left, contents on right
@@ -201,7 +202,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createRulebookPanel() {
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: this.subwidth})
 		let scrollable = this.scene['rexUI'].add.scrollablePanel({
 			space: {
 				// top: Space.pad,
@@ -224,7 +225,7 @@ export default class OptionsMenu extends Menu {
 		// Add text to the scrollable panel
 		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, rulebookString, {
 			...BBStyle.optionsBlock,
-			wrap: { width: subWidth },
+			wrap: { width: this.subwidth },
 		})
 
 		sizer.add(txt)
@@ -233,7 +234,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createCreditsPanel() {
-		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.fixWidthSizer({width: this.subwidth})
 		let scrollable = this.scene['rexUI'].add.scrollablePanel({
 			space: {
 				left: Space.pad/2,
@@ -254,7 +255,7 @@ export default class OptionsMenu extends Menu {
 		// Add text to the scrollable panel
 		let txt = this.scene['rexUI'].add.BBCodeText(0, 0, creditsString, {
 			...BBStyle.optionsBlock,
-			wrap: { width: subWidth },
+			wrap: { width: this.subwidth },
 		})
 
 		sizer.add(txt)
@@ -264,7 +265,7 @@ export default class OptionsMenu extends Menu {
 	
 	// Elements within the panels:
 	private createSkipTutorial(activeScene: BaseScene) {
-		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.sizer({width: this.subwidth})
 
 		let txtHint = this.scene.add.text(0, 0, 'Skip Tutorial:', Style.basic)
 		sizer.add(txtHint)
@@ -296,7 +297,7 @@ export default class OptionsMenu extends Menu {
 	}
 	
 	private createAutopass() {
-		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.sizer({width: this.subwidth})
 
 		let txtHint = this.scene.add.text(0, 0, 'Autopass:', Style.basic)
 		sizer.add(txtHint)
@@ -321,7 +322,7 @@ export default class OptionsMenu extends Menu {
 	
 	private createSpeed() {
 		let sizer = this.scene['rexUI'].add.sizer({
-			width: subWidth,
+			width: this.subwidth,
 			orientation: 'vertical',
 			space: {item: Space.pad},
 		})
@@ -339,7 +340,7 @@ export default class OptionsMenu extends Menu {
 	}
 
 	private createQuit(activeScene: BaseScene) {
-		let sizer = this.scene['rexUI'].add.sizer({width: subWidth})
+		let sizer = this.scene['rexUI'].add.sizer({width: this.subwidth})
 
 		let containerQuit = new ContainerLite(this.scene, 0, 0, Space.buttonWidth, 50)
 		sizer
@@ -364,7 +365,7 @@ export default class OptionsMenu extends Menu {
 	private createMasterVolume() {
 		let that = this
 		let sizer = this.scene['rexUI'].add.sizer({
-			width: subWidth,
+			width: this.subwidth,
 			orientation: 'vertical',
 			space: {item: Space.pad},
 		})
@@ -386,7 +387,7 @@ export default class OptionsMenu extends Menu {
 
 	private createMusicVolume() {
 		let sizer = this.scene['rexUI'].add.sizer({
-			width: subWidth,
+			width: this.subwidth,
 			orientation: 'vertical',
 			space: {item: Space.pad},
 		})
@@ -412,7 +413,7 @@ export default class OptionsMenu extends Menu {
 
 	private createDialogVolume() {
 		let sizer = this.scene['rexUI'].add.sizer({
-			width: subWidth,
+			width: this.subwidth,
 			orientation: 'vertical',
 			space: {item: Space.pad},
 		})
@@ -434,11 +435,11 @@ export default class OptionsMenu extends Menu {
 	private getSlider(value: number, callback: (value: number) => void) {
 		const factory: any = this.scene.rexUI.add
 		return factory.slider({
-			width: subWidth,
+			width: this.subwidth,
 			height: 20,
 			orientation: 'x',
 
-			track: this.scene['rexUI'].add.roundRectangle(0, 0, subWidth, 8, 10, Color.sliderTrack),
+			track: this.scene['rexUI'].add.roundRectangle(0, 0, this.subwidth, 8, 10, Color.sliderTrack),
 			indicator: this.scene['rexUI'].add.roundRectangle(0, 0, 0, 0, 12, Color.sliderIndicator),
 			thumb: this.scene.add.image(0, 0, 'icon-Thumb'),
 			input: 'drag',
@@ -452,7 +453,7 @@ export default class OptionsMenu extends Menu {
 	private tweenHighlight(y: number): void {
 		this.scene.tweens.add({
 			targets: this.highlight,
-			x: (Space.windowWidth - width - Space.pad*2)/2,
+			x: (Space.windowWidth - this.width - Space.pad*2)/2,
 			y: y - 4,
 
 			duration: Time.optionsTabSlide,
