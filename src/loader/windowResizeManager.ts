@@ -14,9 +14,7 @@ export default function addResizeHandler(game: Phaser.Game) {
     timeout = setTimeout(() => {
       refreshSpace()
       
-      game.scale.resize(Space.windowWidth, Space.windowHeight)
-
-      console.log([Space.windowWidth, Space.windowHeight])
+      game.scale.setGameSize(Space.windowWidth, Space.windowHeight)
 
       // If in a match, don't reload
       // TODO Do reload, but better handle disconnects/reconnects

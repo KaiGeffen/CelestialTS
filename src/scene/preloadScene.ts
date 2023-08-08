@@ -2,7 +2,7 @@ import 'phaser'
 import jwt_decode from "jwt-decode"
 import Loader from '../loader/loader'
 import Server from '../server'
-import { Color, Mobile, Space, Style, Url, UserProgress, UserSettings, Flags } from '../settings/settings'
+import { Color, Mobile, Space, Style, BBStyle, Url, UserProgress, UserSettings, Flags } from '../settings/settings'
 import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
 
@@ -33,6 +33,11 @@ export class SigninScene extends Phaser.Scene {
 
 		// Add buttons to sign in or play as a guest
 		this.createButtons()
+
+		// On mobile, encourage user to lock in landscape mode
+		if (Flags.mobile) {
+			this.createLandscapeMessaging()
+		}
 	}
 
 	// Create buttons for each of the signin options (Guest, OAuth)
@@ -55,6 +60,29 @@ export class SigninScene extends Phaser.Scene {
 
 			// Facebook signin
 			this.createFacebookButton(y - 200)
+		}
+	}
+
+	// Create elements which encourage the user to be in landscape mode
+	private createLandscapeMessaging(): void {
+		let txt = this['rexUI'].add.BBCodeText(
+			Space.windowWidth/2,
+			Space.windowHeight/2,
+			'Use landscape mode',
+			BBStyle.error)
+		.setOrigin(0.5)
+		.setInteractive()
+		.setVisible(screen.orientation.type !== 'landscape-primary')
+
+		screen.orientation.onchange = () => {
+			// Center guest button
+			const x = window.innerWidth/2
+			const y = window.innerHeight/2
+			this.guestButton.setPosition(x, y)
+			txt.setPosition(x, y)
+
+			// Set blocking text visibility based on new orientation
+			txt.setVisible(screen.orientation.type !== 'landscape-primary')
 		}
 	}
 
