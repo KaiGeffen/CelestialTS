@@ -8,14 +8,14 @@ import CardLocation from './cardLocation';
 import Play from '../../lib/play'
 
 
-// This is slightly wrong, because the top hand is smaller than this hand height
-const middle = (Space.windowHeight)/2 - Space.handHeight
-
 export default class StoryRegion extends Region {
 	lastScores: [number, number]
 
 	// Callback that plays when ith card in recap is clicked on
 	callback: (i: number) => () => void
+
+	// This is slightly wrong, because the top hand is smaller than this hand height
+	MIDDLE = (Space.windowHeight)/2 - Space.handHeight
 
 	create (scene: BaseScene): StoryRegion {
 		this.scene = scene

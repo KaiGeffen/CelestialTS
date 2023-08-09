@@ -13,11 +13,6 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
 
 
-const WIDTH = 300
-const HEIGHT = Flags.mobile ? 
-	Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2 :
-	Math.min(Space.avatarHeight, Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2)
-
 export default class ResultsRegion extends Region {
 	// Whether the results have been seen already
 	seen: boolean
@@ -34,6 +29,11 @@ export default class ResultsRegion extends Region {
 
 	// The panel that shows results of the match
 	panel
+
+	WIDTH = 300
+	HEIGHT = Flags.mobile ? 
+		Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2 :
+		Math.min(Space.avatarHeight, Space.windowHeight - (Space.buttonHeight + Space.pad*2)*2)
 
 	create (scene: BaseScene): ResultsRegion {
 		this.scene = scene
@@ -126,12 +126,12 @@ export default class ResultsRegion extends Region {
 
 		// Your avatar
 		this.ourAvatar = this.scene.add.image(
-			Flags.mobile ? Space.avatarWidth/2 : Space.windowWidth/2 - WIDTH,
+			Flags.mobile ? Space.avatarWidth/2 : Space.windowWidth/2 - this.WIDTH,
 			Space.windowHeight/2,
 			'avatar-JulesFull')
 		.setInteractive()
 		this.theirAvatar = this.scene.add.image(
-			Flags.mobile ? Space.windowWidth - Space.avatarWidth/2 : Space.windowWidth/2 + WIDTH,
+			Flags.mobile ? Space.windowWidth - Space.avatarWidth/2 : Space.windowWidth/2 + this.WIDTH,
 			Space.windowHeight/2,
 			'avatar-MiaFull')
 		.setInteractive()
@@ -149,8 +149,8 @@ export default class ResultsRegion extends Region {
 		this.panel = this.scene['rexUI'].add.scrollablePanel({
 			x: Space.windowWidth/2,
 			y: Space.windowHeight/2,
-			width: WIDTH,
-			height: HEIGHT,
+			width: this.WIDTH,
+			height: this.HEIGHT,
 
 			background: background,
 
@@ -188,7 +188,7 @@ export default class ResultsRegion extends Region {
 		})
 
 		let sizer = this.scene.rexUI.add.fixWidthSizer({
-			width: WIDTH,
+			width: this.WIDTH,
 			align: 'center',
 			space: {
 				top: Space.pad,
@@ -248,7 +248,7 @@ export default class ResultsRegion extends Region {
 
 			// Container containing elements for this round
 			let sizer = this.scene.rexUI.add.fixWidthSizer({
-				width: WIDTH,
+				width: this.WIDTH,
 				align: 'center',
 				space: {
 					top: Space.pad,

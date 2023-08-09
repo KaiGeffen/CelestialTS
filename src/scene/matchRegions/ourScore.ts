@@ -4,10 +4,6 @@ import { Depth, Space, Style, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 
-// Center at 163, 53 from right bottom corner
-const breathCenterX = Space.windowWidth - (Flags.mobile ? 40 : 163)
-const breathCenterY = Space.windowHeight - (Flags.mobile ? Space.handHeight/2 : 53)
-
 export default class ScoreRegion extends Region {
 	// For the current state, the maximum and current amount of breath we have
 	maxBreath: number
@@ -22,6 +18,10 @@ export default class ScoreRegion extends Region {
 	breathExtra: Phaser.GameObjects.Image[] = []
 	breathHover: Phaser.GameObjects.Image[] = []
 	breathOom: Phaser.GameObjects.Image[] = []
+
+	// Center at 163, 53 from right bottom corner
+	BREATH_X = Space.windowWidth - (Flags.mobile ? 40 : 163)
+	BREATH_Y = Space.windowHeight - (Flags.mobile ? Space.handHeight/2 : 53)
 
 	create(scene: BaseScene): ScoreRegion {
 		this.scene = scene
@@ -40,8 +40,8 @@ export default class ScoreRegion extends Region {
 		
 		// On mobile, center the text, otherwise have it aligned with wins text
 		this.txtBreath = scene.add.text(
-			(Flags.mobile ? breathCenterX : x),
-			breathCenterY + (Flags.mobile ? 0 : 5),
+			(Flags.mobile ? this.BREATH_X : x),
+			this.BREATH_Y + (Flags.mobile ? 0 : 5),
 			'',
 			Style.basic)
 		.setOrigin((Flags.mobile ? 0.5 : 0), 0.5)
@@ -97,7 +97,7 @@ export default class ScoreRegion extends Region {
 	}
 
 	private createBreathSubtype(key: string, images: Phaser.GameObjects.Image[]): void {
-		const center = [breathCenterX, breathCenterY]
+		const center = [this.BREATH_X, this.BREATH_Y]
 		const radius = 30
 
 		// 10 is the max displayed breath, but player could have more
