@@ -65,6 +65,16 @@ export class SigninScene extends Phaser.Scene {
 
 	// Create elements which encourage the user to be in landscape mode
 	private createLandscapeMessaging(): void {
+		function isLandscape() {
+			switch (screen.orientation.type) {
+				case 'landscape-primary':
+				case 'landscape-secondary':
+					return true
+				default:
+					return false
+			}
+		}
+		
 		let txt = this['rexUI'].add.BBCodeText(
 			Space.windowWidth/2,
 			Space.windowHeight/2,
@@ -72,7 +82,7 @@ export class SigninScene extends Phaser.Scene {
 			BBStyle.error)
 		.setOrigin(0.5)
 		.setInteractive()
-		.setVisible(screen.orientation.type !== 'landscape-primary')
+		.setVisible(!isLandscape())
 
 		screen.orientation.onchange = () => {
 			// Brief delay to ensure that dimensions have changed
@@ -85,7 +95,7 @@ export class SigninScene extends Phaser.Scene {
 			}, 5);
 
 			// Set blocking text visibility based on new orientation
-			txt.setVisible(screen.orientation.type !== 'landscape-primary')
+			txt.setVisible(!isLandscape())
 		}
 	}
 
