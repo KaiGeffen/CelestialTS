@@ -39,6 +39,9 @@ const config: Phaser.Types.Core.GameConfig = {
   dom: {
     createContainer: true
   },
+  audio: {
+		disableWebAudio: true
+	},
   scene: [PreloadScene, SigninScene,
   HomeScene,
   MenuScene,

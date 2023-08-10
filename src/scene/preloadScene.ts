@@ -5,6 +5,7 @@ import Server from '../server'
 import { Color, Mobile, Space, Style, BBStyle, Url, UserProgress, UserSettings, Flags } from '../settings/settings'
 import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
+import ensureMusic from '../loader/audioManager'
 
 
 // Scene for user to select a sign in option, without loading assets
@@ -104,6 +105,9 @@ export class SigninScene extends Phaser.Scene {
 
 		// Make the buttons unclickable
 		this.guestButton.disable()
+
+		// Ensure that music is playing
+		ensureMusic(this)
 
 		if (!this.load.isLoading()) {
 			this.scene.start('HomeScene')

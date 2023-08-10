@@ -2,10 +2,11 @@ import "phaser"
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import GesturesPlugin from 'phaser3-rex-plugins/plugins/gestures-plugin.js';
 
-import { Style, BBStyle, Color, Time, UserSettings, Space } from "../settings/settings"
+import { Style, BBStyle, Color, Time, Space, Flags } from "../settings/settings"
 import Button from '../lib/buttons/button'
 import Icons from '../lib/buttons/icons'
 import Hint from '../lib/hint'
+import ensureMusic from "../loader/audioManager";
 
 
 // Functionality shared between BaseScene and MenuBaseScene
@@ -100,12 +101,12 @@ export default class BaseScene extends SharedBaseScene {
 
 	create(params = {}): void {
 		super.create(params)
-		
-		// Play music
-		if (UserSettings._get('musicVolume') > 0) {
-			let music: HTMLAudioElement = <HTMLAudioElement>document.getElementById("music")
-        	music.play()
-        	music.volume = UserSettings._get('musicVolume')
+
+		// On mobile, ensure music is playing the first time a click happens
+		if (Flags.mobile) {
+			this.input.once('pointerdown', () => {
+				ensureMusic(this)
+			})
 		}
 
 		// Menu button
