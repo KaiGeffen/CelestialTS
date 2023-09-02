@@ -145,7 +145,7 @@
   },
 
   {"name": "The Future", "id": 22,
-    "cost": 8, "points": 5,
+    "cost": 8, "points": 4,
     "text": "Draw 1 card.\nCosts X less, where X is the total point value of all Children in your hand."
   },
   {"name": "Oak", "id": 23,
@@ -232,28 +232,25 @@
     ]
   },
   {"name": "Parch", "id": 64,
-    "cost": 2, "points": 0,
-    "text": "Fleeting, draw 2 cards, create 3 Ashes in your discard pile.",
-    "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips",
-    "keywords": [
-      {"name": "Fleeting", "x": 0, "y": 82}
-    ],
-    "references": [
-      {"name": "Ashes", "x": -76, "y": 132}
-    ]
+    "cost": 3, "points": 2,
+    "text": "Discard each of your cards later in the story. Worth +1 for each of those cards.\nWhen played, your cards cost 0 this round.",
+    "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips"
   },
   {"name": "Hold Tight", "id": 33,
     "cost": 2, "points": 2,
     "text": "Put the top card of your discard pile on top of your deck."
   },
   {"name": "Fishing Boat", "id": 32,
-    "cost": 2, "points": 0,
+    "cost": 2, "points": 1,
     "text": "Draw 3 cards that each cost 1."
   },
   {"name": "Imprison", "id": 35,
-    "cost": 2, "points": 0,
-    "text": "Set both player's points to 0, then give your opponent 1 point for each card in their hand.",
-    "story": "All tied up\ncan’t even stand\nAm I lethal to you and yours\nMy tight bonds calm me."
+    "cost": 3, "points": 3,
+    "text": "At the end of this round, if your opponent has 3 or fewer points, give them Nourish -1.",
+    "story": "All tied up\ncan’t even stand\nAm I lethal to you and yours\nMy tight bonds calm me.",
+    "keywords": [
+      {"name": "Nourish", "x": 0, "y": 130, "value": -1}
+    ]
   },
   {"name": "From Ashes", "id": 74,
     "cost": 2, "points": 1,
@@ -295,7 +292,7 @@
     ]
   },
   {"name": "Sickness", "id": 58,
-    "cost": 3, "points": 0,
+    "cost": 3, "points": -1,
     "text": "Fleeting, give your opponent Nourish -4, create a Sickness in their hand.",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y":61},
@@ -307,10 +304,7 @@
   },
   {"name": "Awakening", "id": 39,
     "cost": 3, "points": 3,
-    "text": "When played, gain Sight 1 for each card before this in the story.",
-    "keywords": [
-      {"name": "Sight", "x": -32, "y": 111, "value": 1}
-    ]
+    "text": "Retain your SightTODO at the end of this round."
   },
 
   {"name": "Secretary Bird", "id": 40,
@@ -342,7 +336,7 @@
   },
 
   {"name": "Heron", "id": 65,
-    "cost": 0, "points": 0,
+    "cost": 1, "points": 0,
     "text": "Visible, set both player's points to 0.\nCosts 1 more for each card in your discard pile.",
     "story": "How you see me\nIs of no importance to me\nI am playing with being here, there, every where",
     "keywords": [
@@ -350,7 +344,7 @@
     ]
   },
   {"name": "Conquer", "id": 67,
-    "cost": 5, "points": 2,
+    "cost": 5, "points": 3,
     "text": "Costs 1 less for each card you can see in the story."
   },
   {"name": "Phoenix", "id": 51,
@@ -366,7 +360,7 @@
     ]
   },
   {"name": "Moon", "id": 73,
-    "cost": 5, "points": 5,
+    "cost": 5, "points": 4,
     "text": "Morning: trigger the morning abilities of the top 2 cards below this with morning.",
     "keywords": [
       {"name": "Morning", "x": 0, "y": 60}
@@ -394,7 +388,7 @@
 
   {"name": "Sun", "id": 56,
     "cost": 8, "points": 8,
-    "text": "Morning: gain 3 extra breath this round.",
+    "text": "Morning: gain 2 extra breath this round.",
     "story": "I raise my head over the horizon\nI begin\nJust like you",
     "keywords": [
       {"name": "Morning", "x": 0, "y": 82}
