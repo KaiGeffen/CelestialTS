@@ -195,6 +195,7 @@ export class SearchingRegionTutorial extends Region {
 		})
 
 		let txt = scene.add.text(0, 0, '', Style.stillframe)
+		.setWordWrapWidth(Space.stillframeTextWidth)
 
 		const s = STORY_TEXT[tutorialNum][0]
 		this.textbox = scene.rexUI.add.textBox({
