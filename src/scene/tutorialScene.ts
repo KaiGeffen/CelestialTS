@@ -60,17 +60,15 @@ export default class TutorialGameScene extends AdventureGameScene {
 		.setOrigin(0.5, (Flags.mobile ? 0 : 0.5))
 		.setDepth(Depth.tutorial)
 		
-		// On mobile, add a background and outline
-		if (Flags.mobile) {
-			this.txt.setBackgroundColor(Color.backgroundLight)
-			.setBackgroundCornerRadius(Space.corner)
-			.setPadding(Space.padSmall, Space.padSmall)
+		// Add a background and outline
+		this.txt.setBackgroundColor(Color.backgroundLight)
+		.setBackgroundCornerRadius(Space.corner)
+		.setPadding(Space.padSmall, Space.padSmall)
 
-			this.plugins.get('rexDropShadowPipeline')['add'](this.txt, {
-				distance: 3,
-				shadowColor: 0x000000,
-			})
-		}
+		this.plugins.get('rexDropShadowPipeline')['add'](this.txt, {
+			distance: 3,
+			shadowColor: 0x000000,
+		})
 
 		// Next button for tutorial text
 		this.btnNext = new Buttons.Basic(this, 0, 0, 'Next',
