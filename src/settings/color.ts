@@ -25,7 +25,6 @@ const CoreColors: Record<string, number | string> = {
   darken: 0x333333,
 
   buttonSelected: 0xBCB4B4,
-  filterSelected: 0x3C67FF,
 }
 
 
@@ -59,7 +58,7 @@ export const Color: Record<string, any> = {
   button: CoreColors.whiteS,
   buttonHighlight: 0xaaaaaa,
   buttonSelected: CoreColors.buttonSelected,
-  filterSelected: CoreColors.filterSelected,
+  filterSelected: CoreColors.gold,
   buttonTxtSelected: CoreColors.whiteS,
   textButton: '#817467',
 
