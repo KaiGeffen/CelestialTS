@@ -47,7 +47,7 @@ export class SigninScene extends Phaser.Scene {
 	// Create buttons for each of the signin options (Guest, OAuth)
 	private createButtons(): void {
 		const x = Space.windowWidth/2
-		const y = Space.windowHeight/2
+		const y = Space.windowHeight - Space.buttonHeight/2 - Space.pad
 		
 		this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {
 			if (!Flags.local) {
@@ -56,7 +56,7 @@ export class SigninScene extends Phaser.Scene {
 			}
 			
 			this.onOptionClick()
-		})
+		}).setDepth(-1)
 
 		if (!Flags.local) {
 			// Google GIS
@@ -218,58 +218,16 @@ export class PreloadScene extends SigninScene {
 			this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js')
 		}
 		
-		// Load all assets used throughout the game
-		// Create the graphics for how much of loading is complete and their listeners
-		this.createProgressGraphics()
-
-		// NOTE This does not block and these assets cannot won't be loaded in time for below code
-		Loader.loadAll(this)
-
-		super.create()
-	}
-
-	// Create the which show user how much has loaded
-	private createProgressGraphics(): void {
-		let width = Space.windowWidth - Space.pad * 2
-		let height = 100
-		let x = (Space.windowWidth - width)/2
-		let y = Space.windowHeight - height - Space.pad
-
-		// Add graphics to show information
-		let progressBox = this.add.graphics()
-		.fillStyle(Color.progressBackground)
-		.fillRect(x, y, width, height)
-		let progressBar = this.add.graphics()
-
-		// Add text
-		let txtLoading = this.make.text({
-			x: x + width/2,
-			y: y + height/2,
-			text: 'Loading...',
-			style: Style.announcement
-		}).setOrigin(0.5)
-
-		// Update the progress bar
-		this.load.on('progress', function (value) {
-			progressBar.clear()
-			progressBar.fillStyle(Color.progressFill, 1)
-			progressBar.fillRect(
-				x + Space.pad,
-				y + Space.pad,
-				(width - Space.pad*2) * value,
-				height - Space.pad*2
-				)
-		})
-
+		// When loading is complete, if user selected an option, start home screen
 		this.load.on('complete', () => {
-			progressBox.destroy()
-			progressBar.destroy()
-			txtLoading.destroy()
-
-			// If user has already signed in, start home scene
 			if (this.signedInOrGuest) {
 				this.scene.start('HomeScene')
 			}
 		})
+
+		// NOTE This does not block and these assets won't be loaded in time for below code
+		Loader.loadAll(this)
+
+		super.create()
 	}
 }
