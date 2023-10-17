@@ -26,6 +26,9 @@ export default class HomeScene extends BaseScene {
     // Ensure signin button is hidden
     document.getElementById("signin").hidden = true
 
+    // Ensure animation is hidden
+    this.ensureAnimationHidden()
+
     this.createHeader()
 
     this.createButtons()
@@ -354,4 +357,14 @@ export default class HomeScene extends BaseScene {
       }
     }
   }
+
+	private ensureAnimationHidden(): void {
+		const animations = document.getElementsByClassName('animation')
+		if (animations.length !== 1) {
+			throw new Error('There should be exactly 1 animation on the page.')
+		}
+
+		const animation: HTMLVideoElement = <HTMLVideoElement>animations.item(0)
+		animation.style.display = 'none'
+	}
 }

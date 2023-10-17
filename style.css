@@ -1,0 +1,27 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars */
+    background-color: #F5F2EB;
+}
+
+.game {
+    /* z-index: 2; */
+    position: absolute;
+    align-items: center;
+}
+
+.animation {
+    /* z-index: 1; */
+
+    height: 100vh;
+    width: 100vw;
+
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    
+    filter: opacity(100%);
+}

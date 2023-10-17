@@ -21,25 +21,22 @@
   <link defer href="https://fonts.googleapis.com/css2?family=Mulish:wght@300&display=swap" rel="stylesheet"> 
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <style>
-    body{
-      margin-top:0px;
-      margin-bottom:0px;
-      margin-left:0px;
-      margin-right:0px;
-      overflow: hidden; /* Hide scrollbars */
-      background-color: #F5F2EB;
-    }
-  </style>
-  <div id="game">
-    <div id="signin" style="position: absolute; left: 50%; top: 50%">
-      <div id="signin_google"style="position: relative; left: -110px; top: -90px"></div>
-      <div id="signin_facebook" style="position: relative; left: -110px; top: -190px"><div class="fb-login-button" data-width="220" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div></div></div>
-    <audio id=music loop>
-      <source src="assets/music/background.ogg" type="audio/ogg">
-      Your browser does not support the audio tag
-    </audio>
+  <video class="animation" id="animation" loop autoplay muted>
+    <source src="assets/animation/Jules.mp4" type=video/mp4>
+  </video>
+
+  <div class="game" id="game">
+
+  <div id="signin" style="position: absolute; left: 50%; top: 50%">
+    <div id="signin_google"style="position: relative; left: -110px; top: -90px"></div>
+    <div id="signin_facebook" style="position: relative; left: -110px; top: -190px"><div class="fb-login-button" data-width="220" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div></div></div>
+  <audio id=music loop>
+    <source src="assets/music/background.ogg" type="audio/ogg">
+    Your browser does not support the audio tag
+  </audio>
 </body>
 </html>

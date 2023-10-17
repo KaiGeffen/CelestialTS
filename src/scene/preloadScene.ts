@@ -32,6 +32,9 @@ export class SigninScene extends Phaser.Scene {
 		// Ensure user is signed out
 		UserSettings.clearSessionStorage()
 
+		// Ensure animation is displayed
+		this.ensureAnimation()
+
 		// Add buttons to sign in or play as a guest
 		this.createButtons()
 
@@ -174,6 +177,16 @@ export class SigninScene extends Phaser.Scene {
     			})
 			})
 		}
+	}
+
+	private ensureAnimation(): void {
+		const animations = document.getElementsByClassName('animation')
+		if (animations.length !== 1) {
+			throw new Error('There should be exactly 1 animation on the page.')
+		}
+
+		const animation: HTMLVideoElement = <HTMLVideoElement>animations.item(0)
+		animation.style.display = ''
 	}
 
 }
