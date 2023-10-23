@@ -136,6 +136,7 @@ export class SigninScene extends Phaser.Scene {
 			client_id: Url.oauth,
 			// log_level: 'debug',
 			auto_select: this.autoSelect,
+			cancel_on_tap_outside: false,
 
 			// login_uri: 'https://celestialtcg.com/gapi',
 			
