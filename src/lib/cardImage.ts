@@ -31,8 +31,9 @@ export class CardImage {
   // Whether or not this object is hovered currently
   hovered = false
 
-  // The card's cost, if it has been changed
+  // The card's cost and points, if they have been changed
   cost: number
+  points: number
 
   hoverCallback = () => {}
   exitCallback = () => {}
@@ -81,7 +82,7 @@ export class CardImage {
       `${card.points}`,
       BBStyle.cardStats)
     .setOrigin(0.5)
-    .on('pointerover', () => hint.showText(`This card is worth ${this.txtPoints.text} point${card.points === 1 ? '' : 's'}.`))
+    .on('pointerover', () => hint.showText(`This card is worth ${this.points} point${this.points === 1 ? '' : 's'}.`))
     .on('pointerout', () => {this.onHoverExit()(); hint.hide()})
     .on('pointerdown', () => this.clickCallback())
     this.setPoints(card.points)
@@ -240,6 +241,8 @@ export class CardImage {
 
   // Set the displayed point value of the card, or hide it if it's equal to the default value
   setPoints(amt: number): CardImage {
+    this.points = amt
+
     // If this is the default of the card, don't display any custom point value
     if(this.card.dynamicText === '') {
       this.txtPoints.setAlpha(0.001)
