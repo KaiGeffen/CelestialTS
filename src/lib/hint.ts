@@ -97,7 +97,7 @@ export default class Hint {
 			this.show()
 		}
 
-		this.element.textContent = s
+		this.element.innerHTML = s
 	}
 
 	// TODO Use in more places, instead of forming a string then passing to showText

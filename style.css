@@ -28,6 +28,7 @@ body, html {
 }
 
 .hint {
+    /* display: none; */
     position: absolute;
     z-index: 10;
 
@@ -45,6 +46,10 @@ body, html {
     max-width: 500px;
 
     pointer-events: none;
+}
+
+.color1 {
+    color: #FABD5D;
 }
 
 /* hint: {

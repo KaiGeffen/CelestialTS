@@ -1,35 +1,35 @@
 [
 	{"key": "Visible",
-		"text": "Visible - Both players can see this card while it's in the story.",
+		"text": "<span class='color1'>Visible</span>Both players can see this card while it's in the story.",
 		"x": false
 	},
 	{"key": "Fleeting",
-		"text": "Fleeting - After resolving, this card is removed from the game.",
+		"text": "<span class='color1'>Fleeting</span>After resolving, this card is removed from the game.",
 		"x": false
 	},
 	
 	{"key": "Morning",
-		"text": "Morning - At the start of each round, if this is the top card of your discard pile, trigger the following effect.",
+		"text": "<span class='color1'>Morning</span>At the start of each round, if this is the top card of your discard pile, trigger the following effect.",
 		"x": false
 	},
 	{"key": "Sight",
-		"text": "Sight X - The first X cards in the story are visible to you this round.",
+		"text": "<span class='color1'>Sight 4</span>The first X cards in the story are visible to you this round.",
 		"x": true
 	},
 	{"key": "Inspire",
-		"text": "Inspire X - Next round you have X extra breath.",
+		"text": "<span class='color1'>Inspire X</span>Next round you have X extra breath.",
 		"x": true
 	},
 	{"key": "Inspired",
-		"text": "Inspire X - This round you have X extra breath.",
+		"text": "<span class='color1'>Inspire X</span>This round you have X extra breath.",
 		"x": true
 	},
 	{"key": "Nourish",
-		"text": "Nourish X - The next card you resolve is worth +X points.",
+		"text": "<span class='color1'>Nourish X</span>The next card you resolve is worth +X points.",
 		"x": true
 	},
 	{"key": "Birth",
-		"text": "Birth X - If you have a Child in hand, increase its points by X. Otherwise create a 0:X Fleeting Child in hand.",
+		"text": "<span class='color1'>Birth X</span>If you have a Child in hand, increase its points by X. Otherwise create a 0:X Fleeting Child in hand.",
 		"x": true
 	}
 ]
