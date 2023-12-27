@@ -43,7 +43,6 @@ export default class Hint {
 	}
 
 	hide(): Hint {
-		console.log('hide')
 		this.element.style.display = "none"
 
 		// Reset the pin, since the next hovered item might not pin
@@ -53,9 +52,8 @@ export default class Hint {
 	}
 
 	show(): Hint {
-		console.log('show')
 		this.orientText()
-		this.element.style.display = "block"
+		this.element.style.display = 'inline-block'
 
 		return this
 	}
