@@ -12,9 +12,7 @@ export default class Hint {
 	scene: Phaser.Scene
 
 	element: HTMLElement
-	image: HTMLElement
-	txt: HTMLElement
-
+	
 	// The X position to position flush to, or undefined if no pin
 	leftPin: number
 
@@ -25,8 +23,6 @@ export default class Hint {
 	constructor(scene: Phaser.Scene) {
 		this.scene = scene
 		this.element = document.getElementById('hint')
-		this.image = document.getElementById('hint_img')
-		this.txt = document.getElementById('hint_text')
 
 		// Copy mouse position and show a hint when over a hinted object
 		scene.input.on('pointermove', () => {
@@ -57,7 +53,7 @@ export default class Hint {
 
 	show(): Hint {
 		this.orientText()
-		this.element.style.display = 'inline-block'
+		this.element.style.display = 'flex'
 
 		return this
 	}
@@ -70,31 +66,28 @@ export default class Hint {
 			card = getCard(card)
 		}
 		
+		// Text
 		let hintText = card.getHintText()
-		// const referencedImages = card.getReferencedCards().map((card) => {
-		// 	return ` [img=${card.name}]`
-		// }).join()
-		if (hintText !== '') {
-			this.showText(hintText)
+		this.showText(hintText)
 
-			// NOTE This is a hack because of a bug where card image renders with a single line's height
-			// this.txt
-			// .setText(`[img=${card.name}]`)
-			// .appendText(`[color=grey]${referencedImages}[/color]`)
-			// .appendText('\n\n\n\n\n\n\n\n\n\n\n\n')
-			// .appendText(`\n${hintText}`)
-			// .setFixedSize(0, 0)
-		}
-		else {
-			this.showText(hintText)
-			// const width = card.getReferencedCards().length > 0 ? Space.maxTextWidth + Space.pad : Space.cardWidth + Space.pad
-			// this.txt.setText(`[img=${card.name}]`)
-			// .appendText(`${referencedImages}`)
-			// .setFixedSize(
-			// 	width,
-			// 	Space.cardHeight + Space.pad
-			// 	)
-		}
+		// Images
+		let cardImages = document.createElement('div')
+
+		// Add this card's image
+		let img = document.createElement('img')
+		img.src = `assets/cards/${card.name}.webp`
+		cardImages.append(img)
+
+		// Add any references cards images
+		card.getReferencedCards().forEach(refCard => {
+			let img = document.createElement('img')
+			img.src = `assets/cards/${refCard.name}.webp`
+			img.style.marginLeft = '10px'
+			cardImages.append(img)
+		})
+
+		// Add all of the 
+		this.element.prepend(cardImages)
 
 		return this
 	}
@@ -104,8 +97,7 @@ export default class Hint {
 			this.show()
 		}
 
-		this.txt.textContent = s
-		console.log(this.txt)
+		this.element.textContent = s
 	}
 
 	// TODO Use in more places, instead of forming a string then passing to showText
