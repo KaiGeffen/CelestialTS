@@ -10,8 +10,10 @@ import { Keyword, keywords } from '../catalog/keywords'
 
 export default class Hint {
 	scene: Phaser.Scene
-	txt: RexUIPlugin.BBCodeText
+
 	element: HTMLElement
+	image: HTMLElement
+	txt: HTMLElement
 
 	// The X position to position flush to, or undefined if no pin
 	leftPin: number
@@ -23,6 +25,8 @@ export default class Hint {
 	constructor(scene: Phaser.Scene) {
 		this.scene = scene
 		this.element = document.getElementById('hint')
+		this.image = document.getElementById('hint_img')
+		this.txt = document.getElementById('hint_text')
 
 		// Copy mouse position and show a hint when over a hinted object
 		scene.input.on('pointermove', () => {
@@ -100,7 +104,8 @@ export default class Hint {
 			this.show()
 		}
 
-		this.element.textContent = s
+		this.txt.textContent = s
+		console.log(this.txt)
 	}
 
 	// TODO Use in more places, instead of forming a string then passing to showText
@@ -158,27 +163,27 @@ export default class Hint {
 	}
 
 	// Ensure that the hint is within the screen bounds, if possible
-	private ensureOnScreen(): void {
-		let txt = this.txt
+	// private ensureOnScreen(): void {
+	// 	let txt = this.txt
 
-		let bounds = txt.getBounds()
+	// 	let bounds = txt.getBounds()
 
-		let dx = 0
-		if (bounds.left < 0) {
-			dx = -bounds.left
-		}
-		else if (bounds.right > Space.windowWidth) {
-			dx = Space.windowWidth - bounds.right
-		}
+	// 	let dx = 0
+	// 	if (bounds.left < 0) {
+	// 		dx = -bounds.left
+	// 	}
+	// 	else if (bounds.right > Space.windowWidth) {
+	// 		dx = Space.windowWidth - bounds.right
+	// 	}
 
-		let dy = 0
-		if (bounds.top < 0) {
-			dy = -bounds.top
-		}
-		else if (bounds.bottom > Space.windowHeight) {
-			dy = Space.windowHeight - bounds.bottom
-		}
+	// 	let dy = 0
+	// 	if (bounds.top < 0) {
+	// 		dy = -bounds.top
+	// 	}
+	// 	else if (bounds.bottom > Space.windowHeight) {
+	// 		dy = Space.windowHeight - bounds.bottom
+	// 	}
 
-		txt.setPosition(txt.x + dx, txt.y + dy)
-	}
+	// 	txt.setPosition(txt.x + dx, txt.y + dy)
+	// }
 }
