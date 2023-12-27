@@ -52,8 +52,8 @@ export default class Hint {
 	}
 
 	show(): Hint {
-		this.orientText()
 		this.element.style.display = 'flex'
+		this.orientText()
 
 		return this
 	}
@@ -133,49 +133,39 @@ export default class Hint {
 			this.element.style.left = `${pointer.position.x}px`
 			this.element.style.top = `${pointer.position.y - Space.pad}px`
 			this.element.style.transform = 'translate(-50%, -100%)'
-
-			// this.txt.setX(pointer.position.x)
-			// .setOrigin(0.5, 1)
-			// .setY(pointer.position.y - Space.pad)
 		}
 		// If there is a pin, go just to the right of that
 		else {
 			this.element.style.left = `${this.leftPin + Space.pad}px`
 			this.element.style.top = `${pointer.position.y}px`
 			this.element.style.transform = 'translate(0%, -50%)'
-
-			// this.txt.setX(this.leftPin + Space.pad)
-			// .setOrigin(0, 0.5)
-			// .setY(pointer.position.y)
 		}
-		return
-		
-		// TODO
+
 		this.ensureOnScreen()
 	}
 
 	// Ensure that the hint is within the screen bounds, if possible
-	// private ensureOnScreen(): void {
-	// 	let txt = this.txt
+	private ensureOnScreen(): void {
+		let bounds = this.element.getBoundingClientRect()
 
-	// 	let bounds = txt.getBounds()
+		let dx = 0
+		if (bounds.left < 0) {
+			dx = -bounds.left
+		}
+		else if (bounds.right > Space.windowWidth) {
+			dx = Space.windowWidth - bounds.right
+		}
 
-	// 	let dx = 0
-	// 	if (bounds.left < 0) {
-	// 		dx = -bounds.left
-	// 	}
-	// 	else if (bounds.right > Space.windowWidth) {
-	// 		dx = Space.windowWidth - bounds.right
-	// 	}
+		let dy = 0
+		if (bounds.top < 0) {
+			dy = -bounds.top
+		}
+		else if (bounds.bottom > Space.windowHeight) {
+			dy = Space.windowHeight - bounds.bottom
+		}
 
-	// 	let dy = 0
-	// 	if (bounds.top < 0) {
-	// 		dy = -bounds.top
-	// 	}
-	// 	else if (bounds.bottom > Space.windowHeight) {
-	// 		dy = Space.windowHeight - bounds.bottom
-	// 	}
-
-	// 	txt.setPosition(txt.x + dx, txt.y + dy)
-	// }
+		// Translate by dx, dy
+		// Also keep the existing transform (translate %)
+		this.element.style.transform = `translateX(${dx}px) translateY(${dy}px) ${this.element.style.transform}`
+	}
 }

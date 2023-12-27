@@ -22,6 +22,7 @@ body, html {
     align-items: center;
     justify-content: center;
     object-fit: cover;
+    transform: matrix(20px, 10px);
     
     filter: opacity(100%);
 }
@@ -43,7 +44,7 @@ body, html {
     border: 2px solid #00000050;
     max-width: 500px;
 
-    user-select: none;
+    pointer-events: none;
 }
 
 /* hint: {
