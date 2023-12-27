@@ -26,11 +26,11 @@ export default class Hint {
 
 		// Copy mouse position and show a hint when over a hinted object
 		scene.input.on('pointermove', () => {
-			this.orientText()
 			if (!this.skipWait) {
 				this.element.style.opacity = "0"
 				this.waitTime = 0
 			}
+			this.orientText()
 		})
 		scene.events.on('update', (time, delta) => {
 			if (this.waitTime < Time.hint && !this.skipWait) {
@@ -43,7 +43,8 @@ export default class Hint {
 	}
 
 	hide(): Hint {
-		this.element.style.opacity = "0"
+		console.log('hide')
+		this.element.style.display = "none"
 
 		// Reset the pin, since the next hovered item might not pin
 		this.leftPin = undefined
@@ -52,8 +53,9 @@ export default class Hint {
 	}
 
 	show(): Hint {
+		console.log('show')
 		this.orientText()
-		this.element.style.opacity = "1"
+		this.element.style.display = "block"
 
 		return this
 	}
@@ -82,6 +84,7 @@ export default class Hint {
 			// .setFixedSize(0, 0)
 		}
 		else {
+			this.showText(hintText)
 			// const width = card.getReferencedCards().length > 0 ? Space.maxTextWidth + Space.pad : Space.cardWidth + Space.pad
 			// this.txt.setText(`[img=${card.name}]`)
 			// .appendText(`${referencedImages}`)
@@ -152,6 +155,7 @@ export default class Hint {
 		}
 		return
 		
+		// TODO
 		this.ensureOnScreen()
 	}
 
