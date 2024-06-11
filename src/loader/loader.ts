@@ -9,7 +9,7 @@ import backgroundData from './backgrounds.json'
 import keywordData from './keywords.json'
 import storyData from './stories.json'
 import sfxData from './sfx.json'
-import voiceData from './voice.json'
+import dialogData from './dialog.json'
 import { Space, Flags } from '../settings/settings'
 
 
@@ -170,9 +170,9 @@ export default class Loader {
 			scene.load.audio(sound, `sfx/${sound}.mp3`)
 		})
 
-		// Load each characters voice clip
-		voiceData.forEach((name) => {
-			scene.load.audio(`voice-${name}`, `voice/${name}.mp3`)
+		// Load each characters dialog clip
+		dialogData.forEach((name) => {
+			scene.load.audio(`dialog-${name}`, `dialog/${name}.mp3`)
 		})
 	}
 

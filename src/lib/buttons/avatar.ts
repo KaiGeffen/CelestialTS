@@ -28,7 +28,6 @@ export default class AvatarButton extends Button {
 			callbacks: {
 				click: () => {
 					f()
-					this.scene.sound.play(`voice-${this.name}`)
 				}
 			},
 			sound: {
@@ -42,7 +41,6 @@ export default class AvatarButton extends Button {
 	setOnClick(f, once = false, overwrite = true): Button {
 		let fWithSound = () => {
 			f()
-			this.scene.sound.play(`voice-${this.name}`)
 		}
 
 		return super.setOnClick(fWithSound, once, overwrite)
@@ -93,11 +91,17 @@ export default class AvatarButton extends Button {
 
 	private doEmote(number = 1): () => void {
 		return () => {
+			// Play the dialog clip
+			const dialogSound : Phaser.Sound.BaseSoundManager = this.scene.game['dialogSound']
+			// Stop previous dialog clips
+			dialogSound.pauseAll()
+			dialogSound.play(`dialog-${this.name}`)
+
 			// Stop the timeout if it exists
 			clearTimeout(this.timeout)
 			
 			this.icon.setFrame(number)
-
+			
 			// Keep track of this timeout
 			this.timeout = setTimeout(() => {
 				this.icon.setFrame(0)

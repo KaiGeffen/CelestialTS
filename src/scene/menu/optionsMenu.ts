@@ -422,9 +422,13 @@ export default class OptionsMenu extends Menu {
 		sizer.add(txtHint)
 
 		let slider = this.getSlider(
-			0, // TODO
+			UserSettings._get('dialogVolume'),
 			(value) => {
-				// TODO
+				UserSettings._set('dialogVolume', value)
+				
+				// Set the game's dialogSound to the new value
+				const dialogSound : Phaser.Sound.BaseSoundManager = this.scene.game['dialogSound']
+				dialogSound.volume = value * 5
 			}
 			)
 		sizer.add(slider)
