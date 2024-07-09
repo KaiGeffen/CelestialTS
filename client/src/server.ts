@@ -137,27 +137,6 @@ export default class Server {
 	// If this ws already has an event listener for messages related to the match scene
 	static hasInGameListener = false
 
-	// Request a pack from the server, sets the callback for when the pack is sent
-	static requestPack(callback: (cards: Card[]) => void): void {
-		if (wsServer === undefined) {
-			throw 'Opening a pack when server ws doesnt exist.'
-		}
-		else {
-			wsServer.send(JSON.stringify({type: 'request_pack'}))
-			packOpenCallback = callback
-		}
-	}
-
-	// Send the server the id of the card user wants to choose from the pack
-	static sendChoiceCard(index: number): void {
-		if (wsServer === undefined) {
-			throw 'Picking a choice card when server ws doesnt exist.'
-		}
-		else {
-			wsServer.send(JSON.stringify({type: 'make_choice', value: index}))
-		}
-	}
-
 	// Send server an updated list of userProgress
 	static sendUserProgress(value): void {
 		if (wsServer === undefined) {
