@@ -1,8 +1,3 @@
-import { createTRPCProxyClient, createWSClient, wsLink } from '@trpc/client'
-import superjson from 'superjson'
-import type { MatchRouter } from '../../server/src/index'
-import {URL, PORT} from '../../shared/settings'
-
 // import { io } from "socket.io-client"
 // import * as dgram from "dgram"
 import { encodeDeck } from "./lib/codec"
@@ -18,6 +13,12 @@ const messageHeaders = {
 
 const bufSize = 4096 * 2
 
+const ip = '127.0.0.1' //'10.244.30.242'
+//'10.244.10.228'//'216.193.175.49'
+//'127.0.0.1'//'192.168.1.154' //'server-6d66b4ccc9-xc989'
+const port = 5555
+// const internalPort = 4321
+
 const MATCH_MAKING_PARAM = 'mm'
 
 // The version-number of that state that the client is displaying, for use with verifying with server
@@ -31,20 +32,20 @@ export class Network {
 	socket: WebSocket
 	
 	constructor(deck: string, newScene, mmCode, avatarID: number) {
-		// let that = this
+		let that = this
 
-		// // Must be set each time constructed so that it doesn't persist and cause weird behavior
-		// // (States from previous match shown at the beginning)
-		// versionNumber = -1
+		// Must be set each time constructed so that it doesn't persist and cause weird behavior
+		// (States from previous match shown at the beginning)
+		versionNumber = -1
 
-		// // The first message sent to server once the match starts
-		// initMessage = JSON.stringify({
-		// 	type: 'init',
-		// 	value: encodeDeck(deck),
-		// 	avatar: `${avatarID}`
-		// })
+		// The first message sent to server once the match starts
+		initMessage = JSON.stringify({
+			type: 'init',
+			value: encodeDeck(deck),
+			avatar: `${avatarID}`
+		})
 
-		// scene = newScene
+		scene = newScene
 
 		let socket = this.socket = this.getSocket(mmCode)
 
@@ -176,16 +177,7 @@ export class Network {
 			socket = Server.getWS()
 		}
 		else if (Flags.local) {
-			// TODO
-			const wsClient = createWSClient({url: `ws://${URL}:${PORT}/${mmCode}`})
-			const trpc = socket =  createTRPCProxyClient<MatchRouter>({
-				links: [
-					wsLink({
-						client: wsClient,
-					}),
-				],
-				transformer: superjson,
-			})
+			socket = new WebSocket(`ws://${ip}:${port}/${mmCode}`)
 		}
 		else {
 			// The WS location on DO

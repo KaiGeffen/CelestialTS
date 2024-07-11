@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    // "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+
+    "typeRoots": [
+			"node_modules/@types",
+			"node_module/phaser/types",
+      "node_module/phaser3-rex-plugins-types"
+		]
+
+
+    // "lib": ["es6", "dom", "dom.iterable", "scripthost"],
+    // "typeRoots": ["./node_modules/phaser/types"],
+    // "types": ["phaser"]
+  }
+  // "include": ["src/**/*"]
+}

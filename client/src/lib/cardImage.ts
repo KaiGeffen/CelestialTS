@@ -8,6 +8,7 @@ import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import BaseScene from '../scene/baseScene'
 import Loader from '../loader/loader'
+import BBCodeText from "phaser3-rex-plugins/plugins/bbcodetext"
 
 // The offset of cost / points
 const statOffset1 = Flags.mobile ? 15 : 25
@@ -20,8 +21,8 @@ export class CardImage {
   image: Phaser.GameObjects.Image
 
   // Visual elements that appear on the cardImage
-  txtCost: Phaser.GameObjects.Text
-  txtPoints: Phaser.GameObjects.Text
+  txtCost: BBCodeText
+  txtPoints: BBCodeText
   keywords: KeywordLabel[] = []
   references: ReferenceLabel[] = []
 

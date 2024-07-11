@@ -7,6 +7,8 @@ import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"
 import ensureMusic from '../loader/audioManager'
 
+const google = null
+const FB = null
 
 // Scene for user to select a sign in option, without loading assets
 export class SigninScene extends Phaser.Scene {
@@ -63,7 +65,7 @@ export class SigninScene extends Phaser.Scene {
 			this.createGoogleGSIButton(y - 100)
 
 			// Facebook signin
-			this.createFacebookButton(y - 200)
+			// this.createFacebookButton(y - 200)
 		}
 	}
 
@@ -153,31 +155,6 @@ export class SigninScene extends Phaser.Scene {
 		document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`
 		
 		google.accounts.id.prompt()
-	}
-
-	private createFacebookButton(y: number): void {
-		// Window asynch initiates and then checks the login status
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '525279936367652',
-				cookie     : true,                     // Enable cookies to allow the server to access the session.
-				xfbml      : true,                     // Parse social plugins on this webpage.
-				version    : 'v16.0'		           // Use this Graph API version for this call.
-			})
-
-			FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-				console.log('statusChangeCallback')
-    			console.log(response)
-
-    			if (response.status === 'connected') {
-    				Server.login(response.authResponse.accessToken, this.game)
-    			}
-
-    			FB.api('/me', function(response: any) {
-    				console.log('Successful login for: ' + response.name);
-    			})
-			})
-		}
 	}
 
 	private ensureAnimation(): void {
