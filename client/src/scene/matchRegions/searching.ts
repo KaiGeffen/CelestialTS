@@ -266,7 +266,7 @@ export class SearchingRegionTutorial extends Region {
 		const downFully = Space.windowHeight - this.img.displayHeight
 
 		// First end any tweens that are playing (Previous stillframes)
-		this.scene.tweens.getAllTweens().forEach((tween) => {
+		this.scene.tweens.getTweens().forEach((tween) => {
 			tween.complete()
 		})
 

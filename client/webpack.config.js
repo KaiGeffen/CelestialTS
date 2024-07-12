@@ -1,5 +1,5 @@
 const path = require('path')
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
@@ -27,6 +27,7 @@ module.exports = {
         }
     },
     output: {
+        libraryTarget: 'umd',
         filename: '[name].[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
@@ -65,12 +66,12 @@ module.exports = {
             },
         },
     },
-    // plugins: [
-    //     new HtmlWebpackPlugin({
-    //         title: 'Caching',
-    //         template: 'template.html',
-    //         filename: '../index.html',
-    //     })
-    //     ],
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Caching',
+            template: 'template.html',
+            filename: '../index.html',
+        })
+        ],
 
 };

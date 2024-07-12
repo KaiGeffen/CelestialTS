@@ -106,7 +106,7 @@ class GameScene extends BaseScene {
 			that.queueState(that.currentState)
 		}
 		view.commands.skipCallback = () => {
-			that.tweens.getAllTweens().forEach((tween) => {
+			that.tweens.getTweens().forEach((tween) => {
 				tween.complete()
 			})
 
@@ -150,7 +150,7 @@ class GameScene extends BaseScene {
 		// })
 
 		// view.ourButtons.setSkipCallback(() => {
-		// 	that.tweens.getAllTweens().forEach((tween) => {
+		// 	that.tweens.getTweens().forEach((tween) => {
 		// 		tween.complete()
 		// 	})
 
@@ -177,7 +177,7 @@ class GameScene extends BaseScene {
 
 				// Skip all tweens playing currently
 				// TODO Some text stays enlarged if it doesn't finish
-				that.tweens.getAllTweens().forEach((tween) => {
+				that.tweens.getTweens().forEach((tween) => {
 					tween.complete()
 				})
 
@@ -271,7 +271,7 @@ class GameScene extends BaseScene {
 		}
 
 		// If any tweens are playing, don't display yet
-		let anyTweenPlaying = this.tweens.getAllTweens().length > 0
+		let anyTweenPlaying = this.tweens.getTweens().length > 0
 		if (anyTweenPlaying) {
 			return false
 		}
