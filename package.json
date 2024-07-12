@@ -2,9 +2,12 @@
   "type": "module",
   "scripts": {
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
-    "build:client": "tsc -p client/tsconfig.json && esbuild client/src/app.ts --bundle --outfile=dist/client.js",
-    "start:client": "live-server --port=8083 dist",
-    "start:server": "npm run start --prefix server"
+    "start:client": "npm run start --prefix client",
+    "start:server": "npm run start --prefix server",
+
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "tsc; node dist/server/src/index.js"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",

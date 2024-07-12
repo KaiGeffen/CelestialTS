@@ -3,9 +3,7 @@ import { applyWSSHandler } from '@trpc/server/adapters/ws'
 import superjson from 'superjson'
 import { initTRPC } from '@trpc/server'
 import { z } from 'zod'
-// import {URL, PORT} from '../../shared/settings'
-const URL = '23232'
-const PORT = 132
+import {URL, PORT} from '../../shared/settings.js'
 
 const t = initTRPC.create({
   transformer: superjson,

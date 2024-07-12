@@ -31,6 +31,7 @@ export class Network {
 	socket: WebSocket
 	
 	constructor(deck: string, newScene, mmCode, avatarID: number) {
+		console.log(URL, PORT)
 		// let that = this
 
 		// // Must be set each time constructed so that it doesn't persist and cause weird behavior

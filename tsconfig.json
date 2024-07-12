@@ -1,54 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "resolveJsonModule": true,
-    "esModuleInterop": true
-},
-// "typeRoots": [
-//   "node_modules/@types"
-// ],
-// Include everything under node_modules/./@types by default
-// "types": [
-//   "gapi",
-//   "gapi.auth2",
-//   "phaser3-rex-plugins-types"
-// ],
-// "lib": [
-//   "es2017",
-//   "dom"
-// ],
-
-"include": [
-  "src/*",
-  "**/*",
-  "node_modules/phaser3-rex-plugins-types"
-]
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./"
+  },
+  "include": [
+    "shared/**/*.ts",
+    "server/**/*.ts"
+  ]
 }
-
-
-// {
-//   "compilerOptions": {
-//     "module": "ESNext",
-//     "target": "ESNext",
-//     "moduleResolution": "node",
-//     "esModuleInterop": true,
-//     "skipLibCheck": true,
-//     "resolveJsonModule": true,
-//     // "strict": true,
-//     "forceConsistentCasingInFileNames": true,
-//     "outDir": "./dist",
-//     "rootDir": ".",
-
-//     "typeRoots": [
-// 			"node_modules/@types",
-// 			"node_module/phaser/types",
-//       "node_module/phaser3-rex-plugins-types"
-// 		]
-
-
-//     // "lib": ["es6", "dom", "dom.iterable", "scripthost"],
-//     // "typeRoots": ["./node_modules/phaser/types"],
-//     // "types": ["phaser"]
-//   }
-//   // "include": ["src/**/*"]
-// }
