@@ -2,7 +2,7 @@
 // import * as dgram from "dgram"
 import { encodeDeck } from "./lib/codec"
 import ClientState from "./lib/clientState"
-import Server from "./server"
+import Server from "./network/server"
 
 import { Flags } from "./settings/settings"
 

@@ -1,7 +1,7 @@
 import 'phaser'
 import jwt_decode from "jwt-decode"
 import Loader from '../loader/loader'
-import Server from '../server'
+import Server from '../network/server'
 import { Color, Mobile, Space, Style, BBStyle, Url, UserProgress, UserSettings, Flags } from '../settings/settings'
 import Button from "../lib/buttons/button"
 import Buttons from "../lib/buttons/buttons"

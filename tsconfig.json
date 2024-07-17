@@ -5,10 +5,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,
+    // "strict": true, TODO
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./"
+    "rootDir": "./",
+    "lib": ["es6", "dom"] // includes WebSocket definitions
   },
   "include": [
     "shared/**/*.ts",

@@ -1,4 +1,4 @@
-import Server from "../server"
+import Server from "../network/server"
 import { baseCards } from "../catalog/catalog"
 import { Space } from "./settings"
 import { Flags } from "./flags"

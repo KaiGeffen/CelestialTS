@@ -7,7 +7,7 @@ import Buttons from "../lib/buttons/buttons"
 import Icons from "../lib/buttons/icons"
 import intro from "../adventures/intro.json"
 import Loader from '../loader/loader'
-import Server from '../server'
+import Server from '../network/server'
 import { CardImage } from '../lib/cardImage'
 import { baseCards } from "../catalog/catalog"
 

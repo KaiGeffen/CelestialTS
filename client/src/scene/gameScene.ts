@@ -1,6 +1,6 @@
 import "phaser";
 import ClientState from "../lib/clientState";
-import { Network, versionNumber } from "../net";
+import { MatchWS, versionNumber } from "../network/net";
 // Import Settings itself 
 import { UserSettings } from "../settings/settings";
 import BaseScene from "./baseScene";
@@ -17,7 +17,7 @@ class GameScene extends BaseScene {
 	params: any
 
 	view: View
-	net: Network
+	net: MatchWS
 
 	// Whether the match is paused (Awaiting user to click a button, for example)
 	paused: boolean
@@ -50,7 +50,7 @@ class GameScene extends BaseScene {
 		}
 
 		// Connect with the server
-		this.net = new Network(params.deck, this, mmCode, params.avatar)
+		this.net = new MatchWS(params.deck, this, mmCode, params.avatar)
 
 		// Create the view
 		this.view = new View(this, this.params.avatar || 0)
@@ -96,7 +96,7 @@ class GameScene extends BaseScene {
 	}
 
 	// Set all of the callback functions for the regions in the view
-	private setCallbacks(view, net: Network): void {
+	private setCallbacks(view, net: MatchWS): void {
 		let that = this
 
 		// Commands region

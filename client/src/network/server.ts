@@ -1,9 +1,9 @@
 import 'phaser'
 
-import Card from "./lib/card"
-import { decodeDeck } from "./lib/codec"
-import { UserSettings } from "./settings/settings"
-import BaseScene from './scene/baseScene'
+import Card from "../lib/card"
+import { decodeDeck } from "../lib/codec"
+import { UserSettings } from "../settings/settings"
+import BaseScene from '../scene/baseScene'
 
 
 const ip = '127.0.0.1'
