@@ -11,6 +11,7 @@ import ClientState from '../lib/clientState'
 import Server from './server'
 
 import { Flags } from '../settings/settings'
+import { string } from 'zod'
 
 // The version-number of that state that the client is displaying, for use with verifying with server
 export var versionNumber: number
@@ -20,32 +21,29 @@ var scene
 var initMessage
 
 export class MatchWS {
-  socket: WebSocket
+  socket: TypedWebSocket
 
   constructor(deck: string, newScene, mmCode, avatarID: number) {
     scene = newScene
 
     console.log('Making a new websocket for this match')
-
-    let socket = (this.socket = this.getSocket(mmCode))
+    const socket = (this.socket = this.getSocket(mmCode))
 
     // Each registered event
-    const playersConnectedEvent = createSocket<'both_players_connected'>(
-      'both_players_connected',
-      (data) => {
+    socket
+      .on('both_players_connected', (data) => {
+        console.log(data)
+        console.log('players connected', data)
         if (data.value) {
           // Send the initial message, including things like the deck we are using
-          this.socket.send(initMessage)
+          this.socket.ws.send(initMessage)
 
           // Signal that a match has been found
           scene.signalMatchFound()
         }
-      }
-    )
-    const transmitStateEvent = createSocket<'transmit_state'>(
-      'transmit_state',
-      (data) => {
-        console.log(data)
+      })
+      .on('transmit_state', (data) => {
+        console.log('transmit state', data)
         // if (data.value) {
         //   // Send the initial message, including things like the deck we are using
         //   this.socket.send(initMessage)
@@ -53,8 +51,20 @@ export class MatchWS {
         //   // Signal that a match has been found
         //   scene.signalMatchFound()
         // }
-      }
-    )
+      })
+
+    // TODO Learning, these are the message types being listened for (Keys of the payloads)
+    // socket.on('both_players_connected', (data) => {
+    //     console.log(data)
+    //     if (data.value) {
+    //       // Send the initial message, including things like the deck we are using
+    //       this.socket.send(initMessage)
+
+    //       // Signal that a match has been found
+    //       scene.signalMatchFound()
+    //     }
+    //   }
+    // )
     // case 'transmit_state':
     // 	console.log('Received game state:', msg.state);
     // 	let state = new ClientState(msg.value)
@@ -65,22 +75,23 @@ export class MatchWS {
     // 	break;
 
     // socket.onmessage = (event) => {
-    // 	console.log('got some sort of message')
-    // 	if (typeof event.data === 'string') {
-    // 		this.handleMessage(JSON.parse(event.data))
-    // 	}
-    // 	else {
-    // 		throw new Error(`MatchWebsocket expected string response data but received: ${typeof event.data}`);
-    // 	}
+    //   console.log('got some sort of message')
+    //   if (typeof event.data === 'string') {
+    //     this.handleMessage(JSON.parse(event.data))
+    //   } else {
+    //     throw new Error(
+    //       `MatchWebsocket expected string response data but received: ${typeof event.data}`
+    //     )
+    //   }
     // }
 
-    // socket.onclose = () => {
-    // 	console.log('Disconnected from the server');
-    // };
+    socket.onclose = () => {
+      console.log('Disconnected from the server')
+    }
 
-    // socket.onerror = (error) => {
-    // 	console.error('WebSocket error:', error);
-    // }
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error)
+    }
   }
 
   // Handle a message response from server
@@ -188,19 +199,19 @@ export class MatchWS {
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
   // Get the appropriate websocket for this environment / matchmaking code
   // If user is logged in, use the existing ws instead of opening a new one
-  private getSocket(mmCode): WebSocket {
+  private getSocket(mmCode): TypedWebSocket {
     // Establish a websocket based on the environment
     let socket
     if (Server.loggedIn()) {
-      socket = Server.getWS()
+      socket = null // TODO Server.getWS()
     } else if (Flags.local) {
       // TODO
-      socket = new WebSocket(`ws://${URL}:${PORT}`)
+      socket = new TypedWebSocket(`ws://${URL}:${PORT}`)
     } else {
       // The WS location on DO
       let loc = window.location
       const fullPath = `wss://celestialtcg.com/ws/${mmCode}`
-      socket = new WebSocket(fullPath)
+      socket = new TypedWebSocket(fullPath)
     }
 
     return socket
