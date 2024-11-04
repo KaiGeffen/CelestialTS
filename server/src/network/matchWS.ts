@@ -1,13 +1,10 @@
 import { WebSocketServer } from 'ws'
 
-import {URL, PORT, createSocket, TypedWebSocket, WrappedServerSocket} from '../../../shared/settings.js'
+import {URL, PORT, createSocket, TypedWebSocket, WrappedServerSocket} from '../../../shared/network/settings.js'
 
 // Create the websocket server
 export default function createMatchServer() {
     const wss = new WebSocketServer({ port: PORT })
-    wss.on('foo', (socket: WebSocket) => {
-
-    })
     
     wss.on('connection', (socket: WebSocket) => {
         console.log('Client connected')
