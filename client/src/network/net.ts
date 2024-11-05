@@ -1,10 +1,5 @@
-import {
-  URL,
-  PORT,
-  createSocket,
-  TypedWebSocket,
-  WrappedServerSocket,
-} from '../../../shared/network/settings'
+import { URL, PORT } from '../../../shared/network/settings'
+import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
 
 import { encodeDeck } from '../lib/codec'
 import ClientState from '../lib/clientState'
@@ -222,9 +217,9 @@ export class MatchWS {
 
 // Each of the events and its callback
 
-const playCardEvent = createSocket<'play_card'>('play_card', (data) => {
-  console.log('Playing a card:', data.card)
-})
+// const playCardEvent = createSocket<'play_card'>('play_card', (data) => {
+//   console.log('Playing a card:', data.card)
+// })
 
 // TODO There's some clever way to ensure that all SocketMessages are covered
 // const registeredEvents = [initEvent, playCardEvent]
