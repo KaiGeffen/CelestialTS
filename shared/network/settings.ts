@@ -30,47 +30,45 @@ type SocketMessage = keyof SocketPayloads
 type SocketMessagePayload = SocketPayloads[SocketMessage]
 
 // The message that is sent or received through the WebSocket
-// TODO Use this over the sendMessage and weakly typed WS received message
-type WSMessage<T extends SocketMessage> = {
+type WSMessage<T extends SocketMessage> = SocketPayloads[T] & {
   type: T
-  value: SocketPayloads[T]
 }
 
 // A WebSocket which can only emit the messages we have defined above
 export class TypedWebSocket {
   private listeners: {
-    [key in SocketMessage]?: Array<(data: SocketMessagePayload) => void>
+    [T in SocketMessage]?: Array<(data: SocketPayloads[T]) => void>
   } = {}
 
-  // NOTE This is necessary instead of inheritance because of how WebSocket is polyfilled
+  // NOTE This is necessary instead of extending WebSocket because of how WebSocket is polyfilled
   ws: WebSocket
 
-  constructor(url: string) {
-    this.ws = new WebSocket(url)
+  constructor(url: string | WebSocket) {
+    if (typeof url === 'string') {
+      this.ws = new WebSocket(url)
+    } else {
+      this.ws = url
+    }
 
     // Whenever a message is received, call each callback for that message
     this.ws.onmessage = (event) => {
-      // TODO Type this
-      const message = JSON.parse(event.data)
+      // The type of the message TODO Explain better, this is union over all the SocketMessages, and is consistent below
+      type T = SocketMessage
+
+      const message: WSMessage<T> = JSON.parse(event.data)
       console.log(message)
 
       // TODO Handle parse error
-      const listeners: Array<(data: SocketMessagePayload) => void> =
+
+      const listeners: Array<(data: SocketPayloads[T]) => void> =
         this.listeners[message.type]
       if (listeners) {
-        listeners.forEach((callback) => callback(message.value))
+        listeners.forEach((callback) => callback(message))
       }
     }
   }
 
-  sendMessage<T extends SocketMessage>(
-    messageType: T, // TODO This is unecessary????
-    payload: SocketPayloads[T]
-  ) {
-    const message = {
-      type: messageType,
-      value: payload,
-    }
+  sendMessage<T extends SocketMessage>(message: WSMessage<T>): void {
     return this.ws.send(JSON.stringify(message))
   }
 
@@ -90,7 +88,8 @@ export class TypedWebSocket {
 // Create the websocket server
 type SocketActionFn<T extends SocketMessagePayload> = (message: T) => void
 
-export interface WrappedServerSocket<T extends SocketMessage> {
+// TODO Remove the below
+export type WrappedServerSocket<T extends SocketMessage> = {
   event: T
   callback: SocketActionFn<SocketPayloads[T]>
 }

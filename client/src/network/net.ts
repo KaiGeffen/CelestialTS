@@ -46,7 +46,7 @@ export class MatchWS {
         console.log('transmit state', data)
         // if (data.value) {
         //   // Send the initial message, including things like the deck we are using
-        //   this.socket.send(initMessage)
+        //   this.socket.ws.send(initMessage)
 
         //   // Signal that a match has been found
         //   scene.signalMatchFound()
@@ -58,7 +58,7 @@ export class MatchWS {
     //     console.log(data)
     //     if (data.value) {
     //       // Send the initial message, including things like the deck we are using
-    //       this.socket.send(initMessage)
+    //       this.socket.ws.send(initMessage)
 
     //       // Signal that a match has been found
     //       scene.signalMatchFound()
@@ -85,11 +85,11 @@ export class MatchWS {
     //   }
     // }
 
-    socket.onclose = () => {
+    socket.ws.onclose = () => {
       console.log('Disconnected from the server')
     }
 
-    socket.onerror = (error) => {
+    socket.ws.onerror = (error) => {
       console.error('WebSocket error:', error)
     }
   }
@@ -102,7 +102,7 @@ export class MatchWS {
         console.log('Both players are connected!')
         if (msg.value) {
           // Send the initial message, including things like the deck we are using
-          this.socket.send(initMessage)
+          this.socket.ws.send(initMessage)
 
           // Signal that a match has been found
           scene.signalMatchFound()
@@ -144,7 +144,7 @@ export class MatchWS {
       value: index,
       version: versionNumber,
     }
-    this.socket.send(JSON.stringify(msg))
+    this.socket.ws.send(JSON.stringify(msg))
   }
 
   // String in the format '001' to mulligan just 3rd card, etc
@@ -153,7 +153,7 @@ export class MatchWS {
       type: 'mulligan',
       value: mulligans,
     }
-    this.socket.send(JSON.stringify(msg))
+    this.socket.ws.send(JSON.stringify(msg))
   }
 
   passTurn() {
@@ -161,7 +161,7 @@ export class MatchWS {
       type: 'pass_turn',
       version: versionNumber,
     }
-    this.socket.send(JSON.stringify(msg))
+    this.socket.ws.send(JSON.stringify(msg))
   }
 
   // Signal to server that we are exiting this match
@@ -171,12 +171,12 @@ export class MatchWS {
       let msg = {
         type: 'exit_match',
       }
-      this.socket.send(JSON.stringify(msg))
+      this.socket.ws.send(JSON.stringify(msg))
     }
     // TODO Remove if UserSessionWS is separate from this
     // If user is anon, close socket
     else {
-      this.socket.close(1000)
+      this.socket.ws.close(1000)
     }
   }
 
@@ -193,7 +193,7 @@ export class MatchWS {
       value: emoteNumber,
     })
 
-    this.socket.send(msg)
+    this.socket.ws.send(msg)
   }
 
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
