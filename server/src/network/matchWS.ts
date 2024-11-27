@@ -20,7 +20,7 @@ export default function createMatchServer() {
 
     // Register each of the events
     registeredEvents.forEach(({ event, callback }) => {
-      wss.on(event, callback)
+      ws.on(event, callback)
     })
   })
 

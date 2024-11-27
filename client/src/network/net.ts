@@ -27,7 +27,6 @@ export class MatchWS {
     // Each registered event
     socket
       .on('both_players_connected', (data) => {
-        console.log(data)
         console.log('players connected', data)
         if (data.value) {
           // Send the initial message, including things like the deck we are using
@@ -38,47 +37,18 @@ export class MatchWS {
         }
       })
       .on('transmit_state', (data) => {
-        console.log('transmit state', data)
-        // if (data.value) {
-        //   // Send the initial message, including things like the deck we are using
-        //   this.socket.ws.send(initMessage)
-
-        //   // Signal that a match has been found
-        //   scene.signalMatchFound()
-        // }
+        console.log('Received state: ', data)
       })
-
-    // TODO Learning, these are the message types being listened for (Keys of the payloads)
-    // socket.on('both_players_connected', (data) => {
-    //     console.log(data)
-    //     if (data.value) {
-    //       // Send the initial message, including things like the deck we are using
-    //       this.socket.ws.send(initMessage)
-
-    //       // Signal that a match has been found
-    //       scene.signalMatchFound()
-    //     }
-    //   }
-    // )
-    // case 'transmit_state':
-    // 	console.log('Received game state:', msg.state);
-    // 	let state = new ClientState(msg.value)
-
-    // 	if (state.versionNumber > versionNumber) {
-    // 		scene.queueState(state)
-    // 	}
-    // 	break;
-
-    // socket.onmessage = (event) => {
-    //   console.log('got some sort of message')
-    //   if (typeof event.data === 'string') {
-    //     this.handleMessage(JSON.parse(event.data))
-    //   } else {
-    //     throw new Error(
-    //       `MatchWebsocket expected string response data but received: ${typeof event.data}`
-    //     )
-    //   }
-    // }
+      .on('signal_error', (data) => {
+        // TODO Handle signalling or logging that error on the client
+        console.log('Server says that an action was in error.')
+      })
+      .on('dc', (data) => {
+        scene.signalDC()
+      })
+      .on('opponent_emote', (data) => {
+        scene.emote(0)
+      })
 
     socket.ws.onclose = () => {
       console.log('Disconnected from the server')
@@ -86,50 +56,6 @@ export class MatchWS {
 
     socket.ws.onerror = (error) => {
       console.error('WebSocket error:', error)
-    }
-  }
-
-  // Handle a message response from server
-  private handleMessage(msg) {
-    switch (msg.type) {
-      // TODO Types for these
-      case 'both_players_connected':
-        console.log('Both players are connected!')
-        if (msg.value) {
-          // Send the initial message, including things like the deck we are using
-          this.socket.ws.send(initMessage)
-
-          // Signal that a match has been found
-          scene.signalMatchFound()
-        }
-        break
-
-      case 'transmit_state':
-        console.log('Received game state:', msg.state)
-        let state = new ClientState(msg.value)
-
-        if (state.versionNumber > versionNumber) {
-          scene.queueState(state)
-        }
-        break
-
-      case 'signal_error':
-        console.log('Server says that an action was in error.')
-        // TODO Handle signalling or logging that error on the client
-        break
-
-      case 'dc':
-        console.log('Opponent has disconnected.')
-        scene.signalDC()
-        break
-
-      case 'opponent_emote':
-        console.log('Opponent emote received:', msg.emote)
-        scene.emote(msg.value)
-        break
-
-      default:
-        console.warn('Unknown message type:', msg.type)
     }
   }
 

@@ -15,7 +15,7 @@ type SupportedMessages = {
   both_players_connected: {
     value: boolean
   }
-  transmit_state: {}
+  transmit_state: {} // TODO
   signal_error: {}
   dc: {}
   opponent_emote: {}
@@ -39,7 +39,6 @@ export class TypedWebSocket {
   ws: WebSocket
 
   constructor(url: string | WebSocket) {
-    console.log(url)
     if (typeof url === 'string') {
       this.ws = new WebSocket(url)
     } else {
@@ -83,6 +82,10 @@ export class TypedWebSocket {
 }
 
 // Create a pairing of the event type received / the callback using that event types payload
+/*
+  This is used so that each of the events can be described
+  at the bottom of a file instead of chaining .on calls in a method
+*/
 export function createEvent<T extends MessageTypes>(
   event: T,
   callback: (data: SupportedMessages[T]) => void

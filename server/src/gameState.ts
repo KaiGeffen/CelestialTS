@@ -1,4 +1,4 @@
-import { Animation } from './Animation'
+import { Anim } from './animation'
 import { CardCodec } from './CardCodec'
 import { Story, Source } from './logic/Story'
 import { hidden_card } from './logic/Catalog'
@@ -100,7 +100,7 @@ class ServerModel {
       this.amt_drawn[player] += 1
       amt -= 1
       this.animations[player].push(
-        new Animation(
+        new Anim(
           'Deck',
           'Hand',
           CardCodec.encode_card(card),
@@ -118,7 +118,7 @@ class ServerModel {
       this.pile[player].push(card)
       amt -= 1
       this.animations[player].push(
-        new Animation(
+        new Anim(
           'Hand',
           'Discard',
           CardCodec.encode_card(card),
@@ -149,7 +149,7 @@ class ServerModel {
           this.deck[player].splice(i, 1)
           this.amt_drawn[player] += 1
           this.animations[player].push(
-            new Animation(
+            new Anim(
               'Deck',
               'Hand',
               CardCodec.encode_card(card),
@@ -167,7 +167,7 @@ class ServerModel {
     if (this.hand[player].length < HAND_CAP) {
       this.hand[player].push(card)
       this.animations[player].push(
-        new Animation(
+        new Anim(
           'Gone',
           'Hand',
           CardCodec.encode_card(card),
@@ -181,7 +181,7 @@ class ServerModel {
 
   create_in_pile(player: number, card: any) {
     this.animations[player].push(
-      new Animation(
+      new Anim(
         'Gone',
         'Discard',
         CardCodec.encode_card(card),
@@ -196,7 +196,7 @@ class ServerModel {
       return
     }
     this.animations[player].push(
-      new Animation(
+      new Anim(
         'Gone',
         'Story',
         CardCodec.encode_card(card),
@@ -219,7 +219,7 @@ class ServerModel {
         if (this.hand[player][i].cost === cost) {
           const card = this.hand[player][i]
           this.animations[player].push(
-            new Animation('Hand', 'Gone', CardCodec.encode_card(card), i)
+            new Anim('Hand', 'Gone', CardCodec.encode_card(card), i)
           )
           this.expended[player].push(card)
           this.hand[player].splice(i, 1)
@@ -236,7 +236,7 @@ class ServerModel {
       if (this.pile[player].length > 0) {
         const card = this.pile[player].pop()
         this.animations[player].push(
-          new Animation('Discard', 'Gone', CardCodec.encode_card(card))
+          new Anim('Discard', 'Gone', CardCodec.encode_card(card))
         )
         this.expended[player].push(card)
       }
@@ -248,7 +248,7 @@ class ServerModel {
       const card = this.deck[player].pop()
       this.pile[player].push(card)
       this.animations[player].push(
-        new Animation('Deck', 'Discard', CardCodec.encode_card(card))
+        new Anim('Deck', 'Discard', CardCodec.encode_card(card))
       )
       return card
     }
@@ -265,7 +265,7 @@ class ServerModel {
     }
     this.deck[player].sort(() => Math.random() - 0.5)
     if (this.deck[player].length > 0) {
-      this.animations[player].push(new Animation('Shuffle'))
+      this.animations[player].push(new Anim('Shuffle'))
     }
   }
 
@@ -343,7 +343,7 @@ class ServerModel {
     }
     const obfuscated = opp_animations.map((anim: any) => {
       if (anim.zone_to === 'Hand' && anim.zone_from !== 'Hand') {
-        return new Animation(
+        return new Anim(
           anim.zone_to,
           anim.zone_from,
           undefined,
