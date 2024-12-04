@@ -1,301 +1,386 @@
-import "phaser"
-import { Style, Color, Space, Time, Ease, UserProgress, UserSettings } from "../settings/settings"
-import { allCards } from "../catalog/catalog"
-import BaseScene from "./baseScene"
-import Button from "../lib/buttons/button"
-import Buttons from "../lib/buttons/buttons"
-import Icons from "../lib/buttons/icons"
-import intro from "../adventures/intro.json"
-import Loader from '../loader/loader'
-import Server from '../server'
-import { CardImage } from '../lib/cardImage'
-import { baseCards } from "../catalog/catalog"
+import "phaser";
+import {
+  Style,
+  Color,
+  Space,
+  Time,
+  Ease,
+  UserProgress,
+  UserSettings,
+  Url,
+} from "../settings/settings";
+import { allCards } from "../catalog/catalog";
+import BaseScene from "./baseScene";
+import Button from "../lib/buttons/button";
+import Buttons from "../lib/buttons/buttons";
+import ContainerLite from "phaser3-rex-plugins/plugins/containerlite.js";
+import intro from "../adventures/intro.json";
+import Loader from "../loader/loader";
+import Server from "../server";
+import { CardImage } from "../lib/cardImage";
+import { baseCards } from "../catalog/catalog";
 
-
-const headerHeight = Space.iconSize + Space.pad * 2
+const headerHeight = Space.iconSize + Space.pad * 2;
+const discordHeight = 150;
 
 export default class HomeScene extends BaseScene {
-
   constructor() {
     super({
-      key: "HomeScene"
-    })
+      key: "HomeScene",
+    });
   }
 
   create(): void {
     // Ensure signin button is hidden
-    document.getElementById("signin").hidden = true
+    document.getElementById("signin").hidden = true;
 
     // Ensure animation is hidden
-    this.ensureAnimationHidden()
+    this.ensureAnimationHidden();
 
-    this.createHeader()
+    this.createHeader();
 
-    this.createButtons()
+    this.createButtons();
 
-    super.create()
+    super.create();
   }
 
   private createHeader(): void {
     // Make the background
-    let background = this.add.rectangle(0, 0, Space.windowWidth, headerHeight, Color.backgroundLight)
-    .setOrigin(0)
+    let background = this.add
+      .rectangle(0, 0, Space.windowWidth, headerHeight, Color.backgroundLight)
+      .setOrigin(0);
 
-    this.plugins.get('rexDropShadowPipeline')['add'](background, {
+    this.plugins.get("rexDropShadowPipeline")["add"](background, {
       distance: 3,
       angle: -90,
       shadowColor: 0x000000,
-    })
+    });
 
     // Create logout button
-    const s = Server.loggedIn() ? 'Logout' : 'Login'
-    let btnLogout = new Buttons.Basic(this,
-      Space.pad + Space.buttonWidth/2,
-      headerHeight/2,
+    const s = Server.loggedIn() ? "Logout" : "Login";
+    let btnLogout = new Buttons.Basic(
+      this,
+      Space.pad + Space.buttonWidth / 2,
+      headerHeight / 2,
       s,
       () => {
         // If we aren't logged in, go to login scene
         if (!Server.loggedIn()) {
-          this.scene.start('SigninScene', {autoSelect: true})
-          return
+          this.scene.start("SigninScene", { autoSelect: true });
+          return;
         }
 
         // Otherwise ask to confirm user wants to log out
-        this.scene.launch('MenuScene', {
-          menu: 'confirm',
+        this.scene.launch("MenuScene", {
+          menu: "confirm",
           callback: () => {
-            Server.logout()
-            
-            this.scene.start('SigninScene', {autoSelect: false})
+            Server.logout();
+
+            this.scene.start("SigninScene", { autoSelect: false });
           },
-          hint: 'logout'
-        })
-      })
-    
+          hint: "logout",
+        });
+      }
+    );
+
     // Create title
-    this.add.text(Space.windowWidth/2, headerHeight/2, "Celestial", Style.homeTitle)
-    .setOrigin(0.5)
+    this.add
+      .text(
+        Space.windowWidth / 2,
+        headerHeight / 2,
+        "Celestial",
+        Style.homeTitle
+      )
+      .setOrigin(0.5);
   }
 
   private createButtons(): void {
     // const y = headerHeight + (Space.windowHeight - headerHeight)/2
 
-    const width = (Space.windowWidth - Space.pad * 3)/2
-    const height = Space.windowHeight - headerHeight - Space.pad * 2
+    const width = (Space.windowWidth - Space.pad * 3) / 2;
+    const height =
+      Space.windowHeight - headerHeight - Space.pad * 3 - discordHeight;
 
     // If tutorial complete, show normal buttons, otherwise show tutorial button
-    const missions = UserSettings._get('completedMissions')
+    const missions = UserSettings._get("completedMissions");
     if (missions[intro.length - 1]) {
-      this.createAdventureButton(width, height)
-      this.createDeckbuilderButton(width, height)
+      this.createAdventureButton(width, height);
+      this.createDeckbuilderButton(width, height);
+    } else {
+      this.createTutorialButton();
     }
-    else {
-      this.createTutorialButton()      
-    }
+
+    this.createDiscordButton();
   }
 
   private createAdventureButton(width: number, height: number): void {
-    let rectLeft = this.add.rectangle(Space.windowWidth/2 - Space.pad/2,
-      headerHeight + Space.pad,
-      width,
-      height,
-      0x303030,
-      1)
-    .setOrigin(1, 0)
+    let rectLeft = this.add
+      .rectangle(
+        Space.windowWidth / 2 - Space.pad / 2,
+        headerHeight + Space.pad,
+        width,
+        height,
+        0x303030,
+        1
+      )
+      .setOrigin(1, 0);
 
     // Add tweens that make the map circle
-    const time = 30000
+    const time = 30000;
 
-    let map = this.add.sprite(0, 0, 'story-Map')
-    .setScale(0.5)
-    .setOrigin(0)
+    let map = this.add.sprite(0, 0, "story-Map").setScale(0.5).setOrigin(0);
 
-    let tweens: Phaser.Tweens.Tween[] = []
-    tweens.push(this.tweens.add({
-      targets: map,
-      x: -(map.displayWidth - width - Space.pad),
-      duration: time,
-      ease: 'Sine.easeInOut',
-      yoyo: true,
-      repeat: -1,
-    }))
+    let tweens: Phaser.Tweens.Tween[] = [];
+    tweens.push(
+      this.tweens.add({
+        targets: map,
+        x: -(map.displayWidth - width - Space.pad),
+        duration: time,
+        ease: "Sine.easeInOut",
+        yoyo: true,
+        repeat: -1,
+      })
+    );
 
-    tweens.push(this.tweens.add({
-      targets: map,
-      y: -(map.displayHeight - height - Space.pad - headerHeight),
-      duration: time,
-      delay: time/2,
-      ease: 'Sine.easeInOut',
-      yoyo: true,
-      repeat: -1,
-    }))
+    tweens.push(
+      this.tweens.add({
+        targets: map,
+        y: -(map.displayHeight - height - Space.pad - headerHeight),
+        duration: time,
+        delay: time / 2,
+        ease: "Sine.easeInOut",
+        yoyo: true,
+        repeat: -1,
+      })
+    );
 
     // While not hovered, rectangle is greyed
-    rectLeft.setInteractive()
-    .on('pointerover', () => {
-      map.setTint(0x444444)
-    })
-    .on('pointerout', () => {
-      map.clearTint()
-    })
-    .on('pointerdown', () => {
-      this.sound.play('click')
-      this.doAdventure()
-    })
+    rectLeft
+      .setInteractive()
+      .on("pointerover", () => {
+        map.setTint(0x444444);
+      })
+      .on("pointerout", () => {
+        map.clearTint();
+      })
+      .on("pointerdown", () => {
+        this.sound.play("click");
+        this.doAdventure();
+      });
 
-    map.mask = new Phaser.Display.Masks.BitmapMask(this, rectLeft)
+    map.mask = new Phaser.Display.Masks.BitmapMask(this, rectLeft);
 
     // Text over the rectangle
-    this.add.text(rectLeft.x - rectLeft.displayWidth/2, rectLeft.y + rectLeft.displayHeight/2, 'Adventure', Style.homeButtonText)
-    .setOrigin(0.5)
-    .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
+    this.add
+      .text(
+        rectLeft.x - rectLeft.displayWidth / 2,
+        rectLeft.y + rectLeft.displayHeight / 2,
+        "Adventure",
+        Style.homeButtonText
+      )
+      .setOrigin(0.5)
+      .setShadow(0, 1, "rgb(0, 0, 0, 1)", 6);
   }
 
   private createTutorialButton(): void {
-    const names = ['Jules', 'Mia', 'Kitz']
+    const names = ["Jules", "Mia", "Kitz"];
 
-    const x = Space.windowWidth/2
-    const y = headerHeight + (Space.windowHeight - headerHeight)/2
+    const x = Space.windowWidth / 2;
+    const y =
+      headerHeight +
+      (Space.windowHeight - headerHeight - discordHeight - Space.pad) / 2;
     const width = Math.min(
       Space.windowWidth - Space.pad * 2,
-      Space.avatarWidth * (names.length) + Space.pad * (names.length + 1)
-      )
+      Space.avatarWidth * names.length + Space.pad * (names.length + 1)
+    );
     const height = Math.min(
       Space.avatarHeight,
-      Space.windowHeight - headerHeight,
-      )
+      Space.windowHeight - headerHeight - discordHeight - Space.pad * 3
+    );
 
     // Free Play button
-    let rectRight = this.add.rectangle(x,
+    let rectRight = this.add.rectangle(
+      x,
       y,
       width,
       height,
       Color.backgroundLight,
-      1)
+      1
+    );
 
     // Container with visual elements of the button
-    let container = this.add.container(x, y)
+    let container = this.add.container(x, y);
 
     for (let i = 0; i < names.length; i++) {
-      const offset = (i - 1) * (Space.avatarWidth + Space.pad)
-      const avatar = this.add.sprite(offset, 0, `avatar-${names[i]}Full`)
+      const offset = (i - 1) * (Space.avatarWidth + Space.pad);
+      const avatar = this.add.sprite(offset, 0, `avatar-${names[i]}Full`);
 
-      container.add(avatar)
+      container.add(avatar);
     }
 
     // While not hovered, rectangle is greyed
-    rectRight.setInteractive()
-    .on('pointerover', () => {
-      container.iterate((child) => {
-        child.setTint(0x444444)
+    rectRight
+      .setInteractive()
+      .on("pointerover", () => {
+        container.iterate((child) => {
+          child.setTint(0x444444);
+        });
       })
-    })
-    .on('pointerout', () => {
-      container.iterate((child) => {
-        child.clearTint()
+      .on("pointerout", () => {
+        container.iterate((child) => {
+          child.clearTint();
+        });
       })
-    })
-    .on('pointerdown', () => {
-      this.sound.play('click')
-      this.doTutorial()
-    })
+      .on("pointerdown", () => {
+        this.sound.play("click");
+        this.doTutorial();
+      });
 
-    container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight)
+    container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight);
 
     // Text over the rectangle
-    this.add.text(rectRight.x,
-      rectRight.y,
-      'Tutorial',
-      Style.homeButtonText)
-    .setOrigin(0.5)
-    .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
+    this.add
+      .text(rectRight.x, rectRight.y, "Tutorial", Style.homeButtonText)
+      .setOrigin(0.5)
+      .setShadow(0, 1, "rgb(0, 0, 0, 1)", 6);
   }
 
   private createDeckbuilderButton(width: number, height: number): void {
-    const x = Space.windowWidth/2 + Space.pad/2
-    const y = headerHeight + Space.pad
+    const x = Space.windowWidth / 2 + Space.pad / 2;
+    const y = headerHeight + Space.pad;
 
     // Free Play button
-    let rectRight = this.add.rectangle(x,
-      y,
-      width,
-      height,
-      Color.backgroundLight,
-      1)
-    .setOrigin(0)
+    let rectRight = this.add
+      .rectangle(x, y, width, height, Color.backgroundLight, 1)
+      .setOrigin(0);
 
     // Container with visual elements of the button
-    let container = this.add.container(x, y)
+    let container = this.add.container(x, y);
 
     // Character avatars
-    let avatar1 = this.add.sprite(width/2, 0, 'avatar-JulesFull')
-    .setOrigin(1, 0)
-    let avatar2 = this.add.sprite(width/2, Space.cardHeight, 'avatar-MiaFull')
-    .setOrigin(0)
-    container.add([avatar2, avatar1])
+    let avatar1 = this.add
+      .sprite(width / 2, 0, "avatar-JulesFull")
+      .setOrigin(1, 0);
+    let avatar2 = this.add
+      .sprite(width / 2, Space.cardHeight, "avatar-MiaFull")
+      .setOrigin(0);
+    container.add([avatar2, avatar1]);
 
     for (let i = 0; i < 3; i++) {
       // Card in their hand
-      const x1 = width - ((2 - i) * Space.stackOverlap * 2)
-      this.addCard(container, x1, 0, i)
-      
-      // Card in our hand
-      const x2 = i * Space.stackOverlap * 2
-      this.addCard(container, x2, height, i)
-    }
-    
-    // While not hovered, rectangle is greyed
-    rectRight.setInteractive()
-    .on('pointerover', () => {
-      container.iterate((child) => {
-        child.setTint(0x444444)
-      })
-    })
-    .on('pointerout', () => {
-      container.iterate((child) => {
-        child.clearTint()
-      })
-    })
-    .on('pointerdown', () => {
-      this.sound.play('click')
-      this.doStart()
-    })
+      const x1 = width - (2 - i) * Space.stackOverlap * 2;
+      this.addCard(container, x1, 0, i);
 
-    container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight)
+      // Card in our hand
+      const x2 = i * Space.stackOverlap * 2;
+      this.addCard(container, x2, height, i);
+    }
+
+    // While not hovered, rectangle is greyed
+    rectRight
+      .setInteractive()
+      .on("pointerover", () => {
+        container.iterate((child) => {
+          child.setTint(0x444444);
+        });
+      })
+      .on("pointerout", () => {
+        container.iterate((child) => {
+          child.clearTint();
+        });
+      })
+      .on("pointerdown", () => {
+        this.sound.play("click");
+        this.doStart();
+      });
+
+    container.mask = new Phaser.Display.Masks.BitmapMask(this, rectRight);
 
     // Text over the rectangle
-    this.add.text(rectRight.x + rectRight.displayWidth/2, rectRight.y + rectRight.displayHeight/2, 'Free Play', Style.homeButtonText)
-    .setOrigin(0.5)
-    .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
+    this.add
+      .text(
+        rectRight.x + rectRight.displayWidth / 2,
+        rectRight.y + rectRight.displayHeight / 2,
+        "Free Play",
+        Style.homeButtonText
+      )
+      .setOrigin(0.5)
+      .setShadow(0, 1, "rgb(0, 0, 0, 1)", 6);
   }
 
-  private addCard(container: Phaser.GameObjects.Container, x: number,y: number, delay: number): void {
-    // Becomes a random card when the tween starts
-    const card = baseCards[0].name
-    const top = y === 0
+  private createDiscordButton(): void {
+    let rect = this.add
+      .rectangle(
+        Space.windowWidth / 2,
+        Space.windowHeight - Space.pad,
+        Space.windowWidth - Space.pad * 2,
+        discordHeight,
+        0xfabd5d,
+        1
+      )
+      .setOrigin(0.5, 1);
 
-    const imgX = top ? x + 500 : x - 500
-    let img = this.add.image(imgX, y, card)
-    .setOrigin(top ? 1 : 0, top ? 0 : 1)
-    container.add(img)
+    let map = this.add.sprite(0, 0, "bg-Match").setOrigin(0);
+
+    // While not hovered, rectangle is greyed
+    rect
+      .setInteractive()
+      .on("pointerover", () => {
+        map.setTint(0x444444);
+      })
+      .on("pointerout", () => {
+        map.clearTint();
+      })
+      .on("pointerdown", () => {
+        this.sound.play("click");
+        window.open(Url.discord);
+      });
+
+    map.mask = new Phaser.Display.Masks.BitmapMask(this, rect);
+
+    // Text over the rectangle
+    this.add
+      .text(
+        rect.x,
+        rect.y - rect.displayHeight / 2,
+        "Join the Discord Community",
+        Style.homeButtonText
+      )
+      .setOrigin(0.5)
+      .setShadow(0, 1, "rgb(0, 0, 0, 1)", 6);
+  }
+
+  private addCard(
+    container: Phaser.GameObjects.Container,
+    x: number,
+    y: number,
+    delay: number
+  ): void {
+    // Becomes a random card when the tween starts
+    const card = baseCards[0].name;
+    const top = y === 0;
+
+    const imgX = top ? x + 500 : x - 500;
+    let img = this.add.image(imgX, y, card).setOrigin(top ? 1 : 0, top ? 0 : 1);
+    container.add(img);
 
     // Tween
-    const duration = 300
-    const durationFall = 300 * 2
-    const hold = 6000
-    const repeatDelay = 350 * 3
+    const duration = 300;
+    const durationFall = 300 * 2;
+    const hold = 6000;
+    const repeatDelay = 350 * 3;
 
     const fallConfig = {
       targets: img,
       y: top ? y - Space.cardHeight : y + Space.cardHeight,
-      delay: (duration + hold) - durationFall,
+      delay: duration + hold - durationFall,
       duration: durationFall,
       ease: Ease.cardFall,
       onComplete: () => {
         // Reset the y
-        img.setY(y)
-      }
-    }
+        img.setY(y);
+      },
+    };
 
     this.tweens.add({
       targets: img,
@@ -307,64 +392,69 @@ export default class HomeScene extends BaseScene {
       repeatDelay: repeatDelay,
       ease: Ease.basic,
       onStart: () => {
-        const cardNum = Math.floor(Math.random() * (baseCards.length - 1))
-        const card = baseCards[cardNum].name
-        img.setTexture(card)
+        const cardNum = Math.floor(Math.random() * (baseCards.length - 1));
+        const card = baseCards[cardNum].name;
+        img.setTexture(card);
 
         // When holding completes, tween the card dropping offscreen
-        this.tweens.add(fallConfig)
+        this.tweens.add(fallConfig);
       },
-      
+
       onRepeat: () => {
-        const cardNum = Math.floor(Math.random() * (baseCards.length - 1))
-        const card = baseCards[cardNum].name
-        img.setTexture(card)
+        const cardNum = Math.floor(Math.random() * (baseCards.length - 1));
+        const card = baseCards[cardNum].name;
+        img.setTexture(card);
 
         // When holding completes, tween the card dropping offscreen
-        this.tweens.add(fallConfig)
+        this.tweens.add(fallConfig);
       },
-    })
+    });
   }
 
   // Do everything that occurs when the start button is pressed - either start, or prompt tutorial
   private doStart(): void {
-    this.doDeckbuilder()
+    this.doDeckbuilder();
   }
 
   private doDeckbuilder(): void {
-    UserProgress.addAchievement('deckMenuNotice')
-    
-    this.beforeExit()
-    this.scene.start("BuilderScene", {isTutorial: false})
+    UserProgress.addAchievement("deckMenuNotice");
+
+    this.beforeExit();
+    this.scene.start("BuilderScene", { isTutorial: false });
   }
 
   private doAdventure(): void {
-    this.beforeExit()
+    this.beforeExit();
 
     // Otherwise, go to the adventure scene map
-    this.scene.start("AdventureScene")
+    this.scene.start("AdventureScene");
   }
 
   private doTutorial(): void {
-    this.beforeExit()
-    
-    const missions = UserSettings._get('completedMissions')
+    this.beforeExit();
+
+    const missions = UserSettings._get("completedMissions");
     for (let i = 0; i < intro.length; i++) {
       // If this tutorial mission hasn't been completed, jump to that mission
       if (!missions[i]) {
-        this.scene.start("TutorialGameScene", {isTutorial: false, deck: undefined, mmCode: `ai:t${i}`, missionID: i})
-        return
+        this.scene.start("TutorialGameScene", {
+          isTutorial: false,
+          deck: undefined,
+          mmCode: `ai:t${i}`,
+          missionID: i,
+        });
+        return;
       }
     }
   }
 
-	private ensureAnimationHidden(): void {
-		const animations = document.getElementsByClassName('animation')
-		if (animations.length !== 1) {
-			throw new Error('There should be exactly 1 animation on the page.')
-		}
+  private ensureAnimationHidden(): void {
+    const animations = document.getElementsByClassName("animation");
+    if (animations.length !== 1) {
+      throw new Error("There should be exactly 1 animation on the page.");
+    }
 
-		const animation: HTMLVideoElement = <HTMLVideoElement>animations.item(0)
-		animation.style.display = 'none'
-	}
+    const animation: HTMLVideoElement = <HTMLVideoElement>animations.item(0);
+    animation.style.display = "none";
+  }
 }
