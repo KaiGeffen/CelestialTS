@@ -4,6 +4,7 @@ import {
   TypedWebSocket,
   createEvent,
 } from '../../../shared/network/typedWebSocket.js'
+import { decodeDeck } from '../../../shared/codec.js'
 
 import PveMatch from './match/pveMatch.js'
 import PvpMatch from './match/pvpMatch.js'
@@ -60,7 +61,10 @@ function registerEvents(socket: WebSocket, match: Match, playerNumber: number) {
   // Each of the events and its callback
   const initEvent = createEvent('init', (data) => {
     console.log('Initializing a match with data:', data)
-    match.addDeck(playerNumber, data.deck, data.avatar)
+    const deck = decodeDeck(data.deck)
+    console.log(deck)
+    match.addDeck(playerNumber, deck, data.avatar)
+    ws.send({ type: 'init', avatar: 1, deck: 'helllo' })
   })
 
   const playCardEvent = createEvent('play_card', (data) => {

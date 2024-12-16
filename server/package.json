@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "webpack",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "webpack-node-externals": "^3.0.0"
+  }
+}

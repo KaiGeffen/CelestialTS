@@ -1,4 +1,5 @@
 import { GameModel } from '../../shared/state/gameModel.js'
+import { Card } from '../../shared/state/card.js'
 
 import { Status } from '../../shared/state/effects.js'
 import { SoundEffect } from '../../shared/state/soundEffect'
@@ -19,7 +20,7 @@ import { ClientModel } from './logic/clientModel.js'
 class ServerController {
   model: GameModel
 
-  constructor(deck1: any, deck2: any, avatar1: any, avatar2: any) {
+  constructor(deck1: Card[], deck2: Card[], avatar1: number, avatar2: number) {
     this.model = new GameModel(deck1, deck2, avatar1, avatar2)
   }
 

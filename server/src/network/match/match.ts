@@ -1,4 +1,5 @@
 import { ServerController } from '../../gameController.js'
+import { Card } from '../../../../shared/state/card.js'
 
 interface Match {
   ws1: WebSocket | null
@@ -6,7 +7,7 @@ interface Match {
   uuid1: string | null
   uuid2: string | null
 
-  storedDeck: any
+  storedDeck: Card[]
   storedAvatar: any
 
   game: ServerController | null
@@ -19,24 +20,24 @@ class Match {
     this.uuid1 = uuid
   }
 
-  async addDeck(player: number, deck: any, avatar: any) {
+  async addDeck(player: number, deck: Card[], avatar: number) {
     await this.lock
     if (this.storedDeck === null) {
       this.storedDeck = deck
-      this.storedDeck = avatar
+      this.storedAvatar = avatar
     } else {
       if (player === 0) {
         this.game = new ServerController(
           deck,
           this.storedDeck,
           avatar,
-          this.storedDeck,
+          this.storedAvatar,
         )
       } else {
         this.game = new ServerController(
           this.storedDeck,
           deck,
-          this.storedDeck,
+          this.storedAvatar,
           avatar,
         )
       }
