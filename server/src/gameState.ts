@@ -1,5 +1,5 @@
 import { Anim } from '../../shared/state/animation'
-import { CardCodec } from '../../shared/cardCodec'
+import { CardCodec } from '../../shared/codec'
 import { Story, Source } from './logic/Story'
 import { hidden_card } from './logic/Catalog'
 import { Quality } from '../../shared/state/effects'
@@ -47,7 +47,7 @@ class ServerModel {
     deck2: any[],
     avatar1: any,
     avatar2: any,
-    shuffle = true
+    shuffle = true,
   ) {
     this.version_no = 0
     this.sound_effect = null
@@ -104,8 +104,8 @@ class ServerModel {
           'Deck',
           'Hand',
           CardCodec.encode_card(card),
-          this.hand[player].length - 1
-        )
+          this.hand[player].length - 1,
+        ),
       )
     }
     return card
@@ -123,8 +123,8 @@ class ServerModel {
           'Discard',
           CardCodec.encode_card(card),
           index,
-          this.pile[player].length - 1
-        )
+          this.pile[player].length - 1,
+        ),
       )
     }
     return card
@@ -153,8 +153,8 @@ class ServerModel {
               'Deck',
               'Hand',
               CardCodec.encode_card(card),
-              this.hand[player].length - 1
-            )
+              this.hand[player].length - 1,
+            ),
           )
           return card
         }
@@ -171,8 +171,8 @@ class ServerModel {
           'Gone',
           'Hand',
           CardCodec.encode_card(card),
-          this.hand[player].length - 1
-        )
+          this.hand[player].length - 1,
+        ),
       )
       return card
     }
@@ -185,8 +185,8 @@ class ServerModel {
         'Gone',
         'Discard',
         CardCodec.encode_card(card),
-        this.pile[player].length
-      )
+        this.pile[player].length,
+      ),
     )
     this.pile[player].push(card)
   }
@@ -200,8 +200,8 @@ class ServerModel {
         'Gone',
         'Story',
         CardCodec.encode_card(card),
-        this.story.acts.length
-      )
+        this.story.acts.length,
+      ),
     )
     this.story.add_act(card, player, Source.PILE)
   }
@@ -219,7 +219,7 @@ class ServerModel {
         if (this.hand[player][i].cost === cost) {
           const card = this.hand[player][i]
           this.animations[player].push(
-            new Anim('Hand', 'Gone', CardCodec.encode_card(card), i)
+            new Anim('Hand', 'Gone', CardCodec.encode_card(card), i),
           )
           this.expended[player].push(card)
           this.hand[player].splice(i, 1)
@@ -236,7 +236,7 @@ class ServerModel {
       if (this.pile[player].length > 0) {
         const card = this.pile[player].pop()
         this.animations[player].push(
-          new Anim('Discard', 'Gone', CardCodec.encode_card(card))
+          new Anim('Discard', 'Gone', CardCodec.encode_card(card)),
         )
         this.expended[player].push(card)
       }
@@ -248,7 +248,7 @@ class ServerModel {
       const card = this.deck[player].pop()
       this.pile[player].push(card)
       this.animations[player].push(
-        new Anim('Deck', 'Discard', CardCodec.encode_card(card))
+        new Anim('Deck', 'Discard', CardCodec.encode_card(card)),
       )
       return card
     }
@@ -293,7 +293,7 @@ class ServerModel {
     player: number,
     cards_playable = Array(6).fill(false),
     costs = Array(6).fill(null),
-    is_recap = false
+    is_recap = false,
   ) {
     const deck_sort = (card: any) => {
       const rand_from_name = (parseInt(card.name, 36) % 1000) / 1000
@@ -310,7 +310,7 @@ class ServerModel {
       opp_deck: this.deck[player ^ 1].length,
       pile: this.pile.slice().reverse().map(CardCodec.encode_deck),
       last_shuffle: CardCodec.encode_deck(
-        this.last_shuffle[player ^ 1].sort(deck_sort)
+        this.last_shuffle[player ^ 1].sort(deck_sort),
       ),
       expended: this.expended.slice().reverse().map(CardCodec.encode_deck),
       wins: this.wins.slice().reverse(),
@@ -348,7 +348,7 @@ class ServerModel {
           anim.zone_from,
           undefined,
           anim.index,
-          anim.index2
+          anim.index2,
         )
       } else {
         return anim

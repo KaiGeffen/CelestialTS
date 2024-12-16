@@ -2,19 +2,45 @@ import { Status, Quality } from './effects'
 import { Anim } from './animation'
 import { Act } from './story'
 
-export class Card {
-  constructor(
-    public name: string,
-    public cost: number = 0,
-    public points: number = 0,
-    public qualities: Quality[] = [],
-    public text: string = '',
-    // TODO
-    public dynamicText: string = '',
-    public id: number = -1,
-  ) {}
+interface CardData {
+  name?: string
+  id?: number
+  cost?: number
+  points?: number
 
-  play(player: number, game: any, index: number, bonus: number): string {
+  text?: string
+  qualities?: Quality[]
+  dynamicText?: string
+}
+
+export class Card {
+  name: string
+  id: number
+  cost: number
+  points: number
+  text: string
+  qualities: Quality[]
+  dynamicText: string
+
+  constructor({
+    name = '',
+    id = 0,
+    cost = 0,
+    points = 0,
+    text = '',
+    qualities = [],
+    dynamicText = '',
+  }: CardData) {
+    this.name = name
+    this.id = id
+    this.cost = cost
+    this.points = points
+    this.text = text
+    this.qualities = qualities
+    this.dynamicText = dynamicText
+  }
+
+  play(player: number, game: any, index: number, bonus: number): void {
     let result = this.points + bonus
 
     result += game.status[player].filter(
@@ -32,7 +58,7 @@ export class Card {
 
     game.score[player] += result
 
-    return result > 0 ? `+${result}` : `${result}`
+    result > 0 ? `+${result}` : `${result}`
   }
 
   ratePlay(world: any): number {
@@ -216,15 +242,14 @@ export class Card {
         return `\nBuild +${amt}`
       }
     }
-    const card = new Card(
-      'Child',
-      0,
-      amt,
-      [Quality.FLEETING],
-      '',
-      `0:${amt}, fleeting`,
-      1003,
-    )
+    const card = new Card({
+      name: 'Child',
+      id: 1003,
+      cost: 0,
+      points: amt,
+      qualities: [Quality.FLEETING],
+      text: `0:${amt}, fleeting`,
+    })
     if (game.create(player, card)) {
       return `\nBuild ${amt}`
     } else {
@@ -301,26 +326,15 @@ export class Card {
   }
 }
 
-// class FireCard extends Card {
-//   play(player: number, game: any, index: number, bonus: number): string {
-//     bonus -= index
-//     return super.play(player, game, index, bonus)
-//   }
+export class SightCard extends Card {
+  constructor(
+    public amt: number,
+    data: CardData,
+  ) {
+    super(data)
+  }
 
-//   ratePlay(world: any): number {
-//     return this.points - world.story.acts.length
-//   }
-// }
-
-// class SightCard extends Card {
-//   constructor(
-//     public amt: number,
-//     ...args: any[]
-//   ) {
-//     super(...args)
-//   }
-
-//   onPlay(player: number, game: any): void {
-//     game.vision[player] += this.amt
-//   }
-// }
+  onPlay(player: number, game: any): void {
+    game.vision[player] += this.amt
+  }
+}

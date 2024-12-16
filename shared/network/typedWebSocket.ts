@@ -1,8 +1,10 @@
+import { Card } from '../state/card'
+
 // All supported messages (type and payload) between server and client
 type SupportedMessages = {
   // Client to server
   init: {
-    deck: string
+    deck: Card[]
     avatar: number
   }
   play_card: { card: number }

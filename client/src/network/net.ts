@@ -32,7 +32,7 @@ export class MatchWS {
           // Send the initial message, including things like the deck we are using
           this.socket.send({
             type: 'init',
-            deck: encodeDeck(deck),
+            deck: deck,
             avatar: avatarID,
           })
 
