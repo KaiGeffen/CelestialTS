@@ -1,7 +1,7 @@
 import Match from './match.js'
 
 interface pvpMatch {
-  game: Game
+  game: any
   ws1: WebSocket | null
   ws2: WebSocket | null
   storedDeck: any
@@ -13,6 +13,7 @@ interface pvpMatch {
 
 class pvpMatch extends Match {
   constructor(ws: WebSocket, uuid: string | null = null) {
+    super(ws, uuid)
     this.ws1 = ws
     this.uuid1 = uuid
   }

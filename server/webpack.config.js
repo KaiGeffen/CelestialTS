@@ -7,6 +7,7 @@ module.exports = {
     filename: 'index.js',
     libraryTarget: 'commonjs2', // Use CommonJS for Node.js
   },
+  mode: 'development',
   target: 'node',
   externals: [nodeExternals()], // Exclude node_modules from the bundle
   resolve: {
@@ -16,7 +17,10 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/, // Process TypeScript files
-        use: 'ts-loader',
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true, // Skip type-checking
+        },
         exclude: /node_modules/,
       },
     ],

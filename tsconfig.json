@@ -9,10 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "rootDir": "./",
-    "lib": ["es6", "dom"] // includes WebSocket definitions
+    "lib": ["es6", "dom"]
   },
-  "include": [
-    "shared/**/*.ts",
-    "server/**/*.ts"
-  ]
+  "include": ["shared/**/*.ts", "server/**/*.ts"]
 }

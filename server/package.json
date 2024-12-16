@@ -1,7 +1,8 @@
 {
   "scripts": {
     "build": "webpack",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "dev": "webpack --watch & node dist/index.js"
   },
   "devDependencies": {
     "webpack-node-externals": "^3.0.0"

@@ -6,7 +6,7 @@
     "start:server": "npm run start --prefix server",
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "npm run dev --prefix client",
-    "dev:server": "tsc; node dist/server/src/index.js"
+    "dev:server": "npm run dev --prefix server"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",

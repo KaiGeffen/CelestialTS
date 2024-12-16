@@ -1,5 +1,5 @@
-import { ServerController } from '../../gameController.js'
-import { Card } from '../../../../shared/state/card.js'
+import { ServerController } from '../../gameController'
+import { Card } from '../../../../shared/state/card'
 
 interface Match {
   ws1: WebSocket | null

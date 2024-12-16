@@ -1,7 +1,7 @@
-import Match from './match.js'
-import { Card } from '../../../../shared/state/card.js'
-import { Game } from '../../../../shared/state/gameModel.js'
-import { ServerController } from '../../gameController.js'
+import Match from './match'
+import { Card } from '../../../../shared/state/card'
+import { GameModel } from '../../../../shared/state/gameModel'
+import { ServerController } from '../../gameController'
 
 interface PveMatch {
   ws1: WebSocket
@@ -10,7 +10,7 @@ interface PveMatch {
   storedDeck: any
   storedAvatar: any
 
-  game: Game
+  game: any
   lock: any
 }
 

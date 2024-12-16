@@ -1,7 +1,7 @@
-import { GameModel } from '../../shared/state/gameModel.js'
-import { Card } from '../../shared/state/card.js'
+import { GameModel } from '../../shared/state/gameModel'
+import { Card } from '../../shared/state/card'
 
-import { Status } from '../../shared/state/effects.js'
+import { Status } from '../../shared/state/effects'
 import { SoundEffect } from '../../shared/state/soundEffect'
 import { Anim } from '../../shared/state/animation'
 // import { CardCodec } from '../../shared/cardCodec'
@@ -15,7 +15,7 @@ import {
   BREATH_CAP,
   PASS,
 } from '../../shared/settings'
-import { ClientModel } from './logic/clientModel.js'
+import { ClientModel } from './logic/clientModel'
 
 class ServerController {
   model: GameModel

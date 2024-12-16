@@ -57,19 +57,19 @@ function decodeCard(s: string): Card {
 //   return cards.map(encodeCard).join(delims[1])
 // }
 
-// function decodeDeck(s: string): Card[] {
-//   if (s === '') return []
+function decodeDeck(s: string): Card[] {
+  if (s === '') return []
 
-//   let cardStrings: string[] = s.split(delims[1])
+  let cardStrings: string[] = s.split(delims[1])
 
-//   let result = cardStrings.map(decodeCard)
+  let result = cardStrings.map(decodeCard)
 
-//   if (result.includes(undefined)) {
-//     result = undefined
-//   }
+  if (result.includes(undefined)) {
+    result = undefined
+  }
 
-//   return result
-// }
+  return result
+}
 
 // function decodeStory(s: string): Story {
 //   let story = new Story()
@@ -184,7 +184,7 @@ export {
   encodeCard,
   decodeCard,
   // encodeDeck,
-  // decodeDeck,
+  decodeDeck,
   // decodeStory,
   // decodeStatuses,
   // decodeRecap,

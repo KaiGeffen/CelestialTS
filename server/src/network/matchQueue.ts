@@ -3,12 +3,12 @@ import { parse } from 'url'
 import {
   TypedWebSocket,
   createEvent,
-} from '../../../shared/network/typedWebSocket.js'
-import { decodeDeck } from '../../../shared/codec.js'
+} from '../../../shared/network/typedWebSocket'
+import { decodeDeck } from '../../../shared/codec'
 
-import PveMatch from './match/pveMatch.js'
-import PvpMatch from './match/pvpMatch.js'
-import Match from './match/match.js'
+import PveMatch from './match/pveMatch'
+import PvpMatch from './match/pvpMatch'
+import Match from './match/match'
 
 class MatchQueue {
   static enqueue(socket: WebSocket, req: Request) {
