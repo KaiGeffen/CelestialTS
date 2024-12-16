@@ -117,4 +117,4 @@ class Story {
   }
 }
 
-export { Story }
+export { Act, Story }

@@ -14,6 +14,7 @@ import {
   BREATH_CAP,
   PASS,
 } from '../../shared/settings'
+import { ClientModel } from './logic/clientModel.js'
 
 class ServerController {
   model: GameModel
@@ -282,18 +283,19 @@ class ServerController {
   }
 
   // TODO Get the model that client can see of state
-  getClientModel(player: number): any {
-    const playerCanPlay = (cardNum: number) => this.canPlay(player, cardNum)
+  getClientModel(player: number): GameModel {
+    return this.model
+    // const playerCanPlay = (cardNum: number) => this.canPlay(player, cardNum)
 
-    const cardsPlayable = Array.from(
-      { length: this.model.hand[player].length },
-      (_, i) => playerCanPlay(i),
-    )
-    const costs = this.model.hand[player].map((card) =>
-      this.getCost(card, player),
-    )
+    // const cardsPlayable = Array.from(
+    //   { length: this.model.hand[player].length },
+    //   (_, i) => playerCanPlay(i),
+    // )
+    // const costs = this.model.hand[player].map((card) =>
+    //   this.getCost(card, player),
+    // )
 
-    return this.model.getClientModel(player, cardsPlayable, costs)
+    // return this.model.getClientModel(player, cardsPlayable, costs)
   }
 
   doUpkeepStatuses(player: number): void {

@@ -1,5 +1,6 @@
 import { Status, Quality } from './effects'
 import { Anim } from './animation'
+import { Act } from './story'
 
 export class Card {
   constructor(
@@ -108,17 +109,17 @@ export class Card {
   }
 
   inspire(amt: number, game: any, player: number): string {
-    game.animations[player].push(new Anim('Status', 0))
+    // game.animations[player].push(new Anim('Status', 0))
     return this.addStatus(amt, game, player, Status.INSPIRE)
   }
 
   nourish(amt: number, game: any, player: number): string {
-    game.animations[player].push(new Anim('Status', 2))
+    // game.animations[player].push(new Anim('Status', 2))
     return this.addStatus(amt, game, player, Status.NOURISH)
   }
 
   starve(amt: number, game: any, player: number): string {
-    game.animations[player].push(new Anim('Status', 3))
+    // game.animations[player].push(new Anim('Status', 3))
     return this.addStatus(amt, game, player, Status.STARVE)
   }
 
@@ -221,8 +222,6 @@ export class Card {
       amt,
       [Quality.FLEETING],
       '',
-      false,
-      false,
       `0:${amt}, fleeting`,
       1003,
     )
@@ -238,9 +237,9 @@ export class Card {
       const act = game.story.acts[index]
       const oldCard = act.card
       game.story.replaceAct(index, new Act(card, act.owner))
-      game.animations[act.owner].push(
-        new Anim('Transform', 'Story', CardCodec.encodeCard(oldCard), index),
-      )
+      // game.animations[act.owner].push(
+      //   new Anim('Transform', 'Story', CardCodec.encodeCard(oldCard), index),
+      // )
     }
   }
 
@@ -302,26 +301,26 @@ export class Card {
   }
 }
 
-class FireCard extends Card {
-  play(player: number, game: any, index: number, bonus: number): string {
-    bonus -= index
-    return super.play(player, game, index, bonus)
-  }
+// class FireCard extends Card {
+//   play(player: number, game: any, index: number, bonus: number): string {
+//     bonus -= index
+//     return super.play(player, game, index, bonus)
+//   }
 
-  ratePlay(world: any): number {
-    return this.points - world.story.acts.length
-  }
-}
+//   ratePlay(world: any): number {
+//     return this.points - world.story.acts.length
+//   }
+// }
 
-class SightCard extends Card {
-  constructor(
-    public amt: number,
-    ...args: any[]
-  ) {
-    super(...args)
-  }
+// class SightCard extends Card {
+//   constructor(
+//     public amt: number,
+//     ...args: any[]
+//   ) {
+//     super(...args)
+//   }
 
-  onPlay(player: number, game: any): void {
-    game.vision[player] += this.amt
-  }
-}
+//   onPlay(player: number, game: any): void {
+//     game.vision[player] += this.amt
+//   }
+// }

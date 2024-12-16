@@ -2,7 +2,7 @@ import { Card, SightCard } from '../../../../shared/state/card'
 import { seen, predator } from '../catalog/Tokens'
 import { Status, Quality } from '../../../../shared/state/effects'
 import { Source } from '../Story'
-import { Animation } from '../../../../shared/state/animation'
+import { Anim } from '../../../../shared/state/animation'
 
 class Dawn extends SightCard {
   morning(player: number, game: any, index: number): boolean {
