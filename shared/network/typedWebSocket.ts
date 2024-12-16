@@ -1,14 +1,17 @@
-import { Card } from '../state/card'
+import { GameModel } from '../state/gameModel'
+
+// TODO Put in shared place
+type Mulligan = [boolean, boolean, boolean]
 
 // All supported messages (type and payload) between server and client
 type SupportedMessages = {
   // Client to server
   init: {
-    deck: Card[]
+    deck: string
     avatar: number
   }
   play_card: { card: number }
-  mulligan: {}
+  mulligan: { mulligan: Mulligan }
   pass_turn: {}
   exit_match: {}
   emote: {}
@@ -17,7 +20,7 @@ type SupportedMessages = {
   both_players_connected: {
     value: boolean
   }
-  transmit_state: {} // TODO
+  transmit_state: { state: GameModel }
   signal_error: {}
   dc: {}
   opponent_emote: {}

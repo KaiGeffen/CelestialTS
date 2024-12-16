@@ -1,158 +1,193 @@
-import { all_cards } from '../server/src/logic/Catalog'
-import { Recap } from '../server/src/logic/Recap'
-import { Status } from './state/effects'
-import { Story, Source } from '../server/src/logic/Story'
+import allCards from './state/catalog'
+import { Card } from './state/card'
 
-const DELIM1 = '¡'
-const DELIM2 = '™'
-const DELIM_DYN_TEXT = '£'
-const DELIM_FULL_STATE = 'ª'
+const delims = ['¡', '™', '£']
+const full_state_delim = 'ª'
 
-function encodeCard(card: any): string {
-  for (const catalog_entry of all_cards) {
-    if (card.name === catalog_entry.name) {
-      if (card.dynamic_text) {
-        return `${card.id}${DELIM_DYN_TEXT}${card.dynamic_text}`
-      } else {
-        return `${card.id}`
-      }
-    }
-  }
-  console.error(`Encoding error for card ${card}`)
-  throw new Error('Card encoding broken')
+function encodeCard(card: Card): string {
+  return card.id.toString()
 }
 
-function encodeDeck(deck: any[]): string {
-  return deck.map(encodeCard).join(DELIM2)
-}
+function decodeCard(s: string): Card {
+  let sections = s.split(delims[2])
 
-function decodeCard(s: string): any {
-  const sections = s.split(DELIM_DYN_TEXT)
-  const card_id = parseInt(sections[0], 10)
-  const dynamic_text = sections.length > 1 ? sections[1] : null
+  let cardId = parseInt(sections[0])
+  let baseCard = allCards.find((card) => card.id === cardId)
 
-  let card = null
-  for (const c of all_cards) {
-    if (card_id === c.id) {
-      card = c
-      break
-    }
-  }
-
-  if (dynamic_text) {
-    card = { ...card, text: dynamic_text }
-  }
-
-  return card
-}
-
-function decodeDeck(deck_codes: string): any[] {
-  if (deck_codes) {
-    const cards =
-      deck_codes.includes(DELIM2) || deck_codes.includes(DELIM_DYN_TEXT)
-        ? deck_codes.split(DELIM2)
-        : deck_codes.split(':')
-    return cards.map(decodeCard)
+  if (sections.length == 1) {
+    return baseCard
   } else {
-    return []
-  }
-}
+    let dynamicText = sections[1]
 
-function encodeStory(stack: any[]): string {
-  const encodeAct = (play: any) => {
-    const [card_id, owner] = play
-    return `${encodeCard(card_id)}${DELIM2}${owner}`
-  }
+    let points = parseInt(dynamicText.split(':')[1].split(',')[0])
 
-  return stack.map(encodeAct).join(DELIM1)
-}
-
-function decodeStory(s: string): Story {
-  const story = new Story()
-  if (!s) {
-    return story
-  }
-
-  for (const act of s.split(DELIM1)) {
-    const [cardStr, ownerStr] = act.split(DELIM2)
-    const card = decodeCard(cardStr)
-    const owner = parseInt(ownerStr, 10)
-    story.addAct(card, owner, Source.HAND)
-  }
-
-  return story
-}
-
-function encodeRecap(recap: Recap, shallow: boolean): string {
-  let result = `${recap.sums[0]}${DELIM2}${recap.sums[1]}${DELIM1}${recap.wins[0]}${DELIM2}${recap.wins[1]}${DELIM1}${recap.safety[0]}${DELIM2}${recap.safety[1]}`
-
-  if (recap.story) {
-    result += DELIM1
-
-    const encodePlay = (play: any) => {
-      const [card, owner, text] = play
-      return `${encodeCard(card)}${DELIM2}${owner}${DELIM2}${text}`
+    // NOTE A new copy of the card is created so that all instances (of Bastet, for example) won't have the same dynamic text
+    let data = {
+      name: baseCard.name,
+      id: baseCard.id,
+      cost: baseCard.cost,
+      points: points,
+      text: baseCard.text,
+      dynamicText: dynamicText,
+      catalogText: '',
+      story: '',
+      // TODO These are in client
+      // keywords: baseCard.keywords,
+      // references: baseCard.references,
     }
 
-    result += recap.story.map(encodePlay).join(DELIM1)
+    return new Card(data)
   }
-
-  if (recap.state_list && !shallow) {
-    result += DELIM_FULL_STATE
-    result += recap.getStateList(0).map(JSON.stringify).join(DELIM_FULL_STATE)
-  }
-
-  return result
 }
 
-function decodeRecap(s: string): Recap {
-  s = s.split(DELIM_FULL_STATE)[0]
+// function encodeDeck(deck: Card[] | string): string {
+//   if (deck === undefined || deck === '') {
+//     return ''
+//   }
 
-  const recap = s.split(DELIM1, 4)
-  const sums = recap[0].split(DELIM2).map(Number)
-  const wins = recap[1].split(DELIM2).map(Number)
-  const safety = recap[2].split(DELIM2).map(Number)
+//   let cards = []
+//   if (typeof deck === 'string') {
+//     cards = deck.split(':').map((id) => {
+//       return getCard(parseInt(id))
+//     })
+//   } else {
+//     cards = deck
+//   }
 
-  if (recap.length === 3) {
-    return new Recap(sums, wins, safety)
-  }
+//   return cards.map(encodeCard).join(delims[1])
+// }
 
-  const plays = recap[3].split(DELIM1)
+// function decodeDeck(s: string): Card[] {
+//   if (s === '') return []
 
-  const decodePlay = (play: string) => {
-    const [cardStr, ownerStr, text] = play.split(DELIM2)
-    const card = decodeCard(cardStr)
-    const owner = parseInt(ownerStr, 10)
-    return [card, owner, text]
-  }
+//   let cardStrings: string[] = s.split(delims[1])
 
-  const story = plays.map(decodePlay)
-  return new Recap(story, sums, wins, safety)
-}
+//   let result = cardStrings.map(decodeCard)
 
-function encodeStatuses(statuses: Status[]): string {
-  return statuses.map((status) => status.value).join(DELIM1)
-}
+//   if (result.includes(undefined)) {
+//     result = undefined
+//   }
 
-function decodeStatuses(s: string): Status[] {
-  if (!s) {
-    return []
-  }
-  return s.split(DELIM1).map((stat) => new Status(stat))
-}
+//   return result
+// }
 
-function encodeMulligans(mulligans: boolean[]): string {
-  return mulligans.map((mulligan) => (mulligan ? '1' : '0')).join('')
-}
+// function decodeStory(s: string): Story {
+//   let story = new Story()
+//   if (s === '') return story
 
-function decodeMulligans(s: string): boolean[] {
-  return Array.from(s).map((c) => {
-    if (c === '1') {
-      return true
-    } else if (c === '0') {
-      return false
-    } else {
-      throw new Error(`Invalid mulligans: ${s}`)
-    }
-  })
+//   s.split(delims[0]).forEach(function (act) {
+//     let l = act.split(delims[1])
+
+//     let card = decodeCard(l[0])
+//     let owner = +l[1]
+
+//     story.addAct(card, owner, -1)
+//   })
+
+//   return story
+// }
+
+// // TODO Make a more robust status module once the desired functionality is known
+// const allStatuses = ['Inspired', 'Inspire', 'Nourish', 'Starve', 'Restricted']
+
+// function decodeStatuses(s: string): Status[] {
+//   let result: Status[] = []
+
+//   // Split the string into substrings
+//   s.split(delims[0]).forEach(function (ss) {
+//     // If any of those are statuses, add them to the list
+//     if (Status[ss] !== undefined) {
+//       result.push(Status[ss])
+//     }
+//   })
+
+//   return result
+
+//   // if (s === '') return []
+
+//   // let statuses = s.split(delims[0])
+
+//   // let result = ''
+//   // allStatuses.forEach(function(statusType) {
+
+//   // 	let count = 0
+//   // 	statuses.forEach(function(status) {
+//   // 		if (status === statusType) {
+//   // 			count++
+//   // 		}
+//   // 	})
+
+//   // 	if (count > 0) result += `${statusType} ${count}, `
+//   // })
+
+//   // return result.slice(0, -2)
+// }
+
+// function decodeRecap(s: string): Recap {
+//   let arr = s.split(full_state_delim)
+//   let simpleRecap = arr[0]
+//   arr = arr.slice(1)
+
+//   // The list of states player sees before/after each act in the story
+//   let stateList: ClientState[] = arr.map((s) => new ClientState(JSON.parse(s)))
+
+//   let sections = simpleRecap.split(delims[0])
+//   let sums = sections[0].split(delims[1]).map(parseFloat)
+//   let wins = sections[1].split(delims[1]).map(parseFloat)
+//   let safety = sections[2].split(delims[1]).map(parseFloat)
+
+//   let plays = sections.slice(3)
+
+//   function decodePlay(play: string): Play {
+//     let l = play.split(delims[1])
+
+//     let card = decodeCard(l[0])
+//     let owner = +l[1]
+//     // Text isn't used anymore
+//     let text = l[2]
+
+//     return new Play(card, owner, text)
+//   }
+
+//   let playList = plays.map(decodePlay)
+
+//   return new Recap(sums, wins, safety, playList, stateList)
+// }
+
+// // Random 1-to-1 function that obfuscates the id scheme for cards
+// // and ensures that a deck with n cards always has a string of n * c chars (And vice-verca)
+
+// // Encode / decode a string for deck's code such that user can copy / paste it
+// function encodeShareableDeckCode(s: string): string {
+//   return s
+//     .split(':')
+//     .map((cardId) => {
+//       let hexString = parseInt(cardId).toString(16).toUpperCase()
+//       let padded = hexString.padStart(3, '0')
+//       return padded
+//     })
+//     .join('')
+// }
+// function decodeShareableDeckCode(s: string): string {
+//   try {
+//     return (s.match(/.{1,3}/g) ?? [])
+//       .map((charTuple) => {
+//         return encodeCard(getCard(parseInt(charTuple, 16)))
+//       })
+//       .join(':')
+//   } catch (error) {
+//     return undefined
+//   }
+// }
+
+export {
+  encodeCard,
+  decodeCard,
+  // encodeDeck,
+  // decodeDeck,
+  // decodeStory,
+  // decodeStatuses,
+  // decodeRecap,
+  // encodeShareableDeckCode,
+  // decodeShareableDeckCode,
 }

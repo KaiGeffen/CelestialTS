@@ -1,9 +1,8 @@
+import { Card as BaseCard } from '../../../shared/state/card'
 import { cardback, getCard } from '../catalog/catalog'
 import { Color } from '../settings/settings'
 import { keywords, Keyword } from '../catalog/keywords'
 import { decodeCard } from './codec'
-import { Rarity } from './rarity'
-import { Card as Foo } from '../../../shared/state/card'
 import { Quality } from '../../../shared/state/effects'
 
 interface KeywordTuple {
@@ -31,16 +30,7 @@ interface CardData {
   references: ReferenceTuple[]
 }
 
-// For the tutorial, the card info shown will only be the mana/points
-var simplifyCardInfo: boolean = false
-export function setSimplifyCardInfo(simplify: boolean): void {
-  simplifyCardInfo = simplify
-}
-export function getSimplifyCardInfo(): boolean {
-  return simplifyCardInfo
-}
-
-export default class Card {
+export default class Card extends BaseCard {
   name: string
   id: number
   cost: number
@@ -51,6 +41,7 @@ export default class Card {
   story: string
   keywords: KeywordTuple[]
   references: ReferenceTuple[]
+  fleeting: boolean
 
   /*
   Fields that are only on client
@@ -64,12 +55,9 @@ export default class Card {
   catalogText: string
 
   constructor(data: CardData) {
-    this.name = data.name
-    this.id = data.id
-    this.cost = data.cost
-    this.points = data.points
-    this.text = data.text
+    super(data)
 
+    this.text = data.text
     this.dynamicText = data.dynamicText === undefined ? '' : data.dynamicText
 
     this.keywords = data.keywords === undefined ? [] : data.keywords
@@ -119,25 +107,6 @@ export default class Card {
 
     result = this.replaceReferences(result)
     result = this.explainKeywords(result)
-
-    if (simplifyCardInfo) {
-      result = result.split(',')[0]
-      result = result.replace(':', ' mana:')
-
-      if (result.endsWith('1')) {
-        result += ' point'
-      } else {
-        result += ' points'
-      }
-    }
-
-    // Add any hidden text that the search will find but won't be displayed
-    result += '[size=0]'
-
-    const rarityText = ['Common', 'Uncommon', 'Rare', 'Legend']
-    result += `${rarityText[this.rarity]} `
-
-    result += '[/size]'
 
     return result
   }

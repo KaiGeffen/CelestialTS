@@ -360,3 +360,5 @@ function getComputerDeck(i = null) {
     return possibleDecks[Math.floor(Math.random() * possibleDecks.length)]
   }
 }
+
+export default allCards

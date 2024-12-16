@@ -75,7 +75,7 @@ class Paramountcy extends Card {
         const card = game.pile[player].pop()
         game.story.add_act(card, player, Source.PILE, i)
         game.animations[player].push(
-          new Animation('Discard', 'Story', { index2: i })
+          new Animation('Discard', 'Story', { index2: i }),
         )
       }
     }
@@ -164,7 +164,7 @@ class Hatchling extends Card {
         game.story.add_act(card, player)
         const story_index = game.story.acts.length + index - 1
         game.animations[player].push(
-          new Animation('Gone', 'Story', { index2: story_index })
+          new Animation('Gone', 'Story', { index2: story_index }),
         )
       }
     }
@@ -401,11 +401,6 @@ const full_catalog = [
 ]
 const non_collectibles = [hidden_card, ...tokens]
 const all_cards = [...full_catalog, ...non_collectibles]
-
-const common_cards = full_catalog.filter((card) => card.rarity === 0)
-const uncommon_cards = full_catalog.filter((card) => card.rarity === 1)
-const rare_cards = full_catalog.filter((card) => card.rarity === 2)
-const legend_cards = full_catalog.filter((card) => card.rarity === 3)
 
 function get_computer_deck(i = null) {
   const possible_decks = [
