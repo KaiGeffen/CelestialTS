@@ -11,7 +11,7 @@ import {
   NO_UPDATE,
   VALID_CHOICE,
   INVALID_CHOICE,
-} from './Settings'
+} from '../Settings'
 import { ClientModel } from './ClientModel'
 
 export class Network {
@@ -74,8 +74,8 @@ export class Network {
           } else {
             reject(
               new Error(
-                `Server's response to an action wasn't valid or invalid but instead ${response}`
-              )
+                `Server's response to an action wasn't valid or invalid but instead ${response}`,
+              ),
             )
           }
         })

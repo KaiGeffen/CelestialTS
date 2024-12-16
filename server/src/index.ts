@@ -1,4 +1,4 @@
-import createMatchServer from './network/matchWS.js'
+import createMatchServer from './network/matchServer.js'
 
 // Create the websocket for individual matchs
 createMatchServer()

@@ -74,29 +74,26 @@ export class MatchWS {
 
   // String in the format '001' to mulligan just 3rd card, etc
   doMulligan(mulligans: string) {
-    let msg = {
+    // TODO
+    this.socket.send({
       type: 'mulligan',
-      value: mulligans,
-    }
-    this.socket.ws.send(JSON.stringify(msg))
+    })
   }
 
   passTurn() {
-    let msg = {
+    this.socket.send({
       type: 'pass_turn',
-      version: versionNumber,
-    }
-    this.socket.ws.send(JSON.stringify(msg))
+    })
+    // TODO Why is version number used
   }
 
   // Signal to server that we are exiting this match
   exitMatch() {
     // If user is logged in, send a message but keep the ws
     if (Server.loggedIn()) {
-      let msg = {
+      this.socket.send({
         type: 'exit_match',
-      }
-      this.socket.ws.send(JSON.stringify(msg))
+      })
     }
     // TODO Remove if UserSessionWS is separate from this
     // If user is anon, close socket
@@ -113,12 +110,10 @@ export class MatchWS {
 
   // Signal to the server that we have emoted
   signalEmote(emoteNumber = 0): void {
-    const msg = JSON.stringify({
+    // TODO number
+    this.socket.send({
       type: 'emote',
-      value: emoteNumber,
     })
-
-    this.socket.ws.send(msg)
   }
 
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
@@ -130,8 +125,8 @@ export class MatchWS {
     if (Server.loggedIn()) {
       socket = null // TODO Server.getWS()
     } else if (Flags.local) {
-      // TODO
-      socket = new TypedWebSocket(`ws://${URL}:${PORT}`)
+      // TODO Change mmcode to mode
+      socket = new TypedWebSocket(`ws://${URL}:${PORT}?mode=pvp`)
     } else {
       // The WS location on DO
       let loc = window.location

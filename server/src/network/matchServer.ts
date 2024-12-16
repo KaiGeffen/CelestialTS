@@ -1,4 +1,5 @@
 import { WebSocketServer } from 'ws'
+import MatchQueue from './matchQueue.js'
 
 import { URL, PORT } from '../../../shared/network/settings.js'
 import {
@@ -10,24 +11,22 @@ import {
 export default function createMatchServer() {
   const wss = new WebSocketServer({ port: PORT })
 
-  wss.on('connection', (socket: WebSocket) => {
+  wss.on('connection', (socket: WebSocket, req: Request) => {
     console.log('Client connected')
+
+    // Determine what type of connection it is
+    // Signin
+    // Matchmaking for a signed in player
+    // Matchmaking for guest player
+    MatchQueue.enqueue(socket, req)
+
+    // Ensure cleanup
+    return
 
     const ws = new TypedWebSocket(socket)
 
     // Communicate to client how many players have connected
     ws.send({ type: 'both_players_connected', value: true })
-
-    // Log all
-    ws.ws.onmessage = (message) => {
-      console.log('Received message:', message.data)
-      const parsedMessage = JSON.parse(message.data)
-      console.log('Parsed message:', parsedMessage)
-    }
-
-    registeredEvents.forEach(({ event, callback }) => {
-      ws.on(event, callback)
-    })
 
     // Register each of the events
     registeredEvents.forEach(({ event, callback }) => {
@@ -35,7 +34,7 @@ export default function createMatchServer() {
     })
   })
 
-  console.log('Individual match server is running on port: ', PORT)
+  console.log('Match server is running on port: ', PORT)
 }
 
 // Each of the events and its callback
