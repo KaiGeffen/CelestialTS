@@ -3,21 +3,20 @@ import { Story } from './story'
 import { Avatar } from './avatar'
 
 import { Anim } from './animation'
-import { CardCodec } from '../cardCodec'
-import { hidden_card } from './logic/Catalog'
-import { Quality } from './effects'
-import { Recap } from './logic/Recap'
-
-const DRAW_PER_TURN = 2
-const START_HAND_REAL = 3
-const START_HAND = START_HAND_REAL - DRAW_PER_TURN
-const HAND_CAP = 6
-
-const breath_GAIN_PER_TURN = 1
-const START_breath = 1 - breath_GAIN_PER_TURN
-const breath_CAP = 10
-
-const PASS = 10
+// import { CardCodec } from '../cardCodec'
+// import { hidden_card } from './logic/Catalog'
+import { Quality, Status } from './effects'
+// import { Recap } from './logic/Recap'
+import {
+  DRAW_PER_TURN,
+  START_HAND_REAL,
+  START_HAND,
+  HAND_CAP,
+  BREATH_GAIN_PER_TURN,
+  START_breath,
+  breath_CAP,
+  PASS,
+} from '../settings'
 
 class GameModel {
   // Zones
@@ -29,22 +28,22 @@ class GameModel {
 
   // Player qualities
   breath: number[] = [0, 0]
-  max_breath: number[] = [0, 0]
-  status: any[][] = [[], []]
+  maxBreath: number[] = [0, 0]
+  status: Status[][] = [[], []]
   vision: number[] = [0, 0]
 
   // Recap
-  recap: Recap = new Recap()
+  // recap: Recap = new Recap()
   score: number[] = [0, 0]
-  round_results: any[][] = [[], []]
+  roundResults: any[][] = [[], []]
 
   // Particular phase / time of game
   version_no: number = 0
   mulligans_complete: boolean[] = [false, false]
 
   // Effects
-  sound_effect: any = null
-  animations: any[][] = [[], []]
+  sound: any = null
+  // animations: any[][] = [[], []]
 
   // Other
   last_shuffle: any[][] = [[], []]
@@ -65,12 +64,13 @@ class GameModel {
     deck2: Card[],
     avatar1: Avatar,
     avatar2: Avatar,
+    // Shuffle the deck
     shuffle = true,
   ) {
     // TODO Most of this is redundant
     this.version_no = 0
-    this.sound_effect = null
-    this.animations = [[], []]
+    this.sound = null
+    // this.animations = [[], []]
     this.hand = [[], []]
     this.deck = [deck1, deck2]
     this.pile = [[], []]
@@ -83,25 +83,25 @@ class GameModel {
     this.expended = [[], []]
     this.score = [0, 0]
     this.wins = [0, 0]
-    this.max_breath = [0, 0]
+    this.maxBreath = [0, 0]
     this.breath = [0, 0]
     this.status = [[], []]
     this.story = new Story()
     this.passes = 0
     this.priority = 0
     this.vision = [0, 0]
-    this.recap = this.story.recap
+    // this.recap = this.story.recap
     this.mulligans_complete = [false, false]
     this.amt_passes = [0, 0]
     this.amt_drawn = [0, 0]
     this.avatars = [avatar1, avatar2]
-    this.round_results = [[], []]
+    this.roundResults = [[], []]
     this.last_player_who_played = 0
   }
 
   version_incr() {
     this.version_no += 1
-    this.animations = [[], []]
+    // this.animations = [[], []]
   }
 
   draw(player: number, amt = 1) {
@@ -118,33 +118,34 @@ class GameModel {
       this.hand[player].push(card)
       this.amt_drawn[player] += 1
       amt -= 1
-      this.animations[player].push(
-        new Anim(
-          'Deck',
-          'Hand',
-          CardCodec.encode_card(card),
-          this.hand[player].length - 1,
-        ),
-      )
+      // this.animations[player].push(
+      //   new Anim(
+      //     'Deck',
+      //     'Hand',
+      //     CardCodec.encode_card(card),
+      //     this.hand[player].length - 1,
+      //   ),
+      // )
     }
     return card
   }
 
+  // Discard amt cards from player's hand at given index
   discard(player: number, amt = 1, index = 0) {
     let card = null
     while (amt > 0 && this.hand[player].length > index) {
       card = this.hand[player].splice(index, 1)[0]
       this.pile[player].push(card)
       amt -= 1
-      this.animations[player].push(
-        new Anim(
-          'Hand',
-          'Discard',
-          CardCodec.encode_card(card),
-          index,
-          this.pile[player].length - 1,
-        ),
-      )
+      // this.animations[player].push(
+      //   new Anim(
+      //     'Hand',
+      //     'Discard',
+      //     CardCodec.encode_card(card),
+      //     index,
+      //     this.pile[player].length - 1,
+      //   ),
+      // )
     }
     return card
   }
@@ -167,14 +168,14 @@ class GameModel {
           this.hand[player].push(card)
           this.deck[player].splice(i, 1)
           this.amt_drawn[player] += 1
-          this.animations[player].push(
-            new Anim(
-              'Deck',
-              'Hand',
-              CardCodec.encode_card(card),
-              this.hand[player].length - 1,
-            ),
-          )
+          // this.animations[player].push(
+          //   new Anim(
+          //     'Deck',
+          //     'Hand',
+          //     CardCodec.encode_card(card),
+          //     this.hand[player].length - 1,
+          //   ),
+          // )
           return card
         }
       }
@@ -185,50 +186,29 @@ class GameModel {
   create(player: number, card: any) {
     if (this.hand[player].length < HAND_CAP) {
       this.hand[player].push(card)
-      this.animations[player].push(
-        new Anim(
-          'Gone',
-          'Hand',
-          CardCodec.encode_card(card),
-          this.hand[player].length - 1,
-        ),
-      )
+      // this.animations[player].push(
+      //   new Anim(
+      //     'Gone',
+      //     'Hand',
+      //     CardCodec.encode_card(card),
+      //     this.hand[player].length - 1,
+      //   ),
+      // )
       return card
     }
     return null
   }
 
   create_in_pile(player: number, card: any) {
-    this.animations[player].push(
-      new Anim(
-        'Gone',
-        'Discard',
-        CardCodec.encode_card(card),
-        this.pile[player].length,
-      ),
-    )
+    // this.animations[player].push(
+    //   new Anim(
+    //     'Gone',
+    //     'Discard',
+    //     CardCodec.encode_card(card),
+    //     this.pile[player].length,
+    //   ),
+    // )
     this.pile[player].push(card)
-  }
-
-  create_in_story(player: number, card: any) {
-    if (this.story.acts.length >= 12) {
-      return
-    }
-    this.animations[player].push(
-      new Anim(
-        'Gone',
-        'Story',
-        CardCodec.encode_card(card),
-        this.story.acts.length,
-      ),
-    )
-    this.story.add_act(card, player, Source.PILE)
-  }
-
-  remove_act(index: number) {
-    const act = this.story.remove_act(index)
-    this.pile[act.owner].push(act.card)
-    return act.card
   }
 
   oust(player: number) {
@@ -237,9 +217,9 @@ class GameModel {
       for (let i = 0; i < this.hand[player].length; i++) {
         if (this.hand[player][i].cost === cost) {
           const card = this.hand[player][i]
-          this.animations[player].push(
-            new Anim('Hand', 'Gone', CardCodec.encode_card(card), i),
-          )
+          // this.animations[player].push(
+          //   new Anim('Hand', 'Gone', CardCodec.encode_card(card), i),
+          // )
           this.expended[player].push(card)
           this.hand[player].splice(i, 1)
           return card
@@ -254,9 +234,9 @@ class GameModel {
     for (let i = 0; i < amt; i++) {
       if (this.pile[player].length > 0) {
         const card = this.pile[player].pop()
-        this.animations[player].push(
-          new Anim('Discard', 'Gone', CardCodec.encode_card(card)),
-        )
+        // this.animations[player].push(
+        //   new Anim('Discard', 'Gone', CardCodec.encode_card(card)),
+        // )
         this.expended[player].push(card)
       }
     }
@@ -266,9 +246,9 @@ class GameModel {
     if (this.deck[player].length > 0) {
       const card = this.deck[player].pop()
       this.pile[player].push(card)
-      this.animations[player].push(
-        new Anim('Deck', 'Discard', CardCodec.encode_card(card)),
-      )
+      // this.animations[player].push(
+      //   new Anim('Deck', 'Discard', CardCodec.encode_card(card)),
+      // )
       return card
     }
     return null
@@ -284,7 +264,7 @@ class GameModel {
     }
     this.deck[player].sort(() => Math.random() - 0.5)
     if (this.deck[player].length > 0) {
-      this.animations[player].push(new Anim('Shuffle'))
+      // this.animations[player].push(new Anim('Shuffle'))
     }
   }
 
@@ -308,6 +288,18 @@ class GameModel {
     this.priority = (this.priority + 1) % 2
   }
 
+  get_winner() {
+    if (this.wins[0] >= 5) {
+      return 0
+    }
+    if (this.wins[1] >= 5) {
+      return 1
+    }
+    return null
+  }
+
+  // TODO Get a model that doesn't show unknown information
+  /*
   get_client_model(
     player: number,
     cards_playable = Array(6).fill(false),
@@ -333,7 +325,7 @@ class GameModel {
       ),
       expended: this.expended.slice().reverse().map(CardCodec.encode_deck),
       wins: this.wins.slice().reverse(),
-      max_breath: this.max_breath.slice().reverse(),
+      maxBreath: this.maxBreath.slice().reverse(),
       breath: this.breath[player],
       status: CardCodec.encode_statuses(this.status[player]),
       opp_status: CardCodec.encode_statuses(this.status[player ^ 1]),
@@ -347,11 +339,11 @@ class GameModel {
       vision: this.vision[player],
       winner: this.get_winner() === null ? null : this.get_winner() ^ player,
       score: this.score.slice().reverse(),
-      sound_effect: this.sound_effect,
+      sound_effect: this.sound,
       animations: this.hide_opp_animations(this.animations.slice().reverse()),
       costs: costs,
       avatars: this.avatars.slice().reverse(),
-      round_results: this.round_results.slice().reverse(),
+      round_results: this.roundResults.slice().reverse(),
     }
   }
 
@@ -408,16 +400,7 @@ class GameModel {
 
     return CardCodec.encode_story(result)
   }
-
-  get_winner() {
-    if (this.wins[0] >= 5) {
-      return 0
-    }
-    if (this.wins[1] >= 5) {
-      return 1
-    }
-    return null
-  }
+  */
 }
 
 export { GameModel }

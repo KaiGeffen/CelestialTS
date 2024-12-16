@@ -2,7 +2,7 @@ import { ServerModel } from './ServerModel'
 import { Catalog } from './Catalog'
 import { Status } from '../../../shared/state/effects'
 import { SoundEffect } from './SoundEffect'
-import { Animation } from './Animation'
+import { Anim } from './Animation'
 import { Source } from './Story'
 import { CardCodec } from './CardCodec'
 
@@ -130,13 +130,13 @@ export class ServerController {
     for (const { card, indexFrom } of keptCards) {
       const indexTo = this.model.hand[player].length
       this.model.animations[player].push(
-        new Animation(
+        new Anim(
           'Mulligan',
           'Hand',
           CardCodec.encodeCard(card),
           indexFrom,
-          indexTo
-        )
+          indexTo,
+        ),
       )
       this.model.hand[player].push(card)
     }
@@ -146,7 +146,7 @@ export class ServerController {
     for (const { card, indexFrom } of thrownCards) {
       this.model.deck[player].push(card)
       this.model.animations[player].push(
-        new Animation('Mulligan', 'Deck', CardCodec.encodeCard(card), indexFrom)
+        new Anim('Mulligan', 'Deck', CardCodec.encodeCard(card), indexFrom),
       )
     }
 
@@ -167,12 +167,7 @@ export class ServerController {
         i++
       ) {
         const card = this.model.hand[player][i]
-        const anim = new Animation(
-          'Deck',
-          'Mulligan',
-          CardCodec.encodeCard(card),
-          i
-        )
+        const anim = new Anim('Deck', 'Mulligan', CardCodec.encodeCard(card), i)
         this.model.animations[player].push(anim)
       }
     }
@@ -205,7 +200,7 @@ export class ServerController {
       if (this.model.maxMana[player] < MANA_CAP) {
         this.model.maxMana[player] = Math.min(
           this.model.maxMana[player] + MANA_GAIN_PER_TURN,
-          MANA_CAP
+          MANA_CAP,
         )
       }
       this.model.mana[player] = this.model.maxMana[player]
@@ -219,13 +214,7 @@ export class ServerController {
 
         if (somethingActivated) {
           this.model.animations[player].push(
-            new Animation(
-              'Hand',
-              'Hand',
-              CardCodec.encodeCard(card),
-              index,
-              index
-            )
+            new Anim('Hand', 'Hand', CardCodec.encodeCard(card), index, index),
           )
         }
 
@@ -237,17 +226,17 @@ export class ServerController {
         const somethingActivated = card.morning(
           player,
           this.model,
-          this.model.pile[player].length - 1
+          this.model.pile[player].length - 1,
         )
         if (somethingActivated) {
           this.model.animations[player].push(
-            new Animation(
+            new Anim(
               'Discard',
               'Discard',
               CardCodec.encodeCard(card),
               index,
-              index
-            )
+              index,
+            ),
           )
         }
       }
@@ -291,10 +280,10 @@ export class ServerController {
     const playerCanPlay = (cardNum: number) => this.canPlay(player, cardNum)
     const cardsPlayable = Array.from(
       { length: this.model.hand[player].length },
-      (_, i) => playerCanPlay(i)
+      (_, i) => playerCanPlay(i),
     )
     const costs = this.model.hand[player].map((card) =>
-      this.getCost(card, player)
+      this.getCost(card, player),
     )
 
     return this.model.getClientModel(player, cardsPlayable, costs)
@@ -303,7 +292,7 @@ export class ServerController {
   doUpkeepStatuses(player: number): void {
     const createdStatuses = [Status.INSPIRED]
     this.model.status[player] = this.model.status[player].filter(
-      (stat) => !createdStatuses.includes(stat)
+      (stat) => !createdStatuses.includes(stat),
     )
 
     for (const stat of this.model.status[player]) {
@@ -315,7 +304,7 @@ export class ServerController {
 
     const clearedStatuses = [Status.INSPIRE, Status.UNLOCKED, Status.AWAKENED]
     this.model.status[player] = this.model.status[player].filter(
-      (stat) => !clearedStatuses.includes(stat)
+      (stat) => !clearedStatuses.includes(stat),
     )
   }
 

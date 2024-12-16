@@ -9,7 +9,7 @@ interface Match {
   storedDeck: any
   storedAvatar: any
 
-  game: Game
+  game: ServerController | null
   lock: any
 }
 
@@ -41,23 +41,10 @@ class Match {
         )
       }
       this.game.start()
-
-      const deckToString = (d: any) =>
-        d.map((card: any) => card.name).join(', ')
-
-      const d1 =
-        player === 0 ? deckToString(deck) : deckToString(this.storedDeck)
-      const d2 =
-        player === 0 ? deckToString(this.storedDeck) : deckToString(deck)
-
-      let s = 'Game started between ips:'
-      if (this.ws1 !== null) s += ` ${this.ws1.url} `
-      if (this.ws2 !== null) s += ` ${this.ws2.url} `
-      s += `\nDecks:\n${d1}\n${d2}\n`
-      console.log(s)
     }
   }
 
+  // TODO Below is written by ai
   hasBegun() {
     return this.game !== null
   }
@@ -147,7 +134,7 @@ class Match {
     await this.lock
     this.game.do_mulligan(player, mulligan)
 
-    if (this.vs_ai) this.game.model.sound_effect = null
+    if (this.vs_ai) this.game.model.sound = null
 
     await this.notifyState()
 

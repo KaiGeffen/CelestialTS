@@ -1,8 +1,8 @@
 import { Card } from '../../shared/state/card'
 
-import { SoundEffect } from './SoundEffect'
-import { Recap } from './Recap'
-import { Quality } from '../../../shared/state/effects'
+import { SoundEffect } from './soundEffect'
+// import { Recap } from './Recap'
+import { Quality } from './effects'
 
 class Act {
   constructor(
@@ -14,15 +14,15 @@ class Act {
 
 class Story {
   acts: Act[] = []
-  recap: Recap
+  // recap: Recap
 
   constructor() {
     // TODO
-    this.recap = new Recap()
+    // this.recap = new Recap()
   }
 
-  addAct(card: any, owner: number, source: Source = Source.HAND, i?: number) {
-    const act = new Act(card, owner, source)
+  addAct(card: any, owner: number, i?: number) {
+    const act = new Act(card, owner)
     if (i === undefined) {
       this.acts.push(act)
     } else {
@@ -31,13 +31,13 @@ class Story {
   }
 
   run(game: any, isSimplified: boolean = false) {
-    this.recap.reset()
+    // this.recap.reset()
 
     const stateBeforePlay = ['', '']
     for (let player = 0; player < 2; player++) {
       stateBeforePlay[player] = game.getClientModel(player, true)
     }
-    this.recap.addState(stateBeforePlay)
+    // this.recap.addState(stateBeforePlay)
     game.animations = [[], []]
 
     let index = 0
@@ -48,16 +48,12 @@ class Story {
       game.soundEffect = SoundEffect.Resolve
 
       let result: string
-      if (act.countered) {
-        result = 'Countered'
+      if (isSimplified) {
+        game.score[act.owner] += act.card.points
+        result = 'SIMPLIFIED TODO'
       } else {
-        if (isSimplified) {
-          game.score[act.owner] += act.card.points
-          result = 'SIMPLIFIED TODO'
-        } else if (act.source === Source.HAND || act.source === Source.PILE) {
-          result = act.card.play(act.owner, game, index, act.bonus)
-          roundEndEffects.push([act.card.onRoundEnd, act.owner])
-        }
+        result = act.card.play(act.owner, game, index, act.bonus)
+        roundEndEffects.push([act.card.onRoundEnd, act.owner])
       }
 
       if (!act.card.qualities.includes(Quality.FLEETING)) {
@@ -67,35 +63,36 @@ class Story {
       }
 
       index++
-      this.recap.add(act.card, act.owner, result)
+      // this.recap.add(act.card, act.owner, result)
 
       const stateAfterPlay = ['', '']
       for (let player = 0; player < 2; player++) {
         stateAfterPlay[player] = game.getClientModel(player, true)
       }
-      this.recap.addState(stateAfterPlay)
+      // this.recap.addState(stateAfterPlay)
       game.animations = [[], []]
     }
 
+    // Do all round end effects
     for (const [callback, player] of roundEndEffects) {
       callback(player, game)
     }
   }
 
   saveEndState(game: any) {
-    const stateAfterPlay = ['', '']
-    for (let player = 0; player < 2; player++) {
-      if (this.recap.wins[player] > 0) {
-        game.soundEffect = SoundEffect.Win
-      } else if (this.recap.wins[player ^ 1] > 0) {
-        game.soundEffect = SoundEffect.Lose
-      } else {
-        game.soundEffect = SoundEffect.Tie
-      }
-      stateAfterPlay[player] = game.getClientModel(player, true)
-    }
-    this.recap.addState(stateAfterPlay)
-    game.animations = [[], []]
+    // const stateAfterPlay = ['', '']
+    // for (let player = 0; player < 2; player++) {
+    //   if (this.recap.wins[player] > 0) {
+    //     game.soundEffect = SoundEffect.Win
+    //   } else if (this.recap.wins[player ^ 1] > 0) {
+    //     game.soundEffect = SoundEffect.Lose
+    //   } else {
+    //     game.soundEffect = SoundEffect.Tie
+    //   }
+    //   stateAfterPlay[player] = game.getClientModel(player, true)
+    // }
+    // this.recap.addState(stateAfterPlay)
+    // game.animations = [[], []]
   }
 
   clear() {
@@ -110,22 +107,6 @@ class Story {
     return this.acts.length === 0
   }
 
-  counter(func: (act: Act) => boolean) {
-    for (const act of this.acts) {
-      if (func(act)) {
-        act.countered = true
-        return act.card
-      }
-    }
-    return null
-  }
-
-  moveAct(indexOrigin: number, indexDest: number) {
-    const act = this.acts.splice(indexOrigin, 1)[0]
-    this.acts.splice(indexDest, 0, act)
-    return act
-  }
-
   removeAct(index: number) {
     if (this.acts.length <= index) {
       throw new Error(
@@ -133,15 +114,6 @@ class Story {
       )
     }
     return this.acts.splice(index, 1)[0]
-  }
-
-  replaceAct(index: number, replacementAct: Act) {
-    if (this.acts.length <= index) {
-      throw new Error(
-        `Tried to replace act ${index} in a story with only ${this.acts.length} acts.`,
-      )
-    }
-    this.acts[index] = replacementAct
   }
 }
 

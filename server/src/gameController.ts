@@ -1,26 +1,52 @@
-import { ServerModel } from './logic/ServerModel'
-import { Catalog, Status } from './logic'
+import { GameModel } from '../../shared/state/gameModel.js'
+
+import { Status } from '../../shared/state/effects.js'
 import { SoundEffect } from '../../shared/state/soundEffect'
-import { Animation } from '../../shared/state/animation'
-import { Source } from './logic/Story'
-import { CardCodec } from '../../shared/cardCodec'
+import { Anim } from '../../shared/state/animation'
+// import { CardCodec } from '../../shared/cardCodec'
 
 const DRAW_PER_TURN = 2
 const START_HAND_REAL = 3
 const START_HAND = START_HAND_REAL - DRAW_PER_TURN
 const HAND_CAP = 6
 
-const MANA_GAIN_PER_TURN = 1
-const START_MANA = 1 - MANA_GAIN_PER_TURN
-const MANA_CAP = 10
+const BREATH_GAIN_PER_TURN = 1
+const START_BREATH = 1 - BREATH_GAIN_PER_TURN
+const BREATH_CAP = 10
 
 const PASS = 10
 
 class ServerController {
-  model: ServerModel
+  model: GameModel
 
   constructor(deck1: any, deck2: any, avatar1: any, avatar2: any) {
-    this.model = new ServerModel(deck1, deck2, avatar1, avatar2)
+    this.model = new GameModel(deck1, deck2, avatar1, avatar2)
+  }
+
+  start(): void {
+    this.doSetup()
+    this.doUpkeep()
+
+    for (const player of [0, 1]) {
+      // this.model.animations[player] = []
+
+      for (
+        let i = 0;
+        i < Math.min(START_HAND_REAL, this.model.deck[player].length);
+        i++
+      ) {
+        const card = this.model.hand[player][i]
+        const anim = new Anim('Deck', 'Mulligan', CardCodec.encodeCard(card), i)
+        this.model.animations[player].push(anim)
+      }
+    }
+  }
+
+  doSetup(): void {
+    for (const player of [0, 1]) {
+      this.model.draw(player, START_HAND)
+      this.model.maxBreath = [START_BREATH, START_BREATH]
+    }
   }
 
   onPlayerInput(player: number, choice: number, version?: number): boolean {
@@ -52,9 +78,9 @@ class ServerController {
         return false
       } else {
         this.model.passes += 1
-        this.model.amtPasses[player] += 1
+        this.model.passes[player] += 1
         this.model.switchPriority()
-        this.model.soundEffect = SoundEffect.Pass
+        this.model.sound = SoundEffect.Pass
 
         if (this.model.passes === 2) {
           this.model.passes = 0
@@ -82,7 +108,7 @@ class ServerController {
 
   attemptPlay(player: number, cardNum: number): boolean {
     if (this.canPlay(player, cardNum)) {
-      this.model.soundEffect = null
+      this.model.sound = null
       this.play(player, cardNum)
       return true
     } else {
@@ -93,7 +119,7 @@ class ServerController {
 
   play(player: number, cardNum: number): void {
     const card = this.model.hand[player].splice(cardNum, 1)[0]
-    this.model.mana[player] -= this.getCost(card, player)
+    this.model.breath[player] -= this.getCost(card, player)
 
     const result = card.onPlay(player, this.model)
     if (result) {
@@ -133,8 +159,8 @@ class ServerController {
           'Hand',
           CardCodec.encodeCard(card),
           indexFrom,
-          indexTo
-        )
+          indexTo,
+        ),
       )
       this.model.hand[player].push(card)
     }
@@ -144,7 +170,12 @@ class ServerController {
     for (const [card, indexFrom] of thrownCards) {
       this.model.deck[player].push(card)
       this.model.animations[player].push(
-        new Animation('Mulligan', 'Deck', CardCodec.encodeCard(card), indexFrom)
+        new Animation(
+          'Mulligan',
+          'Deck',
+          CardCodec.encodeCard(card),
+          indexFrom,
+        ),
       )
     }
 
@@ -152,38 +183,8 @@ class ServerController {
     this.model.mulligansComplete[player] = true
   }
 
-  start(): void {
-    this.doSetup()
-    this.doUpkeep()
-
-    for (const player of [0, 1]) {
-      this.model.animations[player] = []
-
-      for (
-        let i = 0;
-        i < Math.min(START_HAND_REAL, this.model.deck[player].length);
-        i++
-      ) {
-        const card = this.model.hand[player][i]
-        const anim = new Animation(
-          'Deck',
-          'Mulligan',
-          CardCodec.encodeCard(card),
-          i
-        )
-        this.model.animations[player].push(anim)
-      }
-    }
-  }
-
-  doSetup(): void {
-    for (const player of [0, 1]) {
-      this.model.draw(player, START_HAND)
-      this.model.maxMana = [START_MANA, START_MANA]
-    }
-  }
-
   doUpkeep(): void {
+    // Reset vision
     const newVision0 = this.model.status[0].includes(Status.AWAKENED)
       ? this.model.vision[0]
       : 0
@@ -192,22 +193,27 @@ class ServerController {
       : 0
     this.model.vision = [newVision0, newVision1]
 
-    this.model.amtPasses = [0, 0]
+    // Reset round counters
+    this.model.passes = [0, 0]
     this.model.amtDrawn = [0, 0]
 
+    // Set priority
     this.model.priority = this.model.lastPlayerWhoPlayed
 
+    // Increase max breath by 1, up to a cap
     for (const player of [0, 1]) {
-      if (this.model.maxMana[player] < MANA_CAP) {
-        this.model.maxMana[player] = Math.min(
-          this.model.maxMana[player] + MANA_GAIN_PER_TURN,
-          MANA_CAP
+      if (this.model.maxBreath[player] < BREATH_CAP) {
+        this.model.maxBreath[player] = Math.min(
+          this.model.maxBreath[player] + BREATH_GAIN_PER_TURN,
+          BREATH_CAP,
         )
       }
-      this.model.mana[player] = this.model.maxMana[player]
+      this.model.breath[player] = this.model.maxBreath[player]
 
+      // Do any upkeep status effect
       this.doUpkeepStatuses(player)
 
+      // Do any effects that activate in hand
       let index = 0
       while (index < this.model.hand[player].length) {
         const card = this.model.hand[player][index]
@@ -215,25 +221,20 @@ class ServerController {
 
         if (somethingActivated) {
           this.model.animations[player].push(
-            new Animation(
-              'Hand',
-              'Hand',
-              CardCodec.encodeCard(card),
-              index,
-              index
-            )
+            new Anim('Hand', 'Hand', CardCodec.encodeCard(card), index, index),
           )
         }
 
         index += 1
       }
 
+      // Do any activated in discard pile effects
       if (this.model.pile[player].length > 0) {
         const card = this.model.pile[player][this.model.pile[player].length - 1]
         const somethingActivated = card.morning(
           player,
           this.model,
-          this.model.pile[player].length - 1
+          this.model.pile[player].length - 1,
         )
         if (somethingActivated) {
           this.model.animations[player].push(
@@ -242,18 +243,20 @@ class ServerController {
               'Discard',
               CardCodec.encodeCard(card),
               index,
-              index
-            )
+              index,
+            ),
           )
         }
       }
     }
 
+    // Draw cards for the turn, set breath to max
     for (const player of [0, 1]) {
       this.model.draw(player, DRAW_PER_TURN)
-      this.model.mana[player] = Math.max(this.model.mana[player], 0)
+      this.model.breath[player] = Math.max(this.model.breath[player], 0)
     }
   }
+
   doTakedown(): void {
     this.model.score = [0, 0]
     const wins = [0, 0]
@@ -279,7 +282,7 @@ class ServerController {
     this.model.story.saveEndState(this.model)
     this.model.story.clear()
 
-    this.model.soundEffect = null
+    this.model.sound = null
   }
 
   getClientModel(player: number): any {
@@ -287,10 +290,10 @@ class ServerController {
 
     const cardsPlayable = Array.from(
       { length: this.model.hand[player].length },
-      (_, i) => playerCanPlay(i)
+      (_, i) => playerCanPlay(i),
     )
     const costs = this.model.hand[player].map((card) =>
-      this.getCost(card, player)
+      this.getCost(card, player),
     )
 
     return this.model.getClientModel(player, cardsPlayable, costs)
@@ -299,19 +302,19 @@ class ServerController {
   doUpkeepStatuses(player: number): void {
     const createdStatuses = [Status.INSPIRED]
     this.model.status[player] = this.model.status[player].filter(
-      (stat) => !createdStatuses.includes(stat)
+      (stat) => !createdStatuses.includes(stat),
     )
 
     for (const stat of this.model.status[player]) {
       if (stat === Status.INSPIRE) {
-        this.model.mana[player] += 1
+        this.model.breath[player] += 1
         this.model.status[player].push(Status.INSPIRED)
       }
     }
 
     const clearedStatuses = [Status.INSPIRE, Status.UNLOCKED, Status.AWAKENED]
     this.model.status[player] = this.model.status[player].filter(
-      (stat) => !clearedStatuses.includes(stat)
+      (stat) => !clearedStatuses.includes(stat),
     )
   }
 
@@ -321,7 +324,7 @@ class ServerController {
     }
 
     const card = this.model.hand[player][cardNum]
-    if (this.getCost(card, player) > this.model.mana[player]) {
+    if (this.getCost(card, player) > this.model.breath[player]) {
       return false
     }
 
@@ -330,7 +333,7 @@ class ServerController {
 
   canPass(player: number): boolean {
     if (
-      this.model.maxMana[player] === MANA_CAP &&
+      this.model.maxBreath[player] === BREATH_CAP &&
       this.model.story.acts.length === 0
     ) {
       for (let i = 0; i < this.model.hand[player].length; i++) {

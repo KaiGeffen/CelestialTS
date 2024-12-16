@@ -11,50 +11,56 @@ import Match from './match/match.js'
 
 class MatchQueue {
   static enqueue(socket: WebSocket, req: Request) {
-    const match = null //createMatchServer(socket, req)
-    registerEvents(socket, match)
+    // PlayerNumber is whether you are player 0 or 1
+    const [match, playerNumber] = createMatch(socket, req)
+    registerEvents(socket, match, playerNumber)
   }
 }
 
-function createMatchServer(socket: WebSocket, req: Request): Match {
-  // Check the path
-  const url = parse(req.url, true)
-  const mode = url.query.mode
-  if (Array.isArray(url.query.uuid)) {
-    throw new Error('UUID should not be an array')
-  }
-  /*
-   TODO It's slightly insecure to be passing the uuid in plain like this
-   It means that an attacked could proxy and change the uuid, or read
-   the uuid. This could instead go in the init message,
-   once the secure connection is established.
-   */
-  const uuid = url.query.uuid
+function createMatch(socket: WebSocket, req: Request): [Match, number] {
+  const aiDeck = []
+  const uuid = null
+  return [new PveMatch(socket, aiDeck, uuid), 0]
 
-  switch (mode) {
-    case 'pvp':
-      console.log('PvP game requested')
-      // Handle PvP matchmaking
-      // TODO PVP
-      return new PvpMatch(socket, uuid)
-    case 'ai':
-      console.log('AI game requested')
-      //TODO
-      const aiDeck = []
-      new PveMatch(socket, aiDeck, uuid)
-    default:
-      console.error('Invalid mode')
-      socket.close(1008, 'Invalid mode')
-  }
+  // // Check the path
+  // const url = parse(req.url, true)
+  // const mode = url.query.mode
+  // if (Array.isArray(url.query.uuid)) {
+  //   throw new Error('UUID should not be an array')
+  // }
+  // /*
+  //  TODO It's slightly insecure to be passing the uuid in plain like this
+  //  It means that an attacked could proxy and change the uuid, or read
+  //  the uuid. This could instead go in the init message,
+  //  once the secure connection is established.
+  //  */
+  // const uuid = url.query.uuid
+
+  // switch (mode) {
+  //   case 'pvp':
+  //     console.log('PvP game requested')
+  //     // Handle PvP matchmaking
+  //     // TODO PVP NUMBER IS WRONG
+  //     return [new PvpMatch(socket, uuid), 1]
+  //   case 'ai':
+  //     console.log('AI game requested')
+  //     //TODO
+  //     const aiDeck = []
+  //     return [new PveMatch(socket, aiDeck, uuid), 0]
+  //   default:
+  //     console.error('Invalid mode')
+  //     socket.close(1008, 'Invalid mode')
+  // }
 }
 
-function registerEvents(socket: WebSocket, match: Match) {
+// TODO Move to a separate file
+function registerEvents(socket: WebSocket, match: Match, playerNumber: number) {
   const ws = new TypedWebSocket(socket)
 
   // Each of the events and its callback
   const initEvent = createEvent('init', (data) => {
     console.log('Initializing a match with data:', data)
-    match.addDeck(0, data.deck, data.avatar)
+    match.addDeck(playerNumber, data.deck, data.avatar)
   })
 
   const playCardEvent = createEvent('play_card', (data) => {
