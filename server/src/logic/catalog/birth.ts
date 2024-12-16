@@ -1,8 +1,8 @@
-import { Card } from '../Card'
+import { Card } from '../../../../shared/state/card'
 import { child } from './Tokens'
-import { Status, Quality } from '../Effects'
+import { Status, Quality } from '../../../../shared/state/effects'
 import { Source } from '../Story'
-import { Animation } from '../../Animation'
+import { Animation } from '../../../../shared/state/animation'
 
 class Nascence extends Card {
   play(player, game, index, bonus) {

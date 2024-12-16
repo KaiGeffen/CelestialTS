@@ -18,6 +18,17 @@ export default function createMatchServer() {
     // Communicate to client how many players have connected
     ws.send({ type: 'both_players_connected', value: true })
 
+    // Log all
+    ws.ws.onmessage = (message) => {
+      console.log('Received message:', message.data)
+      const parsedMessage = JSON.parse(message.data)
+      console.log('Parsed message:', parsedMessage)
+    }
+
+    registeredEvents.forEach(({ event, callback }) => {
+      ws.on(event, callback)
+    })
+
     // Register each of the events
     registeredEvents.forEach(({ event, callback }) => {
       ws.on(event, callback)
@@ -31,8 +42,25 @@ export default function createMatchServer() {
 const initEvent = createEvent('init', (data) => {
   console.log('Initializing a match with data:', data)
 })
+
 const playCardEvent = createEvent('play_card', (data) => {
-  console.log('Playing a card:', data.card)
+  console.log('Playing a card:', data)
+})
+
+const mulliganEvent = createEvent('mulligan', (data) => {
+  console.log('Mulligan with data:', data)
+})
+
+const passTurnEvent = createEvent('pass_turn', (data) => {
+  console.log('Passing turn with data:', data)
+})
+
+const exitMatchEvent = createEvent('exit_match', (data) => {
+  console.log('Exiting match with data:', data)
+})
+
+const emoteEvent = createEvent('emote', (data) => {
+  console.log('Emote with data:', data)
 })
 
 // TODO There's some clever way to ensure that all SocketMessages are covered

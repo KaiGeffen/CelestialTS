@@ -1,5 +1,5 @@
 import { chain, combinations } from 'itertools'
-import { Status, Quality } from './logic/Effects'
+import { Status, Quality } from '../../shared/state/effects'
 
 function* powerset<T>(arr: T[]): IterableIterator<T[]> {
   for (let r = 0; r <= arr.length; r++) {

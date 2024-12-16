@@ -1,7 +1,7 @@
-import { Card, FireCard } from '../Card'
+import { Card, FireCard } from '../../../../shared/state/card'
 import { ashes } from '../catalog/Tokens'
-import { Status, Quality } from '../Effects'
-import { Animation } from '../../Animation'
+import { Status, Quality } from '../../../../shared/state/effects'
+import { Animation } from '../../../../shared/state/animation'
 
 const dash = new FireCard('Dash', 2, 3, 6)
 

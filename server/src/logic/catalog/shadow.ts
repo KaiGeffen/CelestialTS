@@ -1,7 +1,7 @@
-import { Card, CardCodec } from '../Card'
-import { Status, Quality } from '../Effects'
+import { Card, CardCodec } from '../../../../shared/state/card'
+import { Status, Quality } from '../../../../shared/state/effects'
 import { Source } from '../Story'
-import { Animation } from '../../Animation'
+import { Animation } from '../../../../shared/state/animation'
 
 class Dagger extends Card {
   play(player, game, index, bonus) {

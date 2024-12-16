@@ -1,5 +1,5 @@
-import { Card } from './Card'
-import { Animation } from '../Animation'
+import { Card } from '../../../shared/state/card'
+import { Animation } from '../../../shared/state/animation'
 import { Status, Quality } from '../Effects'
 import { Source } from '../Story'
 import { tokens } from './catalog/Tokens'

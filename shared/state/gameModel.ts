@@ -1,8 +1,11 @@
-import { Anim } from '../../shared/state/animation'
-import { CardCodec } from '../../shared/cardCodec'
-import { Story, Source } from './logic/Story'
+import { Card } from './card'
+import { Story } from './story'
+import { Avatar } from './avatar'
+
+import { Anim } from './animation'
+import { CardCodec } from '../cardCodec'
 import { hidden_card } from './logic/Catalog'
-import { Quality } from '../../shared/state/effects'
+import { Quality } from './effects'
 import { Recap } from './logic/Recap'
 
 const DRAW_PER_TURN = 2
@@ -10,45 +13,61 @@ const START_HAND_REAL = 3
 const START_HAND = START_HAND_REAL - DRAW_PER_TURN
 const HAND_CAP = 6
 
-const MANA_GAIN_PER_TURN = 1
-const START_MANA = 1 - MANA_GAIN_PER_TURN
-const MANA_CAP = 10
+const breath_GAIN_PER_TURN = 1
+const START_breath = 1 - breath_GAIN_PER_TURN
+const breath_CAP = 10
 
 const PASS = 10
 
-class ServerModel {
+class GameModel {
+  // Zones
+  hand: Card[][] = [[], []]
+  deck: Card[][] = [[], []]
+  pile: Card[][] = [[], []]
+  expended: Card[][] = [[], []]
+  story: Story = new Story()
+
+  // Player qualities
+  breath: number[] = [0, 0]
+  max_breath: number[] = [0, 0]
+  status: any[][] = [[], []]
+  vision: number[] = [0, 0]
+
+  // Recap
+  recap: Recap = new Recap()
+  score: number[] = [0, 0]
+  round_results: any[][] = [[], []]
+
+  // Particular phase / time of game
   version_no: number = 0
+  mulligans_complete: boolean[] = [false, false]
+
+  // Effects
   sound_effect: any = null
   animations: any[][] = [[], []]
-  hand: any[][] = [[], []]
-  deck: any[][] = [[], []]
-  pile: any[][] = [[], []]
+
+  // Other
   last_shuffle: any[][] = [[], []]
-  expended: any[][] = [[], []]
-  score: number[] = [0, 0]
+
+  // Game tracking
   wins: number[] = [0, 0]
-  max_mana: number[] = [0, 0]
-  mana: number[] = [0, 0]
-  status: any[][] = [[], []]
-  story: Story = new Story()
   passes: number = 0
   priority: number = 0
-  vision: number[] = [0, 0]
-  recap: Recap = new Recap()
-  mulligans_complete: boolean[] = [false, false]
-  amt_passes: number[] = [0, 0]
-  amt_drawn: number[] = [0, 0]
-  avatars: any[] = []
-  round_results: any[][] = [[], []]
   last_player_who_played: number = 0
 
+  // Other (For weird cards)
+  amt_passes: number[] = [0, 0]
+  amt_drawn: number[] = [0, 0]
+  avatars: Avatar[] = []
+
   constructor(
-    deck1: any[],
-    deck2: any[],
-    avatar1: any,
-    avatar2: any,
-    shuffle = true
+    deck1: Card[],
+    deck2: Card[],
+    avatar1: Avatar,
+    avatar2: Avatar,
+    shuffle = true,
   ) {
+    // TODO Most of this is redundant
     this.version_no = 0
     this.sound_effect = null
     this.animations = [[], []]
@@ -64,8 +83,8 @@ class ServerModel {
     this.expended = [[], []]
     this.score = [0, 0]
     this.wins = [0, 0]
-    this.max_mana = [0, 0]
-    this.mana = [0, 0]
+    this.max_breath = [0, 0]
+    this.breath = [0, 0]
     this.status = [[], []]
     this.story = new Story()
     this.passes = 0
@@ -104,8 +123,8 @@ class ServerModel {
           'Deck',
           'Hand',
           CardCodec.encode_card(card),
-          this.hand[player].length - 1
-        )
+          this.hand[player].length - 1,
+        ),
       )
     }
     return card
@@ -123,8 +142,8 @@ class ServerModel {
           'Discard',
           CardCodec.encode_card(card),
           index,
-          this.pile[player].length - 1
-        )
+          this.pile[player].length - 1,
+        ),
       )
     }
     return card
@@ -153,8 +172,8 @@ class ServerModel {
               'Deck',
               'Hand',
               CardCodec.encode_card(card),
-              this.hand[player].length - 1
-            )
+              this.hand[player].length - 1,
+            ),
           )
           return card
         }
@@ -171,8 +190,8 @@ class ServerModel {
           'Gone',
           'Hand',
           CardCodec.encode_card(card),
-          this.hand[player].length - 1
-        )
+          this.hand[player].length - 1,
+        ),
       )
       return card
     }
@@ -185,8 +204,8 @@ class ServerModel {
         'Gone',
         'Discard',
         CardCodec.encode_card(card),
-        this.pile[player].length
-      )
+        this.pile[player].length,
+      ),
     )
     this.pile[player].push(card)
   }
@@ -200,8 +219,8 @@ class ServerModel {
         'Gone',
         'Story',
         CardCodec.encode_card(card),
-        this.story.acts.length
-      )
+        this.story.acts.length,
+      ),
     )
     this.story.add_act(card, player, Source.PILE)
   }
@@ -219,7 +238,7 @@ class ServerModel {
         if (this.hand[player][i].cost === cost) {
           const card = this.hand[player][i]
           this.animations[player].push(
-            new Anim('Hand', 'Gone', CardCodec.encode_card(card), i)
+            new Anim('Hand', 'Gone', CardCodec.encode_card(card), i),
           )
           this.expended[player].push(card)
           this.hand[player].splice(i, 1)
@@ -236,7 +255,7 @@ class ServerModel {
       if (this.pile[player].length > 0) {
         const card = this.pile[player].pop()
         this.animations[player].push(
-          new Anim('Discard', 'Gone', CardCodec.encode_card(card))
+          new Anim('Discard', 'Gone', CardCodec.encode_card(card)),
         )
         this.expended[player].push(card)
       }
@@ -248,7 +267,7 @@ class ServerModel {
       const card = this.deck[player].pop()
       this.pile[player].push(card)
       this.animations[player].push(
-        new Anim('Deck', 'Discard', CardCodec.encode_card(card))
+        new Anim('Deck', 'Discard', CardCodec.encode_card(card)),
       )
       return card
     }
@@ -293,7 +312,7 @@ class ServerModel {
     player: number,
     cards_playable = Array(6).fill(false),
     costs = Array(6).fill(null),
-    is_recap = false
+    is_recap = false,
   ) {
     const deck_sort = (card: any) => {
       const rand_from_name = (parseInt(card.name, 36) % 1000) / 1000
@@ -310,12 +329,12 @@ class ServerModel {
       opp_deck: this.deck[player ^ 1].length,
       pile: this.pile.slice().reverse().map(CardCodec.encode_deck),
       last_shuffle: CardCodec.encode_deck(
-        this.last_shuffle[player ^ 1].sort(deck_sort)
+        this.last_shuffle[player ^ 1].sort(deck_sort),
       ),
       expended: this.expended.slice().reverse().map(CardCodec.encode_deck),
       wins: this.wins.slice().reverse(),
-      max_mana: this.max_mana.slice().reverse(),
-      mana: this.mana[player],
+      max_breath: this.max_breath.slice().reverse(),
+      breath: this.breath[player],
       status: CardCodec.encode_statuses(this.status[player]),
       opp_status: CardCodec.encode_statuses(this.status[player ^ 1]),
       story: this.get_relative_story(player, is_recap),
@@ -348,7 +367,7 @@ class ServerModel {
           anim.zone_from,
           undefined,
           anim.index,
-          anim.index2
+          anim.index2,
         )
       } else {
         return anim
@@ -401,4 +420,4 @@ class ServerModel {
   }
 }
 
-export { ServerModel }
+export { GameModel }

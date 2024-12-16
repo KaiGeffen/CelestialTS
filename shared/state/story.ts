@@ -1,35 +1,23 @@
+import { Card } from '../../shared/state/card'
+
 import { SoundEffect } from './SoundEffect'
 import { Recap } from './Recap'
 import { Quality } from '../../../shared/state/effects'
 
-enum Source {
-  HAND = 0,
-  SPRING = 1,
-  PILE = 2,
-}
-
 class Act {
-  card: any
-  owner: number
-  source: Source
-  countered: boolean
-  bonus: number
-
-  constructor(card: any, owner: number, source: Source = Source.HAND) {
-    this.card = card
-    this.owner = owner
-    this.source = source
-    this.countered = false
-    this.bonus = 0
-  }
+  constructor(
+    public card: Card,
+    public owner: number,
+    public bonus: number = 0,
+  ) {}
 }
 
 class Story {
-  acts: Act[]
+  acts: Act[] = []
   recap: Recap
 
   constructor() {
-    this.acts = []
+    // TODO
     this.recap = new Recap()
   }
 
@@ -141,7 +129,7 @@ class Story {
   removeAct(index: number) {
     if (this.acts.length <= index) {
       throw new Error(
-        `Tried to remove act ${index} in a story with only ${this.acts.length} acts.`
+        `Tried to remove act ${index} in a story with only ${this.acts.length} acts.`,
       )
     }
     return this.acts.splice(index, 1)[0]
@@ -150,11 +138,11 @@ class Story {
   replaceAct(index: number, replacementAct: Act) {
     if (this.acts.length <= index) {
       throw new Error(
-        `Tried to replace act ${index} in a story with only ${this.acts.length} acts.`
+        `Tried to replace act ${index} in a story with only ${this.acts.length} acts.`,
       )
     }
     this.acts[index] = replacementAct
   }
 }
 
-export { Story, Act, Source }
+export { Story }

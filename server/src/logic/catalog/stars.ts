@@ -1,6 +1,6 @@
-import { Card, SightCard, CardCodec } from '../../logic/Card'
-import { Status } from '../../logic/Effects'
-import { Animation } from '../../Animation'
+import { Card, SightCard, CardCodec } from '../../../../shared/state/card'
+import { Status } from '../../../../shared/state/effects'
+import { Animation } from '../../../../shared/state/animation'
 
 class Stars extends Card {
   play(player: any, game: any, index: number, bonus: number) {

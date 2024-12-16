@@ -70,7 +70,7 @@ export class TypedWebSocket {
 
   on<T extends MessageTypes>(
     messageType: T,
-    callback: (data: SupportedMessages[T]) => void
+    callback: (data: SupportedMessages[T]) => void,
   ): this {
     if (!this.listeners[messageType]) {
       this.listeners[messageType] = []
@@ -88,7 +88,7 @@ export class TypedWebSocket {
 */
 export function createEvent<T extends MessageTypes>(
   event: T,
-  callback: (data: SupportedMessages[T]) => void
+  callback: (data: SupportedMessages[T]) => void,
 ): { event: T; callback: (data: SupportedMessages[T]) => void } {
   return { event, callback }
 }

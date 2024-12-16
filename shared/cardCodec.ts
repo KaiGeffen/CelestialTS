@@ -1,7 +1,7 @@
-import { all_cards } from './logic/Catalog'
-import { Recap } from './logic/Recap'
-import { Status } from './logic/Effects'
-import { Story, Source } from './logic/Story'
+import { all_cards } from '../server/src/logic/Catalog'
+import { Recap } from '../server/src/logic/Recap'
+import { Status } from './state/effects'
+import { Story, Source } from '../server/src/logic/Story'
 
 const DELIM1 = '¡'
 const DELIM2 = '™'

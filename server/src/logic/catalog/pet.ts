@@ -1,7 +1,7 @@
-import { Card, SightCard, CardCodec } from '../Card'
-import { Status, Quality } from '../Effects'
+import { Card, SightCard, CardCodec } from '../../../../shared/state/card'
+import { Status, Quality } from '../../../../shared/state/effects'
 import { Source } from '../Story'
-import { Animation } from '../../Animation'
+import { Animation } from '../../../../shared/state/animation'
 
 class Fruit extends Card {
   play(player, game, index, bonus) {

@@ -1,9 +1,9 @@
 import { ServerModel } from './logic/ServerModel'
 import { Catalog, Status } from './logic'
-import { SoundEffect } from './SoundEffect'
-import { Animation } from './Animation'
+import { SoundEffect } from '../../shared/state/soundEffect'
+import { Animation } from '../../shared/state/animation'
 import { Source } from './logic/Story'
-import { CardCodec } from './CardCodec'
+import { CardCodec } from '../../shared/cardCodec'
 
 const DRAW_PER_TURN = 2
 const START_HAND_REAL = 3

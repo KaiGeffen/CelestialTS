@@ -1,6 +1,6 @@
 import { ServerModel } from './ServerModel'
 import { Catalog } from './Catalog'
-import { Status } from './Effects'
+import { Status } from '../../../shared/state/effects'
 import { SoundEffect } from './SoundEffect'
 import { Animation } from './Animation'
 import { Source } from './Story'

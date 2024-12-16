@@ -30,7 +30,11 @@ export class MatchWS {
         console.log('players connected', data)
         if (data.value) {
           // Send the initial message, including things like the deck we are using
-          this.socket.ws.send(initMessage)
+          this.socket.send({
+            type: 'init',
+            deck: encodeDeck(deck),
+            avatar: avatarID,
+          })
 
           // Signal that a match has been found
           scene.signalMatchFound()
