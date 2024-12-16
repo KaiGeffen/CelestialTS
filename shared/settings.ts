@@ -1,2 +1,10 @@
-export const URL = '127.0.0.1'
-export const PORT = 5555
+export const DRAW_PER_TURN = 2
+export const START_HAND_REAL = 3
+export const START_HAND = START_HAND_REAL - DRAW_PER_TURN
+export const HAND_CAP = 6
+
+export const BREATH_GAIN_PER_TURN = 1
+export const START_BREATH = 1 - BREATH_GAIN_PER_TURN
+export const BREATH_CAP = 10
+
+export const PASS = 10

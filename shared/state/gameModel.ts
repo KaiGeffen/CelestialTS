@@ -13,8 +13,8 @@ import {
   START_HAND,
   HAND_CAP,
   BREATH_GAIN_PER_TURN,
-  START_breath,
-  breath_CAP,
+  START_BREATH,
+  BREATH_CAP,
   PASS,
 } from '../settings'
 
@@ -38,8 +38,8 @@ class GameModel {
   roundResults: any[][] = [[], []]
 
   // Particular phase / time of game
-  version_no: number = 0
-  mulligans_complete: boolean[] = [false, false]
+  versionNo: number = 0
+  mulligansComplete: boolean[] = [false, false]
 
   // Effects
   sound: any = null
@@ -52,11 +52,11 @@ class GameModel {
   wins: number[] = [0, 0]
   passes: number = 0
   priority: number = 0
-  last_player_who_played: number = 0
+  lastPlayerWhoPlayed: number = 0
 
   // Other (For weird cards)
-  amt_passes: number[] = [0, 0]
-  amt_drawn: number[] = [0, 0]
+  amtPasses: number[] = [0, 0]
+  amtDrawn: number[] = [0, 0]
   avatars: Avatar[] = []
 
   constructor(
@@ -68,7 +68,7 @@ class GameModel {
     shuffle = true,
   ) {
     // TODO Most of this is redundant
-    this.version_no = 0
+    this.versionNo = 0
     this.sound = null
     // this.animations = [[], []]
     this.hand = [[], []]
@@ -91,16 +91,16 @@ class GameModel {
     this.priority = 0
     this.vision = [0, 0]
     // this.recap = this.story.recap
-    this.mulligans_complete = [false, false]
-    this.amt_passes = [0, 0]
-    this.amt_drawn = [0, 0]
+    this.mulligansComplete = [false, false]
+    this.amtPasses = [0, 0]
+    this.amtDrawn = [0, 0]
     this.avatars = [avatar1, avatar2]
     this.roundResults = [[], []]
-    this.last_player_who_played = 0
+    this.lastPlayerWhoPlayed = 0
   }
 
-  version_incr() {
-    this.version_no += 1
+  versionIncr() {
+    this.versionNo += 1
     // this.animations = [[], []]
   }
 
@@ -116,7 +116,7 @@ class GameModel {
       }
       card = this.deck[player].pop()
       this.hand[player].push(card)
-      this.amt_drawn[player] += 1
+      this.amtDrawn[player] += 1
       amt -= 1
       // this.animations[player].push(
       //   new Anim(
@@ -167,7 +167,7 @@ class GameModel {
         if (card.cost === cost) {
           this.hand[player].push(card)
           this.deck[player].splice(i, 1)
-          this.amt_drawn[player] += 1
+          this.amtDrawn[player] += 1
           // this.animations[player].push(
           //   new Anim(
           //     'Deck',
@@ -284,11 +284,11 @@ class GameModel {
     return result
   }
 
-  switch_priority() {
+  switchPriority() {
     this.priority = (this.priority + 1) % 2
   }
 
-  get_winner() {
+  getWinner() {
     if (this.wins[0] >= 5) {
       return 0
     }
@@ -333,11 +333,11 @@ class GameModel {
       priority: this.priority ^ player,
       passes: this.passes,
       recap: CardCodec.encode_recap(relative_recap, is_recap),
-      mulligans_complete: this.mulligans_complete.slice().reverse(),
-      version_number: this.version_no,
+      mulligansComplete: this.mulligansComplete.slice().reverse(),
+      version_number: this.versionNo,
       cards_playable: cards_playable,
       vision: this.vision[player],
-      winner: this.get_winner() === null ? null : this.get_winner() ^ player,
+      winner: this.getWinner() === null ? null : this.getWinner() ^ player,
       score: this.score.slice().reverse(),
       sound_effect: this.sound,
       animations: this.hide_opp_animations(this.animations.slice().reverse()),
@@ -349,7 +349,7 @@ class GameModel {
 
   hide_opp_animations(animations: any[][]) {
     const opp_animations = animations[1]
-    if (this.version_no <= 2) {
+    if (this.versionNo <= 2) {
       return [animations[0], []]
     }
     const obfuscated = opp_animations.map((anim: any) => {

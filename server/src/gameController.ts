@@ -4,17 +4,16 @@ import { Status } from '../../shared/state/effects.js'
 import { SoundEffect } from '../../shared/state/soundEffect'
 import { Anim } from '../../shared/state/animation'
 // import { CardCodec } from '../../shared/cardCodec'
-
-const DRAW_PER_TURN = 2
-const START_HAND_REAL = 3
-const START_HAND = START_HAND_REAL - DRAW_PER_TURN
-const HAND_CAP = 6
-
-const BREATH_GAIN_PER_TURN = 1
-const START_BREATH = 1 - BREATH_GAIN_PER_TURN
-const BREATH_CAP = 10
-
-const PASS = 10
+import {
+  DRAW_PER_TURN,
+  START_HAND_REAL,
+  START_HAND,
+  HAND_CAP,
+  BREATH_GAIN_PER_TURN,
+  START_BREATH,
+  BREATH_CAP,
+  PASS,
+} from '../../shared/settings'
 
 class ServerController {
   model: GameModel
@@ -36,8 +35,8 @@ class ServerController {
         i++
       ) {
         const card = this.model.hand[player][i]
-        const anim = new Anim('Deck', 'Mulligan', CardCodec.encodeCard(card), i)
-        this.model.animations[player].push(anim)
+        // const anim = new Anim('Deck', 'Mulligan', CardCodec.encodeCard(card), i)
+        // this.model.animations[player].push(anim)
       }
     }
   }
@@ -50,13 +49,6 @@ class ServerController {
   }
 
   onPlayerInput(player: number, choice: number, version?: number): boolean {
-    if (choice === 13) {
-      // Autowin, debug
-      this.model.wins[0] = 5
-      this.model.versionIncr()
-      return true
-    }
-
     if (version !== undefined && version !== this.model.versionNo) {
       return false
     }
@@ -84,7 +76,7 @@ class ServerController {
 
         if (this.model.passes === 2) {
           this.model.passes = 0
-          this.doTakedown()
+          this.doResolvePhase()
           this.model.versionIncr()
           this.doUpkeep()
         } else {
@@ -121,16 +113,18 @@ class ServerController {
     const card = this.model.hand[player].splice(cardNum, 1)[0]
     this.model.breath[player] -= this.getCost(card, player)
 
-    const result = card.onPlay(player, this.model)
-    if (result) {
-      card = result
-    }
+    // TODO Is this outdated
+    // const result =
+    card.onPlay(player, this.model)
+    // if (result) {
+    //   card = result
+    // }
 
     for (const cardInHand of this.model.hand[player]) {
       cardInHand.inHandOnPlay(player, this.model)
     }
 
-    this.model.story.addAct(card, player, Source.HAND)
+    this.model.story.addAct(card, player)
   }
 
   doMulligan(player: number, mulligans: boolean[]): void {
@@ -153,15 +147,15 @@ class ServerController {
 
     for (const [card, indexFrom] of keptCards) {
       const indexTo = this.model.hand[player].length
-      this.model.animations[player].push(
-        new Animation(
-          'Mulligan',
-          'Hand',
-          CardCodec.encodeCard(card),
-          indexFrom,
-          indexTo,
-        ),
-      )
+      // this.model.animations[player].push(
+      //   new Animation(
+      //     'Mulligan',
+      //     'Hand',
+      //     CardCodec.encodeCard(card),
+      //     indexFrom,
+      //     indexTo,
+      //   ),
+      // )
       this.model.hand[player].push(card)
     }
 
@@ -169,14 +163,14 @@ class ServerController {
 
     for (const [card, indexFrom] of thrownCards) {
       this.model.deck[player].push(card)
-      this.model.animations[player].push(
-        new Animation(
-          'Mulligan',
-          'Deck',
-          CardCodec.encodeCard(card),
-          indexFrom,
-        ),
-      )
+      // this.model.animations[player].push(
+      //   new Animation(
+      //     'Mulligan',
+      //     'Deck',
+      //     CardCodec.encodeCard(card),
+      //     indexFrom,
+      //   ),
+      // )
     }
 
     this.model.shuffle(player, false)
@@ -194,7 +188,7 @@ class ServerController {
     this.model.vision = [newVision0, newVision1]
 
     // Reset round counters
-    this.model.passes = [0, 0]
+    this.model.passes = 0
     this.model.amtDrawn = [0, 0]
 
     // Set priority
@@ -219,11 +213,11 @@ class ServerController {
         const card = this.model.hand[player][index]
         const somethingActivated = card.onUpkeep(player, this.model, index)
 
-        if (somethingActivated) {
-          this.model.animations[player].push(
-            new Anim('Hand', 'Hand', CardCodec.encodeCard(card), index, index),
-          )
-        }
+        // if (somethingActivated) {
+        //   this.model.animations[player].push(
+        //     new Anim('Hand', 'Hand', CardCodec.encodeCard(card), index, index),
+        //   )
+        // }
 
         index += 1
       }
@@ -236,17 +230,17 @@ class ServerController {
           this.model,
           this.model.pile[player].length - 1,
         )
-        if (somethingActivated) {
-          this.model.animations[player].push(
-            new Animation(
-              'Discard',
-              'Discard',
-              CardCodec.encodeCard(card),
-              index,
-              index,
-            ),
-          )
-        }
+        // if (somethingActivated) {
+        //   this.model.animations[player].push(
+        //     new Animation(
+        //       'Discard',
+        //       'Discard',
+        //       CardCodec.encodeCard(card),
+        //       index,
+        //       index,
+        //     ),
+        //   )
+        // }
       }
     }
 
@@ -257,13 +251,15 @@ class ServerController {
     }
   }
 
-  doTakedown(): void {
+  // The resolution phase, after both players have passed. Points and effects happen as cards resolve
+  doResolvePhase(): void {
     this.model.score = [0, 0]
     const wins = [0, 0]
 
-    this.model.recap.reset()
+    // this.model.recap.reset()
     this.model.story.run(this.model)
 
+    // If a player has more points, they win the round
     if (this.model.score[0] > this.model.score[1]) {
       wins[0] += 1
     } else if (this.model.score[1] > this.model.score[0]) {
@@ -273,11 +269,11 @@ class ServerController {
     this.model.wins[0] += wins[0]
     this.model.wins[1] += wins[1]
 
+    // Add each players points as the final moment after the story resolves
     this.model.roundResults[0].push(this.model.score[0])
     this.model.roundResults[1].push(this.model.score[1])
 
-    const safeTotals = [0, 0]
-    this.model.recap.addTotal(this.model.score, wins, safeTotals)
+    // this.model.recap.addTotal(this.model.score, wins, safeTotals)
 
     this.model.story.saveEndState(this.model)
     this.model.story.clear()
@@ -285,6 +281,7 @@ class ServerController {
     this.model.sound = null
   }
 
+  // TODO Get the model that client can see of state
   getClientModel(player: number): any {
     const playerCanPlay = (cardNum: number) => this.canPlay(player, cardNum)
 
@@ -300,11 +297,13 @@ class ServerController {
   }
 
   doUpkeepStatuses(player: number): void {
+    // Clear inspired from last round
     const createdStatuses = [Status.INSPIRED]
     this.model.status[player] = this.model.status[player].filter(
       (stat) => !createdStatuses.includes(stat),
     )
 
+    // Add inspired equal to the amount of inspire
     for (const stat of this.model.status[player]) {
       if (stat === Status.INSPIRE) {
         this.model.breath[player] += 1
@@ -312,6 +311,7 @@ class ServerController {
       }
     }
 
+    // Clear all statuses besides those just added
     const clearedStatuses = [Status.INSPIRE, Status.UNLOCKED, Status.AWAKENED]
     this.model.status[player] = this.model.status[player].filter(
       (stat) => !clearedStatuses.includes(stat),
