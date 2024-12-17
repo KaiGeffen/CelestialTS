@@ -1,9 +1,10 @@
 import { ServerController } from '../../gameController'
-import { Card } from '../../../../shared/state/card'
+import Card from '../../../../shared/state/card'
+import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 
 interface Match {
-  ws1: WebSocket | null
-  ws2: WebSocket | null
+  ws1: TypedWebSocket | null
+  ws2: TypedWebSocket | null
   uuid1: string | null
   uuid2: string | null
 
@@ -15,102 +16,61 @@ interface Match {
 }
 
 class Match {
-  constructor(ws: WebSocket, uuid: string | null = null) {
-    this.ws1 = ws
-    this.uuid1 = uuid
+  constructor(
+    ws1: TypedWebSocket,
+    uuid1: string | null = null,
+    deck1: Card[] = [],
+    avatar1: number,
+    ws2: TypedWebSocket,
+    uuid2: string | null = null,
+    deck2: Card[] = [],
+    avatar2: number,
+  ) {
+    this.ws1 = ws1
+    this.uuid1 = uuid1
+    this.ws2 = ws2
+    this.uuid2 = uuid2
+
+    // Make a new game
+    this.game = new ServerController(deck1, deck2, avatar1, avatar2)
   }
 
-  async addDeck(player: number, deck: Card[], avatar: number) {
-    await this.lock
-    if (this.storedDeck === null) {
-      this.storedDeck = deck
-      this.storedAvatar = avatar
-    } else {
-      if (player === 0) {
-        this.game = new ServerController(
-          deck,
-          this.storedDeck,
-          avatar,
-          this.storedAvatar,
-        )
-      } else {
-        this.game = new ServerController(
-          this.storedDeck,
-          deck,
-          this.storedAvatar,
-          avatar,
-        )
-      }
-      this.game.start()
-    }
+  // Notify all connected players that the match has started
+  async notifyMatchStart() {
+    await Promise.all(
+      this.getActiveWsList().map((ws) =>
+        // TODO Change this to 'game starting' or something
+        ws.send({ type: 'both_players_connected', value: true }),
+      ),
+    )
   }
 
-  // TODO Below is written by ai
-  hasBegun() {
-    return this.game !== null
-  }
-
-  async notifyNumberPlayersConnected() {
-    const ready = this.ws2 !== null || this.vs_ai
-    const message = JSON.stringify({
-      type: 'both_players_connected',
-      value: ready,
-    })
-
-    const activeWs = []
-    if (this.ws1 !== null) activeWs.push(this.ws1)
-    if (this.ws2 !== null) activeWs.push(this.ws2)
-
-    await Promise.all(activeWs.map((ws) => ws.send(message)))
-  }
-
+  // Notify players of the state of the game
   async notifyState() {
     if (this.game === null) return
 
-    const winner = this.game.model.get_winner()
-    if (winner === 0) {
-      if (this.uuid1 !== null) {
-        addWin(this.uuid1)
-        this.uuid1 = null
-      }
-      if (this.uuid2 !== null) {
-        addLoss(this.uuid2)
-        this.uuid2 = null
-      }
-    } else if (winner === 1) {
-      if (this.uuid1 !== null) {
-        addLoss(this.uuid1)
-        this.uuid1 = null
-      }
-      if (this.uuid2 !== null) {
-        addWin(this.uuid2)
-        this.uuid2 = null
-      }
-    }
-
-    const messages = []
-    if (this.ws1 !== null) messages.push(this.ws1.send(this.stateEvent(0)))
-    if (this.ws2 !== null) messages.push(this.ws2.send(this.stateEvent(1)))
-
-    await Promise.all(messages)
-
-    if (
-      this.vs_ai &&
-      this.game.model.priority === 1 &&
-      !this.game.model.mulligans_complete.includes(false)
-    ) {
-      await this.opponentActs()
-    }
+    await Promise.all(
+      this.getActiveWsList().map((ws, index) =>
+        ws.send({
+          type: 'transmit_state',
+          state: this.game.getClientModel(index),
+        }),
+      ),
+    )
   }
 
-  stateEvent(player: number) {
-    return JSON.stringify({
-      type: 'transmit_state',
-      value: this.game.get_client_model(player),
-    })
+  // TODO Use the same Mulligan type throughout
+  async doMulligan(player: number, mulligan: boolean[]) {
+    this.game.doMulligan(player, mulligan)
+    await this.notifyState()
   }
 
-  async notifyExit(disconnectingWs: WebSocket | null = null) {
+  // Get the list of all active websockets connected to this match
+  private getActiveWsList(): TypedWebSocket[] {
+    return [this.ws1, this.ws2].filter((ws) => ws !== null)
+  }
+
+  async notifyExit(disconnectingWs: TypedWebSocket | null = null) {
     if (this.game === null || this.game.model.get_winner() !== null) return
 
     if (this.ws1 === disconnectingWs) this.ws1 = null
@@ -123,23 +83,6 @@ class Match {
       messages.push(this.ws2.send(JSON.stringify({ type: 'dc' })))
 
     if (messages.length) await Promise.all(messages)
-  }
-
-  addPlayer2(ws: WebSocket, uuid: string | null = null) {
-    this.ws2 = ws
-    this.uuid2 = uuid
-    return this
-  }
-
-  async doMulligan(player: number, mulligan: boolean[]) {
-    await this.lock
-    this.game.do_mulligan(player, mulligan)
-
-    if (this.vs_ai) this.game.model.sound = null
-
-    await this.notifyState()
-
-    if (this.vs_ai) this.game.do_mulligan(1, [false, false, false, false])
   }
 
   async doAction(player: number, action: any, version: number) {
@@ -155,32 +98,14 @@ class Match {
     }
   }
 
+  // TODO Implement emotes
   async signalEmote(player: number, emoteNumber: number) {
+    return
     if (this.game === null) return
 
-    const msg = JSON.stringify({ type: 'opponent_emote', value: emoteNumber })
-    if (player === 0 && this.ws2 !== null) await this.ws2.send(msg)
-    if (player === 1 && this.ws1 !== null) await this.ws1.send(msg)
-  }
-
-  async addAiOpponent(i: number | null = null) {
-    await this.addDeck(1, get_computer_deck(i), 0)
-    this.vs_ai = true
-  }
-
-  async addSpecificAiOpponent(deckCode: string) {
-    await this.addDeck(1, CardCodec.decode_deck(deckCode), 0)
-    this.vs_ai = true
-  }
-
-  async opponentActs() {
-    await this.lock
-    const opponentModel = new ClientModel(this.game.get_client_model(1))
-    const opponentAction = AI.get_action(opponentModel)
-
-    const valid = this.game.on_player_input(1, opponentAction)
-
-    if (valid) await this.notifyState()
+    // const msg = JSON.stringify({ type: 'opponent_emote', value: emoteNumber })
+    // if (player === 0 && this.ws2 !== null) await this.ws2.send(msg)
+    // if (player === 1 && this.ws1 !== null) await this.ws1.send(msg)
   }
 }
 

@@ -6,7 +6,17 @@ type Mulligan = [boolean, boolean, boolean]
 // All supported messages (type and payload) between server and client
 type SupportedMessages = {
   // Client to server
-  init: {
+  initPvp: {
+    password: string
+    // TODO Is this a string? Too long for a number?
+    uuid: string
+    deck: string
+    avatar: number
+  }
+  initPve: {
+    aiDeck: string
+    // TODO Is this a string? Too long for a number? Is this necessary for pve
+    uuid: string
     deck: string
     avatar: number
   }

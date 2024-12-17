@@ -1,5 +1,5 @@
 import { GameModel } from '../../shared/state/gameModel'
-import { Card } from '../../shared/state/card'
+import Card from '../../shared/state/card'
 
 import { Status } from '../../shared/state/effects'
 import { SoundEffect } from '../../shared/state/soundEffect'

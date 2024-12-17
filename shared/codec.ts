@@ -1,5 +1,5 @@
 import allCards from './state/catalog'
-import { Card } from './state/card'
+import Card from './state/card'
 
 const delims = ['¡', '™', '£']
 const full_state_delim = 'ª'

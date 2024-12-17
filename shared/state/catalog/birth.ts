@@ -1,4 +1,4 @@
-import { Card } from '../card'
+import Card from '../card'
 import { child } from './tokens'
 import { Status, Quality } from '../effects'
 

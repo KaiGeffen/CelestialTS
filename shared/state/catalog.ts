@@ -1,4 +1,4 @@
-import { Card } from './card'
+import Card from './card'
 
 import { dove, swift, secretaryBird, phoenix, heron } from './catalog/birds'
 import {

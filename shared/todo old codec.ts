@@ -1,4 +1,4 @@
-import { Card } from './state/card'
+import Card from './state/card'
 import allCards from './state/catalog'
 import { Status } from './state/effects'
 import { Story } from './state/story'

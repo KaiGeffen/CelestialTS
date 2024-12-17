@@ -1,4 +1,4 @@
-import { Card } from './card'
+import Card from './card'
 import { Story } from './story'
 import { Avatar } from './avatar'
 

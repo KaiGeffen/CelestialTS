@@ -13,7 +13,7 @@ interface CardData {
   dynamicText?: string
 }
 
-export class Card {
+export default class Card {
   name: string
   id: number
   cost: number

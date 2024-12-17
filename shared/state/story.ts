@@ -1,4 +1,4 @@
-import { Card } from '../../shared/state/card'
+import Card from '../../shared/state/card'
 
 import { SoundEffect } from './soundEffect'
 // import { Recap } from './Recap'
