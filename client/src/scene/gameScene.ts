@@ -228,12 +228,8 @@ export class GameScene extends BaseScene {
 
     // Mulligan
     view.mulligan.setCallback(() => {
-      let s = ''
-      view.mulligan.mulliganChoices.forEach((choice) => {
-        s += choice ? '1' : '0'
-      })
-
-      net.doMulligan(s)
+      const choice: [boolean, boolean, boolean] = view.mulligan.mulliganChoices
+      net.doMulligan(choice)
     })
 
     // Results

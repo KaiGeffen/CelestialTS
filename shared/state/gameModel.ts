@@ -101,7 +101,7 @@ export default class GameModel {
     this.avatars = [avatar1, avatar2]
     this.roundResults = [[], []]
     this.lastPlayerWhoPlayed = 0
-    this.cardsPlayable = [false, false, false, false, false, false]
+    this.cardsPlayable = [true, true, true, true, true, true]
   }
 
   versionIncr() {

@@ -71,27 +71,27 @@ export class MatchWS {
   }
 
   playCard(index: number) {
-    let msg = {
-      type: 'play_card',
-      value: index,
+    console.log('Playing card:', index)
+    this.socket.send({
+      type: 'playCard',
+      card: index,
       version: versionNumber,
-    }
-    this.socket.ws.send(JSON.stringify(msg))
+    })
   }
 
-  // String in the format '001' to mulligan just 3rd card, etc
-  doMulligan(mulligans: string) {
-    // TODO
-    // this.socket.send({
-    //   type: 'mulligan',
-    // })
+  // TODO standardize mulligan type
+  doMulligan(mulligans: [boolean, boolean, boolean]) {
+    this.socket.send({
+      type: 'mulligan',
+      mulligan: mulligans,
+    })
   }
 
   passTurn() {
     this.socket.send({
-      type: 'pass_turn',
+      type: 'passTurn',
+      version: versionNumber,
     })
-    // TODO Why is version number used
   }
 
   // Signal to server that we are exiting this match
@@ -99,7 +99,7 @@ export class MatchWS {
     // If user is logged in, send a message but keep the ws
     if (Server.loggedIn()) {
       this.socket.send({
-        type: 'exit_match',
+        type: 'exitMatch',
       })
     }
     // TODO Remove if UserSessionWS is separate from this
@@ -145,14 +145,3 @@ export class MatchWS {
     return socket
   }
 }
-
-// Putting registered events here for now TODO
-
-// Each of the events and its callback
-
-// const playCardEvent = createSocket<'play_card'>('play_card', (data) => {
-//   console.log('Playing a card:', data.card)
-// })
-
-// TODO There's some clever way to ensure that all SocketMessages are covered
-// const registeredEvents = [initEvent, playCardEvent]

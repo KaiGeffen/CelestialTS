@@ -51,12 +51,13 @@ class PveMatch extends Match {
   }
 
   async doMulligan(player, mulligan) {
-    // Opponent first mulligans nothing
-    this.game.doMulligan(1, [false, false, false, false])
-
     // if (this.vs_ai) this.game.model.sound = null TODO idk why this happen
 
     await super.doMulligan(player, mulligan)
+
+    // TODO Opponent makes smarter mulligan
+    this.game.doMulligan(1, [false, false, false])
+    await this.notifyState()
   }
 
   // async addAiOpponent(i: number | null = null) {

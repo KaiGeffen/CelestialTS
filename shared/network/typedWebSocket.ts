@@ -20,10 +20,13 @@ type SupportedMessages = {
     deck: string
     avatar: number
   }
-  play_card: { card: number }
+  playCard: {
+    card: number
+    version: number
+  }
   mulligan: { mulligan: Mulligan }
-  pass_turn: {}
-  exit_match: {}
+  passTurn: { version: number }
+  exitMatch: {}
   emote: {}
 
   // Server to client

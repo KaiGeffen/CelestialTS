@@ -102,22 +102,24 @@ function registerEvents(
   match: Match,
   playerNumber: number,
 ) {
-  const playCardEvent = createEvent('play_card', (data) => {
+  const playCardEvent = createEvent('playCard', (data) => {
+    console.log(data)
     const cardNum = data.card
-    const versionNo = 0 // TODO
-    match.doAction(playerNumber, cardNum, versionNo)
+    const version = data.version
+    match.doAction(playerNumber, cardNum, version)
   })
 
   const mulliganEvent = createEvent('mulligan', (data) => {
+    console.log('Mulliganing', data.mulligan)
     match.doMulligan(playerNumber, data.mulligan)
   })
 
-  const passTurnEvent = createEvent('pass_turn', (data) => {
+  const passTurnEvent = createEvent('passTurn', (data) => {
     const versionNo = 0 // TODO
     match.doAction(playerNumber, PASS, versionNo)
   })
 
-  const exitMatchEvent = createEvent('exit_match', (data) => {
+  const exitMatchEvent = createEvent('exitMatch', (data) => {
     match.doExit(ws)
   })
 

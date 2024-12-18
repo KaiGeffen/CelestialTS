@@ -116,7 +116,7 @@ export default class OurHandRegion extends Region {
 
     // Add each of the cards in our hand
     this.cards = []
-    for (let i = 0; i < state.hand.length; i++) {
+    for (let i = 0; i < state.hand[0].length; i++) {
       let card = this.addCard(
         state.hand[0][i],
         CardLocation.ourHand(state, i, this.container),

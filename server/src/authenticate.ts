@@ -72,7 +72,7 @@ async function authenticate(ws: WebSocket) {
     } else if (data.type === 'find_match') {
       path = data.value
       const { match, player } = await getMatch(ws, path, uuid)
-    } else if (data.type === 'exit_match') {
+    } else if (data.type === 'exitMatch') {
       await matchCleanup(path, match, ws)
       path = null
     } else {
