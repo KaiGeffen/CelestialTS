@@ -8,7 +8,7 @@ class Fruit extends Card {
     this.nourish(3, game, player)
   }
 }
-const fruit = new Fruit({ name: 'Fruit', cost: 3, points: 11, id: 1 })
+const fruit = new Fruit({ name: 'Fruit', cost: 3, id: 11 })
 
 class Oak extends Card {
   onRoundEnd(player, game) {

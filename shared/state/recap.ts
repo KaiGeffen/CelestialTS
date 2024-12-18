@@ -1,13 +1,21 @@
 // TODO ai wrote this and it's wrong
 
+import Card from './card'
+import Act from './act'
+import GameModel from './gameModel'
+
 export default class Recap {
-  story: Array<[string, number, string]>
+  // The story which has resolved so far
+  story: Array<Act>
+  // Each players current points
   sums: [number, number]
+  // The number of wins each player has TODO this is a weird way to represent something at most 1
   wins: [number, number]
+
   stateList: Array<[any, any]>
 
   constructor(
-    story: Array<[string, number, string]> = [],
+    story: Array<Act> = [],
     sums: [number, number] = [0, 0],
     wins: [number, number] = [0, 0],
     stateList: Array<[any, any]> = [],
@@ -18,11 +26,12 @@ export default class Recap {
     this.stateList = stateList
   }
 
-  add(card: string, owner: number, text: string): void {
-    this.story.push([card, owner, text])
+  add(card: Card, owner: number): void {
+    // TODO Bonus?
+    this.story.push(new Act(card, owner, 0))
   }
 
-  addState(statePair: [any, any]): void {
+  addState(statePair: [GameModel, GameModel]): void {
     this.stateList.push(statePair)
   }
 
@@ -41,20 +50,19 @@ export default class Recap {
     this.stateList = []
   }
 
-  // getFlipped(): Recap {
-  //   const story = this.story.map(([card, owner, text]) => [
-  //     card,
-  //     (owner + 1) % 2,
-  //     text,
-  //   ])
-  //   const sums = [this.sums[1], this.sums[0]]
-  //   const wins = [this.wins[1], this.wins[0]]
-  //   const stateList = this.stateList.map((relativeStates) => [
-  //     relativeStates[1],
-  //     relativeStates[0],
-  //   ])
+  private getFlipped(): Recap {
+    const story = this.story.map(
+      (act) => new Act(act.card, (act.owner + 1) % 2, act.bonus),
+    )
+    const sums: [number, number] = [this.sums[1], this.sums[0]]
+    const wins: [number, number] = [this.wins[1], this.wins[0]]
+    const stateList: any = this.stateList.map((relativeStates) => [
+      relativeStates[1],
+      relativeStates[0],
+    ])
 
-  // }
+    return new Recap(story, sums, wins, stateList)
+  }
 
   getStateList(player: number): Array<any> {
     return this.stateList.map((relativeStates) => relativeStates[player])

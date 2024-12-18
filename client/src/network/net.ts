@@ -46,7 +46,7 @@ export class MatchWS {
         scene.signalMatchFound()
       })
       .on('transmit_state', (data) => {
-        console.log('Received state: ', data)
+        console.log('New recap: ', data.state.recap)
         if (data.state.versionNo > versionNumber)
           newScene.queueState(data.state)
       })
@@ -71,7 +71,6 @@ export class MatchWS {
   }
 
   playCard(index: number) {
-    console.log('Playing card:', index)
     this.socket.send({
       type: 'playCard',
       card: index,

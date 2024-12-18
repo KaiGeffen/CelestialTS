@@ -35,8 +35,11 @@ export default class StoryRegion extends Region {
 
     // If this is a recap, add the already played cards greyed out
     let resolvedI = 0
-    for (; isRecap && resolvedI < state.recap.playList.length; resolvedI++) {
-      const play: Play = state.recap.playList[resolvedI]
+    for (; isRecap && resolvedI < state.recap.stateList.length; resolvedI++) {
+      console.log(state.recap.stateList[resolvedI])
+      // TODO
+      // const play: Play = state.recap.stateList[resolvedI]
+      const play = null
 
       let card = this.addCard(
         play.card,
@@ -99,7 +102,7 @@ export default class StoryRegion extends Region {
 
   // Display the current score totals and change in scores
   private displayScores(state: GameModel, isRecap: boolean): void {
-    let index = state.recap.playList.length - 1
+    let index = state.recap.stateList.length - 1
     let remainingActs = state.recap.stateList.length
     if (index >= 0 && remainingActs >= 0) {
       this.animateScoreGains(index, state.score, state, isRecap)

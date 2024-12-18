@@ -51,6 +51,8 @@ class Match {
   async notifyState() {
     if (this.game === null) return
 
+    console.log(this.game.getClientModel(0).recap)
+
     await Promise.all(
       this.getActiveWsList().map((ws, index) =>
         ws.send({

@@ -33,9 +33,12 @@ export default class GameModel {
   status: Status[][] = [[], []]
   vision: number[] = [0, 0]
 
-  // Recap
+  // As the story is resolving
   recap: Recap = new Recap()
+  // The current score
   score: [number, number] = [0, 0]
+
+  // TODO I'm not sure what this is used for
   roundResults: any[][] = [[], []]
 
   // Particular phase / time of game
@@ -95,7 +98,7 @@ export default class GameModel {
     this.passes = 0
     this.priority = 0
     this.vision = [0, 0]
-    // this.recap = this.story.recap
+    this.recap = this.story.recap
     this.mulligansComplete = [false, false]
     this.amtPasses = [0, 0]
     this.amtDrawn = [0, 0]

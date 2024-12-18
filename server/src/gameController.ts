@@ -255,7 +255,7 @@ class ServerController {
   // The resolution phase, after both players have passed. Points and effects happen as cards resolve
   doResolvePhase(): void {
     this.model.score = [0, 0]
-    const wins = [0, 0]
+    const wins: [number, number] = [0, 0]
 
     // this.model.recap.reset()
     this.model.story.run(this.model)
@@ -274,7 +274,7 @@ class ServerController {
     this.model.roundResults[0].push(this.model.score[0])
     this.model.roundResults[1].push(this.model.score[1])
 
-    // this.model.recap.addTotal(this.model.score, wins, safeTotals)
+    this.model.recap.addTotal(this.model.score, wins)
 
     this.model.story.saveEndState(this.model)
     this.model.story.clear()

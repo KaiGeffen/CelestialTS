@@ -24,7 +24,8 @@ export default class Animator {
   }
 
   animate(state: GameModel, isRecap: boolean): void {
-    if (isRecap && state.isRecapStart()) {
+    const isRecapStart = state.recap.stateList.length === 0
+    if (isRecap && isRecapStart) {
       this.animateRecapStart(state)
       return
     }

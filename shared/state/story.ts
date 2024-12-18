@@ -4,22 +4,16 @@ import { SoundEffect } from './soundEffect'
 // import { Recap } from './Recap'
 import { Quality } from './effects'
 import GameModel from './gameModel'
-
-class Act {
-  constructor(
-    public card: Card,
-    public owner: number,
-    public bonus: number = 0,
-  ) {}
-}
+import Recap from './recap'
+import getClientGameModel from './clientGameModel'
+import Act from './act'
 
 class Story {
   acts: Act[] = []
-  // recap: Recap
+  recap: Recap
 
   constructor() {
-    // TODO
-    // this.recap = new Recap()
+    this.recap = new Recap()
   }
 
   // Add a card to the story with given owner and at given position
@@ -33,15 +27,13 @@ class Story {
   }
 
   // Run the current story
-  // TODO I don't think simplified is used anymore
   run(game: GameModel) {
-    // this.recap.reset()
+    this.recap.reset()
 
-    // const stateBeforePlay: [any, any] = [null, null]
-    // for (let player = 0; player < 2; player++) {
-    //   stateBeforePlay[player] = game.getClientModel(player, true)
-    // }
-    // this.recap.addState(stateBeforePlay)
+    const stateBeforePlay: any = [0, 1].map((player) =>
+      getClientGameModel(game, player),
+    )
+    this.recap.addState(stateBeforePlay)
     game.animations = [[], []]
 
     let index = 0
@@ -51,9 +43,7 @@ class Story {
 
       game.sound = SoundEffect.Resolve
 
-      let result: string
       act.card.play(act.owner, game, index, act.bonus)
-      result = 'TODO NOT SIMPLIFIED'
       roundEndEffects.push([act.card.onRoundEnd, act.owner])
 
       // Put in pile or remove from game if Fleeting
@@ -64,13 +54,13 @@ class Story {
       }
 
       index++
-      // this.recap.add(act.card, act.owner, result)
+      this.recap.add(act.card, act.owner)
 
-      // const stateAfterPlay: [any, any] = [null, null]
-      // for (let player = 0; player < 2; player++) {
-      //   stateAfterPlay[player] = game.getClientModel(player, true)
-      // }
-      // this.recap.addState(stateAfterPlay)
+      const stateAfterPlay: [any, any] = [null, null]
+      for (let player = 0; player < 2; player++) {
+        stateAfterPlay[player] = getClientGameModel(game, player)
+      }
+      this.recap.addState(stateAfterPlay)
       game.animations = [[], []]
     }
 
@@ -81,19 +71,19 @@ class Story {
   }
 
   saveEndState(game: any) {
-    // const stateAfterPlay = ['', '']
-    // for (let player = 0; player < 2; player++) {
-    //   if (this.recap.wins[player] > 0) {
-    //     game.soundEffect = SoundEffect.Win
-    //   } else if (this.recap.wins[player ^ 1] > 0) {
-    //     game.soundEffect = SoundEffect.Lose
-    //   } else {
-    //     game.soundEffect = SoundEffect.Tie
-    //   }
-    //   stateAfterPlay[player] = game.getClientModel(player, true)
-    // }
-    // this.recap.addState(stateAfterPlay)
-    // game.animations = [[], []]
+    const stateAfterPlay: [GameModel, GameModel] = [null, null]
+    for (let player = 0; player < 2; player++) {
+      if (this.recap.wins[player] > 0) {
+        game.soundEffect = SoundEffect.Win
+      } else if (this.recap.wins[player ^ 1] > 0) {
+        game.soundEffect = SoundEffect.Lose
+      } else {
+        game.soundEffect = SoundEffect.Tie
+      }
+      stateAfterPlay[player] = getClientGameModel(game, player)
+    }
+    this.recap.addState(stateAfterPlay)
+    game.animations = [[], []]
   }
 
   clear() {

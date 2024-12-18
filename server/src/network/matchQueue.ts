@@ -103,14 +103,12 @@ function registerEvents(
   playerNumber: number,
 ) {
   const playCardEvent = createEvent('playCard', (data) => {
-    console.log(data)
     const cardNum = data.card
     const version = data.version
     match.doAction(playerNumber, cardNum, version)
   })
 
   const mulliganEvent = createEvent('mulligan', (data) => {
-    console.log('Mulliganing', data.mulligan)
     match.doMulligan(playerNumber, data.mulligan)
   })
 
