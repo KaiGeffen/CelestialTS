@@ -6,7 +6,6 @@ import { Anim } from './animation'
 // import { CardCodec } from '../cardCodec'
 // import { hidden_card } from './logic/Catalog'
 import { Quality, Status } from './effects'
-import Recap from './recap'
 import {
   DRAW_PER_TURN,
   START_HAND_REAL,
@@ -18,6 +17,12 @@ import {
   PASS,
 } from '../settings'
 // import getClientGameModel from './clientGameModel'
+
+enum Phase {
+  Morning,
+  Day,
+  Night,
+}
 
 export default class GameModel {
   // Zones
@@ -33,13 +38,11 @@ export default class GameModel {
   status: Status[][] = [[], []]
   vision: number[] = [0, 0]
 
-  // As the story is resolving
-  recap: Recap = new Recap()
-  // The current score
+  // Resolving specific
+  // Each player's score
   score: [number, number] = [0, 0]
-
-  // TODO I'm not sure what this is used for
-  roundResults: any[][] = [[], []]
+  // Interstitial models that occured since the last user action (Recap)
+  recentModels: GameModel[][] = [[], []]
 
   // Particular phase / time of game
   versionNo: number = 0
@@ -52,6 +55,8 @@ export default class GameModel {
   // Other
   last_shuffle: any[][] = [[], []]
   winner: number = null
+  // The points each player got each round
+  roundResults: [number[], number[]] = [[], []]
 
   // Game tracking
   wins: number[] = [0, 0]
@@ -98,12 +103,10 @@ export default class GameModel {
     this.passes = 0
     this.priority = 0
     this.vision = [0, 0]
-    this.recap = this.story.recap
     this.mulligansComplete = [false, false]
     this.amtPasses = [0, 0]
     this.amtDrawn = [0, 0]
     this.avatars = [avatar1, avatar2]
-    this.roundResults = [[], []]
     this.lastPlayerWhoPlayed = 0
   }
 
@@ -304,6 +307,11 @@ export default class GameModel {
       return 1
     }
     return null
+  }
+
+  // Make a shallow copy of this state for recap
+  shallowCopy(): GameModel {
+    return JSON.parse(JSON.stringify(this))
   }
 
   // TODO Get a model that doesn't show unknown information

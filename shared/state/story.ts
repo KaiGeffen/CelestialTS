@@ -1,20 +1,13 @@
 import Card from '../../shared/state/card'
 
 import { SoundEffect } from './soundEffect'
-// import { Recap } from './Recap'
 import { Quality } from './effects'
 import GameModel from './gameModel'
-import Recap from './recap'
 import getClientGameModel from './clientGameModel'
 import Act from './act'
 
 class Story {
   acts: Act[] = []
-  recap: Recap
-
-  constructor() {
-    this.recap = new Recap()
-  }
 
   // Add a card to the story with given owner and at given position
   addAct(card: Card, owner: number, i?: number) {
@@ -28,13 +21,11 @@ class Story {
 
   // Run the current story
   run(game: GameModel) {
-    this.recap.reset()
+    game.score = [0, 0]
 
-    const stateBeforePlay: any = [0, 1].map((player) =>
-      getClientGameModel(game, player),
-    )
-    this.recap.addState(stateBeforePlay)
-    game.animations = [[], []]
+    game.recentModels[0].push(getClientGameModel(game, 0))
+    game.recentModels[1].push(getClientGameModel(game, 1))
+    game.versionIncr()
 
     let index = 0
     const roundEndEffects: [Function, number][] = []
@@ -54,14 +45,15 @@ class Story {
       }
 
       index++
-      this.recap.add(act.card, act.owner)
+      // this.recap.add(act.card, act.owner)
 
-      const stateAfterPlay: [any, any] = [null, null]
-      for (let player = 0; player < 2; player++) {
-        stateAfterPlay[player] = getClientGameModel(game, player)
-      }
-      this.recap.addState(stateAfterPlay)
-      game.animations = [[], []]
+      // const stateAfterPlay: [any, any] = [null, null]
+      // for (let player = 0; player < 2; player++) {
+      //   stateAfterPlay[player] = getClientGameModel(game, player)
+      // }
+      game.recentModels[0].push(getClientGameModel(game, 0))
+      game.recentModels[1].push(getClientGameModel(game, 1))
+      game.versionIncr()
     }
 
     // Do all round end effects
@@ -70,20 +62,22 @@ class Story {
     }
   }
 
-  saveEndState(game: any) {
-    const stateAfterPlay: [GameModel, GameModel] = [null, null]
-    for (let player = 0; player < 2; player++) {
-      if (this.recap.wins[player] > 0) {
-        game.soundEffect = SoundEffect.Win
-      } else if (this.recap.wins[player ^ 1] > 0) {
-        game.soundEffect = SoundEffect.Lose
-      } else {
-        game.soundEffect = SoundEffect.Tie
-      }
-      stateAfterPlay[player] = getClientGameModel(game, player)
-    }
-    this.recap.addState(stateAfterPlay)
-    game.animations = [[], []]
+  saveEndState(game: GameModel) {
+    game.recentModels[0].push(getClientGameModel(game, 0))
+    game.recentModels[1].push(getClientGameModel(game, 1))
+    // const stateAfterPlay: [GameModel, GameModel] = [null, null]
+    // for (let player = 0; player < 2; player++) {
+    //   if (this.recap.wins[player] > 0) {
+    //     game.soundEffect = SoundEffect.Win
+    //   } else if (this.recap.wins[player ^ 1] > 0) {
+    //     game.soundEffect = SoundEffect.Lose
+    //   } else {
+    //     game.soundEffect = SoundEffect.Tie
+    //   }
+    //   stateAfterPlay[player] = getClientGameModel(game, player)
+    // }
+    // this.recap.addState(stateAfterPlay)
+    // game.animations = [[], []]
   }
 
   clear() {

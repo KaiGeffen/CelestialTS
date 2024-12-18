@@ -24,11 +24,11 @@ export default class Animator {
   }
 
   animate(state: GameModel, isRecap: boolean): void {
-    const isRecapStart = state.recap.stateList.length === 0
-    if (isRecap && isRecapStart) {
-      this.animateRecapStart(state)
-      return
-    }
+    // const isRecapStart = state.recap.stateList.length === 0
+    // if (isRecap && isRecapStart) {
+    //   this.animateRecapStart(state)
+    //   return
+    // }
 
     for (let owner = 0; owner < 2; owner++) {
       for (let i = 0; i < state.animations[owner].length; i++) {

@@ -279,10 +279,7 @@ export class GameScene extends BaseScene {
 
   // Display the given game state, returns false if the state isn't shown immediately
   protected displayState(state: GameModel, isRecap: boolean): boolean {
-    // If there is a new recap, queue that instead and don't show this state yet
-    if (this.queueNewRecap(state)) {
-      return false
-    }
+    console.log('version number: ', state.versionNo)
 
     // If any tweens are playing, don't display yet
     let anyTweenPlaying = this.tweens.getTweens().length > 0
@@ -342,29 +339,6 @@ export class GameScene extends BaseScene {
       )
       return !havePlayableCards
     }
-  }
-
-  // Queue up this scene's yet-unseen recap, return false if there is none
-  private queueNewRecap(state: GameModel): boolean {
-    // If a round just ended, we might have a recap to queue up
-    const isRoundStart = state.story.acts.length === 0 && state.passes === 0
-    const numberStates = state.recap.stateList.length
-    if (isRoundStart && numberStates > 0) {
-      // Queue the recap to play
-      // TODO
-      this.queueRecap(state.recap.stateList[0])
-
-      // Remove the recap from this state (So it won't be added again)
-      state.recap.stateList = []
-
-      // Add this state to the queue
-      this.queueState(state)
-
-      // Return true, that a recap was queued
-      return true
-    }
-
-    return false
   }
 
   // Opponent has used a given emote

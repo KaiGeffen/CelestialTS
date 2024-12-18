@@ -2,7 +2,7 @@ import { allCards, getCard } from '../catalog/catalog'
 import Card from './card'
 import Story from './story'
 import Recap from './recap'
-import ClientState from './clientState'
+// import ClientState from './clientState'
 import { Status } from './status'
 import Play from './play'
 
@@ -128,6 +128,7 @@ function decodeStatuses(s: string): Status[] {
 }
 
 function decodeRecap(s: string): Recap {
+  return null
   let arr = s.split(full_state_delim)
   let simpleRecap = arr[0]
   arr = arr.slice(1)

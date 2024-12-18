@@ -46,7 +46,7 @@ export class MatchWS {
         scene.signalMatchFound()
       })
       .on('transmit_state', (data) => {
-        console.log('New recap: ', data.state.recap)
+        console.log('Received state from server', data.state)
         if (data.state.versionNo > versionNumber)
           newScene.queueState(data.state)
       })

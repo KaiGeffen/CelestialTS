@@ -39,9 +39,9 @@ export default class RoundResultRegion extends Region {
   // TODO Temporary, replace with crisper animation
   private animateResult(state: GameModel): void {
     let s
-    if (state.recap.sums[0] > state.recap.sums[1]) {
+    if (state.score[0] > state.score[1]) {
       s = 'Win'
-    } else if (state.recap.sums[0] < state.recap.sums[1]) {
+    } else if (state.score[0] < state.score[1]) {
       s = 'Lose'
     } else {
       s = 'Tie'

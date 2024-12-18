@@ -51,15 +51,27 @@ class Match {
   async notifyState() {
     if (this.game === null) return
 
-    console.log(this.game.getClientModel(0).recap)
-
     await Promise.all(
-      this.getActiveWsList().map((ws, index) =>
+      this.getActiveWsList().map((ws, index) => {
+        /*
+       Send each state since last input
+       For actions besides the last pass of a round, this is just 1
+       but for recaps it's each slice of the recap
+       */
+        // Send any recap states
+        this.game.model.recentModels[index].forEach((state) =>
+          ws.send({
+            type: 'transmit_state',
+            state: state,
+          }),
+        )
+
+        // Send the normal state
         ws.send({
           type: 'transmit_state',
           state: this.game.getClientModel(index),
-        }),
-      ),
+        })
+      }),
     )
   }
 

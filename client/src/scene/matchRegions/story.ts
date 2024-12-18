@@ -34,30 +34,31 @@ export default class StoryRegion extends Region {
     this.container.setDepth(isRecap ? Depth.storyAtNight : Depth.storyAtDay)
 
     // If this is a recap, add the already played cards greyed out
+    // TODO
     let resolvedI = 0
-    for (; isRecap && resolvedI < state.recap.stateList.length; resolvedI++) {
-      console.log(state.recap.stateList[resolvedI])
-      // TODO
-      // const play: Play = state.recap.stateList[resolvedI]
-      const play = null
+    // for (; isRecap && resolvedI < state.recap.stateList.length; resolvedI++) {
+    //   console.log(state.recap.stateList[resolvedI])
+    //   // TODO
+    //   // const play: Play = state.recap.stateList[resolvedI]
+    //   const play = null
 
-      let card = this.addCard(
-        play.card,
-        CardLocation.story(
-          state,
-          isRecap,
-          resolvedI,
-          this.container,
-          play.owner,
-        ),
-      )
-        .setResolved()
-        .moveToTopOnHover()
-        .setOnClick(this.callback(resolvedI))
-      // .showController(play[1])
+    //   let card = this.addCard(
+    //     play.card,
+    //     CardLocation.story(
+    //       state,
+    //       isRecap,
+    //       resolvedI,
+    //       this.container,
+    //       play.owner,
+    //     ),
+    //   )
+    //     .setResolved()
+    //     .moveToTopOnHover()
+    //     .setOnClick(this.callback(resolvedI))
+    //   // .showController(play[1])
 
-      this.temp.push(card)
-    }
+    //   this.temp.push(card)
+    // }
 
     let cards = []
     for (let i = 0; i < state.story.acts.length; i++) {
@@ -102,11 +103,12 @@ export default class StoryRegion extends Region {
 
   // Display the current score totals and change in scores
   private displayScores(state: GameModel, isRecap: boolean): void {
-    let index = state.recap.stateList.length - 1
-    let remainingActs = state.recap.stateList.length
-    if (index >= 0 && remainingActs >= 0) {
-      this.animateScoreGains(index, state.score, state, isRecap)
-    }
+    // let index = state.recap.stateList.length - 1
+    // let remainingActs = state.recap.stateList.length
+    // if (index >= 0 && remainingActs >= 0) {
+    const index = 0
+    this.animateScoreGains(index, state.score, state, isRecap)
+    // }
 
     this.lastScores = state.score
   }
