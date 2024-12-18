@@ -18,7 +18,7 @@ import {
   PASS,
 } from '../settings'
 
-class GameModel {
+export default class GameModel {
   // Zones
   hand: Card[][] = [[], []]
   deck: Card[][] = [[], []]
@@ -33,8 +33,8 @@ class GameModel {
   vision: number[] = [0, 0]
 
   // Recap
-  // recap: Recap = new Recap()
-  score: number[] = [0, 0]
+  recap: Recap = new Recap()
+  score: [number, number] = [0, 0]
   roundResults: any[][] = [[], []]
 
   // Particular phase / time of game
@@ -43,7 +43,7 @@ class GameModel {
 
   // Effects
   sound: any = null
-  // animations: any[][] = [[], []]
+  animations: any[][] = [[], []]
 
   // Other
   last_shuffle: any[][] = [[], []]
@@ -53,6 +53,9 @@ class GameModel {
   passes: number = 0
   priority: number = 0
   lastPlayerWhoPlayed: number = 0
+
+  // For client side visualization
+  cardsPlayable: boolean[]
 
   // Other (For weird cards)
   amtPasses: number[] = [0, 0]
@@ -70,7 +73,7 @@ class GameModel {
     // TODO Most of this is redundant
     this.versionNo = 0
     this.sound = null
-    // this.animations = [[], []]
+    this.animations = [[], []]
     this.hand = [[], []]
     this.deck = [deck1, deck2]
     this.pile = [[], []]
@@ -97,11 +100,12 @@ class GameModel {
     this.avatars = [avatar1, avatar2]
     this.roundResults = [[], []]
     this.lastPlayerWhoPlayed = 0
+    this.cardsPlayable = [false, false, false, false, false, false]
   }
 
   versionIncr() {
     this.versionNo += 1
-    // this.animations = [[], []]
+    this.animations = [[], []]
   }
 
   draw(player: number, amt = 1) {
@@ -401,6 +405,9 @@ class GameModel {
     return CardCodec.encode_story(result)
   }
   */
-}
 
-export { GameModel }
+  isRecapEnd() {
+    // TODO
+    return true
+  }
+}

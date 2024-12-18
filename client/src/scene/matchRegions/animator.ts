@@ -1,5 +1,5 @@
 import 'phaser'
-import ClientState from '../../lib/clientState'
+import GameModel from '../../../../shared/state/gameModel'
 import BaseScene from '../baseScene'
 import { Animation, Zone } from '../../lib/animation'
 import CardLocation from './cardLocation'
@@ -9,478 +9,491 @@ import { cardback } from '../../catalog/catalog'
 import { View } from '../gameScene'
 import { Status } from '../../lib/status'
 
-
 export default class Animator {
-	scene: BaseScene
-	view: View
-	container: Phaser.GameObjects.Container
+  scene: BaseScene
+  view: View
+  container: Phaser.GameObjects.Container
 
-	// In the last state, which cards were hidden in the story
-	lastHiddenCards: boolean[] = []
+  // In the last state, which cards were hidden in the story
+  lastHiddenCards: boolean[] = []
 
-	constructor(scene: BaseScene, view: View) {
-		this.scene = scene
-		this.view = view
-		this.container = scene.add.container().setDepth(Depth.aboveOtherCards)
-	}
+  constructor(scene: BaseScene, view: View) {
+    this.scene = scene
+    this.view = view
+    this.container = scene.add.container().setDepth(Depth.aboveOtherCards)
+  }
 
-	animate(state: ClientState, isRecap: boolean): void {
-		if (isRecap && state.isRecapStart()) {
-			this.animateRecapStart(state)
-			return
-		}
+  animate(state: GameModel, isRecap: boolean): void {
+    if (isRecap && state.isRecapStart()) {
+      this.animateRecapStart(state)
+      return
+    }
 
-		for (let owner = 0; owner < 2; owner++) {
-			for (let i = 0; i < state.animations[owner].length; i++) {
-				let animation = state.animations[owner][i]
+    for (let owner = 0; owner < 2; owner++) {
+      for (let i = 0; i < state.animations[owner].length; i++) {
+        let animation = state.animations[owner][i]
 
-				if (animation.from === Zone.Mulligan) {
-					this.animateMulligan(animation, owner, i, state)
-				}
-				// Gain a status
-				else if (animation.from === Zone.Status) {
-					this.animateStatus(animation, owner, i)
-				}
-				// Shuffle a player's deck
-				else if (animation.from === Zone.Shuffle) {
-					this.animateShuffle(owner, i)
-				}
-				// Transform a card
-				else if (animation.from === Zone.Transform) {
-					this.animateTransform(animation, i, owner)
-				}
-				else {
-					let start = this.getStart(animation, state, owner)
-					let end = this.getEnd(animation, state, owner)
+        if (animation.from === Zone.Mulligan) {
+          this.animateMulligan(animation, owner, i, state)
+        }
+        // Gain a status
+        else if (animation.from === Zone.Status) {
+          this.animateStatus(animation, owner, i)
+        }
+        // Shuffle a player's deck
+        else if (animation.from === Zone.Shuffle) {
+          this.animateShuffle(owner, i)
+        }
+        // Transform a card
+        else if (animation.from === Zone.Transform) {
+          this.animateTransform(animation, i, owner)
+        } else {
+          let start = this.getStart(animation, state, owner)
+          let end = this.getEnd(animation, state, owner)
 
-					let card = this.createCard(animation.card, start)
+          let card = this.createCard(animation.card, start)
 
-					if (animation.to !== animation.from) {
-						// Get the cardImage that this card becomes upon completion, if there is one
-						let permanentCard = this.getCard(animation, owner)
+          if (animation.to !== animation.from) {
+            // Get the cardImage that this card becomes upon completion, if there is one
+            let permanentCard = this.getCard(animation, owner)
 
-						// Show the card in motion between start and end
-						this.animateCard(card, end, i, permanentCard, this.getSound(animation))
-					}
-					else {
-						// Emphasize the card if it stayed in the same zone
-						this.animateEmphasis(card, i)
-					}
-				}
-			}
-		}
+            // Show the card in motion between start and end
+            this.animateCard(
+              card,
+              end,
+              i,
+              permanentCard,
+              this.getSound(animation),
+            )
+          } else {
+            // Emphasize the card if it stayed in the same zone
+            this.animateEmphasis(card, i)
+          }
+        }
+      }
+    }
 
-		this.lastHiddenCards = this.getHiddenCards(state)
-	}
+    this.lastHiddenCards = this.getHiddenCards(state)
+  }
 
-	private getStart(animation: Animation, state, owner: number): [number, number] {
-		switch (animation.from) {
-			case Zone.Deck:
-			if (owner === 0) {
-				return CardLocation.ourDeck()
-			}
-			else {
-				return CardLocation.theirDeck(this.container)
-			}
+  private getStart(
+    animation: Animation,
+    state,
+    owner: number,
+  ): [number, number] {
+    switch (animation.from) {
+      case Zone.Deck:
+        if (owner === 0) {
+          return CardLocation.ourDeck()
+        } else {
+          return CardLocation.theirDeck(this.container)
+        }
 
-			case Zone.Story:
-			return CardLocation.story(state, false, animation.index, this.container, owner)
+      case Zone.Story:
+        return CardLocation.story(
+          state,
+          false,
+          animation.index,
+          this.container,
+          owner,
+        )
 
-			case Zone.Gone:
-			return CardLocation.gone(this.container)
+      case Zone.Gone:
+        return CardLocation.gone(this.container)
 
-			case Zone.Hand:
-			if (owner === 0) {
-				return CardLocation.ourHand(state, animation.index)
-			}
-			else {
-				return CardLocation.theirHand(state, animation.index, this.container)
-			}
-			
-			case Zone.Discard:
-			if (owner === 0) {
-				return CardLocation.ourDiscard(this.container)
-			}
-			else {
-				return CardLocation.theirDiscard(this.container)
-			}
-		}
+      case Zone.Hand:
+        if (owner === 0) {
+          return CardLocation.ourHand(state, animation.index)
+        } else {
+          return CardLocation.theirHand(state, animation.index, this.container)
+        }
 
-		return [300,300]
-	}
+      case Zone.Discard:
+        if (owner === 0) {
+          return CardLocation.ourDiscard(this.container)
+        } else {
+          return CardLocation.theirDiscard(this.container)
+        }
+    }
 
-	private getEnd(animation: Animation, state, owner): [number, number] {
-		switch (animation.to) {
-			case Zone.Deck:
-			if (owner === 0) {
-				return CardLocation.ourDeck()
-			}
-			else {
-				return CardLocation.theirDeck(this.container)
-			}
+    return [300, 300]
+  }
 
-			// TODO Clarify index 1 and 2, mostly 2 seems to be null
-			case Zone.Story:
-			return CardLocation.story(state, false, animation.index2, this.container, owner)
+  private getEnd(animation: Animation, state, owner): [number, number] {
+    switch (animation.to) {
+      case Zone.Deck:
+        if (owner === 0) {
+          return CardLocation.ourDeck()
+        } else {
+          return CardLocation.theirDeck(this.container)
+        }
 
-			case Zone.Gone:
-			return CardLocation.gone(this.container)
+      // TODO Clarify index 1 and 2, mostly 2 seems to be null
+      case Zone.Story:
+        return CardLocation.story(
+          state,
+          false,
+          animation.index2,
+          this.container,
+          owner,
+        )
 
-			case Zone.Mulligan:
-			return CardLocation.mulligan(this.container, animation.index)
+      case Zone.Gone:
+        return CardLocation.gone(this.container)
 
-			case Zone.Hand:
-			if (owner === 0) {
-				return CardLocation.ourHand(state, animation.index2)
-			}
-			else {
-				return CardLocation.theirHand(state, animation.index2, this.container)
-			}
+      case Zone.Mulligan:
+        return CardLocation.mulligan(this.container, animation.index)
 
-			case Zone.Discard:
-			if (owner === 0) {
-				return CardLocation.ourDiscard(this.container)
-			}
-			else {
-				return CardLocation.theirDiscard(this.container)
-			}
-		}
+      case Zone.Hand:
+        if (owner === 0) {
+          return CardLocation.ourHand(state, animation.index2)
+        } else {
+          return CardLocation.theirHand(state, animation.index2, this.container)
+        }
 
-		return [300,300]
-	}
+      case Zone.Discard:
+        if (owner === 0) {
+          return CardLocation.ourDiscard(this.container)
+        } else {
+          return CardLocation.theirDiscard(this.container)
+        }
+    }
 
-	private createCard(card, start: [number, number] = [0,0]): CardImage {
-		let cardImage = new CardImage(card || cardback, this.container, false)
+    return [300, 300]
+  }
 
-		// Set its initial position and make it hidden until its tween plays
-		cardImage.setPosition(start)
-		cardImage.hide()
+  private createCard(card, start: [number, number] = [0, 0]): CardImage {
+    let cardImage = new CardImage(card || cardback, this.container, false)
 
-		return cardImage
-	}
+    // Set its initial position and make it hidden until its tween plays
+    cardImage.setPosition(start)
+    cardImage.hide()
 
-	// Get the cardImage referenced by this animation
-	private getCard(animation: Animation, owner: number): CardImage {
-		let card
+    return cardImage
+  }
 
-		switch(animation.to) {
-			case Zone.Hand:
-			if (owner === 0) {
-				// TODO Check length
-				card = this.view.ourHand.cards[animation.index2]
-			} else {
-				card = this.view.theirHand.cards[animation.index2]
-			}
-			break
+  // Get the cardImage referenced by this animation
+  private getCard(animation: Animation, owner: number): CardImage {
+    let card
 
-			case Zone.Story:
-			card = this.view.story.cards[animation.index]
-			break
+    switch (animation.to) {
+      case Zone.Hand:
+        if (owner === 0) {
+          // TODO Check length
+          card = this.view.ourHand.cards[animation.index2]
+        } else {
+          card = this.view.theirHand.cards[animation.index2]
+        }
+        break
 
-			case Zone.Mulligan:
-			// Only show our mulligans
-			card = this.view.mulligan.cards[animation.index]
-			break
+      case Zone.Story:
+        card = this.view.story.cards[animation.index]
+        break
 
-			case Zone.Deck:
-			if (owner === 0) {
-				card = this.view.decks.cards[animation.index2]
-			} else {
-				card = this.view.decks.cards2[animation.index2]
-			}
-			break
+      case Zone.Mulligan:
+        // Only show our mulligans
+        card = this.view.mulligan.cards[animation.index]
+        break
 
-			case Zone.Discard:
-			if (owner === 0) {
-				card = this.view.discardPiles.cards[animation.index2]
-			} else {
-				card = this.view.discardPiles.cards2[animation.index2]
-			}
-			break
+      case Zone.Deck:
+        if (owner === 0) {
+          card = this.view.decks.cards[animation.index2]
+        } else {
+          card = this.view.decks.cards2[animation.index2]
+        }
+        break
 
-			// // TODO
-			// break
-			// card = this.view.decks.cards
+      case Zone.Discard:
+        if (owner === 0) {
+          card = this.view.discardPiles.cards[animation.index2]
+        } else {
+          card = this.view.discardPiles.cards2[animation.index2]
+        }
+        break
 
-			// case Zone.Discard:
-			// // TODO
-			// break
+      // // TODO
+      // break
+      // card = this.view.decks.cards
 
-			// case Zone.Gone:
-			// case Zone.Create:
-			// default:
-			default:
-			break
-		}
-		return card
-	}
+      // case Zone.Discard:
+      // // TODO
+      // break
 
-	// Animate the given card moving to given end position with given delay
-	// If a permanent card is specified, that's the image that should become visible when tween completes
-	private animateCard(card: CardImage, end: [number, number], i: number, permanentCard?: CardImage, sound?) {
-		let that = this
-		if (permanentCard) {
-			permanentCard.hide()
-		}
+      // case Zone.Gone:
+      // case Zone.Create:
+      // default:
+      default:
+        break
+    }
+    return card
+  }
 
-		// Animate moving x direction, becoming visible when animation starts
-		this.scene.tweens.add({
-			targets: card.container,
-			x: end[0],
-			y: end[1],
-			delay: i * Time.recapTweenWithPause(),
-			duration: Time.recapTween(),
-			ease: Ease.card,
-			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
-			{
-				card.show()
-				if (sound) {
-					that.scene.playSound(sound)
-				}
-			},
-			onComplete: function (tween, targets, _)
-			{
-				if (permanentCard) {
-					permanentCard.show()					
-				}
-				card.destroy()
-			}
-		})
-	}
+  // Animate the given card moving to given end position with given delay
+  // If a permanent card is specified, that's the image that should become visible when tween completes
+  private animateCard(
+    card: CardImage,
+    end: [number, number],
+    i: number,
+    permanentCard?: CardImage,
+    sound?,
+  ) {
+    let that = this
+    if (permanentCard) {
+      permanentCard.hide()
+    }
 
-	// Animate a card being thrown back into the deck during mulligan phase
-	private animateMulligan(animation: Animation, owner: number, iAnimation: number, state: ClientState) {
-		if (owner === 1) {
-			return
-		}
+    // Animate moving x direction, becoming visible when animation starts
+    this.scene.tweens.add({
+      targets: card.container,
+      x: end[0],
+      y: end[1],
+      delay: i * Time.recapTweenWithPause(),
+      duration: Time.recapTween(),
+      ease: Ease.card,
+      onStart: function (tween: Phaser.Tweens.Tween, targets, _) {
+        card.show()
+        if (sound) {
+          that.scene.playSound(sound)
+        }
+      },
+      onComplete: function (tween, targets, _) {
+        if (permanentCard) {
+          permanentCard.show()
+        }
+        card.destroy()
+      },
+    })
+  }
 
-		// Get the cardImage that is being referenced
-		let card = this.view.mulligan.cards[animation.index]
-		
-		// Make a new copy of that card in the same position but in this container
-		card = this.createCard(card.card, [card.container.x, card.container.y])
-		.show()
-		
-		// Should go to our deck
-		let end = this.getEnd(animation, state, owner)
+  // Animate a card being thrown back into the deck during mulligan phase
+  private animateMulligan(
+    animation: Animation,
+    owner: number,
+    iAnimation: number,
+    state: GameModel,
+  ) {
+    if (owner === 1) {
+      return
+    }
 
-		let permanentCard = this.getCard(animation, owner)
-		this.animateCard(card, end, iAnimation, permanentCard, this.getSound(animation))
-	}
+    // Get the cardImage that is being referenced
+    let card = this.view.mulligan.cards[animation.index]
 
-	// Animate the given player's deck shuffling
-	private animateShuffle(owner: number, i: number): void {
-		let that = this
+    // Make a new copy of that card in the same position but in this container
+    card = this.createCard(card.card, [
+      card.container.x,
+      card.container.y,
+    ]).show()
 
-		let start
-		if (owner === 0) {
-			start = CardLocation.ourDeck()
-		}
-		else {
-			start = CardLocation.theirDeck()
-		}
-		
-		let topCard = this.createCard(cardback, start)
-		let bottomCard = this.createCard(cardback, start)
+    // Should go to our deck
+    let end = this.getEnd(animation, state, owner)
 
-		this.scene.add.tween({
-			targets: topCard.container,
-			x: start[0] + Space.cardWidth/4,
-			delay: i * Time.recapTweenWithPause(),
-			duration: Time.recapTween()/4,
-			yoyo: true,
-			repeat: 1,
-			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
-			{
-				topCard.show()
-				that.scene.playSound('shuffle')
-			},
-			onComplete: function (tween, targets, _)
-			{
-				topCard.destroy()
-			}
-		})
+    let permanentCard = this.getCard(animation, owner)
+    this.animateCard(
+      card,
+      end,
+      iAnimation,
+      permanentCard,
+      this.getSound(animation),
+    )
+  }
 
-		this.scene.add.tween({
-			targets: bottomCard.container,
-			x: start[0] - Space.cardHeight/2,
-			delay: i * Time.recapTweenWithPause(),
-			duration: Time.recapTween()/4,
-			yoyo: true,
-			repeat: 1,
-			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
-			{
-				bottomCard.show()
-			},
-			onComplete: function (tween, targets, _)
-			{
-				bottomCard.destroy()
-			}
-		})
-	}
+  // Animate the given player's deck shuffling
+  private animateShuffle(owner: number, i: number): void {
+    let that = this
 
-	private animateStatus(animation: Animation, owner: number, i: number): void {
-		// TODO
+    let start
+    if (owner === 0) {
+      start = CardLocation.ourDeck()
+    } else {
+      start = CardLocation.theirDeck()
+    }
 
-		// scene.add.image(Space.windowWidth/2, Space.windowHeight/2, `icon-${animation.status}1`)
-		// TODO
-		return
+    let topCard = this.createCard(cardback, start)
+    let bottomCard = this.createCard(cardback, start)
 
-		// TODO Some visual sparks or fruit thrown in the air?
+    this.scene.add.tween({
+      targets: topCard.container,
+      x: start[0] + Space.cardWidth / 4,
+      delay: i * Time.recapTweenWithPause(),
+      duration: Time.recapTween() / 4,
+      yoyo: true,
+      repeat: 1,
+      onStart: function (tween: Phaser.Tweens.Tween, targets, _) {
+        topCard.show()
+        that.scene.playSound('shuffle')
+      },
+      onComplete: function (tween, targets, _) {
+        topCard.destroy()
+      },
+    })
 
-		let obj
-		switch (animation.status) {
-			case Status.Inspire:
-			if (owner === 0) {
-				obj = this.view.ourHand['btnInspire'] // TODO Smell, fix typing
-			}
-			else {
-				obj = this.view.theirHand['btnInspire']
-			}
-			break
+    this.scene.add.tween({
+      targets: bottomCard.container,
+      x: start[0] - Space.cardHeight / 2,
+      delay: i * Time.recapTweenWithPause(),
+      duration: Time.recapTween() / 4,
+      yoyo: true,
+      repeat: 1,
+      onStart: function (tween: Phaser.Tweens.Tween, targets, _) {
+        bottomCard.show()
+      },
+      onComplete: function (tween, targets, _) {
+        bottomCard.destroy()
+      },
+    })
+  }
 
-			case Status.Nourish:
-			if (owner === 0) {
-				obj = this.view.ourHand['btnNourish']
-			}
-			else {
-				obj = this.view.theirHand['btnNourish']
-			}
-			break
-		}
+  private animateStatus(animation: Animation, owner: number, i: number): void {
+    // TODO
 
-		this.scene.tweens.add({
-			targets: obj.icon,
-			scale: 2,
-			delay: i * Time.recapTweenWithPause(),
-			duration: Time.recapTween()/2,
-			yoyo: true
-		})
-	}
+    // scene.add.image(Space.windowWidth/2, Space.windowHeight/2, `icon-${animation.status}1`)
+    // TODO
+    return
 
-	// Animate a card being emphasized in its place, such as showing that a Morning card is proccing
-	private animateEmphasis(card: CardImage, i: number): void {
-		let cardCopy = this.createCard(card.card, [0, 0])
-		.copyLocation(card)
+    // TODO Some visual sparks or fruit thrown in the air?
 
-		// Animate card scaling up and disappearing
-		this.scene.tweens.add({
-			targets: cardCopy.container,
-			scale: 3,
-			alpha: 0,
-			delay: i * Time.recapTweenWithPause(),
-			duration: Time.recapTween(),
-			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
-			{
-				cardCopy.show()
-			},
-			onComplete: function (tween, targets, _)
-			{
-				cardCopy.destroy()
-			}
-		})
-	}
+    let obj
+    switch (animation.status) {
+      case Status.Inspire:
+        if (owner === 0) {
+          obj = this.view.ourHand['btnInspire'] // TODO Smell, fix typing
+        } else {
+          obj = this.view.theirHand['btnInspire']
+        }
+        break
 
-	// Animate a card being revealed
-	private animateReveal(card: CardImage, i: number): void {
-		// Animate the back of the card flipping
-		let hiddenCard = this.createCard(cardback, [0,0])
-		.show()
-		.copyLocation(card)
+      case Status.Nourish:
+        if (owner === 0) {
+          obj = this.view.ourHand['btnNourish']
+        } else {
+          obj = this.view.theirHand['btnNourish']
+        }
+        break
+    }
 
-		this.scene.tweens.add({
-			targets: hiddenCard.container,
-			scaleX: 0,
-			delay: i * Time.recapTweenWithPause(),
-			duration: Time.recapTween() / 2,
-			onComplete: function (tween, targets, _)
-			{
-				hiddenCard.destroy()
-			}
-		})
+    this.scene.tweens.add({
+      targets: obj.icon,
+      scale: 2,
+      delay: i * Time.recapTweenWithPause(),
+      duration: Time.recapTween() / 2,
+      yoyo: true,
+    })
+  }
 
-		// Animate the actual card flipping up
-		card.hide()
-		card.container.scaleX = 0
-		this.scene.tweens.add({
-			targets: card.container,
-			scaleX: 1,
-			delay: i * Time.recapTweenWithPause() + Time.recapTween() / 2,
-			duration: Time.recapTween() / 2,
-			onStart: function (tween: Phaser.Tweens.Tween, targets, _)
-			{
-				card.show()
-			}
-		})
-	}
+  // Animate a card being emphasized in its place, such as showing that a Morning card is proccing
+  private animateEmphasis(card: CardImage, i: number): void {
+    let cardCopy = this.createCard(card.card, [0, 0]).copyLocation(card)
 
-	// Animate a card transforming into another card
-	private animateTransform(animation: Animation, i: number, owner): void {
-		let newCard = this.getCard(animation, owner)
-		let oldCard = this.createCard(animation.card)
-		.show()
-		.copyLocation(newCard)
+    // Animate card scaling up and disappearing
+    this.scene.tweens.add({
+      targets: cardCopy.container,
+      scale: 3,
+      alpha: 0,
+      delay: i * Time.recapTweenWithPause(),
+      duration: Time.recapTween(),
+      onStart: function (tween: Phaser.Tweens.Tween, targets, _) {
+        cardCopy.show()
+      },
+      onComplete: function (tween, targets, _) {
+        cardCopy.destroy()
+      },
+    })
+  }
 
-		// Animate card scaling up and disappearing
-		this.scene.tweens.add({
-			targets: oldCard.container,
-			alpha: 0,
-			delay: i * Time.recapTweenWithPause(),
-			duration: Time.recapTween(),
-			onComplete: function (tween, targets, _)
-			{
-				oldCard.destroy()
-			}
-		})
-	}
+  // Animate a card being revealed
+  private animateReveal(card: CardImage, i: number): void {
+    // Animate the back of the card flipping
+    let hiddenCard = this.createCard(cardback, [0, 0]).show().copyLocation(card)
 
-	// Animate cards being flipped over at the start of a recap
-	private animateRecapStart(state: ClientState): void {
-		let acts = state.story.acts
-		let amtSeen = 0
-		for (let i = 0; i < acts.length; i++) {
-			// If it was hidden, flip it over
-			if (this.lastHiddenCards[i]) {
-				let act = acts[i]
+    this.scene.tweens.add({
+      targets: hiddenCard.container,
+      scaleX: 0,
+      delay: i * Time.recapTweenWithPause(),
+      duration: Time.recapTween() / 2,
+      onComplete: function (tween, targets, _) {
+        hiddenCard.destroy()
+      },
+    })
 
-				let card = this.view.story.cards[i]
+    // Animate the actual card flipping up
+    card.hide()
+    card.container.scaleX = 0
+    this.scene.tweens.add({
+      targets: card.container,
+      scaleX: 1,
+      delay: i * Time.recapTweenWithPause() + Time.recapTween() / 2,
+      duration: Time.recapTween() / 2,
+      onStart: function (tween: Phaser.Tweens.Tween, targets, _) {
+        card.show()
+      },
+    })
+  }
 
-				this.animateReveal(card, amtSeen)
+  // Animate a card transforming into another card
+  private animateTransform(animation: Animation, i: number, owner): void {
+    let newCard = this.getCard(animation, owner)
+    let oldCard = this.createCard(animation.card).show().copyLocation(newCard)
 
-				amtSeen++
-			}			
-		}
-	}
+    // Animate card scaling up and disappearing
+    this.scene.tweens.add({
+      targets: oldCard.container,
+      alpha: 0,
+      delay: i * Time.recapTweenWithPause(),
+      duration: Time.recapTween(),
+      onComplete: function (tween, targets, _) {
+        oldCard.destroy()
+      },
+    })
+  }
 
-	private getHiddenCards(state: ClientState): boolean[] {
-		let result = []
+  // Animate cards being flipped over at the start of a recap
+  private animateRecapStart(state: GameModel): void {
+    let acts = state.story.acts
+    let amtSeen = 0
+    for (let i = 0; i < acts.length; i++) {
+      // If it was hidden, flip it over
+      if (this.lastHiddenCards[i]) {
+        let act = acts[i]
 
-		for (let i = 0; i < state.story.acts.length; i++) {
-			result[i] = state.story.acts[i].card === cardback
-		}
+        let card = this.view.story.cards[i]
 
-		return result
-	}
+        this.animateReveal(card, amtSeen)
 
-	private getSound(animation: Animation): string {
-		switch (animation.to) {
-			case Zone.Hand:
-				switch (animation.from) {
-					case Zone.Deck:
-					case Zone.Mulligan:
-					return 'draw'
-					default:
-					return 'create'
-				}
-			return 'draw'
-			case Zone.Discard:
-			return 'discard'
-			// TODO Some other sound?
-			case Zone.Deck:
-			return 'discard'
-			case Zone.Mulligan:
-			return 'draw'
-		}
-		return undefined
-	}
+        amtSeen++
+      }
+    }
+  }
+
+  private getHiddenCards(state: GameModel): boolean[] {
+    let result = []
+
+    for (let i = 0; i < state.story.acts.length; i++) {
+      result[i] = state.story.acts[i].card === cardback
+    }
+
+    return result
+  }
+
+  private getSound(animation: Animation): string {
+    switch (animation.to) {
+      case Zone.Hand:
+        switch (animation.from) {
+          case Zone.Deck:
+          case Zone.Mulligan:
+            return 'draw'
+          default:
+            return 'create'
+        }
+        return 'draw'
+      case Zone.Discard:
+        return 'discard'
+      // TODO Some other sound?
+      case Zone.Deck:
+        return 'discard'
+      case Zone.Mulligan:
+        return 'draw'
+    }
+    return undefined
+  }
 }

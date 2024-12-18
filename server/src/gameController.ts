@@ -1,4 +1,4 @@
-import { GameModel } from '../../shared/state/gameModel'
+import GameModel from '../../shared/state/gameModel'
 import Card from '../../shared/state/card'
 
 import { Status } from '../../shared/state/effects'

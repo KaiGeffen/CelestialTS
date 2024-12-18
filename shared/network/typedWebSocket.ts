@@ -1,4 +1,4 @@
-import { GameModel } from '../state/gameModel'
+import GameModel from '../state/gameModel'
 
 // TODO Put in shared place
 type Mulligan = [boolean, boolean, boolean]
@@ -27,9 +27,7 @@ type SupportedMessages = {
   emote: {}
 
   // Server to client
-  both_players_connected: {
-    value: boolean
-  }
+  game_start: {}
   transmit_state: { state: GameModel }
   signal_error: {}
   dc: {}
@@ -66,7 +64,6 @@ export class TypedWebSocket {
       type T = MessageTypes
 
       const message: WSMessage<T> = JSON.parse(ev.data)
-      console.log(message)
 
       // TODO Handle parse error
 
@@ -93,6 +90,11 @@ export class TypedWebSocket {
     this.listeners[messageType]?.push(callback)
 
     return this
+  }
+
+  // Callback for when the socket is opened
+  onOpen(callback: () => void): void {
+    this.ws.onopen = callback
   }
 }
 

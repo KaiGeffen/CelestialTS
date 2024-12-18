@@ -17,7 +17,7 @@ import { PASS } from '../../../shared/settings'
 
 /*
 List of ongoing games
-List of players in queue, tied with their game if they have one
+List of players in queue, tupled with their game if they have one
 Disconnecting then reconnecting puts you back in your game
 Init includes information about the game type you're looking for
 */
@@ -48,7 +48,7 @@ class MatchQueue {
       registerEvents(ws, match, 0)
 
       // Start the match
-      await match.notifyMatchStart()
+      await match.notifyState()
     })
     const initPvp = createEvent('initPvp', async (data) => {
       const password = data.password
@@ -76,7 +76,7 @@ class MatchQueue {
         registerEvents(otherPlayer.ws, match, 1)
 
         // Notify both players that they are connected
-        await match.notifyMatchStart()
+        await match.notifyState()
       } else {
         // Queue the player with their information
         const waitingPlayer = {
@@ -88,23 +88,12 @@ class MatchQueue {
         searchingPlayers[data.password] = waitingPlayer
       }
     })
+
+    ;[initPve, initPvp].forEach(({ event, callback }) => {
+      ws.on(event, callback)
+    })
   }
 }
-
-// class MatchQueue {
-//   static enqueue(socket: WebSocket, req: Request) {
-//     // PlayerNumber is whether you are player 0 or 1
-//     const [match, playerNumber] = createMatch(socket, req)
-//     registerEvents(socket, match, playerNumber)
-//   }
-// }
-
-/*
-Enqueueing is just registering the events
-The init event will create a game match
-Then later events will do those actions in the game if it's active
-
-*/
 
 // TODO Move to a separate file
 // Register each of the events that the server receives during a match
@@ -129,7 +118,7 @@ function registerEvents(
   })
 
   const exitMatchEvent = createEvent('exit_match', (data) => {
-    match.notifyExit(ws)
+    match.doExit(ws)
   })
 
   const emoteEvent = createEvent('emote', (data) => {
@@ -156,37 +145,3 @@ function registerEvents(
 const PWD_MATCHES: { [key: string]: Match } = {}
 
 export default MatchQueue
-
-/*
-
-      // Create a match or wait for an opponent
-      if (data.mode === 'pve') {
-        // Create a PvE match
-        const aiDeck = []
-        const uuid = null
-        return [new PveMatch(socket, aiDeck, uuid), 0]
-      }
-      if (data.mode === 'pvp') {
-        if (searchingPlayers[data.password]) {
-          // Create a PvP match
-          const otherPlayer = searchingPlayers[data.password]
-          new pvpMatch(socket)
-
-          const aiDeck = []
-          const uuid = null
-          return [new PveMatch(socket, aiDeck, uuid), 0]
-
-          const [match, playerNumber] = createMatch(socket, req)
-          registerEvents(socket, match, playerNumber)
-          const [otherMatch, otherPlayerNumber] = createMatch(otherPlayer, req)
-          registerEvents(otherPlayer, otherMatch, otherPlayerNumber)
-          delete searchingPlayers[data.password]
-        }
-        if (data.password === '') {
-        }
-      } else {
-        // Create a PvE match
-      }
-      match.addDeck(playerNumber, deck, data.avatar)
-      ws.send({ type: 'init', avatar: 1, deck: 'helllo' })
-      */

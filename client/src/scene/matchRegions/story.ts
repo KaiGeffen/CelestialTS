@@ -1,174 +1,198 @@
-import "phaser";
-import { CardImage } from '../../lib/cardImage';
-import ClientState from '../../lib/clientState';
-import { Space, Style, Depth, Time, Flags } from '../../settings/settings';
-import BaseScene from '../baseScene';
-import Region from './baseRegion';
-import CardLocation from './cardLocation';
+import 'phaser'
+import { CardImage } from '../../lib/cardImage'
+import GameModel from '../../../../shared/state/gameModel'
+import { Space, Style, Depth, Time, Flags } from '../../settings/settings'
+import BaseScene from '../baseScene'
+import Region from './baseRegion'
+import CardLocation from './cardLocation'
 import Play from '../../lib/play'
 
-
 export default class StoryRegion extends Region {
-	lastScores: [number, number]
+  lastScores: [number, number]
 
-	// Callback that plays when ith card in recap is clicked on
-	callback: (i: number) => () => void
+  // Callback that plays when ith card in recap is clicked on
+  callback: (i: number) => () => void
 
-	// This is slightly wrong, because the top hand is smaller than this hand height
-	MIDDLE = (Space.windowHeight)/2 - Space.handHeight
+  // This is slightly wrong, because the top hand is smaller than this hand height
+  MIDDLE = Space.windowHeight / 2 - Space.handHeight
 
-	create (scene: BaseScene): StoryRegion {
-		this.scene = scene
-		this.lastScores = [0, 0]
+  create(scene: BaseScene): StoryRegion {
+    this.scene = scene
+    this.lastScores = [0, 0]
 
-		this.container = scene.add.container(0, Space.handHeight)
-		.setDepth(Depth.storyAtDay)
+    this.container = scene.add
+      .container(0, Space.handHeight)
+      .setDepth(Depth.storyAtDay)
 
-		return this
-	}
+    return this
+  }
 
-	displayState(state: ClientState, isRecap: boolean): void {
-		this.deleteTemp()
+  displayState(state: GameModel, isRecap: boolean): void {
+    this.deleteTemp()
 
-		// Set the correct depth based on day/night
-		this.container.setDepth(isRecap ? Depth.storyAtNight : Depth.storyAtDay)
+    // Set the correct depth based on day/night
+    this.container.setDepth(isRecap ? Depth.storyAtNight : Depth.storyAtDay)
 
-		// If this is a recap, add the already played cards greyed out
-		let resolvedI = 0
-		for (; isRecap && resolvedI < state.recap.playList.length; resolvedI++) {
-			const play: Play = state.recap.playList[resolvedI]
-			
-			let card = this.addCard(play.card,
-				CardLocation.story(state, isRecap, resolvedI, this.container, play.owner))
-			.setResolved()
-			.moveToTopOnHover()
-			.setOnClick(this.callback(resolvedI))
-			// .showController(play[1])
+    // If this is a recap, add the already played cards greyed out
+    let resolvedI = 0
+    for (; isRecap && resolvedI < state.recap.playList.length; resolvedI++) {
+      const play: Play = state.recap.playList[resolvedI]
 
-			this.temp.push(card)
-		}
+      let card = this.addCard(
+        play.card,
+        CardLocation.story(
+          state,
+          isRecap,
+          resolvedI,
+          this.container,
+          play.owner,
+        ),
+      )
+        .setResolved()
+        .moveToTopOnHover()
+        .setOnClick(this.callback(resolvedI))
+      // .showController(play[1])
 
-		let cards = []
-		for (let i = 0; i < state.story.acts.length; i++) {
-			const act = state.story.acts[i]
+      this.temp.push(card)
+    }
 
-			let card = this.addCard(
-				act.card,
-				CardLocation.story(state, isRecap, resolvedI + i, this.container, act.owner)
-				)
-			.moveToTopOnHover()
-			.showController(act.owner)
+    let cards = []
+    for (let i = 0; i < state.story.acts.length; i++) {
+      const act = state.story.acts[i]
 
-			// Only allow jumping around in the recap if we are playing a recap
-			if (isRecap && !Flags.mobile) {
-				card.setOnClick(this.callback(resolvedI + i))
-			}
+      let card = this.addCard(
+        act.card,
+        CardLocation.story(
+          state,
+          isRecap,
+          resolvedI + i,
+          this.container,
+          act.owner,
+        ),
+      )
+        .moveToTopOnHover()
+        .showController(act.owner)
 
-			cards.push(card)
-			this.temp.push(card)
-		}
+      // Only allow jumping around in the recap if we are playing a recap
+      if (isRecap && !Flags.mobile) {
+        card.setOnClick(this.callback(resolvedI + i))
+      }
 
-		// Show changes in score
-		if (isRecap) {
-			this.displayScores(state, isRecap)
-		}
+      cards.push(card)
+      this.temp.push(card)
+    }
 
-		this.animate(state, cards, isRecap)
+    // Show changes in score
+    if (isRecap) {
+      this.displayScores(state, isRecap)
+    }
 
-		this.cards = cards
-	}
+    this.animate(state, cards, isRecap)
 
-	// Set the callback for when an act in the story is clicked on
-	setCallback(callback: (i: number) => () => void): void {
-		this.callback = callback
-	}
+    this.cards = cards
+  }
 
-	// Display the current score totals and change in scores
-	private displayScores(state: ClientState, isRecap: boolean): void {
-		let index = state.recap.playList.length - 1
-		let remainingActs = state.recap.stateList.length
-		if (index >= 0 && remainingActs >= 0) {
-			this.animateScoreGains(index, state.score, state, isRecap)
-		}
+  // Set the callback for when an act in the story is clicked on
+  setCallback(callback: (i: number) => () => void): void {
+    this.callback = callback
+  }
 
-		this.lastScores = state.score
-	}
+  // Display the current score totals and change in scores
+  private displayScores(state: GameModel, isRecap: boolean): void {
+    let index = state.recap.playList.length - 1
+    let remainingActs = state.recap.stateList.length
+    if (index >= 0 && remainingActs >= 0) {
+      this.animateScoreGains(index, state.score, state, isRecap)
+    }
 
-	// Animate each player gaining or losing points for the act at this index
-	private animateScoreGains(index: number, scores: [number, number], state: ClientState, isRecap: boolean): void {
-		
-		// TODO The first arg (state) should have a variable if squishing is possible
-		const loc = CardLocation.story(state, isRecap, index, this.container, undefined)
+    this.lastScores = state.score
+  }
 
-		// Form the string for the gain of the given player
-		let that = this
-  		function getGain(i: number): string {
-  			let amt = scores[i] - that.lastScores[i]
-  			if (amt < 0) {
-  				return amt.toString()
-  			} else if (amt === 0) {
-  				return ''
-  			} else {
-  				return `+${amt}`
-  			}
-  		}
-		const txtGain = this.scene.add.text(
-			...loc,
-			`${getGain(1)}\n\n${getGain(0)}`,
-			Style.cardResolution)
-			.setOrigin(0.5)
-			// .setAlpha(0)
+  // Animate each player gaining or losing points for the act at this index
+  private animateScoreGains(
+    index: number,
+    scores: [number, number],
+    state: GameModel,
+    isRecap: boolean,
+  ): void {
+    // TODO The first arg (state) should have a variable if squishing is possible
+    const loc = CardLocation.story(
+      state,
+      isRecap,
+      index,
+      this.container,
+      undefined,
+    )
 
-		this.container.add(txtGain)
-		this.scene.add.tween({
-  			targets: txtGain,
-  			alpha: 1,
-  			duration: Time.recapTween(),
-  			ease: "Sine.easeInOut",
-  			yoyo: true,
-  			onComplete: 
-	  			function (tween, targets, _)
-	  			{
-	  				txtGain.destroy()
-	  			}
-  				})
-	}
+    // Form the string for the gain of the given player
+    let that = this
+    function getGain(i: number): string {
+      let amt = scores[i] - that.lastScores[i]
+      if (amt < 0) {
+        return amt.toString()
+      } else if (amt === 0) {
+        return ''
+      } else {
+        return `+${amt}`
+      }
+    }
+    const txtGain = this.scene.add
+      .text(...loc, `${getGain(1)}\n\n${getGain(0)}`, Style.cardResolution)
+      .setOrigin(0.5)
+    // .setAlpha(0)
 
-	private animate(state: ClientState, cards: CardImage[], isRecap: boolean): void {
-		let that = this
+    this.container.add(txtGain)
+    this.scene.add.tween({
+      targets: txtGain,
+      alpha: 1,
+      duration: Time.recapTween(),
+      ease: 'Sine.easeInOut',
+      yoyo: true,
+      onComplete: function (tween, targets, _) {
+        txtGain.destroy()
+      },
+    })
+  }
 
-		// If the last card was just played by the opponent,
-		// animate it from their hand
-		if (state.story.acts.length === 0) {
-			return
-		}
+  private animate(
+    state: GameModel,
+    cards: CardImage[],
+    isRecap: boolean,
+  ): void {
+    let that = this
 
-		const lastAct = state.story.acts[state.story.acts.length - 1]
-		const lastCardTheirs = lastAct.owner === 1
-		const noPasses = state.passes === 0
+    // If the last card was just played by the opponent,
+    // animate it from their hand
+    if (state.story.acts.length === 0) {
+      return
+    }
 
-		if (lastCardTheirs && noPasses && !isRecap) {
-			// Animate the last card moving from their hand
-			const card = cards[cards.length - 1]
+    const lastAct = state.story.acts[state.story.acts.length - 1]
+    const lastCardTheirs = lastAct.owner === 1
+    const noPasses = state.passes === 0
 
-			const x = card.container.x
-			const y = card.container.y
+    if (lastCardTheirs && noPasses && !isRecap) {
+      // Animate the last card moving from their hand
+      const card = cards[cards.length - 1]
 
-			card.setPosition(
-				CardLocation.theirHand(state, state.opponentHand.length + 1, this.container))
-			
-			// Animate moving x direction, appearing at start
-			this.scene.tweens.add({
-				targets: card.container,
-				x: x,
-				y: y,
-				duration: Time.playCard(),
-				onStart: function (tween, targets, _)
-				{
-					card.show()
-					that.scene.playSound('play them')
-				}
-			})
-		}
-	}
+      const x = card.container.x
+      const y = card.container.y
+
+      card.setPosition(
+        CardLocation.theirHand(state, state.hand[1].length + 1, this.container),
+      )
+
+      // Animate moving x direction, appearing at start
+      this.scene.tweens.add({
+        targets: card.container,
+        x: x,
+        y: y,
+        duration: Time.playCard(),
+        onStart: function (tween, targets, _) {
+          card.show()
+          that.scene.playSound('play them')
+        },
+      })
+    }
+  }
 }

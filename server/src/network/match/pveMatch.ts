@@ -1,6 +1,6 @@
 import Match from './match'
 import Card from '../../../../shared/state/card'
-import { GameModel } from '../../../../shared/state/gameModel'
+import GameModel from '../../../../shared/state/gameModel'
 import { ServerController } from '../../gameController'
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { PASS } from '../../../../shared/settings'

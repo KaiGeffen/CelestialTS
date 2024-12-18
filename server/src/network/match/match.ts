@@ -40,7 +40,7 @@ class Match {
     await Promise.all(
       this.getActiveWsList().map((ws) =>
         // TODO Change this to 'game starting' or something
-        ws.send({ type: 'both_players_connected', value: true }),
+        ws.send({ type: 'game_start' }),
       ),
     )
   }
@@ -48,6 +48,7 @@ class Match {
   // Notify players of the state of the game
   async notifyState() {
     if (this.game === null) return
+    console.log(this.game.getClientModel(0))
 
     await Promise.all(
       this.getActiveWsList().map((ws, index) =>
@@ -65,37 +66,22 @@ class Match {
     await this.notifyState()
   }
 
-  // Get the list of all active websockets connected to this match
-  private getActiveWsList(): TypedWebSocket[] {
-    return [this.ws1, this.ws2].filter((ws) => ws !== null)
-  }
-
-  async notifyExit(disconnectingWs: TypedWebSocket | null = null) {
-    if (this.game === null || this.game.model.get_winner() !== null) return
-
-    if (this.ws1 === disconnectingWs) this.ws1 = null
-    else if (this.ws2 === disconnectingWs) this.ws2 = null
-
-    const messages = []
-    if (this.ws1 !== null && !this.ws1.readyState)
-      messages.push(this.ws1.send(JSON.stringify({ type: 'dc' })))
-    if (this.ws2 !== null && !this.ws2.readyState)
-      messages.push(this.ws2.send(JSON.stringify({ type: 'dc' })))
-
-    if (messages.length) await Promise.all(messages)
-  }
-
+  // Given player does the given action
   async doAction(player: number, action: any, version: number) {
-    let valid: boolean
-    await this.lock
-    valid = this.game.on_player_input(player, action, version)
+    const valid = this.game.onPlayerInput(player, action, version)
 
     if (valid) {
       await this.notifyState()
     } else {
       const ws = player === 0 ? this.ws1 : this.ws2
-      await notifyError(ws)
+      // TODO
+      // await this.notifyError(ws)
     }
+  }
+
+  // Get the list of all active websockets connected to this match
+  private getActiveWsList(): TypedWebSocket[] {
+    return [this.ws1, this.ws2].filter((ws) => ws !== null)
   }
 
   // TODO Implement emotes
@@ -106,6 +92,20 @@ class Match {
     // const msg = JSON.stringify({ type: 'opponent_emote', value: emoteNumber })
     // if (player === 0 && this.ws2 !== null) await this.ws2.send(msg)
     // if (player === 1 && this.ws1 !== null) await this.ws1.send(msg)
+  }
+
+  // Given ws is disconnecting
+  async doExit(disconnectingWs: TypedWebSocket) {
+    if (this.game === null || this.game.model.getWinner() !== null) return
+
+    // Null the ws that has disconnected
+    if (this.ws1 === disconnectingWs) this.ws1 = null
+    else if (this.ws2 === disconnectingWs) this.ws2 = null
+
+    // Notify remaining player of the disconnect
+    await Promise.all(
+      this.getActiveWsList().map((ws) => ws.send({ type: 'dc' })),
+    )
   }
 }
 

@@ -1,6 +1,6 @@
-import Match from './match.js'
+import Match from './match'
 import Card from '../../../../shared/state/card'
-import { TypedWebSocket } from '../../../../shared/network/typedWebSocket.js'
+import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 
 class pvpMatch extends Match {}
 

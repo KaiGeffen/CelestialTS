@@ -52,7 +52,8 @@ class Story {
         game.score[act.owner] += act.card.points
         result = 'SIMPLIFIED TODO'
       } else {
-        result = act.card.play(act.owner, game, index, act.bonus)
+        act.card.play(act.owner, game, index, act.bonus)
+        result = 'TODO NOT SIMPLIFIED'
         roundEndEffects.push([act.card.onRoundEnd, act.owner])
       }
 

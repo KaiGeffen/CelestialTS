@@ -6,7 +6,7 @@ import ClientState from '../lib/clientState'
 import Server from './server'
 
 import { Flags } from '../settings/settings'
-import { string } from 'zod'
+import { GameScene } from '../scene/gameScene'
 
 // The version-number of that state that the client is displaying, for use with verifying with server
 export var versionNumber: number
@@ -18,30 +18,35 @@ var initMessage
 export class MatchWS {
   socket: TypedWebSocket
 
-  constructor(deck: string, newScene, mmCode, avatarID: number) {
+  constructor(deck: string, newScene: GameScene, mmCode, avatarID: number) {
     scene = newScene
 
     console.log('Making a new websocket for this match')
     const socket = (this.socket = this.getSocket(mmCode))
 
+    console.log('Socket:', socket)
+    socket.onOpen(() => {
+      socket.send({
+        type: 'initPve',
+        uuid: '',
+        deck: encodeDeck(deck),
+        avatar: avatarID,
+        aiDeck: encodeDeck(deck),
+      })
+    })
+
     // Each registered event
     socket
-      .on('both_players_connected', (data) => {
-        console.log('players connected', data)
-        if (data.value) {
-          // Send the initial message, including things like the deck we are using
-          this.socket.send({
-            type: 'init',
-            deck: deck,
-            avatar: avatarID,
-          })
-
-          // Signal that a match has been found
-          scene.signalMatchFound()
-        }
+      .on('game_start', () => {
+        // TODO This isn't necessary
+        console.log('match started')
+        // Signal that a match has been found
+        scene.signalMatchFound()
       })
       .on('transmit_state', (data) => {
         console.log('Received state: ', data)
+        if (data.state.versionNo > versionNumber)
+          newScene.queueState(data.state)
       })
       .on('signal_error', (data) => {
         // TODO Handle signalling or logging that error on the client
@@ -75,9 +80,9 @@ export class MatchWS {
   // String in the format '001' to mulligan just 3rd card, etc
   doMulligan(mulligans: string) {
     // TODO
-    this.socket.send({
-      type: 'mulligan',
-    })
+    // this.socket.send({
+    //   type: 'mulligan',
+    // })
   }
 
   passTurn() {
@@ -116,8 +121,9 @@ export class MatchWS {
     })
   }
 
+  // TODO Remove mmCode from this
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
-  // Get the appropriate websocket for this environment / matchmaking code
+  // Get the appropriate websocket for this environment
   // If user is logged in, use the existing ws instead of opening a new one
   private getSocket(mmCode): TypedWebSocket {
     // Establish a websocket based on the environment
@@ -125,11 +131,11 @@ export class MatchWS {
     if (Server.loggedIn()) {
       socket = null // TODO Server.getWS()
     } else if (Flags.local) {
-      // TODO Change mmcode to mode
-      socket = new TypedWebSocket(`ws://${URL}:${PORT}?mode=pvp`)
+      socket = new TypedWebSocket(`ws://${URL}:${PORT}`)
+      // socket = new TypedWebSocket(`ws://${URL}:${PORT}?mode=pvp`)
     } else {
       // The WS location on DO
-      let loc = window.location
+      // let loc = window.location
       const fullPath = `wss://celestialtcg.com/ws/${mmCode}`
       socket = new TypedWebSocket(fullPath)
     }

@@ -38,8 +38,7 @@ class GameMatch {
   async notify_number_players_connected() {
     const ready = this.ws2 !== null || this.vs_ai
     const message = JSON.stringify({
-      type: 'both_players_connected',
-      value: ready,
+      type: 'game_start',
     })
 
     const active_ws = []
@@ -169,14 +168,14 @@ class GameMatch {
           deck,
           this.stored_deck,
           avatar,
-          this.stored_avatar
+          this.stored_avatar,
         )
       } else {
         this.game = new ServerController(
           this.stored_deck,
           deck,
           this.stored_avatar,
-          avatar
+          avatar,
         )
       }
       this.game.start()
@@ -256,7 +255,7 @@ async function serveMain(ws: WebSocket, req: http.IncomingMessage) {
 async function match_cleanup(
   path: string,
   match: GameMatch,
-  ws: WebSocket | null = null
+  ws: WebSocket | null = null,
 ) {
   if (match === null) return
 
@@ -274,7 +273,7 @@ async function match_cleanup(
 async function get_match(
   ws: WebSocket,
   path: string,
-  uuid: string | null = null
+  uuid: string | null = null,
 ): Promise<[GameMatch, number]> {
   let match: GameMatch
   let player: number
@@ -321,7 +320,7 @@ async function get_match(
 async function handle_game_messages(
   data: any,
   match: GameMatch,
-  player: number
+  player: number,
 ) {
   if (data.type === 'init') {
     const deck = CardCodec.decode_deck(data.value)

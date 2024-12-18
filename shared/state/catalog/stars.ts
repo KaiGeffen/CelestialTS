@@ -1,4 +1,5 @@
-import { Card, SightCard } from '../card'
+import Card from '../card'
+import { SightCard } from '../card'
 import { Status, Quality } from '../effects'
 
 class Stars extends Card {

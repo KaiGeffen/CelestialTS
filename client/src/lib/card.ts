@@ -1,4 +1,4 @@
-import { Card as BaseCard } from '../../../shared/state/card'
+import BaseCard from '../../../shared/state/card'
 import { cardback, getCard } from '../catalog/catalog'
 import { Color } from '../settings/settings'
 import { keywords, Keyword } from '../catalog/keywords'
