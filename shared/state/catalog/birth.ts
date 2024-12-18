@@ -27,7 +27,7 @@ class Ancestry extends Card {
     }
   }
 }
-const ancestry = new Ancestry({ name: 'Ancestry', cost: 3, id: 3 })
+const ancestry = new Ancestry({ name: 'Ancestry', cost: 3, id: 10 })
 
 class TheFuture extends Card {
   play(player, game, index, bonus) {

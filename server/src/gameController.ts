@@ -80,7 +80,6 @@ class ServerController {
         if (this.model.passes === 2) {
           this.model.passes = 0
           this.doResolvePhase()
-          this.model.versionIncr()
           this.doUpkeep()
         } else {
           this.model.versionIncr()

@@ -1,6 +1,7 @@
 import { Status, Quality } from './effects'
 import { Anim } from './animation'
 import { Act } from './story'
+import GameModel from './gameModel'
 
 interface KeywordTuple {
   name: string
@@ -69,7 +70,7 @@ export default class Card {
     // this.references = references
   }
 
-  play(player: number, game: any, index: number, bonus: number): void {
+  play(player: number, game: GameModel, index: number, bonus: number): void {
     let result = this.points + bonus
 
     result += game.status[player].filter(
@@ -98,32 +99,32 @@ export default class Card {
     return 0
   }
 
-  getCost(player: number, game: any): number {
+  getCost(player: number, game: GameModel): number {
     return this.cost
   }
 
-  onUpkeep(player: number, game: any, index: number): boolean {
+  onUpkeep(player: number, game: GameModel, index: number): boolean {
     return false
   }
 
-  inHandOnPlay(player: number, game: any): boolean {
+  inHandOnPlay(player: number, game: GameModel): boolean {
     return false
   }
 
-  morning(player: number, game: any, index: number): boolean {
+  morning(player: number, game: GameModel, index: number): boolean {
     return false
   }
 
-  onPlay(player: number, game: any): void {}
+  onPlay(player: number, game: GameModel): void {}
 
-  onRoundEnd(player: number, game: any): void {}
+  onRoundEnd(player: number, game: GameModel): void {}
 
-  reset(game: any): string {
+  reset(game: GameModel): string {
     game.score = [0, 0]
     return '\nReset'
   }
 
-  addMana(amt: number, game: any, player: number): string {
+  addMana(amt: number, game: GameModel, player: number): string {
     game.mana[player] += amt
     for (let i = 0; i < amt; i++) {
       game.status[player].push(Status.INSPIRED)
@@ -131,7 +132,12 @@ export default class Card {
     return amt > 0 ? `\n+${amt} mana` : ''
   }
 
-  addStatus(amt: number, game: any, player: number, stat: Status): string {
+  addStatus(
+    amt: number,
+    game: GameModel,
+    player: number,
+    stat: Status,
+  ): string {
     let recap = `\n${stat} ${amt}`
     if (amt <= 0) recap = ''
 
@@ -157,28 +163,28 @@ export default class Card {
     return recap
   }
 
-  removeStatus(game: any, player: number, removedStatus: Status): void {
+  removeStatus(game: GameModel, player: number, removedStatus: Status): void {
     game.status[player] = game.status[player].filter(
       (status: Status) => status !== removedStatus,
     )
   }
 
-  inspire(amt: number, game: any, player: number): string {
+  inspire(amt: number, game: GameModel, player: number): string {
     // game.animations[player].push(new Anim('Status', 0))
     return this.addStatus(amt, game, player, Status.INSPIRE)
   }
 
-  nourish(amt: number, game: any, player: number): string {
+  nourish(amt: number, game: GameModel, player: number): string {
     // game.animations[player].push(new Anim('Status', 2))
     return this.addStatus(amt, game, player, Status.NOURISH)
   }
 
-  starve(amt: number, game: any, player: number): string {
+  starve(amt: number, game: GameModel, player: number): string {
     // game.animations[player].push(new Anim('Status', 3))
     return this.addStatus(amt, game, player, Status.STARVE)
   }
 
-  draw(amt: number, game: any, player: number): string {
+  draw(amt: number, game: GameModel, player: number): string {
     let recap = ''
     let numDrawn = 0
     for (let i = 0; i < amt; i++) {
@@ -189,29 +195,34 @@ export default class Card {
     return recap
   }
 
-  create(card: Card, game: any, player: number): void {
+  create(card: Card, game: GameModel, player: number): void {
     game.create(player, card)
   }
 
-  createInPile(card: Card, game: any, player: number): string {
+  createInPile(card: Card, game: GameModel, player: number): string {
     game.createInPile(player, card)
     return `\n${card.name}`
   }
 
-  createInStory(card: Card, game: any, player: number): void {
+  createInStory(card: Card, game: GameModel, player: number): void {
     game.createInStory(player, card)
   }
 
-  tutor(cost: number, game: any, player: number): string {
+  tutor(cost: number, game: GameModel, player: number): string {
     const card = game.tutor(player, cost)
     return card ? `\nTutor ${cost}` : ''
   }
 
-  discard(amt: number, game: any, player: number, index: number = 0): string {
+  discard(
+    amt: number,
+    game: GameModel,
+    player: number,
+    index: number = 0,
+  ): string {
     let recap = '\nDiscard:'
     let anySeen = false
     for (let i = 0; i < amt; i++) {
-      const card = game.discard(player, index)
+      const card = game.discard(player, amt, index)
       if (card) {
         anySeen = true
         recap += `\n${card.name}`
@@ -220,7 +231,7 @@ export default class Card {
     return anySeen ? recap : ''
   }
 
-  bottom(amt: number, game: any, player: number): string {
+  bottom(amt: number, game: GameModel, player: number): string {
     let recap = '\nBottom'
     let anySeen = false
     for (let i = 0; i < amt; i++) {
@@ -233,7 +244,7 @@ export default class Card {
     return anySeen ? recap : ''
   }
 
-  oust(amt: number, game: any, player: number): string {
+  oust(amt: number, game: GameModel, player: number): string {
     let recap = '\nOust:'
     let anySeen = false
     for (let i = 0; i < amt; i++) {
@@ -246,7 +257,7 @@ export default class Card {
     return anySeen ? recap : ''
   }
 
-  mill(amt: number, game: any, player: number): string {
+  mill(amt: number, game: GameModel, player: number): string {
     let recap = '\nMill:'
     let anySeen = false
     for (let i = 0; i < amt; i++) {
@@ -259,11 +270,11 @@ export default class Card {
     return anySeen ? recap : ''
   }
 
-  dig(amt: number, game: any, player: number): void {
+  dig(amt: number, game: GameModel, player: number): void {
     game.dig(player, amt)
   }
 
-  build(amt: number, game: any, player: number): string {
+  build(amt: number, game: GameModel, player: number): string {
     for (const card of game.hand[player]) {
       if (card.name === 'Child') {
         card.points += amt
@@ -286,7 +297,7 @@ export default class Card {
     }
   }
 
-  transform(index: number, card: Card, game: any): void {
+  transform(index: number, card: Card, game: GameModel): void {
     if (index + 1 <= game.story.acts.length) {
       const act = game.story.acts[index]
       const oldCard = act.card
@@ -297,11 +308,11 @@ export default class Card {
     }
   }
 
-  removeAct(index: number, game: any): any {
+  removeAct(index: number, game: GameModel): any {
     return game.removeAct(index)
   }
 
-  yourFinal(game: any, player: number): boolean {
+  yourFinal(game: GameModel, player: number): boolean {
     return !game.story.acts.some((act: Act) => act.owner === player)
   }
 
@@ -377,7 +388,7 @@ export class SightCard extends Card {
     super(data)
   }
 
-  onPlay(player: number, game: any): void {
+  onPlay(player: number, game: GameModel): void {
     game.vision[player] += this.amt
   }
 }

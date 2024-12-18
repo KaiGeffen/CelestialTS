@@ -16,6 +16,7 @@ import {
   BREATH_CAP,
   PASS,
 } from '../settings'
+import getClientGameModel from './clientGameModel'
 // import getClientGameModel from './clientGameModel'
 
 enum Phase {

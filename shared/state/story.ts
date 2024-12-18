@@ -22,10 +22,10 @@ class Story {
   // Run the current story
   run(game: GameModel) {
     game.score = [0, 0]
+    game.recentModels = [[], []]
 
-    game.recentModels[0].push(getClientGameModel(game, 0))
-    game.recentModels[1].push(getClientGameModel(game, 1))
-    game.versionIncr()
+    // Add a model at the start
+    addRecentModels(game)
 
     let index = 0
     const roundEndEffects: [Function, number][] = []
@@ -45,15 +45,7 @@ class Story {
       }
 
       index++
-      // this.recap.add(act.card, act.owner)
-
-      // const stateAfterPlay: [any, any] = [null, null]
-      // for (let player = 0; player < 2; player++) {
-      //   stateAfterPlay[player] = getClientGameModel(game, player)
-      // }
-      game.recentModels[0].push(getClientGameModel(game, 0))
-      game.recentModels[1].push(getClientGameModel(game, 1))
-      game.versionIncr()
+      addRecentModels(game)
     }
 
     // Do all round end effects
@@ -63,8 +55,7 @@ class Story {
   }
 
   saveEndState(game: GameModel) {
-    game.recentModels[0].push(getClientGameModel(game, 0))
-    game.recentModels[1].push(getClientGameModel(game, 1))
+    addRecentModels(game)
     // const stateAfterPlay: [GameModel, GameModel] = [null, null]
     // for (let player = 0; player < 2; player++) {
     //   if (this.recap.wins[player] > 0) {
@@ -100,6 +91,21 @@ class Story {
     }
     return this.acts.splice(index, 1)[0]
   }
+}
+
+// Add the current state to list of remembered recent states
+function addRecentModels(model): void {
+  // Get a recent model for each and add for that player
+  const model0 = getClientGameModel(model, 0)
+  model0.recentModels = [[], []]
+  model.recentModels[0].push(model0)
+
+  const model1 = getClientGameModel(model, 0)
+  model1.recentModels = [[], []]
+  model.recentModels[1].push(model1)
+
+  // Increment the version
+  model.versionIncr()
 }
 
 export { Act, Story }

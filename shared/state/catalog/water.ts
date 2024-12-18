@@ -1,7 +1,6 @@
 import Card from '../card'
 import { Status, Quality } from '../effects'
 
-// TODO Water
 class Mercy extends Card {
   play(player: any, game: any, index: number, bonus: any) {
     super.play(player, game, index, bonus)
