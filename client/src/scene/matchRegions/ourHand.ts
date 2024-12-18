@@ -99,7 +99,7 @@ export default class OurHandRegion extends Region {
 
     // Pile sizes
     this.btnDeck.setText(`${state.deck.length}`)
-    this.btnDiscard.setText(`${state.discard[0].length}`)
+    this.btnDiscard.setText(`${state.pile[0].length}`)
 
     // Until we have mulliganed, hide the cards in our hand
     if (!state.mulligansComplete[0]) {
@@ -173,7 +173,7 @@ export default class OurHandRegion extends Region {
     i: number,
   ) {
     let msg
-    if (state.getWinner() !== null) {
+    if (state.winner !== null) {
       msg = 'The game is over.'
     } else if (isRecap) {
       msg = 'The story is resolving.'

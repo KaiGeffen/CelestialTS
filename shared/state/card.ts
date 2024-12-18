@@ -2,6 +2,19 @@ import { Status, Quality } from './effects'
 import { Anim } from './animation'
 import { Act } from './story'
 
+interface KeywordTuple {
+  name: string
+  x: number
+  y: number
+  value: number
+}
+
+interface ReferenceTuple {
+  name: string
+  x: number
+  y: number
+}
+
 interface CardData {
   name?: string
   id?: number
@@ -11,6 +24,10 @@ interface CardData {
   text?: string
   qualities?: Quality[]
   dynamicText?: string
+
+  story?: string
+  keywords?: KeywordTuple[]
+  references?: ReferenceTuple[]
 }
 
 export default class Card {
@@ -21,6 +38,12 @@ export default class Card {
   text: string
   qualities: Quality[]
   dynamicText: string
+  story: string = ''
+  keywords: KeywordTuple[] = []
+  references: ReferenceTuple[] = []
+
+  fleeting = false
+  catalogText = ''
 
   constructor({
     name = '',
@@ -30,6 +53,9 @@ export default class Card {
     text = '',
     qualities = [],
     dynamicText = '',
+    // story = '',
+    // keywords = [],
+    // references = [],
   }: CardData) {
     this.name = name
     this.id = id
@@ -38,6 +64,9 @@ export default class Card {
     this.text = text
     this.qualities = qualities
     this.dynamicText = dynamicText
+    // this.story = story
+    // this.keywords = keywords
+    // this.references = references
   }
 
   play(player: number, game: any, index: number, bonus: number): void {
@@ -323,6 +352,20 @@ export default class Card {
     )
 
     return cardsInHandToValue[handCount]
+  }
+
+  // TODO This is just client
+  getHintText(): string {
+    return ''
+  }
+
+  getReferencedCards(): Card[] {
+    return []
+  }
+
+  // Get the text for this card, including formatting
+  getCardText(): string {
+    return ''
   }
 }
 

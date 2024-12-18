@@ -75,7 +75,7 @@ export default class PassRegion extends Region {
     }
 
     // Enable/disable button based on who has priority
-    if (state.getWinner() !== null) {
+    if (state.winner !== null) {
       // Once the game is over, change the callback to instead show results of match
       this.btnPass
         .enable()

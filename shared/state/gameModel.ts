@@ -6,7 +6,7 @@ import { Anim } from './animation'
 // import { CardCodec } from '../cardCodec'
 // import { hidden_card } from './logic/Catalog'
 import { Quality, Status } from './effects'
-// import { Recap } from './logic/Recap'
+import Recap from './recap'
 import {
   DRAW_PER_TURN,
   START_HAND_REAL,
@@ -47,6 +47,7 @@ export default class GameModel {
 
   // Other
   last_shuffle: any[][] = [[], []]
+  winner: number = null
 
   // Game tracking
   wins: number[] = [0, 0]

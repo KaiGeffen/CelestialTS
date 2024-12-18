@@ -29,9 +29,9 @@ export default class DiscardPilesRegion extends Region {
 
     // Ours
     this.cards = []
-    for (let i = 0; i < state.discard[0].length; i++) {
+    for (let i = 0; i < state.pile[0].length; i++) {
       let card = this.addCard(
-        state.discard[0][i],
+        state.pile[0][i],
         CardLocation.ourDiscard(this.container, i),
       ).setOnClick(that.ourCallback)
 
@@ -41,9 +41,9 @@ export default class DiscardPilesRegion extends Region {
 
     // Theirs
     this.cards2 = []
-    for (let i = 0; i < state.discard[1].length; i++) {
+    for (let i = 0; i < state.pile[1].length; i++) {
       let card = this.addCard(
-        state.discard[1][i],
+        state.pile[1][i],
         CardLocation.theirDiscard(this.container, i),
       ).setOnClick(that.theirCallback)
 

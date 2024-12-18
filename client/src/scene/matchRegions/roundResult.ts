@@ -25,7 +25,7 @@ export default class RoundResultRegion extends Region {
     return this
   }
 
-  displayState(state: ClientState, isRecap: boolean): void {
+  displayState(state: GameModel, isRecap: boolean): void {
     this.deleteTemp()
 
     // On the final state of the recap, animate the text of round results
@@ -36,7 +36,7 @@ export default class RoundResultRegion extends Region {
 
   // Animate the results of this round
   // TODO Temporary, replace with crisper animation
-  private animateResult(state: ClientState): void {
+  private animateResult(state: GameModel): void {
     let s
     if (state.recap.sums[0] > state.recap.sums[1]) {
       s = 'Win'

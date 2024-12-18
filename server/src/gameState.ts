@@ -3,7 +3,7 @@ import { CardCodec } from '../../shared/codec'
 import { Story, Source } from './logic/Story'
 import { hidden_card } from './logic/Catalog'
 import { Quality } from '../../shared/state/effects'
-import { Recap } from './logic/Recap'
+import { Recap } from '../../shared/state/recap'
 
 const DRAW_PER_TURN = 2
 const START_HAND_REAL = 3

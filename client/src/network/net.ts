@@ -20,6 +20,8 @@ export class MatchWS {
 
   constructor(deck: string, newScene: GameScene, mmCode, avatarID: number) {
     scene = newScene
+    // TODO
+    versionNumber = -1
 
     console.log('Making a new websocket for this match')
     const socket = (this.socket = this.getSocket(mmCode))

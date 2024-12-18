@@ -70,7 +70,7 @@ export default class ResultsRegion extends Region {
     this.deleteTemp()
 
     // If the game isn't over, hide this
-    if (state.getWinner() === null) {
+    if (state.winner === null) {
       this.hide()
       return
     }
@@ -94,7 +94,7 @@ export default class ResultsRegion extends Region {
     this.theirAvatar.setTexture(`avatar-${av2}Full`)
 
     // Text saying if you won or lost
-    this.txtResult.setText(state.getWinner() === 0 ? 'Victory' : 'Defeat')
+    this.txtResult.setText(state.winner === 0 ? 'Victory' : 'Defeat')
 
     // Further detail how each round went
     this.displayRoundResults(state)

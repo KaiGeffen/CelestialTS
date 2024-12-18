@@ -74,6 +74,8 @@ export class GameScene extends BaseScene {
 
   // Queue up the given state, to be displayed when correct to do so
   queueState(state: GameModel): void {
+    console.log('queueing state', state)
+
     // If a state with this version isn't in the queued states, add it
     if (!(state.versionNo in this.queuedStates)) {
       this.queuedStates[state.versionNo] = state
@@ -348,12 +350,15 @@ export class GameScene extends BaseScene {
 
   // Queue up this scene's yet-unseen recap, return false if there is none
   private queueNewRecap(state: GameModel): boolean {
+    // TODO
+    return false
     // If a round just ended, we might have a recap to queue up
     const isRoundStart = state.story.acts.length === 0 && state.passes === 0
     const numberStates = state.recap.stateList.length
     if (isRoundStart && numberStates > 0) {
       // Queue the recap to play
-      this.queueRecap(state.recap.stateList)
+      // TODO
+      // this.queueRecap(state.recap.stateList)
 
       // Remove the recap from this state (So it won't be added again)
       state.recap.stateList = []
@@ -477,6 +482,7 @@ export class View {
   }
 
   displayState(state: GameModel, isRecap: boolean) {
+    console.log('showing state', state)
     this.searching.hide()
 
     this.mulligan.displayState(state, isRecap)
@@ -506,8 +512,8 @@ export class View {
     this.animator.animate(state, isRecap)
 
     // Play whatever sound this new state brings
-    if (state.soundEffect !== null) {
-      this.scene.playSound(state.soundEffect)
+    if (state.sound !== null) {
+      this.scene.playSound(state.sound)
     }
   }
 

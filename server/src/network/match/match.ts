@@ -33,6 +33,7 @@ class Match {
 
     // Make a new game
     this.game = new ServerController(deck1, deck2, avatar1, avatar2)
+    this.game.start()
   }
 
   // Notify all connected players that the match has started
@@ -48,7 +49,7 @@ class Match {
   // Notify players of the state of the game
   async notifyState() {
     if (this.game === null) return
-    console.log(this.game.getClientModel(0))
+    console.log(this.game.getClientModel(0).deck[0][0])
 
     await Promise.all(
       this.getActiveWsList().map((ws, index) =>

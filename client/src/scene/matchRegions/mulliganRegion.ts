@@ -80,7 +80,7 @@ export default class MulliganRegion extends Region {
 
     this.show()
 
-    for (let i = 0; i < state.hand.length; i++) {
+    for (let i = 0; i < state.hand[0].length; i++) {
       let card = this.addCard(
         state.hand[0][i],
         CardLocation.mulligan(this.container, i),

@@ -112,76 +112,76 @@ export default class Card extends BaseCard {
   }
 
   // Replace all refences to other cards in this cardText with those card's name + text
-  private replaceReferences(cardText: string): string {
-    // Find each id reference and add the refenced card's text at the end
-    let expr = /\${(\d+)}/
+  // private replaceReferences(cardText: string): string {
+  //   // Find each id reference and add the refenced card's text at the end
+  //   let expr = /\${(\d+)}/
 
-    // Replace all id references with the name of the card they reference
-    let referencedCards: Card[] = []
-    function replaceName(match: string, cardId: string, ...args): string {
-      let card = decodeCard(cardId)
+  //   // Replace all id references with the name of the card they reference
+  //   let referencedCards: Card[] = []
+  //   function replaceName(match: string, cardId: string, ...args): string {
+  //     let card = decodeCard(cardId)
 
-      // Add to a list of refenced cards
-      if (!referencedCards.includes(card)) {
-        referencedCards.push(card)
-      }
+  //     // Add to a list of refenced cards
+  //     if (!referencedCards.includes(card)) {
+  //       referencedCards.push(card)
+  //     }
 
-      return `${card.name}`
-    }
+  //     return `${card.name}`
+  //   }
 
-    // Replace each reference with that card's name
-    cardText = cardText.replace(expr, replaceName)
+  //   // Replace each reference with that card's name
+  //   cardText = cardText.replace(expr, replaceName)
 
-    // Add a full explanation of the card at the end
-    if (referencedCards.length > 0) {
-      cardText += '\n'
-    }
-    for (const card of referencedCards) {
-      cardText += `\n[img=${card.name}] ${card.name} - ${card.text}`
-    }
+  //   // Add a full explanation of the card at the end
+  //   if (referencedCards.length > 0) {
+  //     cardText += '\n'
+  //   }
+  //   for (const card of referencedCards) {
+  //     cardText += `\n[img=${card.name}] ${card.name} - ${card.text}`
+  //   }
 
-    return cardText
-  }
+  //   return cardText
+  // }
 
-  // Add an explanation of each existing keyword in cardText to the end of the text
-  private explainKeywords(cardText: string): string {
-    // The keywords that are present in this card's text, as well as what value each has (Number, X, or undefined)
-    let presentKeywords: [Keyword, string][] = []
-    for (const keyword of keywords) {
-      let regex: RegExp
-      if (!keyword.x) {
-        regex = new RegExp(/\b/.source + keyword.key + /\b/.source, 'i')
-      } else {
-        regex = new RegExp(
-          /\b/.source + keyword.key + ' ' + /(X|-?[0-9]*)\b/.source,
-          'i',
-        )
-      }
+  // // Add an explanation of each existing keyword in cardText to the end of the text
+  // private explainKeywords(cardText: string): string {
+  //   // The keywords that are present in this card's text, as well as what value each has (Number, X, or undefined)
+  //   let presentKeywords: [Keyword, string][] = []
+  //   for (const keyword of keywords) {
+  //     let regex: RegExp
+  //     if (!keyword.x) {
+  //       regex = new RegExp(/\b/.source + keyword.key + /\b/.source, 'i')
+  //     } else {
+  //       regex = new RegExp(
+  //         /\b/.source + keyword.key + ' ' + /(X|-?[0-9]*)\b/.source,
+  //         'i',
+  //       )
+  //     }
 
-      let match = cardText.match(regex)
-      if (match !== null) {
-        presentKeywords.push([keyword, match[1]])
-      }
-    }
+  //     let match = cardText.match(regex)
+  //     if (match !== null) {
+  //       presentKeywords.push([keyword, match[1]])
+  //     }
+  //   }
 
-    // Add each present keyword's text at the end of the cardText
-    if (presentKeywords.length > 0) {
-      cardText += '\n'
-    }
-    for (const [keyword, x] of presentKeywords) {
-      let txt = `\n${keyword.text}`
+  //   // Add each present keyword's text at the end of the cardText
+  //   if (presentKeywords.length > 0) {
+  //     cardText += '\n'
+  //   }
+  //   for (const [keyword, x] of presentKeywords) {
+  //     let txt = `\n${keyword.text}`
 
-      if (x) {
-        // NOTE This is replaceAll, but supported on all architectures
-        txt = txt.split(/\bX\b/).join(x)
+  //     if (x) {
+  //       // NOTE This is replaceAll, but supported on all architectures
+  //       txt = txt.split(/\bX\b/).join(x)
 
-        // NOTE Special case for occurences of +X, where X could be -N, so you want -N instead of +-N
-        txt = txt.split(/\+\-/).join('-')
-      }
+  //       // NOTE Special case for occurences of +X, where X could be -N, so you want -N instead of +-N
+  //       txt = txt.split(/\+\-/).join('-')
+  //     }
 
-      cardText += txt
-    }
+  //     cardText += txt
+  //   }
 
-    return cardText
-  }
+  //   return cardText
+  // }
 }

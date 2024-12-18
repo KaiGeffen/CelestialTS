@@ -112,7 +112,7 @@ export class OurDiscardOverlay extends OverlayRegion {
   }
 
   displayState(state: GameModel, isRecap: boolean): void {
-    this.displayCards(state.discard[0])
+    this.displayCards(state.pile[0])
   }
 }
 
@@ -122,7 +122,7 @@ export class TheirDiscardOverlay extends OverlayRegion {
   }
 
   displayState(state: GameModel, isRecap: boolean): void {
-    this.displayCards(state.discard[1])
+    this.displayCards(state.pile[1])
   }
 }
 

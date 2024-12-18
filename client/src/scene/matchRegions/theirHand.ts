@@ -94,7 +94,7 @@ export default class TheirHandRegion extends Region {
 
     // Pile sizes
     this.btnDeck.setText(`${state.deck[1].length}`)
-    this.btnDiscard.setText(`${state.discard[1].length}`)
+    this.btnDiscard.setText(`${state.pile[1].length}`)
   }
 
   setOverlayCallbacks(fDeck: () => void, fDiscard: () => void): void {
@@ -216,7 +216,7 @@ export default class TheirHandRegion extends Region {
     let amts = [0, 0, 0, 0]
     const length = 4
 
-    state.opponentStatus.forEach(function (status, index, array) {
+    state.status[1].forEach(function (status, index, array) {
       amts[status]++
     })
 

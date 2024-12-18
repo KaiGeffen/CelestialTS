@@ -23,7 +23,7 @@ export default class DecksRegion extends Region {
 
     // Ours
     this.cards = []
-    for (let i = 0; i < state.deck.length; i++) {
+    for (let i = 0; i < state.deck[0].length; i++) {
       let card = this.addCard(
         cardback,
         CardLocation.ourDeck(this.container, i),
@@ -35,7 +35,7 @@ export default class DecksRegion extends Region {
 
     // Theirs
     this.cards2 = []
-    for (let i = 0; i < state.deck[0].length; i++) {
+    for (let i = 0; i < state.deck[1].length; i++) {
       let card = this.addCard(
         cardback,
         CardLocation.theirDeck(this.container, i),

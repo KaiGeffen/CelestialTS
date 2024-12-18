@@ -1,5 +1,5 @@
 import { SoundEffect } from './SoundEffect'
-import { Recap } from './Recap'
+import { Recap } from '../../../shared/state/recap'
 import { Quality } from '../../../shared/state/effects'
 
 enum Source {
@@ -141,7 +141,7 @@ class Story {
   removeAct(index: number) {
     if (this.acts.length <= index) {
       throw new Error(
-        `Tried to remove act ${index} in a story with only ${this.acts.length} acts.`
+        `Tried to remove act ${index} in a story with only ${this.acts.length} acts.`,
       )
     }
     return this.acts.splice(index, 1)[0]
@@ -150,7 +150,7 @@ class Story {
   replaceAct(index: number, replacementAct: Act) {
     if (this.acts.length <= index) {
       throw new Error(
-        `Tried to replace act ${index} in a story with only ${this.acts.length} acts.`
+        `Tried to replace act ${index} in a story with only ${this.acts.length} acts.`,
       )
     }
     this.acts[index] = replacementAct
