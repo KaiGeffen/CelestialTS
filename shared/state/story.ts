@@ -3,6 +3,7 @@ import Card from '../../shared/state/card'
 import { SoundEffect } from './soundEffect'
 // import { Recap } from './Recap'
 import { Quality } from './effects'
+import GameModel from './gameModel'
 
 class Act {
   constructor(
@@ -21,7 +22,8 @@ class Story {
     // this.recap = new Recap()
   }
 
-  addAct(card: any, owner: number, i?: number) {
+  // Add a card to the story with given owner and at given position
+  addAct(card: Card, owner: number, i?: number) {
     const act = new Act(card, owner)
     if (i === undefined) {
       this.acts.push(act)
@@ -30,13 +32,15 @@ class Story {
     }
   }
 
-  run(game: any, isSimplified: boolean = false) {
+  // Run the current story
+  // TODO I don't think simplified is used anymore
+  run(game: GameModel) {
     // this.recap.reset()
 
-    const stateBeforePlay = ['', '']
-    for (let player = 0; player < 2; player++) {
-      stateBeforePlay[player] = game.getClientModel(player, true)
-    }
+    // const stateBeforePlay: [any, any] = [null, null]
+    // for (let player = 0; player < 2; player++) {
+    //   stateBeforePlay[player] = game.getClientModel(player, true)
+    // }
     // this.recap.addState(stateBeforePlay)
     game.animations = [[], []]
 
@@ -45,18 +49,14 @@ class Story {
     while (this.acts.length > 0) {
       const act = this.acts.shift()!
 
-      game.soundEffect = SoundEffect.Resolve
+      game.sound = SoundEffect.Resolve
 
       let result: string
-      if (isSimplified) {
-        game.score[act.owner] += act.card.points
-        result = 'SIMPLIFIED TODO'
-      } else {
-        act.card.play(act.owner, game, index, act.bonus)
-        result = 'TODO NOT SIMPLIFIED'
-        roundEndEffects.push([act.card.onRoundEnd, act.owner])
-      }
+      act.card.play(act.owner, game, index, act.bonus)
+      result = 'TODO NOT SIMPLIFIED'
+      roundEndEffects.push([act.card.onRoundEnd, act.owner])
 
+      // Put in pile or remove from game if Fleeting
       if (!act.card.qualities.includes(Quality.FLEETING)) {
         game.pile[act.owner].push(act.card)
       } else {
@@ -66,10 +66,10 @@ class Story {
       index++
       // this.recap.add(act.card, act.owner, result)
 
-      const stateAfterPlay = ['', '']
-      for (let player = 0; player < 2; player++) {
-        stateAfterPlay[player] = game.getClientModel(player, true)
-      }
+      // const stateAfterPlay: [any, any] = [null, null]
+      // for (let player = 0; player < 2; player++) {
+      //   stateAfterPlay[player] = game.getClientModel(player, true)
+      // }
       // this.recap.addState(stateAfterPlay)
       game.animations = [[], []]
     }

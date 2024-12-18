@@ -5,6 +5,7 @@ import { SoundEffect } from './SoundEffect'
 import { Anim } from './Animation'
 import { Source } from './Story'
 import { CardCodec } from './CardCodec'
+import { Mulligan } from '../../../shared/settings'
 
 const DRAW_PER_TURN = 2
 const START_HAND_REAL = 3
@@ -109,7 +110,7 @@ export class ServerController {
     this.model.story.addAct(card, player, Source.HAND)
   }
 
-  doMulligan(player: number, mulligans: boolean[]): void {
+  doMulligan(player: number, mulligans: Mulligan): void {
     this.model.versionIncr()
 
     const keptCards: any[] = []

@@ -4,6 +4,7 @@ import { Color } from '../settings/settings'
 import { keywords, Keyword } from '../catalog/keywords'
 import { decodeCard } from './codec'
 import { Quality } from '../../../shared/state/effects'
+import GameModel from '../../../shared/state/gameModel'
 
 interface KeywordTuple {
   name: string

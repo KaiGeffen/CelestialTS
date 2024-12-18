@@ -14,8 +14,9 @@ import {
   START_BREATH,
   BREATH_CAP,
   PASS,
+  Mulligan,
 } from '../../shared/settings'
-import { ClientModel } from './logic/clientModel'
+import getClientGameModel from '../../shared/state/clientGameModel'
 
 class ServerController {
   model: GameModel
@@ -72,7 +73,7 @@ class ServerController {
         return false
       } else {
         this.model.passes += 1
-        this.model.passes[player] += 1
+        this.model.amtPasses[player] += 1
         this.model.switchPriority()
         this.model.sound = SoundEffect.Pass
 
@@ -129,16 +130,14 @@ class ServerController {
     this.model.story.addAct(card, player)
   }
 
-  doMulligan(player: number, mulligans: boolean[]): void {
+  doMulligan(player: number, mulligans: Mulligan): void {
     this.model.versionIncr()
 
-    const keptCards: any[] = []
-    const thrownCards: any[] = []
-    for (
-      let i = 0;
-      i < Math.min(START_HAND_REAL, this.model.hand[player].length);
-      i++
-    ) {
+    // Determine which cards are being kept or thrown back
+    const keptCards: [Card, number][] = []
+    const thrownCards: [Card, number][] = []
+    const handSize = this.model.hand[player].length
+    for (let i = 0; i < handSize; i++) {
       const card = this.model.hand[player].shift()
       if (mulligans[i]) {
         thrownCards.push([card, i])
@@ -283,20 +282,9 @@ class ServerController {
     this.model.sound = null
   }
 
-  // TODO Get the model that client can see of state
+  // Get the model of the game that given player sees
   getClientModel(player: number): GameModel {
-    return this.model
-    // const playerCanPlay = (cardNum: number) => this.canPlay(player, cardNum)
-
-    // const cardsPlayable = Array.from(
-    //   { length: this.model.hand[player].length },
-    //   (_, i) => playerCanPlay(i),
-    // )
-    // const costs = this.model.hand[player].map((card) =>
-    //   this.getCost(card, player),
-    // )
-
-    // return this.model.getClientModel(player, cardsPlayable, costs)
+    return getClientGameModel(this.model, player)
   }
 
   doUpkeepStatuses(player: number): void {

@@ -1,6 +1,7 @@
 import { ServerController } from '../../gameController'
 import Card from '../../../../shared/state/card'
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
+import { Mulligan } from '../../../../shared/settings'
 
 interface Match {
   ws1: TypedWebSocket | null
@@ -49,7 +50,6 @@ class Match {
   // Notify players of the state of the game
   async notifyState() {
     if (this.game === null) return
-    console.log(this.game.getClientModel(0).deck[0][0])
 
     await Promise.all(
       this.getActiveWsList().map((ws, index) =>
@@ -62,7 +62,7 @@ class Match {
   }
 
   // TODO Use the same Mulligan type throughout
-  async doMulligan(player: number, mulligan: boolean[]) {
+  async doMulligan(player: number, mulligan: Mulligan) {
     this.game.doMulligan(player, mulligan)
     await this.notifyState()
   }

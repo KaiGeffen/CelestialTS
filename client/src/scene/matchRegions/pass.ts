@@ -87,7 +87,7 @@ export default class PassRegion extends Region {
       // Under the special condition where:
       // Max breath reached, can play card, start of round
       // The player is not allowed to pass
-      const canPlay = state.cardsPlayable.some((x) => x)
+      const canPlay = state.cardCosts.some((cost) => cost <= state.breath[0])
       if (
         state.maxBreath[0] === 10 &&
         canPlay &&

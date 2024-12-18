@@ -17,6 +17,7 @@ import {
   BREATH_CAP,
   PASS,
 } from '../settings'
+// import getClientGameModel from './clientGameModel'
 
 export default class GameModel {
   // Zones
@@ -56,7 +57,7 @@ export default class GameModel {
   lastPlayerWhoPlayed: number = 0
 
   // For client side visualization
-  cardsPlayable: boolean[]
+  cardCosts: number[]
 
   // Other (For weird cards)
   amtPasses: number[] = [0, 0]
@@ -101,7 +102,6 @@ export default class GameModel {
     this.avatars = [avatar1, avatar2]
     this.roundResults = [[], []]
     this.lastPlayerWhoPlayed = 0
-    this.cardsPlayable = [true, true, true, true, true, true]
   }
 
   versionIncr() {
@@ -304,108 +304,110 @@ export default class GameModel {
   }
 
   // TODO Get a model that doesn't show unknown information
-  /*
-  get_client_model(
-    player: number,
-    cards_playable = Array(6).fill(false),
-    costs = Array(6).fill(null),
-    is_recap = false,
-  ) {
-    const deck_sort = (card: any) => {
-      const rand_from_name = (parseInt(card.name, 36) % 1000) / 1000
-      return card.cost + rand_from_name
-    }
+  // getClientModel(player: number, isRecap: boolean): GameModel {
+  //   // TODO Figure out recap system better
+  //   return getClientGameModel(this, player)
+  // }
+  // get_client_model(
+  //   player: number,
+  //   cards_playable: boolean[],
+  //   costs: number[],
+  //   is_recap = false,
+  // ) {
+  //   const deck_sort = (card: any) => {
+  //     const rand_from_name = (parseInt(card.name, 36) % 1000) / 1000
+  //     return card.cost + rand_from_name
+  //   }
 
-    const slice_step = player === 0 ? 1 : -1
-    const relative_recap = player === 0 ? this.recap : this.recap.get_flipped()
+  //   const slice_step = player === 0 ? 1 : -1
+  //   const relative_recap = player === 0 ? this.recap : this.recap.get_flipped()
 
-    return {
-      hand: CardCodec.encode_deck(this.hand[player]),
-      opp_hand: CardCodec.encode_deck(this.hand[player ^ 1]),
-      deck: CardCodec.encode_deck(this.deck[player].sort(deck_sort)),
-      opp_deck: this.deck[player ^ 1].length,
-      pile: this.pile.slice().reverse().map(CardCodec.encode_deck),
-      last_shuffle: CardCodec.encode_deck(
-        this.last_shuffle[player ^ 1].sort(deck_sort),
-      ),
-      expended: this.expended.slice().reverse().map(CardCodec.encode_deck),
-      wins: this.wins.slice().reverse(),
-      maxBreath: this.maxBreath.slice().reverse(),
-      breath: this.breath[player],
-      status: CardCodec.encode_statuses(this.status[player]),
-      opp_status: CardCodec.encode_statuses(this.status[player ^ 1]),
-      story: this.get_relative_story(player, is_recap),
-      priority: this.priority ^ player,
-      passes: this.passes,
-      recap: CardCodec.encode_recap(relative_recap, is_recap),
-      mulligansComplete: this.mulligansComplete.slice().reverse(),
-      version_number: this.versionNo,
-      cards_playable: cards_playable,
-      vision: this.vision[player],
-      winner: this.getWinner() === null ? null : this.getWinner() ^ player,
-      score: this.score.slice().reverse(),
-      sound_effect: this.sound,
-      animations: this.hide_opp_animations(this.animations.slice().reverse()),
-      costs: costs,
-      avatars: this.avatars.slice().reverse(),
-      round_results: this.roundResults.slice().reverse(),
-    }
-  }
+  //   return {
+  //     hand: CardCodec.encode_deck(this.hand[player]),
+  //     opp_hand: CardCodec.encode_deck(this.hand[player ^ 1]),
+  //     deck: CardCodec.encode_deck(this.deck[player].sort(deck_sort)),
+  //     opp_deck: this.deck[player ^ 1].length,
+  //     pile: this.pile.slice().reverse().map(CardCodec.encode_deck),
+  //     last_shuffle: CardCodec.encode_deck(
+  //       this.last_shuffle[player ^ 1].sort(deck_sort),
+  //     ),
+  //     expended: this.expended.slice().reverse().map(CardCodec.encode_deck),
+  //     wins: this.wins.slice().reverse(),
+  //     maxBreath: this.maxBreath.slice().reverse(),
+  //     breath: this.breath[player],
+  //     status: CardCodec.encode_statuses(this.status[player]),
+  //     opp_status: CardCodec.encode_statuses(this.status[player ^ 1]),
+  //     story: this.get_relative_story(player, is_recap),
+  //     priority: this.priority ^ player,
+  //     passes: this.passes,
+  //     recap: CardCodec.encode_recap(relative_recap, is_recap),
+  //     mulligansComplete: this.mulligansComplete.slice().reverse(),
+  //     version_number: this.versionNo,
+  //     cards_playable: cards_playable,
+  //     vision: this.vision[player],
+  //     winner: this.getWinner() === null ? null : this.getWinner() ^ player,
+  //     score: this.score.slice().reverse(),
+  //     sound_effect: this.sound,
+  //     animations: this.hide_opp_animations(this.animations.slice().reverse()),
+  //     costs: costs,
+  //     avatars: this.avatars.slice().reverse(),
+  //     round_results: this.roundResults.slice().reverse(),
+  //   }
+  // }
 
-  hide_opp_animations(animations: any[][]) {
-    const opp_animations = animations[1]
-    if (this.versionNo <= 2) {
-      return [animations[0], []]
-    }
-    const obfuscated = opp_animations.map((anim: any) => {
-      if (anim.zone_to === 'Hand' && anim.zone_from !== 'Hand') {
-        return new Anim(
-          anim.zone_to,
-          anim.zone_from,
-          undefined,
-          anim.index,
-          anim.index2,
-        )
-      } else {
-        return anim
-      }
-    })
-    return [animations[0], obfuscated]
-  }
+  // hide_opp_animations(animations: any[][]) {
+  //   const opp_animations = animations[1]
+  //   if (this.versionNo <= 2) {
+  //     return [animations[0], []]
+  //   }
+  //   const obfuscated = opp_animations.map((anim: any) => {
+  //     if (anim.zone_to === 'Hand' && anim.zone_from !== 'Hand') {
+  //       return new Anim(
+  //         anim.zone_to,
+  //         anim.zone_from,
+  //         undefined,
+  //         anim.index,
+  //         anim.index2,
+  //       )
+  //     } else {
+  //       return anim
+  //     }
+  //   })
+  //   return [animations[0], obfuscated]
+  // }
 
-  get_relative_story(player: number, total_vision: boolean) {
-    const hide_opponents_cards = (live_card: [any, number]) => {
-      const [card, owner] = live_card
-      if (
-        !total_vision &&
-        owner !== player &&
-        !card.qualities.includes(Quality.VISIBLE)
-      ) {
-        return [hidden_card, owner]
-      } else {
-        return live_card
-      }
-    }
+  // get_relative_story(player: number, total_vision: boolean) {
+  //   const hide_opponents_cards = (live_card: [any, number]) => {
+  //     const [card, owner] = live_card
+  //     if (
+  //       !total_vision &&
+  //       owner !== player &&
+  //       !card.qualities.includes(Quality.VISIBLE)
+  //     ) {
+  //       return [hidden_card, owner]
+  //     } else {
+  //       return live_card
+  //     }
+  //   }
 
-    const switch_owners = (live_card: [any, number]) => {
-      const [card, owner] = live_card
-      return [card, owner ^ 1]
-    }
+  //   const switch_owners = (live_card: [any, number]) => {
+  //     const [card, owner] = live_card
+  //     return [card, owner ^ 1]
+  //   }
 
-    let result = this.story.acts.map((act: any) => [act.card, act.owner])
-    const visible_result = result.slice(0, this.vision[player])
-    const invisible_result = result
-      .slice(this.vision[player])
-      .map(hide_opponents_cards)
-    result = visible_result.concat(invisible_result)
+  //   let result = this.story.acts.map((act: any) => [act.card, act.owner])
+  //   const visible_result = result.slice(0, this.vision[player])
+  //   const invisible_result = result
+  //     .slice(this.vision[player])
+  //     .map(hide_opponents_cards)
+  //   result = visible_result.concat(invisible_result)
 
-    if (player === 1) {
-      result = result.map(switch_owners)
-    }
+  //   if (player === 1) {
+  //     result = result.map(switch_owners)
+  //   }
 
-    return CardCodec.encode_story(result)
-  }
-  */
+  //   return CardCodec.encode_story(result)
+  // }
 
   isRecapEnd() {
     // TODO

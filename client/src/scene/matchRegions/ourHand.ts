@@ -98,7 +98,7 @@ export default class OurHandRegion extends Region {
     this.deleteTemp()
 
     // Pile sizes
-    this.btnDeck.setText(`${state.deck.length}`)
+    this.btnDeck.setText(`${state.deck[0].length}`)
     this.btnDiscard.setText(`${state.pile[0].length}`)
 
     // Until we have mulliganed, hide the cards in our hand
@@ -121,18 +121,18 @@ export default class OurHandRegion extends Region {
         state.hand[0][i],
         CardLocation.ourHand(state, i, this.container),
       )
-        .setCost(state.hand[0][i].cost)
+        .setCost(state.cardCosts[i])
         .setFocusOptions('Play')
         .moveToTopOnHover()
 
-      const cost = state.hand[0][i].cost
+      const cost = state.cardCosts[i]
       card.setOnHover(
         that.onCardHover(card, cost, i),
         that.onCardExit(card, this.cards, i),
       )
 
       // Set whether the card shows as playable, and set its onclick
-      card.setPlayable(state.cardsPlayable[i])
+      card.setPlayable(state.cardCosts[i] <= state.breath[0])
       this.setCardOnClick(card, state, isRecap, i)
 
       this.cards.push(card)
@@ -181,7 +181,7 @@ export default class OurHandRegion extends Region {
       msg = "It's not your turn."
     } else if (this.cardClicked) {
       msg = "You've already selected a card."
-    } else if (!state.cardsPlayable[i]) {
+    } else if (state.cardCosts[i] > state.breath[0]) {
       msg = "You don't have enough breath to play that card."
     }
 
@@ -195,7 +195,7 @@ export default class OurHandRegion extends Region {
     }
 
     // Set whether card shows up as playable, and also whether we can click to play a card in this state
-    if (!state.cardsPlayable[i]) {
+    if (state.cardCosts[i] > state.breath[0]) {
       card.setPlayable(false)
     }
   }

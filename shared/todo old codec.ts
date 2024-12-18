@@ -1,3 +1,4 @@
+import { Mulligan } from './settings'
 import Card from './state/card'
 import allCards from './state/catalog'
 import { Status } from './state/effects'
@@ -142,7 +143,7 @@ function decodeStatuses(s: string): Status[] {
   return s.split(DELIM1).map((stat) => new Status(stat))
 }
 
-function encodeMulligans(mulligans: boolean[]): string {
+function encodeMulligans(mulligans: Mulligan): string {
   return mulligans.map((mulligan) => (mulligan ? '1' : '0')).join('')
 }
 

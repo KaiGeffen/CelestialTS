@@ -339,7 +339,9 @@ export class GameScene extends BaseScene {
     }
     // Otherwise, pass only if we have no playable cards
     else {
-      let havePlayableCards = state.cardsPlayable.includes(true)
+      let havePlayableCards = state.cardCosts.some(
+        (cost) => cost <= state.breath[0],
+      )
       return !havePlayableCards
     }
   }

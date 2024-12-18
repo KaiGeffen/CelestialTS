@@ -69,7 +69,6 @@ export default class Region {
 
     this.temp.push(foo)
     // this.container.add(foo)
-    console.log(foo)
 
     // foo.start('uwuwuwuwuwuwuwuwuwuwuwuwu', 3)
 

@@ -14,6 +14,8 @@ function decodeCard(s: string): Card {
   let cardId = parseInt(sections[0])
   let baseCard = allCards.find((card) => card.id === cardId)
 
+  console.log(sections.length)
+
   if (sections.length == 1) {
     return baseCard
   } else {
