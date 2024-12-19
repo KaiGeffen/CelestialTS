@@ -12,13 +12,12 @@ export default function createMatchServer() {
   const wss = new WebSocketServer({ port: PORT })
 
   wss.on('connection', async (socket: WebSocket) => {
-    console.log('Client connected')
-
-    // Determine what type of connection it is
-    // Signin
-    // Matchmaking for a signed in player
-    // Matchmaking for guest player
-    MatchQueue.enqueue(socket)
+    try {
+      console.log('Client connected')
+      MatchQueue.enqueue(socket)
+    } catch (e) {
+      console.error('Error in match queue:', e)
+    }
   })
 
   console.log('Match server is running on port: ', PORT)
