@@ -86,6 +86,13 @@ class Story {
   replaceAct(index: number, arg1: Act) {
     throw new Error('Method not implemented.')
   }
+
+  // Flip such that player 1 is 0 and vice-verca
+  flip() {
+    for (const act of this.acts) {
+      act.owner = act.owner === 1 ? 0 : 1
+    }
+  }
 }
 
 // TODO Unintuitive that this is here instead of in GameModel (Which it can't be in because of circular dependencies)

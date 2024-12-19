@@ -26,7 +26,7 @@ export default function getClientGameModel(
 
 // Reverse the attributes of the given game model
 
-function reverseAttributes(model): void {
+function reverseAttributes(model: GameModel): void {
   // Reverse the order of these lists
   const listAttributes = [
     'hand',
@@ -59,10 +59,8 @@ function reverseAttributes(model): void {
     model[attr] = model[attr] === 1 ? 0 : 1
   }
 
-  // NOT CHANGED 'versionNo', 'sound', passes,
-
-  // TODO
-  // 'story', ,'recap'
+  // Flip the story
+  model.story.flip()
 }
 
 function setClientSideInformation(model: GameModel): void {
@@ -95,6 +93,15 @@ function hideHiddenInformation(model: GameModel) {
 
   // Hide the opponent's amtDrawn
   model.amtDrawn[1] = 0
+
+  // Hide opponent's cards in the story
+  model.story.acts = model.story.acts.map((act) => {
+    if (act.owner === 1) {
+      return { ...act, card: hiddenCard }
+    } else {
+      return act
+    }
+  })
 }
 
 function hideDeckOrder(model: GameModel) {
