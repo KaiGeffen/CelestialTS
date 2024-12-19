@@ -25,7 +25,11 @@ export default class Animator {
   }
 
   animate(state: GameModel): void {
-    // TODO Do this flipping
+    console.log(
+      this.lastHiddenCards,
+      state.isRecap,
+      state.story.resolvedActs.length,
+    )
     const isRecapStart = state.story.resolvedActs.length === 0
     if (state.isRecap && isRecapStart) {
       this.animateRecapStart(state)
@@ -447,6 +451,7 @@ export default class Animator {
 
   // Animate cards being flipped over at the start of a recap
   private animateRecapStart(state: GameModel): void {
+    console.log('Animating recap start')
     let acts = state.story.acts
     let amtSeen = 0
     for (let i = 0; i < acts.length; i++) {
@@ -455,6 +460,7 @@ export default class Animator {
         let act = acts[i]
 
         let card = this.view.story.cards[i]
+        console.log(card)
 
         this.animateReveal(card, amtSeen)
 
@@ -467,7 +473,8 @@ export default class Animator {
     let result = []
 
     for (let i = 0; i < state.story.acts.length; i++) {
-      result[i] = state.story.acts[i].card === cardback
+      // TODO No unnamed constant / DRY
+      result[i] = state.story.acts[i].card.name === 'Cardback'
     }
 
     return result

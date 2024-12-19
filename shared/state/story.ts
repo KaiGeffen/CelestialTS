@@ -27,6 +27,7 @@ class Story {
     this.resolvedActs = []
 
     // Add a model at the start
+    game.versionIncr()
     addRecentModels(game)
 
     let index = 0
@@ -60,9 +61,9 @@ class Story {
   }
 
   saveEndState(game: GameModel) {
-    this.resolvedActs = []
-
     addRecentModels(game)
+
+    this.resolvedActs = []
 
     // Set winner/loser/tie sfx
     if (game.score[0] > game.score[1]) {

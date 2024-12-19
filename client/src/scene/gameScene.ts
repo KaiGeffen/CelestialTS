@@ -257,8 +257,6 @@ export class GameScene extends BaseScene {
 
   // Display the given game state, returns false if the state isn't shown immediately
   protected displayState(state: GameModel): boolean {
-    console.log('version number: ', state.versionNo)
-
     // If any tweens are playing, don't display yet
     let anyTweenPlaying = this.tweens.getTweens().length > 0
     if (anyTweenPlaying) {
