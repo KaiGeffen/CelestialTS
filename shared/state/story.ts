@@ -56,19 +56,10 @@ class Story {
 
   saveEndState(game: GameModel) {
     addRecentModels(game)
-    // const stateAfterPlay: [GameModel, GameModel] = [null, null]
-    // for (let player = 0; player < 2; player++) {
-    //   if (this.recap.wins[player] > 0) {
-    //     game.soundEffect = SoundEffect.Win
-    //   } else if (this.recap.wins[player ^ 1] > 0) {
-    //     game.soundEffect = SoundEffect.Lose
-    //   } else {
-    //     game.soundEffect = SoundEffect.Tie
-    //   }
-    //   stateAfterPlay[player] = getClientGameModel(game, player)
-    // }
-    // this.recap.addState(stateAfterPlay)
-    // game.animations = [[], []]
+
+    game.recentModels[0][game.recentModels[0].length - 1].sound =
+      SoundEffect.Win
+    // TODO
   }
 
   clear() {
@@ -93,6 +84,7 @@ class Story {
   }
 }
 
+// TODO Unintuitive that this is here instead of in GameModel (Which it can't be in because of circular dependencies)
 // Add the current state to list of remembered recent states
 function addRecentModels(model): void {
   // Get a recent model for each and add for that player

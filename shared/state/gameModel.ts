@@ -420,9 +420,4 @@ export default class GameModel {
 
   //   return CardCodec.encode_story(result)
   // }
-
-  isRecapEnd() {
-    // TODO
-    return true
-  }
 }

@@ -30,9 +30,10 @@ export default class RoundResultRegion extends Region {
 
     // TODO
     // On the final state of the recap, animate the text of round results
-    // if (isRecap && state.isRecapEnd()) {
-    //   this.animateResult(state)
-    // }
+    const isRecapEnd = ['win', 'lose', 'tie'].includes(state.sound)
+    if (isRecap && isRecapEnd) {
+      this.animateResult(state)
+    }
   }
 
   // Animate the results of this round
