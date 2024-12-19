@@ -29,6 +29,7 @@ export class GameScene extends BaseScene {
   recapPlaying: boolean // TODO Redundant with above?
   lastRecap: GameModel[]
   currentState: GameModel
+  currentVersionNo: number
 
   // Whether this match is a tutorial
   isTutorial = false
@@ -41,6 +42,7 @@ export class GameScene extends BaseScene {
     this.recapPlaying = false
     this.lastRecap = []
     this.currentState = undefined
+    this.currentVersionNo = 0
 
     // TODO Clean this up when a pass is done
     let mmCode = ''
@@ -80,13 +82,6 @@ export class GameScene extends BaseScene {
     }
   }
 
-  // Queue up the given recap, which is each state seen as the story resolves
-  private queueRecap(stateList: GameModel[]): void {
-    this.recapPlaying = true
-    this.queuedRecap = stateList
-    this.lastRecap = [...stateList]
-  }
-
   signalDC(): void {
     this.scene.launch('MenuScene', {
       menu: 'disconnect',
@@ -101,8 +96,13 @@ export class GameScene extends BaseScene {
     // Commands region
     view.commands.recapCallback = () => {
       that.recapPlaying = true
-      that.queuedRecap = [...that.lastRecap]
-      that.queueState(that.currentState)
+      // that.queuedRecap = [...that.lastRecap]
+      // that.queueState(that.currentState)
+      // 321
+      this.currentVersionNo = Math.max(0, this.currentVersionNo - 10)
+
+      // that.queuedStates
+      // versionNumber
     }
     view.commands.skipCallback = () => {
       that.tweens.getTweens().forEach((tween) => {
@@ -115,6 +115,8 @@ export class GameScene extends BaseScene {
 
       // End the pause
       that.paused = false
+
+      // that.currentVersionNo = versionNumber
     }
 
     // Hand region
@@ -239,24 +241,16 @@ export class GameScene extends BaseScene {
     // Enable the searching region visual update
     this.view.searching.update(time, delta)
 
-    // Otherwise, show a non-recap state, as determined by its version number
-    let nextVersionNumber = versionNumber + 1
-
-    // When a recap replay finishes, return to the current state
-    if (this.currentState !== undefined) {
-      nextVersionNumber = Math.max(
-        this.currentState.versionNo,
-        nextVersionNumber,
+    if (this.currentVersionNo in this.queuedStates) {
+      let isDisplayed = this.displayState(
+        this.queuedStates[this.currentVersionNo],
       )
-    }
-
-    if (nextVersionNumber in this.queuedStates) {
-      let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber])
 
       // If the state was just shown, delete it
       if (isDisplayed) {
-        this.currentState = this.queuedStates[nextVersionNumber]
-        delete this.queuedStates[nextVersionNumber]
+        this.currentState = this.queuedStates[this.currentVersionNo]
+        this.currentVersionNo++
+        // delete this.queuedStates[nextVersionNumber]
       }
     }
   }
