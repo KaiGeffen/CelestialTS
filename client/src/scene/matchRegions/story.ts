@@ -87,12 +87,10 @@ export default class StoryRegion extends Region {
 
   // Display the current score totals and change in scores
   private displayScores(state: GameModel): void {
-    // let index = state.recap.stateList.length - 1
-    // let remainingActs = state.recap.stateList.length
-    // if (index >= 0 && remainingActs >= 0) {
-    const index = 0
-    this.animateScoreGains(index, state.score, state)
-    // }
+    let index = state.story.resolvedActs.length - 1
+    if (index >= 0) {
+      this.animateScoreGains(index, state.score, state)
+    }
 
     this.lastScores = state.score
   }

@@ -39,9 +39,9 @@ class PveMatch extends Match {
 
   // TODO Implement ai opponent, for now just pass
   async opponentActs() {
-    // ;[0, 1, 2, 3, 4, 5, PASS].forEach((action) => {
-    //   this.game.attemptPlay(1, action)
-    // })
+    ;[0, 1, 2, 3, 4, 5, PASS].forEach((action) => {
+      this.game.onPlayerInput(1, action)
+    })
     await this.notifyState()
     // await this.lock
     // const opponentModel = new ClientModel(this.game.get_client_model(1))
