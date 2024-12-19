@@ -2,7 +2,8 @@ import Card from './card'
 import { Story } from './story'
 import { Avatar } from './avatar'
 
-import { Anim } from './animation'
+import { Animation } from '../animation'
+import { Zone } from './zone'
 // import { CardCodec } from '../cardCodec'
 // import { hidden_card } from './logic/Catalog'
 import { Quality, Status } from './effects'
@@ -51,7 +52,7 @@ export default class GameModel {
 
   // Effects
   sound: any = null
-  animations: any[][] = [[], []]
+  animations: Animation[][] = [[], []]
 
   // Other
   last_shuffle: any[][] = [[], []]
@@ -130,14 +131,14 @@ export default class GameModel {
       this.hand[player].push(card)
       this.amtDrawn[player] += 1
       amt -= 1
-      // this.animations[player].push(
-      //   new Anim(
-      //     'Deck',
-      //     'Hand',
-      //     CardCodec.encode_card(card),
-      //     this.hand[player].length - 1,
-      //   ),
-      // )
+      this.animations[player].push(
+        new Animation({
+          from: Zone.Deck,
+          to: Zone.Hand,
+          card: card,
+          index: this.hand[player].length - 1,
+        }),
+      )
     }
     return card
   }
@@ -149,15 +150,15 @@ export default class GameModel {
       card = this.hand[player].splice(index, 1)[0]
       this.pile[player].push(card)
       amt -= 1
-      // this.animations[player].push(
-      //   new Anim(
-      //     'Hand',
-      //     'Discard',
-      //     CardCodec.encode_card(card),
-      //     index,
-      //     this.pile[player].length - 1,
-      //   ),
-      // )
+
+      this.animations[player].push(
+        new Animation({
+          from: Zone.Hand,
+          to: Zone.Discard,
+          index: index,
+          index2: this.pile[player].length - 1,
+        }),
+      )
     }
     return card
   }
@@ -180,14 +181,14 @@ export default class GameModel {
           this.hand[player].push(card)
           this.deck[player].splice(i, 1)
           this.amtDrawn[player] += 1
-          // this.animations[player].push(
-          //   new Anim(
-          //     'Deck',
-          //     'Hand',
-          //     CardCodec.encode_card(card),
-          //     this.hand[player].length - 1,
-          //   ),
-          // )
+          this.animations[player].push(
+            new Animation({
+              from: Zone.Deck,
+              to: Zone.Hand,
+              card: card,
+              index: this.hand[player].length - 1,
+            }),
+          )
           return card
         }
       }
@@ -198,28 +199,28 @@ export default class GameModel {
   create(player: number, card: any) {
     if (this.hand[player].length < HAND_CAP) {
       this.hand[player].push(card)
-      // this.animations[player].push(
-      //   new Anim(
-      //     'Gone',
-      //     'Hand',
-      //     CardCodec.encode_card(card),
-      //     this.hand[player].length - 1,
-      //   ),
-      // )
+      this.animations[player].push(
+        new Animation({
+          from: Zone.Gone,
+          to: Zone.Hand,
+          card: card,
+          index: this.hand[player].length - 1,
+        }),
+      )
       return card
     }
     return null
   }
 
   create_in_pile(player: number, card: any) {
-    // this.animations[player].push(
-    //   new Anim(
-    //     'Gone',
-    //     'Discard',
-    //     CardCodec.encode_card(card),
-    //     this.pile[player].length,
-    //   ),
-    // )
+    this.animations[player].push(
+      new Animation({
+        from: Zone.Gone,
+        to: Zone.Discard,
+        card: card,
+        index: this.pile[player].length,
+      }),
+    )
     this.pile[player].push(card)
   }
 
@@ -229,9 +230,14 @@ export default class GameModel {
       for (let i = 0; i < this.hand[player].length; i++) {
         if (this.hand[player][i].cost === cost) {
           const card = this.hand[player][i]
-          // this.animations[player].push(
-          //   new Anim('Hand', 'Gone', CardCodec.encode_card(card), i),
-          // )
+          this.animations[player].push(
+            new Animation({
+              from: Zone.Hand,
+              to: Zone.Gone,
+              card: card,
+              index: i,
+            }),
+          )
           this.expended[player].push(card)
           this.hand[player].splice(i, 1)
           return card
@@ -246,9 +252,13 @@ export default class GameModel {
     for (let i = 0; i < amt; i++) {
       if (this.pile[player].length > 0) {
         const card = this.pile[player].pop()
-        // this.animations[player].push(
-        //   new Anim('Discard', 'Gone', CardCodec.encode_card(card)),
-        // )
+        this.animations[player].push(
+          new Animation({
+            from: Zone.Discard,
+            to: Zone.Gone,
+            card: card,
+          }),
+        )
         this.expended[player].push(card)
       }
     }
@@ -258,9 +268,13 @@ export default class GameModel {
     if (this.deck[player].length > 0) {
       const card = this.deck[player].pop()
       this.pile[player].push(card)
-      // this.animations[player].push(
-      //   new Anim('Deck', 'Discard', CardCodec.encode_card(card)),
-      // )
+      this.animations[player].push(
+        new Animation({
+          from: Zone.Deck,
+          to: Zone.Discard,
+          card: card,
+        }),
+      )
       return card
     }
     return null
@@ -276,7 +290,11 @@ export default class GameModel {
     }
     this.deck[player].sort(() => Math.random() - 0.5)
     if (this.deck[player].length > 0) {
-      // this.animations[player].push(new Anim('Shuffle'))
+      this.animations[player].push(
+        new Animation({
+          from: Zone.Shuffle,
+        }),
+      )
     }
   }
 
@@ -308,11 +326,6 @@ export default class GameModel {
       return 1
     }
     return null
-  }
-
-  // Make a shallow copy of this state for recap
-  shallowCopy(): GameModel {
-    return JSON.parse(JSON.stringify(this))
   }
 
   // TODO Get a model that doesn't show unknown information

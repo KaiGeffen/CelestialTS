@@ -4,5 +4,10 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["src/*", "**/*", "node_modules/phaser3-rex-plugins-types"]
+  "include": [
+    "src/*",
+    "**/*",
+    "node_modules/phaser3-rex-plugins-types",
+    "../shared/animation.ts"
+  ]
 }

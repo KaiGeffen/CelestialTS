@@ -1,7 +1,8 @@
 import 'phaser'
 import GameModel from '../../../../shared/state/gameModel'
 import BaseScene from '../baseScene'
-import { Animation, Zone } from '../../lib/animation'
+import { Animation } from '../../../../shared/animation'
+import { Zone } from '../../../../shared/state/zone'
 import CardLocation from './cardLocation'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Time, Depth, Ease } from '../../settings/settings'
@@ -24,6 +25,7 @@ export default class Animator {
   }
 
   animate(state: GameModel, isRecap: boolean): void {
+    // TODO Do this flipping
     // const isRecapStart = state.recap.stateList.length === 0
     // if (isRecap && isRecapStart) {
     //   this.animateRecapStart(state)

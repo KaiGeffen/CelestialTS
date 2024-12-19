@@ -1,5 +1,5 @@
 import 'phaser'
-import { Zone } from '../../lib/animation'
+import { Zone } from '../../../../shared/animation'
 import { CardImage } from '../../lib/cardImage'
 import GameModel from '../../../../shared/state/gameModel'
 import { Depth, Space, Time, Flags } from '../../settings/settings'

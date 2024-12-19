@@ -11,7 +11,7 @@ import { CardImage } from '../../lib/cardImage'
 import Card from '../../lib/card'
 import { cardback } from '../../catalog/catalog'
 import GameModel from '../../../../shared/state/gameModel'
-import { Animation, Zone } from '../../lib/animation'
+import { Animation, Zone } from '../../../../shared/animation'
 import BaseScene from '../baseScene'
 
 export default class MulliganRegion extends Region {

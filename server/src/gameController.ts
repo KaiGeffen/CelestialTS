@@ -3,7 +3,7 @@ import Card from '../../shared/state/card'
 
 import { Status } from '../../shared/state/effects'
 import { SoundEffect } from '../../shared/state/soundEffect'
-import { Anim } from '../../shared/state/animation'
+import { Animation } from '../../shared/animation'
 // import { CardCodec } from '../../shared/cardCodec'
 import {
   DRAW_PER_TURN,
@@ -17,6 +17,7 @@ import {
   Mulligan,
 } from '../../shared/settings'
 import getClientGameModel from '../../shared/state/clientGameModel'
+import { Zone } from '../../shared/state/zone'
 
 class ServerController {
   model: GameModel
@@ -30,7 +31,7 @@ class ServerController {
     this.doUpkeep()
 
     for (const player of [0, 1]) {
-      // this.model.animations[player] = []
+      this.model.animations[player] = []
 
       for (
         let i = 0;
@@ -38,8 +39,14 @@ class ServerController {
         i++
       ) {
         const card = this.model.hand[player][i]
-        // const anim = new Anim('Deck', 'Mulligan', CardCodec.encodeCard(card), i)
-        // this.model.animations[player].push(anim)
+        this.model.animations[player].push(
+          new Animation({
+            from: Zone.Deck,
+            to: Zone.Mulligan,
+            card: card,
+            index: i,
+          }),
+        )
       }
     }
   }
@@ -147,15 +154,15 @@ class ServerController {
 
     for (const [card, indexFrom] of keptCards) {
       const indexTo = this.model.hand[player].length
-      // this.model.animations[player].push(
-      //   new Animation(
-      //     'Mulligan',
-      //     'Hand',
-      //     CardCodec.encodeCard(card),
-      //     indexFrom,
-      //     indexTo,
-      //   ),
-      // )
+      this.model.animations[player].push(
+        new Animation({
+          from: Zone.Mulligan,
+          to: Zone.Hand,
+          card: card,
+          index: indexFrom,
+          index2: indexTo,
+        }),
+      )
       this.model.hand[player].push(card)
     }
 
@@ -163,14 +170,14 @@ class ServerController {
 
     for (const [card, indexFrom] of thrownCards) {
       this.model.deck[player].push(card)
-      // this.model.animations[player].push(
-      //   new Animation(
-      //     'Mulligan',
-      //     'Deck',
-      //     CardCodec.encodeCard(card),
-      //     indexFrom,
-      //   ),
-      // )
+      this.model.animations[player].push(
+        new Animation({
+          from: Zone.Mulligan,
+          to: Zone.Deck,
+          card: card,
+          index: indexFrom,
+        }),
+      )
     }
 
     this.model.shuffle(player, false)
@@ -213,11 +220,17 @@ class ServerController {
         const card = this.model.hand[player][index]
         const somethingActivated = card.onUpkeep(player, this.model, index)
 
-        // if (somethingActivated) {
-        //   this.model.animations[player].push(
-        //     new Anim('Hand', 'Hand', CardCodec.encodeCard(card), index, index),
-        //   )
-        // }
+        if (somethingActivated) {
+          this.model.animations[player].push(
+            new Animation({
+              from: Zone.Hand,
+              to: Zone.Hand,
+              card: card,
+              index: index,
+              index2: index,
+            }),
+          )
+        }
 
         index += 1
       }
@@ -230,17 +243,17 @@ class ServerController {
           this.model,
           this.model.pile[player].length - 1,
         )
-        // if (somethingActivated) {
-        //   this.model.animations[player].push(
-        //     new Animation(
-        //       'Discard',
-        //       'Discard',
-        //       CardCodec.encodeCard(card),
-        //       index,
-        //       index,
-        //     ),
-        //   )
-        // }
+        if (somethingActivated) {
+          this.model.animations[player].push(
+            new Animation({
+              from: Zone.Discard,
+              to: Zone.Discard,
+              card: card,
+              index: index,
+              index2: index,
+            }),
+          )
+        }
       }
     }
 
