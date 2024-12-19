@@ -2,6 +2,8 @@ import { Status, Quality } from './effects'
 import { Anim } from './animation'
 import { Act } from './story'
 import GameModel from './gameModel'
+import { Animation } from '../animation'
+import { Zone } from './zone'
 
 interface KeywordTuple {
   name: string
@@ -170,17 +172,32 @@ export default class Card {
   }
 
   inspire(amt: number, game: GameModel, player: number): string {
-    // game.animations[player].push(new Anim('Status', 0))
+    game.animations[player].push(
+      new Animation({
+        from: Zone.Status,
+        status: 0,
+      }),
+    )
     return this.addStatus(amt, game, player, Status.INSPIRE)
   }
 
   nourish(amt: number, game: GameModel, player: number): string {
-    // game.animations[player].push(new Anim('Status', 2))
+    game.animations[player].push(
+      new Animation({
+        from: Zone.Status,
+        status: 2,
+      }),
+    )
     return this.addStatus(amt, game, player, Status.NOURISH)
   }
 
   starve(amt: number, game: GameModel, player: number): string {
-    // game.animations[player].push(new Anim('Status', 3))
+    game.animations[player].push(
+      new Animation({
+        from: Zone.Status,
+        status: 3,
+      }),
+    )
     return this.addStatus(amt, game, player, Status.STARVE)
   }
 
@@ -302,6 +319,7 @@ export default class Card {
       const act = game.story.acts[index]
       const oldCard = act.card
       game.story.replaceAct(index, new Act(card, act.owner))
+      // TODO Implement
       // game.animations[act.owner].push(
       //   new Anim('Transform', 'Story', CardCodec.encodeCard(oldCard), index),
       // )

@@ -1,6 +1,8 @@
 import Card from '../card'
 import { ashes } from './tokens'
 import { Status, Quality } from '../effects'
+import { Animation } from '../../animation'
+import { Zone } from '../zone'
 
 class Dash extends Card {
   play(player: number, game: any, index: number, bonus: number): void {
@@ -120,9 +122,13 @@ class Cling extends Card {
 
       bonus += highestCost
 
-      // game.animations[player].push(
-      //   new Animation('Discard', 'Deck', { card: card.encode() }),
-      // )
+      game.animations[player].push(
+        new Animation({
+          from: Zone.Discard,
+          to: Zone.Deck,
+          card: card,
+        }),
+      )
 
       super.play(player, game, index, bonus)
     } else {

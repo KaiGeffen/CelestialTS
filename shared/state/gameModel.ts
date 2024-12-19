@@ -212,7 +212,7 @@ export default class GameModel {
     return null
   }
 
-  create_in_pile(player: number, card: any) {
+  createInPile(player: number, card: any) {
     this.animations[player].push(
       new Animation({
         from: Zone.Gone,
@@ -298,13 +298,13 @@ export default class GameModel {
     }
   }
 
-  create_card(player: number, card: any) {
+  createCard(player: number, card: any) {
     if (this.hand[player].length < HAND_CAP) {
       this.hand[player].push(card)
     }
   }
 
-  get_highest_card_in_hand(player: number) {
+  getHighestCardInHand(player: number) {
     let result = null
     for (const card of this.hand[player]) {
       if (result === null || card.cost > result.cost) {

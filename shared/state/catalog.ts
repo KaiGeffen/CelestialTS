@@ -68,7 +68,9 @@ import {
   dew,
   gentleRain,
 } from './catalog/water'
-import { seen, ashes, child, predator } from './catalog/tokens'
+import { child, seen, ashes, predator } from './catalog/tokens'
+import { Animation } from '../animation'
+import { Zone } from './zone'
 
 class Paramountcy extends Card {
   play(player, game, index, bonus) {
@@ -78,9 +80,13 @@ class Paramountcy extends Card {
       if (game.pile[player].length > 0) {
         const card = game.pile[player].pop()
         game.story.addAct(card, player, i)
-        // game.animations[player].push(
-        //   new Animation('Discard', 'Story', { index2: i }),
-        // )
+        game.animations[player].push(
+          new Animation({
+            from: Zone.Discard,
+            to: Zone.Story,
+            index2: i,
+          }),
+        )
       }
     }
   }

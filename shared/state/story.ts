@@ -82,6 +82,10 @@ class Story {
     }
     return this.acts.splice(index, 1)[0]
   }
+
+  replaceAct(index: number, arg1: Act) {
+    throw new Error('Method not implemented.')
+  }
 }
 
 // TODO Unintuitive that this is here instead of in GameModel (Which it can't be in because of circular dependencies)
