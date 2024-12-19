@@ -51,7 +51,8 @@ export class GameScene extends BaseScene {
     }
 
     // Connect with the server
-    this.net = new MatchWS(params.deck, this, mmCode, params.avatar)
+    const TODO_AI_DECK = '21:20:20:17:14:14:14:6:3:3:3:3:0:0:0'
+    this.net = new MatchWS(params.deck, this, params.avatar, TODO_AI_DECK)
 
     // Create the view
     this.view = new View(this, this.params.avatar || 0)

@@ -291,7 +291,7 @@ export default class Card {
     game.dig(player, amt)
   }
 
-  build(amt: number, game: GameModel, player: number): string {
+  birth(amt: number, game: GameModel, player: number): string {
     for (const card of game.hand[player]) {
       if (card.name === 'Child') {
         card.points += amt
@@ -305,7 +305,7 @@ export default class Card {
       cost: 0,
       points: amt,
       qualities: [Quality.FLEETING],
-      text: `0:${amt}, fleeting`,
+      dynamicText: `0:${amt}, Fleeting`,
     })
     if (game.create(player, card)) {
       return `\nBuild ${amt}`

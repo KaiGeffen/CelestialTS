@@ -17,13 +17,18 @@ var initMessage
 export class MatchWS {
   socket: TypedWebSocket
 
-  constructor(deck: string, newScene: GameScene, mmCode, avatarID: number) {
+  constructor(
+    deck: string,
+    newScene: GameScene,
+    avatarID: number,
+    aiDeck: string = '',
+  ) {
     scene = newScene
     // TODO
     versionNumber = -1
 
     console.log('Making a new websocket for this match')
-    const socket = (this.socket = this.getSocket(mmCode))
+    const socket = (this.socket = this.getSocket())
 
     console.log('Socket:', socket)
     socket.onOpen(() => {
@@ -32,7 +37,7 @@ export class MatchWS {
         uuid: '',
         deck: encodeDeck(deck),
         avatar: avatarID,
-        aiDeck: encodeDeck(deck),
+        aiDeck: encodeDeck(aiDeck),
       })
     })
 
@@ -121,11 +126,10 @@ export class MatchWS {
     })
   }
 
-  // TODO Remove mmCode from this
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
   // Get the appropriate websocket for this environment
   // If user is logged in, use the existing ws instead of opening a new one
-  private getSocket(mmCode): TypedWebSocket {
+  private getSocket(): TypedWebSocket {
     // Establish a websocket based on the environment
     let socket
     if (Server.loggedIn()) {
@@ -136,7 +140,7 @@ export class MatchWS {
     } else {
       // The WS location on DO
       // let loc = window.location
-      const fullPath = `wss://celestialtcg.com/ws/${mmCode}`
+      const fullPath = `wss://celestialtcg.com/ws`
       socket = new TypedWebSocket(fullPath)
     }
 

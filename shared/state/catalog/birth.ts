@@ -5,25 +5,25 @@ import { Status, Quality } from '../effects'
 class Nascence extends Card {
   play(player, game, index, bonus) {
     super.play(player, game, index, bonus)
-    this.build(1, game, player)
+    this.birth(1, game, player)
   }
 }
-const nascence = new Nascence({ name: 'Nascence', points: 0, id: 2 })
+const nascence = new Nascence({ name: 'Nascence', id: 2 })
 
 class Birth extends Card {
   play(player, game, index, bonus) {
     super.play(player, game, index, bonus)
-    this.build(2, game, player)
+    this.birth(2, game, player)
   }
 }
-const birth = new Birth({ name: 'Birth', points: 2, id: 8 })
+const birth = new Birth({ name: 'Birth', cost: 2, id: 8 })
 
 class Ancestry extends Card {
   play(player, game, index, bonus) {
     const amt = game.story.getLength()
     super.play(player, game, index, bonus)
     if (amt >= 1) {
-      this.build(amt, game, player)
+      this.birth(amt, game, player)
     }
   }
 }
@@ -54,7 +54,7 @@ const theFuture = new TheFuture({
 
 class Generator extends Card {
   morning(player, game, index) {
-    super.build(1, game, player)
+    super.birth(1, game, player)
     return true
   }
 }
@@ -89,7 +89,6 @@ class Rebirth extends Card {
 const rebirth = new Rebirth({
   name: 'Rebirth',
   cost: 1,
-  points: 0,
   id: 55,
   qualities: [Quality.FLEETING],
 })
@@ -97,7 +96,7 @@ const rebirth = new Rebirth({
 class Cradle extends Card {
   play(player, game, index, bonus) {
     super.play(player, game, index, bonus)
-    this.build(2, game, player)
+    this.birth(2, game, player)
   }
 }
 const cradle = new Cradle({ name: 'Cradle', cost: 3, points: 2, id: 60 })
