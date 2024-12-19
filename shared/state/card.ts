@@ -126,12 +126,12 @@ export default class Card {
     return '\nReset'
   }
 
-  addMana(amt: number, game: GameModel, player: number): string {
-    game.mana[player] += amt
+  addBreath(amt: number, game: GameModel, player: number): string {
+    game.breath[player] += amt
     for (let i = 0; i < amt; i++) {
       game.status[player].push(Status.INSPIRED)
     }
-    return amt > 0 ? `\n+${amt} mana` : ''
+    return amt > 0 ? `\n+${amt} breath` : ''
   }
 
   addStatus(
@@ -337,8 +337,8 @@ export default class Card {
   rateReset(world: any): number {
     let knownValue = 0
     let theirUnknownCards = 0
-    let theirMana =
-      world.maxMana[1] +
+    let theirBreath =
+      world.maxBreath[1] +
       world.oppStatus.filter((status: Status) => status === Status.INSPIRED)
         .length
 
@@ -348,7 +348,7 @@ export default class Card {
         knownValue -= card.cost
       } else if (card.qualities.includes(Quality.VISIBLE)) {
         knownValue += card.cost
-        theirMana -= card.cost
+        theirBreath -= card.cost
       } else {
         theirUnknownCards++
       }
@@ -356,9 +356,9 @@ export default class Card {
 
     let value = knownValue
     for (let i = 0; i < theirUnknownCards; i++) {
-      const guessedValue = Math.floor(theirMana / 2)
+      const guessedValue = Math.floor(theirBreath / 2)
       value += guessedValue
-      theirMana -= guessedValue
+      theirBreath -= guessedValue
     }
 
     return value

@@ -367,4 +367,5 @@ function getComputerDeck(i = null) {
   }
 }
 
+export { hiddenCard }
 export default allCards

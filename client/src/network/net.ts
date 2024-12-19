@@ -1,8 +1,7 @@
 import { URL, PORT } from '../../../shared/network/settings'
 import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
 
-import { encodeDeck } from '../lib/codec'
-import ClientState from '../lib/clientState'
+import { encodeDeck } from '../../../shared/codec'
 import Server from './server'
 
 import { Flags } from '../settings/settings'

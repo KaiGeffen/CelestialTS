@@ -1,18 +1,27 @@
 import 'phaser'
 
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
 
-import Card from '../../lib/card'
+import Card from '../../../../shared/state/card'
 import { CardImage } from '../../lib/cardImage'
-import { Style, Color, UserSettings, Space, Mechanics, Time, Scroll, Ease, Flags } from "../../settings/settings"
-import { collectibleCards } from "../../catalog/catalog"
+import {
+  Style,
+  Color,
+  UserSettings,
+  Space,
+  Mechanics,
+  Time,
+  Scroll,
+  Ease,
+  Flags,
+} from '../../settings/settings'
+import { collectibleCards } from '../../catalog/catalog'
 import { BuilderBase } from '../builderScene'
 import newScrollablePanel from '../../lib/scrollablePanel'
 
-
 // Region where all of the available cards can be scrolled through
-export default class CatalogRegion {  
+export default class CatalogRegion {
   // Overwrite the 'scene' property of container to specifically be a BuilderScene
   scene: BuilderBase
   container: ContainerLite
@@ -64,9 +73,9 @@ export default class CatalogRegion {
         bottom: Space.pad - 10,
         item: Space.pad,
         line: Space.pad,
-      }
+      },
     })
-    let superPanel = this.scrollablePanel = newScrollablePanel(scene, {
+    let superPanel = (this.scrollablePanel = newScrollablePanel(scene, {
       x: Space.windowWidth,
       y: 0,
       width: width,
@@ -75,7 +84,7 @@ export default class CatalogRegion {
       scrollMode: 0,
 
       panel: {
-        child: panel
+        child: panel,
       },
 
       space: {
@@ -84,26 +93,29 @@ export default class CatalogRegion {
       },
 
       slider: Flags.mobile ? undefined : Scroll(scene),
-    }).setOrigin(1, 0)
+    }).setOrigin(1, 0))
 
     // TODO
     // Update panel when mousewheel scrolls
-    scene.input.on('wheel', function(pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-      // Return if the pointer is outside of the panel
-      if (pointer.x < panel.getLeftCenter().x) {
-        return
-      }
+    scene.input.on(
+      'wheel',
+      function (pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+        // Return if the pointer is outside of the panel
+        if (pointer.x < panel.getLeftCenter().x) {
+          return
+        }
 
-      // Hide the hint, which might have been scrolled away from
-      this.scene['hint'].hide()
+        // Hide the hint, which might have been scrolled away from
+        this.scene['hint'].hide()
 
-      // Scroll panel down by amount wheel moved
-      superPanel.childOY -= dy
+        // Scroll panel down by amount wheel moved
+        superPanel.childOY -= dy
 
-      // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
-      superPanel.t = Math.max(0, superPanel.t)
-      superPanel.t = Math.min(0.999999, superPanel.t)
-    })
+        // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+        superPanel.t = Math.max(0, superPanel.t)
+        superPanel.t = Math.min(0.999999, superPanel.t)
+      },
+    )
 
     return superPanel
   }
@@ -124,9 +136,7 @@ export default class CatalogRegion {
 
         // Add the image next, with padding between it and the next card
         sizer.add(cardImage.container)
-      }
-      else
-      {
+      } else {
         cardImage.container.setVisible(false)
       }
     }
@@ -139,10 +149,15 @@ export default class CatalogRegion {
 
   private addCardToCatalog(card: Card, index: number): CardImage {
     let cardImage = new CardImage(card, this.container, !Flags.mobile)
-    .setOnClick(this.onClickCatalogCard(card))
-    .setFocusOptions('Add',
-      () => { return this.scene.isOverfull() },
-      () => { return this.scene.getCount(card) },
+      .setOnClick(this.onClickCatalogCard(card))
+      .setFocusOptions(
+        'Add',
+        () => {
+          return this.scene.isOverfull()
+        },
+        () => {
+          return this.scene.getCount(card)
+        },
       )
 
     // Add this cardImage to the maintained list of cardImages in the catalog
@@ -155,13 +170,14 @@ export default class CatalogRegion {
   private onClickCatalogCard(card: Card): () => void {
     return () => {
       // NOTE If a new deck is created by clicking this card, the new decklist's button will be clicked and make a sound. In that case, do nothing.
-      const muteSound = this.scene['journeyRegion'] || this.scene.decklistsRegion.savedDeckIndex === undefined
+      const muteSound =
+        this.scene['journeyRegion'] ||
+        this.scene.decklistsRegion.savedDeckIndex === undefined
       const errorMsg = this.scene.addCardToDeck(card)
 
       if (errorMsg !== undefined) {
         this.scene.signalError(errorMsg)
-      }
-      else if (!muteSound) {
+      } else if (!muteSound) {
         this.scene.sound.play('click')
       }
     }
@@ -171,7 +187,9 @@ export default class CatalogRegion {
   shiftRight(): void {
     let that = this
 
-    const x = Flags.mobile ? Space.deckPanelWidth : Space.decklistPanelWidth + Space.deckPanelWidth
+    const x = Flags.mobile
+      ? Space.deckPanelWidth
+      : Space.decklistPanelWidth + Space.deckPanelWidth
     const width = Space.windowWidth - x
 
     // Ratio of how much panel has been scrolled
@@ -196,7 +214,7 @@ export default class CatalogRegion {
   shiftLeft(): void {
     let that = this
 
-    const x = Space.decklistPanelWidth// + (Flags.mobile ? Space.sliderWidth : 0)
+    const x = Space.decklistPanelWidth // + (Flags.mobile ? Space.sliderWidth : 0)
     const width = Space.windowWidth - x
 
     // Ratio of how much panel has been scrolled

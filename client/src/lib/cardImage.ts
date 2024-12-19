@@ -1,7 +1,7 @@
 import 'phaser'
 import { cardback } from '../catalog/catalog'
 import { Color, Style, BBStyle, Time, Space, Flags } from '../settings/settings'
-import Card from './card'
+import Card from '../../../shared/state/card'
 import { allCards } from '../catalog/catalog'
 import { StatusBar } from '../lib/status'
 import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'

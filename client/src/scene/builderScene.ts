@@ -1,6 +1,6 @@
-import "phaser"
-import Card from "../lib/card"
-import BaseScene from "./baseScene"
+import 'phaser'
+import Card from '../../../shared/state/card'
+import BaseScene from './baseScene'
 
 import CatalogRegion from './builderRegions/catalog'
 import DeckRegion from './builderRegions/deck'
@@ -8,7 +8,6 @@ import DecklistsRegion from './builderRegions/decklists'
 import FilterRegion from './builderRegions/filter'
 import JourneyRegion from './builderRegions/journey'
 import { Space, Mechanics } from '../settings/settings'
-
 
 // Features common between all builders
 export class BuilderBase extends BaseScene {
@@ -33,8 +32,9 @@ export class BuilderBase extends BaseScene {
   // Filter which cards are visible and selectable in the catalog
   // based on the settings in the filter region
   filter() {
-    let filterFunction: (card: Card) => boolean = this.filterRegion.getFilterFunction()
-    
+    let filterFunction: (card: Card) => boolean =
+      this.filterRegion.getFilterFunction()
+
     this.catalogRegion.filter(filterFunction)
   }
 
@@ -76,7 +76,9 @@ export class BuilderBase extends BaseScene {
   }
 
   // Check whether the deck is overfull
-  isOverfull(): boolean { return this.deckRegion.isOverfull() }
+  isOverfull(): boolean {
+    return this.deckRegion.isOverfull()
+  }
 
   // Get the amt of a given card in the current deck
   getCount(card: Card): number {
@@ -89,19 +91,25 @@ export class AdventureBuilderScene extends BuilderBase {
 
   constructor() {
     super({
-      key: "AdventureBuilderScene",
-      lastScene: "AdventureScene"
+      key: 'AdventureBuilderScene',
+      lastScene: 'AdventureScene',
     })
   }
 
   create(params): void {
     super.create(params)
-    
+
     this.catalogRegion = new CatalogRegion().create(this, Space.deckPanelWidth)
 
     // TODO Not just the 100s digit number
     const avatar = (Math.floor(params.id / 100) - 1) % 6
-    this.journeyRegion = new JourneyRegion().create(this, this.startCallback(), avatar, this.params.storyTitle, this.params.storyText)
+    this.journeyRegion = new JourneyRegion().create(
+      this,
+      this.startCallback(),
+      avatar,
+      this.params.storyTitle,
+      this.params.storyText,
+    )
     this.journeyRegion.addRequiredCards(params.deck)
 
     this.filterRegion = new FilterRegion().create(this, true)
@@ -123,22 +131,24 @@ export class AdventureBuilderScene extends BuilderBase {
   private startCallback(): () => void {
     let that = this
 
-    return function() {
+    return function () {
       // TODO Not just the 100s digit number
       const avatar = (Math.floor(that.params.id / 100) - 1) % 6
 
       // Start a match against an ai opponent with the specified deck
-      that.scene.start("AdventureGameScene",
-        {isTutorial: false,
-          deck: that.getDeckCode(),
-          mmCode: `ai:${that.params.opponent}`,
-          missionID: that.params.id,
-          avatar: avatar,
-        })
+      that.scene.start('AdventureGameScene', {
+        isTutorial: false,
+        deck: that.getDeckCode(),
+        mmCode: `ai:${that.params.opponent}`,
+        missionID: that.params.id,
+        avatar: avatar,
+      })
     }
   }
-  
-  isOverfull(): boolean { return this.journeyRegion.isOverfull() }
+
+  isOverfull(): boolean {
+    return this.journeyRegion.isOverfull()
+  }
 
   // Get the amt of a given card in the current deck
   getCount(card: Card): number {
@@ -152,27 +162,33 @@ export class BuilderScene extends BuilderBase {
 
   constructor() {
     super({
-      key: "BuilderScene",
-      lastScene: "HomeScene"
+      key: 'BuilderScene',
+      lastScene: 'HomeScene',
     })
   }
-  
+
   create(params): void {
     super.create(params)
 
-    this.catalogRegion = new CatalogRegion().create(this, Space.decklistPanelWidth)
+    this.catalogRegion = new CatalogRegion().create(
+      this,
+      Space.decklistPanelWidth,
+    )
 
-    this.deckRegion = new DeckRegion().create(this, this.startCallback(), this.updateDeckCallback())
+    this.deckRegion = new DeckRegion().create(
+      this,
+      this.startCallback(),
+      this.updateDeckCallback(),
+    )
 
     this.decklistsRegion = new DecklistsRegion().create(this)
-    
+
     this.filterRegion = new FilterRegion().create(this, false)
 
     // Set starting deck
     if (this.lastDecklist !== undefined) {
       this.decklistsRegion.selectDeck(this.lastDecklist)
-    }
-    else if (this.lastPremade !== undefined) {
+    } else if (this.lastPremade !== undefined) {
       this.decklistsRegion.premadeCallback()(this.lastPremade)
     }
   }
@@ -230,14 +246,14 @@ export class BuilderScene extends BuilderBase {
   // Remember what deck / decklist was selected
   private rememberSettings() {
     // Remember the deck for when the builder is returned to
-      this.lastDecklist = this.decklistsRegion.savedDeckIndex
-      this.lastPremade = this.decklistsRegion.savedPremadeIndex
+    this.lastDecklist = this.decklistsRegion.savedDeckIndex
+    this.lastPremade = this.decklistsRegion.savedPremadeIndex
   }
 
   private startCallback(): () => void {
     let that = this
 
-    return function() {
+    return function () {
       // Remember the deck for when the builder is returned to
       that.rememberSettings()
 
@@ -252,10 +268,14 @@ export class BuilderScene extends BuilderBase {
   }
 
   // Update the avatar or name for the current deck
-  private updateDeckCallback(): (name: string, avatar: number, deckCode: string) => void {
+  private updateDeckCallback(): (
+    name: string,
+    avatar: number,
+    deckCode: string,
+  ) => void {
     let that = this
 
-    return function(name: string, avatar: number, deckCode: string) {
+    return function (name: string, avatar: number, deckCode: string) {
       that.updateSavedDeck(undefined, name, avatar)
 
       // Update the avatar

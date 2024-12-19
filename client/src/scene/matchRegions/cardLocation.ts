@@ -102,7 +102,8 @@ export default class CardLocation {
       // Length of cards displayed in the story
       let length = state.story.acts.length
       if (isRecap) {
-        length += state.recap.stateList.length
+        // TODO Greyed cards
+        // length += state.recap.stateList.length
       }
 
       const lastCardOffset = dx * (length - 1)

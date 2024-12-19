@@ -8,10 +8,11 @@ import { Space, Color, Time, Style, Depth } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
 
 import { CardImage } from '../../lib/cardImage'
-import Card from '../../lib/card'
+import Card from '../../../../shared/state/card'
 import { cardback } from '../../catalog/catalog'
 import GameModel from '../../../../shared/state/gameModel'
-import { Animation, Zone } from '../../../../shared/animation'
+import { Animation } from '../../../../shared/animation'
+import { Zone } from '../../../../shared/state/zone'
 import BaseScene from '../baseScene'
 
 export default class MulliganRegion extends Region {

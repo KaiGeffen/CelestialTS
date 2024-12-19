@@ -1,7 +1,6 @@
 import 'phaser'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 
-import ClientState from '../lib/clientState'
 import { AdventureGameScene } from './gameScene'
 import data from '../catalog/tutorial.json'
 import { Space, Color, BBStyle, Time, Depth, Flags } from '../settings/settings'
@@ -11,7 +10,9 @@ import { TutorialCardImage } from '../lib/cardImage'
 import { getCard } from '../catalog/catalog'
 import { ResultsRegionTutorial } from './matchRegions/results'
 import { SearchingRegionTutorial } from './matchRegions/searching'
-import { Animation, Zone } from '../../../shared/animation'
+import { Animation } from '../../../shared/animation'
+import { Zone } from '../../../shared/state/zone'
+import GameModel from '../../../shared/state/gameModel'
 
 export default class TutorialGameScene extends AdventureGameScene {
   // How far into the tutorial (How many lines of text you have seen)
@@ -94,7 +95,7 @@ export default class TutorialGameScene extends AdventureGameScene {
       .setAlpha(Flags.mobile ? 0.0001 : 1)
   }
 
-  protected displayState(state: ClientState, isRecap: boolean): boolean {
+  protected displayState(state: GameModel, isRecap: boolean): boolean {
     // Remove unused animations
     for (let i = 0; i < 2; i++) {
       state.animations[i] = state.animations[i].filter(

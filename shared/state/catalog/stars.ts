@@ -39,14 +39,14 @@ const nightVision = new NightVision(3, {
 
 class Ecology extends Card {
   onPlay(player: any, game: any) {
-    game.mana[player] += 10
+    game.breath[player] += 10
   }
 }
 const ecology = new Ecology({ name: 'Ecology', cost: 7, points: 0, id: 44 })
 
 class Sun extends Card {
   morning(player: any, game: any, index: number) {
-    super.addMana(2, game, player)
+    super.addBreath(2, game, player)
     return true
   }
 }

@@ -1,5 +1,5 @@
 import 'phaser'
-import Card from '../../lib/card'
+import Card from '../../../../shared/state/card'
 import { CardImage } from '../../lib/cardImage'
 import GameModel from '../../../../shared/state/gameModel'
 import { Color, Depth, Space, Style } from '../../settings/settings'

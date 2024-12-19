@@ -5,7 +5,6 @@ import { Space, Style, Depth, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
-import Play from '../../lib/play'
 
 export default class StoryRegion extends Region {
   lastScores: [number, number]

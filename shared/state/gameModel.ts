@@ -20,13 +20,13 @@ import {
 import getClientGameModel from './clientGameModel'
 // import getClientGameModel from './clientGameModel'
 
-enum Phase {
-  Morning,
-  Day,
-  Night,
-}
-
 export default class GameModel {
+  createInStory(player: number, card: Card) {
+    throw new Error('Method not implemented.')
+  }
+  removeAct(index: number): any {
+    throw new Error('Method not implemented.')
+  }
   // Zones
   hand: Card[][] = [[], []]
   deck: Card[][] = [[], []]

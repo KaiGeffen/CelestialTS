@@ -1,3 +1,4 @@
+import { hiddenCard } from './catalog'
 import GameModel from './gameModel'
 
 class ClientGameModel extends GameModel {}
@@ -20,8 +21,8 @@ export default function getClientGameModel(
   // Set cost information
   model.cardCosts = cardCosts
 
-  // Hide information player shouldn't have
-  // TODO
+  // Hide information player doesn't have
+  hideHiddenInformation(model)
 
   return model
 }
@@ -72,4 +73,30 @@ function setClientSideInformation(model: GameModel): void {
   for (let i = 0; i < model.hand[0].length; i++) {
     model.cardCosts[i] = model.hand[0][i].getCost(0, model)
   }
+}
+
+function hideHiddenInformation(model: GameModel) {
+  // Hide the opponent's hand
+  model.hand[1] = model.hand[1].map(() => hiddenCard)
+
+  // Hide the opponent's deck
+  model.deck[1] = model.deck[1].map(() => hiddenCard)
+
+  // Hide the opponent's breath
+  model.breath[1] = null
+
+  // Hide the opponent's vision
+  model.vision[1] = null
+
+  // Hide the opponent's animations
+  model.animations[1] = null
+
+  // Hide the opponent's last_shuffle
+  model.last_shuffle[1] = null
+
+  // Hide the opponent's wins
+  model.wins[1] = null
+
+  // Hide the opponent's amtDrawn
+  model.amtDrawn[1] = null
 }
