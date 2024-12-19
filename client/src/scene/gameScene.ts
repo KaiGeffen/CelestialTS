@@ -98,8 +98,18 @@ export class GameScene extends BaseScene {
       that.recapPlaying = true
       // that.queuedRecap = [...that.lastRecap]
       // that.queueState(that.currentState)
-      // 321
-      this.currentVersionNo = Math.max(0, this.currentVersionNo - 10)
+
+      // Scan backwards through the queued states to find the start of the recap
+      for (let version = this.currentVersionNo; version >= 0; version--) {
+        if (this.queuedStates[version] && this.queuedStates[version].isRecap) {
+          // Continue backwards until we find where isRecap is false
+          while (version >= 0 && this.queuedStates[version].isRecap) {
+            version--
+          }
+          this.currentVersionNo = version + 1
+          break
+        }
+      }
 
       // that.queuedStates
       // versionNumber
