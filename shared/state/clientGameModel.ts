@@ -1,4 +1,4 @@
-import { hiddenCard } from './catalog'
+import Card from './card'
 import GameModel from './gameModel'
 
 class ClientGameModel extends GameModel {}
@@ -76,6 +76,8 @@ function setClientSideInformation(model: GameModel): void {
 }
 
 function hideHiddenInformation(model: GameModel) {
+  const hiddenCard = new Card({ name: 'Cardback', id: 1000 })
+
   // Hide the opponent's hand
   model.hand[1] = model.hand[1].map(() => hiddenCard)
 
@@ -83,20 +85,14 @@ function hideHiddenInformation(model: GameModel) {
   model.deck[1] = model.deck[1].map(() => hiddenCard)
 
   // Hide the opponent's breath
-  model.breath[1] = null
+  model.breath[1] = 0
 
   // Hide the opponent's vision
-  model.vision[1] = null
+  model.vision[1] = 0
 
   // Hide the opponent's animations
-  model.animations[1] = null
-
-  // Hide the opponent's last_shuffle
-  model.last_shuffle[1] = null
-
-  // Hide the opponent's wins
-  model.wins[1] = null
+  model.animations[1] = []
 
   // Hide the opponent's amtDrawn
-  model.amtDrawn[1] = null
+  model.amtDrawn[1] = 0
 }

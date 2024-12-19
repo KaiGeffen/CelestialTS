@@ -98,7 +98,6 @@ const paramountcy = new Paramountcy({
   id: 62,
 })
 
-const hiddenCard = new Card({ name: 'Cardback', id: 1000 })
 const fullCatalog = [
   stars,
   dagger,
@@ -160,7 +159,7 @@ const fullCatalog = [
   hollow,
   moon,
 ]
-const nonCollectibles = [hiddenCard, seen, ashes, child, predator]
+const nonCollectibles = [seen, ashes, child, predator]
 const allCards = [...fullCatalog, ...nonCollectibles]
 
 function getComputerDeck(i = null) {
@@ -367,5 +366,4 @@ function getComputerDeck(i = null) {
   }
 }
 
-export { hiddenCard }
 export default allCards
