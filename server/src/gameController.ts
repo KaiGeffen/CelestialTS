@@ -295,7 +295,7 @@ class ServerController {
 
   // Get the model of the game that given player sees
   getClientModel(player: number): GameModel {
-    return getClientGameModel(this.model, player)
+    return getClientGameModel(this.model, player, false)
   }
 
   doUpkeepStatuses(player: number): void {

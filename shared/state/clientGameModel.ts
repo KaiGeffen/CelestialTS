@@ -6,12 +6,16 @@ class ClientGameModel extends GameModel {}
 export default function getClientGameModel(
   orig: GameModel,
   player: number,
+  isRecap: boolean,
 ): ClientGameModel {
   // Get the costs before copying this as json
   orig.cardCosts = orig.hand[player].map((card) => card.getCost(player, orig))
 
   // Create a new copy of the model
   const model = JSON.parse(JSON.stringify(orig))
+
+  // Set this as a recap
+  model.isRecap = isRecap
 
   // Reverse the attributes
   if (player === 1) {
@@ -95,13 +99,15 @@ function hideHiddenInformation(model: GameModel) {
   model.amtDrawn[1] = 0
 
   // Hide opponent's cards in the story
-  model.story.acts = model.story.acts.map((act) => {
-    if (act.owner === 1) {
-      return { ...act, card: hiddenCard }
-    } else {
-      return act
-    }
-  })
+  if (!model.isRecap) {
+    model.story.acts = model.story.acts.map((act) => {
+      if (act.owner === 1) {
+        return { ...act, card: hiddenCard }
+      } else {
+        return act
+      }
+    })
+  }
 }
 
 function hideDeckOrder(model: GameModel) {

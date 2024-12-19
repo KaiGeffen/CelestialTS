@@ -17,8 +17,6 @@ import {
   BREATH_CAP,
   PASS,
 } from '../settings'
-import getClientGameModel from './clientGameModel'
-// import getClientGameModel from './clientGameModel'
 
 export default class GameModel {
   createInStory(player: number, card: Card) {

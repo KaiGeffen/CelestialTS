@@ -64,9 +64,23 @@ class Story {
 
     addRecentModels(game)
 
-    game.recentModels[0][game.recentModels[0].length - 1].sound =
-      SoundEffect.Win
-    // TODO
+    // Set winner/loser/tie sfx
+    if (game.score[0] > game.score[1]) {
+      game.recentModels[0][game.recentModels[0].length - 1].sound =
+        SoundEffect.Win
+      game.recentModels[1][game.recentModels[1].length - 1].sound =
+        SoundEffect.Lose
+    } else if (game.score[0] < game.score[1]) {
+      game.recentModels[0][game.recentModels[0].length - 1].sound =
+        SoundEffect.Lose
+      game.recentModels[1][game.recentModels[1].length - 1].sound =
+        SoundEffect.Win
+    } else {
+      game.recentModels[0][game.recentModels[0].length - 1].sound =
+        SoundEffect.Tie
+      game.recentModels[1][game.recentModels[1].length - 1].sound =
+        SoundEffect.Tie
+    }
   }
 
   clear() {
@@ -110,12 +124,12 @@ class Story {
 // Add the current state to list of remembered recent states
 function addRecentModels(model): void {
   // Get a recent model for each and add for that player
-  const model0 = getClientGameModel(model, 0)
+  const model0 = getClientGameModel(model, 0, true)
   model0.recentModels = [[], []]
   model0.isRecap = true
   model.recentModels[0].push(model0)
 
-  const model1 = getClientGameModel(model, 0)
+  const model1 = getClientGameModel(model, 0, true)
   model1.recentModels = [[], []]
   model1.isRecap = true
   model.recentModels[1].push(model1)
