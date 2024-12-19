@@ -26,7 +26,7 @@ export default class TheirScoreRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.txtWins.setText(`${Flags.mobile ? 'Wins: ' : ''}${state.wins[1]}/5`)
   }
 }

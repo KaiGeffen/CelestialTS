@@ -72,7 +72,7 @@ export default class TheirHandRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.deleteTemp()
 
     // Avatar
@@ -201,8 +201,8 @@ export default class TheirHandRegion extends Region {
   }
 
   // Animate them getting or losing priority
-  private animatePriority(state: GameModel, isRecap: boolean): void {
-    const targetAlpha = state.priority === 1 && !isRecap ? 1 : 0
+  private animatePriority(state: GameModel): void {
+    const targetAlpha = state.priority === 1 && !state.isRecap ? 1 : 0
 
     this.scene.tweens.add({
       targets: this.priorityHighlight,

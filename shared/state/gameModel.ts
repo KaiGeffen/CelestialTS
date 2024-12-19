@@ -45,6 +45,7 @@ export default class GameModel {
   score: [number, number] = [0, 0]
   // Interstitial models that occured since the last user action (Recap)
   recentModels: GameModel[][] = [[], []]
+  isRecap: boolean = false
 
   // Particular phase / time of game
   versionNo: number = 0
@@ -136,7 +137,7 @@ export default class GameModel {
           from: Zone.Deck,
           to: Zone.Hand,
           card: card,
-          index: this.hand[player].length - 1,
+          index2: this.hand[player].length - 1,
         }),
       )
     }
@@ -329,7 +330,7 @@ export default class GameModel {
   }
 
   // TODO Get a model that doesn't show unknown information
-  // getClientModel(player: number, isRecap: boolean): GameModel {
+  // getClientModel(player: number): GameModel {
   //   // TODO Figure out recap system better
   //   return getClientGameModel(this, player)
   // }

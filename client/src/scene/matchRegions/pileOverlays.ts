@@ -45,7 +45,7 @@ export default class OverlayRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {}
+  displayState(state: GameModel): void {}
 
   // Set the callback for this overlay switching to another
   setSwitch(callback: () => void): this {
@@ -89,7 +89,7 @@ export class OurDeckOverlay extends OverlayRegion {
     return super.create(scene, 'Your Deck')
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.displayCards(state.deck[0])
   }
 }
@@ -99,7 +99,7 @@ export class TheirDeckOverlay extends OverlayRegion {
     return super.create(scene, 'Their Last Shuffle')
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.displayCards(state.last_shuffle[1])
   }
 }
@@ -111,7 +111,7 @@ export class OurDiscardOverlay extends OverlayRegion {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.displayCards(state.pile[0])
   }
 }
@@ -121,7 +121,7 @@ export class TheirDiscardOverlay extends OverlayRegion {
     return super.create(scene, 'Their Discard Pile')
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.displayCards(state.pile[1])
   }
 }
@@ -133,7 +133,7 @@ export class OurExpendedOverlay extends OverlayRegion {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.displayCards(state.expended[0])
   }
 }
@@ -143,7 +143,7 @@ export class TheirExpendedOverlay extends OverlayRegion {
     return super.create(scene, 'Their Removed From Game Cards')
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.displayCards(state.expended[1])
   }
 }

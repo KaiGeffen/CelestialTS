@@ -5,6 +5,7 @@ import { Space, Style, Depth, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
+import Act from '../../../../shared/state/act'
 
 export default class StoryRegion extends Region {
   lastScores: [number, number]
@@ -26,38 +27,30 @@ export default class StoryRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.deleteTemp()
 
     // Set the correct depth based on day/night
-    this.container.setDepth(isRecap ? Depth.storyAtNight : Depth.storyAtDay)
+    this.container.setDepth(
+      state.isRecap ? Depth.storyAtNight : Depth.storyAtDay,
+    )
 
     // If this is a recap, add the already played cards greyed out
     // TODO
     let resolvedI = 0
-    // for (; isRecap && resolvedI < state.recap.stateList.length; resolvedI++) {
-    //   console.log(state.recap.stateList[resolvedI])
-    //   // TODO
-    //   // const play: Play = state.recap.stateList[resolvedI]
-    //   const play = null
+    for (; resolvedI < state.story.resolvedActs.length; resolvedI++) {
+      const act: Act = state.story.resolvedActs[resolvedI]
 
-    //   let card = this.addCard(
-    //     play.card,
-    //     CardLocation.story(
-    //       state,
-    //       isRecap,
-    //       resolvedI,
-    //       this.container,
-    //       play.owner,
-    //     ),
-    //   )
-    //     .setResolved()
-    //     .moveToTopOnHover()
-    //     .setOnClick(this.callback(resolvedI))
-    //   // .showController(play[1])
+      let card = this.addCard(
+        act.card,
+        CardLocation.story(state, resolvedI, this.container, act.owner),
+      )
+        .setResolved()
+        .moveToTopOnHover()
+        .setOnClick(this.callback(resolvedI))
 
-    //   this.temp.push(card)
-    // }
+      this.temp.push(card)
+    }
 
     let cards = []
     for (let i = 0; i < state.story.acts.length; i++) {
@@ -65,19 +58,11 @@ export default class StoryRegion extends Region {
 
       let card = this.addCard(
         act.card,
-        CardLocation.story(
-          state,
-          isRecap,
-          resolvedI + i,
-          this.container,
-          act.owner,
-        ),
-      )
-        .moveToTopOnHover()
-        .showController(act.owner)
+        CardLocation.story(state, resolvedI + i, this.container, act.owner),
+      ).moveToTopOnHover()
 
       // Only allow jumping around in the recap if we are playing a recap
-      if (isRecap && !Flags.mobile) {
+      if (state.isRecap && !Flags.mobile) {
         card.setOnClick(this.callback(resolvedI + i))
       }
 
@@ -86,11 +71,11 @@ export default class StoryRegion extends Region {
     }
 
     // Show changes in score
-    if (isRecap) {
-      this.displayScores(state, isRecap)
+    if (state.isRecap) {
+      this.displayScores(state)
     }
 
-    this.animate(state, cards, isRecap)
+    this.animate(state, cards)
 
     this.cards = cards
   }
@@ -101,12 +86,12 @@ export default class StoryRegion extends Region {
   }
 
   // Display the current score totals and change in scores
-  private displayScores(state: GameModel, isRecap: boolean): void {
+  private displayScores(state: GameModel): void {
     // let index = state.recap.stateList.length - 1
     // let remainingActs = state.recap.stateList.length
     // if (index >= 0 && remainingActs >= 0) {
     const index = 0
-    this.animateScoreGains(index, state.score, state, isRecap)
+    this.animateScoreGains(index, state.score, state)
     // }
 
     this.lastScores = state.score
@@ -117,16 +102,9 @@ export default class StoryRegion extends Region {
     index: number,
     scores: [number, number],
     state: GameModel,
-    isRecap: boolean,
   ): void {
     // TODO The first arg (state) should have a variable if squishing is possible
-    const loc = CardLocation.story(
-      state,
-      isRecap,
-      index,
-      this.container,
-      undefined,
-    )
+    const loc = CardLocation.story(state, index, this.container, undefined)
 
     // Form the string for the gain of the given player
     let that = this
@@ -158,11 +136,7 @@ export default class StoryRegion extends Region {
     })
   }
 
-  private animate(
-    state: GameModel,
-    cards: CardImage[],
-    isRecap: boolean,
-  ): void {
+  private animate(state: GameModel, cards: CardImage[]): void {
     let that = this
 
     // If the last card was just played by the opponent,
@@ -175,7 +149,7 @@ export default class StoryRegion extends Region {
     const lastCardTheirs = lastAct.owner === 1
     const noPasses = state.passes === 0
 
-    if (lastCardTheirs && noPasses && !isRecap) {
+    if (lastCardTheirs && noPasses && !state.isRecap) {
       // Animate the last card moving from their hand
       const card = cards[cards.length - 1]
 

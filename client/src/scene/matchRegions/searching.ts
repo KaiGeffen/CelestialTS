@@ -56,7 +56,7 @@ export default class SearchingRegion extends Region {
     this.txtTime.setText(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`)
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.matchFound = true
 
     // If player has been waiting trivial time, don't bother
@@ -191,7 +191,7 @@ export class SearchingRegionTutorial extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.hide()
   }
 

@@ -24,13 +24,13 @@ export default class Animator {
     this.container = scene.add.container().setDepth(Depth.aboveOtherCards)
   }
 
-  animate(state: GameModel, isRecap: boolean): void {
+  animate(state: GameModel): void {
     // TODO Do this flipping
-    // const isRecapStart = state.recap.stateList.length === 0
-    // if (isRecap && isRecapStart) {
-    //   this.animateRecapStart(state)
-    //   return
-    // }
+    const isRecapStart = state.story.resolvedActs.length === 0
+    if (state.isRecap && isRecapStart) {
+      this.animateRecapStart(state)
+      return
+    }
 
     for (let owner = 0; owner < 2; owner++) {
       for (let i = 0; i < state.animations[owner].length; i++) {
@@ -50,7 +50,9 @@ export default class Animator {
         // Transform a card
         else if (animation.from === Zone.Transform) {
           this.animateTransform(animation, i, owner)
-        } else {
+        }
+        // In all other cases, move it from start to end
+        else {
           let start = this.getStart(animation, state, owner)
           let end = this.getEnd(animation, state, owner)
 
@@ -93,13 +95,7 @@ export default class Animator {
         }
 
       case Zone.Story:
-        return CardLocation.story(
-          state,
-          false,
-          animation.index,
-          this.container,
-          owner,
-        )
+        return CardLocation.story(state, animation.index, this.container, owner)
 
       case Zone.Gone:
         return CardLocation.gone(this.container)
@@ -135,7 +131,6 @@ export default class Animator {
       case Zone.Story:
         return CardLocation.story(
           state,
-          false,
           animation.index2,
           this.container,
           owner,

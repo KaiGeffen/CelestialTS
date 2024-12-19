@@ -52,7 +52,7 @@ export default class ScoreRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.maxBreath = state.maxBreath[0]
     this.currentBreath = state.breath[0]
 

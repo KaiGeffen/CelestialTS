@@ -25,13 +25,13 @@ export default class RoundResultRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.deleteTemp()
 
     // TODO
     // On the final state of the recap, animate the text of round results
     const isRecapEnd = ['win', 'lose', 'tie'].includes(state.sound)
-    if (isRecap && isRecapEnd) {
+    if (state.isRecap && isRecapEnd) {
       this.animateResult(state)
     }
   }

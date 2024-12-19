@@ -239,19 +239,6 @@ export class GameScene extends BaseScene {
     // Enable the searching region visual update
     this.view.searching.update(time, delta)
 
-    // Play the recap if one is queued
-    if (this.queuedRecap.length > 0) {
-      if (this.displayState(this.queuedRecap[0], true)) {
-        this.queuedRecap.shift()
-
-        if (this.queuedRecap.length === 0) {
-          this.recapPlaying = false
-        }
-      }
-
-      return
-    }
-
     // Otherwise, show a non-recap state, as determined by its version number
     let nextVersionNumber = versionNumber + 1
 
@@ -264,10 +251,7 @@ export class GameScene extends BaseScene {
     }
 
     if (nextVersionNumber in this.queuedStates) {
-      let isDisplayed = this.displayState(
-        this.queuedStates[nextVersionNumber],
-        false,
-      )
+      let isDisplayed = this.displayState(this.queuedStates[nextVersionNumber])
 
       // If the state was just shown, delete it
       if (isDisplayed) {
@@ -278,7 +262,7 @@ export class GameScene extends BaseScene {
   }
 
   // Display the given game state, returns false if the state isn't shown immediately
-  protected displayState(state: GameModel, isRecap: boolean): boolean {
+  protected displayState(state: GameModel): boolean {
     console.log('version number: ', state.versionNo)
 
     // If any tweens are playing, don't display yet
@@ -294,10 +278,10 @@ export class GameScene extends BaseScene {
     // Remember what version of the game state this is, for use when communicating with server
     this.net.setVersionNumber(state.versionNo)
 
-    this.view.displayState(state, isRecap)
+    this.view.displayState(state)
 
     // Autopass
-    if (this.shouldPass(state, isRecap)) {
+    if (this.shouldPass(state)) {
       this.net.passTurn()
     }
 
@@ -306,14 +290,14 @@ export class GameScene extends BaseScene {
   }
 
   // Return if the user should pass automatically, based on the game state and their settings
-  private shouldPass(state: GameModel, isRecap: boolean): boolean {
+  private shouldPass(state: GameModel): boolean {
     // Don't pass if mulligans aren't complete
     if (state.mulligansComplete.includes(false)) {
       return false
     }
 
     // Don't pass during a recap
-    if (isRecap) {
+    if (state.isRecap) {
       return false
     }
 
@@ -449,34 +433,34 @@ export class View {
     this.animator = new Animator(scene, this)
   }
 
-  displayState(state: GameModel, isRecap: boolean) {
+  displayState(state: GameModel) {
     this.searching.hide()
 
-    this.mulligan.displayState(state, isRecap)
-    this.commands.displayState(state, isRecap)
+    this.mulligan.displayState(state)
+    this.commands.displayState(state)
 
-    this.ourHand.displayState(state, isRecap)
-    this.theirHand.displayState(state, isRecap)
-    this.story.displayState(state, isRecap)
-    this.ourScore.displayState(state, isRecap)
-    this.theirScore.displayState(state, isRecap)
-    // this.ourButtons.displayState(state, isRecap)
-    this.decks.displayState(state, isRecap)
-    this.discardPiles.displayState(state, isRecap)
-    this.pass.displayState(state, isRecap)
-    this.scores.displayState(state, isRecap)
+    this.ourHand.displayState(state)
+    this.theirHand.displayState(state)
+    this.story.displayState(state)
+    this.ourScore.displayState(state)
+    this.theirScore.displayState(state)
+    // this.ourButtons.displayState(state)
+    this.decks.displayState(state)
+    this.discardPiles.displayState(state)
+    this.pass.displayState(state)
+    this.scores.displayState(state)
 
-    this.ourDeckOverlay.displayState(state, isRecap)
-    this.theirDeckOverlay.displayState(state, isRecap)
-    this.ourDiscardOverlay.displayState(state, isRecap)
-    this.theirDiscardOverlay.displayState(state, isRecap)
-    this.ourExpendedOverlay.displayState(state, isRecap)
-    this.theirExpendedOverlay.displayState(state, isRecap)
+    this.ourDeckOverlay.displayState(state)
+    this.theirDeckOverlay.displayState(state)
+    this.ourDiscardOverlay.displayState(state)
+    this.theirDiscardOverlay.displayState(state)
+    this.ourExpendedOverlay.displayState(state)
+    this.theirExpendedOverlay.displayState(state)
 
-    this.results.displayState(state, isRecap)
+    this.results.displayState(state)
 
     // Animate the state
-    this.animator.animate(state, isRecap)
+    this.animator.animate(state)
 
     // Play whatever sound this new state brings
     if (state.sound !== null) {
@@ -508,7 +492,7 @@ export class StandardGameScene extends GameScene {
   }
 
   signalMatchFound(): void {
-    this.view.searching.displayState(undefined, undefined)
+    this.view.searching.displayState(undefined)
   }
 }
 

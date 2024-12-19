@@ -24,7 +24,7 @@ export default class Region {
   }
 
   // Display parts of the given state relevant to this region
-  displayState(state: GameModel, isRecap: boolean): void {}
+  displayState(state: GameModel): void {}
 
   show(): Region {
     this.container.setVisible(true)

@@ -83,7 +83,6 @@ export default class CardLocation {
 
   static story(
     state: GameModel,
-    isRecap: boolean,
     i: number,
     container: Phaser.GameObjects.Container,
     owner: number,
@@ -101,9 +100,9 @@ export default class CardLocation {
       // This may be multiplied by a constant to fit within the max
       // Length of cards displayed in the story
       let length = state.story.acts.length
-      if (isRecap) {
+      if (state.isRecap) {
         // TODO Greyed cards
-        // length += state.recap.stateList.length
+        length += state.story.resolvedActs.length
       }
 
       const lastCardOffset = dx * (length - 1)

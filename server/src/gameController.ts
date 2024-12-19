@@ -4,7 +4,6 @@ import Card from '../../shared/state/card'
 import { Status } from '../../shared/state/effects'
 import { SoundEffect } from '../../shared/state/soundEffect'
 import { Animation } from '../../shared/animation'
-// import { CardCodec } from '../../shared/cardCodec'
 import {
   DRAW_PER_TURN,
   START_HAND_REAL,
@@ -335,21 +334,22 @@ class ServerController {
   }
 
   canPass(player: number): boolean {
-    if (
-      this.model.maxBreath[player] === BREATH_CAP &&
-      this.model.story.acts.length === 0
-    ) {
-      for (let i = 0; i < this.model.hand[player].length; i++) {
-        if (this.canPlay(player, i)) {
-          return false
-        }
-      }
-    }
-
     return true
+    // if (
+    //   this.model.maxBreath[player] === BREATH_CAP &&
+    //   this.model.story.acts.length === 0
+    // ) {
+    //   for (let i = 0; i < this.model.hand[player].length; i++) {
+    //     if (this.canPlay(player, i)) {
+    //       return false
+    //     }
+    //   }
+    // }
+
+    // return true
   }
 
-  getCost(card: any, player: number): number {
+  getCost(card: Card, player: number): number {
     if (this.model.status[player].includes(Status.UNLOCKED)) {
       return 0
     } else {

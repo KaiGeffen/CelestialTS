@@ -18,7 +18,7 @@ export default class DecksRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.deleteTemp()
 
     // Ours

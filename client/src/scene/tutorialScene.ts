@@ -95,7 +95,7 @@ export default class TutorialGameScene extends AdventureGameScene {
       .setAlpha(Flags.mobile ? 0.0001 : 1)
   }
 
-  protected displayState(state: GameModel, isRecap: boolean): boolean {
+  protected displayState(state: GameModel): boolean {
     // Remove unused animations
     for (let i = 0; i < 2; i++) {
       state.animations[i] = state.animations[i].filter(
@@ -124,14 +124,14 @@ export default class TutorialGameScene extends AdventureGameScene {
       this.view.pass['tutorialEnablePass']()
     }
 
-    let result = super.displayState(state, isRecap)
+    let result = super.displayState(state)
 
     if (!result) {
       return false
     }
 
     // Don't progress hints during the recap
-    if (!isRecap) {
+    if (!state.isRecap) {
       this.progress += 1
     }
 

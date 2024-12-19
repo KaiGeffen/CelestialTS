@@ -66,7 +66,7 @@ export default class ResultsRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.deleteTemp()
 
     // If the game isn't over, hide this
@@ -76,7 +76,7 @@ export default class ResultsRegion extends Region {
     }
 
     // If we are in a recap, hide this
-    if (isRecap) {
+    if (state.isRecap) {
       this.hide()
       return
     }

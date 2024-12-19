@@ -37,7 +37,7 @@ export default class PassRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.deleteTemp()
 
     // Before mulligan is complete, hide this region
@@ -52,7 +52,7 @@ export default class PassRegion extends Region {
     this.btnMoon.setText(s)
 
     // Rotate to the right day/night
-    this.showDayNight(isRecap)
+    this.showDayNight(state.isRecap)
 
     // Show who has passed
     if (state.passes === 2) {
@@ -83,7 +83,7 @@ export default class PassRegion extends Region {
         .setOnClick(() => {
           this.showResultsCallback()
         })
-    } else if (state.priority === 0 && !isRecap) {
+    } else if (state.priority === 0 && !state.isRecap) {
       // Under the special condition where:
       // Max breath reached, can play card, start of round
       // The player is not allowed to pass
@@ -111,7 +111,7 @@ export default class PassRegion extends Region {
     }
 
     // Disable moon during day
-    if (isRecap) {
+    if (state.isRecap) {
       this.btnMoon.enable()
     } else {
       this.btnMoon.disable()

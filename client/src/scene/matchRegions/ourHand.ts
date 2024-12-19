@@ -94,7 +94,7 @@ export default class OurHandRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     this.deleteTemp()
 
     // Pile sizes
@@ -133,7 +133,7 @@ export default class OurHandRegion extends Region {
 
       // Set whether the card shows as playable, and set its onclick
       card.setPlayable(state.cardCosts[i] <= state.breath[0])
-      this.setCardOnClick(card, state, isRecap, i)
+      this.setCardOnClick(card, state, i)
 
       this.cards.push(card)
       this.temp.push(card)
@@ -157,7 +157,7 @@ export default class OurHandRegion extends Region {
     }
 
     // Show priority / not
-    // this.animatePriority(state, isRecap)
+    // this.animatePriority(state, state.isRecap)
   }
 
   setOverlayCallbacks(fDeck: () => void, fDiscard: () => void): void {
@@ -166,16 +166,11 @@ export default class OurHandRegion extends Region {
   }
 
   // Set the callback / error message for when card is clicked
-  private setCardOnClick(
-    card: CardImage,
-    state: GameModel,
-    isRecap: boolean,
-    i: number,
-  ) {
+  private setCardOnClick(card: CardImage, state: GameModel, i: number) {
     let msg
     if (state.winner !== null) {
       msg = 'The game is over.'
-    } else if (isRecap) {
+    } else if (state.isRecap) {
       msg = 'The story is resolving.'
     } else if (state.priority === 1) {
       msg = "It's not your turn."
@@ -191,7 +186,7 @@ export default class OurHandRegion extends Region {
         this.scene.signalError(msg)
       })
     } else {
-      card.setOnClick(this.onCardClick(i, card, this.cards, state, isRecap))
+      card.setOnClick(this.onCardClick(i, card, this.cards, state))
     }
 
     // Set whether card shows up as playable, and also whether we can click to play a card in this state
@@ -294,12 +289,10 @@ export default class OurHandRegion extends Region {
     card: CardImage,
     hand: CardImage[],
     state: GameModel,
-    isRecap: boolean,
   ): () => void {
     // The position these cards will move to if played
     const nextStoryPosition = CardLocation.story(
       state,
-      isRecap,
       state.story.acts.length,
       this.container,
       0,

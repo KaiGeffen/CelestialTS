@@ -8,6 +8,7 @@ import Act from './act'
 
 class Story {
   acts: Act[] = []
+  resolvedActs: Act[] = []
 
   // Add a card to the story with given owner and at given position
   addAct(card: Card, owner: number, i?: number) {
@@ -23,6 +24,7 @@ class Story {
   run(game: GameModel) {
     game.score = [0, 0]
     game.recentModels = [[], []]
+    this.resolvedActs = []
 
     // Add a model at the start
     addRecentModels(game)
@@ -44,6 +46,9 @@ class Story {
         game.expended[act.owner].push(act.card)
       }
 
+      // Add to the list of resolved acts
+      this.resolvedActs.push(act)
+
       index++
       addRecentModels(game)
     }
@@ -55,6 +60,8 @@ class Story {
   }
 
   saveEndState(game: GameModel) {
+    this.resolvedActs = []
+
     addRecentModels(game)
 
     game.recentModels[0][game.recentModels[0].length - 1].sound =
@@ -64,6 +71,7 @@ class Story {
 
   clear() {
     this.acts = []
+    this.resolvedActs = []
   }
 
   getLength() {
@@ -92,6 +100,9 @@ class Story {
     for (const act of this.acts) {
       act.owner = act.owner === 1 ? 0 : 1
     }
+    for (const act of this.resolvedActs) {
+      act.owner = act.owner === 1 ? 0 : 1
+    }
   }
 }
 
@@ -101,10 +112,12 @@ function addRecentModels(model): void {
   // Get a recent model for each and add for that player
   const model0 = getClientGameModel(model, 0)
   model0.recentModels = [[], []]
+  model0.isRecap = true
   model.recentModels[0].push(model0)
 
   const model1 = getClientGameModel(model, 0)
   model1.recentModels = [[], []]
+  model1.isRecap = true
   model.recentModels[1].push(model1)
 
   // Increment the version

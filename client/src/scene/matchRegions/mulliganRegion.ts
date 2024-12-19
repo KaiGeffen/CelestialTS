@@ -67,7 +67,7 @@ export default class MulliganRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
+  displayState(state: GameModel): void {
     // If we are done with our mulligan, hide this
     if (state.mulligansComplete[0]) {
       this.hide()

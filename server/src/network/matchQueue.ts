@@ -103,7 +103,7 @@ function registerEvents(
   playerNumber: number,
 ) {
   const playCardEvent = createEvent('playCard', (data) => {
-    const cardNum = data.card
+    const cardNum = data.cardNum
     const version = data.version
     match.doAction(playerNumber, cardNum, version)
   })

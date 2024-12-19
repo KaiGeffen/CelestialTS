@@ -21,7 +21,7 @@ type SupportedMessages = {
     avatar: number
   }
   playCard: {
-    card: number
+    cardNum: number
     version: number
   }
   mulligan: { mulligan: Mulligan }

@@ -34,9 +34,9 @@ export default class CommandsRegion extends Region {
     return this
   }
 
-  displayState(state: GameModel, isRecap: boolean): void {
-    this.btnRecap.setVisible(!isRecap && state.maxBreath[0] > 1)
-    this.btnSkip.setVisible(isRecap)
+  displayState(state: GameModel): void {
+    this.btnRecap.setVisible(!state.isRecap && state.maxBreath[0] > 1)
+    this.btnSkip.setVisible(state.isRecap)
   }
 
   private createRecap(): void {

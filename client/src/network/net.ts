@@ -72,7 +72,7 @@ export class MatchWS {
   playCard(index: number) {
     this.socket.send({
       type: 'playCard',
-      card: index,
+      cardNum: index,
       version: versionNumber,
     })
   }
