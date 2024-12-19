@@ -8,7 +8,7 @@ export default function getClientGameModel(
   player: number,
 ): ClientGameModel {
   // Get the costs before copying this as json
-  const cardCosts = orig.hand[player].map((card) => card.getCost(player, orig))
+  orig.cardCosts = orig.hand[player].map((card) => card.getCost(player, orig))
 
   // Create a new copy of the model
   const model = JSON.parse(JSON.stringify(orig))
@@ -17,9 +17,6 @@ export default function getClientGameModel(
   if (player === 1) {
     reverseAttributes(model)
   }
-
-  // Set cost information
-  model.cardCosts = cardCosts
 
   // Hide information player doesn't have
   hideHiddenInformation(model)
@@ -78,6 +75,9 @@ function setClientSideInformation(model: GameModel): void {
 function hideHiddenInformation(model: GameModel) {
   const hiddenCard = new Card({ name: 'Cardback', id: 1000 })
 
+  // Hide the ordering of player's deck
+  hideDeckOrder(model)
+
   // Hide the opponent's hand
   model.hand[1] = model.hand[1].map(() => hiddenCard)
 
@@ -95,4 +95,15 @@ function hideHiddenInformation(model: GameModel) {
 
   // Hide the opponent's amtDrawn
   model.amtDrawn[1] = 0
+}
+
+function hideDeckOrder(model: GameModel) {
+  model.deck[0].sort((card1: Card, card2: Card) => {
+    // For even cost, sort based on name
+    if (card1.cost === card2.cost) {
+      return card1.name.localeCompare(card2.name)
+    } else {
+      return card1.cost - card2.cost
+    }
+  })
 }
