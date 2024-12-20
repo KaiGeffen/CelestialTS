@@ -34,7 +34,7 @@ export default class Hint extends BaseHint {
       console.log('card is', card)
       card.keywords.forEach((kt) => {
         // If this keyword hasn't been seen before, add this tuple (Including X value)
-        if (!keywordPosition.some((k) => k.keyword === kt.keyword)) {
+        if (!keywordPosition.some((k) => k.name === kt.name)) {
           keywordPosition.push(kt)
         }
       })
@@ -127,22 +127,22 @@ function getReferencedCards(card: Card): Card[] {
 
 // For a list of keyword tuples (Which expresses a keyword and its value)
 // Get the hint text that should display
-function getKeywordsText(keywordTuples: KeywordPosition[]) {
-  let result = '\n'
+function getKeywordsText(keywordPositions: KeywordPosition[]) {
+  let result = ''
 
-  for (const keywordTuple of keywordTuples) {
-    const keyword = keywordTuple.keyword
+  for (const keywordPosition of keywordPositions) {
+    const keyword = keywordPosition.name
     let txt = keyword.text
 
     if (keyword.hasX) {
       // NOTE This is replaceAll, but supported on all architectures
-      txt = txt.split(/\bX\b/).join(`${keywordTuple.value}`)
+      txt = txt.split(/\bX\b/).join(`${keywordPosition.value}`)
 
       // NOTE Special case for occurences of +X, where X could be -N, so you want -N instead of +-N
       txt = txt.split(/\+\-/).join('-')
     }
 
-    result += txt
+    result += `\n${txt}`
   }
 
   return result

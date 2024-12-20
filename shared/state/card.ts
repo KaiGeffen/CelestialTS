@@ -7,10 +7,10 @@ import { Keyword } from './keyword'
 
 // TODO Move some of these around
 export interface KeywordPosition {
-  keyword: Keyword
+  name: Keyword
   x: number
   y: number
-  value: number
+  value?: number
 }
 
 export interface ReferencePosition {

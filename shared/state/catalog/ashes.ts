@@ -3,6 +3,7 @@ import { ashes } from './tokens'
 import { Status, Quality } from '../effects'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
+import { Keywords } from '../keyword'
 
 class Dash extends Card {
   play(player: number, game: any, index: number, bonus: number): void {
@@ -14,7 +15,14 @@ class Dash extends Card {
     return this.points - world.story.acts.length
   }
 }
-const dash = new Dash({ name: 'Dash', cost: 2, points: 3, id: 6 })
+const dash = new Dash({
+  name: 'Dash',
+  cost: 2,
+  points: 3,
+  id: 6,
+  text: 'Worth -1 point for each card before this in the story.',
+  story: 'I look around only to remind me: Move on! Fast!',
+})
 
 class Impulse extends Card {
   play(player, game, index, bonus) {
@@ -31,6 +39,11 @@ const impulse = new Impulse({
   points: 1,
   qualities: [Quality.FLEETING],
   id: 3,
+  text: 'Fleeting, create 2 Ashes in your discard pile.',
+  story:
+    'Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me',
+  keywords: [{ name: Keywords.fleeting, x: 0, y: 82 }],
+  references: [{ name: 'Ashes', x: 6, y: 112 }],
 })
 
 class Mine extends Card {
@@ -40,7 +53,13 @@ class Mine extends Card {
     this.dig(4, game, player)
   }
 }
-const mine = new Mine({ name: 'Mine', cost: 4, points: 4, id: 15 })
+const mine = new Mine({
+  name: 'Mine',
+  cost: 4,
+  points: 4,
+  id: 15,
+  text: 'Remove from the game the top 4 cards of your discard pile.',
+})
 
 class Arsonist extends Card {
   play(player, game, index, bonus) {
@@ -57,6 +76,11 @@ const arsonist = new Arsonist({
   points: 4,
   qualities: [Quality.FLEETING],
   id: 14,
+  text: 'Fleeting, create 3 Ashes in your discard pile.',
+  story:
+    "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
+  keywords: [{ name: Keywords.fleeting, x: 0, y: 82 }],
+  references: [{ name: 'Ashes', x: 6, y: 112 }],
 })
 
 class Parch extends Card {
@@ -84,7 +108,15 @@ class Parch extends Card {
     game.status[player].push(Status.UNLOCKED)
   }
 }
-const parch = new Parch({ name: 'Parch', cost: 3, points: 2, id: 64 })
+const parch = new Parch({
+  name: 'Parch',
+  cost: 3,
+  points: 2,
+  id: 64,
+  text: 'Discard each of your cards later in the story. Worth +1 for each of those cards.\nWhen played, your cards cost 0 this round.',
+  story:
+    'We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips',
+})
 
 class Veteran extends Card {
   play(player, game, index, bonus) {
@@ -100,7 +132,15 @@ class Veteran extends Card {
     return 4 + (pileHas8 ? 2 : 0)
   }
 }
-const veteran = new Veteran({ name: 'Veteran', cost: 5, points: 4, id: 17 })
+const veteran = new Veteran({
+  name: 'Veteran',
+  cost: 5,
+  points: 4,
+  id: 17,
+  text: 'Worth +2 points if your discard pile has at least 8 cards in it.',
+  story:
+    'The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat there was to know',
+})
 
 class Cling extends Card {
   play(player, game, index, bonus) {
@@ -157,14 +197,29 @@ class Cling extends Card {
     }
   }
 }
-const cling = new Cling({ name: 'Cling', cost: 6, id: 20 })
+const cling = new Cling({
+  name: 'Cling',
+  cost: 6,
+  id: 20,
+  text: "Put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost.",
+  story:
+    'Reaching back with the back of the eyes\nTo that moment when\nI see myself – not as I am – but as I was - clearly',
+})
 
 class Death extends Card {
   getCost(player, game) {
     return game.pile[player].length >= 12 ? 0 : this.cost
   }
 }
-const death = new Death({ name: 'Death', cost: 7, points: 7, id: 21 })
+const death = new Death({
+  name: 'Death',
+  cost: 7,
+  points: 7,
+  id: 21,
+  text: 'Costs 0 if you have at least 12 cards in your discard pile.',
+  story:
+    'I knew you were coming, I just didn’t know when.\nGo easy on me.\nI am tired, sated, and looking for new life.',
+})
 
 class FromAshes extends Card {
   play(player, game, index, bonus) {
@@ -183,6 +238,13 @@ const fromAshes = new FromAshes({
   cost: 2,
   points: 1,
   id: 74,
+  text: 'Remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.',
+  story:
+    'Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning',
+  keywords: [
+    { name: Keywords.nourish, x: -36, y: 89, value: 1 },
+    { name: Keywords.fleeting, x: 38, y: 113 },
+  ],
 })
 
 export {

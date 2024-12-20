@@ -13,7 +13,7 @@ const stars = new Stars({
   name: 'Stars',
   id: 0,
   text: 'Inspire 1.',
-  keywords: [{ keyword: Keywords.inspire, x: 0, y: 130, value: 1 }],
+  keywords: [{ name: Keywords.inspire, x: 0, y: 130, value: 1 }],
 })
 console.log(stars)
 
