@@ -16,7 +16,7 @@ const dove = new Dove({
   id: 4,
 })
 
-class Swift extends Card {
+class Starling extends Card {
   play(player, game, index, bonus) {
     if (!game.story.isEmpty()) {
       if (game.story.acts[0].card.cost === 1) {
@@ -33,8 +33,8 @@ class Swift extends Card {
   }
 }
 
-const swift = new Swift({
-  name: 'Swift',
+const starling = new Starling({
+  name: 'Starling',
   cost: 2,
   points: 2,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
@@ -100,4 +100,4 @@ const heron = new Heron({
   id: 65,
 })
 
-export { dove, swift, secretaryBird, phoenix, heron }
+export { dove, starling, secretaryBird, phoenix, heron }

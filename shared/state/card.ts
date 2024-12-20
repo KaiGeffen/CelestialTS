@@ -1,5 +1,4 @@
 import { Status, Quality } from './effects'
-import { Anim } from './animation'
 import { Act } from './story'
 import GameModel from './gameModel'
 import { Animation } from '../animation'
