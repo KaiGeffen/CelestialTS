@@ -42,7 +42,7 @@ export default class CatalogRegion {
     this.cardCatalog = []
 
     // Add each card
-    let pool = Catalog.collectibleCards
+    let pool = Catalog.collectibleCards.sort((a, b) => a.cost - b.cost)
     for (let i = 0; i < pool.length; i++) {
       let cardImage = this.addCardToCatalog(pool[i], i)
 
