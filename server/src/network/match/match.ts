@@ -42,7 +42,7 @@ class Match {
     await Promise.all(
       this.getActiveWsList().map((ws) =>
         // TODO Change this to 'game starting' or something
-        ws.send({ type: 'game_start' }),
+        ws.send({ type: 'gameStart' }),
       ),
     )
   }
@@ -61,14 +61,14 @@ class Match {
         // Send any recap states
         this.game.model.recentModels[index].forEach((state) =>
           ws.send({
-            type: 'transmit_state',
+            type: 'transmitState',
             state: state,
           }),
         )
 
         // Send the normal state
         ws.send({
-          type: 'transmit_state',
+          type: 'transmitState',
           state: this.game.getClientModel(index),
         })
       }),

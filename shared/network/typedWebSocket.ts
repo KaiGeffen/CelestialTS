@@ -27,11 +27,11 @@ type SupportedMessages = {
   emote: {}
 
   // Server to client
-  game_start: {}
-  transmit_state: { state: GameModel }
-  signal_error: {}
+  gameStart: {}
+  transmitState: { state: GameModel }
+  signalError: {}
   dc: {}
-  opponent_emote: {}
+  opponentEmote: {}
 }
 
 // All of the types of messages sent

@@ -40,23 +40,23 @@ export class MatchWS {
 
     // Each registered event
     socket
-      .on('game_start', () => {
+      .on('gameStart', () => {
         // TODO This isn't necessary
         console.log('match started')
         // Signal that a match has been found
         scene.signalMatchFound()
       })
-      .on('transmit_state', (data) => {
+      .on('transmitState', (data) => {
         newScene.queueState(data.state)
       })
-      .on('signal_error', (data) => {
+      .on('signalError', (data) => {
         // TODO Handle signalling or logging that error on the client
         console.log('Server says that an action was in error.')
       })
       .on('dc', (data) => {
         scene.signalDC()
       })
-      .on('opponent_emote', (data) => {
+      .on('opponentEmote', (data) => {
         scene.emote(0)
       })
 
