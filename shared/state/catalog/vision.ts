@@ -72,7 +72,7 @@ const prey = new Prey({
   cost: 1,
   points: 2,
   id: 26,
-  references: [{ name: 'Predator', x: 6, y: 113 }],
+  references: [{ card: predator, x: 6, y: 113 }],
 })
 
 class Conquer extends Card {

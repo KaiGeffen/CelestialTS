@@ -68,15 +68,15 @@ export class ReferenceLabel extends Phaser.GameObjects.Text {
 
   constructor(
     scene: Phaser.Scene,
-    name: string,
+    card: Card,
     x: number,
     y: number,
     f: () => void,
   ) {
-    super(scene, x, y, name, Style.reference)
+    super(scene, x, y, card.name, Style.reference)
     scene.add.existing(this)
 
-    this.card = Catalog.getCard(name)
+    this.card = card
 
     // Set origin
     this.setOrigin(0.5)

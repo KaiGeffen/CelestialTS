@@ -1,5 +1,6 @@
 import Card from '../card'
 import { Status, Quality } from '../effects'
+import { Keywords } from '../keyword'
 
 class Dove extends Card {
   play(player, game, index, bonus) {
@@ -14,6 +15,12 @@ const dove = new Dove({
   points: 1,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
   id: 4,
+  text: 'Visible, Fleeting.',
+  story: 'Look at my eyes.\nSurrender\nTo the one thing you want',
+  keywords: [
+    { name: Keywords.visible, x: 0, y: 100 },
+    { name: Keywords.fleeting, x: 0, y: 130 },
+  ],
 })
 
 class Starling extends Card {
@@ -39,6 +46,12 @@ const starling = new Starling({
   points: 2,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
   id: 7,
+  text: 'Visible, Fleeting, worth +1 point if the next card in the story costs 1.',
+  story: 'Making headway\nDefying the headwind\nHeading out and through',
+  keywords: [
+    { name: Keywords.visible, x: 0, y: 52 },
+    { name: Keywords.fleeting, x: 0, y: 82 },
+  ],
 })
 
 class SecretaryBird extends Card {
@@ -60,6 +73,9 @@ const secretaryBird = new SecretaryBird({
   points: 4,
   qualities: [Quality.VISIBLE],
   id: 40,
+  text: 'Visible, worth +1 point for each card in your hand that costs 1 or less. Remove those cards from the game.',
+  story: 'I will I will I will\nBecome me become me become me\nAt your peril',
+  keywords: [{ name: Keywords.visible, x: 0, y: 43 }],
 })
 
 class Phoenix extends Card {
@@ -75,6 +91,14 @@ const phoenix = new Phoenix({
   points: 5,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
   id: 51,
+  text: 'Visible, Fleeting, create a Dove in your hand.',
+  story:
+    'Cracks in the shell\nShell falls away\nI stretch into wide possibilities',
+  keywords: [
+    { name: Keywords.visible, x: 0, y: 52 },
+    { name: Keywords.fleeting, x: 0, y: 82 },
+  ],
+  references: [{ card: dove, x: 6, y: 112 }],
 })
 
 class Heron extends Card {
@@ -98,6 +122,10 @@ const heron = new Heron({
   points: 0,
   qualities: [Quality.VISIBLE],
   id: 65,
+  text: "Visible, set both player's points to 0.\nCosts 1 more for each card in your discard pile.",
+  story:
+    'How you see me\nIs of no importance to me\nI am playing with being here, there, every where',
+  keywords: [{ name: Keywords.visible, x: 0, y: 60 }],
 })
 
 export { dove, starling, secretaryBird, phoenix, heron }

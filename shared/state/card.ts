@@ -14,7 +14,7 @@ export interface KeywordPosition {
 }
 
 export interface ReferencePosition {
-  name: string
+  card: Card
   x: number
   y: number
 }

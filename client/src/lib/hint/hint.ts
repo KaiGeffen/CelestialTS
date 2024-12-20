@@ -26,7 +26,7 @@ export default class Hint extends BaseHint {
     }
 
     // Get cards referenced by this card
-    const refs: Card[] = getReferencedCards(card)
+    const refs: Card[] = card.references.map((ref) => ref.card)
 
     // Get all keywords present in this or any referenced card
     const keywordPosition: KeywordPosition[] = []
@@ -108,21 +108,6 @@ export default class Hint extends BaseHint {
       this.showText(keyword.text.replace(' X', ''))
     }
   }
-}
-
-// Get the list of all cards referenced by this card
-function getReferencedCards(card: Card): Card[] {
-  let result = []
-  console.log('getting')
-
-  card.references.forEach((reference: ReferencePosition) => {
-    if (card.name !== reference.name) {
-      console.log('getReferencedCards', reference.name)
-      result.push(Catalog.getCard(reference.name))
-    }
-  })
-
-  return result
 }
 
 // For a list of keyword tuples (Which expresses a keyword and its value)

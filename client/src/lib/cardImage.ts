@@ -341,12 +341,12 @@ export class CardImage {
   private addReferences(): void {
     let that = this
 
-    this.card.references.forEach((referenceTuple) => {
+    this.card.references.forEach((referencePosition) => {
       let reference = new ReferenceLabel(
         this.scene,
-        referenceTuple.name,
-        referenceTuple.x,
-        referenceTuple.y,
+        referencePosition.card,
+        referencePosition.x,
+        referencePosition.y,
         () => {
           that.clickCallback()
         },

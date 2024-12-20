@@ -1,6 +1,9 @@
 import Card from '../card'
 import { SightCard } from '../card'
 import { Status, Quality } from '../effects'
+import { Keywords } from '../keyword'
+import { Animation } from '../../animation'
+import { Zone } from '../zone'
 
 class Fruit extends Card {
   play(player, game, index, bonus) {
@@ -8,7 +11,13 @@ class Fruit extends Card {
     this.nourish(3, game, player)
   }
 }
-const fruit = new Fruit({ name: 'Fruit', cost: 3, id: 11 })
+const fruit = new Fruit({
+  name: 'Fruit',
+  cost: 3,
+  id: 11,
+  text: 'Nourish 3.',
+  keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: 3 }],
+})
 
 class Oak extends Card {
   onRoundEnd(player, game) {
@@ -17,7 +26,14 @@ class Oak extends Card {
     game.status[player].push(...Array(amt).fill(Status.NOURISH))
   }
 }
-const oak = new Oak({ name: 'Oak', cost: 8, points: 8, id: 23 })
+const oak = new Oak({
+  name: 'Oak',
+  cost: 8,
+  points: 8,
+  id: 23,
+  text: 'If this is win this round, Nourish 1 for each point you won by.',
+  keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
+})
 
 class Bounty extends Card {
   play(player, game, index, bonus) {
@@ -25,7 +41,14 @@ class Bounty extends Card {
     ;[0, 1].forEach((p) => this.nourish(2, game, p))
   }
 }
-const bounty = new Bounty({ name: 'Bounty', cost: 3, points: 3, id: 48 })
+const bounty = new Bounty({
+  name: 'Bounty',
+  cost: 3,
+  points: 3,
+  id: 48,
+  text: 'Both players Nourish 2.',
+  keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: 2 }],
+})
 
 class Pet extends Card {
   constructor(points) {
@@ -64,7 +87,16 @@ class Nectar extends SightCard {
     this.nourish(1, game, player)
   }
 }
-const nectar = new Nectar(3, { name: 'Nectar', cost: 1, id: 25 })
+const nectar = new Nectar(3, {
+  name: 'Nectar',
+  cost: 1,
+  id: 25,
+  text: 'Nourish 1.\nWhen played, gain Sight 3.',
+  keywords: [
+    { name: Keywords.nourish, x: 0, y: 73, value: 1 },
+    { name: Keywords.sight, x: 0, y: 130, value: 3 },
+  ],
+})
 
 class Hollow extends Card {
   play(player, game, index, bonus) {
@@ -74,7 +106,14 @@ class Hollow extends Card {
     this.nourish(amt, game, player)
   }
 }
-const hollow = new Hollow({ name: 'Hollow', cost: 0, points: 0, id: 76 })
+const hollow = new Hollow({
+  name: 'Hollow',
+  cost: 0,
+  points: 0,
+  id: 76,
+  text: 'Set your points to 0. Gain Nourish 1 for each point you lost this way.',
+  keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
+})
 
 class HoldTight extends Card {
   play(player, game, index, bonus) {
@@ -82,9 +121,13 @@ class HoldTight extends Card {
     if (game.pile[player].length > 0) {
       const card = game.pile[player].pop()
       game.deck[player].push(card)
-      // game.animations[player].push(
-      //   new Animation('Discard', 'Deck', CardCodec.encodeCard(card)),
-      // )
+      game.animations[player].push(
+        new Animation({
+          from: Zone.Discard,
+          to: Zone.Deck,
+          card: card,
+        }),
+      )
     }
   }
 }
