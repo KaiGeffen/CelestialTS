@@ -1,6 +1,6 @@
 import 'phaser'
 
-import { Keyword, keywords } from '../catalog/keywords'
+import { Keyword, ALL_KEYWORDS } from '../catalog/keywords'
 import { Style } from '../settings/settings'
 import { getCard } from '../catalog/catalog'
 import Card from '../../../shared/state/card'
@@ -26,7 +26,7 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
     scene.add.existing(this)
 
     // Set keyword for this
-    keywords.forEach((keyword) => {
+    ALL_KEYWORDS.forEach((keyword) => {
       if (keyword.key === name) {
         this.keyword = keyword
         this.value = value

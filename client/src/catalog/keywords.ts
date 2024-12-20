@@ -1,7 +1,6 @@
-import keywordData from "./keywords.json"
+import keywordData from '../../../shared/state/keywords.json'
 
-
-export const keywords: Keyword[] = keywordData
+export const ALL_KEYWORDS: Keyword[] = keywordData
 
 export interface Keyword {
   key: string

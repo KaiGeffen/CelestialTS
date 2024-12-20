@@ -4,7 +4,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import { Space, Style, Color, Time, Flags } from '../../settings/settings'
 import Button from './button'
 import Card from '../../../../shared/state/card'
-import Hint from '../hint'
+import Hint from '../hint/hint'
 
 // Exported buttons
 export default class Cutout extends Button {

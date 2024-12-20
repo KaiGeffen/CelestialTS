@@ -8,7 +8,12 @@ class Stars extends Card {
     this.inspire(1, game, player)
   }
 }
-const stars = new Stars({ name: 'Stars', id: 0 })
+const stars = new Stars({
+  name: 'Stars',
+  id: 0,
+  text: 'Inspire 1.',
+  keywords: [{ name: 'Inspire', x: 0, y: 130, value: 1 }],
+})
 
 class Cosmos extends Card {
   play(player: any, game: any, index: number, bonus: number) {

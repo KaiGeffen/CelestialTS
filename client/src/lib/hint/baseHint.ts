@@ -8,11 +8,11 @@ import {
   Time,
   UserSettings,
   Space,
-} from '../settings/settings'
-import Card from '../../../shared/state/card'
-import BaseScene from '../scene/baseScene'
-import { allCards, getCard } from '../catalog/catalog'
-import { Keyword, keywords } from '../catalog/keywords'
+} from '../../settings/settings'
+import Card from '../../../../shared/state/card'
+import BaseScene from '../../scene/baseScene'
+import { allCards, getCard } from '../../catalog/catalog'
+import { Keyword, ALL_KEYWORDS } from '../../catalog/keywords'
 
 export default class Hint {
   txt: RexUIPlugin.BBCodeText
@@ -70,75 +70,21 @@ export default class Hint {
     return this
   }
 
-  showCard(card: Card | string): Hint {
-    this.show()
-
-    // Explain any keywords within the card
-    if (typeof card === 'string') {
-      card = getCard(card)
-    }
-
-    let hintText = card.getHintText()
-    const referencedImages = card
-      .getReferencedCards()
-      .map((card) => {
-        return ` [img=${card.name}]`
-      })
-      .join()
-    if (hintText !== '') {
-      this.showText(hintText)
-
-      // NOTE This is a hack because of a bug where card image renders with a single line's height
-      this.txt
-        .setText(`[img=${card.name}]`)
-        .appendText(`[color=grey]${referencedImages}[/color]`)
-        .appendText('\n\n\n\n\n\n\n\n\n\n\n\n')
-        .appendText(`\n${hintText}`)
-        .setFixedSize(0, 0)
-    } else {
-      const width =
-        card.getReferencedCards().length > 0
-          ? Space.maxTextWidth + Space.pad
-          : Space.cardWidth + Space.pad
-      this.txt
-        .setText(`[img=${card.name}]`)
-        .appendText(`${referencedImages}`)
-        .setFixedSize(width, Space.cardHeight + Space.pad)
-    }
-
-    return this
-  }
-
-  showText(s: string): void {
-    if (s !== '') {
-      this.show()
-    }
-
-    this.txt.setText(s).setFixedSize(0, 0)
-  }
-
-  // TODO Use in more places, instead of forming a string then passing to showText
-  showKeyword(name: string): void {
-    keywords.forEach((keyword) => {
-      if (keyword.key === name) {
-        let s = keyword.text
-
-        if (keyword.x) {
-          s = s.replace(' X', '')
-        }
-
-        this.showText(s)
-        return
-      }
-    })
-  }
-
   enableWaitTime(): void {
     this.skipWait = false
   }
 
   disableWaitTime(): void {
     this.skipWait = true
+  }
+
+  // Show the given hint text, or hide if empty
+  showText(s: string): void {
+    if (s !== '') {
+      this.show()
+    }
+
+    this.txt.setText(s).setFixedSize(0, 0)
   }
 
   // Orient the text to be in the right position relative to the mouse

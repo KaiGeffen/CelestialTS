@@ -4,7 +4,7 @@ import GameModel from './gameModel'
 import { Animation } from '../animation'
 import { Zone } from './zone'
 
-interface KeywordTuple {
+export interface KeywordTuple {
   name: string
   x: number
   y: number

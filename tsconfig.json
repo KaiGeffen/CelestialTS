@@ -11,5 +11,9 @@
     "rootDir": "./",
     "lib": ["es6", "dom"]
   },
-  "include": ["shared/**/*.ts", "server/**/*.ts"]
+  "include": [
+    "shared/**/*.ts",
+    "server/**/*.ts",
+    "client/src/catalog/keywords.ts"
+  ]
 }
