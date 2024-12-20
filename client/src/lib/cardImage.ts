@@ -1,8 +1,7 @@
 import 'phaser'
-import { cardback } from '../catalog/catalog'
+import Catalog from '../../../shared/state/catalog'
 import { Color, Style, BBStyle, Time, Space, Flags } from '../settings/settings'
 import Card from '../../../shared/state/card'
-import { allCards } from '../catalog/catalog'
 import { StatusBar } from '../lib/status'
 import { KeywordLabel, ReferenceLabel } from '../lib/keywordLabel'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
@@ -50,7 +49,7 @@ export class CardImage {
   private getCount: () => number
 
   constructor(card: Card, container: any, interactive: Boolean = true) {
-    card = card || cardback
+    card = card || Catalog.cardback
     this.init(card, container, interactive)
   }
 

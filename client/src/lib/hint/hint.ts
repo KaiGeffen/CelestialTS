@@ -10,8 +10,8 @@ import {
   Space,
 } from '../../settings/settings'
 import Card, { KeywordTuple } from '../../../../shared/state/card'
+import Catalog from '../../../../shared/state/catalog'
 import BaseScene from '../../scene/baseScene'
-import { allCards, getCard } from '../../catalog/catalog'
 import { Keyword, getKeyword } from '../../../../shared/state/keyword'
 import BaseHint from './baseHint'
 import { ALL } from 'dns'
@@ -22,7 +22,7 @@ export default class Hint extends BaseHint {
 
     // Get the card
     if (typeof card === 'string') {
-      card = allCards.filter((c) => c.name === card)[0]
+      card = Catalog.getCard(card)
       // card = getCard(card)
     }
 

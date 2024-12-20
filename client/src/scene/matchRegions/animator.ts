@@ -6,7 +6,7 @@ import { Zone } from '../../../../shared/state/zone'
 import CardLocation from './cardLocation'
 import { CardImage } from '../../lib/cardImage'
 import { Space, Time, Depth, Ease } from '../../settings/settings'
-import { cardback } from '../../catalog/catalog'
+import Catalog from '../../../../shared/state/catalog'
 import { View } from '../gameScene'
 import { Status } from '../../lib/status'
 
@@ -160,7 +160,11 @@ export default class Animator {
   }
 
   private createCard(card, start: [number, number] = [0, 0]): CardImage {
-    let cardImage = new CardImage(card || cardback, this.container, false)
+    let cardImage = new CardImage(
+      card || Catalog.cardback,
+      this.container,
+      false,
+    )
 
     // Set its initial position and make it hidden until its tween plays
     cardImage.setPosition(start)
@@ -306,8 +310,8 @@ export default class Animator {
       start = CardLocation.theirDeck()
     }
 
-    let topCard = this.createCard(cardback, start)
-    let bottomCard = this.createCard(cardback, start)
+    let topCard = this.createCard(Catalog.cardback, start)
+    let bottomCard = this.createCard(Catalog.cardback, start)
 
     this.scene.add.tween({
       targets: topCard.container,
@@ -401,7 +405,9 @@ export default class Animator {
   // Animate a card being revealed
   private animateReveal(card: CardImage, i: number): void {
     // Animate the back of the card flipping
-    let hiddenCard = this.createCard(cardback, [0, 0]).show().copyLocation(card)
+    let hiddenCard = this.createCard(Catalog.cardback, [0, 0])
+      .show()
+      .copyLocation(card)
 
     this.scene.tweens.add({
       targets: hiddenCard.container,
@@ -467,7 +473,7 @@ export default class Animator {
 
     for (let i = 0; i < state.story.acts.length; i++) {
       // TODO No unnamed constant / DRY
-      result[i] = state.story.acts[i].card.name === 'Cardback'
+      result[i] = state.story.acts[i].card.name === 'Catalog.Cardback'
     }
 
     return result

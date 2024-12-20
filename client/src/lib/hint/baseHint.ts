@@ -11,7 +11,6 @@ import {
 } from '../../settings/settings'
 import Card from '../../../../shared/state/card'
 import BaseScene from '../../scene/baseScene'
-import { allCards, getCard } from '../../catalog/catalog'
 import { Keyword, ALL_KEYWORDS } from '../../../../shared/state/keyword'
 
 export default class Hint {

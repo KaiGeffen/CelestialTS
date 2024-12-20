@@ -366,4 +366,12 @@ function getComputerDeck(i = null) {
   }
 }
 
-export default allCards
+export default class Catalog {
+  static allCards = allCards
+  static collectibleCards = fullCatalog
+  static cardback = new Card({ name: 'Cardback', id: 1000 })
+
+  static getCard(s: string): Card {
+    return allCards.filter((c) => c.name === s)[0]
+  }
+}

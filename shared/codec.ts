@@ -1,4 +1,4 @@
-import allCards from './state/catalog'
+import Catalog from './state/catalog'
 import Card from './state/card'
 
 const delims = ['¡', '™', '£']
@@ -6,7 +6,7 @@ const full_state_delim = 'ª'
 
 // Get a card given by its id
 function getCard(id: string): Card {
-  return allCards.find((card) => card.id === parseInt(id))
+  return Catalog.allCards.find((card) => card.id === parseInt(id))
 }
 
 function encodeCard(card: Card): string {

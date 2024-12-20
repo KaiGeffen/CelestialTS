@@ -8,7 +8,6 @@ import {
   UserProgress,
   UserSettings,
 } from '../settings/settings'
-import { allCards } from '../catalog/catalog'
 import BaseScene from './baseScene'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
@@ -17,7 +16,7 @@ import intro from '../adventures/intro.json'
 import Loader from '../loader/loader'
 import Server from '../network/server'
 import { CardImage } from '../lib/cardImage'
-import { baseCards } from '../catalog/catalog'
+import Catalog from '../../../shared/state/catalog'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 
@@ -308,7 +307,7 @@ export default class HomeScene extends BaseScene {
     delay: number,
   ): void {
     // Becomes a random card when the tween starts
-    const card = baseCards[0].name
+    const card = Catalog.collectibleCards[0].name
     const top = y === 0
 
     const imgX = top ? x + 500 : x - 500
@@ -343,8 +342,10 @@ export default class HomeScene extends BaseScene {
       repeatDelay: repeatDelay,
       ease: Ease.basic,
       onStart: () => {
-        const cardNum = Math.floor(Math.random() * (baseCards.length - 1))
-        const card = baseCards[cardNum].name
+        const cardNum = Math.floor(
+          Math.random() * (Catalog.collectibleCards.length - 1),
+        )
+        const card = Catalog.collectibleCards[cardNum].name
         img.setTexture(card)
 
         // When holding completes, tween the card dropping offscreen
@@ -352,8 +353,10 @@ export default class HomeScene extends BaseScene {
       },
 
       onRepeat: () => {
-        const cardNum = Math.floor(Math.random() * (baseCards.length - 1))
-        const card = baseCards[cardNum].name
+        const cardNum = Math.floor(
+          Math.random() * (Catalog.collectibleCards.length - 1),
+        )
+        const card = Catalog.collectibleCards[cardNum].name
         img.setTexture(card)
 
         // When holding completes, tween the card dropping offscreen

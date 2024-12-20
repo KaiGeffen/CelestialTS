@@ -7,7 +7,7 @@ import { Space, Color, BBStyle, Time, Depth, Flags } from '../settings/settings'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
 import { TutorialCardImage } from '../lib/cardImage'
-import { getCard } from '../catalog/catalog'
+import Catalog from '../../../shared/state/catalog'
 import { ResultsRegionTutorial } from './matchRegions/results'
 import { SearchingRegionTutorial } from './matchRegions/searching'
 import { Animation } from '../../../shared/animation'
@@ -443,7 +443,10 @@ export default class TutorialGameScene extends AdventureGameScene {
     const y = Flags.mobile
       ? Space.windowHeight - Space.cardHeight / 2
       : Space.windowHeight / 2
-    this.card = new TutorialCardImage(getCard(name), this.add.container(x, y))
+    this.card = new TutorialCardImage(
+      Catalog.getCard(name),
+      this.add.container(x, y),
+    )
 
     return this.card
   }

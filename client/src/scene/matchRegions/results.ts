@@ -12,7 +12,6 @@ import {
 } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
 // import { CardImage } from '../../lib/cardImage'
-// import { cardback } from '../../catalog/catalog'
 import GameModel from '../../../../shared/state/gameModel'
 // import { Animation, Zone } from '../../lib/animation'
 import BaseScene from '../baseScene'

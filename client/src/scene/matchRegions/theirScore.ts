@@ -3,8 +3,6 @@ import 'phaser'
 import Region from './baseRegion'
 
 import { Space, Color, Style, Depth, Flags } from '../../settings/settings'
-import { CardImage } from '../../lib/cardImage'
-import { cardback } from '../../catalog/catalog'
 import GameModel from '../../../../shared/state/gameModel'
 
 export default class TheirScoreRegion extends Region {

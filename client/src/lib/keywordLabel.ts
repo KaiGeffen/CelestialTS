@@ -1,8 +1,8 @@
 import 'phaser'
 
-import { Keyword, ALL_KEYWORDS } from '../../../shared/state/keyword'
+import { Keyword, getKeyword } from '../../../shared/state/keyword'
 import { Style } from '../settings/settings'
-import { getCard } from '../catalog/catalog'
+import Catalog from '../../../shared/state/catalog'
 import Card from '../../../shared/state/card'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 
@@ -26,12 +26,17 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
     scene.add.existing(this)
 
     // Set keyword for this
-    ALL_KEYWORDS.forEach((keyword) => {
-      if (keyword.key === name) {
-        this.keyword = keyword
-        this.value = value
-      }
-    })
+    const keyword = getKeyword(name)
+    if (keyword) {
+      this.keyword = keyword
+      this.value = value
+    }
+    // TODO
+    // ALL_KEYWORDS.forEach((keyword) => {
+    //   if (keyword.key === name) {
+    //     this.keyword = keyword
+    //     this.value = value
+    //   }
 
     // On hover this should show the correct hint
     this.setInteractive()
@@ -80,7 +85,7 @@ export class ReferenceLabel extends Phaser.GameObjects.Text {
     super(scene, x, y, name, Style.reference)
     scene.add.existing(this)
 
-    this.card = getCard(name)
+    this.card = Catalog.getCard(name)
 
     // Set origin
     this.setOrigin(0.5)

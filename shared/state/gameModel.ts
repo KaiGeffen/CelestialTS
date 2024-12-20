@@ -5,7 +5,6 @@ import { Avatar } from './avatar'
 import { Animation } from '../animation'
 import { Zone } from './zone'
 // import { CardCodec } from '../cardCodec'
-// import { hidden_card } from './logic/Catalog'
 import { Quality, Status } from './effects'
 import {
   DRAW_PER_TURN,

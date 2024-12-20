@@ -1,5 +1,5 @@
 import 'phaser'
-import { cardback } from '../../catalog/catalog'
+import Catalog from '../../../../shared/state/catalog'
 import GameModel from '../../../../shared/state/gameModel'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
@@ -25,7 +25,7 @@ export default class DecksRegion extends Region {
     this.cards = []
     for (let i = 0; i < state.deck[0].length; i++) {
       let card = this.addCard(
-        cardback,
+        Catalog.cardback,
         CardLocation.ourDeck(this.container, i),
       ).setOnClick(this.ourCallback)
 
@@ -37,7 +37,7 @@ export default class DecksRegion extends Region {
     this.cards2 = []
     for (let i = 0; i < state.deck[1].length; i++) {
       let card = this.addCard(
-        cardback,
+        Catalog.cardback,
         CardLocation.theirDeck(this.container, i),
       ).setOnClick(this.theirCallback)
 

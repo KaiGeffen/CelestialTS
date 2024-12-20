@@ -1,8 +1,7 @@
-import Server from "../network/server"
-import { baseCards } from "../catalog/catalog"
-import { Space } from "./settings"
-import { Flags } from "./flags"
-
+import Server from '../network/server'
+import Catalog from '../../../shared/state/catalog'
+import { Space } from './settings'
+import { Flags } from './flags'
 
 // User settings will first look to see if the user is logged in
 // If they are, it will prioritize the account data for that user (in session storage) over local storage
@@ -11,7 +10,6 @@ export class UserSettings {
   // Ensure that each expected setting exists, or give it a default value
   static _ensure(): void {
     const defaultSettings = {
-
       // Device specific settings (Not tied to user account)
       vsAi: true,
       mmCode: '',
@@ -25,7 +23,6 @@ export class UserSettings {
       // List of Messages that user should be shown
       // NOTE Doesn't get pushed to sql, is the result of the userProgress below
       newMessages: [],
-
 
       // Settings tied to user's account
       decks: [],
@@ -44,8 +41,8 @@ export class UserSettings {
 
       // Coordinates for the camera in adventure mode
       adventureCoordinates: {
-        x: 4650 - Space.windowWidth/2,
-        y: 700 - Space.windowHeight/2,
+        x: 4650 - Space.windowWidth / 2,
+        y: 700 - Space.windowHeight / 2,
       },
     }
 
@@ -66,9 +63,8 @@ export class UserSettings {
 
     if (key in sessionStorage) {
       return JSON.parse(sessionStorage.getItem(key))
-    }
-    else {
-      return JSON.parse(localStorage.getItem(key))      
+    } else {
+      return JSON.parse(localStorage.getItem(key))
     }
   }
 
@@ -85,18 +81,14 @@ export class UserSettings {
       // User progress and decks should be communicated to the server immediately
       if (key === 'userProgress') {
         Server.sendUserProgress(value)
-      }
-      else if (key === 'decks') {
+      } else if (key === 'decks') {
         Server.sendDecks(value)
-      }
-      else if (key === 'inventory') {
+      } else if (key === 'inventory') {
         Server.sendInventory(value)
-      }
-      else if (key === 'completedMissions') {
+      } else if (key === 'completedMissions') {
         Server.sendCompletedMissions(value)
       }
-    }
-    else {
+    } else {
       localStorage.setItem(key, JSON.stringify(value))
     }
   }
@@ -104,7 +96,7 @@ export class UserSettings {
   // Set the nth index of the given array
   static _setIndex(key: string, index: number, value: any) {
     let ary = this._get(key)
-    
+
     ary[index] = value
 
     this._set(key, ary)
@@ -133,11 +125,10 @@ export class UserSettings {
   // Get the quantity of a given card in inventory
   static _getQuantity(cardId: number): number {
     let amt = this._get('inventory')[cardId]
-    
+
     if (isNaN(amt) || amt == null) {
       return 0
-    }
-    else {
+    } else {
       return amt
     }
   }
@@ -148,10 +139,10 @@ export class UserSettings {
 }
 
 function getStartingInventory(): boolean[] {
-  let ary = Array(baseCards.length).fill(false);
+  let ary = Array(Catalog.collectibleCards.length).fill(false)
 
   // Unlock each of the starting cards
-  [0,4,9,6,11,12,13,18].forEach(i => {
+  ;[0, 4, 9, 6, 11, 12, 13, 18].forEach((i) => {
     ary[i] = true
   })
 

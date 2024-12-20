@@ -1,6 +1,5 @@
 import 'phaser'
-import { cardback } from '../../catalog/catalog'
-import Keyword from '../../../../shared/state/keyword'
+import { Keyword } from '../../../../shared/state/keyword'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import GameModel from '../../../../shared/state/gameModel'

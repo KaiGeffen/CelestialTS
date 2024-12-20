@@ -16,7 +16,7 @@ import {
   Ease,
   Flags,
 } from '../../settings/settings'
-import { collectibleCards } from '../../catalog/catalog'
+import Catalog from '../../../../shared/state/catalog'
 import { BuilderBase } from '../builderScene'
 import newScrollablePanel from '../../lib/scrollablePanel'
 
@@ -43,7 +43,7 @@ export default class CatalogRegion {
     this.cardCatalog = []
 
     // Add each card
-    let pool = collectibleCards
+    let pool = Catalog.collectibleCards
     for (let i = 0; i < pool.length; i++) {
       let cardImage = this.addCardToCatalog(pool[i], i)
 

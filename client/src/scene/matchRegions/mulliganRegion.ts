@@ -9,7 +9,6 @@ import Buttons from '../../lib/buttons/buttons'
 
 import { CardImage } from '../../lib/cardImage'
 import Card from '../../../../shared/state/card'
-import { cardback } from '../../catalog/catalog'
 import GameModel from '../../../../shared/state/gameModel'
 import { Animation } from '../../../../shared/animation'
 import { Zone } from '../../../../shared/state/zone'

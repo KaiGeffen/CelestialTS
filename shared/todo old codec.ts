@@ -1,6 +1,6 @@
 import { Mulligan } from './settings'
 import Card from './state/card'
-import allCards from './state/catalog'
+import Catalog from './state/catalog'
 import { Status } from './state/effects'
 import { Story } from './state/story'
 
@@ -10,7 +10,7 @@ const DELIM_DYN_TEXT = '£'
 const DELIM_FULL_STATE = 'ª'
 
 function encodeCard(card: any): string {
-  for (const catalogEntry of allCards) {
+  for (const catalogEntry of Catalog.allCards) {
     if (card.name === catalogEntry.name) {
       if (card.dynamicText) {
         return `${card.id}${DELIM_DYN_TEXT}${card.dynamicText}`
@@ -33,7 +33,7 @@ function decodeCard(s: string): any {
   const dynamicText = sections.length > 1 ? sections[1] : null
 
   let card = null
-  for (const c of allCards) {
+  for (const c of Catalog.allCards) {
     if (cardId === c.id) {
       card = c
       break

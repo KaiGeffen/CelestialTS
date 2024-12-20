@@ -5,6 +5,7 @@ import { Animation } from '../animation'
 import { Zone } from './zone'
 import { Keyword } from './keyword'
 
+// TODO Move some of these around
 export interface KeywordTuple {
   name: Keyword
   x: number
