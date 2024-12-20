@@ -55,7 +55,7 @@ const predator = new Predator({
   cost: 1,
   qualities: [Quality.FLEETING],
   id: 1004,
-  // TODO
+  keywords: [{ name: Keywords.fleeting, x: 0, y: 61 }],
 })
 
 export { seen, ashes, child, predator }

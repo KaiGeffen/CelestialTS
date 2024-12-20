@@ -1,6 +1,5 @@
 import avatarNames from '../lib/avatarNames'
 import Catalog from '../../../shared/state/catalog'
-import Card from '../../../shared/state/card'
 
 // Json data
 import avatarData from './avatars.json'
@@ -35,7 +34,7 @@ const imagePrefixMap: PrefixEntry[] = [
   {
     fp: `cards/${Flags.mobile ? 'mobile/' : ''}`,
     prefix: '',
-    list: Catalog.allCards.map((card) => card.name),
+    list: [...Catalog.allCards, Catalog.cardback].map((card) => card.name),
   },
   {
     fp: 'cutouts/',

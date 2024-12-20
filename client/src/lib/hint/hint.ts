@@ -31,7 +31,6 @@ export default class Hint extends BaseHint {
     // Get all keywords present in this or any referenced card
     const keywordPosition: KeywordPosition[] = []
     ;[card, ...refs].forEach((card) => {
-      console.log('card is', card)
       card.keywords.forEach((kt) => {
         // If this keyword hasn't been seen before, add this tuple (Including X value)
         if (!keywordPosition.some((k) => k.name === kt.name)) {
@@ -45,12 +44,11 @@ export default class Hint extends BaseHint {
     if (keywordPosition.length === 0) {
       const width =
         referencedImages.length > 0
-          ? Space.maxTextWidth * 2 + Space.pad
+          ? Space.maxTextWidth + Space.pad
           : Space.cardWidth + Space.pad
       this.txt
         .setText(`[img=${card.name}]${referencedImages}`)
         .setFixedSize(width, Space.cardHeight + Space.pad)
-      console.log(this.txt)
     } else {
       // The hint relating to keywords
       const keywordsText = getKeywordsText(keywordPosition)
