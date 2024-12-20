@@ -1,7 +1,5 @@
 import GameModel from '../state/gameModel'
-
-// TODO Put in shared place
-type Mulligan = [boolean, boolean, boolean]
+import { Mulligan } from '../settings'
 
 // All supported messages (type and payload) between server and client
 type SupportedMessages = {
@@ -62,12 +60,16 @@ export class TypedWebSocket {
 
     // Whenever a message is received, call each callback for that message
     this.ws.onmessage = (ev: MessageEvent): void => {
-      // The type of the message TODO Explain better, this is union over all the SocketMessages, and is consistent below
+      // The type of the message
       type T = MessageTypes
 
-      const message: WSMessage<T> = JSON.parse(ev.data)
-
-      // TODO Handle parse error
+      let message: WSMessage<T>
+      try {
+        message = JSON.parse(ev.data)
+      } catch (error) {
+        console.error('Failed to parse WebSocket message:', error)
+        return
+      }
 
       const listeners: Array<(data: SupportedMessages[T]) => void> =
         this.listeners[message.type]

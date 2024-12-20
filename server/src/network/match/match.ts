@@ -75,7 +75,6 @@ class Match {
     )
   }
 
-  // TODO Use the same Mulligan type throughout
   async doMulligan(player: number, mulligan: Mulligan) {
     this.game.doMulligan(player, mulligan)
     await this.notifyState()
@@ -99,14 +98,13 @@ class Match {
     return [this.ws1, this.ws2].filter((ws) => ws !== null)
   }
 
-  // TODO Implement emotes
   async signalEmote(player: number, emoteNumber: number) {
-    return
-    if (this.game === null) return
-
-    // const msg = JSON.stringify({ type: 'opponent_emote', value: emoteNumber })
-    // if (player === 0 && this.ws2 !== null) await this.ws2.send(msg)
-    // if (player === 1 && this.ws1 !== null) await this.ws1.send(msg)
+    if (player === 0 && this.ws2 !== null) {
+      await this.ws2.send({ type: 'emote' })
+    }
+    if (player === 1 && this.ws1 !== null) {
+      await this.ws1.send({ type: 'emote' })
+    }
   }
 
   // Given ws is disconnecting

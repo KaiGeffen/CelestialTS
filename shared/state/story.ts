@@ -121,7 +121,6 @@ class Story {
   }
 }
 
-// TODO Unintuitive that this is here instead of in GameModel (Which it can't be in because of circular dependencies)
 // Add the current state to list of remembered recent states
 function addRecentModels(model): void {
   // Get a recent model for each and add for that player

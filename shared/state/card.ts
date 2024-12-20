@@ -5,20 +5,6 @@ import { Animation } from '../animation'
 import { Zone } from './zone'
 import { Keyword } from './keyword'
 
-// TODO Move some of these around
-export interface KeywordPosition {
-  name: Keyword
-  x: number
-  y: number
-  value?: number
-}
-
-export interface ReferencePosition {
-  card: Card
-  x: number
-  y: number
-}
-
 interface CardData {
   name?: string
   id?: number
@@ -26,6 +12,7 @@ interface CardData {
   points?: number
   qualities?: Quality[]
 
+  // Just used by client
   text?: string
   dynamicText?: string
   story?: string
@@ -317,10 +304,15 @@ export default class Card {
       const act = game.story.acts[index]
       const oldCard = act.card
       game.story.replaceAct(index, new Act(card, act.owner))
-      // TODO Implement
-      // game.animations[act.owner].push(
-      //   new Anim('Transform', 'Story', CardCodec.encodeCard(oldCard), index),
-      // )
+
+      game.animations[act.owner].push(
+        new Animation({
+          from: Zone.Transform,
+          to: Zone.Story,
+          card: oldCard,
+          index2: index,
+        }),
+      )
     }
   }
 
@@ -394,6 +386,19 @@ export default class Card {
   getCardText(): string {
     return ''
   }
+}
+
+export interface KeywordPosition {
+  name: Keyword
+  x: number
+  y: number
+  value?: number
+}
+
+export interface ReferencePosition {
+  card: Card
+  x: number
+  y: number
 }
 
 export class SightCard extends Card {

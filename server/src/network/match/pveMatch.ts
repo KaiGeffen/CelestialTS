@@ -53,8 +53,6 @@ class PveMatch extends Match {
   }
 
   async doMulligan(player, mulligan) {
-    // if (this.vs_ai) this.game.model.sound = null TODO idk why this happen
-
     await super.doMulligan(player, mulligan)
 
     // TODO Opponent makes smarter mulligan
