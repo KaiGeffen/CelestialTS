@@ -1,5 +1,5 @@
 import 'phaser'
-import { MatchWS, versionNumber } from '../network/net'
+import { MatchWS } from '../network/net'
 // Import Settings itself
 import { UserSettings } from '../settings/settings'
 import BaseScene from './baseScene'
@@ -8,8 +8,6 @@ import Region from './matchRegions/baseRegion'
 import Regions from './matchRegions/matchRegions'
 import OverlayRegion from './matchRegions/pileOverlays'
 import GameModel from '../../../shared/state/gameModel'
-
-var storyHiddenLock: boolean = false
 
 // TODO Rename to Match
 export class GameScene extends BaseScene {
@@ -21,15 +19,11 @@ export class GameScene extends BaseScene {
   // Whether the match is paused (Awaiting user to click a button, for example)
   paused: boolean
 
-  // The states which are queued up and have not yet been seen, with key being their version number
+  // Version numbers of currently displayed and most recent states
+  currentVersion: number
+  maxVersion: number
+  // The states which are queued up, with key being their version number
   queuedStates: { [key: number]: GameModel }
-
-  // Recap handling
-  queuedRecap: GameModel[] = []
-  recapPlaying: boolean // TODO Redundant with above?
-  lastRecap: GameModel[]
-  currentState: GameModel
-  currentVersionNo: number
 
   // Whether this match is a tutorial
   isTutorial = false
@@ -38,11 +32,7 @@ export class GameScene extends BaseScene {
     this.params = params
     // Reset variables
     this.queuedStates = {}
-    this.queuedRecap = []
-    this.recapPlaying = false
-    this.lastRecap = []
-    this.currentState = undefined
-    this.currentVersionNo = 0
+    this.currentVersion = 0
 
     // TODO Clean this up when a pass is done
     let mmCode = ''
@@ -81,6 +71,8 @@ export class GameScene extends BaseScene {
     if (!(state.versionNo in this.queuedStates)) {
       this.queuedStates[state.versionNo] = state
     }
+
+    this.maxVersion = Math.max(this.maxVersion, state.versionNo)
   }
 
   signalDC(): void {
@@ -96,24 +88,17 @@ export class GameScene extends BaseScene {
 
     // Commands region
     view.commands.recapCallback = () => {
-      that.recapPlaying = true
-      // that.queuedRecap = [...that.lastRecap]
-      // that.queueState(that.currentState)
-
       // Scan backwards through the queued states to find the start of the recap
-      for (let version = this.currentVersionNo; version >= 0; version--) {
+      for (let version = this.currentVersion; version >= 0; version--) {
         if (this.queuedStates[version] && this.queuedStates[version].isRecap) {
           // Continue backwards until we find where isRecap is false
           while (version >= 0 && this.queuedStates[version].isRecap) {
             version--
           }
-          this.currentVersionNo = version + 1
+          this.currentVersion = version + 1
           break
         }
       }
-
-      // that.queuedStates
-      // versionNumber
     }
     view.commands.skipCallback = () => {
       that.tweens.getTweens().forEach((tween) => {
@@ -121,13 +106,11 @@ export class GameScene extends BaseScene {
       })
 
       // Set variables to a state where a recap isn't playing
-      that.queuedRecap = []
-      that.recapPlaying = false
 
       // End the pause
       that.paused = false
 
-      // that.currentVersionNo = versionNumber
+      that.currentVersion = that.maxVersion
     }
 
     // Hand region
@@ -162,9 +145,6 @@ export class GameScene extends BaseScene {
 
     // Buttons TODO Rework these
     // view.ourButtons.setRecapCallback(() => {
-    // 	that.recapPlaying = true
-    // 	that.queuedRecap = [...that.lastRecap]
-    // 	that.queueState(that.currentState)
     // })
 
     // view.ourButtons.setPassCallback(() => {
@@ -177,8 +157,6 @@ export class GameScene extends BaseScene {
     // 	})
 
     // 	// Set variables to a state where a recap isn't playing
-    // 	that.queuedRecap = []
-    // 	that.recapPlaying = false
     // 	that.view.paused = false
     // })
     // view.ourButtons.setPlayCallback(() => {that.view.paused = false})
@@ -188,14 +166,8 @@ export class GameScene extends BaseScene {
     view.story.setCallback((i: number) => {
       return function () {
         // Get the series of states for this recap starting from the given index
-        let recap = that.lastRecap.slice(i)
-
-        // Set that a recap is playing, queue the correct recap
-        that.recapPlaying = true
-        that.queuedRecap = recap
 
         // To correctly display point changes, set the current scores to the last recaps totals
-        // that.lastScore = that.lastRecap[i].score TODO
 
         // Skip all tweens playing currently
         // TODO Some text stays enlarged if it doesn't finish
@@ -252,15 +224,14 @@ export class GameScene extends BaseScene {
     // Enable the searching region visual update
     this.view.searching.update(time, delta)
 
-    if (this.currentVersionNo in this.queuedStates) {
+    if (this.currentVersion in this.queuedStates) {
       let isDisplayed = this.displayState(
-        this.queuedStates[this.currentVersionNo],
+        this.queuedStates[this.currentVersion],
       )
 
       // If the state was just shown, delete it
       if (isDisplayed) {
-        this.currentState = this.queuedStates[this.currentVersionNo]
-        this.currentVersionNo++
+        this.currentVersion++
         // delete this.queuedStates[nextVersionNumber]
       }
     }
@@ -277,9 +248,6 @@ export class GameScene extends BaseScene {
     if (this.paused) {
       return false
     }
-
-    // Remember what version of the game state this is, for use when communicating with server
-    this.net.setVersionNumber(state.versionNo)
 
     this.view.displayState(state)
 

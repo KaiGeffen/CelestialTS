@@ -7,8 +7,6 @@ import Server from './server'
 import { Flags } from '../settings/settings'
 import { GameScene } from '../scene/gameScene'
 
-// The version-number of that state that the client is displaying, for use with verifying with server
-export var versionNumber: number
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
 var scene
 // NOTE This can change, but the listener is only created once, so it needs to reference this var
@@ -25,7 +23,6 @@ export class MatchWS {
   ) {
     scene = newScene
     // TODO
-    versionNumber = -1
 
     console.log('Making a new websocket for this match')
     const socket = (this.socket = this.getSocket())
@@ -50,9 +47,7 @@ export class MatchWS {
         scene.signalMatchFound()
       })
       .on('transmit_state', (data) => {
-        // console.log('Received state from server', data.state)
-        if (data.state.versionNo > versionNumber)
-          newScene.queueState(data.state)
+        newScene.queueState(data.state)
       })
       .on('signal_error', (data) => {
         // TODO Handle signalling or logging that error on the client
@@ -78,7 +73,6 @@ export class MatchWS {
     this.socket.send({
       type: 'playCard',
       cardNum: index,
-      version: versionNumber,
     })
   }
 
@@ -93,7 +87,6 @@ export class MatchWS {
   passTurn() {
     this.socket.send({
       type: 'passTurn',
-      version: versionNumber,
     })
   }
 
@@ -110,12 +103,6 @@ export class MatchWS {
     else {
       this.socket.ws.close(1000)
     }
-  }
-
-  // Set the version number of the state that the client is seeing
-  // Set the
-  setVersionNumber(vn: number): void {
-    versionNumber = vn
   }
 
   // Signal to the server that we have emoted

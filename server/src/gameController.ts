@@ -57,11 +57,7 @@ class ServerController {
     }
   }
 
-  onPlayerInput(player: number, choice: number, version?: number): boolean {
-    if (version !== undefined && version !== this.model.versionNo) {
-      return false
-    }
-
+  onPlayerInput(player: number, choice: number): boolean {
     if (this.model.getWinner() !== null) {
       return false
     }

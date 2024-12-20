@@ -22,10 +22,9 @@ type SupportedMessages = {
   }
   playCard: {
     cardNum: number
-    version: number
   }
   mulligan: { mulligan: Mulligan }
-  passTurn: { version: number }
+  passTurn: {}
   exitMatch: {}
   emote: {}
 

@@ -104,8 +104,7 @@ function registerEvents(
 ) {
   const playCardEvent = createEvent('playCard', (data) => {
     const cardNum = data.cardNum
-    const version = data.version
-    match.doAction(playerNumber, cardNum, version)
+    match.doAction(playerNumber, cardNum)
   })
 
   const mulliganEvent = createEvent('mulligan', (data) => {
@@ -113,8 +112,7 @@ function registerEvents(
   })
 
   const passTurnEvent = createEvent('passTurn', (data) => {
-    const versionNo = 0 // TODO
-    match.doAction(playerNumber, PASS, versionNo)
+    match.doAction(playerNumber, PASS)
   })
 
   const exitMatchEvent = createEvent('exitMatch', (data) => {

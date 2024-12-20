@@ -82,8 +82,8 @@ class Match {
   }
 
   // Given player does the given action
-  async doAction(player: number, action: number, version: number) {
-    const valid = this.game.onPlayerInput(player, action, version)
+  async doAction(player: number, action: number) {
+    const valid = this.game.onPlayerInput(player, action)
 
     if (valid) {
       await this.notifyState()
