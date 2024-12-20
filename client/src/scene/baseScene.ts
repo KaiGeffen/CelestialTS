@@ -5,7 +5,7 @@ import GesturesPlugin from 'phaser3-rex-plugins/plugins/gestures-plugin.js'
 import { Style, BBStyle, Color, Time, Space, Flags } from '../settings/settings'
 import Button from '../lib/buttons/button'
 import Icons from '../lib/buttons/icons'
-import Hint from '../lib/hint/hint'
+import Hint from '../lib/hint'
 import ensureMusic from '../loader/audioManager'
 
 // Functionality shared between BaseScene and MenuBaseScene

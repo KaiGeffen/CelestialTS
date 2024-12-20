@@ -4,6 +4,7 @@ import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
+import GameModel from '../gameModel'
 
 class Fruit extends Card {
   play(player, game, index, bonus) {
@@ -55,11 +56,11 @@ class Pet extends Card {
     const text = `2:${points}, this card retains all changes to points as it resolves (For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)`
     super({
       name: 'Pet',
+      id: 34,
       cost: 2,
       points,
       qualities: [Quality.FLEETING],
       text,
-      id: 34,
     })
   }
 

@@ -117,12 +117,7 @@ class ServerController {
     const card = this.model.hand[player].splice(cardNum, 1)[0]
     this.model.breath[player] -= this.getCost(card, player)
 
-    // TODO Is this outdated
-    // const result =
     card.onPlay(player, this.model)
-    // if (result) {
-    //   card = result
-    // }
 
     for (const cardInHand of this.model.hand[player]) {
       cardInHand.inHandOnPlay(player, this.model)

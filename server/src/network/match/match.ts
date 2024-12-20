@@ -40,10 +40,7 @@ class Match {
   // Notify all connected players that the match has started
   async notifyMatchStart() {
     await Promise.all(
-      this.getActiveWsList().map((ws) =>
-        // TODO Change this to 'game starting' or something
-        ws.send({ type: 'gameStart' }),
-      ),
+      this.getActiveWsList().map((ws) => ws.send({ type: 'gameStart' })),
     )
   }
 

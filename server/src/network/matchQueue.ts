@@ -12,7 +12,6 @@ import PvpMatch from './match/pvpMatch'
 import Match from './match/match'
 import pvpMatch from './match/pvpMatch'
 import { decode } from 'punycode'
-import { MULLIGAN_MSG } from './old/settings'
 import { PASS } from '../../../shared/settings'
 
 /*
@@ -95,7 +94,6 @@ class MatchQueue {
   }
 }
 
-// TODO Move to a separate file
 // Register each of the events that the server receives during a match
 function registerEvents(
   ws: TypedWebSocket,
@@ -124,7 +122,6 @@ function registerEvents(
     match.signalEmote(playerNumber, emote)
   })
 
-  // TODO There's some clever way to ensure that all SocketMessages are covered
   const registeredEvents = [
     playCardEvent,
     mulliganEvent,
@@ -138,8 +135,5 @@ function registerEvents(
     ws.on(event, callback)
   })
 }
-
-// Password matches dictionary
-const PWD_MATCHES: { [key: string]: Match } = {}
 
 export default MatchQueue

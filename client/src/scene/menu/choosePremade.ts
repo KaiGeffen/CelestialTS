@@ -4,7 +4,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 import avatarDetails from '../../catalog/avatarDetails.json'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
-import Hint from '../../lib/hint/hint'
+import Hint from '../../lib/hint'
 import {
   BBStyle,
   Color,
