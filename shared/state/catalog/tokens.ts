@@ -1,5 +1,6 @@
 import Card from '../card'
 import { Quality } from '../effects'
+import { Keywords } from '../keyword'
 
 class Seen extends Card {
   onUpkeep(player: number, game: any, index: number): boolean {
@@ -27,12 +28,16 @@ const ashes = new Ashes({
   cost: 1,
   qualities: [Quality.FLEETING],
   id: 1002,
+  text: 'Fleeting. Draw a card.',
+  keywords: [{ name: Keywords.fleeting, x: 0, y: 102 }],
 })
 
 const child = new Card({
   name: 'Child',
   qualities: [Quality.FLEETING],
   id: 1003,
+  text: 'Fleeting.',
+  keywords: [{ name: Keywords.fleeting, x: 0, y: 130 }],
 })
 
 class Predator extends Card {
@@ -50,6 +55,7 @@ const predator = new Predator({
   cost: 1,
   qualities: [Quality.FLEETING],
   id: 1004,
+  // TODO
 })
 
 export { seen, ashes, child, predator }

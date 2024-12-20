@@ -126,7 +126,14 @@ class Cradle extends Card {
     this.birth(2, game, player)
   }
 }
-const cradle = new Cradle({ name: 'Cradle', cost: 3, points: 2, id: 60 })
+const cradle = new Cradle({
+  name: 'Cradle',
+  cost: 3,
+  points: 2,
+  id: 60,
+  text: 'Birth 2.',
+  keywords: [{ name: Keywords.birth, x: 0, y: 130, value: 2 }],
+})
 
 class Uprising extends Card {
   play(player, game, index, bonus) {

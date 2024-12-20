@@ -2,6 +2,8 @@ import Card from '../card'
 import { SightCard } from '../card'
 import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
+import { Animation } from '../../animation'
+import { Zone } from '../zone'
 
 class Stars extends Card {
   play(player: any, game: any, index: number, bonus: number) {
@@ -15,7 +17,6 @@ const stars = new Stars({
   text: 'Inspire 1.',
   keywords: [{ name: Keywords.inspire, x: 0, y: 130, value: 1 }],
 })
-console.log(stars)
 
 class Cosmos extends Card {
   play(player: any, game: any, index: number, bonus: number) {
@@ -29,7 +30,13 @@ class Cosmos extends Card {
     this.inspire(amt, game, player)
   }
 }
-const cosmos = new Cosmos({ name: 'Cosmos', cost: 2, id: 9 })
+const cosmos = new Cosmos({
+  name: 'Cosmos',
+  cost: 2,
+  id: 9,
+  text: 'Inspire 1 for this and each of your cards later in the story.',
+  keywords: [{ name: Keywords.inspire, x: -28, y: 90, value: 1 }],
+})
 
 class NightVision extends SightCard {
   play(player: any, game: any, index: number, bonus: number) {
@@ -42,6 +49,8 @@ const nightVision = new NightVision(3, {
   cost: 1,
   points: 0,
   id: 28,
+  text: 'Draw a card that costs 2.\nWhen played, gain Sight 3.',
+  keywords: [{ name: Keywords.sight, x: 0, y: 130, value: 3 }],
 })
 
 class Ecology extends Card {
@@ -49,7 +58,13 @@ class Ecology extends Card {
     game.breath[player] += 10
   }
 }
-const ecology = new Ecology({ name: 'Ecology', cost: 7, points: 0, id: 44 })
+const ecology = new Ecology({
+  name: 'Ecology',
+  cost: 7,
+  points: 0,
+  id: 44,
+  text: 'When played, gain 10 breath this round.',
+})
 
 class Sun extends Card {
   morning(player: any, game: any, index: number) {
@@ -57,7 +72,15 @@ class Sun extends Card {
     return true
   }
 }
-const sun = new Sun({ name: 'Sun', cost: 8, points: 8, id: 56 })
+const sun = new Sun({
+  name: 'Sun',
+  cost: 8,
+  points: 8,
+  id: 56,
+  text: 'Morning: gain 2 extra breath this round.',
+  story: 'I raise my head over the horizon\nI begin\nJust like you',
+  keywords: [{ name: Keywords.morning, x: 0, y: 82 }],
+})
 
 class Moon extends Card {
   morning(player: any, game: any, index: number) {
@@ -67,19 +90,29 @@ class Moon extends Card {
 
       const card = game.pile[player][i]
       if (card.morning(player, game, i)) {
-        // game.animations[player].push(
-        //   new Animation('Discard', 'Discard', CardCodec.encodeCard(card), {
-        //     index: i,
-        //     index2: i,
-        //   }),
-        // )
+        game.animations[player].push(
+          new Animation({
+            from: Zone.Discard,
+            to: Zone.Discard,
+            card: card,
+            index: i,
+            index2: i,
+          }),
+        )
         count += 1
       }
     }
     return true
   }
 }
-const moon = new Moon({ name: 'Moon', cost: 5, points: 4, id: 73 })
+const moon = new Moon({
+  name: 'Moon',
+  cost: 5,
+  points: 4,
+  id: 73,
+  text: 'Morning: trigger the morning abilities of the top 2 cards below this with morning.',
+  keywords: [{ name: Keywords.morning, x: 0, y: 60 }],
+})
 
 class Sunflower extends Card {
   play(player: any, game: any, index: number, bonus: number) {
@@ -96,6 +129,8 @@ const sunflower = new Sunflower({
   cost: 2,
   points: 1,
   id: 69,
+  text: 'Inspire 1 for each point this is worth.',
+  keywords: [{ name: Keywords.inspire, x: -36, y: 111, value: 1 }],
 })
 
 export { stars, cosmos, nightVision, ecology, sun, moon, sunflower }

@@ -342,6 +342,7 @@ export class CardImage {
     let that = this
 
     this.card.references.forEach((referencePosition) => {
+      console.log('meee', this.card)
       let reference = new ReferenceLabel(
         this.scene,
         referencePosition.card,

@@ -193,8 +193,7 @@ class Sickness extends Card {
     this.create(sickness, game, player ^ 1)
   }
 }
-let sickness = null
-sickness = new Sickness({
+const sickness = new Sickness({
   name: 'Sickness',
   cost: 3,
   points: -1,
@@ -205,7 +204,7 @@ sickness = new Sickness({
     { name: Keywords.fleeting, x: 0, y: 61 },
     { name: Keywords.nourish, x: -35, y: 111, value: -4 },
   ],
-  references: [{ card: sickness, x: -48, y: 132 }],
+  // references: [{ card: sickness, x: -48, y: 132 }],
 })
 
 export {

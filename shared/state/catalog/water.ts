@@ -1,5 +1,6 @@
 import Card from '../card'
 import { Status, Quality } from '../effects'
+import { Keywords } from '../keyword'
 
 class Mercy extends Card {
   play(player: any, game: any, index: number, bonus: any) {
@@ -14,7 +15,13 @@ class Mercy extends Card {
     return 3 + world.oppHand.length / 2 - world.hand.length / 2
   }
 }
-const mercy = new Mercy({ name: 'Mercy', cost: 3, points: 3, id: 12 })
+const mercy = new Mercy({
+  name: 'Mercy',
+  cost: 3,
+  points: 3,
+  id: 12,
+  text: 'Each player draws a card.',
+})
 
 class Excess extends Card {
   getCost(player: any, game: any) {
@@ -31,7 +38,13 @@ class Excess extends Card {
     return amt === 4 ? 0 : this.cost
   }
 }
-const excess = new Excess({ name: 'Excess', cost: 7, points: 7, id: 46 })
+const excess = new Excess({
+  name: 'Excess',
+  cost: 7,
+  points: 7,
+  id: 46,
+  text: 'Costs 0 if you have exactly 4 cards in the story.',
+})
 
 class FishingBoat extends Card {
   play(player: any, game: any, index: number, bonus: any) {
@@ -47,6 +60,7 @@ const fishingBoat = new FishingBoat({
   cost: 2,
   points: 1,
   id: 32,
+  text: 'Draw 3 cards that each cost 1.',
 })
 
 class Drown extends Card {
@@ -56,7 +70,13 @@ class Drown extends Card {
     this.mill(3, game, player)
   }
 }
-const drown = new Drown({ name: 'Drown', cost: 1, points: 1, id: 5 })
+const drown = new Drown({
+  name: 'Drown',
+  cost: 1,
+  points: 1,
+  id: 5,
+  text: 'Discard the top 3 cards of your deck.',
+})
 
 class Iceberg extends Card {
   getCost(player: any, game: any) {
@@ -68,7 +88,13 @@ class Iceberg extends Card {
     this.draw(2, game, player)
   }
 }
-const iceberg = new Iceberg({ name: 'Iceberg', cost: 4, points: 2, id: 54 })
+const iceberg = new Iceberg({
+  name: 'Iceberg',
+  cost: 4,
+  points: 2,
+  id: 54,
+  text: 'Draw 2 cards.\nCosts 1 less for each time you’ve passed this round.',
+})
 
 class Dew extends Card {
   morning(player: any, game: any, index: number) {
@@ -76,7 +102,15 @@ class Dew extends Card {
     return true
   }
 }
-const dew = new Dew({ name: 'Dew', cost: 1, points: 1, id: 63 })
+const dew = new Dew({
+  name: 'Dew',
+  cost: 1,
+  points: 1,
+  id: 63,
+  text: 'Morning: create a Dew in your hand.',
+  story: 'I return\nOver and over again\nSwelling the future',
+  keywords: [{ name: Keywords.morning, x: 0, y: 102 }],
+})
 
 class GentleRain extends Card {
   play(player: any, game: any, index: number, bonus: any) {
@@ -92,6 +126,8 @@ const gentleRain = new GentleRain({
   cost: 4,
   points: 2,
   id: 71,
+  text: "Nourish 1 for each card you've drawn this round.",
+  keywords: [{ name: Keywords.nourish, x: -32, y: 88, value: 1 }],
 })
 
 export { mercy, excess, fishingBoat, drown, iceberg, dew, gentleRain }
