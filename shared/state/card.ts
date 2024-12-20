@@ -6,14 +6,14 @@ import { Zone } from './zone'
 import { Keyword } from './keyword'
 
 // TODO Move some of these around
-export interface KeywordTuple {
+export interface KeywordPosition {
   keyword: Keyword
   x: number
   y: number
   value: number
 }
 
-interface ReferenceTuple {
+export interface ReferencePosition {
   name: string
   x: number
   y: number
@@ -24,14 +24,13 @@ interface CardData {
   id?: number
   cost?: number
   points?: number
+  qualities?: Quality[]
 
   text?: string
-  qualities?: Quality[]
   dynamicText?: string
-
   story?: string
-  keywords?: KeywordTuple[]
-  references?: ReferenceTuple[]
+  keywords?: KeywordPosition[]
+  references?: ReferencePosition[]
 }
 
 export default class Card {
@@ -39,15 +38,13 @@ export default class Card {
   id: number
   cost: number
   points: number
-  text: string
   qualities: Quality[]
+
+  text: string
   dynamicText: string
   story: string = ''
-  keywords: KeywordTuple[] = []
-  references: ReferenceTuple[] = []
-
-  // TODO Constructor fix
-  catalogText = ''
+  keywords: KeywordPosition[] = []
+  references: ReferencePosition[] = []
 
   constructor({
     name = '',

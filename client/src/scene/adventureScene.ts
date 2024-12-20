@@ -419,7 +419,8 @@ export default class AdventureScene extends BaseScene {
 
         let card = Catalog.getCard(mission.card)
         if (card !== undefined) {
-          params.txt = card.story
+          // TODO
+          // params.txt = card.story
           params.card = card
         }
 
