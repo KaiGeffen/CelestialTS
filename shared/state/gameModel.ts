@@ -185,7 +185,7 @@ export default class GameModel {
               from: Zone.Deck,
               to: Zone.Hand,
               card: card,
-              index: this.hand[player].length - 1,
+              index2: this.hand[player].length - 1,
             }),
           )
           return card
@@ -203,7 +203,7 @@ export default class GameModel {
           from: Zone.Gone,
           to: Zone.Hand,
           card: card,
-          index: this.hand[player].length - 1,
+          index2: this.hand[player].length - 1,
         }),
       )
       return card
@@ -217,7 +217,7 @@ export default class GameModel {
         from: Zone.Gone,
         to: Zone.Discard,
         card: card,
-        index: this.pile[player].length,
+        index2: this.pile[player].length,
       }),
     )
     this.pile[player].push(card)

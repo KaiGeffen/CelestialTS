@@ -441,7 +441,9 @@ export default class OurHandRegion extends Region {
 
     this.btnNourish.setVisible(amtNourish !== 0).setText(`${amtNourish}`)
 
-    this.btnSight.setVisible(state.vision[0] !== 0).setText(`${state.vision}`)
+    this.btnSight
+      .setVisible(state.vision[0] !== 0)
+      .setText(`${state.vision[0]}`)
   }
 
   // TUTORIAL FUNCTIONALITY

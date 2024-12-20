@@ -98,15 +98,13 @@ function hideHiddenInformation(model: GameModel) {
   // Hide the opponent's amtDrawn
   model.amtDrawn[1] = 0
 
-  // Hide opponent's cards in the story
+  // Hide opponent's cards in the story (Except the first _vision_ of them)
   if (!model.isRecap) {
-    model.story.acts = model.story.acts.map((act) => {
-      if (act.owner === 1) {
-        return { ...act, card: hiddenCard }
-      } else {
-        return act
+    for (let i = model.vision[0]; i < model.story.acts.length; i++) {
+      if (model.story.acts[i].owner === 1) {
+        model.story.acts[i].card = hiddenCard
       }
-    })
+    }
   }
 }
 
