@@ -374,4 +374,7 @@ export default class Catalog {
   static getCard(s: string): Card {
     return allCards.find((c) => c.name === s)
   }
+  static getCardById(id: number): Card {
+    return allCards.find((c) => c.id === id)
+  }
 }
