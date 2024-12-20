@@ -209,17 +209,28 @@ export default class FilterRegion {
 
     // Filter cards based on if they contain the string being searched
     let searchTextFilter = function (card: Card): boolean {
-      // If searching for 'common', return false to uncommon cards
-      if (
-        that.searchText.toLowerCase() === 'common' &&
-        card.getCardText().toLowerCase().includes('uncommon')
-      ) {
-        return false
+      // Search over text, name, cost, points
+      let s = `${card.text}
+        ${card.name}
+        ${card.cost}
+        ${card.points}`
+      // Add each keyword
+      for (let keyword of card.keywords) {
+        s += ` ${keyword.name.text}`
       }
-      return card
-        .getCardText()
-        .toLowerCase()
-        .includes(that.searchText.toLowerCase())
+      // Add each referenced card's text and its keyword text
+      for (let ref of card.references) {
+        s += ` ${ref.card.text}`
+        for (let keyword of ref.card.keywords) {
+          s += ` ${keyword.name.text}`
+        }
+      }
+
+      // Compare inclusion without case
+      const query = that.searchText.toLowerCase()
+      s = s.toLowerCase()
+
+      return s.includes(query)
     }
 
     // Filter cards based on whether you have unlocked them

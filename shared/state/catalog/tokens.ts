@@ -55,6 +55,7 @@ const predator = new Predator({
   cost: 1,
   qualities: [Quality.FLEETING],
   id: 1004,
+  text: "Fleeting. Worth +2 points for each Prey in your opponent's discard pile.",
   keywords: [{ name: Keywords.fleeting, x: 0, y: 61 }],
 })
 
