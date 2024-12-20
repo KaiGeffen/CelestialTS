@@ -67,7 +67,13 @@ class Prey extends Card {
     this.create(predator, game, player ^ 1)
   }
 }
-const prey = new Prey({ name: 'Prey', cost: 1, points: 2, id: 26 })
+const prey = new Prey({
+  name: 'Prey',
+  cost: 1,
+  points: 2,
+  id: 26,
+  references: [{ name: 'Predator', x: 6, y: 113 }],
+})
 
 class Conquer extends Card {
   getCost(player: number, game: any): number {

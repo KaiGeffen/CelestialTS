@@ -1,6 +1,6 @@
 import 'phaser'
 import { cardback } from '../../catalog/catalog'
-import { ALL_KEYWORDS } from '../../catalog/keywords'
+import Keyword from '../../../../shared/state/keyword'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import GameModel from '../../../../shared/state/gameModel'
@@ -175,9 +175,7 @@ export default class TheirHandRegion extends Region {
 
   private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
     let that = this
-    let keyword = ALL_KEYWORDS.find((value) => {
-      return value.key === status
-    })
+    let keyword = Keyword.find(status)
 
     //TODO Move this into hint
     let onHover = () => {

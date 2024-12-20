@@ -1,6 +1,6 @@
 import 'phaser'
 
-import { Keyword, ALL_KEYWORDS } from '../catalog/keywords'
+import { Keyword, ALL_KEYWORDS } from '../../../shared/state/keyword'
 import { Style } from '../settings/settings'
 import { getCard } from '../catalog/catalog'
 import Card from '../../../shared/state/card'

@@ -7,13 +7,10 @@
     "skipLibCheck": true,
     // "strict": true, TODO
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "outDir": "./dist",
     "rootDir": "./",
     "lib": ["es6", "dom"]
   },
-  "include": [
-    "shared/**/*.ts",
-    "server/**/*.ts",
-    "client/src/catalog/keywords.ts"
-  ]
+  "include": ["shared/**/*.ts", "server/**/*.ts", "shared/state/keyword.ts"]
 }

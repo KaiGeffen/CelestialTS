@@ -1,5 +1,5 @@
 import 'phaser'
-import { ALL_KEYWORDS } from '../catalog/keywords'
+import { ALL_KEYWORDS } from '../../../shared/state/keyword'
 import { Space, Style } from '../settings/settings'
 
 export enum Status {

@@ -3,9 +3,10 @@ import { Act } from './story'
 import GameModel from './gameModel'
 import { Animation } from '../animation'
 import { Zone } from './zone'
+import { Keyword } from './keyword'
 
 export interface KeywordTuple {
-  name: string
+  name: Keyword
   x: number
   y: number
   value: number

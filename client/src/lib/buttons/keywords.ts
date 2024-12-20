@@ -2,12 +2,10 @@ import 'phaser'
 import Button from './button'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import { Style, Space, Flags } from '../../settings/settings'
-import { ALL_KEYWORDS } from '../../catalog/keywords'
+import { getKeyword } from '../../../../shared/state/keyword'
 
 function getHint(btn: Button, status: string): string {
-  let keyword = ALL_KEYWORDS.find((value) => {
-    return value.key === status
-  })
+  let keyword = getKeyword(status)
 
   let s = keyword.text
 
