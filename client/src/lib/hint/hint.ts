@@ -12,9 +12,8 @@ import {
 import Card, { KeywordTuple } from '../../../../shared/state/card'
 import Catalog from '../../../../shared/state/catalog'
 import BaseScene from '../../scene/baseScene'
-import { Keyword, getKeyword } from '../../../../shared/state/keyword'
+import { Keywords } from '../../../../shared/state/keyword'
 import BaseHint from './baseHint'
-import { ALL } from 'dns'
 
 export default class Hint extends BaseHint {
   showCard(card: Card | string): Hint {
@@ -26,6 +25,8 @@ export default class Hint extends BaseHint {
       // card = getCard(card)
     }
 
+    console.log(card)
+
     // Get cards referenced by this card
     const refs: Card[] = getReferencedCards(card)
 
@@ -34,7 +35,7 @@ export default class Hint extends BaseHint {
     ;[card, ...refs].forEach((card) => {
       card.keywords.forEach((kt) => {
         // If this keyword hasn't been seen before, add this tuple (Including X value)
-        if (!keywordTuples.some((k) => k.name === kt.name)) {
+        if (!keywordTuples.some((k) => k.keyword === kt.keyword)) {
           keywordTuples.push(kt)
         }
       })
@@ -103,7 +104,7 @@ export default class Hint extends BaseHint {
 
   // TODO Use in more places, instead of forming a string then passing to showText
   showKeyword(name: string): void {
-    const keyword = getKeyword(name)
+    const keyword = Keywords.get(name)
     if (keyword) {
       this.showText(keyword.text.replace(' X', ''))
     }
@@ -118,7 +119,7 @@ function getReferencedCards(card: Card): Card[] {
   card.references.forEach((reference) => {
     if (card.name !== reference.name) {
       console.log('getReferencedCards', reference.name)
-      result.push(getCard(reference.name))
+      result.push(Catalog.getCard(reference.name))
     }
   })
 
@@ -131,7 +132,7 @@ function getKeywordsText(keywordTuples: KeywordTuple[]) {
   let result = '\n'
 
   for (const keywordTuple of keywordTuples) {
-    const keyword = getKeyword(`${keywordTuple.name}`)
+    const keyword = Keywords.get(`${keywordTuple.keyword}`)
     let txt = keyword.text
 
     if (keyword.hasX) {

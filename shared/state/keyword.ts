@@ -1,9 +1,27 @@
 export class Keyword {
   constructor(
-    public key: string,
+    public name: string,
     public text: string,
     public hasX: Boolean,
   ) {}
+}
+
+export class Keywords {
+  static get(key: string): Keyword {
+    return Keywords.getAll().find((keyword) => keyword.name === key)
+  }
+  static getAll(): Keyword[] {
+    return [
+      Keywords.visible,
+      Keywords.fleeting,
+      Keywords.morning,
+      Keywords.sight,
+      Keywords.inspire,
+      Keywords.inspired,
+      Keywords.nourish,
+      Keywords.birth,
+    ]
+  }
 
   static visible = new Keyword(
     'Visible',
@@ -45,17 +63,4 @@ export class Keyword {
     '[img=kw-Birth X] - If you have a Child in hand, increase its points by X. Otherwise create a 0:X [img=kw-Fleeting] Child in hand.',
     true,
   )
-}
-
-export function getKeyword(value): Keyword {
-  return [
-    Keyword.visible,
-    Keyword.fleeting,
-    Keyword.morning,
-    Keyword.sight,
-    Keyword.inspire,
-    Keyword.inspired,
-    Keyword.nourish,
-    Keyword.birth,
-  ].find((keyword) => keyword.key === value)
 }

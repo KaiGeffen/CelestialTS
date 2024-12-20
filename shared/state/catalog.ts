@@ -372,6 +372,7 @@ export default class Catalog {
   static cardback = new Card({ name: 'Cardback', id: 1000 })
 
   static getCard(s: string): Card {
-    return allCards.filter((c) => c.name === s)[0]
+    console.log(allCards.find((c) => c.name === stars.name))
+    return allCards.find((c) => c.name === s)
   }
 }

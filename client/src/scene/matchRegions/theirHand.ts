@@ -1,5 +1,5 @@
 import 'phaser'
-import { Keyword } from '../../../../shared/state/keyword'
+import { Keywords } from '../../../../shared/state/keyword'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import GameModel from '../../../../shared/state/gameModel'
@@ -174,7 +174,7 @@ export default class TheirHandRegion extends Region {
 
   private onHoverStatus(status: string, btn: Button): [() => void, () => void] {
     let that = this
-    let keyword = Keyword.find(status)
+    let keyword = Keywords.get(status)
 
     //TODO Move this into hint
     let onHover = () => {

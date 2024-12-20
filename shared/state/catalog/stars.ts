@@ -1,7 +1,7 @@
 import Card from '../card'
 import { SightCard } from '../card'
 import { Status, Quality } from '../effects'
-import { Keyword } from '../keyword'
+import { Keywords } from '../keyword'
 
 class Stars extends Card {
   play(player: any, game: any, index: number, bonus: number) {
@@ -13,8 +13,9 @@ const stars = new Stars({
   name: 'Stars',
   id: 0,
   text: 'Inspire 1.',
-  keywords: [{ name: Keyword.inspire, x: 0, y: 130, value: 1 }],
+  keywords: [{ keyword: Keywords.inspire, x: 0, y: 130, value: 1 }],
 })
+console.log(stars)
 
 class Cosmos extends Card {
   play(player: any, game: any, index: number, bonus: number) {

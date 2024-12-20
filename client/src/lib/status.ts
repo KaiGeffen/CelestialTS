@@ -1,5 +1,5 @@
 import 'phaser'
-import { ALL_KEYWORDS } from '../../../shared/state/keyword'
+import { Keywords } from '../../../shared/state/keyword'
 import { Space, Style } from '../settings/settings'
 
 export enum Status {
@@ -104,8 +104,8 @@ export class StatusBar {
     return function () {
       // Get the string to be shown
       let s = ''
-      ALL_KEYWORDS.forEach(function (keyword, i, array) {
-        if (keyword.key === Status[statusIndex]) {
+      Keywords.getAll().forEach(function (keyword, i, array) {
+        if (keyword.name === Status[statusIndex]) {
           s += keyword.text
 
           // Replace each instance of X with amt

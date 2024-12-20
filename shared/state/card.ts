@@ -7,7 +7,7 @@ import { Keyword } from './keyword'
 
 // TODO Move some of these around
 export interface KeywordTuple {
-  name: Keyword
+  keyword: Keyword
   x: number
   y: number
   value: number
@@ -46,7 +46,7 @@ export default class Card {
   keywords: KeywordTuple[] = []
   references: ReferenceTuple[] = []
 
-  fleeting = false
+  // TODO Constructor fix
   catalogText = ''
 
   constructor({
@@ -57,9 +57,9 @@ export default class Card {
     text = '',
     qualities = [],
     dynamicText = '',
-    // story = '',
-    // keywords = [],
-    // references = [],
+    story = '',
+    keywords = [],
+    references = [],
   }: CardData) {
     this.name = name
     this.id = id
@@ -68,9 +68,9 @@ export default class Card {
     this.text = text
     this.qualities = qualities
     this.dynamicText = dynamicText
-    // this.story = story
-    // this.keywords = keywords
-    // this.references = references
+    this.story = story
+    this.keywords = keywords
+    this.references = references
   }
 
   play(player: number, game: GameModel, index: number, bonus: number): void {

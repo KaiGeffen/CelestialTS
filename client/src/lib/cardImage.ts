@@ -324,7 +324,7 @@ export class CardImage {
     this.card.keywords.forEach((keywordTuple) => {
       let keyword = new KeywordLabel(
         this.scene,
-        keywordTuple.name,
+        keywordTuple.keyword,
         keywordTuple.x,
         keywordTuple.y,
         keywordTuple.value,

@@ -9,9 +9,6 @@ import {
   UserSettings,
   Space,
 } from '../../settings/settings'
-import Card from '../../../../shared/state/card'
-import BaseScene from '../../scene/baseScene'
-import { Keyword, ALL_KEYWORDS } from '../../../../shared/state/keyword'
 
 export default class Hint {
   txt: RexUIPlugin.BBCodeText

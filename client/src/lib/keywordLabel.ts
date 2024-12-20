@@ -1,6 +1,6 @@
 import 'phaser'
 
-import { Keyword, getKeyword } from '../../../shared/state/keyword'
+import { Keyword, Keywords } from '../../../shared/state/keyword'
 import { Style } from '../settings/settings'
 import Catalog from '../../../shared/state/catalog'
 import Card from '../../../shared/state/card'
@@ -14,29 +14,20 @@ export class KeywordLabel extends Phaser.GameObjects.Image {
 
   constructor(
     scene: Phaser.Scene,
-    name,
+    keyword: Keyword,
     x: number,
     y: number,
     value: number,
     f: () => void,
   ) {
-    const s = value === undefined ? `kw-${name}` : `kw-${name} ${value}`
+    const s =
+      value === undefined ? `kw-${keyword.name}` : `kw-${keyword.name} ${value}`
 
     super(scene, x, y, s)
     scene.add.existing(this)
 
-    // Set keyword for this
-    const keyword = getKeyword(name)
-    if (keyword) {
-      this.keyword = keyword
-      this.value = value
-    }
-    // TODO
-    // ALL_KEYWORDS.forEach((keyword) => {
-    //   if (keyword.key === name) {
-    //     this.keyword = keyword
-    //     this.value = value
-    //   }
+    this.keyword = keyword
+    this.value = value
 
     // On hover this should show the correct hint
     this.setInteractive()
