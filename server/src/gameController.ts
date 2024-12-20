@@ -276,12 +276,16 @@ class ServerController {
 
     this.model.wins[0] += wins[0]
     this.model.wins[1] += wins[1]
+    // Declare a game winner if a player has 5 wins
+    ;[0, 1].forEach((player) => {
+      if (this.model.wins[player] >= 5) {
+        this.model.winner = player
+      }
+    })
 
     // Add each players points as the final moment after the story resolves
     this.model.roundResults[0].push(this.model.score[0])
     this.model.roundResults[1].push(this.model.score[1])
-
-    // this.model.recap.addTotal(this.model.score, wins)
 
     this.model.story.saveEndState(this.model)
     this.model.story.clear()

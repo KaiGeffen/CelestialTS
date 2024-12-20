@@ -10,3 +10,5 @@ export const START_BREATH = 1 - BREATH_GAIN_PER_TURN
 export const BREATH_CAP = 10
 
 export const PASS = 10
+
+export const MAX_DECK_NAME_LENGTH = 20

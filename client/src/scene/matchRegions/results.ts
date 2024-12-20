@@ -11,9 +11,7 @@ import {
   Flags,
 } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
-// import { CardImage } from '../../lib/cardImage'
 import GameModel from '../../../../shared/state/gameModel'
-// import { Animation, Zone } from '../../lib/animation'
 import BaseScene from '../baseScene'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
