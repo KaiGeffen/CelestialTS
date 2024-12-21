@@ -82,18 +82,26 @@ class Phoenix extends Card {
   play(player, game, index, bonus) {
     super.play(player, game, index, bonus)
 
-    // for (let i = 0; i < game.pile[player].length; i++) {
-    //   let card = game.pile[player][i]
-    //   if (card.qualities.includes(Quality.FLEETING)) {
-    //     const cardCopy = Object.create(
-    //       Object.getPrototypeOf(card),
-    //       Object.getOwnPropertyDescriptors(card),
-    //     )
-    //     cardCopy.points += 1
-    //     cardCopy.basePoint = cardCopy.basePoints
-    //     game.pile[player][i] = cardCopy
+    // const deck = game.deck[player]
+    // const discardPile = game.pile[player]
+    // ;[deck, discardPile].forEach((zone) => {
+    //   // For each index in the zone
+    //   for (let i = 0; i < zone.length; i++) {
+    //     let card = zone[i]
+    //     if (card.qualities.includes(Quality.FLEETING)) {
+    //       // Create a new copy of the card, but with 1 more point
+    //       const cardCopy = Object.create(
+    //         Object.getPrototypeOf(card),
+    //         Object.getOwnPropertyDescriptors(card),
+    //       )
+    //       cardCopy.points += 1
+    //       cardCopy.basePoint = cardCopy.basePoints
+
+    //       // Replace the original card with the new copy
+    //       zone[i] = cardCopy
+    //     }
     //   }
-    // }
+    // })
 
     this.create(dove, game, player)
   }
