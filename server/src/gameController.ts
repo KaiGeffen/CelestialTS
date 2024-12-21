@@ -192,7 +192,8 @@ class ServerController {
     this.model.priority = this.model.lastPlayerWhoPlayed
 
     // Increase max breath by 1, up to a cap
-    for (const player of [0, 1]) {
+    const players = this.model.priority === 1 ? [1, 0] : [0, 1]
+    for (const player of players) {
       if (this.model.maxBreath[player] < BREATH_CAP) {
         this.model.maxBreath[player] = Math.min(
           this.model.maxBreath[player] + BREATH_GAIN_PER_TURN,
