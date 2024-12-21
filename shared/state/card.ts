@@ -17,6 +17,9 @@ interface CardData {
   story?: string
   keywords?: KeywordPosition[]
   references?: ReferencePosition[]
+
+  // Some cards include this, otherwise defaults to points
+  basePoints?: number
 }
 
 export default class Card {
@@ -24,6 +27,7 @@ export default class Card {
   id: number
   cost: number
   points: number
+  basePoints: number
   qualities: Quality[]
 
   text: string
@@ -41,6 +45,7 @@ export default class Card {
     story = '',
     keywords = [],
     references = [],
+    basePoints = points,
   }: CardData) {
     this.name = name
     this.id = id
@@ -51,6 +56,7 @@ export default class Card {
     this.story = story
     this.keywords = keywords
     this.references = references
+    this.basePoints = basePoints
   }
 
   play(player: number, game: GameModel, index: number, bonus: number): void {
@@ -285,6 +291,7 @@ export default class Card {
       cost: 0,
       points: amt,
       qualities: [Quality.FLEETING],
+      basePoints: 0,
     })
     if (game.create(player, card)) {
       return `\nBuild ${amt}`

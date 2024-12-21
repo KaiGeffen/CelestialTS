@@ -52,7 +52,7 @@ const bounty = new Bounty({
 })
 
 class Pet extends Card {
-  constructor(points) {
+  constructor(points: number) {
     const text = `2:${points}. This card retains all changes to points as it resolves.`
     super({
       name: 'Pet',
@@ -61,6 +61,7 @@ class Pet extends Card {
       points,
       qualities: [Quality.FLEETING],
       text,
+      basePoints: 1,
     })
   }
 

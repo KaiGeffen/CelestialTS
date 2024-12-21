@@ -81,6 +81,20 @@ const secretaryBird = new SecretaryBird({
 class Phoenix extends Card {
   play(player, game, index, bonus) {
     super.play(player, game, index, bonus)
+
+    // for (let i = 0; i < game.pile[player].length; i++) {
+    //   let card = game.pile[player][i]
+    //   if (card.qualities.includes(Quality.FLEETING)) {
+    //     const cardCopy = Object.create(
+    //       Object.getPrototypeOf(card),
+    //       Object.getOwnPropertyDescriptors(card),
+    //     )
+    //     cardCopy.points += 1
+    //     cardCopy.basePoint = cardCopy.basePoints
+    //     game.pile[player][i] = cardCopy
+    //   }
+    // }
+
     this.create(dove, game, player)
   }
 }
