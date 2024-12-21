@@ -14,7 +14,6 @@ interface CardData {
 
   // Just used by client
   text?: string
-  dynamicText?: string
   story?: string
   keywords?: KeywordPosition[]
   references?: ReferencePosition[]
@@ -28,7 +27,6 @@ export default class Card {
   qualities: Quality[]
 
   text: string
-  dynamicText: string
   story: string = ''
   keywords: KeywordPosition[] = []
   references: ReferencePosition[] = []
@@ -40,7 +38,6 @@ export default class Card {
     points = 0,
     text = '',
     qualities = [],
-    dynamicText = '',
     story = '',
     keywords = [],
     references = [],
@@ -51,7 +48,6 @@ export default class Card {
     this.points = points
     this.text = text
     this.qualities = qualities
-    this.dynamicText = dynamicText
     this.story = story
     this.keywords = keywords
     this.references = references
@@ -280,7 +276,6 @@ export default class Card {
     for (const card of game.hand[player]) {
       if (card.name === 'Child') {
         card.points += amt
-        card.dynamicText = `0:${card.points}, Fleeting`
         return `\nBuild +${amt}`
       }
     }
@@ -290,7 +285,6 @@ export default class Card {
       cost: 0,
       points: amt,
       qualities: [Quality.FLEETING],
-      dynamicText: `0:${amt}, Fleeting`,
     })
     if (game.create(player, card)) {
       return `\nBuild ${amt}`

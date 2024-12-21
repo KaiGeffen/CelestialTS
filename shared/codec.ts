@@ -16,29 +16,7 @@ function encodeCard(card: Card): string {
 function decodeCard(s: string): Card {
   let sections = s.split(delims[2])
 
-  let baseCard = getCard(sections[0])
-
-  if (sections.length == 1) {
-    return baseCard
-  } else {
-    let dynamicText = sections[1]
-
-    let points = parseInt(dynamicText.split(':')[1].split(',')[0])
-
-    // NOTE A new copy of the card is created so that all instances (of Bastet, for example) won't have the same dynamic text
-    let data = {
-      name: baseCard.name,
-      id: baseCard.id,
-      cost: baseCard.cost,
-      points: points,
-      text: baseCard.text,
-      dynamicText: dynamicText,
-      catalogText: '',
-      story: '',
-    }
-
-    return new Card(data)
-  }
+  return getCard(sections[0])
 }
 
 function encodeDeck(deck: Card[] | string): string {

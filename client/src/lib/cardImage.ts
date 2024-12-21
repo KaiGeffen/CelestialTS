@@ -253,20 +253,16 @@ export class CardImage {
 
   // Set the displayed point value of the card, or hide it if it's equal to the default value
   setPoints(amt: number): CardImage {
-    // If this is the default of the card, don't display any custom point value
-    if (this.card.dynamicText === '') {
-      this.txtPoints.setAlpha(0.001)
-    }
-
     // TODO Generalize once it's not just pet and child that have dynamic version
     if (
-      (this.card.name === 'Child' && amt === 0) ||
-      (this.card.name === 'Pet' && amt === 1)
+      (this.card.name === 'Child' && amt !== 0) ||
+      (this.card.name === 'Pet' && amt !== 1)
     ) {
+      this.txtPoints.setAlpha(1)
+      this.txtPoints.setText(`[stroke=${Color.cardStatChanged}]${amt}[/stroke]`)
+    } else {
       this.txtPoints.setAlpha(0.001)
     }
-
-    this.txtPoints.setText(`[stroke=${Color.cardStatChanged}]${amt}[/stroke]`)
 
     return this
   }

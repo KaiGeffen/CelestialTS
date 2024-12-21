@@ -53,7 +53,7 @@ const bounty = new Bounty({
 
 class Pet extends Card {
   constructor(points) {
-    const text = `2:${points}, this card retains all changes to points as it resolves (For example, if this card was nourished by 3, it stays a 2:4 once it is in the discard pile)`
+    const text = `2:${points}. This card retains all changes to points as it resolves.`
     super({
       name: 'Pet',
       id: 34,
