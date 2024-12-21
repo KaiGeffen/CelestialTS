@@ -1,19 +1,19 @@
 [
   {"name": "Stars", "id": 0,
     "cost": 0, "points": 0,
-    "text": "Inspire 1.",
+    "text": "Inspire 1",
     "keywords": [
       {"name": "Inspire", "x": 0, "y": 130, "value": 1}
     ]
   },
   {"name": "Dagger", "id": 1,
     "cost": 1, "points": 0,
-    "text": "Your opponent discards the leftmost card of their hand.",
+    "text": "Your opponent discards a card.",
     "story": "I have a point now\nI am no longer alone, scattered \nBut trained wholly on the promise\nOf your body, squirming"
   },
   {"name": "Nascence", "id": 2,
     "cost": 0, "points": 0,
-    "text": "Birth 1.",
+    "text": "Birth 1",
     "keywords": [
       {"name": "Birth", "x": 0, "y": 130, "value": 1}
     ]
@@ -21,7 +21,7 @@
 
   {"name": "Impulse", "id": 3,
     "cost": 1, "points": 1,
-    "text": "Fleeting, create 2 Ashes in your discard pile.",
+    "text": "Fleeting\nCreate two Ashes in your discard pile.",
     "story": "Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y": 82}
@@ -32,7 +32,7 @@
   },
   {"name": "Dove", "id": 4,
     "cost": 1, "points": 1,
-    "text": "Visible, Fleeting.",
+    "text": "Visible\nFleeting",
     "story": "Look at my eyes.\nSurrender\nTo the one thing you want",
     "keywords": [
       {"name": "Visible", "x": 0, "y": 100},
@@ -41,17 +41,17 @@
   },
   {"name": "Drown", "id": 5,
     "cost": 1, "points": 1,
-    "text": "Discard the top 3 cards of your deck."
+    "text": "Discard the top three cards of your deck."
   },
 
   {"name": "Dash", "id": 6,
     "cost": 2, "points": 3,
-    "text": "Worth -1 point for each card before this in the story.",
+    "text": "Worth -1 for each card before this in the story.",
     "story": "I look around only to remind me: Move on! Fast!"
   },
   {"name": "Starling", "id": 7,
     "cost": 2, "points": 2,
-    "text": "Visible, Fleeting, worth +1 point if the next card in the story costs 1.",
+    "text": "Visible\nFleeting\nWorth +1 if the next card in the story has base cost 1.",
     "story": "Making headway\nDefying the headwind\nHeading out and through",
     "keywords": [
       {"name": "Visible", "x": 0, "y": 52},
@@ -60,7 +60,7 @@
   },
   {"name": "Birth", "id": 8,
     "cost": 2, "points": 0,
-    "text": "Birth 2.",
+    "text": "Birth 2",
     "keywords": [
       {"name": "Birth", "x": 0, "y": 130, "value": 2}
     ]
@@ -82,7 +82,7 @@
   },
   {"name": "Fruit", "id": 11,
     "cost": 3, "points": 0,
-    "text": "Nourish 3.",
+    "text": "Nourish 3",
     "keywords": [
       {"name": "Nourish", "x": 0, "y": 130, "value": 3}
     ]
@@ -94,11 +94,11 @@
 
   {"name": "Hurricane", "id": 13,
     "cost": 4, "points": 0,
-    "text": "Set both player's points to 0."
+    "text": "Set both players' points to 0."
   },
   {"name": "Arsonist", "id": 14,
     "cost": 4, "points": 4,
-    "text": "Fleeting, create 3 Ashes in your discard pile.",
+    "text": "Fleeting\nCreate three Ashes in your discard pile.",
     "story": "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y": 82}
@@ -109,23 +109,23 @@
   },
   {"name": "Mine", "id": 15,
     "cost": 4, "points": 4,
-    "text": "Remove from the game the top 4 cards of your discard pile."
+    "text": "Remove from the game the top four cards of your discard pile."
   },
 
   {"name": "Wing Clipping", "id": 16,
     "cost": 5, "points": 3,
-    "text": "Your opponent puts the leftmost card of their hand on top of their deck.",
+    "text": "Your opponent puts a card from their hand on top of their deck.",
     "story": "We walked and ran and played then\nYou leave me behind\nI gasp as the space between us grows"
   },
   {"name": "Veteran", "id": 17,
     "cost": 5, "points": 4,
-    "text": "Worth +2 points if your discard pile has at least 8 cards in it.",
+    "text": "Worth +2 if your discard pile has at least eight cards in it.",
     "story": "The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat there was to know"
   },
 
   {"name": "Uprising", "id": 18,
     "cost": 6, "points": 3,
-    "text": "Worth +1 point for each card before this in the story."
+    "text": "Worth +1 for each card before this in the story."
   },
   {"name": "Shadow", "id": 19,
     "cost": 6, "points": 3,
@@ -134,23 +134,23 @@
   },
   {"name": "Cling", "id": 20,
     "cost": 6, "points": 0,
-    "text": "Put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost.",
+    "text": "Worth +X, where X is the highest base cost in your discard pile. Put that card on top of your deck.",
     "story": "Reaching back with the back of the eyes\nTo that moment when\nI see myself – not as I am – but as I was - clearly"
   },
 
   {"name": "Death", "id": 21,
     "cost": 7, "points": 7,
-    "text": "Costs 0 if you have at least 12 cards in your discard pile.",
+    "text": "Costs 0 if you have at least twelve cards in your discard pile.",
     "story": "I knew you were coming, I just didn’t know when.\nGo easy on me.\nI am tired, sated, and looking for new life."
   },
 
   {"name": "The Future", "id": 22,
     "cost": 8, "points": 4,
-    "text": "Draw 1 card.\nCosts X less, where X is the total point value of all Children in your hand."
+    "text": "Costs X less, where X is the total point value of all Children in your hand.\nDraw a card."
   },
   {"name": "Oak", "id": 23,
     "cost": 8, "points": 8,
-    "text": "If this is win this round, Nourish 1 for each point you won by.",
+    "text": "If you win this round, Nourish 1 for each point you won by.",
     "keywords": [
       {"name": "Nourish", "x": -31, "y": 112, "value": 1}
     ]
@@ -158,7 +158,7 @@
 
   {"name": "Dawn", "id": 50,
     "cost": 0, "points": 0,
-    "text": "When played, gain Sight 4.\nMorning: gain Sight 1.",
+    "text": "When played, gain Sight 4\nMorning: Gain Sight 1",
     "keywords": [
       {"name": "Sight", "x": 0, "y": 74, "value": 4},
       {"name": "Morning", "x": -22, "y": 104},
@@ -168,7 +168,7 @@
 
   {"name": "Nectar", "id": 25,
     "cost": 1, "points": 0,
-    "text": "Nourish 1.\nWhen played, gain Sight 3.",
+    "text": "Nourish 1\nWhen played, gain Sight 3",
     "keywords": [
       {"name": "Nourish", "x": 0, "y": 73, "value": 1},
       {"name": "Sight", "x": 0, "y": 130, "value": 3}
@@ -183,7 +183,7 @@
   },
   {"name": "Dew", "id": 63,
     "cost": 1, "points": 1,
-    "text": "Morning: create a Dew in your hand.",
+    "text": "Morning: Create a Dew in your hand.",
     "story": "I return\nOver and over again\nSwelling the future",
     "keywords": [
       {"name": "Morning", "x": 0, "y": 102}
@@ -194,7 +194,7 @@
   },
   {"name": "Night Vision", "id": 28,
     "cost": 1, "points": 0,
-    "text": "Draw a card that costs 2.\nWhen played, gain Sight 3.",
+    "text": "Draw a card with base cost 2.\nWhen played, gain Sight 3",
     "keywords": [
       {"name": "Sight", "x": 0, "y": 130, "value": 3}
     ]
@@ -208,7 +208,7 @@
   },
   {"name": "Rebirth", "id": 55,
     "cost": 1, "points": 0,
-    "text": "Fleeting, transform each of your cards later in the story into an 0:X Fleeting Child, where X is its cost.",
+    "text": "Fleeting\nTransform each of your cards later in the story into a 0:X Fleeting Child, where X is its base cost.",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y": 39}
     ],
@@ -219,7 +219,7 @@
 
   {"name": "Hungry Ghost", "id": 31,
     "cost": 2, "points": 4,
-    "text": "Nourish -4.",
+    "text": "Nourish -4",
     "keywords": [
       {"name": "Nourish", "x": 0, "y": 130, "value": -4}
     ]
@@ -233,7 +233,7 @@
   },
   {"name": "Parch", "id": 64,
     "cost": 3, "points": 2,
-    "text": "Discard each of your cards later in the story. Worth +1 for each of those cards.\nWhen played, your cards cost 0 this round.",
+    "text": "Worth +1 for each of your cards later in the story. Discard those cards.\nWhen played, your cards cost 0 this round.",
     "story": "We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips"
   },
   {"name": "Hold Tight", "id": 33,
@@ -242,11 +242,11 @@
   },
   {"name": "Fishing Boat", "id": 32,
     "cost": 2, "points": 1,
-    "text": "Draw 3 cards that each cost 1."
+    "text": "Draw 3 cards that each have base cost 1."
   },
   {"name": "Imprison", "id": 35,
     "cost": 3, "points": 3,
-    "text": "At the end of this round, if your opponent has 3 or fewer points, give them Nourish -1.",
+    "text": "At the end of this round, if your opponent has 3 or fewer points, they Nourish -1",
     "story": "All tied up\ncan’t even stand\nAm I lethal to you and yours\nMy tight bonds calm me.",
     "keywords": [
       {"name": "Nourish", "x": 0, "y": 130, "value": -1}
@@ -254,7 +254,7 @@
   },
   {"name": "From Ashes", "id": 74,
     "cost": 2, "points": 1,
-    "text": "Remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
+    "text": "Remove from the game the top three cards of your discard pile. Nourish 1 for each card with Fleeting removed.",
     "story": "Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning",
     "keywords": [
       {"name": "Nourish", "x": -36, "y": 89, "value": 1},
@@ -263,26 +263,26 @@
   },
   {"name": "Pet", "id": 34,
     "cost": 2, "points": 1,
-    "text": "This card retains all changes to points as it resolves."
+    "text": "This permanently retains all changes to its points."
   },
 
   {"name": "Bounty", "id": 48,
     "cost": 3, "points": 3,
-    "text": "Both players Nourish 2.",
+    "text": "Both players Nourish 2",
     "keywords": [
       {"name": "Nourish", "x": 0, "y": 130, "value": 2}
     ]
   },
   {"name": "Cradle", "id": 60,
     "cost": 3, "points": 2,
-    "text": "Birth 2.",
+    "text": "Birth 2",
     "keywords": [
       {"name": "Birth", "x": 0, "y": 130, "value": 2}
     ]
   },
   {"name": "Nightmare", "id": 68,
     "cost": 2, "points": 2,
-    "text": "Morning: if you have more cards in hand than your opponent, create a Shadow in hand.",
+    "text": "Morning: If you have more cards in hand than your opponent, create a Shadow in hand.",
     "story": "I struggle to find myself\nBetween the claws and biting words\nShearing my mind away",
     "keywords": [
       {"name": "Morning", "x": 0, "y": 60}
@@ -293,7 +293,7 @@
   },
   {"name": "Sickness", "id": 58,
     "cost": 3, "points": -1,
-    "text": "Fleeting, give your opponent Nourish -4, create a Sickness in their hand.",
+    "text": "Fleeting\nCreate a Sickness in your opponent's hand, then they Nourish -4",
     "keywords": [
       {"name": "Fleeting", "x": 0, "y":61},
       {"name": "Nourish", "x": -35, "y": 111, "value": -4}
@@ -304,12 +304,12 @@
   },
   {"name": "Awakening", "id": 39,
     "cost": 3, "points": 3,
-    "text": "Retain your SightTODO at the end of this round."
+    "text": "Retain your Sight at the end of this round."
   },
 
   {"name": "Secretary Bird", "id": 40,
     "cost": 4, "points": 4,
-    "text": "Visible, worth +1 point for each card in your hand that costs 1 or less. Remove those cards from the game.",
+    "text": "Visible\nWorth +1 for each card in your hand with base cost 0 or 1. Remove those cards from the game.",
     "story": "I will I will I will\nBecome me become me become me\nAt your peril",
     "keywords": [
       {"name": "Visible", "x": 0, "y": 43}
@@ -317,7 +317,7 @@
   },
   {"name": "Posterity", "id": 53,
     "cost": 4, "points": 4,
-    "text": "Morning: Birth 1.",
+    "text": "Morning: Birth 1",
     "keywords": [
       {"name": "Morning", "x": 0, "y": 100},
       {"name": "Birth", "x": 0, "y": 130, "value": 1}
@@ -332,12 +332,12 @@
   },
   {"name": "Iceberg", "id": 54,
     "cost": 4, "points": 2,
-    "text": "Draw 2 cards.\nCosts 1 less for each time you’ve passed this round."
+    "text": "Draw two cards.\nCosts 1 less for each time you’ve passed this round."
   },
 
   {"name": "Heron", "id": 65,
     "cost": 1, "points": 0,
-    "text": "Visible, set both player's points to 0.\nCosts 1 more for each card in your discard pile.",
+    "text": "Visible\nSet both player's points to 0.\nCosts 1 more for each card in your discard pile.",
     "story": "How you see me\nIs of no importance to me\nI am playing with being here, there, every where",
     "keywords": [
       {"name": "Visible", "x": 0, "y": 60}
@@ -349,7 +349,7 @@
   },
   {"name": "Phoenix", "id": 51,
     "cost": 5, "points": 5,
-    "text": "Visible, Fleeting, create a Dove in your hand.",
+    "text": "Visible\nFleeting\nCreate a Dove in your hand.",
     "story": "Cracks in the shell\nShell falls away\nI stretch into wide possibilities",
     "keywords": [
       {"name": "Visible", "x": 0, "y": 52},
@@ -361,7 +361,7 @@
   },
   {"name": "Moon", "id": 73,
     "cost": 5, "points": 4,
-    "text": "Morning: trigger the morning abilities of the top 2 cards below this with morning.",
+    "text": "Morning: Trigger the morning abilities of the top 2 cards below this with morning.",
     "keywords": [
       {"name": "Morning", "x": 0, "y": 60}
     ]
@@ -369,26 +369,26 @@
 
   {"name": "Boa", "id": 57,
     "cost": 6, "points": 6,
-    "text": "If this is nourished, your opponent discards the leftmost card of their hand.",
+    "text": "If this is nourished, your opponent discards a card.",
     "story": "I reach I win I have it.\nIt is all mine now!\nCan I make it me?"
   },
 
   {"name": "Ecology", "id": 44,
     "cost": 7, "points": 0,
-    "text": "When played, gain 10 mana this round."
+    "text": "When played, gain 10 breath."
   },
   {"name": "Enlightenment", "id": 45,
     "cost": 7, "points": 7,
-    "text": "Costs 0 if you can see at least 3 of your opponent's cards in the story."
+    "text": "Costs 0 if you can see at least three of your opponent's cards in the story."
   },
   {"name": "Excess", "id": 46,
     "cost": 7, "points": 7,
-    "text": "Costs 0 if you have exactly 4 cards in the story."
+    "text": "Costs 0 if you have exactly four cards in the story."
   },
 
   {"name": "Sun", "id": 56,
     "cost": 8, "points": 8,
-    "text": "Morning: gain 2 extra breath this round.",
+    "text": "Morning: Gain 2 breath.",
     "story": "I raise my head over the horizon\nI begin\nJust like you",
     "keywords": [
       {"name": "Morning", "x": 0, "y": 82}
@@ -397,12 +397,12 @@
 
   {"name": "Paramountcy", "id": 62,
     "cost": 9, "points": 0,
-    "text": "Add the top 5 cards of your discard pile to the story after this card."
+    "text": "Add the top five cards of your discard pile to the story after this."
   },
 
   {"name": "Hollow", "id": 76,
     "cost": 0, "points": 0,
-    "text": "Set your points to 0. Gain Nourish 1 for each point you lost this way.",
+    "text": "Set your points to 0. Nourish 1 for each point you lost this way.",
     "keywords": [
       {"name": "Nourish", "x": -31, "y": 112, "value": 1}
     ]
