@@ -67,6 +67,7 @@ import {
   iceberg,
   dew,
   gentleRain,
+  refresh,
 } from './catalog/water'
 import { child, seen, ashes, predator } from './catalog/tokens'
 import { Animation } from '../animation'
@@ -99,6 +100,7 @@ const paramountcy = new Paramountcy({
 })
 
 const fullCatalog = [
+  refresh,
   stars,
   dagger,
   nascence,

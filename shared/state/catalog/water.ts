@@ -1,5 +1,6 @@
 import Card from '../card'
 import { Status, Quality } from '../effects'
+import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
 
 class Mercy extends Card {
@@ -130,4 +131,22 @@ const gentleRain = new GentleRain({
   keywords: [{ name: Keywords.nourish, x: -32, y: 88, value: 1 }],
 })
 
-export { mercy, excess, fishingBoat, drown, iceberg, dew, gentleRain }
+// BETA
+class Refresh extends Card {
+  onPlay(player: number, game: GameModel): void {
+    if (game.hand[player].length > 0) {
+      const card = game.hand[player].shift()
+      game.deck[player].unshift(card)
+      this.draw(1, game, player)
+    }
+  }
+}
+const refresh = new Refresh({
+  name: 'Refresh',
+  cost: 1,
+  points: 1,
+  id: 200,
+  text: 'When played, put the leftmost card in your hand on the bottom of your deck, then draw a card if you did. Your opponent doesn’t see you do this.',
+})
+
+export { mercy, excess, fishingBoat, drown, iceberg, dew, gentleRain, refresh }
