@@ -27,7 +27,7 @@ const dagger = new Dagger({
 })
 
 class Shadow extends Card {
-  get_cost(player, game) {
+  getCost(player, game) {
     const opp = (player + 1) % 2
     return game.hand[opp].length
   }
