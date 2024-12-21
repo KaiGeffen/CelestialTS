@@ -2,10 +2,6 @@ import { WebSocketServer } from 'ws'
 import MatchQueue from './matchQueue'
 
 import { URL, PORT } from '../../../shared/network/settings'
-import {
-  TypedWebSocket,
-  createEvent,
-} from '../../../shared/network/typedWebSocket'
 
 // Create the websocket server
 export default function createMatchServer() {

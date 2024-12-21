@@ -13,7 +13,7 @@ class Dagger extends Card {
     // game.sound_effect = SoundEffect.Cut
   }
 
-  rate_play(world) {
+  ratePlay(world) {
     return this.rateDiscard(world)
   }
 }
@@ -98,7 +98,7 @@ class Boa extends Card {
     }
   }
 
-  rate_play(world) {
+  ratePlay(world) {
     const nourished =
       world.status.includes(Status.NOURISH) ||
       world.status.includes(Status.STARVE)
@@ -143,7 +143,7 @@ class Hurricane extends Card {
     this.reset(game)
   }
 
-  rate_play(world) {
+  ratePlay(world) {
     return this.rateReset(world)
   }
 }
@@ -172,7 +172,7 @@ class WingClipping extends Card {
     }
   }
 
-  rate_play(world) {
+  ratePlay(world) {
     return this.points + this.rateDiscard(world)
   }
 }

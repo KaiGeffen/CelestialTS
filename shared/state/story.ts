@@ -109,16 +109,6 @@ class Story {
   replaceAct(index: number, arg1: Act) {
     throw new Error('Method not implemented.')
   }
-
-  // Flip such that player 1 is 0 and vice-verca
-  flip() {
-    for (const act of this.acts) {
-      act.owner = act.owner === 1 ? 0 : 1
-    }
-    for (const act of this.resolvedActs) {
-      act.owner = act.owner === 1 ? 0 : 1
-    }
-  }
 }
 
 // Add the current state to list of remembered recent states

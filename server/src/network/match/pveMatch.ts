@@ -1,9 +1,8 @@
 import Match from './match'
 import Card from '../../../../shared/state/card'
-import GameModel from '../../../../shared/state/gameModel'
-import { ServerController } from '../../gameController'
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { PASS } from '../../../../shared/settings'
+import { getAction } from '../../ai'
 
 class PveMatch extends Match {
   constructor(
@@ -39,9 +38,9 @@ class PveMatch extends Match {
 
   // TODO Implement ai opponent, for now just pass
   async opponentActs() {
-    ;[0, 1, 2, 3, 4, 5, PASS].forEach((action) => {
-      this.game.onPlayerInput(1, action)
-    })
+    const model = this.game.getClientModel(1)
+    const action = getAction(model)
+    this.game.onPlayerInput(1, action)
     await this.notifyState()
     // await this.lock
     // const opponentModel = new ClientModel(this.game.get_client_model(1))
