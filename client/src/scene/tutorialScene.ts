@@ -55,6 +55,8 @@ export default class TutorialGameScene extends AdventureGameScene {
 
     // Must reset progress
     this.progress = -1
+    // TODO
+    this.progress = 6
 
     // Hint text
     this.txt = this.rexUI.add
@@ -222,20 +224,20 @@ export default class TutorialGameScene extends AdventureGameScene {
         break
 
       case 2:
-        this.addCardWithRequiredHover('Dove')
+        // this.addCardWithRequiredHover('Dove')
         break
 
       case 4:
-        this.addCard('Dash')
+        // this.addCard('Dash')
         break
 
       case 5:
-        this.addCard('Mercy')
+        // this.addCard('Mercy')
         break
 
       case 6:
-        this.card.destroy()
-        this.view.ourHand.show()['hideStacks']()
+        // this.card.destroy()
+        // this.view.ourHand.show()['hideStacks']()
         break
 
       case 7:

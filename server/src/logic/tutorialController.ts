@@ -157,53 +157,45 @@ class TutorialController extends ServerController {
 
     super(player_deck, ai_deck, 0, 0)
 
+    this.model.priority = 0
     this.model.wins[0] = 2
     this.model.mulligansComplete = [true, true]
   }
 
-  // start() {
-  //   super.start()
-  //   this.model.priority = 0
-  // }
+  doUpkeep() {
+    super.doUpkeep()
+    this.model.priority = 0
+  }
 
-  // doMulligan(player: number, mulligans: any) {
-  //   this.model.mulligansComplete[player] = true
-  // }
+  doResolvePhase() {
+    if (this.model.wins[0] >= 2) {
+      super.doResolvePhase()
+      return
+    }
 
-  // doUpkeep() {
-  //   super.doUpkeep()
-  //   this.model.priority = 0
-  // }
+    // this.model.score = [0, 0]
+    // const wins = [0, 0]
 
-  // doTakedown() {
-  //   if (this.model.wins[0] >= 2) {
-  //     super.doTakedown()
-  //     return
-  //   }
+    // this.model.recap.reset()
+    // this.model.story.run(this.model, true)
 
-  //   this.model.score = [0, 0]
-  //   const wins = [0, 0]
+    // if (this.model.score[0] > this.model.score[1]) {
+    //   if (this.model.score[0] > 0) {
+    //     wins[0] += 1
+    //   }
+    // } else if (this.model.score[1] > this.model.score[0]) {
+    //   if (this.model.score[1] > 0) {
+    //     wins[1] += 1
+    //   }
+    // }
 
-  //   this.model.recap.reset()
-  //   this.model.story.run(this.model, true)
+    // this.model.wins[0] += wins[0]
+    // this.model.wins[1] += wins[1]
 
-  //   if (this.model.score[0] > this.model.score[1]) {
-  //     if (this.model.score[0] > 0) {
-  //       wins[0] += 1
-  //     }
-  //   } else if (this.model.score[1] > this.model.score[0]) {
-  //     if (this.model.score[1] > 0) {
-  //       wins[1] += 1
-  //     }
-  //   }
-
-  //   this.model.wins[0] += wins[0]
-  //   this.model.wins[1] += wins[1]
-
-  //   this.model.recap.addTotal(this.model.score, wins, [0, 0])
-  //   this.model.story.saveEndState(this.model)
-  //   this.model.story.clear()
-  // }
+    // this.model.recap.addTotal(this.model.score, wins, [0, 0])
+    // this.model.story.saveEndState(this.model)
+    // this.model.story.clear()
+  }
 }
 
 export { TutorialController }
