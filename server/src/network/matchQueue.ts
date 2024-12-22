@@ -12,6 +12,7 @@ import PvpMatch from './match/pvpMatch'
 import Match from './match/match'
 import pvpMatch from './match/pvpMatch'
 import { PASS } from '../../../shared/settings'
+import TutorialMatch from './match/tutorialMatch'
 
 /*
 List of ongoing games
@@ -50,9 +51,6 @@ class MatchQueue {
       await match.notifyState()
     })
     const initPvp = createEvent('initPvp', async (data) => {
-      console.log('password is', data.password)
-      console.log('searching players is,', Object.keys(searchingPlayers))
-
       // Check if there is another player, and they are still ready
       const otherPlayer: WaitingPlayer = searchingPlayers[data.password]
       if (otherPlayer && otherPlayer.ws.ws.readyState === WebSocket.OPEN) {
@@ -88,8 +86,16 @@ class MatchQueue {
         searchingPlayers[data.password] = waitingPlayer
       }
     })
+    // Register the init events
+    const initTutorial = createEvent('initTutorial', async (data) => {
+      const match = new TutorialMatch(ws, data.num)
+      registerEvents(ws, match, 0)
 
-    ;[initPve, initPvp].forEach(({ event, callback }) => {
+      // Start the match
+      await match.notifyState()
+    })
+
+    ;[initPve, initPvp, initTutorial].forEach(({ event, callback }) => {
       ws.on(event, callback)
     })
   }

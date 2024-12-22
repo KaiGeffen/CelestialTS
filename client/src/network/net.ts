@@ -119,6 +119,19 @@ export class MatchWS {
   }
 }
 
+export class MatchTutorialWS extends MatchWS {
+  constructor(newScene: GameScene, num: number) {
+    super(newScene)
+
+    this.socket.onOpen(() => {
+      this.socket.send({
+        type: 'initTutorial',
+        num: num,
+      })
+    })
+  }
+}
+
 export class MatchPveWS extends MatchWS {
   constructor(
     newScene: GameScene,

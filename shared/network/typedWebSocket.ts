@@ -19,7 +19,7 @@ type SupportedMessages = {
     avatar: number
   }
   initTutorial: {
-    number: number
+    num: number
   }
   playCard: {
     cardNum: number

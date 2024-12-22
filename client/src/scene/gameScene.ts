@@ -1,5 +1,10 @@
 import 'phaser'
-import { MatchWS, MatchPveWS, MatchPvpWS } from '../network/net'
+import {
+  MatchWS,
+  MatchPveWS,
+  MatchPvpWS,
+  MatchTutorialWS,
+} from '../network/net'
 // Import Settings itself
 import { UserSettings } from '../settings/settings'
 import BaseScene from './baseScene'
@@ -34,14 +39,11 @@ export class GameScene extends BaseScene {
     this.queuedStates = {}
     this.currentVersion = 0
 
-    // TODO Clean this up when a pass is done
-    let mmCode = ''
-    if (params.mmCode !== undefined) {
-      mmCode = params.mmCode
-    }
-
     // Connect with the server
-    if (params.isPvp) {
+    if (this.isTutorial) {
+      this.net = new MatchTutorialWS(this, 0) // TODO
+      console.log()
+    } else if (params.isPvp) {
       this.net = new MatchPvpWS(
         this,
         params.deck,

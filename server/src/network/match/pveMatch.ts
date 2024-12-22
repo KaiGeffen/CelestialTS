@@ -37,7 +37,7 @@ class PveMatch extends Match {
   }
 
   // TODO Implement ai opponent, for now just pass
-  async opponentActs() {
+  protected async opponentActs() {
     const model = this.game.getClientModel(1)
     const action = getAction(model)
     this.game.onPlayerInput(1, action)
