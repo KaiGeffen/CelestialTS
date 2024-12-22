@@ -153,8 +153,6 @@ class TutorialController extends ServerController {
       ai_deck = o_decks[num]
     }
 
-    // this.model = new GameModel(player_deck, ai_deck, 0, 0, false)
-
     super(player_deck, ai_deck, 0, 0)
 
     this.model.priority = 0
@@ -165,36 +163,6 @@ class TutorialController extends ServerController {
   doUpkeep() {
     super.doUpkeep()
     this.model.priority = 0
-  }
-
-  doResolvePhase() {
-    if (this.model.wins[0] >= 2) {
-      super.doResolvePhase()
-      return
-    }
-
-    // this.model.score = [0, 0]
-    // const wins = [0, 0]
-
-    // this.model.recap.reset()
-    // this.model.story.run(this.model, true)
-
-    // if (this.model.score[0] > this.model.score[1]) {
-    //   if (this.model.score[0] > 0) {
-    //     wins[0] += 1
-    //   }
-    // } else if (this.model.score[1] > this.model.score[0]) {
-    //   if (this.model.score[1] > 0) {
-    //     wins[1] += 1
-    //   }
-    // }
-
-    // this.model.wins[0] += wins[0]
-    // this.model.wins[1] += wins[1]
-
-    // this.model.recap.addTotal(this.model.score, wins, [0, 0])
-    // this.model.story.saveEndState(this.model)
-    // this.model.story.clear()
   }
 }
 

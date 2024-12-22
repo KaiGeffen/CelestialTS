@@ -213,13 +213,7 @@ export class PreloadScene extends SigninScene {
     // When loading is complete, if user selected an option, start home screen
     this.load.on('complete', () => {
       if (this.signedInOrGuest) {
-        // this.scene.start('HomeScene')
-        this.scene.start('TutorialGameScene', {
-          isTutorial: false,
-          deck: undefined,
-          mmCode: `ai:t${0}`,
-          missionID: 0,
-        })
+        this.scene.start('HomeScene')
       }
     })
 

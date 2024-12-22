@@ -383,9 +383,6 @@ export class ResultsRegionTutorial extends ResultsRegion {
         this.scene.scene.start('AdventureScene', { stillframe: 4 })
       } else {
         this.scene.scene.start('TutorialGameScene', {
-          isTutorial: false,
-          deck: undefined,
-          mmCode: `ai:t${this.missionID}`,
           missionID: this.missionID,
         })
       }

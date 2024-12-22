@@ -22,7 +22,7 @@ class ServerController {
   model: GameModel
 
   constructor(deck1: Card[], deck2: Card[], avatar1: number, avatar2: number) {
-    this.model = new GameModel(deck1, deck2, avatar1, avatar2)
+    this.model = new GameModel(deck1, deck2, avatar1, avatar2, false)
   }
 
   start(): void {

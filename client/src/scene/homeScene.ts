@@ -391,12 +391,7 @@ export default class HomeScene extends BaseScene {
     for (let i = 0; i < intro.length; i++) {
       // If this tutorial mission hasn't been completed, jump to that mission
       if (!missions[i]) {
-        this.scene.start('TutorialGameScene', {
-          isTutorial: false,
-          deck: undefined,
-          mmCode: `ai:t${i}`,
-          missionID: i,
-        })
+        this.scene.start('TutorialGameScene', { missionID: i })
         return
       }
     }
