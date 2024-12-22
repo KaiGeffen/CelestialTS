@@ -11,7 +11,6 @@ import PveMatch from './match/pveMatch'
 import PvpMatch from './match/pvpMatch'
 import Match from './match/match'
 import pvpMatch from './match/pvpMatch'
-import { decode } from 'punycode'
 import { PASS } from '../../../shared/settings'
 
 /*
@@ -21,6 +20,7 @@ Disconnecting then reconnecting puts you back in your game
 Init includes information about the game type you're looking for
 */
 
+// A player waiting for a game and their associated data
 interface WaitingPlayer {
   ws: TypedWebSocket
   uuid: string
@@ -50,8 +50,6 @@ class MatchQueue {
       await match.notifyState()
     })
     const initPvp = createEvent('initPvp', async (data) => {
-      const password = data.password
-
       // An opponent is found, start the match for both
       if (searchingPlayers[data.password]) {
         // Create a PvP match

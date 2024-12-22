@@ -57,11 +57,15 @@ function reverseAttributes(model: GameModel): void {
   }
 
   // Flip these attributes
-  const flipAttributes = ['winner', 'priority', 'lastPlayerWhoPlayed']
+  const flipAttributes = ['priority', 'lastPlayerWhoPlayed']
 
   for (const attr of flipAttributes) {
     model[attr] = model[attr] === 1 ? 0 : 1
   }
+
+  // Flip winner if there is one
+  if (model.winner === 0) model.winner = 1
+  else if (model.winner === 1) model.winner = 0
 
   // Flip the story
   for (const act of model.story.acts) {

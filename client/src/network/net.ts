@@ -8,36 +8,18 @@ import { Flags } from '../settings/settings'
 import { GameScene } from '../scene/gameScene'
 import { Mulligan } from '../../../shared/settings'
 
+// TODO Figure out this global scene situation, smells bad
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
 var scene
-// NOTE This can change, but the listener is only created once, so it needs to reference this var
-var initMessage
 
 export class MatchWS {
   socket: TypedWebSocket
 
-  constructor(
-    deck: string,
-    newScene: GameScene,
-    avatarID: number,
-    aiDeck: string = '',
-  ) {
+  constructor(newScene: GameScene) {
     scene = newScene
     // TODO
 
-    console.log('Making a new websocket for this match')
     const socket = (this.socket = this.getSocket())
-
-    console.log('Socket:', socket)
-    socket.onOpen(() => {
-      socket.send({
-        type: 'initPve',
-        uuid: '',
-        deck: encodeDeck(deck),
-        avatar: avatarID,
-        aiDeck: encodeDeck(aiDeck),
-      })
-    })
 
     // Each registered event
     socket
@@ -48,6 +30,7 @@ export class MatchWS {
         scene.signalMatchFound()
       })
       .on('transmitState', (data) => {
+        console.log(data.state)
         newScene.queueState(data.state)
       })
       .on('signalError', (data) => {
@@ -133,5 +116,47 @@ export class MatchWS {
     }
 
     return socket
+  }
+}
+
+export class MatchPveWS extends MatchWS {
+  constructor(
+    newScene: GameScene,
+    deck: string,
+    avatarID: number,
+    aiDeck: string,
+  ) {
+    super(newScene)
+
+    this.socket.onOpen(() => {
+      this.socket.send({
+        type: 'initPve',
+        uuid: '',
+        deck: encodeDeck(deck),
+        avatar: avatarID,
+        aiDeck: encodeDeck(aiDeck),
+      })
+    })
+  }
+}
+
+export class MatchPvpWS extends MatchWS {
+  constructor(
+    newScene: GameScene,
+    deck: string,
+    avatarID: number,
+    password: string,
+  ) {
+    super(newScene)
+
+    this.socket.onOpen(() => {
+      this.socket.send({
+        type: 'initPvp',
+        uuid: '',
+        deck: encodeDeck(deck),
+        avatar: avatarID,
+        password: password,
+      })
+    })
   }
 }

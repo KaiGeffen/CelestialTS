@@ -52,6 +52,7 @@ const fullCatalog = [
 const nonCollectibles = [seen, ashes, child, predator]
 const allCards = [...fullCatalog, ...nonCollectibles]
 
+// TODO Move to another file
 function getComputerDeck(i = null) {
   const possibleDecks = [
     [

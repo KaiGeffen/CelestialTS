@@ -1,5 +1,5 @@
 import 'phaser'
-import { MatchWS } from '../network/net'
+import { MatchWS, MatchPveWS, MatchPvpWS } from '../network/net'
 // Import Settings itself
 import { UserSettings } from '../settings/settings'
 import BaseScene from './baseScene'
@@ -41,8 +41,16 @@ export class GameScene extends BaseScene {
     }
 
     // Connect with the server
-    const TODO_AI_DECK = '21:20:20:17:14:14:14:6:3:3:3:3:0:0:0'
-    this.net = new MatchWS(params.deck, this, params.avatar, TODO_AI_DECK)
+    if (params.isPvp) {
+      this.net = new MatchPvpWS(
+        this,
+        params.deck,
+        params.avatar,
+        params.password,
+      )
+    } else {
+      this.net = new MatchPveWS(this, params.deck, params.avatar, params.aiDeck)
+    }
 
     // Create the view
     this.view = new View(this, this.params.avatar || 0)
