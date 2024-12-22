@@ -42,7 +42,6 @@ export class GameScene extends BaseScene {
     // Connect with the server
     if (this.isTutorial) {
       this.net = new MatchTutorialWS(this, params.missionID)
-      console.log()
     } else if (params.isPvp) {
       this.net = new MatchPvpWS(
         this,

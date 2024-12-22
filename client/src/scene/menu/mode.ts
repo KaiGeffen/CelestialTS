@@ -5,6 +5,7 @@ import Buttons from '../../lib/buttons/buttons'
 import { Color, Space, Style } from '../../settings/settings'
 import Menu from './menu'
 import MenuScene from '../menuScene'
+import getRandomAiDeck from '../../catalog/aiDecks'
 
 const width = 550
 
@@ -35,7 +36,7 @@ export default class ModeMenu extends Menu {
   private createContent(activeScene: Phaser.Scene, deck: string) {
     this.createHeader('Game Mode')
     this.sizer
-      .add(this.createAI(activeScene, deck))
+      .add(this.createPVE(activeScene, deck))
       .addNewLine()
       .add(this.createPVP(activeScene, deck))
       .addNewLine()
@@ -79,7 +80,7 @@ export default class ModeMenu extends Menu {
     return this.inputText
   }
 
-  private createAI(activeScene: Phaser.Scene, deck: string) {
+  private createPVE(activeScene: Phaser.Scene, deck: string) {
     let sizer = this.scene['rexUI'].add.sizer({ width: width - Space.pad * 2 })
 
     const txt = this.scene.add.text(
@@ -98,7 +99,7 @@ export default class ModeMenu extends Menu {
         deck: deck,
         avatar: this.avatar,
         // TODO ai deck
-        aiDeck: '',
+        aiDeck: getRandomAiDeck(),
       })
     })
 
