@@ -18,6 +18,9 @@ type SupportedMessages = {
     deck: string
     avatar: number
   }
+  initTutorial: {
+    number: number
+  }
   playCard: {
     cardNum: number
   }

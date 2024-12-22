@@ -71,6 +71,16 @@ export default class Cutout extends Button {
       },
     })
 
+    // FOR TESTING TODO Flag to include
+    if (!this.scene.game.textures.exists(`cutout-${card.name}`)) {
+      const s = `${card.name} - ${card.cost}:${card.points}`
+      const txt = this.scene.add
+        .text(0, 0, s, Style.cardCount)
+        .setWordWrapWidth(Space.cardWidth)
+        .setOrigin(0.5, 0.5)
+      within.add(txt)
+    }
+
     // The base scene's hint text object
     let hint: Hint = within.scene['hint']
 

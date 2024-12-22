@@ -6,6 +6,7 @@ import Server from './server'
 
 import { Flags } from '../settings/settings'
 import { GameScene } from '../scene/gameScene'
+import { Mulligan } from '../../../shared/settings'
 
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
 var scene
@@ -77,7 +78,7 @@ export class MatchWS {
   }
 
   // TODO standardize mulligan type
-  doMulligan(mulligans: [boolean, boolean, boolean]) {
+  doMulligan(mulligans: Mulligan) {
     this.socket.send({
       type: 'mulligan',
       mulligan: mulligans,

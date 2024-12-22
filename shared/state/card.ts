@@ -108,6 +108,9 @@ export default class Card {
 
   onRoundEnd(player: number, game: GameModel): void {}
 
+  // Triggers when this card is drawn
+  onDraw(player: number, game: GameModel): void {}
+
   reset(game: GameModel): string {
     game.score = [0, 0]
     return '\nReset'
@@ -321,10 +324,6 @@ export default class Card {
     return game.removeAct(index)
   }
 
-  yourFinal(game: GameModel, player: number): boolean {
-    return !game.story.acts.some((act: Act) => act.owner === player)
-  }
-
   rateReset(world: any): number {
     let knownValue = 0
     let theirUnknownCards = 0
@@ -374,18 +373,13 @@ export default class Card {
     return cardsInHandToValue[handCount]
   }
 
-  // TODO This is just client
+  // TODO The below are just for client (Mobile focus menu)
   getHintText(): string {
     return ''
   }
 
   getReferencedCards(): Card[] {
     return []
-  }
-
-  // Get the text for this card, including formatting
-  getCardText(): string {
-    return ''
   }
 }
 

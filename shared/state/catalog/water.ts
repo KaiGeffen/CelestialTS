@@ -149,4 +149,56 @@ const refresh = new Refresh({
   text: 'When played, put the leftmost card in your hand on the bottom of your deck, then draw a card if you did. Your opponent doesn’t see you do this.',
 })
 
-export { mercy, excess, fishingBoat, drown, iceberg, dew, gentleRain, refresh }
+class Overflow extends Card {
+  play(player: any, game: any, index: number, bonus: any) {
+    super.play(player, game, index, bonus + game.hand[player].length)
+  }
+
+  onPlay(player: number, game: GameModel): void {
+    if (game.hand[player].length > 0) {
+      const card = game.hand[player].shift()
+      game.deck[player].unshift(card)
+      this.draw(1, game, player)
+    }
+  }
+}
+const overflow = new Overflow({
+  name: 'Overflow',
+  cost: 3,
+  points: 0,
+  id: 201,
+  text: 'Refresh.\nWorth +1 for each card in your hand.',
+})
+
+class Fish extends Card {
+  onDraw(player: number, game: GameModel): void {
+    // Create a new copy of the card, but with 1 more point
+    const copy = Object.create(
+      Object.getPrototypeOf(this),
+      Object.getOwnPropertyDescriptors(this),
+    )
+    copy.points += 1
+
+    game.hand[player][game.hand[player].length - 1] = copy
+  }
+}
+const fish = new Fish({
+  name: 'Fish',
+  cost: 2,
+  points: 1,
+  id: 202,
+  text: 'When you draw this, increase its points by 1 permanently.',
+})
+
+export {
+  mercy,
+  excess,
+  fishingBoat,
+  drown,
+  iceberg,
+  dew,
+  gentleRain,
+  refresh,
+  overflow,
+  fish,
+}

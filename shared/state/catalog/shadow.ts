@@ -47,7 +47,7 @@ const shadow = new Shadow({
 })
 
 class Imprison extends Card {
-  on_round_end(player, game) {
+  onRoundEnd(player, game) {
     // If opponent had 3 or fewer points
     if (game.score[player ^ 1] <= 3) {
       // Give them Nourish -1

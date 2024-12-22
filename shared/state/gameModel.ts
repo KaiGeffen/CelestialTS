@@ -116,8 +116,9 @@ export default class GameModel {
   }
 
   draw(player: number, amt = 1) {
-    let card = null
+    let card: Card = null
     while (amt > 0 && this.hand[player].length < HAND_CAP) {
+      // If deck is empty, shuffled discard pile into deck
       if (this.deck[player].length === 0) {
         if (this.pile[player].length === 0) {
           return
@@ -125,10 +126,20 @@ export default class GameModel {
           this.shuffle(player)
         }
       }
+
+      // Get the top card, add it to deck
       card = this.deck[player].pop()
       this.hand[player].push(card)
+
+      // Increment draw counter
       this.amtDrawn[player] += 1
+
+      // Trigger its on draw effects
+      card.onDraw(player, this)
+
       amt -= 1
+
+      // Animate this draw
       this.animations[player].push(
         new Animation({
           from: Zone.Deck,

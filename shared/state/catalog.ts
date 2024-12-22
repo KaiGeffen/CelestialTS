@@ -1,74 +1,13 @@
 import Card from './card'
 
-import { dove, starling, secretaryBird, phoenix, heron } from './catalog/birds'
-import {
-  dash,
-  impulse,
-  mine,
-  arsonist,
-  parch,
-  veteran,
-  cling,
-  death,
-  fromAshes,
-} from './catalog/ashes'
-import {
-  fruit,
-  oak,
-  bounty,
-  pet,
-  nectar,
-  hollow,
-  holdTight,
-} from './catalog/pet'
-import {
-  dagger,
-  shadow,
-  imprison,
-  nightmare,
-  boa,
-  hungryGhost,
-  hurricane,
-  wingClipping,
-  sickness,
-} from './catalog/shadow'
-import {
-  nascence,
-  birth,
-  ancestry,
-  theFuture,
-  generator,
-  rebirth,
-  cradle,
-  uprising,
-} from './catalog/birth'
-import {
-  dawn,
-  clearView,
-  awakening,
-  enlightenment,
-  prey,
-  conquer,
-} from './catalog/vision'
-import {
-  stars,
-  cosmos,
-  nightVision,
-  ecology,
-  sun,
-  moon,
-  sunflower,
-} from './catalog/stars'
-import {
-  mercy,
-  excess,
-  fishingBoat,
-  drown,
-  iceberg,
-  dew,
-  gentleRain,
-  refresh,
-} from './catalog/water'
+import * as birdsCatalog from './catalog/birds'
+import * as ashesCatalog from './catalog/ashes'
+import * as petCatalog from './catalog/pet'
+import * as shadowCatalog from './catalog/shadow'
+import * as birthCatalog from './catalog/birth'
+import * as visionCatalog from './catalog/vision'
+import * as starsCatalog from './catalog/stars'
+import * as waterCatalog from './catalog/water'
 import { child, seen, ashes, predator } from './catalog/tokens'
 import { Animation } from '../animation'
 import { Zone } from './zone'
@@ -100,66 +39,15 @@ const paramountcy = new Paramountcy({
 })
 
 const fullCatalog = [
-  refresh,
-  stars,
-  dagger,
-  nascence,
-  impulse,
-  dove,
-  drown,
-  dash,
-  starling,
-  birth,
-  cosmos,
-  ancestry,
-  fruit,
-  mercy,
-  hurricane,
-  arsonist,
-  mine,
-  wingClipping,
-  veteran,
-  uprising,
-  shadow,
-  cling,
-  death,
-  theFuture,
-  oak,
-  nectar,
-  prey,
-  clearView,
-  nightVision,
-  hungryGhost,
-  fishingBoat,
-  holdTight,
-  pet,
-  imprison,
-  awakening,
-  secretaryBird,
-  ecology,
-  enlightenment,
-  excess,
-  bounty,
-  dawn,
-  phoenix,
-  generator,
-  iceberg,
-  rebirth,
-  sun,
-  boa,
-  sickness,
-  cradle,
+  ...Object.values(waterCatalog),
+  ...Object.values(birdsCatalog),
+  ...Object.values(ashesCatalog),
+  ...Object.values(petCatalog),
+  ...Object.values(shadowCatalog),
+  ...Object.values(birthCatalog),
+  ...Object.values(visionCatalog),
+  ...Object.values(starsCatalog),
   paramountcy,
-  dew,
-  parch,
-  heron,
-  conquer,
-  nightmare,
-  fromAshes,
-  gentleRain,
-  sunflower,
-  hollow,
-  moon,
 ]
 const nonCollectibles = [seen, ashes, child, predator]
 const allCards = [...fullCatalog, ...nonCollectibles]
