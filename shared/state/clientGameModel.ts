@@ -45,7 +45,7 @@ function reverseAttributes(model: GameModel): void {
     'roundResults',
     'mulligansComplete',
     'animations',
-    'last_shuffle',
+    'lastShuffle',
     'wins',
     'amtPasses',
     'amtDrawn',

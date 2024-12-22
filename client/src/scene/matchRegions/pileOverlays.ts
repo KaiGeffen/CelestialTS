@@ -100,7 +100,7 @@ export class TheirDeckOverlay extends OverlayRegion {
   }
 
   displayState(state: GameModel): void {
-    this.displayCards(state.last_shuffle[1])
+    this.displayCards(state.lastShuffle[1])
   }
 }
 

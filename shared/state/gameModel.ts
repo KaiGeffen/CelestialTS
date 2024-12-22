@@ -53,7 +53,7 @@ export default class GameModel {
   animations: Animation[][] = [[], []]
 
   // Other
-  last_shuffle: any[][] = [[], []]
+  lastShuffle: any[][] = [[], []]
   winner: number = null
   // The points each player got each round
   roundResults: [number[], number[]] = [[], []]
@@ -92,7 +92,7 @@ export default class GameModel {
         this.shuffle(p, false)
       }
     }
-    this.last_shuffle = [[], []]
+    this.lastShuffle = [[], []]
     this.expended = [[], []]
     this.score = [0, 0]
     this.wins = [0, 0]
@@ -291,7 +291,7 @@ export default class GameModel {
 
   shuffle(player: number, remember = true, take_pile = true) {
     if (remember) {
-      this.last_shuffle[player] = this.pile[player]
+      this.lastShuffle[player] = this.pile[player]
     }
     if (take_pile) {
       this.deck[player] = this.pile[player].concat(this.deck[player])

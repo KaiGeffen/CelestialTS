@@ -50,10 +50,13 @@ class MatchQueue {
       await match.notifyState()
     })
     const initPvp = createEvent('initPvp', async (data) => {
-      // An opponent is found, start the match for both
-      if (searchingPlayers[data.password]) {
+      console.log('password is', data.password)
+      console.log('searching players is,', Object.keys(searchingPlayers))
+
+      // Check if there is another player, and they are still ready
+      const otherPlayer: WaitingPlayer = searchingPlayers[data.password]
+      if (otherPlayer && otherPlayer.ws.ws.readyState === WebSocket.OPEN) {
         // Create a PvP match
-        const otherPlayer: WaitingPlayer = searchingPlayers[data.password]
         const match = new pvpMatch(
           ws,
           data.uuid,
