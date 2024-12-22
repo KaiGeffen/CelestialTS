@@ -207,6 +207,21 @@ const sickness = new Sickness({
   // references: [{ card: sickness, x: -48, y: 132 }],
 })
 
+// BETA
+class Victim extends Card {
+  onRoundEnd(player, game) {
+    const scoreAboveWinning = game.score[player ^ 1] - game.score[player]
+    const amt = Math.max(0, scoreAboveWinning)
+    game.status[player ^ 1].push(...Array(amt).fill(Status.STARVE))
+  }
+}
+const victim = new Victim({
+  name: 'Victim',
+  id: 4001,
+  text: 'If you lose this round, Nourish -1 your opponent for each point you lost by.',
+  keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
+})
+
 export {
   dagger,
   shadow,
@@ -217,4 +232,5 @@ export {
   hurricane,
   wingClipping,
   sickness,
+  victim,
 }
