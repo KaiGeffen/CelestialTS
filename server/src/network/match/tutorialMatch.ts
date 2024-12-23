@@ -13,10 +13,9 @@ class TutorialMatch extends PveMatch {
   }
 
   protected async opponentActs() {
-    let success = false
     ;[0, 1, 2, 3, 4, 5, PASS].forEach((action) => {
-      if (!success) {
-        success ||= this.game.onPlayerInput(1, action)
+      if (this.game.onPlayerInput(1, action)) {
+        return
       }
     })
     await this.notifyState()
