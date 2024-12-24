@@ -3,5 +3,5 @@ export const Mechanics = {
   deckSize: 15,
   numMulligans: 3,
   costPack: 100,
-  maxDecks: 20,
-}
+  maxDecks: 50,
+};
