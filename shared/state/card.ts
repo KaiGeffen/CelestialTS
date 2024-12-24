@@ -80,6 +80,16 @@ export default class Card {
     result > 0 ? `+${result}` : `${result}`
   }
 
+  // Spend the given amount of breath, return whether successful
+  exhale(amt: number, game: GameModel, player: number): boolean {
+    if (game.breath[player] >= amt) {
+      game.breath[player] -= amt
+      return true
+    } else {
+      return false
+    }
+  }
+
   ratePlay(world: any): number {
     return Math.max(1, this.cost)
   }

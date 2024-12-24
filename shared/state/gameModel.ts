@@ -19,7 +19,8 @@ import {
 
 export default class GameModel {
   createInStory(player: number, card: Card) {
-    throw new Error('Method not implemented.')
+    // TODO consistent hierarchy of arguments
+    this.story.addAct(card, player)
   }
   removeAct(index: number): any {
     throw new Error('Method not implemented.')

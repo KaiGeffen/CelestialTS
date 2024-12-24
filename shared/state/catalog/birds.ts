@@ -1,5 +1,6 @@
 import Card from '../card'
 import { Status, Quality } from '../effects'
+import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
 
 class Dove extends Card {
@@ -150,4 +151,20 @@ const heron = new Heron({
   keywords: [{ name: Keywords.visible, x: 0, y: 60 }],
 })
 
-export { dove, starling, secretaryBird, phoenix, heron }
+// BETA CONTENT TODO
+class Nest extends Card {
+  morning(player: number, game: GameModel, index: number) {
+    game.createInStory(player, dove)
+    return true
+  }
+}
+
+const nest = new Nest({
+  name: 'Nest',
+  cost: 1,
+  points: 0,
+  id: 207,
+  text: 'Morning: Create a Dove in the story.',
+})
+
+export { dove, starling, secretaryBird, phoenix, heron, nest }

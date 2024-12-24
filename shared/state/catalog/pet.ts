@@ -140,4 +140,40 @@ const holdTight = new HoldTight({
   id: 33,
 })
 
-export { fruit, oak, bounty, pet, nectar, hollow, holdTight }
+// BETA TODO
+class Yearn extends Card {
+  play(player, game, index, bonus) {
+    super.play(player, game, index, bonus)
+
+    if (super.exhale(2, game, player)) {
+      // If the discard pile has at least one card
+      if (game.pile[player].length > 0) {
+        // And the top card costs 3 or less
+        if (game.pile[player][game.pile[player].length - 1].cost <= 3) {
+          const card = game.pile[player].pop()
+
+          // Add the card as a new act
+          game.story.addAct(card, player, 0)
+
+          // Animate the movement
+          game.animations[player].push(
+            new Animation({
+              from: Zone.Discard,
+              to: Zone.Story,
+              index2: 0,
+            }),
+          )
+        }
+      }
+    }
+  }
+}
+const yearn = new Yearn({
+  name: 'Yearn',
+  id: 233,
+  cost: 1,
+  points: 1,
+  text: 'Extra 2: Add the top card of your discard pile to the story after this if it has base cost 3 or less.',
+})
+
+export { fruit, oak, bounty, pet, nectar, hollow, holdTight, yearn }

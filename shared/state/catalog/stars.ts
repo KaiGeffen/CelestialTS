@@ -60,9 +60,9 @@ class Ecology extends Card {
 }
 const ecology = new Ecology({
   name: 'Ecology',
+  id: 44,
   cost: 7,
   points: 0,
-  id: 44,
   text: 'When played, gain 10 breath this round.',
 })
 

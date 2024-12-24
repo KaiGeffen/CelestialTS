@@ -21,8 +21,14 @@ import { Zone } from '../../shared/state/zone'
 class ServerController {
   model: GameModel
 
-  constructor(deck1: Card[], deck2: Card[], avatar1: number, avatar2: number) {
-    this.model = new GameModel(deck1, deck2, avatar1, avatar2, false)
+  constructor(
+    deck1: Card[],
+    deck2: Card[],
+    avatar1: number,
+    avatar2: number,
+    shuffle: boolean = true,
+  ) {
+    this.model = new GameModel(deck1, deck2, avatar1, avatar2, shuffle)
   }
 
   start(): void {
