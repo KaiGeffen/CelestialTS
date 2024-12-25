@@ -24,8 +24,8 @@ class Birth extends Card {
 }
 const birth = new Birth({
   name: 'Birth',
-  cost: 2,
   id: 8,
+  cost: 2,
   text: 'Birth 2.',
   keywords: [{ name: Keywords.birth, x: 0, y: 130, value: 2 }],
 })
@@ -41,8 +41,8 @@ class Ancestry extends Card {
 }
 const ancestry = new Ancestry({
   name: 'Ancestry',
-  cost: 3,
   id: 10,
+  cost: 3,
   text: 'Birth 1 for each card later in the story.',
   keywords: [{ name: Keywords.birth, x: -32, y: 111, value: 1 }],
 })
@@ -65,9 +65,9 @@ class TheFuture extends Card {
 }
 const theFuture = new TheFuture({
   name: 'The Future',
+  id: 22,
   cost: 8,
   points: 4,
-  id: 22,
   text: 'Draw 1 card.\nCosts X less, where X is the total point value of all Children in your hand.',
 })
 
@@ -79,9 +79,9 @@ class Posterity extends Card {
 }
 const posterity = new Posterity({
   name: 'Posterity',
+  id: 53,
   cost: 4,
   points: 4,
-  id: 53,
   text: 'Morning: Birth 1.',
   keywords: [
     { name: Keywords.morning, x: 0, y: 100 },
@@ -112,8 +112,8 @@ class Rebirth extends Card {
 }
 const rebirth = new Rebirth({
   name: 'Rebirth',
-  cost: 1,
   id: 55,
+  cost: 1,
   qualities: [Quality.FLEETING],
   text: 'Fleeting, transform each of your cards later in the story into an 0:X Fleeting Child, where X is its cost.',
   keywords: [{ name: Keywords.fleeting, x: 0, y: 39 }],
@@ -128,9 +128,9 @@ class Cradle extends Card {
 }
 const cradle = new Cradle({
   name: 'Cradle',
+  id: 60,
   cost: 3,
   points: 2,
-  id: 60,
   text: 'Birth 2.',
   keywords: [{ name: Keywords.birth, x: 0, y: 130, value: 2 }],
 })
@@ -145,7 +145,7 @@ class Uprising extends Card {
     return world.story.acts.length
   }
 }
-const uprising = new Uprising({ name: 'Uprising', cost: 6, points: 3, id: 18 })
+const uprising = new Uprising({ name: 'Uprising', id: 18, cost: 6, points: 3 })
 
 export {
   nascence,

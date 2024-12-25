@@ -9,8 +9,6 @@ class Dagger extends Card {
     const opp = (player + 1) % 2
     super.play(player, game, index, bonus)
     this.discard(1, game, opp)
-
-    // game.sound_effect = SoundEffect.Cut
   }
 
   ratePlay(world) {
@@ -19,8 +17,8 @@ class Dagger extends Card {
 }
 const dagger = new Dagger({
   name: 'Dagger',
-  cost: 1,
   id: 1,
+  cost: 1,
   text: 'Your opponent discards the leftmost card of their hand.',
   story:
     'I have a point now\nI am no longer alone, scattered \nBut trained wholly on the promise\nOf your body, squirming',
@@ -38,9 +36,9 @@ class Shadow extends Card {
 }
 const shadow = new Shadow({
   name: 'Shadow',
+  id: 19,
   cost: 6,
   points: 3,
-  id: 19,
   text: "Costs X, where X is the number of cards in your opponent's hand.",
   story:
     'Your pain blooms like flowers on a misty day.\nI breathe it in.\nPerhaps I can rest now.',
@@ -57,9 +55,9 @@ class Imprison extends Card {
 }
 const imprison = new Imprison({
   name: 'Imprison',
+  id: 35,
   cost: 3,
   points: 3,
-  id: 35,
   text: 'At the end of this round, if your opponent has 3 or fewer points, give them Nourish -1.',
   story:
     'All tied up\ncan’t even stand\nAm I lethal to you and yours\nMy tight bonds calm me.',
@@ -77,9 +75,9 @@ class Nightmare extends Card {
 }
 const nightmare = new Nightmare({
   name: 'Nightmare',
+  id: 68,
   cost: 2,
   points: 2,
-  id: 68,
   text: 'Morning: if you have more cards in hand than your opponent, create a Shadow in hand.',
   story:
     'I struggle to find myself\nBetween the claws and biting words\nShearing my mind away',
@@ -111,9 +109,9 @@ class Boa extends Card {
 }
 const boa = new Boa({
   name: 'Boa',
+  id: 57,
   cost: 6,
   points: 6,
-  id: 57,
   text: 'If this is nourished, your opponent discards the leftmost card of their hand.',
   story: 'I reach I win I have it.\nIt is all mine now!\nCan I make it me?',
 })
@@ -130,9 +128,9 @@ class HungryGhost extends Card {
 }
 const hungryGhost = new HungryGhost({
   name: 'Hungry Ghost',
+  id: 31,
   cost: 2,
   points: 4,
-  id: 31,
   text: 'Nourish -4.',
   keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: -4 }],
 })
@@ -149,8 +147,8 @@ class Hurricane extends Card {
 }
 const hurricane = new Hurricane({
   name: 'Hurricane',
-  cost: 4,
   id: 13,
+  cost: 4,
   text: "Set both player's points to 0.",
 })
 
@@ -178,9 +176,9 @@ class WingClipping extends Card {
 }
 const wingClipping = new WingClipping({
   name: 'Wing Clipping',
+  id: 16,
   cost: 5,
   points: 3,
-  id: 16,
   text: 'Your opponent puts the leftmost card of their hand on top of their deck.',
   story:
     'We walked and ran and played then\nYou leave me behind\nI gasp as the space between us grows',
@@ -195,10 +193,10 @@ class Sickness extends Card {
 }
 const sickness = new Sickness({
   name: 'Sickness',
+  id: 58,
   cost: 3,
   points: -1,
   qualities: [Quality.FLEETING],
-  id: 58,
   text: 'Fleeting, give your opponent Nourish -4, create a Sickness in their hand.',
   keywords: [
     { name: Keywords.fleeting, x: 0, y: 61 },

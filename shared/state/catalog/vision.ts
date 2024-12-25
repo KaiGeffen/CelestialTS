@@ -12,8 +12,6 @@ class Dawn extends SightCard {
 }
 const dawn = new Dawn(4, {
   name: 'Dawn',
-  cost: 0,
-  points: 0,
   id: 50,
   text: 'When played, gain Sight 4.\nMorning: gain Sight 1.',
   keywords: [
@@ -31,9 +29,8 @@ class ClearView extends Card {
 }
 const clearView = new ClearView({
   name: 'Clear View',
-  cost: 1,
-  points: 0,
   id: 27,
+  cost: 1,
   text: "Create a Seen in your opponent's hand.",
   references: [{ card: seen, x: 5, y: 112 }],
 })
@@ -46,9 +43,9 @@ class Awakening extends Card {
 }
 const awakening = new Awakening({
   name: 'Awakening',
+  id: 39,
   cost: 3,
   points: 3,
-  id: 39,
   // TODO Keyword for sight
   text: 'Retain your Sight at the end of this round.',
 })
@@ -72,9 +69,9 @@ class Enlightenment extends Card {
 }
 const enlightenment = new Enlightenment({
   name: 'Enlightenment',
+  id: 45,
   cost: 7,
   points: 7,
-  id: 45,
   text: "Costs 0 if you can see at least 3 of your opponent's cards in the story.",
 })
 
@@ -86,9 +83,9 @@ class Prey extends Card {
 }
 const prey = new Prey({
   name: 'Prey',
+  id: 26,
   cost: 1,
   points: 2,
-  id: 26,
   text: "Create a Predator in your opponent's hand.",
   references: [{ card: predator, x: 6, y: 113 }],
 })
@@ -114,9 +111,9 @@ class Conquer extends Card {
 }
 const conquer = new Conquer({
   name: 'Conquer',
+  id: 67,
   cost: 5,
   points: 3,
-  id: 67,
   text: 'Costs 1 less for each card you can see in the story.',
 })
 

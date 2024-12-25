@@ -17,9 +17,9 @@ class Dash extends Card {
 }
 const dash = new Dash({
   name: 'Dash',
+  id: 6,
   cost: 2,
   points: 3,
-  id: 6,
   text: 'Worth -1 point for each card before this in the story.',
   story: 'I look around only to remind me: Move on! Fast!',
 })
@@ -35,10 +35,10 @@ class Impulse extends Card {
 }
 const impulse = new Impulse({
   name: 'Impulse',
+  id: 3,
   cost: 1,
   points: 1,
   qualities: [Quality.FLEETING],
-  id: 3,
   text: 'Fleeting, create 2 Ashes in your discard pile.',
   story:
     'Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me',
@@ -55,9 +55,9 @@ class Mine extends Card {
 }
 const mine = new Mine({
   name: 'Mine',
+  id: 15,
   cost: 4,
   points: 4,
-  id: 15,
   text: 'Remove from the game the top 4 cards of your discard pile.',
 })
 
@@ -74,8 +74,8 @@ const arsonist = new Arsonist({
   name: 'Arsonist',
   cost: 4,
   points: 4,
-  qualities: [Quality.FLEETING],
   id: 14,
+  qualities: [Quality.FLEETING],
   text: 'Fleeting, create 3 Ashes in your discard pile.',
   story:
     "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
@@ -110,9 +110,9 @@ class Parch extends Card {
 }
 const parch = new Parch({
   name: 'Parch',
+  id: 64,
   cost: 3,
   points: 2,
-  id: 64,
   text: 'Discard each of your cards later in the story. Worth +1 for each of those cards.\nWhen played, your cards cost 0 this round.',
   story:
     'We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips',
@@ -134,9 +134,9 @@ class Veteran extends Card {
 }
 const veteran = new Veteran({
   name: 'Veteran',
+  id: 17,
   cost: 5,
   points: 4,
-  id: 17,
   text: 'Worth +2 points if your discard pile has at least 8 cards in it.',
   story:
     'The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat there was to know',
@@ -199,8 +199,8 @@ class Cling extends Card {
 }
 const cling = new Cling({
   name: 'Cling',
-  cost: 6,
   id: 20,
+  cost: 6,
   text: "Put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost.",
   story:
     'Reaching back with the back of the eyes\nTo that moment when\nI see myself – not as I am – but as I was - clearly',
@@ -213,9 +213,9 @@ class Death extends Card {
 }
 const death = new Death({
   name: 'Death',
+  id: 21,
   cost: 7,
   points: 7,
-  id: 21,
   text: 'Costs 0 if you have at least 12 cards in your discard pile.',
   story:
     'I knew you were coming, I just didn’t know when.\nGo easy on me.\nI am tired, sated, and looking for new life.',
@@ -235,9 +235,9 @@ class FromAshes extends Card {
 }
 const fromAshes = new FromAshes({
   name: 'From Ashes',
+  id: 74,
   cost: 2,
   points: 1,
-  id: 74,
   text: 'Remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.',
   story:
     'Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning',

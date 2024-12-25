@@ -10,6 +10,8 @@ interface CardData {
   id?: number
   cost?: number
   points?: number
+  // Some cards include this, otherwise defaults to points
+  basePoints?: number
   qualities?: Quality[]
 
   // Just used by client
@@ -17,9 +19,6 @@ interface CardData {
   story?: string
   keywords?: KeywordPosition[]
   references?: ReferencePosition[]
-
-  // Some cards include this, otherwise defaults to points
-  basePoints?: number
 }
 
 export default class Card {
@@ -30,6 +29,7 @@ export default class Card {
   basePoints: number
   qualities: Quality[]
 
+  // Only used client-side
   text: string
   story: string = ''
   keywords: KeywordPosition[] = []
@@ -40,23 +40,25 @@ export default class Card {
     id = 0,
     cost = 0,
     points = 0,
-    text = '',
+    basePoints = points,
     qualities = [],
+
+    text = '',
     story = '',
     keywords = [],
     references = [],
-    basePoints = points,
   }: CardData) {
     this.name = name
     this.id = id
     this.cost = cost
     this.points = points
-    this.text = text
+    this.basePoints = basePoints
     this.qualities = qualities
+
+    this.text = text
     this.story = story
     this.keywords = keywords
     this.references = references
-    this.basePoints = basePoints
   }
 
   play(player: number, game: GameModel, index: number, bonus: number): void {
@@ -301,10 +303,9 @@ export default class Card {
     const card = new Card({
       name: 'Child',
       id: 1003,
-      cost: 0,
       points: amt,
-      qualities: [Quality.FLEETING],
       basePoints: 0,
+      qualities: [Quality.FLEETING],
     })
     if (game.create(player, card)) {
       return `\nBuild ${amt}`

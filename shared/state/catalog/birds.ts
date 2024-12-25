@@ -12,10 +12,10 @@ class Dove extends Card {
 
 const dove = new Dove({
   name: 'Dove',
+  id: 4,
   cost: 1,
   points: 1,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
-  id: 4,
   text: 'Visible, Fleeting.',
   story: 'Look at my eyes.\nSurrender\nTo the one thing you want',
   keywords: [
@@ -43,10 +43,10 @@ class Starling extends Card {
 
 const starling = new Starling({
   name: 'Starling',
+  id: 7,
   cost: 2,
   points: 2,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
-  id: 7,
   text: 'Visible, Fleeting, worth +1 point if the next card in the story costs 1.',
   story: 'Making headway\nDefying the headwind\nHeading out and through',
   keywords: [
@@ -70,10 +70,10 @@ class SecretaryBird extends Card {
 
 const secretaryBird = new SecretaryBird({
   name: 'Secretary Bird',
+  id: 40,
   cost: 4,
   points: 4,
   qualities: [Quality.VISIBLE],
-  id: 40,
   text: 'Visible, worth +1 point for each card in your hand that costs 1 or less. Remove those cards from the game.',
   story: 'I will I will I will\nBecome me become me become me\nAt your peril',
   keywords: [{ name: Keywords.visible, x: 0, y: 43 }],
@@ -110,10 +110,10 @@ class Phoenix extends Card {
 
 const phoenix = new Phoenix({
   name: 'Phoenix',
+  id: 51,
   cost: 5,
   points: 5,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
-  id: 51,
   text: 'Visible, Fleeting, create a Dove in your hand.',
   story:
     'Cracks in the shell\nShell falls away\nI stretch into wide possibilities',
@@ -141,10 +141,10 @@ class Heron extends Card {
 
 const heron = new Heron({
   name: 'Heron',
+  id: 65,
   cost: 1,
   points: 0,
   qualities: [Quality.VISIBLE],
-  id: 65,
   text: "Visible, set both player's points to 0.\nCosts 1 more for each card in your discard pile.",
   story:
     'How you see me\nIs of no importance to me\nI am playing with being here, there, every where',
@@ -161,9 +161,9 @@ class Nest extends Card {
 
 const nest = new Nest({
   name: 'Nest',
+  id: 207,
   cost: 1,
   points: 0,
-  id: 207,
   text: 'Morning: Create a Dove in the story.',
 })
 

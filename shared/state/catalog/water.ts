@@ -18,9 +18,9 @@ class Mercy extends Card {
 }
 const mercy = new Mercy({
   name: 'Mercy',
+  id: 12,
   cost: 3,
   points: 3,
-  id: 12,
   text: 'Each player draws a card.',
 })
 
@@ -41,9 +41,9 @@ class Excess extends Card {
 }
 const excess = new Excess({
   name: 'Excess',
+  id: 46,
   cost: 7,
   points: 7,
-  id: 46,
   text: 'Costs 0 if you have exactly 4 cards in the story.',
 })
 
@@ -58,24 +58,23 @@ class FishingBoat extends Card {
 }
 const fishingBoat = new FishingBoat({
   name: 'Fishing Boat',
+  id: 32,
   cost: 2,
   points: 1,
-  id: 32,
   text: 'Draw 3 cards that each cost 1.',
 })
 
 class Drown extends Card {
   play(player: any, game: any, index: number, bonus: any) {
-    // game.soundEffect = SoundEffect.Drown;
     super.play(player, game, index, bonus)
     this.mill(3, game, player)
   }
 }
 const drown = new Drown({
   name: 'Drown',
+  id: 5,
   cost: 1,
   points: 1,
-  id: 5,
   text: 'Discard the top 3 cards of your deck.',
 })
 
@@ -91,9 +90,9 @@ class Iceberg extends Card {
 }
 const iceberg = new Iceberg({
   name: 'Iceberg',
+  id: 54,
   cost: 4,
   points: 2,
-  id: 54,
   text: 'Draw 2 cards.\nCosts 1 less for each time you’ve passed this round.',
 })
 
@@ -105,9 +104,9 @@ class Dew extends Card {
 }
 const dew = new Dew({
   name: 'Dew',
+  id: 63,
   cost: 1,
   points: 1,
-  id: 63,
   text: 'Morning: create a Dew in your hand.',
   story: 'I return\nOver and over again\nSwelling the future',
   keywords: [{ name: Keywords.morning, x: 0, y: 102 }],
@@ -124,9 +123,9 @@ class GentleRain extends Card {
 }
 const gentleRain = new GentleRain({
   name: 'Gentle Rain',
+  id: 71,
   cost: 4,
   points: 2,
-  id: 71,
   text: "Nourish 1 for each card you've drawn this round.",
   keywords: [{ name: Keywords.nourish, x: -32, y: 88, value: 1 }],
 })
@@ -143,9 +142,9 @@ class Refresh extends Card {
 }
 const refresh = new Refresh({
   name: 'Refresh',
+  id: 200,
   cost: 1,
   points: 1,
-  id: 200,
   text: 'When played, put the leftmost card in your hand on the bottom of your deck, then draw a card if you did. Your opponent doesn’t see you do this.',
 })
 
@@ -164,9 +163,8 @@ class Overflow extends Card {
 }
 const overflow = new Overflow({
   name: 'Overflow',
-  cost: 3,
-  points: 0,
   id: 201,
+  cost: 3,
   text: 'Refresh.\nWorth +1 for each card in your hand.',
 })
 
@@ -184,9 +182,9 @@ class Fish extends Card {
 }
 const fish = new Fish({
   name: 'Fish',
+  id: 202,
   cost: 2,
   points: 1,
-  id: 202,
   text: 'When you draw this, increase its points by 1 permanently.',
 })
 

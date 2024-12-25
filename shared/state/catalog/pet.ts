@@ -14,8 +14,8 @@ class Fruit extends Card {
 }
 const fruit = new Fruit({
   name: 'Fruit',
-  cost: 3,
   id: 11,
+  cost: 3,
   text: 'Nourish 3.',
   keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: 3 }],
 })
@@ -29,9 +29,9 @@ class Oak extends Card {
 }
 const oak = new Oak({
   name: 'Oak',
+  id: 23,
   cost: 8,
   points: 8,
-  id: 23,
   text: 'If this is win this round, Nourish 1 for each point you won by.',
   keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
 })
@@ -44,9 +44,9 @@ class Bounty extends Card {
 }
 const bounty = new Bounty({
   name: 'Bounty',
+  id: 48,
   cost: 3,
   points: 3,
-  id: 48,
   text: 'Both players Nourish 2.',
   keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: 2 }],
 })
@@ -59,9 +59,9 @@ class Pet extends Card {
       id: 34,
       cost: 2,
       points,
+      basePoints: 1,
       qualities: [Quality.FLEETING],
       text,
-      basePoints: 1,
     })
   }
 
@@ -91,8 +91,8 @@ class Nectar extends SightCard {
 }
 const nectar = new Nectar(3, {
   name: 'Nectar',
-  cost: 1,
   id: 25,
+  cost: 1,
   text: 'Nourish 1.\nWhen played, gain Sight 3.',
   keywords: [
     { name: Keywords.nourish, x: 0, y: 73, value: 1 },
@@ -110,8 +110,6 @@ class Hollow extends Card {
 }
 const hollow = new Hollow({
   name: 'Hollow',
-  cost: 0,
-  points: 0,
   id: 76,
   text: 'Set your points to 0. Gain Nourish 1 for each point you lost this way.',
   keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
@@ -135,9 +133,9 @@ class HoldTight extends Card {
 }
 const holdTight = new HoldTight({
   name: 'Hold Tight',
+  id: 33,
   cost: 2,
   points: 2,
-  id: 33,
 })
 
 // BETA TODO

@@ -12,7 +12,6 @@ const seen = new Seen({
   name: 'Seen',
   id: 1001,
   cost: 2,
-  points: 0,
   qualities: [Quality.FLEETING],
   text: 'Fleeting. At the start of each round, if this is in your hand, give your opponent Sight 4.',
   keywords: [
@@ -29,17 +28,17 @@ class Ashes extends Card {
 }
 const ashes = new Ashes({
   name: 'Ashes',
+  id: 1002,
   cost: 1,
   qualities: [Quality.FLEETING],
-  id: 1002,
   text: 'Fleeting. Draw a card.',
   keywords: [{ name: Keywords.fleeting, x: 0, y: 102 }],
 })
 
 const child = new Card({
   name: 'Child',
-  qualities: [Quality.FLEETING],
   id: 1003,
+  qualities: [Quality.FLEETING],
   text: 'Fleeting.',
   keywords: [{ name: Keywords.fleeting, x: 0, y: 130 }],
 })
@@ -56,9 +55,9 @@ class Predator extends Card {
 }
 const predator = new Predator({
   name: 'Predator',
+  id: 1004,
   cost: 1,
   qualities: [Quality.FLEETING],
-  id: 1004,
   text: "Fleeting. Worth +2 points for each Prey in your opponent's discard pile.",
   keywords: [{ name: Keywords.fleeting, x: 0, y: 61 }],
 })

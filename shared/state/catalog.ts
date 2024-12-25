@@ -35,8 +35,8 @@ class Paramountcy extends Card {
 const paramountcy = new Paramountcy({
   name: 'Paramountcy',
   cost: 9,
-  points: 0,
   id: 62,
+  text: 'Add the top five cards of your discard pile to the story after this.',
 })
 
 const fullCatalog = [
