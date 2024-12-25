@@ -125,10 +125,6 @@ class ServerController {
 
     card.onPlay(player, this.model)
 
-    for (const cardInHand of this.model.hand[player]) {
-      cardInHand.inHandOnPlay(player, this.model)
-    }
-
     this.model.story.addAct(card, player)
   }
 
@@ -215,7 +211,11 @@ class ServerController {
       let index = 0
       while (index < this.model.hand[player].length) {
         const card = this.model.hand[player][index]
-        const somethingActivated = card.onUpkeep(player, this.model, index)
+        const somethingActivated = card.onUpkeepInHand(
+          player,
+          this.model,
+          index,
+        )
 
         if (somethingActivated) {
           this.model.animations[player].push(
@@ -235,7 +235,7 @@ class ServerController {
       // Do any activated in discard pile effects
       if (this.model.pile[player].length > 0) {
         const card = this.model.pile[player][this.model.pile[player].length - 1]
-        const somethingActivated = card.morning(
+        const somethingActivated = card.onMorning(
           player,
           this.model,
           this.model.pile[player].length - 1,

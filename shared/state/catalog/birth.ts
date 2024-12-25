@@ -2,6 +2,7 @@ import Card from '../card'
 import { child } from './tokens'
 import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
+import GameModel from '../gameModel'
 
 class Nascence extends Card {
   play(player, game, index, bonus) {
@@ -48,9 +49,9 @@ const ancestry = new Ancestry({
 })
 
 class TheFuture extends Card {
-  play(player, game, index, bonus) {
+  play(player, game: GameModel, index, bonus) {
     super.play(player, game, index, bonus)
-    this.draw(1, game, player)
+    game.draw(player, 1)
   }
 
   getCost(player, game) {
@@ -72,7 +73,7 @@ const theFuture = new TheFuture({
 })
 
 class Posterity extends Card {
-  morning(player, game, index) {
+  onMorning(player, game, index) {
     super.birth(1, game, player)
     return true
   }

@@ -1,9 +1,10 @@
 import Card from '../card'
 import { Quality } from '../effects'
+import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
 
 class Seen extends Card {
-  onUpkeep(player: number, game: any, index: number): boolean {
+  onUpkeepInHand(player: number, game: any, index: number): boolean {
     game.vision[player ^ 1] += 4
     return true
   }
@@ -21,9 +22,9 @@ const seen = new Seen({
 })
 
 class Ashes extends Card {
-  play(player: number, game: any, index: number, bonus: number): void {
+  play(player: number, game: GameModel, index: number, bonus: number): void {
     super.play(player, game, index, bonus)
-    this.draw(1, game, player)
+    game.draw(player, 1)
   }
 }
 const ashes = new Ashes({

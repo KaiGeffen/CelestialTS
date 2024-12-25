@@ -8,7 +8,7 @@ class Dagger extends Card {
   play(player, game, index, bonus) {
     const opp = (player + 1) % 2
     super.play(player, game, index, bonus)
-    this.discard(1, game, opp)
+    game.discard(player)
   }
 
   ratePlay(world) {
@@ -45,7 +45,7 @@ const shadow = new Shadow({
 })
 
 class Imprison extends Card {
-  onRoundEnd(player, game) {
+  onRoundEndIfThisResolved(player, game) {
     // If opponent had 3 or fewer points
     if (game.score[player ^ 1] <= 3) {
       // Give them Nourish -1
@@ -65,9 +65,9 @@ const imprison = new Imprison({
 })
 
 class Nightmare extends Card {
-  morning(player, game, index) {
+  onMorning(player, game, index) {
     if (game.hand[player ^ 1].length < game.hand[player].length) {
-      super.create(shadow, game, player)
+      game.create(shadow, player)
       return true
     }
     return false
@@ -92,7 +92,7 @@ class Boa extends Card {
       game.status[player].includes(Status.STARVE)
     super.play(player, game, index, bonus)
     if (nourished) {
-      super.discard(1, game, player ^ 1)
+      game.discard(player ^ 1)
     }
   }
 
@@ -188,7 +188,7 @@ class Sickness extends Card {
   play(player, game, index, bonus) {
     super.play(player, game, index, bonus)
     this.starve(4, game, player ^ 1)
-    this.create(sickness, game, player ^ 1)
+    game.create(sickness, player ^ 1)
   }
 }
 const sickness = new Sickness({
@@ -207,7 +207,7 @@ const sickness = new Sickness({
 
 // BETA
 class Victim extends Card {
-  onRoundEnd(player, game) {
+  onRoundEndIfThisResolved(player, game) {
     const scoreAboveWinning = game.score[player ^ 1] - game.score[player]
     const amt = Math.max(0, scoreAboveWinning)
     game.status[player ^ 1].push(...Array(amt).fill(Status.STARVE))

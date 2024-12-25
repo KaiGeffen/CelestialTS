@@ -21,7 +21,7 @@ const fruit = new Fruit({
 })
 
 class Oak extends Card {
-  onRoundEnd(player, game) {
+  onRoundEndIfThisResolved(player, game) {
     const scoreAboveWinning = game.score[player] - game.score[player ^ 1]
     const amt = Math.max(0, scoreAboveWinning)
     game.status[player].push(...Array(amt).fill(Status.NOURISH))
@@ -143,7 +143,7 @@ class Yearn extends Card {
   play(player, game, index, bonus) {
     super.play(player, game, index, bonus)
 
-    if (super.exhale(2, game, player)) {
+    if (super.exhale(player, game, 2)) {
       // If the discard pile has at least one card
       if (game.pile[player].length > 0) {
         // And the top card costs 3 or less

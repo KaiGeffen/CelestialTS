@@ -4,6 +4,7 @@ import { Status, Quality } from '../effects'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
 import { Keywords } from '../keyword'
+import GameModel from '../gameModel'
 
 class Dash extends Card {
   play(player: number, game: any, index: number, bonus: number): void {
@@ -29,7 +30,7 @@ class Impulse extends Card {
     super.play(player, game, index, bonus)
 
     for (let i = 0; i < 2; i++) {
-      this.createInPile(ashes, game, player)
+      game.createInPile(ashes, player)
     }
   }
 }
@@ -47,10 +48,10 @@ const impulse = new Impulse({
 })
 
 class Mine extends Card {
-  play(player, game, index, bonus) {
+  play(player, game: GameModel, index, bonus) {
     super.play(player, game, index, bonus)
 
-    this.dig(4, game, player)
+    game.dig(player, 4)
   }
 }
 const mine = new Mine({
@@ -66,7 +67,7 @@ class Arsonist extends Card {
     super.play(player, game, index, bonus)
 
     for (let i = 0; i < 3; i++) {
-      this.createInPile(ashes, game, player)
+      game.createInPile(ashes, player)
     }
   }
 }
@@ -97,7 +98,7 @@ class Parch extends Card {
     while (i < game.story.acts.length) {
       const act = game.story.acts[i]
       if (act.owner === player) {
-        this.removeAct(i, game)
+        game.removeAct(i)
       } else {
         i++
       }
@@ -229,7 +230,7 @@ class FromAshes extends Card {
       .slice(-3)
       .filter((card) => card.qualities.includes(Quality.FLEETING)).length
 
-    this.dig(3, game, player)
+    game.dig(player, 3)
     this.nourish(amt, game, player)
   }
 }

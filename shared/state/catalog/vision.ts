@@ -5,7 +5,7 @@ import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
 
 class Dawn extends SightCard {
-  morning(player: number, game: any, index: number): boolean {
+  onMorning(player: number, game: any, index: number): boolean {
     game.vision[player] += 1
     return true
   }
@@ -24,7 +24,7 @@ const dawn = new Dawn(4, {
 class ClearView extends Card {
   play(player: number, game: any, index: number, bonus: any): void {
     super.play(player, game, index, bonus)
-    this.create(seen, game, player ^ 1)
+    game.create(seen, player ^ 1)
   }
 }
 const clearView = new ClearView({
@@ -78,7 +78,7 @@ const enlightenment = new Enlightenment({
 class Prey extends Card {
   play(player: number, game: any, index: number, bonus: any): void {
     super.play(player, game, index, bonus)
-    this.create(predator, game, player ^ 1)
+    game.create(predator, player ^ 1)
   }
 }
 const prey = new Prey({

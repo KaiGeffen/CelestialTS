@@ -4,11 +4,11 @@ import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
 
 class Mercy extends Card {
-  play(player: any, game: any, index: number, bonus: any) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     for (let i = 0; i < 2; i++) {
-      this.draw(1, game, i)
+      game.draw(i, 1)
     }
   }
 
@@ -25,7 +25,7 @@ const mercy = new Mercy({
 })
 
 class Excess extends Card {
-  getCost(player: any, game: any) {
+  getCost(player: number, game: GameModel) {
     let amt = 0
 
     if (!game.story.isEmpty()) {
@@ -48,11 +48,11 @@ const excess = new Excess({
 })
 
 class FishingBoat extends Card {
-  play(player: any, game: any, index: number, bonus: any) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     for (let i = 0; i < 3; i++) {
-      this.tutor(1, game, player)
+      game.tutor(1, player)
     }
   }
 }
@@ -65,7 +65,7 @@ const fishingBoat = new FishingBoat({
 })
 
 class Drown extends Card {
-  play(player: any, game: any, index: number, bonus: any) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.mill(3, game, player)
   }
@@ -79,13 +79,13 @@ const drown = new Drown({
 })
 
 class Iceberg extends Card {
-  getCost(player: any, game: any) {
+  getCost(player: number, game: GameModel) {
     return Math.max(0, this.cost - game.amtPasses[player])
   }
 
-  play(player: any, game: any, index: number, bonus: any) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
-    this.draw(2, game, player)
+    game.draw(player, 2)
   }
 }
 const iceberg = new Iceberg({
@@ -97,8 +97,8 @@ const iceberg = new Iceberg({
 })
 
 class Dew extends Card {
-  morning(player: any, game: any, index: number) {
-    super.create(dew, game, player)
+  onMorning(player: number, game: GameModel, index: number) {
+    game.create(player, dew)
     return true
   }
 }
@@ -113,7 +113,7 @@ const dew = new Dew({
 })
 
 class GentleRain extends Card {
-  play(player: any, game: any, index: number, bonus: any) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     const amt = game.amtDrawn[player]
@@ -136,7 +136,7 @@ class Refresh extends Card {
     if (game.hand[player].length > 0) {
       const card = game.hand[player].shift()
       game.deck[player].unshift(card)
-      this.draw(1, game, player)
+      game.draw(player, 1)
     }
   }
 }
@@ -149,7 +149,7 @@ const refresh = new Refresh({
 })
 
 class Overflow extends Card {
-  play(player: any, game: any, index: number, bonus: any) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus + game.hand[player].length)
   }
 
@@ -157,7 +157,7 @@ class Overflow extends Card {
     if (game.hand[player].length > 0) {
       const card = game.hand[player].shift()
       game.deck[player].unshift(card)
-      this.draw(1, game, player)
+      game.draw(player, 1)
     }
   }
 }

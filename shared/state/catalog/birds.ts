@@ -104,7 +104,7 @@ class Phoenix extends Card {
     //   }
     // })
 
-    this.create(dove, game, player)
+    game.create(dove, player)
   }
 }
 
@@ -153,7 +153,7 @@ const heron = new Heron({
 
 // BETA CONTENT TODO
 class Nest extends Card {
-  morning(player: number, game: GameModel, index: number) {
+  onMorning(player: number, game: GameModel, index: number) {
     game.createInStory(player, dove)
     return true
   }

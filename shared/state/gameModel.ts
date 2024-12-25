@@ -234,6 +234,7 @@ export default class GameModel {
     this.pile[player].push(card)
   }
 
+  // TODO This is just secretary bird, and it appears to oust the entire hand
   oust(player: number) {
     let cost = 0
     while (this.hand[player].length > 0) {

@@ -38,7 +38,7 @@ class Story {
       game.sound = SoundEffect.Resolve
 
       act.card.play(act.owner, game, index, act.bonus)
-      roundEndEffects.push([act.card.onRoundEnd, act.owner])
+      roundEndEffects.push([act.card.onRoundEndIfThisResolved, act.owner])
 
       // Put in pile or remove from game if Fleeting
       if (!act.card.qualities.includes(Quality.FLEETING)) {

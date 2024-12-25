@@ -41,7 +41,7 @@ const cosmos = new Cosmos({
 class NightVision extends SightCard {
   play(player: any, game: any, index: number, bonus: number) {
     super.play(player, game, index, bonus)
-    this.tutor(2, game, player)
+    game.tutor(2, player)
   }
 }
 const nightVision = new NightVision(3, {
@@ -65,7 +65,7 @@ const ecology = new Ecology({
 })
 
 class Sun extends Card {
-  morning(player: any, game: any, index: number) {
+  onMorning(player: any, game: any, index: number) {
     super.addBreath(2, game, player)
     return true
   }
@@ -81,7 +81,7 @@ const sun = new Sun({
 })
 
 class Moon extends Card {
-  morning(player: any, game: any, index: number) {
+  onMorning(player: any, game: any, index: number) {
     let count = 0
     for (let i = index - 1; i >= 0; i--) {
       if (count >= 2) break
