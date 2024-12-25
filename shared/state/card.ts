@@ -61,19 +61,15 @@ export default class Card {
     this.references = references
   }
 
-  // Play this card to the story
   play(player: number, game: GameModel, index: number, bonus: number): void {
     let result = this.points + bonus
 
-    // Increase points by the amount of nourish, consuming it
     result += game.status[player].filter(
       (status: Status) => status === Status.NOURISH,
     ).length
     game.status[player] = game.status[player].filter(
       (status: Status) => status !== Status.NOURISH,
     )
-
-    // Decrease points by the amount of starve, consuming it
     result -= game.status[player].filter(
       (status: Status) => status === Status.STARVE,
     ).length
@@ -81,49 +77,13 @@ export default class Card {
       (status: Status) => status !== Status.STARVE,
     )
 
-    // Add this card's points to the player's score
     game.score[player] += result
-  }
 
-  // Get this card's current cost (Which may differ from its base cost)
-  getCost(player: number, game: GameModel): number {
-    return this.cost
-  }
-
-  /* Triggers */
-  // When this card is played
-  onPlay(player: number, game: GameModel): void {}
-
-  // When this has its morning ability triggered
-  onMorning(player: number, game: GameModel, index: number): boolean {
-    return false
-  }
-
-  // When this is in player's hand at the start of their upkeep
-  onUpkeepInHand(player: number, game: GameModel, index: number): boolean {
-    return false
-  }
-
-  // When this resolves in a round and the round ends
-  onRoundEndIfThisResolved(player: number, game: GameModel): void {}
-
-  // When this is drawn
-  onDraw(player: number, game: GameModel): void {}
-
-  /* Utility methods */
-  reset(game: GameModel): void {
-    game.score = [0, 0]
-  }
-
-  addBreath(amt: number, game: GameModel, player: number): void {
-    game.breath[player] += amt
-    for (let i = 0; i < amt; i++) {
-      game.status[player].push(Status.INSPIRED)
-    }
+    result > 0 ? `+${result}` : `${result}`
   }
 
   // Spend the given amount of breath, return whether successful
-  exhale(player: number, game: GameModel, amt: number): boolean {
+  exhale(amt: number, game: GameModel, player: number): boolean {
     if (game.breath[player] >= amt) {
       game.breath[player] -= amt
       return true
@@ -132,7 +92,55 @@ export default class Card {
     }
   }
 
-  addStatus(amt: number, game: GameModel, player: number, stat: Status): void {
+  ratePlay(world: any): number {
+    return Math.max(1, this.cost)
+  }
+
+  rateDelay(world: any): number {
+    return 0
+  }
+
+  getCost(player: number, game: GameModel): number {
+    return this.cost
+  }
+
+  onUpkeepInHand(player: number, game: GameModel, index: number): boolean {
+    return false
+  }
+
+  onMorning(player: number, game: GameModel, index: number): boolean {
+    return false
+  }
+
+  onPlay(player: number, game: GameModel): void {}
+
+  onRoundEndIfThisResolved(player: number, game: GameModel): void {}
+
+  // Triggers when this card is drawn
+  onDraw(player: number, game: GameModel): void {}
+
+  reset(game: GameModel): string {
+    game.score = [0, 0]
+    return '\nReset'
+  }
+
+  addBreath(amt: number, game: GameModel, player: number): string {
+    game.breath[player] += amt
+    for (let i = 0; i < amt; i++) {
+      game.status[player].push(Status.INSPIRED)
+    }
+    return amt > 0 ? `\n+${amt} breath` : ''
+  }
+
+  addStatus(
+    amt: number,
+    game: GameModel,
+    player: number,
+    stat: Status,
+  ): string {
+    let recap = `\n${stat} ${amt}`
+    if (amt <= 0) recap = ''
+
     for (let i = 0; i < amt; i++) {
       if (
         stat === Status.NOURISH &&
@@ -152,42 +160,140 @@ export default class Card {
         game.status[player].push(stat)
       }
     }
+    return recap
   }
 
-  inspire(amt: number, game: GameModel, player: number): void {
+  removeStatus(game: GameModel, player: number, removedStatus: Status): void {
+    game.status[player] = game.status[player].filter(
+      (status: Status) => status !== removedStatus,
+    )
+  }
+
+  inspire(amt: number, game: GameModel, player: number): string {
     game.animations[player].push(
       new Animation({
         from: Zone.Status,
         status: 0,
       }),
     )
-    this.addStatus(amt, game, player, Status.INSPIRE)
+    return this.addStatus(amt, game, player, Status.INSPIRE)
   }
 
-  nourish(amt: number, game: GameModel, player: number): void {
+  nourish(amt: number, game: GameModel, player: number): string {
     game.animations[player].push(
       new Animation({
         from: Zone.Status,
         status: 2,
       }),
     )
-    this.addStatus(amt, game, player, Status.NOURISH)
+    return this.addStatus(amt, game, player, Status.NOURISH)
   }
 
-  starve(amt: number, game: GameModel, player: number): void {
+  starve(amt: number, game: GameModel, player: number): string {
     game.animations[player].push(
       new Animation({
         from: Zone.Status,
         status: 3,
       }),
     )
-    this.addStatus(amt, game, player, Status.STARVE)
+    return this.addStatus(amt, game, player, Status.STARVE)
   }
 
-  birth(amt: number, game: GameModel, player: number): void {
+  draw(amt: number, game: GameModel, player: number): string {
+    let recap = ''
+    let numDrawn = 0
+    for (let i = 0; i < amt; i++) {
+      const card = game.draw(player)
+      if (card) numDrawn++
+    }
+    if (numDrawn > 0) recap = `\nDraw ${numDrawn}`
+    return recap
+  }
+
+  create(card: Card, game: GameModel, player: number): void {
+    game.create(player, card)
+  }
+
+  createInPile(card: Card, game: GameModel, player: number): string {
+    game.createInPile(player, card)
+    return `\n${card.name}`
+  }
+
+  createInStory(card: Card, game: GameModel, player: number): void {
+    game.createInStory(player, card)
+  }
+
+  tutor(cost: number, game: GameModel, player: number): string {
+    const card = game.tutor(player, cost)
+    return card ? `\nTutor ${cost}` : ''
+  }
+
+  discard(
+    amt: number,
+    game: GameModel,
+    player: number,
+    index: number = 0,
+  ): string {
+    let recap = '\nDiscard:'
+    let anySeen = false
+    for (let i = 0; i < amt; i++) {
+      const card = game.discard(player, amt, index)
+      if (card) {
+        anySeen = true
+        recap += `\n${card.name}`
+      }
+    }
+    return anySeen ? recap : ''
+  }
+
+  bottom(amt: number, game: GameModel, player: number): string {
+    let recap = '\nBottom'
+    let anySeen = false
+    for (let i = 0; i < amt; i++) {
+      const card = game.bottom(player)
+      if (card) {
+        anySeen = true
+        recap += `\n${card.name}`
+      }
+    }
+    return anySeen ? recap : ''
+  }
+
+  oust(amt: number, game: GameModel, player: number): string {
+    let recap = '\nOust:'
+    let anySeen = false
+    for (let i = 0; i < amt; i++) {
+      const card = game.oust(player)
+      if (card) {
+        anySeen = true
+        recap += `\n${card.name}`
+      }
+    }
+    return anySeen ? recap : ''
+  }
+
+  mill(amt: number, game: GameModel, player: number): string {
+    let recap = '\nMill:'
+    let anySeen = false
+    for (let i = 0; i < amt; i++) {
+      const card = game.mill(player)
+      if (card) {
+        anySeen = true
+        recap += `\n${card.name}`
+      }
+    }
+    return anySeen ? recap : ''
+  }
+
+  dig(amt: number, game: GameModel, player: number): void {
+    game.dig(player, amt)
+  }
+
+  birth(amt: number, game: GameModel, player: number): string {
     for (const card of game.hand[player]) {
       if (card.name === 'Child') {
         card.points += amt
+        return `\nBuild +${amt}`
       }
     }
     const card = new Card({
@@ -197,10 +303,13 @@ export default class Card {
       basePoints: 0,
       qualities: [Quality.FLEETING],
     })
-    game.create(player, card)
+    if (game.create(player, card)) {
+      return `\nBuild ${amt}`
+    } else {
+      return ''
+    }
   }
 
-  // Transform the card in the story at given index into the given card
   transform(index: number, card: Card, game: GameModel): void {
     if (index + 1 <= game.story.acts.length) {
       const act = game.story.acts[index]
@@ -218,35 +327,16 @@ export default class Card {
     }
   }
 
-  // TODO remove this, make model do the milling and take an amt
-  mill(amt: number, game: GameModel, player: number): string {
-    let recap = '\nMill:'
-    let anySeen = false
-    for (let i = 0; i < amt; i++) {
-      const card = game.mill(player)
-      if (card) {
-        anySeen = true
-        recap += `\n${card.name}`
-      }
-    }
-    return anySeen ? recap : ''
+  removeAct(index: number, game: GameModel): any {
+    return game.removeAct(index)
   }
 
-  /* AI Heuristics */
-  ratePlay(world: GameModel): number {
-    return Math.max(1, this.cost)
-  }
-
-  rateDelay(world: GameModel): number {
-    return 0
-  }
-
-  rateReset(world: GameModel): number {
+  rateReset(world: any): number {
     let knownValue = 0
     let theirUnknownCards = 0
     let theirBreath =
       world.maxBreath[1] +
-      world.status[1].filter((status: Status) => status === Status.INSPIRED)
+      world.oppStatus.filter((status: Status) => status === Status.INSPIRED)
         .length
 
     for (const act of world.story.acts) {
@@ -271,7 +361,7 @@ export default class Card {
     return value
   }
 
-  rateDiscard(world: GameModel): number {
+  rateDiscard(world: any): number {
     let extraCards = 0
     for (const act of world.story.acts) {
       if (['Gift', 'Mercy'].includes(act.card.name)) {
@@ -284,13 +374,13 @@ export default class Card {
     const cardsInHandToValue = [0, 0.6, 0.8, 1, 1, 0.2, 0.1]
     const handCount = Math.max(
       0,
-      Math.min(6, world.hand[1].length + extraCards),
+      Math.min(6, world.oppHand.length + extraCards),
     )
 
     return cardsInHandToValue[handCount]
   }
 
-  // TODO These are just in the mobile focus menu
+  // TODO The below are just for client (Mobile focus menu)
   getHintText(): string {
     return ''
   }
