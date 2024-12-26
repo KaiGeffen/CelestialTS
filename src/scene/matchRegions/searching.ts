@@ -97,8 +97,7 @@ export default class SearchingRegion extends Region {
         Space.windowHeight,
         Color.backgroundLight
       )
-      .setOrigin(0)
-      .setInteractive(true);
+      .setOrigin(0);
 
     this.container.add(background);
   }
