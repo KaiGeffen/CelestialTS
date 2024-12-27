@@ -26,8 +26,7 @@ const dagger = new Dagger({
 
 class Shadow extends Card {
   getCost(player: number, game: GameModel): number {
-    const opp = (player + 1) % 2
-    return game.hand[opp].length
+    return game.hand[player ^ 1].length
   }
 
   rateDelay(world) {
