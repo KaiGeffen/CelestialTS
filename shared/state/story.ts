@@ -109,6 +109,17 @@ class Story {
   replaceAct(index: number, arg1: Act) {
     throw new Error('Method not implemented.')
   }
+
+  // Return a full deepcopy of the story
+  getDeepCopy(): Story {
+    let copy = new Story()
+
+    this.acts.forEach((element) => {
+      copy.addAct(element.card, element.owner)
+    })
+
+    return copy
+  }
 }
 
 // Add the current state to list of remembered recent states

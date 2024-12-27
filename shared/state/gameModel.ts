@@ -342,19 +342,13 @@ export default class GameModel {
 
   // Return a full deepcopy of this object
   getDeepCopy(): GameModel {
-    const copy = new GameModel(
-      [...this.deck[0]],
-      [...this.deck[1]],
-      this.avatars[0],
-      this.avatars[1],
-      false,
-    )
+    const copy = new GameModel([], [], this.avatars[0], this.avatars[1], false)
 
     copy.hand = this.hand.map((hand) => [...hand])
     copy.deck = this.deck.map((deck) => [...deck])
     copy.pile = this.pile.map((pile) => [...pile])
     copy.expended = this.expended.map((expended) => [...expended])
-    copy.story = structuredClone(this.story)
+    copy.story = this.story.getDeepCopy()
     copy.breath = [...this.breath]
     copy.maxBreath = [...this.maxBreath]
     copy.status = this.status.map((status) => [...status])

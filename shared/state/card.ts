@@ -346,9 +346,10 @@ export default class Card {
   }
 
   rateDiscard(world: any): number {
+    // TODO Redo this, it uses hardcoded names
     let extraCards = 0
     for (const act of world.story.acts) {
-      if (['Gift', 'Mercy'].includes(act.card.name)) {
+      if (['Mercy'].includes(act.card.name)) {
         extraCards++
       } else if (['Dagger', 'Bone Knife', 'Chimney'].includes(act.card.name)) {
         extraCards--
@@ -358,7 +359,7 @@ export default class Card {
     const cardsInHandToValue = [0, 0.6, 0.8, 1, 1, 0.2, 0.1]
     const handCount = Math.max(
       0,
-      Math.min(6, world.oppHand.length + extraCards),
+      Math.min(6, world.hand[1].length + extraCards),
     )
 
     return cardsInHandToValue[handCount]
