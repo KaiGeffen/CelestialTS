@@ -3,9 +3,10 @@ import { SightCard } from '../card'
 import { seen, predator } from './tokens'
 import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
+import GameModel from '../gameModel'
 
 class Dawn extends SightCard {
-  onMorning(player: number, game: any, index: number): boolean {
+  onMorning(player: number, game: GameModel, index: number): boolean {
     game.vision[player] += 1
     return true
   }
@@ -22,9 +23,9 @@ const dawn = new Dawn(4, {
 })
 
 class ClearView extends Card {
-  play(player: number, game: any, index: number, bonus: any): void {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
-    game.create(seen, player ^ 1)
+    game.create(player ^ 1, seen)
   }
 }
 const clearView = new ClearView({
@@ -36,7 +37,7 @@ const clearView = new ClearView({
 })
 
 class Awakening extends Card {
-  play(player: number, game: any, index: number, bonus: any): void {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     this.addStatus(1, game, player, Status.AWAKENED)
     super.play(player, game, index, bonus)
   }
@@ -51,7 +52,7 @@ const awakening = new Awakening({
 })
 
 class Enlightenment extends Card {
-  getCost(player: number, game: any): number {
+  getCost(player: number, game: GameModel): number {
     let numSeenCards = 0
     for (let i = 0; i < game.story.acts.length; i++) {
       const act = game.story.acts[i]
@@ -76,9 +77,9 @@ const enlightenment = new Enlightenment({
 })
 
 class Prey extends Card {
-  play(player: number, game: any, index: number, bonus: any): void {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
-    game.create(predator, player ^ 1)
+    game.create(player ^ 1, predator)
   }
 }
 const prey = new Prey({
@@ -91,7 +92,7 @@ const prey = new Prey({
 })
 
 class Conquer extends Card {
-  getCost(player: number, game: any): number {
+  getCost(player: number, game: GameModel): number {
     let numSeenCards = 0
     for (let i = 0; i < game.story.acts.length; i++) {
       const act = game.story.acts[i]

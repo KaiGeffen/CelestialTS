@@ -7,7 +7,7 @@ import { Zone } from '../zone'
 import GameModel from '../gameModel'
 
 class Fruit extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.nourish(3, game, player)
   }
@@ -21,7 +21,7 @@ const fruit = new Fruit({
 })
 
 class Oak extends Card {
-  onRoundEndIfThisResolved(player, game) {
+  onRoundEndIfThisResolved(player: number, game: GameModel) {
     const scoreAboveWinning = game.score[player] - game.score[player ^ 1]
     const amt = Math.max(0, scoreAboveWinning)
     game.status[player].push(...Array(amt).fill(Status.NOURISH))
@@ -37,7 +37,7 @@ const oak = new Oak({
 })
 
 class Bounty extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     ;[0, 1].forEach((p) => this.nourish(2, game, p))
   }
@@ -65,7 +65,7 @@ class Pet extends Card {
     })
   }
 
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     let points = this.points + bonus
     points += game.status[player].filter(
       (status) => status === Status.NOURISH,
@@ -84,7 +84,7 @@ class Pet extends Card {
 const pet = new Pet(1)
 
 class Nectar extends SightCard {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.nourish(1, game, player)
   }
@@ -101,7 +101,7 @@ const nectar = new Nectar(3, {
 })
 
 class Hollow extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     const amt = Math.max(0, game.score[player])
     game.score[player] = 0
@@ -116,7 +116,7 @@ const hollow = new Hollow({
 })
 
 class HoldTight extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     if (game.pile[player].length > 0) {
       const card = game.pile[player].pop()
@@ -140,7 +140,7 @@ const holdTight = new HoldTight({
 
 // BETA TODO
 class Yearn extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     if (super.exhale(player, game, 2)) {

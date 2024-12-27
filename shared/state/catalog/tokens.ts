@@ -4,7 +4,7 @@ import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
 
 class Seen extends Card {
-  onUpkeepInHand(player: number, game: any, index: number): boolean {
+  onUpkeepInHand(player: number, game: GameModel, index: number): boolean {
     game.vision[player ^ 1] += 4
     return true
   }
@@ -45,7 +45,7 @@ const child = new Card({
 })
 
 class Predator extends Card {
-  play(player: number, game: any, index: number, bonus: number): void {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     // NOTE This name must match the name of the card that creates it
     bonus += game.pile[player ^ 1].reduce(
       (acc: number, card: Card) => acc + (card.name === 'Prey' ? 2 : 0),

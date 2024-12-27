@@ -4,9 +4,10 @@ import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
+import GameModel from '../gameModel'
 
 class Stars extends Card {
-  play(player: any, game: any, index: number, bonus: number) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.inspire(1, game, player)
   }
@@ -19,7 +20,7 @@ const stars = new Stars({
 })
 
 class Cosmos extends Card {
-  play(player: any, game: any, index: number, bonus: number) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     let amt = 1
     for (const act of game.story.acts) {
       if (act.owner === player) {
@@ -39,7 +40,7 @@ const cosmos = new Cosmos({
 })
 
 class NightVision extends SightCard {
-  play(player: any, game: any, index: number, bonus: number) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     game.tutor(2, player)
   }
@@ -53,7 +54,7 @@ const nightVision = new NightVision(3, {
 })
 
 class Ecology extends Card {
-  onPlay(player: any, game: any) {
+  onPlay(player: number, game: GameModel) {
     game.breath[player] += 10
   }
 }
@@ -65,7 +66,7 @@ const ecology = new Ecology({
 })
 
 class Sun extends Card {
-  onMorning(player: any, game: any, index: number) {
+  onMorning(player: number, game: GameModel, index: number) {
     super.addBreath(2, game, player)
     return true
   }
@@ -81,13 +82,13 @@ const sun = new Sun({
 })
 
 class Moon extends Card {
-  onMorning(player: any, game: any, index: number) {
+  onMorning(player: number, game: GameModel, index: number) {
     let count = 0
     for (let i = index - 1; i >= 0; i--) {
       if (count >= 2) break
 
       const card = game.pile[player][i]
-      if (card.morning(player, game, i)) {
+      if (card.onMorning(player, game, i)) {
         game.animations[player].push(
           new Animation({
             from: Zone.Discard,
@@ -113,10 +114,14 @@ const moon = new Moon({
 })
 
 class Sunflower extends Card {
-  play(player: any, game: any, index: number, bonus: number) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     let points = this.points + bonus
-    points += game.status[player].count(Status.NOURISH)
-    points -= game.status[player].count(Status.STARVE)
+    points += game.status[player].filter(
+      (status) => status === Status.NOURISH,
+    ).length
+    points -= game.status[player].filter(
+      (status) => status === Status.STARVE,
+    ).length
 
     super.play(player, game, index, bonus)
     this.inspire(points, game, player)

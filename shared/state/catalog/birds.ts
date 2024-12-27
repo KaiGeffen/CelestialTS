@@ -4,7 +4,7 @@ import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
 
 class Dove extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     // game.sound_effect = SoundEffect.Bird
     super.play(player, game, index, bonus)
   }
@@ -25,7 +25,7 @@ const dove = new Dove({
 })
 
 class Starling extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     if (!game.story.isEmpty()) {
       if (game.story.acts[0].card.cost === 1) {
         bonus += 1
@@ -34,7 +34,7 @@ class Starling extends Card {
     super.play(player, game, index, bonus)
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel) {
     let value = 2
     // TODO
     return value
@@ -56,7 +56,7 @@ const starling = new Starling({
 })
 
 class SecretaryBird extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     let amt = 0
     for (let card of game.hand[player]) {
       if (card.cost <= 1) {
@@ -80,7 +80,7 @@ const secretaryBird = new SecretaryBird({
 })
 
 class Phoenix extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     // const deck = game.deck[player]
@@ -104,7 +104,7 @@ class Phoenix extends Card {
     //   }
     // })
 
-    game.create(dove, player)
+    game.create(player, dove)
   }
 }
 
@@ -125,16 +125,16 @@ const phoenix = new Phoenix({
 })
 
 class Heron extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.reset(game)
   }
 
-  getCost(player, game) {
+  getCost(player: number, game: GameModel) {
     return this.cost + game.pile[player].length
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel) {
     return this.rateReset(world)
   }
 }

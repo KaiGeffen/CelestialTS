@@ -11,10 +11,6 @@ class Mercy extends Card {
       game.draw(i, 1)
     }
   }
-
-  ratePlay(world: any) {
-    return 3 + world.oppHand.length / 2 - world.hand.length / 2
-  }
 }
 const mercy = new Mercy({
   name: 'Mercy',

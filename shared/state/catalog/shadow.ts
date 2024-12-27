@@ -3,15 +3,16 @@ import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
+import GameModel from '../gameModel'
 
 class Dagger extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     const opp = (player + 1) % 2
     super.play(player, game, index, bonus)
     game.discard(player)
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel): number {
     return this.rateDiscard(world)
   }
 }
@@ -25,7 +26,7 @@ const dagger = new Dagger({
 })
 
 class Shadow extends Card {
-  getCost(player, game) {
+  getCost(player: number, game: GameModel): number {
     const opp = (player + 1) % 2
     return game.hand[opp].length
   }
@@ -45,7 +46,7 @@ const shadow = new Shadow({
 })
 
 class Imprison extends Card {
-  onRoundEndIfThisResolved(player, game) {
+  onRoundEndIfThisResolved(player: number, game: GameModel) {
     // If opponent had 3 or fewer points
     if (game.score[player ^ 1] <= 3) {
       // Give them Nourish -1
@@ -65,9 +66,9 @@ const imprison = new Imprison({
 })
 
 class Nightmare extends Card {
-  onMorning(player, game, index) {
+  onMorning(player: number, game: GameModel, index: number) {
     if (game.hand[player ^ 1].length < game.hand[player].length) {
-      game.create(shadow, player)
+      game.create(player, shadow)
       return true
     }
     return false
@@ -86,24 +87,13 @@ const nightmare = new Nightmare({
 })
 
 class Boa extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     const nourished =
       game.status[player].includes(Status.NOURISH) ||
       game.status[player].includes(Status.STARVE)
     super.play(player, game, index, bonus)
     if (nourished) {
       game.discard(player ^ 1)
-    }
-  }
-
-  ratePlay(world) {
-    const nourished =
-      world.status.includes(Status.NOURISH) ||
-      world.status.includes(Status.STARVE)
-    if (nourished) {
-      return this.points + this.rateDiscard(world)
-    } else {
-      return this.points
     }
   }
 }
@@ -117,7 +107,7 @@ const boa = new Boa({
 })
 
 class HungryGhost extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.starve(4, game, player)
   }
@@ -136,12 +126,12 @@ const hungryGhost = new HungryGhost({
 })
 
 class Hurricane extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.reset(game)
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel): number {
     return this.rateReset(world)
   }
 }
@@ -153,7 +143,7 @@ const hurricane = new Hurricane({
 })
 
 class WingClipping extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     if (game.hand[player ^ 1].length > 0) {
@@ -170,7 +160,7 @@ class WingClipping extends Card {
     }
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel): number {
     return this.points + this.rateDiscard(world)
   }
 }
@@ -185,10 +175,10 @@ const wingClipping = new WingClipping({
 })
 
 class Sickness extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.starve(4, game, player ^ 1)
-    game.create(sickness, player ^ 1)
+    game.create(player ^ 1, sickness)
   }
 }
 const sickness = new Sickness({
@@ -207,7 +197,7 @@ const sickness = new Sickness({
 
 // BETA
 class Victim extends Card {
-  onRoundEndIfThisResolved(player, game) {
+  onRoundEndIfThisResolved(player: number, game: GameModel) {
     const scoreAboveWinning = game.score[player ^ 1] - game.score[player]
     const amt = Math.max(0, scoreAboveWinning)
     game.status[player ^ 1].push(...Array(amt).fill(Status.STARVE))

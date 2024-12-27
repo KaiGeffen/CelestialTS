@@ -7,12 +7,12 @@ import { Keywords } from '../keyword'
 import GameModel from '../gameModel'
 
 class Dash extends Card {
-  play(player: number, game: any, index: number, bonus: number): void {
+  play(player: number, game: GameModel, index: number, bonus: number): void {
     bonus -= index
     super.play(player, game, index, bonus)
   }
 
-  ratePlay(world: any): number {
+  ratePlay(world: GameModel): number {
     return this.points - world.story.acts.length
   }
 }
@@ -26,11 +26,11 @@ const dash = new Dash({
 })
 
 class Impulse extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     for (let i = 0; i < 2; i++) {
-      game.createInPile(ashes, player)
+      game.createInPile(player, ashes)
     }
   }
 }
@@ -48,7 +48,7 @@ const impulse = new Impulse({
 })
 
 class Mine extends Card {
-  play(player, game: GameModel, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     game.dig(player, 4)
@@ -63,11 +63,11 @@ const mine = new Mine({
 })
 
 class Arsonist extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     for (let i = 0; i < 3; i++) {
-      game.createInPile(ashes, player)
+      game.createInPile(player, ashes)
     }
   }
 }
@@ -85,7 +85,7 @@ const arsonist = new Arsonist({
 })
 
 class Parch extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     for (const act of game.story.acts) {
       if (act.owner === player) {
         bonus += 1
@@ -105,7 +105,7 @@ class Parch extends Card {
     }
   }
 
-  onPlay(player, game) {
+  onPlay(player: number, game: GameModel) {
     game.status[player].push(Status.UNLOCKED)
   }
 }
@@ -120,7 +120,7 @@ const parch = new Parch({
 })
 
 class Veteran extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     if (game.pile[player].length >= 8) {
       bonus += 2
     }
@@ -128,7 +128,7 @@ class Veteran extends Card {
     super.play(player, game, index, bonus)
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel): number {
     const pileHas8 = world.pile[0].length >= 8
     return 4 + (pileHas8 ? 2 : 0)
   }
@@ -144,7 +144,7 @@ const veteran = new Veteran({
 })
 
 class Cling extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     let highestCost = -1
     let highestIndex = null
 
@@ -177,7 +177,7 @@ class Cling extends Card {
     }
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel): number {
     let highestCost = 0
     for (const card of world.pile[0]) {
       highestCost = Math.max(highestCost, card.cost)
@@ -208,7 +208,7 @@ const cling = new Cling({
 })
 
 class Death extends Card {
-  getCost(player, game) {
+  getCost(player: number, game: GameModel) {
     return game.pile[player].length >= 12 ? 0 : this.cost
   }
 }
@@ -223,7 +223,7 @@ const death = new Death({
 })
 
 class FromAshes extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     const amt = game.pile[player]

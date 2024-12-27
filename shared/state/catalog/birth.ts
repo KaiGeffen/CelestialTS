@@ -1,11 +1,11 @@
 import Card from '../card'
 import { child } from './tokens'
-import { Status, Quality } from '../effects'
+import { Quality } from '../effects'
 import { Keywords } from '../keyword'
 import GameModel from '../gameModel'
 
 class Nascence extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.birth(1, game, player)
   }
@@ -18,7 +18,7 @@ const nascence = new Nascence({
 })
 
 class Birth extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.birth(2, game, player)
   }
@@ -32,7 +32,7 @@ const birth = new Birth({
 })
 
 class Ancestry extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     const amt = game.story.getLength()
     super.play(player, game, index, bonus)
     if (amt >= 1) {
@@ -54,7 +54,7 @@ class TheFuture extends Card {
     game.draw(player, 1)
   }
 
-  getCost(player, game) {
+  getCost(player: number, game: GameModel) {
     let amt = 0
     for (const card of game.hand[player]) {
       if (card.name === child.name) {
@@ -73,7 +73,7 @@ const theFuture = new TheFuture({
 })
 
 class Posterity extends Card {
-  onMorning(player, game, index) {
+  onMorning(player: number, game: GameModel, index: number) {
     super.birth(1, game, player)
     return true
   }
@@ -91,7 +91,7 @@ const posterity = new Posterity({
 })
 
 class Rebirth extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
     let idx = 0
@@ -122,7 +122,7 @@ const rebirth = new Rebirth({
 })
 
 class Cradle extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     this.birth(2, game, player)
   }
@@ -137,12 +137,12 @@ const cradle = new Cradle({
 })
 
 class Uprising extends Card {
-  play(player, game, index, bonus) {
+  play(player: number, game: GameModel, index: number, bonus: number) {
     // game.soundEffect = SoundEffect.Crowd;
     super.play(player, game, index, bonus + index)
   }
 
-  ratePlay(world) {
+  ratePlay(world: GameModel): number {
     return world.story.acts.length
   }
 }
