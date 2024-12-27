@@ -156,7 +156,6 @@ export default class GameModel {
   // Discard amt cards from player's hand at given index
   discard(player: number, amt = 1, index = 0) {
     let card = null
-    console.log(this)
     while (amt > 0 && this.hand[player].length > index) {
       card = this.hand[player].splice(index, 1)[0]
       this.pile[player].push(card)

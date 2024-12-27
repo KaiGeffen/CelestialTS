@@ -87,64 +87,6 @@ export default class Card {
     return this.cost
   }
 
-  /* AI heuristics */
-  ratePlay(world: any): number {
-    return Math.max(1, this.cost)
-  }
-
-  rateDelay(world: any): number {
-    return 0
-  }
-
-  rateReset(world: any): number {
-    let knownValue = 0
-    let theirUnknownCards = 0
-    let theirBreath =
-      world.maxBreath[1] +
-      world.oppStatus.filter((status: Status) => status === Status.INSPIRED)
-        .length
-
-    for (const act of world.story.acts) {
-      const card = act.card
-      if (act.owner === 0) {
-        knownValue -= card.cost
-      } else if (card.qualities.includes(Quality.VISIBLE)) {
-        knownValue += card.cost
-        theirBreath -= card.cost
-      } else {
-        theirUnknownCards++
-      }
-    }
-
-    let value = knownValue
-    for (let i = 0; i < theirUnknownCards; i++) {
-      const guessedValue = Math.floor(theirBreath / 2)
-      value += guessedValue
-      theirBreath -= guessedValue
-    }
-
-    return value
-  }
-
-  rateDiscard(world: any): number {
-    let extraCards = 0
-    for (const act of world.story.acts) {
-      if (['Gift', 'Mercy'].includes(act.card.name)) {
-        extraCards++
-      } else if (['Dagger', 'Bone Knife', 'Chimney'].includes(act.card.name)) {
-        extraCards--
-      }
-    }
-
-    const cardsInHandToValue = [0, 0.6, 0.8, 1, 1, 0.2, 0.1]
-    const handCount = Math.max(
-      0,
-      Math.min(6, world.oppHand.length + extraCards),
-    )
-
-    return cardsInHandToValue[handCount]
-  }
-
   /* Keywords */
   // Spend the given amount of breath, return whether successful
   exhale(amt: number, game: GameModel, player: number): boolean {
@@ -192,10 +134,6 @@ export default class Card {
         }),
       )
     }
-  }
-
-  removeAct(index: number, game: GameModel): any {
-    return game.removeAct(index)
   }
 
   /* Triggers */
@@ -259,12 +197,6 @@ export default class Card {
     return recap
   }
 
-  removeStatus(game: GameModel, player: number, removedStatus: Status): void {
-    game.status[player] = game.status[player].filter(
-      (status: Status) => status !== removedStatus,
-    )
-  }
-
   inspire(amt: number, game: GameModel, player: number): string {
     game.animations[player].push(
       new Animation({
@@ -289,6 +221,7 @@ export default class Card {
     game.animations[player].push(
       new Animation({
         from: Zone.Status,
+        // TODO Don't hardcode this number here
         status: 3,
       }),
     )
@@ -309,15 +242,6 @@ export default class Card {
 
   create(card: Card, game: GameModel, player: number): void {
     game.create(player, card)
-  }
-
-  createInPile(card: Card, game: GameModel, player: number): string {
-    game.createInPile(player, card)
-    return `\n${card.name}`
-  }
-
-  createInStory(card: Card, game: GameModel, player: number): void {
-    game.createInStory(player, card)
   }
 
   tutor(cost: number, game: GameModel, player: number): string {
@@ -382,8 +306,62 @@ export default class Card {
     return anySeen ? recap : ''
   }
 
-  dig(amt: number, game: GameModel, player: number): void {
-    game.dig(player, amt)
+  /* AI heuristics */
+  ratePlay(world: any): number {
+    return Math.max(1, this.cost)
+  }
+
+  rateDelay(world: any): number {
+    return 0
+  }
+
+  rateReset(world: any): number {
+    let knownValue = 0
+    let theirUnknownCards = 0
+    let theirBreath =
+      world.maxBreath[1] +
+      world.oppStatus.filter((status: Status) => status === Status.INSPIRED)
+        .length
+
+    for (const act of world.story.acts) {
+      const card = act.card
+      if (act.owner === 0) {
+        knownValue -= card.cost
+      } else if (card.qualities.includes(Quality.VISIBLE)) {
+        knownValue += card.cost
+        theirBreath -= card.cost
+      } else {
+        theirUnknownCards++
+      }
+    }
+
+    let value = knownValue
+    for (let i = 0; i < theirUnknownCards; i++) {
+      const guessedValue = Math.floor(theirBreath / 2)
+      value += guessedValue
+      theirBreath -= guessedValue
+    }
+
+    return value
+  }
+
+  rateDiscard(world: any): number {
+    let extraCards = 0
+    for (const act of world.story.acts) {
+      if (['Gift', 'Mercy'].includes(act.card.name)) {
+        extraCards++
+      } else if (['Dagger', 'Bone Knife', 'Chimney'].includes(act.card.name)) {
+        extraCards--
+      }
+    }
+
+    const cardsInHandToValue = [0, 0.6, 0.8, 1, 1, 0.2, 0.1]
+    const handCount = Math.max(
+      0,
+      Math.min(6, world.oppHand.length + extraCards),
+    )
+
+    return cardsInHandToValue[handCount]
   }
 
   // TODO The below are just for client (Mobile focus menu)
