@@ -61,6 +61,7 @@ export default class Card {
     this.references = references
   }
 
+  /* Main functions */
   play(player: number, game: GameModel, index: number, bonus: number): void {
     let result = this.points + bonus
 
@@ -82,6 +83,69 @@ export default class Card {
     result > 0 ? `+${result}` : `${result}`
   }
 
+  getCost(player: number, game: GameModel): number {
+    return this.cost
+  }
+
+  /* AI heuristics */
+  ratePlay(world: any): number {
+    return Math.max(1, this.cost)
+  }
+
+  rateDelay(world: any): number {
+    return 0
+  }
+
+  rateReset(world: any): number {
+    let knownValue = 0
+    let theirUnknownCards = 0
+    let theirBreath =
+      world.maxBreath[1] +
+      world.oppStatus.filter((status: Status) => status === Status.INSPIRED)
+        .length
+
+    for (const act of world.story.acts) {
+      const card = act.card
+      if (act.owner === 0) {
+        knownValue -= card.cost
+      } else if (card.qualities.includes(Quality.VISIBLE)) {
+        knownValue += card.cost
+        theirBreath -= card.cost
+      } else {
+        theirUnknownCards++
+      }
+    }
+
+    let value = knownValue
+    for (let i = 0; i < theirUnknownCards; i++) {
+      const guessedValue = Math.floor(theirBreath / 2)
+      value += guessedValue
+      theirBreath -= guessedValue
+    }
+
+    return value
+  }
+
+  rateDiscard(world: any): number {
+    let extraCards = 0
+    for (const act of world.story.acts) {
+      if (['Gift', 'Mercy'].includes(act.card.name)) {
+        extraCards++
+      } else if (['Dagger', 'Bone Knife', 'Chimney'].includes(act.card.name)) {
+        extraCards--
+      }
+    }
+
+    const cardsInHandToValue = [0, 0.6, 0.8, 1, 1, 0.2, 0.1]
+    const handCount = Math.max(
+      0,
+      Math.min(6, world.oppHand.length + extraCards),
+    )
+
+    return cardsInHandToValue[handCount]
+  }
+
+  /* Keywords */
   // Spend the given amount of breath, return whether successful
   exhale(amt: number, game: GameModel, player: number): boolean {
     if (game.breath[player] >= amt) {
@@ -92,18 +156,49 @@ export default class Card {
     }
   }
 
-  ratePlay(world: any): number {
-    return Math.max(1, this.cost)
+  birth(amt: number, game: GameModel, player: number): string {
+    for (const card of game.hand[player]) {
+      if (card.name === 'Child') {
+        card.points += amt
+        return `\nBuild +${amt}`
+      }
+    }
+    const card = new Card({
+      name: 'Child',
+      id: 1003,
+      points: amt,
+      basePoints: 0,
+      qualities: [Quality.FLEETING],
+    })
+    if (game.create(player, card)) {
+      return `\nBuild ${amt}`
+    } else {
+      return ''
+    }
   }
 
-  rateDelay(world: any): number {
-    return 0
+  transform(index: number, card: Card, game: GameModel): void {
+    if (index + 1 <= game.story.acts.length) {
+      const act = game.story.acts[index]
+      const oldCard = act.card
+      game.story.replaceAct(index, new Act(card, act.owner))
+
+      game.animations[act.owner].push(
+        new Animation({
+          from: Zone.Transform,
+          to: Zone.Story,
+          card: oldCard,
+          index2: index,
+        }),
+      )
+    }
   }
 
-  getCost(player: number, game: GameModel): number {
-    return this.cost
+  removeAct(index: number, game: GameModel): any {
+    return game.removeAct(index)
   }
 
+  /* Triggers */
   onUpkeepInHand(player: number, game: GameModel, index: number): boolean {
     return false
   }
@@ -119,6 +214,7 @@ export default class Card {
   // Triggers when this card is drawn
   onDraw(player: number, game: GameModel): void {}
 
+  /* Common functions */
   reset(game: GameModel): string {
     game.score = [0, 0]
     return '\nReset'
@@ -199,6 +295,7 @@ export default class Card {
     return this.addStatus(amt, game, player, Status.STARVE)
   }
 
+  /* Cards moving from zone to zone */
   draw(amt: number, game: GameModel, player: number): string {
     let recap = ''
     let numDrawn = 0
@@ -287,97 +384,6 @@ export default class Card {
 
   dig(amt: number, game: GameModel, player: number): void {
     game.dig(player, amt)
-  }
-
-  birth(amt: number, game: GameModel, player: number): string {
-    for (const card of game.hand[player]) {
-      if (card.name === 'Child') {
-        card.points += amt
-        return `\nBuild +${amt}`
-      }
-    }
-    const card = new Card({
-      name: 'Child',
-      id: 1003,
-      points: amt,
-      basePoints: 0,
-      qualities: [Quality.FLEETING],
-    })
-    if (game.create(player, card)) {
-      return `\nBuild ${amt}`
-    } else {
-      return ''
-    }
-  }
-
-  transform(index: number, card: Card, game: GameModel): void {
-    if (index + 1 <= game.story.acts.length) {
-      const act = game.story.acts[index]
-      const oldCard = act.card
-      game.story.replaceAct(index, new Act(card, act.owner))
-
-      game.animations[act.owner].push(
-        new Animation({
-          from: Zone.Transform,
-          to: Zone.Story,
-          card: oldCard,
-          index2: index,
-        }),
-      )
-    }
-  }
-
-  removeAct(index: number, game: GameModel): any {
-    return game.removeAct(index)
-  }
-
-  rateReset(world: any): number {
-    let knownValue = 0
-    let theirUnknownCards = 0
-    let theirBreath =
-      world.maxBreath[1] +
-      world.oppStatus.filter((status: Status) => status === Status.INSPIRED)
-        .length
-
-    for (const act of world.story.acts) {
-      const card = act.card
-      if (act.owner === 0) {
-        knownValue -= card.cost
-      } else if (card.qualities.includes(Quality.VISIBLE)) {
-        knownValue += card.cost
-        theirBreath -= card.cost
-      } else {
-        theirUnknownCards++
-      }
-    }
-
-    let value = knownValue
-    for (let i = 0; i < theirUnknownCards; i++) {
-      const guessedValue = Math.floor(theirBreath / 2)
-      value += guessedValue
-      theirBreath -= guessedValue
-    }
-
-    return value
-  }
-
-  rateDiscard(world: any): number {
-    let extraCards = 0
-    for (const act of world.story.acts) {
-      if (['Gift', 'Mercy'].includes(act.card.name)) {
-        extraCards++
-      } else if (['Dagger', 'Bone Knife', 'Chimney'].includes(act.card.name)) {
-        extraCards--
-      }
-    }
-
-    const cardsInHandToValue = [0, 0.6, 0.8, 1, 1, 0.2, 0.1]
-    const handCount = Math.max(
-      0,
-      Math.min(6, world.oppHand.length + extraCards),
-    )
-
-    return cardsInHandToValue[handCount]
   }
 
   // TODO The below are just for client (Mobile focus menu)
