@@ -42,7 +42,7 @@ const cosmos = new Cosmos({
 class NightVision extends SightCard {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
-    game.tutor(2, player)
+    game.tutor(player, 2)
   }
 }
 const nightVision = new NightVision(3, {

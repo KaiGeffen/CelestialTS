@@ -7,9 +7,8 @@ import GameModel from '../gameModel'
 
 class Dagger extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
-    const opp = (player + 1) % 2
     super.play(player, game, index, bonus)
-    game.discard(player)
+    game.discard(player ^ 1)
   }
 
   ratePlay(world: GameModel): number {

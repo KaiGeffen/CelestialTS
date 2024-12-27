@@ -48,7 +48,7 @@ class FishingBoat extends Card {
     super.play(player, game, index, bonus)
 
     for (let i = 0; i < 3; i++) {
-      game.tutor(1, player)
+      game.tutor(player, 1)
     }
   }
 }
