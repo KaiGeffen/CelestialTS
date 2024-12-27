@@ -2,6 +2,7 @@ import { ServerController } from '../../gameController'
 import Card from '../../../../shared/state/card'
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { Mulligan } from '../../../../shared/settings'
+import getClientGameModel from '../../../../shared/state/clientGameModel'
 
 interface Match {
   ws1: TypedWebSocket | null
@@ -66,7 +67,7 @@ class Match {
         // Send the normal state
         ws.send({
           type: 'transmitState',
-          state: this.game.getClientModel(index),
+          state: getClientGameModel(this.game.model, index, false),
         })
       }),
     )

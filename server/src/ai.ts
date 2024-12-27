@@ -80,86 +80,92 @@ function wantDryRound(model: GameModel): boolean {
 }
 
 function rateTurn(turn: number[], model: GameModel): number {
-  const predictedModel = JSON.parse(JSON.stringify(model))
+  // The speculative model we're predicting
+  const predictedModel = model.getDeepCopy()
+
+  // How much breath we have left
   let remainingBreath = predictedModel.breath[0]
-  let value = 0
-  let floatingStarlingBonus = 0
 
-  if (model.story.acts.length > 0) {
-    const lastAct = model.story.acts[model.story.acts.length - 1]
-    if (lastAct.card.name === 'Starling') {
-      floatingStarlingBonus = lastAct.owner === 0 ? 1 : -1
-    }
-  }
-
-  let finalCardBonus = 0
+  // The total value of this
+  let result = 0
 
   for (const cardNum of turn) {
     const card = predictedModel.hand[0][cardNum]
-    remainingBreath -= predictedModel.hand[0][cardNum].cost
+
+    if (card === undefined) {
+      throw new Error('Card that ai is considering playing is undefined')
+    }
+
+    remainingBreath -= card.getCost(0, model)
+
+    // If we have spent more breath than we have, this is impossible
     if (remainingBreath < 0) {
       return -1
     }
 
-    // TODO You need this for it to be good card.ratePlay(predictedModel)
-    value += card.cost
-    // TODO predictedModel.story.addAct(card, 0)
+    // Add the heuristic value of playing the card with this game state
+    result += card.ratePlay(predictedModel)
 
-    if (card.cost === 1) {
-      value += floatingStarlingBonus
-    }
-
-    // TODO Don't hard-code these
-    if (['Dew', 'Posterity', 'Sun'].includes(card.name)) {
-      finalCardBonus = 1
-    } else {
-      floatingStarlingBonus = 0
-      finalCardBonus = 0
-    }
+    // Speculate about adding this act
+    // predictedModel.story.addAct(card, 0)
   }
 
-  value += finalCardBonus
-  return value
+  return result
 }
 
-function getAction(model: GameModel): number {
+function getAIAction(model: GameModel): number {
+  // Pause for the set amount of time
   setTimeout(() => {}, TIME_PAUSE)
 
+  // Determine the difference in points
   const pointDifference = predictPointDifference(model)
 
+  // If we are ahead, pass
   if (pointDifference > 0) {
+    // TODO No unnamed constant
     return 10
   }
 
   if (
+    // Want no plays to occur
     wantDryRound(model) &&
-    (model.maxBreath[0] < 10 || model.story.acts.length > 0)
+    // We have less than max breath
+    model.maxBreath[0] < 10 &&
+    // No cards are in the story
+    model.story.acts.length > 0
   ) {
     return 10
   }
 
+  // The best heuristic score we have found
   let highScore = 0
+  // The list of cards to play in the best play we have found
   let bestPossible: number[] | null = null
   for (const possibleTurn of getPowerset([
-    ...Array(model.hand.length).keys(),
+    ...Array(model.hand[0].length).keys(),
   ])) {
     const score = rateTurn(possibleTurn, model)
 
+    // If this is better than the best we've found
     if (score > highScore) {
       highScore = score
       bestPossible = possibleTurn
     }
   }
 
+  // If there is no best, pass
   if (bestPossible === null || bestPossible.length === 0) {
     return 10
   } else {
+    // Sort the list of cards to play for the best play by which are better to play early vs late
     bestPossible.sort(
       (a, b) =>
         model.hand[0][a].rateDelay(model) - model.hand[0][b].rateDelay(model),
     )
+
+    // Return the first play of that best play
     return bestPossible[0]
   }
 }
 
-export { getAction }
+export { getAIAction as getAction }

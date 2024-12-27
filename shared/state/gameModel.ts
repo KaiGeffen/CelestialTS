@@ -339,4 +339,47 @@ export default class GameModel {
     }
     return null
   }
+
+  // Return a full deepcopy of this object
+  getDeepCopy(): GameModel {
+    const copy = new GameModel(
+      [...this.deck[0]],
+      [...this.deck[1]],
+      this.avatars[0],
+      this.avatars[1],
+      false,
+    )
+
+    copy.hand = this.hand.map((hand) => [...hand])
+    copy.deck = this.deck.map((deck) => [...deck])
+    copy.pile = this.pile.map((pile) => [...pile])
+    copy.expended = this.expended.map((expended) => [...expended])
+    copy.story = structuredClone(this.story)
+    copy.breath = [...this.breath]
+    copy.maxBreath = [...this.maxBreath]
+    copy.status = this.status.map((status) => [...status])
+    copy.vision = [...this.vision]
+    copy.score = [...this.score]
+    copy.recentModels = this.recentModels.map((models) =>
+      models.map((model) => model.getDeepCopy()),
+    )
+    copy.isRecap = this.isRecap
+    copy.versionNo = this.versionNo
+    copy.mulligansComplete = [...this.mulligansComplete]
+    copy.sound = structuredClone(this.sound)
+    copy.animations = this.animations.map((animations) => [...animations])
+    copy.lastShuffle = this.lastShuffle.map((shuffle) => [...shuffle])
+    copy.winner = this.winner
+    copy.roundResults = [[...this.roundResults[0]], [...this.roundResults[1]]]
+    copy.wins = [...this.wins]
+    copy.passes = this.passes
+    copy.priority = this.priority
+    copy.lastPlayerWhoPlayed = this.lastPlayerWhoPlayed
+    copy.cardCosts = [...this.cardCosts]
+    copy.amtPasses = [...this.amtPasses]
+    copy.amtDrawn = [...this.amtDrawn]
+    copy.avatars = [...this.avatars]
+
+    return copy
+  }
 }

@@ -12,7 +12,7 @@ export default function getClientGameModel(
   orig.cardCosts = orig.hand[player].map((card) => card.getCost(player, orig))
 
   // Create a new copy of the model
-  const model = JSON.parse(JSON.stringify(orig))
+  const model = orig.getDeepCopy()
 
   // Set this as a recap
   model.isRecap = isRecap

@@ -295,11 +295,6 @@ class ServerController {
     this.model.sound = null
   }
 
-  // Get the model of the game that given player sees
-  getClientModel(player: number): GameModel {
-    return getClientGameModel(this.model, player, false)
-  }
-
   doUpkeepStatuses(player: number): void {
     // Clear inspired from last round
     const createdStatuses = [Status.INSPIRED]
