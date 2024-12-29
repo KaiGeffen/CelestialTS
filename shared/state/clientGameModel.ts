@@ -9,7 +9,7 @@ export default function getClientGameModel(
   isRecap: boolean,
 ): ClientGameModel {
   // Get the costs before copying this as json
-  orig.cardCosts = orig.hand[player].map((card) => card.getCost(player, orig))
+  orig.cardCosts = orig.hand[player].map((card) => orig.getCost(card, player))
 
   // Create a new copy of the model
   const model = orig.getDeepCopy()

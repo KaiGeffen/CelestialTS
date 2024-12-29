@@ -118,6 +118,11 @@ class Story {
       copy.addAct(element.card, element.owner)
     })
 
+    this.resolvedActs.forEach((act) => {
+      // Add to the list of resolved acts
+      copy.resolvedActs.push(act)
+    })
+
     return copy
   }
 }

@@ -161,6 +161,7 @@ const overflow = new Overflow({
   name: 'Overflow',
   id: 201,
   cost: 3,
+  points: -1,
   text: 'Refresh.\nWorth +1 for each card in your hand.',
 })
 
@@ -180,7 +181,7 @@ const fish = new Fish({
   name: 'Fish',
   id: 202,
   cost: 2,
-  points: 1,
+  points: 0,
   text: 'When you draw this, increase its points by 1 permanently.',
 })
 

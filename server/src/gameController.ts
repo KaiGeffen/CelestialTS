@@ -121,7 +121,7 @@ class ServerController {
 
   play(player: number, cardNum: number): void {
     const card = this.model.hand[player].splice(cardNum, 1)[0]
-    this.model.breath[player] -= this.getCost(card, player)
+    this.model.breath[player] -= this.model.getCost(card, player)
 
     card.onPlay(player, this.model)
 
@@ -323,7 +323,7 @@ class ServerController {
     }
 
     const card = this.model.hand[player][cardNum]
-    if (this.getCost(card, player) > this.model.breath[player]) {
+    if (this.model.getCost(card, player) > this.model.breath[player]) {
       return false
     }
 
@@ -344,14 +344,6 @@ class ServerController {
     // }
 
     // return true
-  }
-
-  getCost(card: Card, player: number): number {
-    if (this.model.status[player].includes(Status.UNLOCKED)) {
-      return 0
-    } else {
-      return card.getCost(player, this.model)
-    }
   }
 }
 

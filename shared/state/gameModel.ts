@@ -340,6 +340,15 @@ export default class GameModel {
     return null
   }
 
+  // Get the cost of given player playing the given card
+  getCost(card: Card, player: number): number {
+    if (this.status[player].includes(Status.UNLOCKED)) {
+      return 0
+    } else {
+      return card.getCost(player, this)
+    }
+  }
+
   // Return a full deepcopy of this object
   getDeepCopy(): GameModel {
     const copy = new GameModel([], [], this.avatars[0], this.avatars[1], false)
