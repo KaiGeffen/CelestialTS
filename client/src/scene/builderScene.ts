@@ -137,9 +137,8 @@ export class AdventureBuilderScene extends BuilderBase {
 
       // Start a match against an ai opponent with the specified deck
       that.scene.start('AdventureGameScene', {
-        isTutorial: false,
         deck: that.getDeckCode(),
-        mmCode: `ai:${that.params.opponent}`,
+        aiDeck: that.params.opponent,
         missionID: that.params.id,
         avatar: avatar,
       })

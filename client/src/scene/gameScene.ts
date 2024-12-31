@@ -33,6 +33,7 @@ export class GameScene extends BaseScene {
   // Whether this match is a tutorial
   isTutorial = false
 
+  // TODO Type params
   init(params: any) {
     this.params = params
     // Reset variables

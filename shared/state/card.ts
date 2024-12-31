@@ -320,7 +320,7 @@ export default class Card {
     let theirUnknownCards = 0
     let theirBreath =
       world.maxBreath[1] +
-      world.oppStatus.filter((status: Status) => status === Status.INSPIRED)
+      world.status[1].filter((status: Status) => status === Status.INSPIRED)
         .length
 
     for (const act of world.story.acts) {
