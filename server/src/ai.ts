@@ -1,3 +1,4 @@
+import { MechanicsSettings } from '../../shared/settings'
 import { Status, Quality } from '../../shared/state/effects'
 import GameModel from '../../shared/state/gameModel'
 
@@ -122,19 +123,18 @@ function getAIAction(model: GameModel): number {
 
   // If we are ahead, pass
   if (pointDifference > 0) {
-    // TODO No unnamed constant
-    return 10
+    return MechanicsSettings.PASS
   }
 
   if (
     // Want no plays to occur
     wantDryRound(model) &&
     // We have less than max breath
-    model.maxBreath[0] < 10 &&
+    model.maxBreath[0] < MechanicsSettings.BREATH_CAP &&
     // No cards are in the story
     model.story.acts.length > 0
   ) {
-    return 10
+    return MechanicsSettings.PASS
   }
 
   // The best heuristic score we have found
@@ -155,7 +155,7 @@ function getAIAction(model: GameModel): number {
 
   // If there is no best, pass
   if (bestPossible === null || bestPossible.length === 0) {
-    return 10
+    return MechanicsSettings.PASS
   } else {
     // Sort the list of cards to play for the best play by which are better to play early vs late
     bestPossible.sort(

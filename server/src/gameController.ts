@@ -4,19 +4,9 @@ import Card from '../../shared/state/card'
 import { Status } from '../../shared/state/effects'
 import { SoundEffect } from '../../shared/state/soundEffect'
 import { Animation } from '../../shared/animation'
-import {
-  DRAW_PER_TURN,
-  START_HAND_REAL,
-  START_HAND,
-  HAND_CAP,
-  BREATH_GAIN_PER_TURN,
-  START_BREATH,
-  BREATH_CAP,
-  PASS,
-  Mulligan,
-} from '../../shared/settings'
 import getClientGameModel from '../../shared/state/clientGameModel'
 import { Zone } from '../../shared/state/zone'
+import { MechanicsSettings, Mulligan } from '../../shared/settings'
 
 class ServerController {
   model: GameModel
@@ -40,7 +30,11 @@ class ServerController {
 
       for (
         let i = 0;
-        i < Math.min(START_HAND_REAL, this.model.deck[player].length);
+        i <
+        Math.min(
+          MechanicsSettings.START_HAND_REAL,
+          this.model.deck[player].length,
+        );
         i++
       ) {
         const card = this.model.hand[player][i]
@@ -58,8 +52,11 @@ class ServerController {
 
   doSetup(): void {
     for (const player of [0, 1]) {
-      this.model.draw(player, START_HAND)
-      this.model.maxBreath = [START_BREATH, START_BREATH]
+      this.model.draw(player, MechanicsSettings.START_HAND)
+      this.model.maxBreath = [
+        MechanicsSettings.START_BREATH,
+        MechanicsSettings.START_BREATH,
+      ]
     }
   }
 
@@ -76,7 +73,7 @@ class ServerController {
       return false
     }
 
-    if (choice === PASS) {
+    if (choice === MechanicsSettings.PASS) {
       if (!this.canPass(player)) {
         return false
       } else {
@@ -196,10 +193,10 @@ class ServerController {
     // Increase max breath by 1, up to a cap
     const players = this.model.priority === 1 ? [1, 0] : [0, 1]
     for (const player of players) {
-      if (this.model.maxBreath[player] < BREATH_CAP) {
+      if (this.model.maxBreath[player] < MechanicsSettings.BREATH_CAP) {
         this.model.maxBreath[player] = Math.min(
-          this.model.maxBreath[player] + BREATH_GAIN_PER_TURN,
-          BREATH_CAP,
+          this.model.maxBreath[player] + MechanicsSettings.BREATH_GAIN_PER_TURN,
+          MechanicsSettings.BREATH_CAP,
         )
       }
       this.model.breath[player] = this.model.maxBreath[player]
@@ -256,7 +253,7 @@ class ServerController {
 
     // Draw cards for the turn, set breath to max
     for (const player of [0, 1]) {
-      this.model.draw(player, DRAW_PER_TURN)
+      this.model.draw(player, MechanicsSettings.DRAW_PER_TURN)
       this.model.breath[player] = Math.max(this.model.breath[player], 0)
     }
   }

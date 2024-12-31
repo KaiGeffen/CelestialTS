@@ -12,6 +12,9 @@ export class MechanicsSettings {
   static readonly BREATH_GAIN_PER_TURN = 1
   static readonly START_BREATH = 1 - MechanicsSettings.BREATH_GAIN_PER_TURN
   static readonly BREATH_CAP = 10
+
+  // The code to communicate passing, TODO is this a mechanic
+  static readonly PASS = 10
 }
 
 // Information about the decklists

@@ -6,6 +6,7 @@ import GameModel from '../../../../shared/state/gameModel'
 import { Style, Color, Space, Time, Ease, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 // During the round, shows Pass button, who has passed, and who has priority
 export default class PassRegion extends Region {
@@ -89,7 +90,7 @@ export default class PassRegion extends Region {
       // The player is not allowed to pass
       const canPlay = state.cardCosts.some((cost) => cost <= state.breath[0])
       if (
-        state.maxBreath[0] === 10 &&
+        state.maxBreath[0] === MechanicsSettings.BREATH_CAP &&
         canPlay &&
         state.story.acts.length === 0
       ) {

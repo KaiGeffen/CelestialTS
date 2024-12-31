@@ -6,17 +6,6 @@ import { Animation } from '../animation'
 import { Zone } from './zone'
 // import { CardCodec } from '../cardCodec'
 import { Quality, Status } from './effects'
-import {
-  DRAW_PER_TURN,
-  START_HAND_REAL,
-  START_HAND,
-  HAND_CAP,
-  BREATH_GAIN_PER_TURN,
-  START_BREATH,
-  BREATH_CAP,
-  PASS,
-} from '../settings'
-
 export default class GameModel {
   createInStory(player: number, card: Card) {
     // TODO consistent hierarchy of arguments

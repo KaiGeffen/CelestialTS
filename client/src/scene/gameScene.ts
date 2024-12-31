@@ -13,6 +13,7 @@ import Region from './matchRegions/baseRegion'
 import Regions from './matchRegions/matchRegions'
 import OverlayRegion from './matchRegions/pileOverlays'
 import GameModel from '../../../shared/state/gameModel'
+import { MechanicsSettings } from '../../../shared/settings'
 
 // TODO Rename to Match
 export class GameScene extends BaseScene {
@@ -193,7 +194,7 @@ export class GameScene extends BaseScene {
     // Pass button
     view.pass.setCallback(() => {
       if (!this.paused) {
-        net.playCard(10)
+        net.playCard(MechanicsSettings.PASS)
       }
     })
     view.pass.setShowResultsCallback(() => {

@@ -3,6 +3,7 @@ import GameModel from '../../../../shared/state/gameModel'
 import { Depth, Space, Style, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 export default class ScoreRegion extends Region {
   // For the current state, the maximum and current amount of breath we have
@@ -68,7 +69,7 @@ export default class ScoreRegion extends Region {
   // Display a given breath cost
   displayCost(cost: number): void {
     // Each is hidden by the one below
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < MechanicsSettings.BREATH_CAP; i++) {
       this.breathSpent[i].setVisible(i < this.maxBreath)
       this.breathExtra[i].setVisible(i < this.currentBreath)
       this.breathBasic[i].setVisible(
@@ -103,9 +104,9 @@ export default class ScoreRegion extends Region {
     const radius = 30
 
     // 10 is the max displayed breath, but player could have more
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < MechanicsSettings.BREATH_CAP; i++) {
       // Angle in radians
-      const theta = (2 * Math.PI * i) / 10
+      const theta = (2 * Math.PI * i) / MechanicsSettings.BREATH_CAP
 
       const x = center[0] + Math.cos(theta) * radius
       const y = center[1] + Math.sin(theta) * radius
