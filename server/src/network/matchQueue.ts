@@ -11,8 +11,8 @@ import PveMatch from './match/pveMatch'
 import PvpMatch from './match/pvpMatch'
 import Match from './match/match'
 import pvpMatch from './match/pvpMatch'
-import { PASS } from '../../../shared/settings'
 import TutorialMatch from './match/tutorialMatch'
+import { MechanicsSettings } from '../../../shared/settings'
 
 /*
 List of ongoing games
@@ -117,7 +117,7 @@ function registerEvents(
   })
 
   const passTurnEvent = createEvent('passTurn', (data) => {
-    match.doAction(playerNumber, PASS)
+    match.doAction(playerNumber, MechanicsSettings.PASS)
   })
 
   const exitMatchEvent = createEvent('exitMatch', (data) => {

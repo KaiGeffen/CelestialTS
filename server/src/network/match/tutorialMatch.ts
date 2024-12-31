@@ -1,7 +1,7 @@
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
+import { MechanicsSettings } from '../../../../shared/settings'
 import { TutorialController } from '../../logic/tutorialController'
 import PveMatch from './pveMatch'
-import { PASS } from '../../../../shared/settings'
 
 class TutorialMatch extends PveMatch {
   constructor(ws: TypedWebSocket, num: number) {
@@ -13,7 +13,7 @@ class TutorialMatch extends PveMatch {
   }
 
   protected async opponentActs() {
-    ;[0, 1, 2, 3, 4, 5, PASS].forEach((action) => {
+    ;[0, 1, 2, 3, 4, 5, MechanicsSettings.PASS].forEach((action) => {
       if (this.game.onPlayerInput(1, action)) {
         return
       }
