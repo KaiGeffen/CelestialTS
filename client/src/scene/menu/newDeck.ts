@@ -3,14 +3,14 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import avatarNames from '../../lib/avatarNames'
 import Buttons from '../../lib/buttons/buttons'
 import Button from '../../lib/buttons/button'
-import { Color, Space, Style, Mechanics, Flags } from '../../settings/settings'
+import { Color, Space, Style, Flags } from '../../settings/settings'
 import Menu from './menu'
 import MenuScene from '../menuScene'
 import {
   encodeShareableDeckCode,
   decodeShareableDeckCode,
 } from '../../../../shared/codec'
-import { MAX_DECK_NAME_LENGTH } from '../../../../shared/settings'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 const width = Flags.mobile ? Space.avatarSize * 6 + Space.pad * 7 : 500
 const inputTextWidth = 200
@@ -191,7 +191,7 @@ class AlterDeckMenu extends Menu {
         fontFamily: 'Mulish',
         fontSize: '24px',
         color: Color.textboxText,
-        maxLength: Mechanics.deckSize * 4,
+        maxLength: MechanicsSettings.DECK_SIZE * 4,
         selectAll: true,
         id: 'search-field',
       })

@@ -7,7 +7,8 @@ import DeckRegion from './builderRegions/deck'
 import DecklistsRegion from './builderRegions/decklists'
 import FilterRegion from './builderRegions/filter'
 import JourneyRegion from './builderRegions/journey'
-import { Space, Mechanics } from '../settings/settings'
+import { Space } from '../settings/settings'
+import { DecklistSettings } from '../../../shared/settings'
 
 // Features common between all builders
 export class BuilderBase extends BaseScene {
@@ -202,7 +203,7 @@ export class BuilderScene extends BuilderBase {
     if (this.decklistsRegion.savedDeckIndex === undefined) {
       // If creating an empty deck failed, return an error string
       if (!this.decklistsRegion.createEmptyDeck()) {
-        return `Reached max number of decks (${Mechanics.maxDecks}).`
+        return `Reached max number of decks (${DecklistSettings.MAX_DECKS}).`
       }
 
       // NOTE Card gets added below (Deck starts empty)

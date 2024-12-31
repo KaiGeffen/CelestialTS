@@ -3,13 +3,7 @@ import 'phaser'
 import { Color } from '../../settings/settings'
 import Card from '../../../../shared/state/card'
 import { CardImage } from '../../lib/cardImage'
-import {
-  Style,
-  UserSettings,
-  Space,
-  Mechanics,
-  Flags,
-} from '../../settings/settings'
+import { Style, UserSettings, Space, Flags } from '../../settings/settings'
 import Buttons from '../../lib/buttons/buttons'
 import Icons from '../../lib/buttons/icons'
 import UButton from '../../lib/buttons/underlined'

@@ -13,17 +13,15 @@ import Card from '../../../../shared/state/card'
 import { decodeCard, encodeShareableDeckCode } from '../../../../shared/codec'
 import {
   Color,
-  Mechanics,
   Space,
-  Style,
   BBStyle,
   Time,
-  Scroll,
   Ease,
   Flags,
 } from '../../settings/settings'
 import { BuilderScene } from '../builderScene'
 import newScrollablePanel from '../../lib/scrollablePanel'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 const width = Space.deckPanelWidth // + Space.pad * 2
 
@@ -244,7 +242,7 @@ export default class DeckRegion {
       containerStart,
       0,
       0,
-      '0/15',
+      `0/${MechanicsSettings.DECK_SIZE}`,
       startCallback,
       true,
     )
@@ -280,7 +278,7 @@ export default class DeckRegion {
     })
 
     // NOTE Limit the max number of cards so that database doesn't get taxed
-    if (totalCount >= Mechanics.deckSize * 2) {
+    if (totalCount >= MechanicsSettings.DECK_SIZE * 2) {
       return 'Deck is overfull.'
     }
 
@@ -469,11 +467,11 @@ export default class DeckRegion {
       totalCount += cutout.count
     })
 
-    if (totalCount === Mechanics.deckSize) {
+    if (totalCount === MechanicsSettings.DECK_SIZE) {
       this.btnStart.setText('Start')
       this.btnStart.enable()
     } else {
-      this.btnStart.setText(`${totalCount}/${Mechanics.deckSize}`)
+      this.btnStart.setText(`${totalCount}/${MechanicsSettings.DECK_SIZE}`)
 
       // For debugging, allow sub-15 card decks locally
       if (!Flags.local) {

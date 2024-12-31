@@ -9,15 +9,9 @@ import Cutout from '../../lib/buttons/cutout'
 import Icons from '../../lib/buttons/icons'
 import Card from '../../../../shared/state/card'
 import { decodeCard } from '../../../../shared/codec'
-import {
-  Color,
-  Mechanics,
-  Space,
-  Style,
-  Time,
-  Flags,
-} from '../../settings/settings'
+import { Color, Space, Style, Flags } from '../../settings/settings'
 import newScrollablePanel from '../../lib/scrollablePanel'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 const width = Space.deckPanelWidth // + Space.pad * 2
 
@@ -146,7 +140,7 @@ export default class DeckRegion {
       containerStart,
       0,
       0,
-      '0/15',
+      `0/${MechanicsSettings.DECK_SIZE}`,
       startCallback,
       true,
     )
@@ -193,7 +187,7 @@ export default class DeckRegion {
       totalCount += cutout.count
     })
 
-    if (totalCount >= Mechanics.deckSize) {
+    if (totalCount >= MechanicsSettings.DECK_SIZE) {
       return 'Deck is full.'
     }
 
@@ -294,7 +288,12 @@ export default class DeckRegion {
 
     // Hint for the cards user's can choose to complete the deck
     this.txtChoice = this.scene.add
-      .text(0, 0, `Chosen Cards: 0/${Mechanics.deckSize - amt}`, Style.basic)
+      .text(
+        0,
+        0,
+        `Chosen Cards: 0/${MechanicsSettings.DECK_SIZE - amt}`,
+        Style.basic,
+      )
       .setOrigin(0.5)
     let containerChoice = new ContainerLite(
       this.scene,
@@ -402,15 +401,15 @@ export default class DeckRegion {
     // Display amount of chosen cards
     if (this.txtChoice !== undefined) {
       this.txtChoice.setText(
-        `Chosen Cards: ${choiceCount}/${Mechanics.deckSize - totalCount + choiceCount}`,
+        `Chosen Cards: ${choiceCount}/${MechanicsSettings.DECK_SIZE - totalCount + choiceCount}`,
       )
     }
 
-    if (totalCount === Mechanics.deckSize) {
+    if (totalCount === MechanicsSettings.DECK_SIZE) {
       this.btnStart.setText('Start')
       this.btnStart.enable()
     } else {
-      this.btnStart.setText(`${totalCount}/${Mechanics.deckSize}`)
+      this.btnStart.setText(`${totalCount}/${MechanicsSettings.DECK_SIZE}`)
 
       // TODO Grey out the button, have a disable method for button class
       // For debugging, allow sub-15 card decks locally
@@ -452,7 +451,7 @@ export default class DeckRegion {
       totalCount += cutout.count
     })
 
-    return totalCount >= Mechanics.deckSize
+    return totalCount >= MechanicsSettings.DECK_SIZE
   }
 
   // Get the amt of a given card in the current deck
