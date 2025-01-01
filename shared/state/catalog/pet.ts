@@ -32,7 +32,7 @@ const oak = new Oak({
   id: 23,
   cost: 8,
   points: 8,
-  text: 'If this is win this round, Nourish 1 for each point you won by.',
+  text: 'If you win this round, Nourish 1 for each point you won by.',
   keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
 })
 
