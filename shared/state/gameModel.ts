@@ -6,6 +6,7 @@ import { Animation } from '../animation'
 import { Zone } from './zone'
 // import { CardCodec } from '../cardCodec'
 import { Quality, Status } from './effects'
+import { MechanicsSettings } from '../settings'
 export default class GameModel {
   createInStory(player: number, card: Card) {
     // TODO consistent hierarchy of arguments
@@ -107,7 +108,7 @@ export default class GameModel {
 
   draw(player: number, amt = 1) {
     let card: Card = null
-    while (amt > 0 && this.hand[player].length < HAND_CAP) {
+    while (amt > 0 && this.hand[player].length < MechanicsSettings.HAND_CAP) {
       // If deck is empty, shuffled discard pile into deck
       if (this.deck[player].length === 0) {
         if (this.pile[player].length === 0) {
@@ -173,7 +174,7 @@ export default class GameModel {
   }
 
   tutor(player: number, cost: number) {
-    if (this.hand[player].length < HAND_CAP) {
+    if (this.hand[player].length < MechanicsSettings.HAND_CAP) {
       for (let i = this.deck[player].length - 1; i >= 0; i--) {
         const card = this.deck[player][i]
         if (card.cost === cost) {
@@ -197,7 +198,7 @@ export default class GameModel {
 
   create(player: number, card: any) {
     console.log('creating', this.hand)
-    if (this.hand[player].length < HAND_CAP) {
+    if (this.hand[player].length < MechanicsSettings.HAND_CAP) {
       this.hand[player].push(card)
       this.animations[player].push(
         new Animation({
@@ -300,7 +301,7 @@ export default class GameModel {
   }
 
   createCard(player: number, card: any) {
-    if (this.hand[player].length < HAND_CAP) {
+    if (this.hand[player].length < MechanicsSettings.HAND_CAP) {
       this.hand[player].push(card)
     }
   }

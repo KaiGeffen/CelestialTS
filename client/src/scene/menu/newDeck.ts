@@ -10,7 +10,10 @@ import {
   encodeShareableDeckCode,
   decodeShareableDeckCode,
 } from '../../../../shared/codec'
-import { MechanicsSettings } from '../../../../shared/settings'
+import {
+  DecklistSettings,
+  MechanicsSettings,
+} from '../../../../shared/settings'
 
 const width = Flags.mobile ? Space.avatarSize * 6 + Space.pad * 7 : 500
 const inputTextWidth = 200
@@ -115,7 +118,7 @@ class AlterDeckMenu extends Menu {
         fontFamily: 'Mulish',
         fontSize: '24px',
         color: Color.textboxText,
-        maxLength: MAX_DECK_NAME_LENGTH,
+        maxLength: DecklistSettings.MAX_DECK_NAME_LENGTH,
         selectAll: true,
         id: 'search-field',
       })
