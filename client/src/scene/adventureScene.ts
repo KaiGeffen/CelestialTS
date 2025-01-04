@@ -49,9 +49,6 @@ export default class AdventureScene extends BaseScene {
     // Bound camera on this map
     this.cameras.main.setBounds(0, 0, this.map.width, this.map.height)
 
-    // Add navigation arrows + zoom
-    this.createNavigation()
-
     // Add button for help menu
     this.createHelpButton()
 
@@ -114,69 +111,6 @@ export default class AdventureScene extends BaseScene {
 
     // Adjust alpha/location of each indicator
     this.adjustIndicators()
-  }
-
-  private createNavigation(): void {
-    const mag = 25
-    const pad = 60
-
-    // Create zoom in button
-    // const camera = this.cameras.main
-    // new Buttons.Basic(this,
-    // 	Space.windowWidth - Space.buttonWidth/2 - Space.iconSize - Space.pad * 2,
-    // 	Space.buttonHeight/2 + Space.pad,
-    // 	'Zoom',
-    // 	() => {
-    // 		if (this.map.scale === 1) {
-    // 			this.map.setScale(1/2)
-    // 			camera.scrollX = camera.scrollX / 2
-    // 			camera.scrollY = camera.scrollY / 2
-    // 		}
-    // 		else {
-    // 			this.map.setScale(1)
-    // 			camera.scrollX = camera.scrollX * 2
-    // 			camera.scrollY = camera.scrollY * 2
-    // 		}
-    // 	}
-    // )
-    // .setNoScroll()
-    // .setDepth(10)
-
-    // Details for each arrow (North, East, South, West)
-    const arrows = [
-      {
-        x: Space.windowWidth / 2,
-        y: pad,
-        direction: [0, -mag],
-      },
-      {
-        x: Space.windowWidth - pad,
-        y: Space.windowHeight / 2,
-        direction: [mag, 0],
-      },
-      {
-        x: Space.windowWidth / 2,
-        y: Space.windowHeight - pad,
-        direction: [0, mag],
-      },
-      {
-        x: pad,
-        y: Space.windowHeight / 2,
-        direction: [-mag, 0],
-      },
-    ]
-
-    for (let i = 0; i < arrows.length; i++) {
-      const arrow = arrows[i]
-
-      let icon = new Icons.Arrow(this, arrow.x, arrow.y, i)
-        .setDepth(10)
-        .setNoScroll()
-        .setOnClick(() => {
-          this.panDirection = arrow.direction
-        })
-        .setAlpha(0)
-    }
   }
 
   private createHelpButton(): void {
