@@ -15,3 +15,7 @@ index.html
 
 # Project settings #
 .idea/
+
+# Environment variables #
+.env
+**/.env
