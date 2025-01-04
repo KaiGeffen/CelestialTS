@@ -435,14 +435,33 @@ export default class AdventureScene extends BaseScene {
   }
 
   private enableDrag(): void {
+    // Arrow pointing from the start of the drag to current position
+    const arrow = this.scene.scene.add
+      .image(0, 0, 'icon-Arrow')
+      .setAlpha(0)
+      .setScrollFactor(0)
+
     // Map can be dragged
     this.input
       .setDraggable(this.map)
-      .on('dragstart', () => {
+      .on('dragstart', (event) => {
         this.isDragging = true
+      })
+      .on('drag', (event) => {
+        const angle = Phaser.Math.Angle.Between(
+          event.downX,
+          event.downY,
+          event.x,
+          event.y,
+        )
+        arrow
+          .setPosition(event.downX, event.downY)
+          .setRotation(angle + Phaser.Math.DegToRad(90))
+          .setAlpha(1)
       })
       .on('dragend', () => {
         this.isDragging = false
+        arrow.setAlpha(0)
       })
   }
 
