@@ -158,7 +158,6 @@ class Nest extends Card {
     return true
   }
 }
-
 const nest = new Nest({
   name: 'Nest',
   id: 207,
@@ -167,4 +166,17 @@ const nest = new Nest({
   text: 'Morning: Create a Dove in the story.',
 })
 
-export { dove, starling, secretaryBird, phoenix, heron, nest }
+class Truth extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    // game.sound_effect = SoundEffect.Bird
+    super.play(player, game, index, bonus)
+  }
+}
+const truth = new Truth({
+  name: 'Truth',
+  id: 104,
+  cost: 7,
+  points: 9,
+})
+
+export { dove, starling, secretaryBird, phoenix, heron, nest, truth }

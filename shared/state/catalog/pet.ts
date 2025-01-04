@@ -174,4 +174,29 @@ const yearn = new Yearn({
   text: 'Extra 2: Add the top card of your discard pile to the story after this if it has base cost 3 or less.',
 })
 
-export { fruit, oak, bounty, pet, nectar, hollow, holdTight, yearn }
+class Pomegranate extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+    this.nourish(6, game, player)
+  }
+}
+const pomegranate = new Pomegranate({
+  name: 'Pomegranate',
+  id: 411,
+  cost: 5,
+  text: 'Fleeting. Nourish 6.',
+  qualities: [Quality.FLEETING],
+  // keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: 3 }],
+})
+
+export {
+  fruit,
+  oak,
+  bounty,
+  pet,
+  nectar,
+  hollow,
+  holdTight,
+  yearn,
+  pomegranate,
+}
