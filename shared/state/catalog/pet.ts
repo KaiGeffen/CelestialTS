@@ -186,7 +186,6 @@ const pomegranate = new Pomegranate({
   cost: 5,
   text: 'Fleeting. Nourish 6.',
   qualities: [Quality.FLEETING],
-  // keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: 3 }],
 })
 
 export {

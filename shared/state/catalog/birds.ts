@@ -166,13 +166,7 @@ const nest = new Nest({
   text: 'Morning: Create a Dove in the story.',
 })
 
-class Truth extends Card {
-  play(player: number, game: GameModel, index: number, bonus: number) {
-    // game.sound_effect = SoundEffect.Bird
-    super.play(player, game, index, bonus)
-  }
-}
-const truth = new Truth({
+const truth = new Card({
   name: 'Truth',
   id: 104,
   cost: 7,

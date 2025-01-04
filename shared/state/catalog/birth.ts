@@ -164,7 +164,7 @@ class Lullaby extends Card {
 const lullaby = new Lullaby({
   name: 'Lullaby',
   id: 218,
-  cost: 1,
+  cost: 6,
   points: 4,
   text: 'Create a copy in hand of each card later in the 	story that costs 0.',
 })

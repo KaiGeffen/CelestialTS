@@ -142,32 +142,21 @@ const hurricane = new Hurricane({
 
 class WingClipping extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
+    // Worth 3 less for each card in the opponent's hand
+    bonus -= 3 * game.hand[player ^ 1].length
+
     super.play(player, game, index, bonus)
 
-    if (game.hand[player ^ 1].length > 0) {
-      const card = game.hand[player ^ 1].shift()
-      game.deck[player ^ 1].push(card)
-
-      game.animations[player ^ 1].push(
-        new Animation({
-          from: Zone.Hand,
-          to: Zone.Deck,
-          card: card,
-        }),
-      )
-    }
-  }
-
-  ratePlay(world: GameModel): number {
-    return this.points + this.rateDiscard(world)
+    // The opponent discards 2 cards
+    super.discard(2, game, player ^ 1)
   }
 }
 const wingClipping = new WingClipping({
   name: 'Wing Clipping',
   id: 16,
   cost: 5,
-  points: 3,
-  text: 'Your opponent puts the leftmost card of their hand on top of their deck.',
+  points: 6,
+  text: "Worth -3 for each card in the opponent's hand. Your opponent discards 2 cards.",
   story:
     'We walked and ran and played then\nYou leave me behind\nI gasp as the space between us grows',
 })

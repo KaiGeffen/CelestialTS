@@ -180,6 +180,30 @@ const fates = new Fates({
   text: 'Exhale 5: Reset.\nExhale 3: Nourish 2.\nExhale 1: Birth 1.',
 })
 
+class Wish extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    // Inspire 1
+    super.inspire(1, game, player)
+
+    // Find the highest cost in the deck
+    const highestCost = game.deck[player].reduce((max, card) => {
+      return card.cost > max.cost ? card : max
+    }, game.deck[player][0]).cost
+
+    if (highestCost !== undefined) {
+      game.tutor(player, highestCost)
+    }
+  }
+}
+const wish = new Wish({
+  name: 'Wish',
+  id: 828,
+  cost: 2,
+  text: 'Inspire 1.\nDraw the highest base cost card from your deck.',
+})
+
 export {
   stars,
   cosmos,
@@ -190,4 +214,5 @@ export {
   sunflower,
   aspirant,
   fates,
+  wish,
 }

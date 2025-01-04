@@ -258,7 +258,7 @@ export default class Card {
     let recap = '\nDiscard:'
     let anySeen = false
     for (let i = 0; i < amt; i++) {
-      const card = game.discard(player, amt, index)
+      const card = game.discard(player, 1, index)
       if (card) {
         anySeen = true
         recap += `\n${card.name}`
