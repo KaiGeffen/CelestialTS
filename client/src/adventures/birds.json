@@ -86,7 +86,10 @@
     "id": 122,
     "x": 4227,
     "y": 866,
-    "prereq": [[121, 207], [121, 207]],
+    "prereq": [
+      [121, 207],
+      [121, 207]
+    ],
     "type": "mission",
     "deck": "21:20:51:63:63",
     "opponent": "12:12:12:4:4:4:4:4:4:4:4:4:4:4:4"
@@ -120,7 +123,7 @@
     "card": 40
   },
   {
-    "name": "Birds Bonus 4 - Ecology",
+    "name": "Birds Bonus 4 - Ecology TODO This is impossible to unlock",
     "id": 126,
     "x": 2300,
     "y": 1400,

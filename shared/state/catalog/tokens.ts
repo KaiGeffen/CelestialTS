@@ -16,8 +16,8 @@ const seen = new Seen({
   qualities: [Quality.FLEETING],
   text: 'Fleeting. At the start of each round, if this is in your hand, give your opponent Sight 4.',
   keywords: [
-    { name: Keywords.fleeting, x: 0, y: 61 },
-    { name: Keywords.sight, x: 420, y: 69, value: 4 },
+    { name: Keywords.fleeting, x: 0, y: 30 },
+    { name: Keywords.sight, x: 0, y: 130, value: 4 },
   ],
 })
 
