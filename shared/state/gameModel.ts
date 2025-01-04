@@ -197,7 +197,6 @@ export default class GameModel {
   }
 
   create(player: number, card: any) {
-    console.log('creating', this.hand)
     if (this.hand[player].length < MechanicsSettings.HAND_CAP) {
       this.hand[player].push(card)
       this.animations[player].push(

@@ -143,7 +143,7 @@ class Yearn extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    if (super.exhale(player, game, 2)) {
+    if (super.exhale(2, game, player)) {
       // If the discard pile has at least one card
       if (game.pile[player].length > 0) {
         // And the top card costs 3 or less

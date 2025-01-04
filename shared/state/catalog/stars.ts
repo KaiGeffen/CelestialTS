@@ -136,4 +136,58 @@ const sunflower = new Sunflower({
   keywords: [{ name: Keywords.inspire, x: -36, y: 111, value: 1 }],
 })
 
-export { stars, cosmos, nightVision, ecology, sun, moon, sunflower }
+// Beta
+class Aspirant extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    if (super.exhale(3, game, player)) {
+      bonus += 3
+    }
+    super.play(player, game, index, bonus)
+  }
+}
+const aspirant = new Aspirant({
+  name: 'Aspirant',
+  id: 360,
+  cost: 2,
+  points: 2,
+  text: 'Exhale 3: Worth +3.',
+})
+class Fates extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    // Atropos the inevitable
+    if (super.exhale(5, game, player)) {
+      super.reset(game)
+    }
+
+    // Lachesis the allotter
+    if (super.exhale(3, game, player)) {
+      super.nourish(2, game, player)
+    }
+
+    // Clotho the spinner
+    if (super.exhale(1, game, player)) {
+      super.birth(1, game, player)
+    }
+  }
+}
+const fates = new Fates({
+  name: 'Fates',
+  id: 369,
+  cost: 0,
+  points: 0,
+  text: 'Exhale 5: Reset.\nExhale 3: Nourish 2.\nExhale 1: Birth 1.',
+})
+
+export {
+  stars,
+  cosmos,
+  nightVision,
+  ecology,
+  sun,
+  moon,
+  sunflower,
+  aspirant,
+  fates,
+}
