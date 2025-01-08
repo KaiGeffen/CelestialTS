@@ -5,6 +5,15 @@
     "dev": "webpack --watch & node dist/index.js"
   },
   "devDependencies": {
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.30.1",
+    "tsx": "^4.19.2",
     "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.38.3",
+    "drizzle-orm-pg": "^0.16.3",
+    "pg": "^8.13.1"
   }
 }
