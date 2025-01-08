@@ -6,8 +6,5 @@
   },
   "devDependencies": {
     "webpack-node-externals": "^3.0.0"
-  },
-  "dependencies": {
-    "@prisma/client": "^6.1.0"
   }
 }
