@@ -3,6 +3,7 @@ import Card from '../../../../shared/state/card'
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { Mulligan } from '../../../../shared/settings'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
+import { updateMatchResult } from '../../db/updateMatchResult'
 
 interface Match {
   ws1: TypedWebSocket | null
@@ -49,13 +50,13 @@ class Match {
   async notifyState() {
     if (this.game === null) return
 
+    /*
+      Send each state since last input
+      For actions besides the last pass of a round, this is just 1
+      but for recaps it's each slice of the recap
+    */
     await Promise.all(
       this.getActiveWsList().map((ws, index) => {
-        /*
-       Send each state since last input
-       For actions besides the last pass of a round, this is just 1
-       but for recaps it's each slice of the recap
-       */
         // Send any recap states
         this.game.model.recentModels[index].forEach((state) =>
           ws.send({
@@ -71,6 +72,13 @@ class Match {
         })
       }),
     )
+
+    // If there is a winner, update wins/losses/elo accordingly
+    if (this.game.model.getWinner() === 0) {
+      updateMatchResult(this.uuid1, this.uuid2)
+    } else if (this.game.model.getWinner() === 1) {
+      updateMatchResult(this.uuid2, this.uuid1)
+    }
   }
 
   async doMulligan(player: number, mulligan: Mulligan) {
@@ -118,16 +126,6 @@ class Match {
       this.getActiveWsList().map((ws) => ws.send({ type: 'dc' })),
     )
   }
-}
-
-function addWin(uuid: string) {
-  // Implement logic to record a win for the player with the given uuid
-  console.log(`Player with UUID ${uuid} has won.`)
-}
-
-function addLoss(uuid: string) {
-  // Implement logic to record a loss for the player with the given uuid
-  console.log(`Player with UUID ${uuid} has lost.`)
 }
 
 export default Match

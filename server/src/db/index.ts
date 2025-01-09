@@ -1,30 +1,29 @@
 import 'dotenv/config'
 import { eq } from 'drizzle-orm'
-import { usersTable } from './schema'
+import { players } from './schema'
 import { db } from './db'
 
 async function main() {
-  const user: typeof usersTable.$inferInsert = {
-    name: 'John',
-    age: 30,
+  const user: typeof players.$inferInsert = {
+    id: '1',
     email: 'john@example.com',
   }
 
-  await db.insert(usersTable).values(user)
+  await db.insert(players).values(user)
   console.log('New user created!')
 
-  const users = await db.select().from(usersTable)
+  const users = await db.select().from(players)
   console.log('Getting all users from the database: ', users)
 
   await db
-    .update(usersTable)
+    .update(players)
     .set({
       age: 31,
     })
-    .where(eq(usersTable.email, user.email))
+    .where(eq(players.email, user.email))
   console.log('User info updated!')
 
-  await db.delete(usersTable).where(eq(usersTable.email, user.email))
+  await db.delete(players).where(eq(players.email, user.email))
   console.log('User deleted!')
 }
 
