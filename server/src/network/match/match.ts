@@ -14,7 +14,7 @@ interface Match {
   storedDeck: Card[]
   storedAvatar: any
 
-  game: ServerController | null
+  game: ServerController
   lock: any
 }
 
@@ -24,7 +24,7 @@ class Match {
     uuid1: string | null = null,
     deck1: Card[] = [],
     avatar1: number,
-    ws2: TypedWebSocket,
+    ws2: TypedWebSocket | null,
     uuid2: string | null = null,
     deck2: Card[] = [],
     avatar2: number,
