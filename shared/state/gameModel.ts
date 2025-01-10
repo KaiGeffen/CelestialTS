@@ -8,13 +8,11 @@ import { Zone } from './zone'
 import { Quality, Status } from './effects'
 import { MechanicsSettings } from '../settings'
 export default class GameModel {
+  // TODO consistent hierarchy of arguments
   createInStory(player: number, card: Card) {
-    // TODO consistent hierarchy of arguments
     this.story.addAct(card, player)
   }
-  removeAct(index: number): any {
-    throw new Error('Method not implemented.')
-  }
+
   // Zones
   hand: Card[][] = [[], []]
   deck: Card[][] = [[], []]
@@ -303,6 +301,20 @@ export default class GameModel {
     if (this.hand[player].length < MechanicsSettings.HAND_CAP) {
       this.hand[player].push(card)
     }
+  }
+
+  removeAct(index: number): any {
+    const act = this.story.acts[index]
+    this.animations[act.owner].push(
+      new Animation({
+        from: Zone.Story,
+        to: Zone.Discard,
+        card: act.card,
+        index: index,
+      }),
+    )
+
+    this.story.removeAct(index)
   }
 
   getHighestCardInHand(player: number) {
