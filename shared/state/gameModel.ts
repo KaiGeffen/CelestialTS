@@ -304,6 +304,10 @@ export default class GameModel {
   }
 
   removeAct(index: number): any {
+    if (index >= this.story.acts.length) {
+      return
+    }
+
     const act = this.story.acts[index]
     this.animations[act.owner].push(
       new Animation({

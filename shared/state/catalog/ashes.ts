@@ -248,6 +248,25 @@ const fromAshes = new FromAshes({
   ],
 })
 
+// BETA
+class Goliath extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    game.removeAct(0)
+    this.mill(2, game, player)
+  }
+}
+const goliath = new Goliath({
+  name: 'Goliath',
+  id: 164,
+  cost: 8,
+  points: 8,
+  text: 'Discard the next card in the story and the top 2 cards of your deck.',
+  story:
+    'We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips',
+})
+
 export {
   dash,
   impulse,
@@ -258,4 +277,5 @@ export {
   cling,
   death,
   fromAshes,
+  goliath,
 }

@@ -6,6 +6,8 @@ export async function updateMatchResult(
   winnerID: string | null,
   loserID: string | null,
 ) {
+  return
+
   // Update the winner
   if (winnerID !== null) {
     await db
