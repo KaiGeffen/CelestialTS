@@ -48,7 +48,10 @@ type WSMessage<T extends MessageTypes> = SupportedMessages[T] & {
 // A WebSocket which can only emit the messages we have defined above
 export class TypedWebSocket {
   private listeners: {
-    [T in MessageTypes]?: Array<(data: SupportedMessages[T]) => void>
+    [T in MessageTypes]?: Array<
+      // NOTE Some of the callbacks are async
+      (data: SupportedMessages[T]) => void | Promise<void>
+    >
   } = {}
 
   // NOTE Wrapping is necessary instead of inheritance because traditional inheritance is not possible for WebSocket in all environments
@@ -63,6 +66,8 @@ export class TypedWebSocket {
 
     // Whenever a message is received, call each callback for that message
     this.ws.onmessage = (ev: MessageEvent): void => {
+      console.log('listeners:', this.listeners)
+
       // The type of the message
       type T = MessageTypes
 
@@ -74,11 +79,22 @@ export class TypedWebSocket {
         return
       }
 
-      const listeners: Array<(data: SupportedMessages[T]) => void> =
-        this.listeners[message.type]
+      const listeners: Array<
+        (data: SupportedMessages[T]) => void | Promise<void>
+      > = this.listeners[message.type]
       // If there are any listeners for this event type, call each of them
       if (listeners) {
-        listeners.forEach((callback) => callback(message))
+        listeners.forEach((callback) => {
+          try {
+            console.log('doing it', message)
+            callback(message)
+          } catch (error) {
+            console.error(
+              `Error in callback for message type ${message.type}:`,
+              error,
+            )
+          }
+        })
       }
     }
   }

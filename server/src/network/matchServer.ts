@@ -1,7 +1,6 @@
 import { WebSocketServer } from 'ws'
 import MatchQueue from './matchQueue'
-
-import { URL, PORT } from '../../../shared/network/settings'
+import { PORT } from '../../../shared/network/settings'
 
 // Create the websocket server
 export default function createMatchServer() {
@@ -12,7 +11,7 @@ export default function createMatchServer() {
       console.log('Client connected')
       MatchQueue.enqueue(socket)
     } catch (e) {
-      console.error('Error in match queue:', e)
+      console.error('Error when enqueuing client:', e)
     }
   })
 

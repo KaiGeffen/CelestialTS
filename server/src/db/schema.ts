@@ -13,23 +13,22 @@ import {
 export const players = pgTable(
   'players',
   {
-    id: uuid('id').primaryKey(),
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    uuid: uuid('uuid').notNull(),
     email: varchar('email', { length: 255 }).notNull(),
-    createdate: date('createdate').notNull().default('now()'),
-    lastActive: date('lastactive').notNull().default('now()'),
+    createdate: date().notNull().default('now()'),
+    lastActive: date().notNull().default('now()'),
     lastActivity: varchar('lastactivity', { length: 255 })
       .notNull()
       .default(''),
 
     // Aesthetic
-    username: varchar('username', { length: 255 })
-      .notNull()
-      .default('lllllllll'),
+    username: varchar('username', { length: 255 }).notNull().default('unknown'),
 
     // Just for pvp
-    wins: integer('wins').notNull().default(0),
-    losses: integer('losses').notNull().default(0),
-    elo: integer('elo').notNull().default(1000),
+    wins: integer().notNull().default(0),
+    losses: integer().notNull().default(0),
+    elo: integer().notNull().default(1000),
 
     decks: varchar('decks', { length: 255 }).array().notNull().default([]),
 
@@ -40,12 +39,12 @@ export const players = pgTable(
       .default([]),
 
     // Single player
-    inventory: bit('inventory', { dimensions: 1000 })
-      .notNull()
-      .default('1000101001011100001'),
-    completedmissions: bit('completedmissions', { dimensions: 1000 })
-      .notNull()
-      .default(''),
+    // inventory: bit('inventory', { dimensions: 1000 })
+    //   .notNull()
+    //   .default('1000101001011100001'),
+    // completedmissions: bit('completedmissions', { dimensions: 1000 })
+    //   .notNull()
+    //   .default(''),
   },
   (table) => ({
     emailUniqueIndex: uniqueIndex('emailUniqueIndex').on(lower(table.email)),

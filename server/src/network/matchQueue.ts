@@ -37,7 +37,8 @@ class MatchQueue {
     const ws = new TypedWebSocket(socket)
 
     // Register the init events
-    const initPve = createEvent('initPve', async (data) => {
+    const initPve = createEvent('initPve', (data) => {
+      throw new Error('Within the created event')
       const match = new PveMatch(
         ws,
         data.uuid,
@@ -48,7 +49,7 @@ class MatchQueue {
       registerEvents(ws, match, 0)
 
       // Start the match
-      await match.notifyState()
+      // await match.notifyState()
     })
     const initPvp = createEvent('initPvp', async (data) => {
       // Check if there is another player, and they are still ready
@@ -95,8 +96,13 @@ class MatchQueue {
       await match.notifyState()
     })
 
-    ;[initPve, initPvp, initTutorial].forEach(({ event, callback }) => {
-      ws.on(event, callback)
+    // const {a, b} = initPve
+    // ws.on(initPve.event, (args) => {
+    //   throw new Error('Not impfdsfdslemented')
+    // })
+
+    ;[initPve, initPvp, initTutorial].forEach((pair) => {
+      ws.on(pair.event, pair.callback)
     })
   }
 }

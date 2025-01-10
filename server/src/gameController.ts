@@ -4,7 +4,6 @@ import Card from '../../shared/state/card'
 import { Status } from '../../shared/state/effects'
 import { SoundEffect } from '../../shared/state/soundEffect'
 import { Animation } from '../../shared/animation'
-import getClientGameModel from '../../shared/state/clientGameModel'
 import { Zone } from '../../shared/state/zone'
 import { MechanicsSettings, Mulligan } from '../../shared/settings'
 
@@ -135,9 +134,9 @@ class ServerController {
     for (let i = 0; i < handSize; i++) {
       const card = this.model.hand[player].shift()
       if (mulligans[i]) {
-        thrownCards.push([card, i])
+        thrownCards.push([card!, i])
       } else {
-        keptCards.push([card, i])
+        keptCards.push([card!, i])
       }
     }
 

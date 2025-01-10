@@ -320,6 +320,7 @@ export default class GameModel {
   }
 
   getWinner() {
+    return 0
     if (this.wins[0] >= 5) {
       return 0
     }
