@@ -2,7 +2,7 @@ const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
   entry: './src/index.ts', // Replace with your TypeScript entry file
-  stats: { warnings: false },
+  stats: 'minimal',
   output: {
     path: __dirname + '/dist',
     filename: 'index.js',
