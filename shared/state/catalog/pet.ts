@@ -184,8 +184,7 @@ const pomegranate = new Pomegranate({
   name: 'Pomegranate',
   id: 411,
   cost: 5,
-  text: 'Fleeting. Nourish 6.',
-  qualities: [Quality.FLEETING],
+  text: 'Nourish 6.',
 })
 
 export {

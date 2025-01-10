@@ -321,6 +321,22 @@ export default class GameModel {
     this.story.removeAct(index)
   }
 
+  returnActToHand(i: number) {
+    const act = this.story.acts[i]
+    this.createCard(act.owner, act.card)
+    this.story.removeAct(i)
+
+    this.animations[act.owner].push(
+      new Animation({
+        from: Zone.Story,
+        to: Zone.Hand,
+        card: act.card,
+        index: i,
+        index2: this.hand[act.owner].length - 1,
+      }),
+    )
+  }
+
   getHighestCardInHand(player: number) {
     let result = null
     for (const card of this.hand[player]) {

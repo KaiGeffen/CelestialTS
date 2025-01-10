@@ -118,4 +118,30 @@ const conquer = new Conquer({
   text: 'Costs 1 less for each card you can see in the story.',
 })
 
-export { dawn, clearView, awakening, enlightenment, prey, conquer }
+// BETA
+class Timid extends SightCard {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    if (super.exhale(1, game, player)) {
+      let i = 0
+      while (i < game.story.acts.length) {
+        const act = game.story.acts[i]
+        if (act.owner === player) {
+          game.returnActToHand(i)
+        } else {
+          i++
+        }
+      }
+    }
+  }
+}
+const timid = new Timid(3, {
+  name: 'Timid',
+  id: 850,
+  cost: 1,
+  points: 1,
+  text: 'When played, gain Sight 3.\nExhale 1: Return your cards later in the story to your hand.',
+})
+
+export { dawn, clearView, awakening, enlightenment, prey, conquer, timid }
