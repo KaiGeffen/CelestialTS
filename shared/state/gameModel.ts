@@ -143,22 +143,24 @@ export default class GameModel {
 
   // Discard amt cards from player's hand at given index
   discard(player: number, amt = 1, index = 0) {
-    let card = null
     while (amt > 0 && this.hand[player].length > index) {
-      card = this.hand[player].splice(index, 1)[0]
+      const card = this.hand[player].splice(index, 1)[0]
       this.pile[player].push(card)
       amt -= 1
 
+      const discardPileIndex = this.pile[player].length - 1
       this.animations[player].push(
         new Animation({
           from: Zone.Hand,
           to: Zone.Discard,
           index: index,
-          index2: this.pile[player].length - 1,
+          index2: discardPileIndex,
         }),
       )
+
+      // Trigger its on discard effects
+      card.onDiscard(player, this, discardPileIndex)
     }
-    return card
   }
 
   bottom(player: number, amt = 1, index = 0) {
@@ -274,9 +276,10 @@ export default class GameModel {
           card: card,
         }),
       )
-      return card
+
+      // Trigger its on discard effects
+      card.onDiscard(player, this, this.pile[player].length - 1)
     }
-    return null
   }
 
   shuffle(player: number, remember = true, take_pile = true) {
@@ -319,6 +322,9 @@ export default class GameModel {
     )
 
     this.story.removeAct(index)
+
+    // Trigger its on discard effects
+    act.card.onDiscard(act.owner, this, index)
   }
 
   returnActToHand(i: number) {

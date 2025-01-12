@@ -151,6 +151,8 @@ export default class Card {
 
   onPlay(player: number, game: GameModel): void {}
 
+  onDiscard(player: number, game: GameModel, index: number): void {}
+
   onRoundEndIfThisResolved(player: number, game: GameModel): void {}
 
   // Triggers when this card is drawn
@@ -253,22 +255,17 @@ export default class Card {
     return card ? `\nTutor ${cost}` : ''
   }
 
+  // TODO Remove this and call game.discard
   discard(
     amt: number,
     game: GameModel,
     player: number,
     index: number = 0,
   ): string {
-    let recap = '\nDiscard:'
-    let anySeen = false
     for (let i = 0; i < amt; i++) {
-      const card = game.discard(player, 1, index)
-      if (card) {
-        anySeen = true
-        recap += `\n${card.name}`
-      }
+      game.discard(player, 1, index)
     }
-    return anySeen ? recap : ''
+    return 'TODO Remove string return for this method'
   }
 
   bottom(amt: number, game: GameModel, player: number): string {
@@ -298,16 +295,10 @@ export default class Card {
   }
 
   mill(amt: number, game: GameModel, player: number): string {
-    let recap = '\nMill:'
-    let anySeen = false
     for (let i = 0; i < amt; i++) {
       const card = game.mill(player)
-      if (card) {
-        anySeen = true
-        recap += `\n${card.name}`
-      }
     }
-    return anySeen ? recap : ''
+    return 'TODO Remove this method'
   }
 
   /* AI heuristics */

@@ -94,8 +94,10 @@ class Parch extends Card {
 
     super.play(player, game, index, bonus)
 
+    // Story index being considered
     let i = 0
-    while (i < game.story.acts.length) {
+    // This many times discard the card if its owner is you
+    for (let count = 0; count < game.story.acts.length; count++) {
       const act = game.story.acts[i]
       if (act.owner === player) {
         game.removeAct(i)
@@ -280,6 +282,29 @@ const firebug = new Firebug({
   text: 'Discard a card.',
 })
 
+class Immolant extends Card {
+  onDiscard(player: number, game: GameModel, index: number) {
+    game.animations[player].push(
+      new Animation({
+        from: Zone.Discard,
+        to: Zone.Story,
+        index: index,
+        // TODO This index is wrong, doesn't count resolved cards, and off by 1
+        index2: game.story.acts.length - 1,
+      }),
+    )
+
+    game.story.addAct(this, player)
+  }
+}
+const immolant = new Immolant({
+  name: 'Immolant',
+  id: 204,
+  cost: 1,
+  points: 1,
+  text: 'When this is discarded, add it to the story.',
+})
+
 export {
   dash,
   impulse,
@@ -290,6 +315,8 @@ export {
   cling,
   death,
   fromAshes,
+  // NEW
   goliath,
   firebug,
+  immolant,
 }
