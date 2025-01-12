@@ -170,6 +170,7 @@ const fledgling = new Fledgling({
   points: 1,
   text: 'Morning: Worth +1 point permanently.',
 })
+
 class Nest extends Card {
   onMorning(player: number, game: GameModel, index: number) {
     game.createInStory(player, dove)
@@ -248,6 +249,24 @@ const bare = new Bare({
   text: 'Visible\nExhale 1: The next card in the story loses all card-text.',
 })
 
+class Cloud extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    while (game.breath[player] > 0) {
+      if (this.exhale(1, game, player)) {
+        this.draw(1, game, player)
+      }
+    }
+  }
+}
+const cloud = new Cloud({
+  name: 'Cloud',
+  id: 169,
+  qualities: [Quality.FLEETING],
+  text: 'Fleeting\nExhale X: Draw X cards.',
+})
+
 export {
   dove,
   starling,
@@ -260,4 +279,5 @@ export {
   truth,
   defiance,
   bare,
+  cloud,
 }

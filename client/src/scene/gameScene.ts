@@ -39,7 +39,7 @@ export class GameScene extends BaseScene {
     this.params = params
     // Reset variables
     this.queuedStates = {}
-    this.currentVersion = 0
+    this.currentVersion = this.maxVersion = 0
 
     // Connect with the server
     if (this.isTutorial) {
@@ -115,8 +115,6 @@ export class GameScene extends BaseScene {
       that.tweens.getTweens().forEach((tween) => {
         tween.complete()
       })
-
-      // Set variables to a state where a recap isn't playing
 
       // End the pause
       that.paused = false
