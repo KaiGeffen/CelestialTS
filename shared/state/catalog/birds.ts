@@ -173,4 +173,31 @@ const truth = new Card({
   points: 9,
 })
 
-export { dove, starling, secretaryBird, phoenix, heron, nest, truth }
+class Defiance extends Card {
+  getCost(player: number, game: GameModel): number {
+    let numSeenCards = 0
+    for (let i = 0; i < game.story.acts.length; i++) {
+      const act = game.story.acts[i]
+      if (act.owner === (player ^ 1)) {
+        numSeenCards += 1
+      } else {
+        if (
+          i + 1 <= game.vision[player ^ 1] ||
+          act.card.qualities.includes(Quality.VISIBLE)
+        ) {
+          numSeenCards += 1
+        }
+      }
+    }
+    return Math.max(0, this.cost - numSeenCards)
+  }
+}
+const defiance = new Defiance({
+  name: 'Defiance',
+  id: 167,
+  cost: 5,
+  points: 3,
+  text: 'Costs 1 less for each card your opponent can see in the story.',
+})
+
+export { dove, starling, secretaryBird, phoenix, heron, nest, truth, defiance }
