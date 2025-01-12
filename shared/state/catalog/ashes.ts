@@ -266,6 +266,7 @@ const goliath = new Goliath({
   story:
     'We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips',
 })
+
 class Firebug extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)

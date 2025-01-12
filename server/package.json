@@ -2,7 +2,7 @@
   "scripts": {
     "build": "webpack",
     "start": "node dist/index.js",
-    "dev": "webpack --watch & node dist/index.js"
+    "dev": "webpack --watch & nodemon --quiet dist/index.js"
   },
   "devDependencies": {
     "@types/pg": "^8.11.10",
