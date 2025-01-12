@@ -106,8 +106,8 @@ class Story {
     return this.acts.splice(index, 1)[0]
   }
 
-  replaceAct(index: number, arg1: Act) {
-    throw new Error('Method not implemented.')
+  replaceAct(index: number, act: Act) {
+    this.acts[index] = act
   }
 
   // Return a full deepcopy of the story

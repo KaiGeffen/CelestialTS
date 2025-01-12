@@ -150,6 +150,26 @@ const heron = new Heron({
 })
 
 // BETA CONTENT TODO
+class Fledgling extends Card {
+  onMorning(player: number, game: GameModel, index: number) {
+    // Create a new copy of the card, but with 1 more point
+    const copy = Object.create(
+      Object.getPrototypeOf(this),
+      Object.getOwnPropertyDescriptors(this),
+    )
+    copy.points += 1
+
+    game.pile[player][game.pile[player].length - 1] = copy
+    return true
+  }
+}
+const fledgling = new Fledgling({
+  name: 'Fledgling',
+  id: 111,
+  cost: 1,
+  points: 1,
+  text: 'Morning: Worth +1 point permanently.',
+})
 class Nest extends Card {
   onMorning(player: number, game: GameModel, index: number) {
     game.createInStory(player, dove)
@@ -159,7 +179,7 @@ class Nest extends Card {
 const nest = new Nest({
   name: 'Nest',
   id: 207,
-  cost: 1,
+  cost: 2,
   points: 0,
   text: 'Morning: Create a Dove in the story.',
 })
@@ -198,4 +218,46 @@ const defiance = new Defiance({
   text: 'Costs 1 less for each card your opponent can see in the story.',
 })
 
-export { dove, starling, secretaryBird, phoenix, heron, nest, truth, defiance }
+class Bare extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    if (this.exhale(1, game, player)) {
+      // If there are more cards, transform the first one into a version with no text/qualities
+      if (game.story.acts.length > 0) {
+        const oldCard = game.story.acts[0].card
+
+        const newCard = new Card({
+          name: oldCard.name,
+          id: oldCard.id,
+          cost: oldCard.cost,
+          points: oldCard.points,
+        })
+
+        this.transform(0, newCard, game)
+      }
+    }
+  }
+}
+const bare = new Bare({
+  name: 'Bare',
+  id: 197,
+  cost: 2,
+  points: 2,
+  qualities: [Quality.VISIBLE],
+  text: 'Visible\nExhale 1: The next card in the story loses all card-text.',
+})
+
+export {
+  dove,
+  starling,
+  secretaryBird,
+  phoenix,
+  heron,
+  // NEW
+  fledgling,
+  nest,
+  truth,
+  defiance,
+  bare,
+}
