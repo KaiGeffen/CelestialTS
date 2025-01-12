@@ -83,28 +83,26 @@ class Phoenix extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    // const deck = game.deck[player]
-    // const discardPile = game.pile[player]
-    // ;[deck, discardPile].forEach((zone) => {
-    //   // For each index in the zone
-    //   for (let i = 0; i < zone.length; i++) {
-    //     let card = zone[i]
-    //     if (card.qualities.includes(Quality.FLEETING)) {
-    //       // Create a new copy of the card, but with 1 more point
-    //       const cardCopy = Object.create(
-    //         Object.getPrototypeOf(card),
-    //         Object.getOwnPropertyDescriptors(card),
-    //       )
-    //       cardCopy.points += 1
-    //       cardCopy.basePoint = cardCopy.basePoints
+    const deck = game.deck[player]
+    const discardPile = game.pile[player]
+    ;[deck, discardPile].forEach((zone) => {
+      // For each index in the zone
+      for (let i = 0; i < zone.length; i++) {
+        let card = zone[i]
+        if (card.qualities.includes(Quality.FLEETING)) {
+          // Create a new copy of the card, but with 1 more point
+          const cardCopy = Object.create(
+            Object.getPrototypeOf(card),
+            Object.getOwnPropertyDescriptors(card),
+          )
+          cardCopy.points += 1
+          cardCopy.basePoint = cardCopy.basePoints
 
-    //       // Replace the original card with the new copy
-    //       zone[i] = cardCopy
-    //     }
-    //   }
-    // })
-
-    game.create(player, dove)
+          // Replace the original card with the new copy
+          zone[i] = cardCopy
+        }
+      }
+    })
   }
 }
 
@@ -114,7 +112,7 @@ const phoenix = new Phoenix({
   cost: 5,
   points: 5,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
-  text: 'Visible, Fleeting, create a Dove in your hand.',
+  text: 'Visible\nFleeting\nGive each card with fleeting in your deck or discard pile +1 point.',
   story:
     'Cracks in the shell\nShell falls away\nI stretch into wide possibilities',
   keywords: [

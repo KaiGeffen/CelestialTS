@@ -87,6 +87,10 @@ export default class Card {
     return this.cost
   }
 
+  isVisible(): boolean {
+    return this.qualities.includes(Quality.VISIBLE)
+  }
+
   /* Keywords */
   // Spend the given amount of breath, return whether successful
   exhale(amt: number, game: GameModel, player: number): boolean {

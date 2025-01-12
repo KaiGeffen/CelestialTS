@@ -110,7 +110,8 @@ function hideHiddenInformation(model: GameModel) {
   // Hide opponent's cards in the story (Except the first _vision_ of them)
   if (!model.isRecap) {
     for (let i = model.vision[0]; i < model.story.acts.length; i++) {
-      if (model.story.acts[i].owner === 1) {
+      const act = model.story.acts[i]
+      if (act.owner === 1 && !act.card.isVisible()) {
         model.story.acts[i].card = hiddenCard
       }
     }
