@@ -129,6 +129,18 @@ export default class TheirHandRegion extends Region {
     let btn = new Buttons.Avatar(this.container, x, y, 'Jules')
     btn.setOrigin(0)
 
+    // Add username
+    this.container.add(
+      this.scene.add
+        .text(
+          btn.icon.x + Space.avatarSize / 2,
+          btn.icon.y + Space.avatarSize,
+          'USERNAME',
+          Style.username,
+        )
+        .setOrigin(0.5, 0),
+    )
+
     return btn
   }
 

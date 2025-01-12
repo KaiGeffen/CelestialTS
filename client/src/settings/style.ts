@@ -1,6 +1,6 @@
 // Settings relating to styles of text or bbcode throughout the app
-import "phaser"
-import { Space, Color, Flags } from "./settings"
+import 'phaser'
+import { Space, Color, Flags } from './settings'
 
 // All fonts used
 const mainFont = 'Mulish'
@@ -8,10 +8,10 @@ const altFont = 'Cinzel'
 
 // Settings for the font sizes
 const FontSettings: Record<string, Record<string, string>> = {
-  standard: {size: Flags.mobile ? '20px' : '24px'},
-  huge: {size: Flags.mobile ? '40px' : '50px'},
-  large: {size: Flags.mobile ? '32px' : '44px'},
-  title: {size: '128px'},
+  standard: { size: Flags.mobile ? '20px' : '24px' },
+  huge: { size: Flags.mobile ? '40px' : '50px' },
+  large: { size: Flags.mobile ? '32px' : '44px' },
+  title: { size: '128px' },
 }
 
 export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
@@ -31,7 +31,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   // Count of a card in the deck
   cardCount: {
     fontFamily: mainFont,
-    fontSize: '24px',//FontSettings.standard.size,
+    fontSize: '24px', //FontSettings.standard.size,
     color: Color.cardCount,
     stroke: '#0009',
     strokeThickness: 3,
@@ -42,7 +42,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: '20px',
     color: Color.textButton,
   },
-  
+
   // Pass button
   pass: {
     fontFamily: altFont,
@@ -93,7 +93,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: mainFont,
     fontSize: FontSettings.standard.size,
     color: Color.basicText,
-    wordWrap: { width: Space.maxTextWidth }
+    wordWrap: { width: Space.maxTextWidth },
   },
   button: {
     fontFamily: mainFont,
@@ -105,7 +105,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
   announcement: {
     fontFamily: altFont,
     fontSize: FontSettings.huge.size,
-    color: '#353F4E',//Color.basicText,
+    color: '#353F4E', //Color.basicText,
     // stroke: '#000',
     // strokeThickness: 1
   },
@@ -123,7 +123,7 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fixedWidth: Space.windowWidth - 200,
     padding: { x: 10, y: 5 },
     stroke: '#000',
-    strokeThickness: 3
+    strokeThickness: 3,
   },
   // Title for menus
   menutitle: {
@@ -131,18 +131,23 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontSize: FontSettings.title.size,
     color: '#fff',
     stroke: '#000',
-    strokeThickness: 6
+    strokeThickness: 6,
   },
   // Title for the home scene
   homeTitle: {
     fontFamily: altFont,
     fontSize: '70px',
-    color: '#353F4E'
+    color: '#353F4E',
   },
   homeButtonText: {
     fontFamily: altFont,
     fontSize: '70px',
-    color: '#F5F2EB'
+    color: '#F5F2EB',
+  },
+  username: {
+    fontFamily: altFont,
+    fontSize: '18px',
+    color: Color.basicText,
   },
 }
 
@@ -161,7 +166,7 @@ export const BBStyle: Record<string, any> = {
     halign: 'center',
     wrap: {
       mode: 'word',
-      width: Space.maxTextWidth
+      width: Space.maxTextWidth,
     },
   },
   // Cost / Points shown above each card
@@ -172,12 +177,12 @@ export const BBStyle: Record<string, any> = {
     backgroundColor: Color.cardTextBackground,
     backgroundHorizontalGradient: false,
     strokeThickness: 3,
-    padding: { 
+    padding: {
       // left: 5,
       // right: 5,
       top: -5,
-      bottom: -5
-    }
+      bottom: -5,
+    },
   },
   // Hint text shown when something onscreen is hovered
   hint: {
@@ -185,22 +190,22 @@ export const BBStyle: Record<string, any> = {
     fontSize: FontSettings.standard.size,
     color: Color.hintFill,
     backgroundColor: Color.hintBackground,
-    backgroundStrokeColor: "#0005",
+    backgroundStrokeColor: '#0005',
     backgroundStrokeLineWidth: 2,
     backgroundCornerRadius: 5,
     wrap: {
       mode: 'word',
-      width: Space.maxTextWidth
+      width: Space.maxTextWidth,
     },
     // strokeThickness: 3,
     padding: {
       left: Space.padSmall,
       right: Space.padSmall,
       top: Space.padSmall,
-      bottom: Space.padSmall
+      bottom: Space.padSmall,
     },
     // lineSpacing: Space.cardHeight - Space.pad,
-  },  // Error text that appears in the center of the screen
+  }, // Error text that appears in the center of the screen
   error: {
     fontFamily: mainFont,
     fontSize: FontSettings.huge.size,
@@ -210,17 +215,17 @@ export const BBStyle: Record<string, any> = {
     backgroundStrokeLineWidth: 4,
     backgroundCornerRadius: 5,
     backgroundHorizontalGradient: false,
-    padding: { 
+    padding: {
       left: Space.pad,
       right: Space.pad,
       top: Space.pad,
-      bottom: Space.pad
+      bottom: Space.pad,
     },
     // strokeThickness: 4,
     wrap: {
       mode: 'word',
-      width: Space.windowWidth - Space.pad * 2
-    }
+      width: Space.windowWidth - Space.pad * 2,
+    },
   },
   // Description for avatars in premade menu
   description: {
@@ -231,11 +236,11 @@ export const BBStyle: Record<string, any> = {
     backgroundCornerRadius: 5,
     // backgroundStrokeColor: Color.outline,
     // backgroundStrokeLineWidth: 2,
-    padding: { 
+    padding: {
       left: Space.padSmall,
       right: Space.padSmall,
       top: Space.padSmall,
-      bottom: Space.padSmall
+      bottom: Space.padSmall,
     },
     wrap: {
       mode: 'word',

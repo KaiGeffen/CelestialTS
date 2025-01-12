@@ -159,7 +159,7 @@ class Fledgling extends Card {
     )
     copy.points += 1
 
-    game.pile[player][game.pile[player].length - 1] = copy
+    game.pile[player][index] = copy
     return true
   }
 }

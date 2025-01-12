@@ -220,6 +220,18 @@ export default class OurHandRegion extends Region {
       .setOrigin(0)
       .setQuality({ emotive: true })
 
+    // Add username
+    this.container.add(
+      this.scene.add
+        .text(
+          btn.icon.x + Space.avatarSize / 2,
+          btn.icon.y + Space.avatarSize,
+          'USERNAME',
+          Style.username,
+        )
+        .setOrigin(0.5, 0),
+    )
+
     // Sight
     this.btnSight = new Buttons.Keywords.Sight(
       this.container,
