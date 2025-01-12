@@ -266,6 +266,18 @@ const goliath = new Goliath({
   story:
     'We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips',
 })
+class Firebug extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+    game.discard(player)
+  }
+}
+const firebug = new Firebug({
+  name: 'Firebug',
+  id: 101,
+  points: 1,
+  text: 'Discard a card.',
+})
 
 export {
   dash,
@@ -278,4 +290,5 @@ export {
   death,
   fromAshes,
   goliath,
+  firebug,
 }

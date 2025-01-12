@@ -106,8 +106,8 @@ export default class Hint {
     // FOR TESTING TODO Flag to include
     if (!this.txt.scene.textures.exists(card.name)) {
       const s = `${card.name}\n${card.cost}:${card.points}\n${card.text}`
-      this.txt.setText(s)
-      return
+      this.showText(s)
+      return this
     }
 
     // String for all referenced cards

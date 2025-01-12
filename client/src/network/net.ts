@@ -24,13 +24,10 @@ export class MatchWS {
     // Each registered event
     socket
       .on('gameStart', () => {
-        // TODO This isn't necessary
-        console.log('match started')
         // Signal that a match has been found
         scene.signalMatchFound()
       })
       .on('transmitState', (data) => {
-        console.log(data.state)
         newScene.queueState(data.state)
       })
       .on('signalError', (data) => {
