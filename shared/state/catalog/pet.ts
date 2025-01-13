@@ -192,7 +192,7 @@ class Abundance extends Card {
     super.play(player, game, index, bonus)
 
     if (super.exhale(1, game, player)) {
-      if (game.score[player] >= 6) {
+      if (game.score[player] >= 7) {
         this.nourish(3, game, player)
       }
     }
@@ -203,7 +203,22 @@ const abundance = new Abundance({
   id: 435,
   cost: 2,
   points: 2,
-  text: 'Exhale 1: If you have 6 or more points, Nourish 3.',
+  text: 'Exhale 1: If you have 7 or more points, Nourish 3.',
+})
+
+class Rose extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+    this.nourish(2, game, player)
+  }
+}
+const rose = new Rose({
+  name: 'Rose',
+  id: 437,
+  cost: 1,
+  points: -1,
+  qualities: [Quality.FLEETING],
+  text: 'Fleeting.\nNourish 2.',
 })
 
 export {
@@ -214,7 +229,9 @@ export {
   nectar,
   hollow,
   holdTight,
+  // NEW
   yearn,
   pomegranate,
   abundance,
+  rose,
 }
