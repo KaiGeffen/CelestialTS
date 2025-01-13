@@ -188,8 +188,8 @@ const nest = new Nest({
 const truth = new Card({
   name: 'Truth',
   id: 104,
-  cost: 7,
-  points: 9,
+  cost: 6,
+  points: 8,
 })
 
 class Defiance extends Card {

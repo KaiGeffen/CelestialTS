@@ -305,6 +305,24 @@ const immolant = new Immolant({
   text: 'When this is discarded, add it to the story.',
 })
 
+// class Pyre extends Card {
+//   onPlay(player: number, game: GameModel): void {
+//     game.hand[player] = Array(game.hand[player].length).fill(ashes)
+//   }
+
+//   // TODO This displays correctly but then takes 1 more breath because at that point it's not in hand
+//   getCost(player: number, game: GameModel): number {
+//     return Math.max(0, this.cost - game.hand[player].length + 1)
+//   }
+// }
+// const pyre = new Pyre({
+//   name: 'Pyre',
+//   id: 166,
+//   cost: 5,
+//   points: 3,
+//   text: 'Costs 1 less for each other card in your hand.\nWhen played, transform cards in your hand into ashes.',
+// })
+
 export {
   dash,
   impulse,
@@ -319,4 +337,5 @@ export {
   goliath,
   firebug,
   immolant,
+  // pyre,
 }

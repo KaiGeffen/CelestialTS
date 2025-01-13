@@ -143,7 +143,7 @@ class Yearn extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    if (super.exhale(2, game, player)) {
+    if (super.exhale(3, game, player)) {
       // If the discard pile has at least one card
       if (game.pile[player].length > 0) {
         // And the top card costs 3 or less
@@ -171,7 +171,7 @@ const yearn = new Yearn({
   id: 233,
   cost: 1,
   points: 1,
-  text: 'Extra 2: Add the top card of your discard pile to the story after this if it has base cost 3 or less.',
+  text: 'Extra 3: Add the top card of your discard pile to the story after this if it has base cost 3 or less.',
 })
 
 class Pomegranate extends Card {
@@ -187,6 +187,25 @@ const pomegranate = new Pomegranate({
   text: 'Nourish 6.',
 })
 
+class Abundance extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    if (super.exhale(1, game, player)) {
+      if (game.score[player] >= 6) {
+        this.nourish(3, game, player)
+      }
+    }
+  }
+}
+const abundance = new Abundance({
+  name: 'Abundance',
+  id: 435,
+  cost: 2,
+  points: 2,
+  text: 'Exhale 1: If you have 6 or more points, Nourish 3.',
+})
+
 export {
   fruit,
   oak,
@@ -197,4 +216,5 @@ export {
   holdTight,
   yearn,
   pomegranate,
+  abundance,
 }
