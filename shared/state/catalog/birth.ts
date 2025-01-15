@@ -163,10 +163,32 @@ class Lullaby extends Card {
 }
 const lullaby = new Lullaby({
   name: 'Lullaby',
-  id: 218,
+  id: 5218,
   cost: 6,
   points: 3,
   text: 'Create a copy in hand of each card later in the 	story that costs 0.',
+})
+class Plan extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus + index)
+
+    const card = new Card({
+      name: child.name,
+      id: child.id,
+      points: 2,
+      text: child.text,
+      qualities: child.qualities,
+      basePoints: child.basePoints,
+    })
+    game.createInDeck(player, card)
+  }
+}
+const plan = new Plan({
+  name: 'Plan',
+  id: 5212,
+  cost: 1,
+  points: 0,
+  text: 'Create a 0:2 Fleeting Child in your deck.',
 })
 
 export {
@@ -180,4 +202,5 @@ export {
   uprising,
   // BETA
   lullaby,
+  plan,
 }

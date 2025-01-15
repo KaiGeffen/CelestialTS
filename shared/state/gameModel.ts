@@ -224,6 +224,24 @@ export default class GameModel {
     this.pile[player].push(card)
   }
 
+  createInDeck(player: number, card: any) {
+    this.animations[player].push(
+      new Animation({
+        from: Zone.Gone,
+        to: Zone.Deck,
+        card: card,
+        index2: 0,
+      }),
+    )
+
+    // Add the card at a random position
+    this.deck[player].splice(
+      Math.floor(Math.random() * this.deck[player].length),
+      0,
+      card,
+    )
+  }
+
   // TODO This is just secretary bird, and it appears to oust the entire hand
   oust(player: number) {
     let cost = 0
