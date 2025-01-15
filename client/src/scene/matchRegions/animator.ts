@@ -188,11 +188,12 @@ export default class Animator {
         break
 
       case Zone.Story:
-        card = this.view.story.cards[animation.index]
+        card = this.view.story.cards[animation.index2]
         break
 
       case Zone.Mulligan:
         // Only show our mulligans
+        // TODO Should this be index2?
         card = this.view.mulligan.cards[animation.index]
         break
 
@@ -435,7 +436,9 @@ export default class Animator {
 
   // Animate a card transforming into another card
   private animateTransform(animation: Animation, i: number, owner): void {
+    console.log(animation)
     let newCard = this.getCard(animation, owner)
+    console.log('new ', newCard)
     let oldCard = this.createCard(animation.card).show().copyLocation(newCard)
 
     // Animate card scaling up and disappearing

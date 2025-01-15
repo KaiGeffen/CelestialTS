@@ -127,6 +127,7 @@ export default class Card {
     if (index + 1 <= game.story.acts.length) {
       const act = game.story.acts[index]
       const oldCard = act.card
+
       game.story.replaceAct(index, new Act(card, act.owner))
 
       game.animations[act.owner].push(
