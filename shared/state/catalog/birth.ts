@@ -148,7 +148,7 @@ class Uprising extends Card {
 }
 const uprising = new Uprising({ name: 'Uprising', id: 18, cost: 6, points: 3 })
 
-// TODO BETA cards
+// BETA
 class Lullaby extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus + index)
@@ -165,7 +165,7 @@ const lullaby = new Lullaby({
   name: 'Lullaby',
   id: 218,
   cost: 6,
-  points: 4,
+  points: 3,
   text: 'Create a copy in hand of each card later in the 	story that costs 0.',
 })
 
@@ -178,5 +178,6 @@ export {
   rebirth,
   cradle,
   uprising,
+  // BETA
   lullaby,
 }
