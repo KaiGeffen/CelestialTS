@@ -2,6 +2,8 @@ import Card from '../card'
 import { Quality } from '../effects'
 import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
+import { Zone } from '../zone'
+import { Animation } from '../../animation'
 
 class Seen extends Card {
   onUpkeepInHand(player: number, game: GameModel, index: number): boolean {
@@ -63,4 +65,36 @@ const predator = new Predator({
   keywords: [{ name: Keywords.fleeting, x: 0, y: 61 }],
 })
 
-export { seen, ashes, child, predator }
+// BETA
+class Wound extends Card {
+  onDiscard(player: number, game: GameModel, index: number) {
+    game.animations[player].push(
+      new Animation({
+        from: Zone.Discard,
+        to: Zone.Story,
+        index: index,
+        // TODO This index is wrong, doesn't count resolved cards, and off by 1
+        index2: game.story.acts.length - 1,
+      }),
+    )
+
+    game.story.addAct(this, player)
+  }
+}
+const wound = new Wound({
+  name: 'Wound',
+  id: 1006,
+  cost: 1,
+  points: -3,
+  qualities: [Quality.FLEETING],
+  text: 'Fleeting.\nWhen this is discarded, add it to the story.',
+})
+
+export {
+  seen,
+  ashes,
+  child,
+  predator,
+  // BETA
+  wound,
+}

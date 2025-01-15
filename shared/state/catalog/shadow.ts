@@ -4,6 +4,7 @@ import { Keywords } from '../keyword'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
 import GameModel from '../gameModel'
+import { wound } from './tokens'
 
 class Dagger extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
@@ -197,6 +198,38 @@ const victim = new Victim({
   keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
 })
 
+class Rupture extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+    game.create(player ^ 1, wound)
+  }
+}
+const rupture = new Rupture({
+  name: 'Rupture',
+  id: 4027,
+  cost: 1,
+  text: "Create a Wound in your opponent's hand.",
+  references: [{ card: wound, x: 5, y: 112 }],
+})
+
+class Craving extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+    if (
+      !game.story.acts.some((act) => act.owner === player && act.card.cost >= 6)
+    ) {
+      super.discard(10, game, player)
+    }
+  }
+}
+const craving = new Craving({
+  name: 'Craving',
+  id: 4028,
+  cost: 2,
+  points: 4,
+  text: 'Discard your hand unless you have a card with base-cost 6 or more later in the story.',
+})
+
 export {
   dagger,
   shadow,
@@ -207,5 +240,8 @@ export {
   hurricane,
   wingClipping,
   sickness,
+  // BETA
   victim,
+  rupture,
+  craving,
 }
