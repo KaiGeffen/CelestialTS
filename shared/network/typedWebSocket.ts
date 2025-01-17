@@ -35,6 +35,8 @@ type SupportedMessages = {
   signalError: {}
   dc: {}
   opponentEmote: {}
+
+  // TODO Separate each of the above to/from server/client and this into 4 different subtypes of supported messages
 }
 
 // All of the types of messages sent

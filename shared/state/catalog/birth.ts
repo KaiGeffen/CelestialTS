@@ -187,7 +187,6 @@ const plan = new Plan({
   name: 'Plan',
   id: 5212,
   cost: 1,
-  points: 0,
   text: 'Create a 0:2 Fleeting Child in your deck.',
 })
 
