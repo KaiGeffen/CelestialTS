@@ -5,6 +5,8 @@
   <meta name="description"
   content="Single or multiplayer digital collectible card game where players build a story and play around hidden information to win rounds.">
 
+  <meta name="referrer" content="no-referrer-when-downgrade">
+
   <!-- Icon Image -->
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
 
@@ -13,7 +15,8 @@
 
   <!-- Related to Google sign-in -->
   <meta name="google-signin-client_id" content="574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com">
-  <script async src="https://accounts.google.com/gsi/client"></script>
+  <script src="https://accounts.google.com/gsi/client" async></script>
+
 
   <script defer src="https://apis.google.com/js/platform.js" async></script>
   <link defer rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +26,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7E0LP0X7Y9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7E0LP0X7Y9');
+  </script>
 </head>
 <body>
   <!-- playsinline and muted enable mobile autoplay -->
@@ -32,9 +45,7 @@
   
   <div class="game" id="game">
 
-  <div id="signin" style="position: absolute; left: 50%; top: 50%">
-    <div id="signin_google"style="position: relative; left: -110px; top: -90px"></div>
-    <div id="signin_facebook" style="position: relative; left: -110px; top: -190px"><div class="fb-login-button" data-width="220" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div></div></div>
+  <div id="signin" style="position: absolute; bottom: 118px; left: 50%; transform: translateX(-50%);"></div>
   <audio id=music loop>
     <source src="assets/music/background.ogg" type="audio/ogg">
     Your browser does not support the audio tag

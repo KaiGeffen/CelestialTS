@@ -17,9 +17,6 @@ import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
 import ensureMusic from '../loader/audioManager'
 
-const google = null
-const FB = null
-
 // Scene for user to select a sign in option, without loading assets
 export class SigninScene extends Phaser.Scene {
   // True when user is signed or chose to be a guest
@@ -62,21 +59,11 @@ export class SigninScene extends Phaser.Scene {
     const y = Space.windowHeight - Space.buttonHeight / 2 - Space.pad
 
     this.guestButton = new Buttons.Basic(this, x, y, 'Guest', () => {
-      if (!Flags.local) {
-        // Ensure that any other automatic sign-ins are cancelled
-        google.accounts.id.cancel()
-      }
-
       this.onOptionClick()
     }).setDepth(-1)
 
-    if (!Flags.local) {
-      // Google GIS
-      this.createGoogleGSIButton(y - 100)
-
-      // Facebook signin
-      // this.createFacebookButton(y - 200)
-    }
+    // TODO Use y value
+    this.createGoogleGSIButton()
   }
 
   // Create elements which encourage the user to be in landscape mode
@@ -131,28 +118,11 @@ export class SigninScene extends Phaser.Scene {
     }
   }
 
-  private createGoogleGSIButton(y: number): void {
-    // const client = google.accounts['oauth2'].initTokenClient({
-    // 	client_id: Url.oauth,
-    // 	scope: 'https://www.googleapis.com/auth/userinfo.email',
-    // 	callback: (tokenResponse) => {
-    // 		console.log('This is google authorization response:')
-    // 		console.log(tokenResponse)
-
-    // 		Server.login(tokenResponse.access_token, this)
-
-    // 		this.onOptionClick()
-
-    // 	},
-    // })
-
+  private createGoogleGSIButton(): void {
     google.accounts.id.initialize({
       client_id: Url.oauth,
-      // log_level: 'debug',
-      auto_select: this.autoSelect,
-      cancel_on_tap_outside: false,
-
-      // login_uri: 'https://celestialtcg.com/gapi',
+      log_level: 'debug',
+      ux_mode: 'popup',
 
       callback: (token) => {
         const payload: any = jwt_decode(token.credential)
@@ -163,10 +133,14 @@ export class SigninScene extends Phaser.Scene {
       },
     })
 
-    // NOTE Ensure that one-tap appears even if the user has closed it in the past
-    document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`
-
-    google.accounts.id.prompt()
+    // Render the button
+    google.accounts.id.renderButton(document.getElementById('signin'), {
+      theme: 'filled_black',
+      size: 'large',
+      shape: 'rectangular',
+      text: 'signin',
+      width: Space.buttonWidth,
+    })
   }
 
   private ensureAnimation(): void {

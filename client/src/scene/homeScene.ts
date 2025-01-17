@@ -7,6 +7,7 @@ import {
   Ease,
   UserProgress,
   UserSettings,
+  Url,
 } from '../settings/settings'
 import BaseScene from './baseScene'
 import Button from '../lib/buttons/button'
@@ -19,6 +20,7 @@ import { CardImage } from '../lib/cardImage'
 import Catalog from '../../../shared/state/catalog'
 
 const headerHeight = Space.iconSize + Space.pad * 2
+const discordHeight = 150
 
 export default class HomeScene extends BaseScene {
   constructor() {
@@ -95,7 +97,8 @@ export default class HomeScene extends BaseScene {
     // const y = headerHeight + (Space.windowHeight - headerHeight)/2
 
     const width = (Space.windowWidth - Space.pad * 3) / 2
-    const height = Space.windowHeight - headerHeight - Space.pad * 2
+    const height =
+      Space.windowHeight - headerHeight - Space.pad * 3 - discordHeight
 
     // If tutorial complete, show normal buttons, otherwise show tutorial button
     const missions = UserSettings._get('completedMissions')
@@ -105,6 +108,8 @@ export default class HomeScene extends BaseScene {
     } else {
       this.createTutorialButton()
     }
+
+    this.createDiscordButton()
   }
 
   private createAdventureButton(width: number, height: number): void {
@@ -180,14 +185,16 @@ export default class HomeScene extends BaseScene {
     const names = ['Jules', 'Mia', 'Kitz']
 
     const x = Space.windowWidth / 2
-    const y = headerHeight + (Space.windowHeight - headerHeight) / 2
+    const y =
+      headerHeight +
+      (Space.windowHeight - headerHeight - discordHeight - Space.pad) / 2
     const width = Math.min(
       Space.windowWidth - Space.pad * 2,
       Space.avatarWidth * names.length + Space.pad * (names.length + 1),
     )
     const height = Math.min(
       Space.avatarHeight,
-      Space.windowHeight - headerHeight,
+      Space.windowHeight - headerHeight - discordHeight - Space.pad * 3,
     )
 
     // Free Play button
@@ -300,6 +307,48 @@ export default class HomeScene extends BaseScene {
       .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
   }
 
+  private createDiscordButton(): void {
+    let rect = this.add
+      .rectangle(
+        Space.windowWidth / 2,
+        Space.windowHeight - Space.pad,
+        Space.windowWidth - Space.pad * 2,
+        discordHeight,
+        0xfabd5d,
+        1,
+      )
+      .setOrigin(0.5, 1)
+
+    let map = this.add.sprite(0, 0, 'bg-Match').setOrigin(0)
+
+    // While not hovered, rectangle is greyed
+    rect
+      .setInteractive()
+      .on('pointerover', () => {
+        map.setTint(0x444444)
+      })
+      .on('pointerout', () => {
+        map.clearTint()
+      })
+      .on('pointerdown', () => {
+        this.sound.play('click')
+        window.open(Url.discord, '_blank')
+      })
+
+    map.mask = new Phaser.Display.Masks.BitmapMask(this, rect)
+
+    // Text over the rectangle
+    this.add
+      .text(
+        rect.x,
+        rect.y - rect.displayHeight / 2,
+        'Join the Discord Community',
+        Style.homeButtonText,
+      )
+      .setOrigin(0.5)
+      .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
+  }
+
   private addCard(
     container: Phaser.GameObjects.Container,
     x: number,
@@ -391,7 +440,12 @@ export default class HomeScene extends BaseScene {
     for (let i = 0; i < intro.length; i++) {
       // If this tutorial mission hasn't been completed, jump to that mission
       if (!missions[i]) {
-        this.scene.start('TutorialGameScene', { missionID: i })
+        this.scene.start('TutorialGameScene', {
+          isTutorial: false,
+          deck: undefined,
+          mmCode: `ai:t${i}`,
+          missionID: i,
+        })
         return
       }
     }

@@ -1,4 +1,4 @@
-import { URL, PORT } from '../../../shared/network/settings'
+import { URL, MATCH_PORT } from '../../../shared/network/settings'
 import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
 
 import { encodeDeck } from '../../../shared/codec'
@@ -103,8 +103,8 @@ export class MatchWS {
     if (Server.loggedIn()) {
       socket = null // TODO Server.getWS()
     } else if (Flags.local) {
-      socket = new TypedWebSocket(`ws://${URL}:${PORT}`)
-      // socket = new TypedWebSocket(`ws://${URL}:${PORT}?mode=pvp`)
+      socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)
+      // socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}?mode=pvp`)
     } else {
       // The WS location on DO
       // let loc = window.location
