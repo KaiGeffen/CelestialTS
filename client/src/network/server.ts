@@ -3,6 +3,8 @@ import 'phaser'
 import Card from '../../../shared/state/card'
 import { UserSettings } from '../settings/settings'
 import BaseScene from '../scene/baseScene'
+import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
+import { URL, MATCH_PORT } from '../../../shared/network/settings'
 
 const ip = '127.0.0.1'
 const port = 5555
@@ -10,12 +12,87 @@ const port = 5555
 const code = 1000
 
 // The websocket which is open with the main server (Authentication/pack opening)
-var wsServer: WebSocket = undefined
-var packOpenCallback: (cards: Card[]) => void = undefined
+var wsServer: TypedWebSocket = undefined
 
 export default class Server {
   // Log in with the server for user with given OAuth token
   static login(payload: any, game: Phaser.Game, callback = () => {}) {
+    /*
+    Destructure the payload
+    Immediately send the payload information to server
+    Register a listener for the response of the user-data
+    Listen for a prompt for user to send initial values (Local storage information)
+    Listen for invalid_token and show an error message
+    Listen for close ? and resend the login information
+
+    This websocket stays open, and when the user updates anything that info
+    gets sent to the server. The wsServer above does get set by this, and user
+    in the static methods below. 
+    */
+
+    const email = payload.email
+    const uuid = payload.sub
+    const jti = payload.jti
+
+    wsServer = this.getWebSocket()
+
+    // Immediately send the payload information to server
+    wsServer.onOpen(() => {
+      wsServer.send({
+        type: 'sendToken',
+        email: email,
+        uuid: uuid,
+        jti: jti,
+      })
+    })
+
+    // Register a listener for the response of the user-data
+    wsServer
+      .on('promptUserInit', () => {
+        that.sendDecks(UserSettings._get('decks'))
+        that.sendUserProgress(UserSettings._get('userProgress'))
+        that.sendInventory(UserSettings._get('inventory'))
+      })
+      .on('invalidToken', () => {
+        console.log(
+          'Server has indicated that sent token is invalid. Logging out.',
+        )
+
+        game.scene.getScenes(true).forEach((scene) => {
+          if (scene instanceof BaseScene) {
+            scene.signalError('Invalid login token.')
+          }
+        })
+
+        wsServer.close(code)
+        wsServer = undefined
+      })
+      .on('alreadySignedIn', () => {
+        console.log(
+          'Server indicated that the given uuid is already signed in. Logging out.',
+        )
+        wsServer.close(code)
+        wsServer = undefined
+
+        Server.logout()
+
+        // TODO Make this a part of the static logout method
+        game.scene
+          .getScenes(true)[0]
+          .scene.start('SigninScene', { autoSelect: false })
+          .launch('MenuScene', {
+            menu: 'message',
+            title: 'ERROR',
+            s: 'The selected account is already logged in on another device or tab. Please select another account option.',
+          })
+      })
+      .on('sendUserData', (data) => {
+        that.loadUserData(data)
+        callback()
+      })
+
+    // OLD
+
     let that = this
 
     console.log('Log in to server with payload:')
@@ -219,18 +296,21 @@ export default class Server {
 
   // Load user data that was sent from server into session storage
   private static loadUserData(data): void {
+    // TODO Why is this stringifying? Isn't it already a string?
     // Put this data into the session storage so that UserSettings sees it before local storage
-    sessionStorage.setItem('userProgress', JSON.stringify(data[6]))
+    sessionStorage.setItem('userProgress', JSON.stringify(data.userProgress))
 
     // Map from binary string to bool array
-    const inventory = JSON.stringify([...data[7]].map((c) => c === '1'))
+    const inventory = JSON.stringify([...data.inventory].map((c) => c === '1'))
     sessionStorage.setItem('inventory', inventory)
-    const completedMissions = JSON.stringify([...data[8]].map((c) => c === '1'))
+    const completedMissions = JSON.stringify(
+      [...data.completedMissions].map((c) => c === '1'),
+    )
     sessionStorage.setItem('completedMissions', completedMissions)
 
     // Decks must be translated from string, string to dictionary
     let decks = []
-    data[5].forEach((pair) => {
+    data.decks.forEach((pair) => {
       let name = pair[0]
       let deckCode = pair[1]
       // TODO Decks must have an avatar
@@ -242,12 +322,15 @@ export default class Server {
   }
 
   // Get a websocket connection
-  private static getWebSocket(): WebSocket {
+  private static getWebSocket(): TypedWebSocket {
     // Establish a websocket based on the environment
     // The WS location on DO
-    let loc = window.location
-    let fullPath = `wss://${loc.host}${loc.pathname}ws/tokensignin`
-    let socket = new WebSocket(fullPath)
+
+    // let loc = window.location
+    // let fullPath = `wss://${loc.host}${loc.pathname}ws/tokensignin`
+    // let socket = new WebSocket(fullPath)
+
+    const socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)
 
     return socket
   }

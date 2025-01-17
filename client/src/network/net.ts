@@ -82,7 +82,7 @@ export class MatchWS {
     // TODO Remove if UserSessionWS is separate from this
     // If user is anon, close socket
     else {
-      this.socket.ws.close(1000)
+      this.socket.close(1000)
     }
   }
 

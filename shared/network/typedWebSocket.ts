@@ -37,6 +37,23 @@ type SupportedMessages = {
   opponentEmote: {}
 
   // TODO Separate each of the above to/from server/client and this into 4 different subtypes of supported messages
+  // Client to server
+  sendToken: {
+    email: string
+    uuid: string
+    jti: string
+  }
+  promptUserInit: {}
+  invalidToken: {}
+  alreadySignedIn: {}
+  sendUserData: {
+    userProgress: string
+    inventory: string
+    completedMissions: string
+    decks: string[]
+  }
+
+  // Server to client
 }
 
 // All of the types of messages sent
@@ -104,6 +121,10 @@ export class TypedWebSocket {
   // Callback for when the socket is opened
   onOpen(callback: () => void): void {
     this.ws.onopen = callback
+  }
+
+  close(code?: number, reason?: string): void {
+    this.ws.close(code, reason)
   }
 }
 
