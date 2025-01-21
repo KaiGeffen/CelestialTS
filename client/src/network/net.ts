@@ -2,7 +2,7 @@ import { URL, MATCH_PORT } from '../../../shared/network/settings'
 import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
 
 import { encodeDeck } from '../../../shared/codec'
-import Server from './server'
+import UserDataServer from './userDataServer'
 
 import { Flags } from '../settings/settings'
 import { GameScene } from '../scene/gameScene'
@@ -74,7 +74,7 @@ export class MatchWS {
   // Signal to server that we are exiting this match
   exitMatch() {
     // If user is logged in, send a message but keep the ws
-    if (Server.loggedIn()) {
+    if (UserDataServer.loggedIn()) {
       this.socket.send({
         type: 'exitMatch',
       })
@@ -100,7 +100,7 @@ export class MatchWS {
   private getSocket(): TypedWebSocket {
     // Establish a websocket based on the environment
     let socket
-    if (Server.loggedIn()) {
+    if (UserDataServer.loggedIn()) {
       socket = null // TODO Server.getWS()
     } else if (Flags.local) {
       socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)

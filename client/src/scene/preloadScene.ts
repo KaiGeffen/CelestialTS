@@ -1,7 +1,9 @@
 import 'phaser'
 import jwt_decode from 'jwt-decode'
+import type { CredentialResponse } from 'google-one-tap'
+import type { GoogleJwtPayload } from '../types/google'
 import Loader from '../loader/loader'
-import Server from '../network/server'
+import UserDataServer from '../network/userDataServer'
 import {
   Color,
   Mobile,
@@ -124,12 +126,12 @@ export class SigninScene extends Phaser.Scene {
       log_level: 'debug',
       ux_mode: 'popup',
 
-      callback: (token) => {
-        const payload: any = jwt_decode(token.credential)
+      callback: (token: CredentialResponse) => {
+        const payload = jwt_decode<GoogleJwtPayload>(token.credential)
 
         // Send the jti to confirm a connection
         // After server responds, complete login
-        Server.login(payload, this.game, () => this.onOptionClick())
+        UserDataServer.login(payload, this.game, () => this.onOptionClick())
       },
     })
 

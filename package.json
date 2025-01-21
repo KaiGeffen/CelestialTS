@@ -12,6 +12,8 @@
   "devDependencies": {
     "@eslint/js": "^9.14.0",
     "@types/express": "^4.17.11",
+    "@types/google-one-tap": "^1.2.6",
+    "@types/google.accounts": "^0.0.15",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.14.10",
     "@types/socket.io": "^3.0.2",
@@ -44,8 +46,6 @@
     "@types/facebook-js-sdk": "^3.3.6",
     "@types/gapi": "^0.0.41",
     "@types/gapi.auth2": "^0.0.55",
-    "@types/google-one-tap": "^1.2.2",
-    "@types/google.accounts": "^0.0.5",
     "dgram": "^1.0.1",
     "express": "^4.19.2",
     "gapi": "^0.0.3",

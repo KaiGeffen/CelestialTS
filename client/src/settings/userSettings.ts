@@ -1,4 +1,4 @@
-import Server from '../network/server'
+import UserDataServer from '../network/userDataServer'
 import Catalog from '../../../shared/state/catalog'
 import { Space } from './settings'
 import { Flags } from './flags'
@@ -80,13 +80,13 @@ export class UserSettings {
       // If key is in session storage then we're signed in
       // User progress and decks should be communicated to the server immediately
       if (key === 'userProgress') {
-        Server.sendUserProgress(value)
+        UserDataServer.sendUserProgress(value)
       } else if (key === 'decks') {
-        Server.sendDecks(value)
+        UserDataServer.sendDecks(value)
       } else if (key === 'inventory') {
-        Server.sendInventory(value)
+        UserDataServer.sendInventory(value)
       } else if (key === 'completedMissions') {
-        Server.sendCompletedMissions(value)
+        UserDataServer.sendCompletedMissions(value)
       }
     } else {
       localStorage.setItem(key, JSON.stringify(value))

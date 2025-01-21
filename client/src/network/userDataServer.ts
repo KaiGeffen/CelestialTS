@@ -4,7 +4,12 @@ import Card from '../../../shared/state/card'
 import { UserSettings } from '../settings/settings'
 import BaseScene from '../scene/baseScene'
 import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
-import { URL, MATCH_PORT } from '../../../shared/network/settings'
+import {
+  URL,
+  MATCH_PORT,
+  USER_DATA_PORT,
+} from '../../../shared/network/settings'
+import type { GoogleJwtPayload } from '../types/google'
 
 const ip = '127.0.0.1'
 const port = 5555
@@ -14,9 +19,13 @@ const code = 1000
 // The websocket which is open with the main server (Authentication/pack opening)
 var wsServer: TypedWebSocket = undefined
 
-export default class Server {
+export default class UserDataServer {
   // Log in with the server for user with given OAuth token
-  static login(payload: any, game: Phaser.Game, callback = () => {}) {
+  static login(
+    payload: GoogleJwtPayload,
+    game: Phaser.Game,
+    callback = () => {},
+  ) {
     /*
     Destructure the payload
     Immediately send the payload information to server
@@ -34,7 +43,7 @@ export default class Server {
     const uuid = payload.sub
     const jti = payload.jti
 
-    wsServer = this.getWebSocket()
+    wsServer = new TypedWebSocket(`ws://${URL}:${USER_DATA_PORT}`)
 
     // Immediately send the payload information to server
     wsServer.onOpen(() => {
@@ -47,8 +56,11 @@ export default class Server {
     })
 
     // Register a listener for the response of the user-data
+    const that = this
     wsServer
       .on('promptUserInit', () => {
+        console.log('Prompting user to send initial values')
+
         that.sendDecks(UserSettings._get('decks'))
         that.sendUserProgress(UserSettings._get('userProgress'))
         that.sendInventory(UserSettings._get('inventory'))
@@ -74,7 +86,7 @@ export default class Server {
         wsServer.close(code)
         wsServer = undefined
 
-        Server.logout()
+        UserDataServer.logout()
 
         // TODO Make this a part of the static logout method
         game.scene
@@ -91,98 +103,9 @@ export default class Server {
         callback()
       })
 
-    // OLD
-
-    let that = this
-
-    console.log('Log in to server with payload:')
-    console.log(payload)
-
-    // Set / reset that server ws does not have an in-game listener yet
-    Server.hasInGameListener = false
-
-    // The first message sent to server once the match starts
-    let tokenMessage = JSON.stringify({
-      type: 'send_token',
-      email: payload.email,
-      uuid: payload.sub,
-      jti: payload.jti,
-    })
-
-    wsServer = this.getWebSocket()
-
-    // Connection opened
-    wsServer.addEventListener('open', function (event) {
-      console.log('Auth socket open')
-    })
-
-    // Listen for messages
-    wsServer.addEventListener('message', function (event) {
-      let msg
-      try {
-        msg = JSON.parse(event.data)
-      } catch (e) {
-        console.log('Not valid json: ' + event.data)
-        return
-      }
-
-      switch (msg.type) {
-        case 'request_token':
-          wsServer.send(tokenMessage)
-          break
-
-        case 'send_user_data':
-          that.loadUserData(msg.value)
-          callback()
-          break
-
-        // Prompt the user to send initial values to set up their account
-        case 'prompt_user_init':
-          that.sendDecks(UserSettings._get('decks'))
-          that.sendUserProgress(UserSettings._get('userProgress'))
-          that.sendInventory(UserSettings._get('inventory'))
-          break
-
-        case 'invalid_token':
-          console.log(
-            'Server has indicated that sent token is invalid. Logging out.',
-          )
-
-          game.scene.getScenes(true).forEach((scene) => {
-            if (scene instanceof BaseScene) {
-              scene.signalError('Invalid login token.')
-            }
-          })
-
-          wsServer.close(code)
-          wsServer = undefined
-          break
-
-        case 'already_signed_in':
-          console.log(
-            'Server indicated that the given uuid is already signed in. Logging out.',
-          )
-          wsServer.close(code)
-          wsServer = undefined
-
-          Server.logout()
-
-          // TODO Make this a part of the static logout method
-          game.scene
-            .getScenes(true)[0]
-            .scene.start('SigninScene', { autoSelect: false })
-            .launch('MenuScene', {
-              menu: 'message',
-              title: 'ERROR',
-              s: 'The selected account is already logged in on another device or tab. Please select another account option.',
-            })
-
-          break
-      }
-    })
-
+    wsServer.ws.onclose
     // If the connection closes, login again with same args
-    wsServer.addEventListener('close', (event) => {
+    wsServer.ws.onclose = (event) => {
       // Don't attempt to login again if the server explicitly logged us out
       if (event.code !== code) {
         console.log(
@@ -190,14 +113,117 @@ export default class Server {
         )
         console.log(payload)
 
-        Server.login(payload, game)
+        UserDataServer.login(payload, game)
       }
-    })
+    }
+
+    // OLD
+
+    // let that = this
+
+    // console.log('Log in to server with payload:')
+    // console.log(payload)
+
+    // // Set / reset that server ws does not have an in-game listener yet
+    // Server.hasInGameListener = false
+
+    // // The first message sent to server once the match starts
+    // let tokenMessage = JSON.stringify({
+    //   type: 'send_token',
+    //   email: payload.email,
+    //   uuid: payload.sub,
+    //   jti: payload.jti,
+    // })
+
+    // wsServer = this.getWebSocket()
+
+    // // Connection opened
+    // wsServer.addEventListener('open', function (event) {
+    //   console.log('Auth socket open')
+    // })
+
+    // // Listen for messages
+    // wsServer.addEventListener('message', function (event) {
+    //   let msg
+    //   try {
+    //     msg = JSON.parse(event.data)
+    //   } catch (e) {
+    //     console.log('Not valid json: ' + event.data)
+    //     return
+    //   }
+
+    //   switch (msg.type) {
+    //     case 'request_token':
+    //       wsServer.send(tokenMessage)
+    //       break
+
+    //     case 'send_user_data':
+    //       that.loadUserData(msg.value)
+    //       callback()
+    //       break
+
+    //     // Prompt the user to send initial values to set up their account
+    //     case 'prompt_user_init':
+    //       that.sendDecks(UserSettings._get('decks'))
+    //       that.sendUserProgress(UserSettings._get('userProgress'))
+    //       that.sendInventory(UserSettings._get('inventory'))
+    //       break
+
+    //     case 'invalid_token':
+    //       console.log(
+    //         'Server has indicated that sent token is invalid. Logging out.',
+    //       )
+
+    //       game.scene.getScenes(true).forEach((scene) => {
+    //         if (scene instanceof BaseScene) {
+    //           scene.signalError('Invalid login token.')
+    //         }
+    //       })
+
+    //       wsServer.close(code)
+    //       wsServer = undefined
+    //       break
+
+    //     case 'already_signed_in':
+    //       console.log(
+    //         'Server indicated that the given uuid is already signed in. Logging out.',
+    //       )
+    //       wsServer.close(code)
+    //       wsServer = undefined
+
+    //       Server.logout()
+
+    //       // TODO Make this a part of the static logout method
+    //       game.scene
+    //         .getScenes(true)[0]
+    //         .scene.start('SigninScene', { autoSelect: false })
+    //         .launch('MenuScene', {
+    //           menu: 'message',
+    //           title: 'ERROR',
+    //           s: 'The selected account is already logged in on another device or tab. Please select another account option.',
+    //         })
+
+    //       break
+    //   }
+    // })
+
+    // // If the connection closes, login again with same args
+    // wsServer.addEventListener('close', (event) => {
+    //   // Don't attempt to login again if the server explicitly logged us out
+    //   if (event.code !== code) {
+    //     console.log(
+    //       'Logged in websocket is closing, signing in again with token:',
+    //     )
+    //     console.log(payload)
+
+    //     Server.login(payload, game)
+    //   }
+    // })
   }
 
   static logout(): void {
     console.log('Logging out')
-    if (Server.loggedIn()) {
+    if (UserDataServer.loggedIn()) {
       console.log('server was logged in and now its logging out...')
 
       wsServer.close(code)
@@ -247,12 +273,10 @@ export default class Server {
         decksAsList.push(tuple)
       })
 
-      let message = JSON.stringify({
-        type: 'send_decks',
-        value: decksAsList,
+      wsServer.send({
+        type: 'sendDecks',
+        decks: decksAsList,
       })
-
-      wsServer.send(message)
     }
   }
 
@@ -266,12 +290,10 @@ export default class Server {
         result += ary[i] ? '1' : '0'
       }
 
-      let message = JSON.stringify({
-        type: 'send_inventory',
-        value: result,
+      wsServer.send({
+        type: 'sendInventory',
+        inventory: result,
       })
-
-      wsServer.send(message)
     }
   }
 
@@ -285,12 +307,10 @@ export default class Server {
         result += ary[i] ? '1' : '0'
       }
 
-      let message = JSON.stringify({
-        type: 'send_completed_missions',
-        value: result,
+      wsServer.send({
+        type: 'sendCompletedMissions',
+        missions: result,
       })
-
-      wsServer.send(message)
     }
   }
 
@@ -319,19 +339,5 @@ export default class Server {
       decks.push({ name: name, value: deckCode, avatar: avatar })
     })
     sessionStorage.setItem('decks', JSON.stringify(decks))
-  }
-
-  // Get a websocket connection
-  private static getWebSocket(): TypedWebSocket {
-    // Establish a websocket based on the environment
-    // The WS location on DO
-
-    // let loc = window.location
-    // let fullPath = `wss://${loc.host}${loc.pathname}ws/tokensignin`
-    // let socket = new WebSocket(fullPath)
-
-    const socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)
-
-    return socket
   }
 }

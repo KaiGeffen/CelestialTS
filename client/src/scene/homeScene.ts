@@ -15,7 +15,7 @@ import Buttons from '../lib/buttons/buttons'
 import Icons from '../lib/buttons/icons'
 import intro from '../adventures/intro.json'
 import Loader from '../loader/loader'
-import Server from '../network/server'
+import UserDataServer from '../network/userDataServer'
 import { CardImage } from '../lib/cardImage'
 import Catalog from '../../../shared/state/catalog'
 
@@ -56,7 +56,7 @@ export default class HomeScene extends BaseScene {
     })
 
     // Create logout button
-    const s = Server.loggedIn() ? 'Logout' : 'Login'
+    const s = UserDataServer.loggedIn() ? 'Logout' : 'Login'
     let btnLogout = new Buttons.Basic(
       this,
       Space.pad + Space.buttonWidth / 2,
@@ -64,7 +64,7 @@ export default class HomeScene extends BaseScene {
       s,
       () => {
         // If we aren't logged in, go to login scene
-        if (!Server.loggedIn()) {
+        if (!UserDataServer.loggedIn()) {
           this.scene.start('SigninScene', { autoSelect: true })
           return
         }
@@ -73,7 +73,7 @@ export default class HomeScene extends BaseScene {
         this.scene.launch('MenuScene', {
           menu: 'confirm',
           callback: () => {
-            Server.logout()
+            UserDataServer.logout()
 
             this.scene.start('SigninScene', { autoSelect: false })
           },

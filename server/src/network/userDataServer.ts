@@ -1,6 +1,10 @@
 import { WebSocketServer } from 'ws'
 
 import { USER_DATA_PORT } from '../../../shared/network/settings'
+import {
+  TypedWebSocket,
+  createEvent,
+} from '../../../shared/network/typedWebSocket'
 
 /*
  This prevents async promises in the indivual websockets from causing the server to crash
@@ -41,6 +45,24 @@ export default function createUserDataServer() {
        In that event, register events to 
 
       */
+      const ws = new TypedWebSocket(socket)
+
+      //
+      ws.on('sendToken', ({ email, uuid, jti }) => {
+        console.log('Users token included email: ', email)
+
+        ws.send({ type: 'promptUserInit' })
+      })
+        .on('sendDecks', (decks) => {
+          console.log('Client is sending decks:', decks)
+        })
+        .on('sendInventory', (inventory) => {
+          console.log('Client is sending inventory:', inventory)
+        })
+        .on('sendCompletedMissions', (missions) => {
+          console.log('Client is sending completed missions:', missions)
+        })
+
       console.log('Client connected to user-data server')
     } catch (e) {
       console.error('Error in match queue:', e)

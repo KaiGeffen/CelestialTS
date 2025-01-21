@@ -1,5 +1,6 @@
 import GameModel from '../state/gameModel'
 import { Mulligan } from '../settings'
+import { Deck } from '../state/deck'
 
 // All supported messages (type and payload) between server and client
 type SupportedMessages = {
@@ -43,6 +44,18 @@ type SupportedMessages = {
     uuid: string
     jti: string
   }
+  // TODO Type these and don't encode strings
+  sendDecks: {
+    decks: string[]
+  }
+  sendInventory: {
+    inventory: string
+  }
+  sendCompletedMissions: {
+    missions: string
+  }
+
+  // Server to client
   promptUserInit: {}
   invalidToken: {}
   alreadySignedIn: {}
@@ -52,8 +65,6 @@ type SupportedMessages = {
     completedMissions: string
     decks: string[]
   }
-
-  // Server to client
 }
 
 // All of the types of messages sent
