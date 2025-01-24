@@ -11,13 +11,6 @@ import { db } from '../db/db'
 import { players } from '../db/schema'
 import { eq, sql } from 'drizzle-orm'
 
-/*
- This prevents async promises in the indivual websockets from causing the server to crash
- */
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
-})
-
 // Add UUID namespace constant
 const UUID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // UUID v4 namespace
 
