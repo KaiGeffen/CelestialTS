@@ -61,9 +61,14 @@ export default class UserDataServer {
       .on('promptUserInit', () => {
         console.log('User was prompted to send initial values')
 
+        // TODO Include username
+
         that.sendDecks(UserSettings._get('decks'))
         that.sendInventory(UserSettings._get('inventory'))
         that.sendCompletedMissions(UserSettings._get('completedMissions'))
+
+        // Call callback since we already have the data in userSettings
+        callback()
       })
       .on('invalidToken', () => {
         console.log(
@@ -103,7 +108,6 @@ export default class UserDataServer {
         callback()
       })
 
-    wsServer.ws.onclose
     // If the connection closes, login again with same args
     wsServer.ws.onclose = (event) => {
       // Don't attempt to login again if the server explicitly logged us out
@@ -307,17 +311,11 @@ export default class UserDataServer {
 
   // Load user data that was sent from server into session storage
   private static loadUserData(data): void {
-    // TODO Why is this stringifying? Isn't it already a string?
-    // Put this data into the session storage so that UserSettings sees it before local storage
-    sessionStorage.setItem('userProgress', JSON.stringify(data.userProgress))
+    console.log('user receied', data)
 
     // Map from binary string to bool array
-    const inventory = JSON.stringify([...data.inventory].map((c) => c === '1'))
-    sessionStorage.setItem('inventory', inventory)
-    const completedMissions = JSON.stringify(
-      [...data.completedMissions].map((c) => c === '1'),
-    )
-    sessionStorage.setItem('completedMissions', completedMissions)
+    sessionStorage.setItem('inventory', data.inventory)
+    sessionStorage.setItem('completedMissions', data.completedMissions)
 
     // Decks must be translated from string, string to dictionary
     let decks = []

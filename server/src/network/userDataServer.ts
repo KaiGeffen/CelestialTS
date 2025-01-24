@@ -66,7 +66,8 @@ export default function createUserDataServer() {
         id = userId
 
         // Check if user exists in database
-        const result = await db.select()
+        const result = await db
+          .select()
           .from(players)
           .where(eq(players.id, userId))
 
@@ -85,33 +86,44 @@ export default function createUserDataServer() {
             decks: [],
             inventory: '1000101001011100001',
             completedmissions: '',
-            userprogress: []
+            userprogress: [],
           })
           // User doesn't exist yet
           console.log("User doesn't exist yet")
+
+          ws.send({ type: 'promptUserInit' })
+        } else if (result.length === 1) {
+          // Send user their data
+          const data = result[0]
+          console.log('sending user data:', data)
+
+          ws.send({
+            type: 'sendUserData',
+            inventory: data.inventory,
+            completedMissions: data.completedmissions,
+            decks: data.decks,
+          })
         }
-        // TODO Move in above
-        ws.send({ type: 'promptUserInit' })
       })
-        .on('sendDecks', async ({decks}) => {
+        .on('sendDecks', async ({ decks }) => {
           if (!id) return
           console.log('Client is sending decks:', decks)
-          await db.update(players)
-            .set({ 
-              decks: decks
+          await db
+            .update(players)
+            .set({
+              decks: decks,
             })
             .where(eq(players.id, id))
         })
-        .on('sendInventory', async ({inventory}) => {
+        .on('sendInventory', async ({ inventory }) => {
           if (!id) return
-          await db.update(players)
-            .set({ inventory })
-            .where(eq(players.id, id))
+          await db.update(players).set({ inventory }).where(eq(players.id, id))
           console.log('Client is sending inventory:', inventory)
         })
-        .on('sendCompletedMissions', async ({missions}) => {
+        .on('sendCompletedMissions', async ({ missions }) => {
           if (!id) return
-          await db.update(players)
+          await db
+            .update(players)
             .set({ completedmissions: missions })
             .where(eq(players.id, id))
           console.log('Client is sending completed missions:', missions)

@@ -60,7 +60,6 @@ type SupportedMessages = {
   invalidToken: {}
   alreadySignedIn: {}
   sendUserData: {
-    userProgress: string
     inventory: string
     completedMissions: string
     decks: string[]
