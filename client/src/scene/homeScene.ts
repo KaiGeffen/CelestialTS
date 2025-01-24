@@ -110,6 +110,7 @@ export default class HomeScene extends BaseScene {
     }
 
     this.createDiscordButton()
+    this.createLeaderboardButton()
   }
 
   private createAdventureButton(width: number, height: number): void {
@@ -345,6 +346,43 @@ export default class HomeScene extends BaseScene {
         'Join the Discord Community',
         Style.homeButtonText,
       )
+      .setOrigin(0.5)
+      .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
+  }
+
+  private createLeaderboardButton(): void {
+    const l = discordHeight
+
+    let rect = this.add.rectangle(
+      Space.windowWidth - Space.pad - l / 2,
+      Space.windowHeight - Space.pad - l / 2,
+      l,
+      l,
+      0xfabd5d,
+      1,
+    )
+
+    let map = this.add.sprite(0, 0, 'bg-Match').setOrigin(0)
+
+    // While not hovered, rectangle is greyed
+    rect
+      .setInteractive()
+      .on('pointerover', () => {
+        map.setTint(0x444444)
+      })
+      .on('pointerout', () => {
+        map.clearTint()
+      })
+      .on('pointerdown', () => {
+        this.sound.play('click')
+        // TODO
+      })
+
+    map.mask = new Phaser.Display.Masks.BitmapMask(this, rect)
+
+    // Text over the rectangle
+    this.add
+      .text(rect.x, rect.y, '🏆', Style.homeButtonText)
       .setOrigin(0.5)
       .setShadow(0, 1, 'rgb(0, 0, 0, 1)', 6)
   }
