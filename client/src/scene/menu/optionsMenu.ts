@@ -495,7 +495,7 @@ export default class OptionsMenu extends Menu {
   }
 
   private getSlider(value: number, callback: (value: number) => void) {
-    const factory: any = this.scene.rexUI.add
+    const factory = this.scene.rexUI.add
     return factory.slider({
       width: this.subwidth,
       height: 20,
