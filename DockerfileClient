@@ -4,9 +4,12 @@ RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 WORKDIR /home/node/app
 
-COPY --chown=node:node . .
+COPY --chown=node:node ./client ./client
+COPY --chown=node:node ./shared ./shared
 
 USER node
+
+WORKDIR /home/node/app/client
 
 RUN npm install && npm run build
 
