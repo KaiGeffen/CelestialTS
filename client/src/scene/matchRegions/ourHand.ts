@@ -170,6 +170,8 @@ export default class OurHandRegion extends Region {
     let msg
     if (state.winner !== null) {
       msg = 'The game is over.'
+    } else if (!state.mulligansComplete[1]) {
+      msg = 'Opponent still mulliganing.'
     } else if (state.isRecap) {
       msg = 'The story is resolving.'
     } else if (state.priority === 1) {
@@ -177,7 +179,7 @@ export default class OurHandRegion extends Region {
     } else if (this.cardClicked) {
       msg = "You've already selected a card."
     } else if (state.cardCosts[i] > state.breath[0]) {
-      msg = "You don't have enough breath to play that card."
+      msg = 'Not enough breath.'
     }
 
     // Show error message if there is one, otherwise play the card
