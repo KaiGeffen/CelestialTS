@@ -74,9 +74,9 @@ class Match {
     )
 
     // If there is a winner, update wins/losses/elo accordingly
-    if (this.game.model.getWinner() === 0) {
+    if (this.game.model.winner === 0) {
       updateMatchResult(this.uuid1, this.uuid2)
-    } else if (this.game.model.getWinner() === 1) {
+    } else if (this.game.model.winner === 1) {
       updateMatchResult(this.uuid2, this.uuid1)
     }
   }
@@ -115,7 +115,7 @@ class Match {
 
   // Given ws is disconnecting
   async doExit(disconnectingWs: TypedWebSocket) {
-    if (this.game === null || this.game.model.getWinner() !== null) return
+    if (this.game === null || this.game.model.winner !== null) return
 
     // Null the ws that has disconnected
     if (this.ws1 === disconnectingWs) this.ws1 = null

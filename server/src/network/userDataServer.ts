@@ -59,8 +59,6 @@ export default function createUserDataServer() {
       let id: string = null
 
       ws.on('sendToken', async ({ email, uuid, jti }) => {
-        console.log('Users token included email: ', email)
-
         // Generate UUID v5 from Google's user ID
         const userId = uuidv5(uuid, UUID_NAMESPACE)
         id = userId
@@ -70,10 +68,6 @@ export default function createUserDataServer() {
           .select()
           .from(players)
           .where(eq(players.id, userId))
-
-        // Print database columns
-        console.log('Database columns:', Object.keys(players))
-        console.log('Query result:', result)
 
         if (result.length === 0) {
           // Create new user entry in database
@@ -89,13 +83,12 @@ export default function createUserDataServer() {
             userprogress: [],
           })
           // User doesn't exist yet
-          console.log("User doesn't exist yet")
+          console.log('Creating new user:', email)
 
           ws.send({ type: 'promptUserInit' })
         } else if (result.length === 1) {
           // Send user their data
           const data = result[0]
-          console.log('sending user data:', data)
 
           ws.send({
             type: 'sendUserData',
@@ -107,18 +100,11 @@ export default function createUserDataServer() {
       })
         .on('sendDecks', async ({ decks }) => {
           if (!id) return
-          console.log('Client is sending decks:', decks)
-          await db
-            .update(players)
-            .set({
-              decks: decks,
-            })
-            .where(eq(players.id, id))
+          await db.update(players).set({ decks }).where(eq(players.id, id))
         })
         .on('sendInventory', async ({ inventory }) => {
           if (!id) return
           await db.update(players).set({ inventory }).where(eq(players.id, id))
-          console.log('Client is sending inventory:', inventory)
         })
         .on('sendCompletedMissions', async ({ missions }) => {
           if (!id) return
@@ -126,10 +112,7 @@ export default function createUserDataServer() {
             .update(players)
             .set({ completedmissions: missions })
             .where(eq(players.id, id))
-          console.log('Client is sending completed missions:', missions)
         })
-
-      console.log('Client connected to user-data server')
     } catch (e) {
       console.error('Error in match queue:', e)
     }

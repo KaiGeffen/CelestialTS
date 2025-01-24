@@ -19,7 +19,8 @@ class PveMatch extends Match {
       avatar,
       null,
       null,
-      aiDeck,
+      // TODO
+      [],
       0, // TODO ai avatar choice
     )
   }

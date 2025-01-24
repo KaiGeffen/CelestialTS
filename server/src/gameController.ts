@@ -52,7 +52,7 @@ class ServerController {
 
   doSetup(): void {
     for (const player of [0, 1]) {
-      this.model.draw(player, MechanicsSettings.START_HAND)
+      this.model.draw(player, MechanicsSettings.START_HAND, true)
       this.model.maxBreath = [
         MechanicsSettings.START_BREATH,
         MechanicsSettings.START_BREATH,
@@ -61,7 +61,7 @@ class ServerController {
   }
 
   onPlayerInput(player: number, choice: number): boolean {
-    if (this.model.getWinner() !== null) {
+    if (this.model.winner !== null) {
       return false
     }
 

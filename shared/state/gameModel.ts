@@ -104,7 +104,7 @@ export default class GameModel {
     this.animations = [[], []]
   }
 
-  draw(player: number, amt = 1) {
+  draw(player: number, amt = 1, isSetup = false) {
     let card: Card = null
     while (amt > 0 && this.hand[player].length < MechanicsSettings.HAND_CAP) {
       // If deck is empty, shuffled discard pile into deck
@@ -123,8 +123,10 @@ export default class GameModel {
       // Increment draw counter
       this.amtDrawn[player] += 1
 
-      // Trigger its on draw effects
-      card.onDraw(player, this)
+      // Trigger its on draw effects, except during setup phase
+      if (!isSetup) {
+        card.onDraw(player, this)
+      }
 
       amt -= 1
 
@@ -373,16 +375,6 @@ export default class GameModel {
 
   switchPriority() {
     this.priority = (this.priority + 1) % 2
-  }
-
-  getWinner() {
-    if (this.wins[0] >= 5) {
-      return 0
-    }
-    if (this.wins[1] >= 5) {
-      return 1
-    }
-    return null
   }
 
   // Get the cost of given player playing the given card

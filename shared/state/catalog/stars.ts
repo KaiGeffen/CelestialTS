@@ -204,6 +204,21 @@ const wish = new Wish({
   text: 'Inspire 1.\nDraw the highest base cost card from your deck.',
 })
 
+class Possibility extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    game.maxBreath[player] += 1
+  }
+}
+const possibility = new Possibility({
+  name: 'Possibility',
+  id: 8828,
+  cost: 4,
+  qualities: [Quality.FLEETING],
+  text: 'Fleeting.\nIncrease your max breath by 1 permanently.',
+})
+
 export {
   stars,
   cosmos,
@@ -212,7 +227,9 @@ export {
   sun,
   moon,
   sunflower,
+  // BETA
   aspirant,
   fates,
   wish,
+  possibility,
 }
