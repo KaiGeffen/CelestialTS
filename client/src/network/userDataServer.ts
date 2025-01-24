@@ -227,7 +227,7 @@ export default class UserDataServer {
 
   static logout(): void {
     console.log('Logging out')
-    if (UserDataServer.loggedIn()) {
+    if (UserDataServer.isLoggedIn()) {
       console.log('server was logged in and now its logging out...')
 
       wsServer.close(code)
@@ -237,18 +237,10 @@ export default class UserDataServer {
     }
   }
 
-  // Get the open websocket, for use in playing a match
-  static getWS() {
-    return wsServer
-  }
-
   // Returns if the user is logged in
-  static loggedIn(): boolean {
+  static isLoggedIn(): boolean {
     return wsServer !== undefined
   }
-
-  // If this ws already has an event listener for messages related to the match scene
-  static hasInGameListener = false
 
   // Send server an updated list of userProgress
   static sendUserProgress(value): void {
@@ -314,8 +306,24 @@ export default class UserDataServer {
     console.log('user receied', data)
 
     // Map from binary string to bool array
-    sessionStorage.setItem('inventory', data.inventory)
-    sessionStorage.setItem('completedMissions', data.completedMissions)
+    sessionStorage.setItem(
+      'inventory',
+      JSON.stringify(
+        data.inventory
+          .toString()
+          .split('')
+          .map((char) => char === '1'),
+      ),
+    )
+    sessionStorage.setItem(
+      'completedMissions',
+      JSON.stringify(
+        data.completedMissions
+          .toString()
+          .split('')
+          .map((char) => char === '1'),
+      ),
+    )
 
     // Decks must be translated from string, string to dictionary
     let decks = []

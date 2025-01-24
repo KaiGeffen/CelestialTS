@@ -74,7 +74,7 @@ export class MatchWS {
   // Signal to server that we are exiting this match
   exitMatch() {
     // If user is logged in, send a message but keep the ws
-    if (UserDataServer.loggedIn()) {
+    if (UserDataServer.isLoggedIn()) {
       this.socket.send({
         type: 'exitMatch',
       })
@@ -100,7 +100,7 @@ export class MatchWS {
   private getSocket(): TypedWebSocket {
     // Establish a websocket based on the environment
     let socket
-    if (UserDataServer.loggedIn()) {
+    if (UserDataServer.isLoggedIn()) {
       socket = null // TODO Server.getWS()
     } else if (Flags.local) {
       socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)

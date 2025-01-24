@@ -56,7 +56,7 @@ export default class HomeScene extends BaseScene {
     })
 
     // Create logout button
-    const s = UserDataServer.loggedIn() ? 'Logout' : 'Login'
+    const s = UserDataServer.isLoggedIn() ? 'Logout' : 'Login'
     let btnLogout = new Buttons.Basic(
       this,
       Space.pad + Space.buttonWidth / 2,
@@ -64,7 +64,7 @@ export default class HomeScene extends BaseScene {
       s,
       () => {
         // If we aren't logged in, go to login scene
-        if (!UserDataServer.loggedIn()) {
+        if (!UserDataServer.isLoggedIn()) {
           this.scene.start('SigninScene', { autoSelect: true })
           return
         }
@@ -102,6 +102,7 @@ export default class HomeScene extends BaseScene {
 
     // If tutorial complete, show normal buttons, otherwise show tutorial button
     const missions = UserSettings._get('completedMissions')
+    console.log('missions is:', missions)
     if (missions[intro.length - 1]) {
       this.createAdventureButton(width, height)
       this.createDeckbuilderButton(width, height)

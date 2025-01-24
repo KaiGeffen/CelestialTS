@@ -61,7 +61,11 @@ export class UserSettings {
       key = 'devDecks'
     }
 
+    console.log('Getting key', key)
     if (key in sessionStorage) {
+      console.log('From session storage...')
+      console.log(sessionStorage.getItem(key))
+      console.log(JSON.parse(sessionStorage.getItem(key)))
       return JSON.parse(sessionStorage.getItem(key))
     } else {
       return JSON.parse(localStorage.getItem(key))
@@ -96,6 +100,8 @@ export class UserSettings {
   // Set the nth index of the given array
   static _setIndex(key: string, index: number, value: any) {
     let ary = this._get(key)
+
+    console.log('Setting index', index, 'of', key, 'to', value)
 
     ary[index] = value
 
