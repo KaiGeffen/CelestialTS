@@ -83,7 +83,6 @@ class ServerController {
         this.model.sound = SoundEffect.Pass
 
         if (this.model.passes === 2) {
-          this.model.passes = 0
           this.doResolvePhase()
           this.doUpkeep()
         } else {
@@ -185,6 +184,7 @@ class ServerController {
 
     // Reset round counters
     this.model.passes = 0
+    this.model.amtPasses = [0, 0]
     this.model.amtDrawn = [0, 0]
 
     // Set priority
