@@ -102,7 +102,6 @@ export default class HomeScene extends BaseScene {
 
     // If tutorial complete, show normal buttons, otherwise show tutorial button
     const missions = UserSettings._get('completedMissions')
-    console.log('missions is:', missions)
     if (missions[intro.length - 1]) {
       this.createAdventureButton(width, height)
       this.createDeckbuilderButton(width, height)

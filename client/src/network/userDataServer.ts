@@ -303,8 +303,6 @@ export default class UserDataServer {
 
   // Load user data that was sent from server into session storage
   private static loadUserData(data): void {
-    console.log('user receied', data)
-
     // Map from binary string to bool array
     sessionStorage.setItem(
       'inventory',

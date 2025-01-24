@@ -99,20 +99,14 @@ export class MatchWS {
   // If user is logged in, use the existing ws instead of opening a new one
   private getSocket(): TypedWebSocket {
     // Establish a websocket based on the environment
-    let socket
-    if (UserDataServer.isLoggedIn()) {
-      socket = null // TODO Server.getWS()
-    } else if (Flags.local) {
-      socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)
-      // socket = new TypedWebSocket(`ws://${URL}:${MATCH_PORT}?mode=pvp`)
+    if (Flags.local) {
+      return new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)
     } else {
       // The WS location on DO
       // let loc = window.location
       const fullPath = `wss://celestialtcg.com/ws`
-      socket = new TypedWebSocket(fullPath)
+      return new TypedWebSocket(fullPath)
     }
-
-    return socket
   }
 }
 
