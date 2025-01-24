@@ -42,19 +42,50 @@ lastaction        | string              |           |          | ''
  REMOVE userprogress      | character varying[] |           |          | '{}'::character varying[]
 */
 
-export const players = pgTable('players', {
-  id: uuid('id').primaryKey(),
-  email: varchar('email', { length: 255 }).notNull(),
-  createdate: date('createdate').notNull(),
-  wins: integer('wins').notNull(),
-  losses: integer('losses').notNull(),
-  decks: varchar('decks', { length: 255 }).array().notNull(),
-  inventory: varchar('inventory', { length: 1000 }).notNull(),
-  completedmissions: varchar('completedmissions', { length: 1000 }).notNull(),
-  userprogress: varchar('userprogress', { length: 255 }).array().notNull(),
-}, (table) => ({
-  emailIdx: uniqueIndex('email_idx').on(table.email)
-}))
+export const players = pgTable(
+  'players',
+  {
+    id: uuid('id').primaryKey(),
+    email: varchar('email', { length: 255 }).notNull(),
+    createdate: date('createdate').notNull().default('now()'),
+    lastActive: date('lastactive').notNull().default('now()'),
+    // TODO Rename to clarify this is the last action user took
+    lastActivity: varchar('lastactivity', { length: 255 })
+      .notNull()
+      .default(''),
+
+    // Aesthetic
+    username: varchar('username', { length: 255 })
+      .notNull()
+      .default('lllllllll'),
+
+    // Just for pvp
+    wins: integer('wins').notNull().default(0),
+    losses: integer('losses').notNull().default(0),
+    elo: integer('elo').notNull().default(1000),
+
+    decks: varchar('decks', { length: 255 }).array().notNull().default([]),
+
+    // TODO This doesn't get used anymore, remove
+    userprogress: varchar('userprogress', { length: 255 })
+      .array()
+      .notNull()
+      .default([]),
+
+    // Single player
+    inventory: bit('inventory', { dimensions: 1000 })
+      .notNull()
+      .default('1000101001011100001'),
+    completedmissions: bit('completedmissions', { dimensions: 1000 })
+      .notNull()
+      .default(''),
+  },
+  (table) => ({
+    emailUniqueIndex: uniqueIndex('emailUniqueIndex').on(lower(table.email)),
+    // TODO Enforce unique usernames
+    // usernameUnique: uniqueIndex('usernameUnique').on(lower(table.username)),
+  }),
+)
 
 // Custom lower function
 function lower(email: AnyPgColumn): SQL {

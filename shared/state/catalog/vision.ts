@@ -144,4 +144,49 @@ const timid = new Timid(3, {
   text: 'When played, gain Sight 3.\nExhale 1: Return your cards later in the story to your hand.',
 })
 
-export { dawn, clearView, awakening, enlightenment, prey, conquer, timid }
+class Balance extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    if (game.story.resolvedActs.length === game.story.acts.length) {
+      bonus += 3
+    }
+    super.play(player, game, index, bonus)
+  }
+}
+const balance = new Balance({
+  name: 'Balance',
+  id: 6850,
+  cost: 2,
+  points: 1,
+  text: 'Worth +3 if the number of cards before this in the story is equal to the number of cards after this.',
+})
+
+class Lantern extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    if (game.story.resolvedActs.length === game.story.acts.length) {
+      bonus += 4
+    }
+    super.play(player, game, index, bonus)
+  }
+}
+const lantern = new Lantern({
+  name: 'Lantern',
+  id: 6852,
+  cost: 4,
+  points: 0,
+  text: 'Worth +4 if the number of cards before this in the story is equal to the number of cards after this.',
+})
+
+const riddle =
+  'Visible. Add the first card in your hand to the story after this if it has the same cost as the card after this.'
+
+export {
+  dawn,
+  clearView,
+  awakening,
+  enlightenment,
+  prey,
+  conquer,
+  // BETA
+  timid,
+  balance,
+}

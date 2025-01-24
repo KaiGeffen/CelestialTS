@@ -1,4 +1,5 @@
 import { WebSocketServer } from 'ws'
+import { v5 as uuidv5 } from 'uuid'
 
 import { USER_DATA_PORT } from '../../../shared/network/settings'
 import {
@@ -6,12 +7,19 @@ import {
   createEvent,
 } from '../../../shared/network/typedWebSocket'
 
+import { db } from '../db/db'
+import { players } from '../db/schema'
+import { eq, sql } from 'drizzle-orm'
+
 /*
  This prevents async promises in the indivual websockets from causing the server to crash
  */
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason)
 })
+
+// Add UUID namespace constant
+const UUID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // UUID v4 namespace
 
 // Create the websocket server
 export default function createUserDataServer() {
@@ -47,19 +55,65 @@ export default function createUserDataServer() {
       */
       const ws = new TypedWebSocket(socket)
 
-      //
-      ws.on('sendToken', ({ email, uuid, jti }) => {
+      // Remember the user once they've signed in
+      let id: string = null
+
+      ws.on('sendToken', async ({ email, uuid, jti }) => {
         console.log('Users token included email: ', email)
 
+        // Generate UUID v5 from Google's user ID
+        const userId = uuidv5(uuid, UUID_NAMESPACE)
+        id = userId
+
+        // Check if user exists in database
+        const result = await db.select()
+          .from(players)
+          .where(eq(players.id, userId))
+
+        // Print database columns
+        console.log('Database columns:', Object.keys(players))
+        console.log('Query result:', result)
+
+        if (result.length === 0) {
+          // Create new user entry in database
+          await db.insert(players).values({
+            id: userId,
+            email: email,
+            createdate: new Date().toISOString(),
+            wins: 0,
+            losses: 0,
+            decks: [],
+            inventory: '1000101001011100001',
+            completedmissions: '',
+            userprogress: []
+          })
+          // User doesn't exist yet
+          console.log("User doesn't exist yet")
+        }
+        // TODO Move in above
         ws.send({ type: 'promptUserInit' })
       })
-        .on('sendDecks', (decks) => {
+        .on('sendDecks', async ({decks}) => {
+          if (!id) return
           console.log('Client is sending decks:', decks)
+          await db.update(players)
+            .set({ 
+              decks: decks
+            })
+            .where(eq(players.id, id))
         })
-        .on('sendInventory', (inventory) => {
+        .on('sendInventory', async ({inventory}) => {
+          if (!id) return
+          await db.update(players)
+            .set({ inventory })
+            .where(eq(players.id, id))
           console.log('Client is sending inventory:', inventory)
         })
-        .on('sendCompletedMissions', (missions) => {
+        .on('sendCompletedMissions', async ({missions}) => {
+          if (!id) return
+          await db.update(players)
+            .set({ completedmissions: missions })
+            .where(eq(players.id, id))
           console.log('Client is sending completed missions:', missions)
         })
 

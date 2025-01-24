@@ -59,11 +59,11 @@ export default class UserDataServer {
     const that = this
     wsServer
       .on('promptUserInit', () => {
-        console.log('Prompting user to send initial values')
+        console.log('User was prompted to send initial values')
 
         that.sendDecks(UserSettings._get('decks'))
-        that.sendUserProgress(UserSettings._get('userProgress'))
         that.sendInventory(UserSettings._get('inventory'))
+        that.sendCompletedMissions(UserSettings._get('completedMissions'))
       })
       .on('invalidToken', () => {
         console.log(
@@ -248,16 +248,7 @@ export default class UserDataServer {
 
   // Send server an updated list of userProgress
   static sendUserProgress(value): void {
-    if (wsServer === undefined) {
-      throw 'Sending user progress when server ws doesnt exist.'
-    } else {
-      let message = JSON.stringify({
-        type: 'send_user_progress',
-        value: value,
-      })
-
-      wsServer.send(message)
-    }
+    // TODO Remove
   }
 
   // Send server an updated list of decks
