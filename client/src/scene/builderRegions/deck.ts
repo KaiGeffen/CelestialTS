@@ -456,7 +456,7 @@ export default class DeckRegion {
 
       this.updateText()
 
-      this.scene['updateSavedDeck'](this.getDeckCode())
+      this.scene.updateSavedDeck(this.getDeckCode())
     }
   }
 
