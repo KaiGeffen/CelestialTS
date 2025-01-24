@@ -18,6 +18,9 @@ export default class MulliganRegion extends Region {
   // The cards in our starting hand
   cards: CardImage[] = []
 
+  // Text saying who starts with priority
+  txtPriority: Phaser.GameObjects.Text
+
   // The player's keep/not keep choices for each card in their hand
   mulliganChoices = [false, false, false]
 
@@ -52,16 +55,25 @@ export default class MulliganRegion extends Region {
       )
       .setOrigin(0.5, 1)
 
+    this.txtPriority = scene.add
+      .text(
+        Space.windowWidth / 2,
+        Space.windowHeight / 2 + Space.cardHeight / 2 + Space.pad * 2,
+        '',
+        Style.basic,
+      )
+      .setOrigin(0.5, 1)
+
     let btn = new Buttons.Basic(
       this.container,
       Space.windowWidth / 2,
-      Space.windowHeight / 2 + Space.cardHeight / 2 + Space.pad * 3,
+      Space.windowHeight / 2 + Space.cardHeight / 2 + Space.pad * 4,
       'Ready',
     ).setOnClick(() => {
       this.onButtonClick()
     }, true)
 
-    this.container.add([txtTitle, txtHint])
+    this.container.add([txtTitle, txtHint, this.txtPriority])
 
     return this
   }
@@ -80,6 +92,7 @@ export default class MulliganRegion extends Region {
 
     this.show()
 
+    // Show the cards as toggleable objects
     for (let i = 0; i < state.hand[0].length; i++) {
       let card = this.addCard(
         state.hand[0][i],
@@ -91,6 +104,11 @@ export default class MulliganRegion extends Region {
 
       this.cards.push(card)
     }
+
+    // Update the text saying who starts with priority
+    this.txtPriority.setText(
+      `You will act ${state.priority === 0 ? 'first' : 'second'}`,
+    )
   }
 
   setCallback(callback: () => void): void {
