@@ -228,7 +228,7 @@ export default class OurHandRegion extends Region {
         .text(
           btn.icon.x + Space.avatarSize / 2,
           btn.icon.y + Space.avatarSize,
-          'USERNAME',
+          'Kai (1200)',
           Style.username,
         )
         .setOrigin(0.5, 0),
