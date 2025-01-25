@@ -375,7 +375,10 @@ export default class HomeScene extends BaseScene {
       })
       .on('pointerdown', () => {
         this.sound.play('click')
-        // TODO
+        this.scene.launch('MenuScene', {
+          menu: 'leaderboard',
+          hint: 'leaderboard',
+        })
       })
 
     map.mask = new Phaser.Display.Masks.BitmapMask(this, rect)

@@ -157,6 +157,7 @@ import DistributionMenu from './distribution'
 import MessageMenu from './message'
 import FocusMenu from './focus'
 import SearchMenu from './search'
+import LeaderboardMenu from './leaderboard'
 
 
 const menus = {
@@ -174,6 +175,7 @@ const menus = {
 	'help': HelpMenu,
 	'focus': FocusMenu,
 	'search': SearchMenu,
+	'leaderboard': LeaderboardMenu,
 }
 
 // Function exposed for the creation of custom menus
