@@ -171,7 +171,7 @@ const yearn = new Yearn({
   id: 233,
   cost: 1,
   points: 1,
-  text: 'Extra 3: Add the top card of your discard pile to the story after this if it has base cost 3 or less.',
+  text: 'Exhale 3: Add the top card of your discard pile to the story after this if it has base cost 3 or less.',
 })
 
 class Pomegranate extends Card {
