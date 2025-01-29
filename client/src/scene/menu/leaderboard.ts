@@ -11,16 +11,20 @@ const RESULTS_PER_PAGE = 10
 
 export default class LeaderboardMenu extends Menu {
   private leaderboardData: Array<{
-    rank: number, 
-    username: string, 
-    elo: number,
-    wins: number,
+    rank: number
+    username: string
+    elo: number
+    wins: number
     losses: number
   }>
 
   constructor(scene: MenuScene, params) {
     super(scene, width, params)
-    
+
+    // Sizer has no pad between lines
+    this.sizer.space.line = 0
+    this.sizer.space.bottom = 0
+
     this.createHeader('Leaderboard')
     this.initializeData()
     this.createContent()
@@ -54,15 +58,51 @@ export default class LeaderboardMenu extends Menu {
       { rank: 20, username: 'PlayerTwenty', elo: 1375, wins: 0, losses: 55 },
       { rank: 21, username: 'PlayerTwentyOne', elo: 1370, wins: 0, losses: 56 },
       { rank: 22, username: 'PlayerTwentyTwo', elo: 1365, wins: 0, losses: 57 },
-      { rank: 23, username: 'PlayerTwentyThree', elo: 1360, wins: 0, losses: 58 },
-      { rank: 24, username: 'PlayerTwentyFour', elo: 1355, wins: 0, losses: 59 },
-      { rank: 25, username: 'PlayerTwentyFive', elo: 1350, wins: 0, losses: 60 },
+      {
+        rank: 23,
+        username: 'PlayerTwentyThree',
+        elo: 1360,
+        wins: 0,
+        losses: 58,
+      },
+      {
+        rank: 24,
+        username: 'PlayerTwentyFour',
+        elo: 1355,
+        wins: 0,
+        losses: 59,
+      },
+      {
+        rank: 25,
+        username: 'PlayerTwentyFive',
+        elo: 1350,
+        wins: 0,
+        losses: 60,
+      },
       { rank: 26, username: 'PlayerTwentySix', elo: 1345, wins: 0, losses: 61 },
-      { rank: 27, username: 'PlayerTwentySeven', elo: 1340, wins: 0, losses: 62 },
-      { rank: 28, username: 'PlayerTwentyEight', elo: 1335, wins: 0, losses: 63 },
-      { rank: 29, username: 'PlayerTwentyNine', elo: 1330, wins: 0, losses: 64 },
+      {
+        rank: 27,
+        username: 'PlayerTwentySeven',
+        elo: 1340,
+        wins: 0,
+        losses: 62,
+      },
+      {
+        rank: 28,
+        username: 'PlayerTwentyEight',
+        elo: 1335,
+        wins: 0,
+        losses: 63,
+      },
+      {
+        rank: 29,
+        username: 'PlayerTwentyNine',
+        elo: 1330,
+        wins: 0,
+        losses: 64,
+      },
       { rank: 30, username: 'PlayerThirty', elo: 1325, wins: 0, losses: 65 },
-    ];
+    ]
   }
 
   private createContent() {
@@ -70,7 +110,6 @@ export default class LeaderboardMenu extends Menu {
     let headerSizer = this.scene.rexUI.add.sizer({
       orientation: 'horizontal',
       width: width,
-      space: { item: Space.pad }
     })
 
     let rankText = this.scene.add.text(0, 0, '\tRank', Style.basic)
@@ -91,20 +130,18 @@ export default class LeaderboardMenu extends Menu {
     // Create scrollable panel for all player rows
     let scrollablePanel = this.scene.rexUI.add.scrollablePanel({
       width: width,
-      height: Space.windowHeight * 2 / 3,
+      height: (Space.windowHeight * 2) / 3,
       scrollMode: 0,
       panel: {
-        child: this.createPlayerRows()
+        child: this.createPlayerRows(),
       },
       slider: false,
       mouseWheelScroller: {
-        speed: 0.5
-      }
+        speed: 0.5,
+      },
     })
 
-    this.sizer.add(headerSizer)
-    .add(line)
-    .add(scrollablePanel)
+    this.sizer.add(headerSizer).add(line).add(scrollablePanel)
   }
 
   private createPlayerRows() {
@@ -112,11 +149,10 @@ export default class LeaderboardMenu extends Menu {
     let entriesSizer = this.scene.rexUI.add.sizer({
       orientation: 'vertical',
       width: width,
-      space: { item: Space.pad}
     })
 
     // Create individual rows for all entries
-    this.leaderboardData.forEach(entry => {
+    this.leaderboardData.forEach((entry) => {
       let rowSizer = this.createRow(entry)
       entriesSizer.add(rowSizer)
     })
@@ -125,31 +161,33 @@ export default class LeaderboardMenu extends Menu {
   }
 
   private createRow(entry: {
-    rank: number, 
-    username: string, 
-    elo: number,
-    wins: number,
+    rank: number
+    username: string
+    elo: number
+    wins: number
     losses: number
   }) {
     let rowSizer = this.scene.rexUI.add.sizer({
       width: width,
-      space: { 
-        item: Space.pad,
-      }
     })
 
     // TODO If username is the same as user's username, highlight the row
-    
-    let rankText = this.scene.add.text(0, 0, 
-      `\t${entry.rank.toString()}`, Style.basic)
-    let usernameText = this.scene.add.text(0, 0, 
-      entry.username, Style.basic)
-    let winsText = this.scene.add.text(0, 0, 
-      entry.wins.toString(), Style.basic)
-    let lossesText = this.scene.add.text(0, 0, 
-      entry.losses.toString(), Style.basic)
-    let eloText = this.scene.add.text(0, 0, 
-      entry.elo.toString(), Style.basic)
+
+    let rankText = this.scene.add.text(
+      0,
+      0,
+      `\t${entry.rank.toString()}`,
+      Style.basic,
+    )
+    let usernameText = this.scene.add.text(0, 0, entry.username, Style.basic)
+    let winsText = this.scene.add.text(0, 0, entry.wins.toString(), Style.basic)
+    let lossesText = this.scene.add.text(
+      0,
+      0,
+      entry.losses.toString(),
+      Style.basic,
+    )
+    let eloText = this.scene.add.text(0, 0, entry.elo.toString(), Style.basic)
 
     rowSizer
       .add(rankText, { proportion: 1 })
@@ -163,21 +201,21 @@ export default class LeaderboardMenu extends Menu {
 
   private createScrollablePanel(scene: Phaser.Scene, panel) {
     let scrollable = scene['rexUI'].add.scrollablePanel({
-      x: Space.windowWidth/2,
-      y: Space.windowHeight/2,
+      x: Space.windowWidth / 2,
+      y: Space.windowHeight / 2,
       width: width,
       height: Space.windowHeight - Space.pad * 4,
-      
+
       panel: {
-        child: panel.setDepth(1)
+        child: panel.setDepth(1),
       },
 
       mouseWheelScroller: {
-        speed: 1
-      }
+        speed: 1,
+      },
     })
 
     scrollable.name = 'top'
     return scrollable
   }
-} 
+}
