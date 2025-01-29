@@ -157,7 +157,7 @@ class Fates extends Card {
     super.play(player, game, index, bonus)
 
     // Atropos the inevitable
-    if (super.exhale(5, game, player)) {
+    if (super.exhale(6, game, player)) {
       super.reset(game)
     }
 
@@ -175,9 +175,7 @@ class Fates extends Card {
 const fates = new Fates({
   name: 'Fates',
   id: 369,
-  cost: 0,
-  points: 0,
-  text: 'Exhale 5: Reset.\nExhale 3: Nourish 2.\nExhale 1: Birth 1.',
+  text: 'Exhale 6: Reset.\nExhale 3: Nourish 2.\nExhale 1: Birth 1.',
 })
 
 class Wish extends Card {
@@ -219,6 +217,29 @@ const possibility = new Possibility({
   text: 'Fleeting.\nIncrease your max breath by 1 permanently.',
 })
 
+class Neptune extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    game.breath[player] += 3
+  }
+
+  onMorning(player: number, game: GameModel, index: number) {
+    const endOfLastRound =
+      game.recentModels[player][game.recentModels[player].length - 1]
+    const lastRoundsBreath = endOfLastRound.breath[player]
+    super.addBreath(lastRoundsBreath, game, player)
+
+    return true
+  }
+}
+const neptune = new Neptune({
+  name: 'Neptune',
+  id: 8056,
+  cost: 3,
+  text: 'Gain 3 breath.\nMorning: Gain 1 breath for each breath you ended the last round with.',
+})
+
 export {
   stars,
   cosmos,
@@ -232,4 +253,5 @@ export {
   fates,
   wish,
   possibility,
+  neptune,
 }
