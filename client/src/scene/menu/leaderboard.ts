@@ -8,6 +8,7 @@ import Buttons from '../../lib/buttons/buttons'
 
 const width = 1000
 const RESULTS_PER_PAGE = 10
+const USERNAME = 'Kai'
 
 export default class LeaderboardMenu extends Menu {
   private leaderboardData: Array<{
@@ -171,8 +172,14 @@ export default class LeaderboardMenu extends Menu {
       width: width,
     })
 
-    // TODO If username is the same as user's username, highlight the row
+    // If this row has current user's username, highlight it
+    if (entry.username === USERNAME) {
+      rowSizer.addBackground(
+        this.scene.add.rectangle(0, 0, 10, 10, Color.backgroundLight),
+      )
+    }
 
+    // Add each text object
     let rankText = this.scene.add.text(
       0,
       0,
@@ -189,6 +196,7 @@ export default class LeaderboardMenu extends Menu {
     )
     let eloText = this.scene.add.text(0, 0, entry.elo.toString(), Style.basic)
 
+    // Add each text with the right proportion
     rowSizer
       .add(rankText, { proportion: 1 })
       .add(usernameText, { proportion: 3 })
