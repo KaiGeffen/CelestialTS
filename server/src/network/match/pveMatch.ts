@@ -30,7 +30,8 @@ class PveMatch extends Match {
     // Opponent will act if it's their turn
     if (
       this.game.model.priority === 1 &&
-      !this.game.model.mulligansComplete.includes(false)
+      !this.game.model.mulligansComplete.includes(false) &&
+      this.game.model.winner === null
     ) {
       await this.opponentActs()
     }
@@ -40,9 +41,13 @@ class PveMatch extends Match {
   protected async opponentActs() {
     const model = getClientGameModel(this.game.model, 1, false)
     const action = getAction(model)
-    this.game.onPlayerInput(1, action)
+    if (this.game.onPlayerInput(1, action)) {
+      await this.notifyState()
+    }
+    else {
+      console.error('Computer opponent chose invalid action')
+    }
 
-    await this.notifyState()
     // await this.lock
     // const opponentModel = new ClientModel(this.game.get_client_model(1))
     // const opponentAction = AI.get_action(opponentModel)

@@ -3,7 +3,6 @@ import Card from '../../../../shared/state/card'
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { Mulligan } from '../../../../shared/settings'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
-import { updateMatchResult } from '../../db/updateMatchResult'
 
 interface Match {
   ws1: TypedWebSocket | null
@@ -56,9 +55,9 @@ class Match {
       but for recaps it's each slice of the recap
     */
     await Promise.all(
-      this.getActiveWsList().map((ws, index) => {
+      this.getActiveWsList().map((ws, player) => {
         // Send any recap states
-        this.game.model.recentModels[index].forEach((state) =>
+        this.game.model.recentModels[player].forEach((state) =>
           ws.send({
             type: 'transmitState',
             state: state,
@@ -68,17 +67,12 @@ class Match {
         // Send the normal state
         ws.send({
           type: 'transmitState',
-          state: getClientGameModel(this.game.model, index, false),
+          state: getClientGameModel(this.game.model, player, false),
         })
       }),
     )
 
-    // If there is a winner, update wins/losses/elo accordingly
-    if (this.game.model.winner === 0) {
-      updateMatchResult(this.uuid1, this.uuid2)
-    } else if (this.game.model.winner === 1) {
-      updateMatchResult(this.uuid2, this.uuid1)
-    }
+    // TODO If there is a winner, update wins/losses/elo accordingly
   }
 
   async doMulligan(player: number, mulligan: Mulligan) {
@@ -123,7 +117,7 @@ class Match {
 
     // Notify remaining player of the disconnect
     await Promise.all(
-      this.getActiveWsList().map((ws) => ws.send({ type: 'dc' })),
+      this.getActiveWsList().map((ws: TypedWebSocket) => ws.send({ type: 'dc' })),
     )
   }
 }
