@@ -1,0 +1,20 @@
+FROM node:16
+
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+
+WORKDIR /home/node/app
+
+COPY --chown=node:node ./server ./server
+COPY --chown=node:node ./shared ./shared
+
+USER node
+
+WORKDIR /home/node/app/server
+
+RUN npm install && npm run build
+
+EXPOSE 8084
+EXPOSE 8085
+EXPOSE 8086
+
+CMD [ "npm", "run", "start" ] 
