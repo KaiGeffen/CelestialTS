@@ -85,8 +85,8 @@ export default class GameModel {
     this.expended = [[], []]
     this.score = [0, 0]
     this.wins = [0, 0]
-    this.maxBreath = [0, 0]
-    this.breath = [0, 0]
+    this.maxBreath = [1, 1]
+    this.breath = [1, 1]
     this.status = [[], []]
     this.story = new Story()
     this.passes = 0

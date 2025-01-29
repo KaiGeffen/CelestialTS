@@ -4,13 +4,11 @@ export class MechanicsSettings {
   static readonly NUM_MULLIGANS = 3
 
   static readonly DRAW_PER_TURN = 2
-  static readonly START_HAND_REAL = 3
-  static readonly START_HAND =
-    MechanicsSettings.START_HAND_REAL - MechanicsSettings.DRAW_PER_TURN
+  static readonly START_HAND = 3
   static readonly HAND_CAP = 6
 
   static readonly BREATH_GAIN_PER_TURN = 1
-  static readonly START_BREATH = 1 - MechanicsSettings.BREATH_GAIN_PER_TURN
+  static readonly START_BREATH = 1
   static readonly BREATH_CAP = 10
 
   // The code to communicate passing, TODO is this a mechanic

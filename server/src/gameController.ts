@@ -23,7 +23,6 @@ class ServerController {
 
   start(): void {
     this.doSetup()
-    this.doUpkeep()
 
     for (const player of [0, 1]) {
       this.model.animations[player] = []
@@ -31,10 +30,7 @@ class ServerController {
       for (
         let i = 0;
         i <
-        Math.min(
-          MechanicsSettings.START_HAND_REAL,
-          this.model.deck[player].length,
-        );
+        Math.min(MechanicsSettings.START_HAND, this.model.deck[player].length);
         i++
       ) {
         const card = this.model.hand[player][i]
@@ -53,10 +49,6 @@ class ServerController {
   doSetup(): void {
     for (const player of [0, 1]) {
       this.model.draw(player, MechanicsSettings.START_HAND, true)
-      this.model.maxBreath = [
-        MechanicsSettings.START_BREATH,
-        MechanicsSettings.START_BREATH,
-      ]
     }
   }
 
@@ -140,6 +132,7 @@ class ServerController {
       }
     }
 
+    // Add the kept cards to the hand
     for (const [card, indexFrom] of keptCards) {
       const indexTo = this.model.hand[player].length
       this.model.animations[player].push(
@@ -152,6 +145,9 @@ class ServerController {
         }),
       )
       this.model.hand[player].push(card)
+
+      // Trigger on-draw effects
+      card.onDraw(player, this.model)
     }
 
     this.model.draw(player, mulligans.filter(Boolean).length)
