@@ -9,7 +9,7 @@ import {
 
 import { db } from '../db/db'
 import { players } from '../db/schema'
-import { eq, sql } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 
 // Add UUID namespace constant
 const UUID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // UUID v4 namespace

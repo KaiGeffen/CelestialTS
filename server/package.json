@@ -12,8 +12,13 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.38.3",
-    "drizzle-orm-pg": "^0.16.3",
-    "pg": "^8.13.1"
+    "drizzle-orm": "^0.29.1",
+    "pg": "^8.11.3",
+    "webpack": "^5.23.0",
+    "webpack-cli": "^4.5.0",
+    "ts-loader": "^8.0.17",
+    "nodemon": "^3.1.9",
+    "@types/pg": "^8.10.9",
+    "drizzle-kit": "^0.20.6"
   }
 }
