@@ -160,24 +160,29 @@ const balance = new Balance({
   text: 'Worth +3 if the number of cards before this in the story is equal to the number of cards after this.',
 })
 
-class Lantern extends Card {
+class Riddle extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
-    if (game.story.resolvedActs.length === game.story.acts.length) {
-      bonus += 4
-    }
     super.play(player, game, index, bonus)
+
+    console.log(game.story.acts)
+    if (
+      game.story.acts.length >= 1 &&
+      game.hand[player].length >= 1 &&
+      game.story.acts[0].card.cost === game.hand[player][0].cost
+    ) {
+      const card = game.hand[player].splice(0, 1)[0]
+      game.story.addAct(card, player, 0)
+    }
   }
 }
-const lantern = new Lantern({
-  name: 'Lantern',
+const riddle = new Riddle({
+  name: 'Riddle',
   id: 6852,
-  cost: 4,
-  points: 0,
-  text: 'Worth +4 if the number of cards before this in the story is equal to the number of cards after this.',
+  cost: 1,
+  points: 1,
+  qualities: [Quality.VISIBLE],
+  text: 'Visible.\nAdd the first card in your hand to the story after this if it has the same cost as the card after this.',
 })
-
-const riddle =
-  'Visible. Add the first card in your hand to the story after this if it has the same cost as the card after this.'
 
 export {
   dawn,
@@ -189,4 +194,5 @@ export {
   // BETA
   timid,
   balance,
+  riddle,
 }
