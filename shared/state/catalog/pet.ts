@@ -221,6 +221,49 @@ const rose = new Rose({
   text: 'Fleeting.\nNourish 2.',
 })
 
+class Celebration extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    if (super.exhale(3, game, player)) {
+      let amtAdded = 0
+      for (let iHand = 0; iHand < game.hand[player].length; iHand++) {
+        // If the card costs 3 or less
+        if (game.hand[player][iHand].cost <= 3) {
+          // Get the card and remove it from hand
+          const card = game.hand[player].splice(iHand, 1)[0]
+
+          // Add the card as a new act
+          game.story.addAct(card, player, amtAdded)
+
+          // Animate the movement
+          game.animations[player].push(
+            new Animation({
+              from: Zone.Hand,
+              to: Zone.Story,
+              index: iHand,
+              index2: index + amtAdded,
+            }),
+          )
+
+          // Keep track of how many added
+          amtAdded += 1
+
+          // Decrement i to account for hand shrinking
+          iHand -= 1
+        }
+      }
+    }
+  }
+}
+const celebration = new Celebration({
+  name: 'Celebration',
+  id: 4437,
+  cost: 3,
+  points: 3,
+  text: 'Exhale 3: Add cards with base-cost 3 or less from your hand to the story after this.',
+})
+
 export {
   fruit,
   oak,
@@ -234,4 +277,5 @@ export {
   pomegranate,
   abundance,
   rose,
+  celebration,
 }
