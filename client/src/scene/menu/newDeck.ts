@@ -199,7 +199,8 @@ class AlterDeckMenu extends Menu {
         id: 'search-field',
       })
       .on('textchange', (inputText) => {
-        const result = decodeShareableDeckCode(inputText.text)
+        const trimmedCode = inputText.text.trim()
+        const result = decodeShareableDeckCode(trimmedCode)
         if (result === undefined) {
           this.scene.signalError('Invalid deck code.')
           this.deckCode = ''
