@@ -184,6 +184,28 @@ const riddle = new Riddle({
   text: 'Visible.\nAdd the first card in your hand to the story after this if it has the same cost as the card after this.',
 })
 
+class Bull extends Card {
+  getCost(player: number, game: GameModel): number {
+    if (
+      game.story.acts.length >= 1 &&
+      game.deck[player].length >= 1 &&
+      game.story.acts[game.story.acts.length - 1].card.cost ===
+        game.deck[player][0].cost
+    ) {
+      return this.cost - 1
+    } else {
+      return this.cost
+    }
+  }
+}
+const bull = new Bull({
+  name: 'Bull',
+  id: 6063,
+  cost: 3,
+  points: 3,
+  text: 'Costs 1 less if the last card in the story has the same base-cost as the bottom card of your deck.',
+})
+
 export {
   dawn,
   clearView,
@@ -195,4 +217,5 @@ export {
   timid,
   balance,
   riddle,
+  bull,
 }
