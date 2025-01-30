@@ -90,6 +90,12 @@ const wound = new Wound({
   text: 'Fleeting.\nWhen this is discarded, add it to the story.',
 })
 
+const heirloom = new Card({
+  name: 'Heirloom',
+  id: 1007,
+  points: 4,
+})
+
 export {
   seen,
   ashes,
@@ -97,4 +103,5 @@ export {
   predator,
   // BETA
   wound,
+  heirloom,
 }

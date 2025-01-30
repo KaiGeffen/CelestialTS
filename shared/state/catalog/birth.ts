@@ -1,5 +1,5 @@
 import Card from '../card'
-import { child } from './tokens'
+import { child, heirloom } from './tokens'
 import { Quality } from '../effects'
 import { Keywords } from '../keyword'
 import GameModel from '../gameModel'
@@ -168,7 +168,7 @@ const lullaby = new Lullaby({
   points: 3,
   text: 'Create a copy in hand of each card later in the 	story that costs 0.',
 })
-class Plan extends Card {
+class Pregnant extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus + index)
 
@@ -183,11 +183,26 @@ class Plan extends Card {
     game.createInDeck(player, card)
   }
 }
-const plan = new Plan({
-  name: 'Plan',
+const pregnant = new Pregnant({
+  name: 'Pregnant',
   id: 5212,
   cost: 1,
   text: 'Create a 0:2 Fleeting Child in your deck.',
+})
+
+class PassOn extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus + index)
+
+    game.create(player, heirloom)
+  }
+}
+const passOn = new PassOn({
+  name: 'Pass On',
+  id: 5213,
+  cost: 4,
+  qualities: [Quality.FLEETING],
+  text: 'Fleeting.\nCreate a 0:4 Heirloom in hand.',
 })
 
 export {
@@ -201,5 +216,6 @@ export {
   uprising,
   // BETA
   lullaby,
-  plan,
+  pregnant,
+  passOn,
 }

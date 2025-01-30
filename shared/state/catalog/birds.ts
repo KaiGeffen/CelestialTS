@@ -267,6 +267,20 @@ const cloud = new Cloud({
   text: 'Fleeting\nExhale X: Draw X cards.',
 })
 
+class Caladrius extends Card {
+  onPlay(player: number, game: GameModel): void {
+    this.starve(3, game, player)
+  }
+}
+const caladrius = new Caladrius({
+  name: 'Caladrius',
+  id: 1031,
+  cost: 3,
+  points: 6,
+  qualities: [Quality.VISIBLE, Quality.FLEETING],
+  text: 'Visible.\nFleeting.\nWhen played, gain Nourish -3.',
+})
+
 export {
   dove,
   starling,
@@ -280,4 +294,5 @@ export {
   defiance,
   bare,
   cloud,
+  caladrius,
 }
