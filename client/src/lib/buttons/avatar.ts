@@ -91,11 +91,13 @@ export default class AvatarButton extends Button {
 
 	private doEmote(number = 1): () => void {
 		return () => {
-			// Play the dialog clip
-			const dialogSound : Phaser.Sound.BaseSoundManager = this.scene.game['dialogSound']
-			// Stop previous dialog clips
-			dialogSound.pauseAll()
-			dialogSound.play(`dialog-${this.name}`)
+			// Get dialog audio element
+			const dialogAudio = document.getElementById('dialog') as HTMLAudioElement
+			
+			// Set the source and play
+			dialogAudio.src = `assets/dialog/${this.name}.mp3`
+			dialogAudio.currentTime = 0
+			dialogAudio.play()
 
 			// Stop the timeout if it exists
 			clearTimeout(this.timeout)

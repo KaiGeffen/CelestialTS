@@ -190,7 +190,7 @@ class Bull extends Card {
       game.story.acts.length >= 1 &&
       game.deck[player].length >= 1 &&
       game.story.acts[game.story.acts.length - 1].card.cost ===
-        game.deck[player][0].cost
+        game.deck[player][game.deck[player].length - 1].cost
     ) {
       return this.cost - 1
     } else {
@@ -203,7 +203,7 @@ const bull = new Bull({
   id: 6063,
   cost: 3,
   points: 3,
-  text: 'Costs 1 less if the last card in the story has the same base-cost as the bottom card of your deck.',
+  text: 'Costs 1 less if the last card in the story has the same base-cost as the top card of your deck.',
 })
 
 export {

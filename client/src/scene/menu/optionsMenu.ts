@@ -459,9 +459,7 @@ export default class OptionsMenu extends Menu {
     let slider = this.getSlider(UserSettings._get('musicVolume'), (value) => {
       UserSettings._set('musicVolume', value)
 
-      let music: HTMLAudioElement = <HTMLAudioElement>(
-        document.getElementById('music')
-      )
+      const music = document.getElementById('music') as HTMLAudioElement
 
       music.volume = value
       music.play()
@@ -484,10 +482,8 @@ export default class OptionsMenu extends Menu {
     let slider = this.getSlider(UserSettings._get('dialogVolume'), (value) => {
       UserSettings._set('dialogVolume', value)
 
-      // Set the game's dialogSound to the new value
-      const dialogSound: Phaser.Sound.BaseSoundManager =
-        this.scene.game['dialogSound']
-      dialogSound.volume = value * 5
+      const dialogAudio = document.getElementById('dialog') as HTMLAudioElement
+      dialogAudio.volume = value
     })
     sizer.add(slider)
 

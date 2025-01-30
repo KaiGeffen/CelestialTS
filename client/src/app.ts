@@ -38,12 +38,6 @@ const config: Phaser.Types.Core.GameConfig = {
   dom: {
     createContainer: true,
   },
-  callbacks: {
-    preBoot: function (game) {
-      // TODO Phaser typing doesn't include these and it stinks
-      game['dialogSound'] = Phaser.Sound.SoundManagerCreator['create'](game)
-    },
-  },
   scene: [
     PreloadScene,
     SigninScene,
