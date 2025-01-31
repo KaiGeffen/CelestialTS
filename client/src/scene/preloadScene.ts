@@ -111,6 +111,7 @@ export class SigninScene extends Phaser.Scene {
 
     // Make the buttons unclickable
     this.guestButton.disable()
+    document.getElementById('signin').hidden = true
 
     // Ensure that music is playing
     ensureMusic(this)
