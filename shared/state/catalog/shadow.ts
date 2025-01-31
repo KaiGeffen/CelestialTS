@@ -196,6 +196,7 @@ const victim = new Victim({
   id: 4001,
   text: 'If you lose this round, Nourish -1 your opponent for each point you lost by.',
   keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
+  beta: true,
 })
 
 class Rupture extends Card {
@@ -210,6 +211,7 @@ const rupture = new Rupture({
   cost: 1,
   text: "Create a Wound in your opponent's hand.",
   references: [{ card: wound, x: 5, y: 112 }],
+  beta: true,
 })
 
 class Craving extends Card {
@@ -228,6 +230,7 @@ const craving = new Craving({
   cost: 2,
   points: 4,
   text: 'Discard your hand unless you have a card with base-cost 6 or more later in the story.',
+  beta: true,
 })
 
 export {

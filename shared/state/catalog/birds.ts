@@ -169,6 +169,7 @@ const fledgling = new Fledgling({
   cost: 1,
   points: 1,
   text: 'Morning: Worth +1 point permanently.',
+  beta: true,
 })
 
 class Nest extends Card {
@@ -183,6 +184,7 @@ const nest = new Nest({
   cost: 2,
   points: 0,
   text: 'Morning: Create a Dove in the story.',
+  beta: true,
 })
 
 const truth = new Card({
@@ -190,6 +192,7 @@ const truth = new Card({
   id: 104,
   cost: 6,
   points: 8,
+  beta: true,
 })
 
 class Defiance extends Card {
@@ -217,6 +220,7 @@ const defiance = new Defiance({
   cost: 5,
   points: 3,
   text: 'Costs 1 less for each card your opponent can see in the story.',
+  beta: true,
 })
 
 class Bare extends Card {
@@ -247,6 +251,7 @@ const bare = new Bare({
   points: 2,
   qualities: [Quality.VISIBLE],
   text: 'Visible\nExhale 1: The next card in the story loses all card-text.',
+  beta: true,
 })
 
 class Cloud extends Card {
@@ -265,6 +270,7 @@ const cloud = new Cloud({
   id: 169,
   qualities: [Quality.FLEETING],
   text: 'Fleeting\nExhale X: Draw X cards.',
+  beta: true,
 })
 
 class Caladrius extends Card {
@@ -279,6 +285,7 @@ const caladrius = new Caladrius({
   points: 6,
   qualities: [Quality.VISIBLE, Quality.FLEETING],
   text: 'Visible.\nFleeting.\nWhen played, gain Nourish -3.',
+  beta: true,
 })
 
 export {

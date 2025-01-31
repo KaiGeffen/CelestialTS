@@ -151,6 +151,7 @@ const aspirant = new Aspirant({
   cost: 2,
   points: 2,
   text: 'Exhale 3: Worth +3.',
+  beta: true,
 })
 class Fates extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
@@ -176,6 +177,7 @@ const fates = new Fates({
   name: 'Fates',
   id: 369,
   text: 'Exhale 6: Reset.\nExhale 3: Nourish 2.\nExhale 1: Birth 1.',
+  beta: true,
 })
 
 class Wish extends Card {
@@ -200,6 +202,7 @@ const wish = new Wish({
   id: 828,
   cost: 2,
   text: 'Inspire 1.\nDraw the highest base cost card from your deck.',
+  beta: true,
 })
 
 class Possibility extends Card {
@@ -215,6 +218,7 @@ const possibility = new Possibility({
   cost: 4,
   qualities: [Quality.FLEETING],
   text: 'Fleeting.\nIncrease your max breath by 1 permanently.',
+  beta: true,
 })
 
 class Neptune extends Card {
@@ -238,6 +242,7 @@ const neptune = new Neptune({
   id: 8056,
   cost: 3,
   text: 'Gain 3 breath.\nMorning: Gain 1 breath for each breath you ended the last round with.',
+  beta: true,
 })
 
 export {

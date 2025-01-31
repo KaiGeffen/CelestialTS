@@ -172,6 +172,7 @@ const yearn = new Yearn({
   cost: 1,
   points: 1,
   text: 'Exhale 3: Add the top card of your discard pile to the story after this if it has base cost 3 or less.',
+  beta: true,
 })
 
 class Pomegranate extends Card {
@@ -185,6 +186,7 @@ const pomegranate = new Pomegranate({
   id: 411,
   cost: 5,
   text: 'Nourish 6.',
+  beta: true,
 })
 
 class Abundance extends Card {
@@ -204,6 +206,7 @@ const abundance = new Abundance({
   cost: 2,
   points: 2,
   text: 'Exhale 1: If you have 7 or more points, Nourish 3.',
+  beta: true,
 })
 
 class Rose extends Card {
@@ -219,6 +222,7 @@ const rose = new Rose({
   points: -1,
   qualities: [Quality.FLEETING],
   text: 'Fleeting.\nNourish 2.',
+  beta: true,
 })
 
 class Celebration extends Card {
@@ -262,6 +266,7 @@ const celebration = new Celebration({
   cost: 3,
   points: 3,
   text: 'Exhale 5: Add each card with base-cost 3 or less from your hand to the story after this.',
+  beta: true,
 })
 
 export {

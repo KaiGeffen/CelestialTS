@@ -19,6 +19,7 @@ interface CardData {
   story?: string
   keywords?: KeywordPosition[]
   references?: ReferencePosition[]
+  beta?: boolean
 }
 
 export default class Card {
@@ -34,6 +35,7 @@ export default class Card {
   story: string = ''
   keywords: KeywordPosition[] = []
   references: ReferencePosition[] = []
+  beta: boolean = false
 
   constructor({
     name = '',
@@ -47,6 +49,7 @@ export default class Card {
     story = '',
     keywords = [],
     references = [],
+    beta = false,
   }: CardData) {
     this.name = name
     this.id = id
@@ -59,6 +62,7 @@ export default class Card {
     this.story = story
     this.keywords = keywords
     this.references = references
+    this.beta = beta
   }
 
   /* Main functions */

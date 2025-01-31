@@ -167,7 +167,9 @@ const lullaby = new Lullaby({
   cost: 6,
   points: 3,
   text: 'Create a copy in hand of each card later in the 	story that costs 0.',
+  beta: true,
 })
+
 class Pregnant extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus + index)
@@ -188,6 +190,7 @@ const pregnant = new Pregnant({
   id: 5212,
   cost: 1,
   text: 'Create a 0:2 Fleeting Child in your deck.',
+  beta: true,
 })
 
 class PassOn extends Card {
@@ -203,6 +206,7 @@ const passOn = new PassOn({
   cost: 4,
   qualities: [Quality.FLEETING],
   text: 'Fleeting.\nCreate a 0:4 Heirloom in hand.',
+  beta: true,
 })
 
 export {

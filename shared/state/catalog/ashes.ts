@@ -265,8 +265,7 @@ const goliath = new Goliath({
   cost: 8,
   points: 8,
   text: 'Discard the next card in the story and the top 2 cards of your deck.',
-  story:
-    'We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips',
+  beta: true,
 })
 
 class Firebug extends Card {
@@ -280,6 +279,7 @@ const firebug = new Firebug({
   id: 101,
   points: 1,
   text: 'Discard a card.',
+  beta: true,
 })
 
 class Immolant extends Card {
@@ -303,6 +303,7 @@ const immolant = new Immolant({
   cost: 1,
   points: 1,
   text: 'When this is discarded, add it to the story.',
+  beta: true,
 })
 
 // class Pyre extends Card {

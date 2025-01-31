@@ -142,6 +142,7 @@ const timid = new Timid(3, {
   cost: 1,
   points: 1,
   text: 'When played, gain Sight 3.\nExhale 1: Return your cards later in the story to your hand.',
+  beta: true,
 })
 
 class Balance extends Card {
@@ -158,6 +159,7 @@ const balance = new Balance({
   cost: 2,
   points: 1,
   text: 'Worth +3 if the number of cards before this in the story is equal to the number of cards after this.',
+  beta: true,
 })
 
 class Riddle extends Card {
@@ -182,6 +184,7 @@ const riddle = new Riddle({
   points: 1,
   qualities: [Quality.VISIBLE],
   text: 'Visible.\nAdd the first card in your hand to the story after this if it has the same cost as the card after this.',
+  beta: true,
 })
 
 class Bull extends Card {
@@ -204,6 +207,7 @@ const bull = new Bull({
   cost: 3,
   points: 3,
   text: 'Costs 1 less if the last card in the story has the same base-cost as the top card of your deck.',
+  beta: true,
 })
 
 export {

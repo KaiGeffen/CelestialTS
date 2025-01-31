@@ -142,6 +142,7 @@ const refresh = new Refresh({
   cost: 1,
   points: 1,
   text: 'When played, put the leftmost card in your hand on the bottom of your deck, then draw a card if you did. Your opponent doesn’t see you do this.',
+  beta: true,
 })
 
 class Overflow extends Card {
@@ -163,6 +164,7 @@ const overflow = new Overflow({
   cost: 4,
   points: 1,
   text: 'Refresh.\nWorth +1 for each card in your hand.',
+  beta: true,
 })
 
 class Fish extends Card {
@@ -183,6 +185,7 @@ const fish = new Fish({
   cost: 3,
   points: 2,
   text: 'When you draw this, increase its points by 1 permanently.',
+  beta: true,
 })
 
 class Unnamed extends Card {
@@ -208,6 +211,7 @@ const unnamed = new Unnamed({
   cost: 5,
   points: 5,
   text: 'Refresh.\nExhale 2: Draw 3 cards.',
+  beta: true,
 })
 
 export {

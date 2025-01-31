@@ -88,12 +88,14 @@ const wound = new Wound({
   points: -3,
   qualities: [Quality.FLEETING],
   text: 'Fleeting.\nWhen this is discarded, add it to the story.',
+  beta: true,
 })
 
 const heirloom = new Card({
   name: 'Heirloom',
   id: 1007,
   points: 4,
+  beta: true,
 })
 
 export {

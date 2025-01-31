@@ -7,8 +7,10 @@ export const Flags = {
   // Is client connected to the internet
   online: navigator.onLine,
 
-  // Include cards in development
-  devCards: new URLSearchParams(window.location.search).has('dev'),
+  // Include cards still in development
+  devCardsEnabled:
+    new URLSearchParams(window.location.search).has('dev') ||
+    location.port === '4949',
 
   // See cards in the opponent's hand
   peek: new URLSearchParams(window.location.search).has('peek'),
