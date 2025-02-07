@@ -1,7 +1,7 @@
 import 'phaser'
 
 import Card from '../../../shared/state/card'
-import { UserSettings } from '../settings/settings'
+import { Flags, UserSettings } from '../settings/settings'
 import BaseScene from '../scene/baseScene'
 import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
 import {
@@ -43,7 +43,7 @@ export default class UserDataServer {
     const uuid = payload.sub
     const jti = payload.jti
 
-    wsServer = new TypedWebSocket(`ws://${URL}:${USER_DATA_PORT}`)
+    wsServer = UserDataServer.getSocket()
 
     // Immediately send the payload information to server
     wsServer.onOpen(() => {
@@ -334,5 +334,22 @@ export default class UserDataServer {
       decks.push({ name: name, value: deckCode, avatar: avatar })
     })
     sessionStorage.setItem('decks', JSON.stringify(decks))
+  }
+
+  // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
+  // Get the appropriate websocket for this environment
+  // If user is logged in, use the existing ws instead of opening a new one
+  private static getSocket(): TypedWebSocket {
+    // Establish a websocket based on the environment
+    console.log('This is running locally?', Flags.local)
+
+    if (Flags.local) {
+      return new TypedWebSocket(`ws://${URL}:${USER_DATA_PORT}`)
+    } else {
+      // The WS location on DO
+      // let loc = window.location
+      const fullPath = `wss://celestialtcg.com/user_data_ws`
+      return new TypedWebSocket(fullPath)
+    }
   }
 }
