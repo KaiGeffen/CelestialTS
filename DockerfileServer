@@ -13,7 +13,7 @@ WORKDIR /home/node/app
 RUN npm install && npm run build:server
 
 EXPOSE 8084
-EXPOSE 8085
+# EXPOSE 8085
 EXPOSE 8086
 
 CMD [ "npm", "run", "start:server" ]
