@@ -92,6 +92,8 @@ export class TypedWebSocket {
 
     // Whenever a message is received, call each callback for that message
     this.ws.onmessage = (ev: MessageEvent): void => {
+      console.log('websocket got message event:', ev)
+
       // The type of the message
       type T = MessageTypes
 
