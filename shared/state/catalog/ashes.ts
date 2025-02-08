@@ -21,7 +21,7 @@ const dash = new Dash({
   id: 6,
   cost: 2,
   points: 3,
-  text: 'Worth -1 point for each card before this in the story.',
+  text: 'Worth -1 for each card before this in the story.',
   story: 'I look around only to remind me: Move on! Fast!',
 })
 
@@ -40,11 +40,11 @@ const impulse = new Impulse({
   cost: 1,
   points: 1,
   qualities: [Quality.FLEETING],
-  text: 'Fleeting, create 2 Ashes in your discard pile.',
+  text: 'Fleeting\nCreate two Ashes in your discard pile.',
   story:
     'Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me',
   keywords: [{ name: Keywords.fleeting, x: 0, y: 82 }],
-  references: [{ card: ashes, x: 6, y: 112 }],
+  references: [{ card: ashes, x: 6, y: 131 }],
 })
 
 class Mine extends Card {
@@ -59,7 +59,7 @@ const mine = new Mine({
   id: 15,
   cost: 4,
   points: 4,
-  text: 'Remove from the game the top 4 cards of your discard pile.',
+  text: 'Remove from the game the top four cards of your discard pile.',
 })
 
 class Arsonist extends Card {
@@ -77,11 +77,11 @@ const arsonist = new Arsonist({
   points: 4,
   id: 14,
   qualities: [Quality.FLEETING],
-  text: 'Fleeting, create 3 Ashes in your discard pile.',
+  text: 'Fleeting\nCreate three Ashes in your discard pile.',
   story:
     "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
   keywords: [{ name: Keywords.fleeting, x: 0, y: 82 }],
-  references: [{ card: ashes, x: 6, y: 112 }],
+  references: [{ card: ashes, x: 6, y: 135 }],
 })
 
 class Parch extends Card {
@@ -116,7 +116,7 @@ const parch = new Parch({
   id: 64,
   cost: 3,
   points: 2,
-  text: 'Discard each of your cards later in the story. Worth +1 for each of those cards.\nWhen played, your cards cost 0 this round.',
+  text: 'Worth +1 for each of your cards later in the story. Discard those cards.\nWhen played, your cards cost 0 this round.',
   story:
     'We drank and we drank, then\nWe washed and fed fountains, then\nWe watered and we swam, then\nNow we lick our parched lips',
 })
@@ -124,7 +124,7 @@ const parch = new Parch({
 class Veteran extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     if (game.pile[player].length >= 8) {
-      bonus += 2
+      bonus += 3
     }
 
     super.play(player, game, index, bonus)
@@ -140,7 +140,7 @@ const veteran = new Veteran({
   id: 17,
   cost: 5,
   points: 4,
-  text: 'Worth +2 points if your discard pile has at least 8 cards in it.',
+  text: 'Worth +3 if your discard pile has at least eight cards in it.',
   story:
     'The veteran sleepwalks, body aware and functioning\nCarrying a longing for the time when they knew\nWhat there was to know',
 })
@@ -204,7 +204,7 @@ const cling = new Cling({
   name: 'Cling',
   id: 20,
   cost: 6,
-  text: "Put the highest cost card from your discard pile on top of your deck. Gain points equal to that card's cost.",
+  text: 'Worth +X, where X is the highest base cost in your discard pile. Put that card on top of your deck.',
   story:
     'Reaching back with the back of the eyes\nTo that moment when\nI see myself – not as I am – but as I was - clearly',
 })
@@ -219,7 +219,7 @@ const death = new Death({
   id: 21,
   cost: 7,
   points: 7,
-  text: 'Costs 0 if you have at least 12 cards in your discard pile.',
+  text: 'Costs 0 if you have at least twelve cards in your discard pile.',
   story:
     'I knew you were coming, I just didn’t know when.\nGo easy on me.\nI am tired, sated, and looking for new life.',
 })
@@ -241,7 +241,7 @@ const fromAshes = new FromAshes({
   id: 74,
   cost: 2,
   points: 1,
-  text: 'Remove from the game the top 3 cards of your discard pile. Nourish 1 for each card with Fleeting removed.',
+  text: 'Remove from the game the top three cards of your discard pile. Nourish 1 for each card with Fleeting removed.',
   story:
     'Ash carefully tends\nThe green shoot\nLiving on atonement\nTender so close to death and beginning',
   keywords: [

@@ -22,6 +22,23 @@ const dawn = new Dawn(4, {
   ],
 })
 
+class Nectar extends SightCard {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+    this.nourish(1, game, player)
+  }
+}
+const nectar = new Nectar(3, {
+  name: 'Nectar',
+  id: 25,
+  cost: 1,
+  text: 'Nourish 1\nWhen played, gain Sight 3.',
+  keywords: [
+    { name: Keywords.nourish, x: 0, y: 73, value: 1 },
+    { name: Keywords.sight, x: 0, y: 130, value: 3 },
+  ],
+})
+
 class ClearView extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
@@ -73,7 +90,7 @@ const enlightenment = new Enlightenment({
   id: 45,
   cost: 7,
   points: 7,
-  text: "Costs 0 if you can see at least 3 of your opponent's cards in the story.",
+  text: "Costs 0 if you can see at least three of your opponent's cards in the story.",
 })
 
 class Prey extends Card {
@@ -212,6 +229,7 @@ const bull = new Bull({
 
 export {
   dawn,
+  nectar,
   clearView,
   awakening,
   enlightenment,

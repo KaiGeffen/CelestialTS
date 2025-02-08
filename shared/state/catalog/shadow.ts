@@ -20,7 +20,7 @@ const dagger = new Dagger({
   name: 'Dagger',
   id: 1,
   cost: 1,
-  text: 'Your opponent discards the leftmost card of their hand.',
+  text: 'Your opponent discards a card.',
   story:
     'I have a point now\nI am no longer alone, scattered \nBut trained wholly on the promise\nOf your body, squirming',
 })
@@ -38,7 +38,7 @@ const shadow = new Shadow({
   name: 'Shadow',
   id: 19,
   cost: 6,
-  points: 3,
+  points: 4,
   text: "Costs X, where X is the number of cards in your opponent's hand.",
   story:
     'Your pain blooms like flowers on a misty day.\nI breathe it in.\nPerhaps I can rest now.',
@@ -46,8 +46,8 @@ const shadow = new Shadow({
 
 class Imprison extends Card {
   onRoundEndIfThisResolved(player: number, game: GameModel) {
-    // If opponent had 3 or fewer points
-    if (game.score[player ^ 1] <= 3) {
+    // If opponent had 2 or fewer points
+    if (game.score[player ^ 1] <= 2) {
       // Give them Nourish -1
       game.status[player ^ 1].push(Status.STARVE)
     }
@@ -58,7 +58,7 @@ const imprison = new Imprison({
   id: 35,
   cost: 3,
   points: 3,
-  text: 'At the end of this round, if your opponent has 3 or fewer points, give them Nourish -1.',
+  text: 'At the end of this round, if your opponent has two or fewer points, they Nourish -1.',
   story:
     'All tied up\ncan’t even stand\nAm I lethal to you and yours\nMy tight bonds calm me.',
   keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: -1 }],
@@ -78,7 +78,7 @@ const nightmare = new Nightmare({
   id: 68,
   cost: 2,
   points: 2,
-  text: 'Morning: if you have more cards in hand than your opponent, create a Shadow in hand.',
+  text: 'Morning: If you have more cards in hand than your opponent, create a Shadow in hand.',
   story:
     'I struggle to find myself\nBetween the claws and biting words\nShearing my mind away',
   keywords: [{ name: Keywords.morning, x: 0, y: 60 }],
@@ -101,7 +101,7 @@ const boa = new Boa({
   id: 57,
   cost: 6,
   points: 6,
-  text: 'If this is nourished, your opponent discards the leftmost card of their hand.',
+  text: 'If this is nourished, your opponent discards a card.',
   story: 'I reach I win I have it.\nIt is all mine now!\nCan I make it me?',
 })
 
@@ -120,7 +120,7 @@ const hungryGhost = new HungryGhost({
   id: 31,
   cost: 2,
   points: 4,
-  text: 'Nourish -4.',
+  text: 'Nourish -4',
   keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: -4 }],
 })
 
@@ -138,7 +138,7 @@ const hurricane = new Hurricane({
   name: 'Hurricane',
   id: 13,
   cost: 4,
-  text: "Set both player's points to 0.",
+  text: "Set both players' points to 0.",
 })
 
 class WingClipping extends Card {

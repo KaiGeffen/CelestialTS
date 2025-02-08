@@ -15,7 +15,7 @@ class Stars extends Card {
 const stars = new Stars({
   name: 'Stars',
   id: 0,
-  text: 'Inspire 1.',
+  text: 'Inspire 1',
   keywords: [{ name: Keywords.inspire, x: 0, y: 131, value: 1 }],
 })
 
@@ -49,7 +49,7 @@ const nightVision = new NightVision(3, {
   name: 'Night Vision',
   id: 28,
   cost: 1,
-  text: 'Draw a card that costs 2.\nWhen played, gain Sight 3.',
+  text: 'Put the top card with base cost 2 from your deck into your hand.\nWhen played, gain Sight 3.',
   keywords: [{ name: Keywords.sight, x: 0, y: 130, value: 3 }],
 })
 
@@ -62,7 +62,7 @@ const ecology = new Ecology({
   name: 'Ecology',
   id: 44,
   cost: 7,
-  text: 'When played, gain 10 breath this round.',
+  text: 'When played, gain 10 breath.',
 })
 
 class Sun extends Card {
@@ -76,9 +76,9 @@ const sun = new Sun({
   id: 56,
   cost: 8,
   points: 8,
-  text: 'Morning: gain 2 extra breath this round.',
+  text: 'Morning: Gain 2 breath.',
   story: 'I raise my head over the horizon\nI begin\nJust like you',
-  keywords: [{ name: Keywords.morning, x: 0, y: 82 }],
+  keywords: [{ name: Keywords.morning, x: 0, y: 104 }],
 })
 
 class Moon extends Card {
@@ -109,7 +109,7 @@ const moon = new Moon({
   id: 73,
   cost: 5,
   points: 4,
-  text: 'Morning: trigger the morning abilities of the top 2 cards below this with morning.',
+  text: 'Morning: Trigger the morning abilities of the top 2 cards below this with morning.',
   keywords: [{ name: Keywords.morning, x: 0, y: 60 }],
 })
 

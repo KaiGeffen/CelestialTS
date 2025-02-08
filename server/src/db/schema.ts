@@ -5,7 +5,6 @@ import {
   integer,
   varchar,
   date,
-  bit,
   uniqueIndex,
   AnyPgColumn,
 } from 'drizzle-orm/pg-core'

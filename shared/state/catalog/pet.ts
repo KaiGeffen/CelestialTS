@@ -16,7 +16,7 @@ const fruit = new Fruit({
   name: 'Fruit',
   id: 11,
   cost: 3,
-  text: 'Nourish 3.',
+  text: 'Nourish 3',
   keywords: [{ name: Keywords.nourish, x: 0, y: 130, value: 3 }],
 })
 
@@ -53,7 +53,7 @@ const bounty = new Bounty({
 
 class Pet extends Card {
   constructor(points: number) {
-    const text = `2:${points}. This card retains all changes to points as it resolves.`
+    const text = `This permanently retains all changes to its points`
     super({
       name: 'Pet',
       id: 34,
@@ -83,23 +83,6 @@ class Pet extends Card {
 }
 const pet = new Pet(1)
 
-class Nectar extends SightCard {
-  play(player: number, game: GameModel, index: number, bonus: number) {
-    super.play(player, game, index, bonus)
-    this.nourish(1, game, player)
-  }
-}
-const nectar = new Nectar(3, {
-  name: 'Nectar',
-  id: 25,
-  cost: 1,
-  text: 'Nourish 1.\nWhen played, gain Sight 3.',
-  keywords: [
-    { name: Keywords.nourish, x: 0, y: 73, value: 1 },
-    { name: Keywords.sight, x: 0, y: 130, value: 3 },
-  ],
-})
-
 class Hollow extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
@@ -111,7 +94,7 @@ class Hollow extends Card {
 const hollow = new Hollow({
   name: 'Hollow',
   id: 76,
-  text: 'Set your points to 0. Gain Nourish 1 for each point you lost this way.',
+  text: 'Set your points to 0. Nourish 1 for each point you lost this way.',
   keywords: [{ name: Keywords.nourish, x: -31, y: 112, value: 1 }],
 })
 
@@ -274,7 +257,6 @@ export {
   oak,
   bounty,
   pet,
-  nectar,
   hollow,
   holdTight,
   // NEW

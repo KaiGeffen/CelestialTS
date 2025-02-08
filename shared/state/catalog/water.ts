@@ -40,7 +40,7 @@ const excess = new Excess({
   id: 46,
   cost: 7,
   points: 7,
-  text: 'Costs 0 if you have exactly 4 cards in the story.',
+  text: 'Costs 0 if you have exactly four cards in the story.',
 })
 
 class FishingBoat extends Card {
@@ -57,7 +57,7 @@ const fishingBoat = new FishingBoat({
   id: 32,
   cost: 2,
   points: 1,
-  text: 'Draw 3 cards that each cost 1.',
+  text: 'Put the top 3 cards with base cost 1 from your deck into your hand.',
 })
 
 class Drown extends Card {
@@ -71,7 +71,7 @@ const drown = new Drown({
   id: 5,
   cost: 1,
   points: 1,
-  text: 'Discard the top 3 cards of your deck.',
+  text: 'Discard the top three cards of your deck.',
 })
 
 class Iceberg extends Card {
@@ -89,7 +89,7 @@ const iceberg = new Iceberg({
   id: 54,
   cost: 4,
   points: 2,
-  text: 'Draw 2 cards.\nCosts 1 less for each time you’ve passed this round.',
+  text: 'Draw two cards.\nCosts 1 less for each time you’ve passed this round.',
 })
 
 class Dew extends Card {
@@ -103,9 +103,9 @@ const dew = new Dew({
   id: 63,
   cost: 1,
   points: 1,
-  text: 'Morning: create a Dew in your hand.',
+  text: 'Morning: Create a Dew in your hand.',
   story: 'I return\nOver and over again\nSwelling the future',
-  keywords: [{ name: Keywords.morning, x: 0, y: 102 }],
+  keywords: [{ name: Keywords.morning, x: 0, y: 82 }],
 })
 
 class GentleRain extends Card {
