@@ -9,7 +9,6 @@ export default function createMatchServer() {
 
   wss.on('connection', async (socket: WebSocket) => {
     try {
-      console.log('Client connected')
       MatchQueue.enqueue(socket)
     } catch (e) {
       console.error('Error in match queue:', e)

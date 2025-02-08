@@ -183,7 +183,6 @@ class Riddle extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    console.log(game.story.acts)
     if (
       game.story.acts.length >= 1 &&
       game.hand[player].length >= 1 &&

@@ -102,7 +102,6 @@ class ServerController {
       this.play(player, cardNum)
       return true
     } else {
-      console.log(`Can't play the ${cardNum}th card`)
       return false
     }
   }
