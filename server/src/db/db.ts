@@ -11,11 +11,12 @@ type Schema = {
   players: typeof players
 }
 
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required')
+}
+
 const pool = new Pool({
-  user: 'kai',
-  host: 'localhost',
-  database: 'celestial_test',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL
 })
 
 export const db = drizzle<Schema>(pool, { schema })
