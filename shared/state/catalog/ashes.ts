@@ -44,7 +44,7 @@ const impulse = new Impulse({
   story:
     'Belly burns with knowing now\nBurning hand tells me how heroic I am\nA whiff of ‘what if?’ is not enough to stop me',
   keywords: [{ name: Keywords.fleeting, x: 0, y: 82 }],
-  references: [{ card: ashes, x: 6, y: 131 }],
+  references: [{ card: ashes, x: 12, y: 112 }],
 })
 
 class Mine extends Card {
@@ -81,7 +81,7 @@ const arsonist = new Arsonist({
   story:
     "We build and tend and feed and joy\nFlames dance in the buildings\nCrackle in the streets\nWe still build and tend and feed and joy\nAnd suddenly it's all up in smoke",
   keywords: [{ name: Keywords.fleeting, x: 0, y: 82 }],
-  references: [{ card: ashes, x: 6, y: 135 }],
+  references: [{ card: ashes, x: 20, y: 112 }],
 })
 
 class Parch extends Card {
