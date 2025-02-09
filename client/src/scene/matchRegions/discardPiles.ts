@@ -6,12 +6,13 @@ import { Depth, Space, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
+import { GameScene } from '../gameScene'
 
 export default class DiscardPilesRegion extends Region {
   ourCallback: () => void
   theirCallback: () => void
 
-  create(scene: BaseScene): DiscardPilesRegion {
+  create(scene: GameScene): DiscardPilesRegion {
     this.scene = scene
 
     this.container = scene.add

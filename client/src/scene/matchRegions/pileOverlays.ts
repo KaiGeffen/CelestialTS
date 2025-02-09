@@ -3,7 +3,7 @@ import Card from '../../../../shared/state/card'
 import { CardImage } from '../../lib/cardImage'
 import GameModel from '../../../../shared/state/gameModel'
 import { Color, Depth, Space, Style } from '../../settings/settings'
-import BaseScene from '../baseScene'
+import { GameScene } from '../gameScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 import Buttons from '../../lib/buttons/buttons'
@@ -13,7 +13,7 @@ export default class OverlayRegion extends Region {
   txtTitle: Phaser.GameObjects.Text
 
   // fSwitch is the callback for if this overlay switches to another overlay
-  create(scene: BaseScene, title: string): OverlayRegion {
+  create(scene: GameScene, title: string): OverlayRegion {
     this.scene = scene
 
     this.container = scene.add
@@ -85,7 +85,7 @@ export default class OverlayRegion extends Region {
 }
 
 export class OurDeckOverlay extends OverlayRegion {
-  create(scene: BaseScene): OverlayRegion {
+  create(scene: GameScene): OverlayRegion {
     return super.create(scene, 'Your Deck')
   }
 
@@ -95,7 +95,7 @@ export class OurDeckOverlay extends OverlayRegion {
 }
 
 export class TheirDeckOverlay extends OverlayRegion {
-  create(scene: BaseScene): OverlayRegion {
+  create(scene: GameScene): OverlayRegion {
     return super.create(scene, 'Their Last Shuffle')
   }
 
@@ -105,7 +105,7 @@ export class TheirDeckOverlay extends OverlayRegion {
 }
 
 export class OurDiscardOverlay extends OverlayRegion {
-  create(scene: BaseScene): OverlayRegion {
+  create(scene: GameScene): OverlayRegion {
     super.create(scene, 'Your Discard Pile')
 
     return this
@@ -117,7 +117,7 @@ export class OurDiscardOverlay extends OverlayRegion {
 }
 
 export class TheirDiscardOverlay extends OverlayRegion {
-  create(scene: BaseScene): OverlayRegion {
+  create(scene: GameScene): OverlayRegion {
     return super.create(scene, 'Their Discard Pile')
   }
 
@@ -127,7 +127,7 @@ export class TheirDiscardOverlay extends OverlayRegion {
 }
 
 export class OurExpendedOverlay extends OverlayRegion {
-  create(scene: BaseScene): OverlayRegion {
+  create(scene: GameScene): OverlayRegion {
     super.create(scene, 'Your Removed From Game Cards')
 
     return this
@@ -139,7 +139,7 @@ export class OurExpendedOverlay extends OverlayRegion {
 }
 
 export class TheirExpendedOverlay extends OverlayRegion {
-  create(scene: BaseScene): OverlayRegion {
+  create(scene: GameScene): OverlayRegion {
     return super.create(scene, 'Their Removed From Game Cards')
   }
 

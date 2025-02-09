@@ -1,16 +1,16 @@
 import 'phaser'
 import Catalog from '../../../../shared/state/catalog'
 import GameModel from '../../../../shared/state/gameModel'
-import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 import { Flags } from '../../settings/settings'
+import { GameScene } from '../gameScene'
 
 export default class DecksRegion extends Region {
   ourCallback: () => void
   theirCallback: () => void
 
-  create(scene: BaseScene): DecksRegion {
+  create(scene: GameScene): DecksRegion {
     this.scene = scene
 
     this.container = scene.add.container(0, 150).setVisible(!Flags.mobile)

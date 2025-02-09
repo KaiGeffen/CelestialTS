@@ -2,15 +2,15 @@ import 'phaser'
 import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js'
 import GameModel from '../../../../shared/state/gameModel'
 import { Color, Space, Style, Depth, Time } from '../../settings/settings'
-import BaseScene from '../baseScene'
 import Region from './baseRegion'
+import { GameScene } from '../gameScene'
 
 // Shows the current scores of the night's performance
 // As well as any buttons
 export default class RoundResultRegion extends Region {
   roundResult: Phaser.GameObjects.Sprite
 
-  create(scene: BaseScene): RoundResultRegion {
+  create(scene: GameScene): RoundResultRegion {
     this.scene = scene
     this.container = scene.add.container().setDepth(Depth.roundResult)
 

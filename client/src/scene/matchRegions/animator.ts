@@ -1,6 +1,6 @@
 import 'phaser'
 import GameModel from '../../../../shared/state/gameModel'
-import BaseScene from '../baseScene'
+import { GameScene } from '../gameScene'
 import { Animation } from '../../../../shared/animation'
 import { Zone } from '../../../../shared/state/zone'
 import CardLocation from './cardLocation'
@@ -11,14 +11,14 @@ import { View } from '../gameScene'
 import { Status } from '../../lib/status'
 
 export default class Animator {
-  scene: BaseScene
+  scene: GameScene
   view: View
   container: Phaser.GameObjects.Container
 
   // In the last state, which cards were hidden in the story
   lastHiddenCards: boolean[] = []
 
-  constructor(scene: BaseScene, view: View) {
+  constructor(scene: GameScene, view: View) {
     this.scene = scene
     this.view = view
     this.container = scene.add.container().setDepth(Depth.aboveOtherCards)

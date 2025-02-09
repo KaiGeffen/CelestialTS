@@ -36,7 +36,6 @@ export class MatchWS {
         console.log('Server says that an action was in error.')
       })
       .on('dc', () => {
-        console.log('My opponent has disconnected')
         scene.signalDC()
       })
       .on('opponentEmote', (data) => {

@@ -5,6 +5,7 @@ import GameModel from '../../../../shared/state/gameModel'
 import { Space, Depth, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
+import { GameScene } from '../gameScene'
 
 // Y of the buttons
 const y = Space.pad * 2 + (Space.iconSize * 3) / 2
@@ -17,7 +18,7 @@ export default class CommandsRegion extends Region {
   private btnRecap: Button
   private btnSkip: Button
 
-  create(scene: BaseScene): CommandsRegion {
+  create(scene: GameScene): CommandsRegion {
     this.scene = scene
     const x = Flags.mobile
       ? Space.pad + Space.iconSize / 2

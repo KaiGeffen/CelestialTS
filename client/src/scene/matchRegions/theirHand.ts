@@ -4,7 +4,7 @@ import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import GameModel from '../../../../shared/state/gameModel'
 import { Depth, Space, Style, Time, Flags } from '../../settings/settings'
-import BaseScene from '../baseScene'
+import { GameScene } from '../gameScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 
@@ -21,7 +21,7 @@ export default class TheirHandRegion extends Region {
   // Avatar image
   avatar: Button
 
-  create(scene: BaseScene): TheirHandRegion {
+  create(scene: GameScene): TheirHandRegion {
     this.scene = scene
 
     // Avatar, status, hand, recap, pass buttons

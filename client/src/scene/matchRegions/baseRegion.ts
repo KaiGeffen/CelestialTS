@@ -4,13 +4,13 @@ import { CardImage } from '../../lib/cardImage'
 import Card from '../../../../shared/state/card'
 import GameModel from '../../../../shared/state/gameModel'
 import { Time, Space, Color, Depth, Style } from '../../settings/settings'
-import BaseScene from '../baseScene'
+import { GameScene } from '../gameScene'
 
 // Base region
 export default class Region {
   container: Phaser.GameObjects.Container
 
-  scene: BaseScene
+  scene: GameScene
 
   // All gameobjects that should be deleted before new state is shown
   temp: any[] = []

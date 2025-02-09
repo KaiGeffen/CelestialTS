@@ -12,7 +12,7 @@ import Card from '../../../../shared/state/card'
 import GameModel from '../../../../shared/state/gameModel'
 import { Animation } from '../../../../shared/animation'
 import { Zone } from '../../../../shared/state/zone'
-import BaseScene from '../baseScene'
+import { GameScene } from '../gameScene'
 
 export default class MulliganRegion extends Region {
   // The cards in our starting hand
@@ -27,7 +27,7 @@ export default class MulliganRegion extends Region {
   // The callback for when the button is clicked
   onButtonClick: () => void
 
-  create(scene: BaseScene): MulliganRegion {
+  create(scene: GameScene): MulliganRegion {
     this.scene = scene
 
     this.cards = []

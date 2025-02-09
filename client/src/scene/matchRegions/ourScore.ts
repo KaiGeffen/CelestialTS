@@ -1,9 +1,9 @@
 import 'phaser'
 import GameModel from '../../../../shared/state/gameModel'
 import { Depth, Space, Style, Flags } from '../../settings/settings'
-import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import { MechanicsSettings } from '../../../../shared/settings'
+import { GameScene } from '../gameScene'
 
 export default class ScoreRegion extends Region {
   // For the current state, the maximum and current amount of breath we have
@@ -24,7 +24,7 @@ export default class ScoreRegion extends Region {
   BREATH_X = Space.windowWidth - (Flags.mobile ? 40 : 163)
   BREATH_Y = Space.windowHeight - (Flags.mobile ? Space.handHeight / 2 : 53)
 
-  create(scene: BaseScene): ScoreRegion {
+  create(scene: GameScene): ScoreRegion {
     this.scene = scene
     this.container = scene.add.container().setDepth(Depth.ourScore)
 

@@ -1,6 +1,6 @@
 import 'phaser'
 import { Color, Space, Style, Depth, Ease, Time } from '../../settings/settings'
-import BaseScene from '../baseScene'
+import { GameScene } from '../gameScene'
 import Region from './baseRegion'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
@@ -15,7 +15,7 @@ export default class SearchingRegion extends Region {
   txtTime: Phaser.GameObjects.Text
   matchFound: boolean
 
-  create(scene: BaseScene, avatarId: number): Region {
+  create(scene: GameScene, avatarId: number): Region {
     this.scene = scene
     this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
@@ -147,7 +147,7 @@ export default class SearchingRegion extends Region {
     this.container.add([this.txtTitle, this.txtTime])
   }
 
-  private addButtons(scene: BaseScene): void {
+  private addButtons(scene: GameScene): void {
     let btn = new Buttons.Basic(
       this.container,
       Space.windowWidth / 2,
@@ -177,7 +177,7 @@ export class SearchingRegionTutorial extends Region {
   // Number of the image frame currently shown, always end with the 3rd frame
   currentFrame: number
 
-  create(scene: BaseScene, tutorialNum: number): Region {
+  create(scene: GameScene, tutorialNum: number): Region {
     this.scene = scene
     this.container = scene.add.container(0, 0).setDepth(Depth.searching)
 
@@ -219,7 +219,7 @@ export class SearchingRegionTutorial extends Region {
     this.tweenImage()
   }
 
-  private createText(scene: BaseScene, tutorialNum: number): void {
+  private createText(scene: GameScene, tutorialNum: number): void {
     this.background = scene.add
       .rectangle(
         0,

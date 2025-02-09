@@ -4,7 +4,7 @@ import Button from '../../lib/buttons/button'
 import Icons from '../../lib/buttons/icons'
 import GameModel from '../../../../shared/state/gameModel'
 import { Style, Color, Space, Time, Ease, Flags } from '../../settings/settings'
-import BaseScene from '../baseScene'
+import { GameScene } from '../gameScene'
 import Region from './baseRegion'
 import { MechanicsSettings } from '../../../../shared/settings'
 
@@ -22,7 +22,7 @@ export default class PassRegion extends Region {
   txtYouPassed: Phaser.GameObjects.Text
   txtTheyPassed: Phaser.GameObjects.Text
 
-  create(scene: BaseScene): PassRegion {
+  create(scene: GameScene): PassRegion {
     this.scene = scene
     this.container = scene.add.container(
       Space.windowWidth,

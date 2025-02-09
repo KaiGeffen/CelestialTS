@@ -34,6 +34,9 @@ export class GameScene extends BaseScene {
   // Whether this match is a tutorial
   isTutorial = false
 
+  // Whether the opponent has disconnected
+  opponentDisconnected = false
+
   // TODO Type params
   init(params: any) {
     this.params = params
@@ -87,6 +90,7 @@ export class GameScene extends BaseScene {
   }
 
   signalDC(): void {
+    this.opponentDisconnected = true
     this.scene.launch('MenuScene', {
       menu: 'disconnect',
       activeScene: this,
@@ -347,7 +351,7 @@ export class View {
   // Class that animates everything that is animated
   animator: Animator
 
-  constructor(scene: BaseScene, avatarId: number) {
+  constructor(scene: GameScene, avatarId: number) {
     this.scene = scene
 
     let background = scene.add

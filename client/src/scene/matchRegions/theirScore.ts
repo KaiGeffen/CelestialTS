@@ -4,11 +4,12 @@ import Region from './baseRegion'
 
 import { Space, Color, Style, Depth, Flags } from '../../settings/settings'
 import GameModel from '../../../../shared/state/gameModel'
+import { GameScene } from '../gameScene'
 
 export default class TheirScoreRegion extends Region {
   txtWins: Phaser.GameObjects.Text
 
-  create(scene: Phaser.Scene): TheirScoreRegion {
+  create(scene: GameScene): TheirScoreRegion {
     this.container = scene.add.container(0, 0).setDepth(Depth.theirScore)
 
     // Wins

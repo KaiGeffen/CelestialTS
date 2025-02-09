@@ -41,7 +41,7 @@ export default class ResultsRegion extends Region {
         Space.windowHeight - (Space.buttonHeight + Space.pad * 2) * 2,
       )
 
-  create(scene: BaseScene): ResultsRegion {
+  create(scene: GameScene): ResultsRegion {
     this.scene = scene
     this.container = scene.add.container(0, 0).setDepth(Depth.results)
     this.seen = false
@@ -360,6 +360,7 @@ export default class ResultsRegion extends Region {
 }
 
 import intro from '../../adventures/intro.json'
+import { GameScene } from '../gameScene'
 
 export class ResultsRegionTutorial extends ResultsRegion {
   missionID: number

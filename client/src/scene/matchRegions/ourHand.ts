@@ -7,6 +7,7 @@ import { Depth, Space, Style, Time, Flags } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
+import { GameScene } from '../gameScene'
 
 // The y distance card moves up when hovered
 const HOVER_OFFSET = Space.cardHeight / 2
@@ -35,7 +36,7 @@ export default class OurHandRegion extends Region {
   // Avatar image
   btnAvatar: Button
 
-  create(scene: BaseScene, avatarId: number): OurHandRegion {
+  create(scene: GameScene, avatarId: number): OurHandRegion {
     let that = this
     this.scene = scene
 
@@ -155,9 +156,6 @@ export default class OurHandRegion extends Region {
         }
       }
     }
-
-    // Show priority / not
-    // this.animatePriority(state, state.isRecap)
   }
 
   setOverlayCallbacks(fDeck: () => void, fDiscard: () => void): void {
@@ -167,34 +165,36 @@ export default class OurHandRegion extends Region {
 
   // Set the callback / error message for when card is clicked
   private setCardOnClick(card: CardImage, state: GameModel, i: number) {
-    let msg
-    if (state.winner !== null) {
-      msg = 'The game is over.'
-    } else if (!state.mulligansComplete[1]) {
-      msg = 'Opponent still mulliganing.'
-    } else if (state.isRecap) {
-      msg = 'The story is resolving.'
-    } else if (state.priority === 1) {
-      msg = "It's not your turn."
-    } else if (this.cardClicked) {
-      msg = "You've already selected a card."
-    } else if (state.cardCosts[i] > state.breath[0]) {
-      msg = 'Not enough breath.'
-    }
-
-    // Show error message if there is one, otherwise play the card
-    if (msg !== undefined) {
-      card.setOnClick(() => {
-        this.scene.signalError(msg)
-      })
-    } else {
-      card.setOnClick(this.onCardClick(i, card, this.cards, state))
-    }
-
     // Set whether card shows up as playable, and also whether we can click to play a card in this state
     if (state.cardCosts[i] > state.breath[0]) {
       card.setPlayable(false)
     }
+
+    card.setOnClick(() => {
+      // Check if there are any errors
+      let msg
+      if (state.winner !== null) {
+        msg = 'The game is over.'
+      } else if (this.scene.opponentDisconnected) {
+        msg = 'Your opponent has disconnected.'
+      } else if (!state.mulligansComplete[1]) {
+        msg = 'Opponent still mulliganing.'
+      } else if (state.isRecap) {
+        msg = 'The story is resolving.'
+      } else if (state.priority === 1) {
+        msg = "It's not your turn."
+      } else if (this.cardClicked) {
+        msg = "You've already selected a card."
+      } else if (state.cardCosts[i] > state.breath[0]) {
+        msg = 'Not enough breath.'
+      }
+
+      if (msg !== undefined) {
+        this.scene.signalError(msg)
+      } else {
+        this.onCardClick(i, card, this.cards, state)
+      }
+    })
   }
 
   // Hide the cards in our hand, used when mulligan is visible
