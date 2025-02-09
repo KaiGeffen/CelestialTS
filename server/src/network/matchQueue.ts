@@ -51,11 +51,19 @@ class MatchQueue {
       await match.notifyState()
     })
     const initPvp = createEvent('initPvp', async (data) => {
+      // Clean up stale entries first
+      Object.keys(searchingPlayers).forEach(password => {
+        // TODO Websocket.OPEN is 1, but remote vs local views Websocket differently
+        if (searchingPlayers[password].ws.ws.readyState !== 1) {
+          delete searchingPlayers[password]
+        }
+      })
+
       console.log('searching players are:', searchingPlayers)
+      
       // Check if there is another player, and they are still ready
       const otherPlayer: WaitingPlayer = searchingPlayers[data.password]
-      // TODO Websocket.OPEN is 1, but remote vs local views Websocket differently
-      if (otherPlayer && otherPlayer.ws.ws.readyState === 1) {
+      if (otherPlayer) {
         // Create a PvP match
         const match = new pvpMatch(
           ws,
