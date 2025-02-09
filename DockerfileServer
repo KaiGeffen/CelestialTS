@@ -1,20 +1,16 @@
 FROM node:18
 
-# Create app directory
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+
 WORKDIR /home/node/app
 
-# Copy everything at once
-COPY . .
+COPY --chown=node:node . .
 
-# Install dependencies globally to avoid permission issues
-RUN npm install -g npm@10.8.2
+USER node
 
-# Switch to specific npm version that works locally
-RUN npm --version
+WORKDIR /home/node/app
 
-# Install dependencies with verbose logging to see where it fails
-RUN npm install --verbose
-
+RUN npm install
 RUN npm run build:server
 
 CMD [ "npm", "run", "start:server" ]
