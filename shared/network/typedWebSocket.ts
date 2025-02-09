@@ -48,6 +48,10 @@ export class TypedWebSocket<Received extends Record<string, any>, Sent extends R
     this.ws.onopen = callback
   }
 
+  onClose(callback: () => void): void {
+    this.ws.onclose = callback
+  }
+
   close(code?: number, reason?: string): void {
     this.ws.close(code, reason)
   }

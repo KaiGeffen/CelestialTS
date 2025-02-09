@@ -9,7 +9,6 @@ import { decodeDeck } from '../../../shared/codec'
 import PveMatch from './match/pveMatch'
 import PvpMatch from './match/pvpMatch'
 import Match from './match/match'
-import pvpMatch from './match/pvpMatch'
 import TutorialMatch from './match/tutorialMatch'
 import { MechanicsSettings } from '../../../shared/settings'
 import { MatchServerWS } from '../../../shared/network/matchWS'
@@ -65,7 +64,7 @@ class MatchQueue {
       const otherPlayer: WaitingPlayer = searchingPlayers[data.password]
       if (otherPlayer) {
         // Create a PvP match
-        const match = new pvpMatch(
+        const match = new PvpMatch(
           ws,
           data.uuid,
           decodeDeck(data.deck),

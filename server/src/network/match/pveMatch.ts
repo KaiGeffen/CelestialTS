@@ -1,12 +1,12 @@
 import Match from './match'
 import Card from '../../../../shared/state/card'
-import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { getAction } from '../../ai'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
+import { MatchServerWS } from '../../../../shared/network/matchWS'
 
 class PveMatch extends Match {
   constructor(
-    ws: TypedWebSocket,
+    ws: MatchServerWS,
     uuid: string,
     deck: Card[],
     avatar: number,

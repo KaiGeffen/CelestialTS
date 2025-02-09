@@ -1,12 +1,12 @@
 import { ServerController } from '../../gameController'
 import Card from '../../../../shared/state/card'
-import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { Mulligan } from '../../../../shared/settings'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
+import { MatchServerWS } from '../../../../shared/network/matchWS'
 
 interface Match {
-  ws1: TypedWebSocket | null
-  ws2: TypedWebSocket | null
+  ws1: MatchServerWS | null
+  ws2: MatchServerWS | null
   uuid1: string | null
   uuid2: string | null
 
@@ -19,11 +19,11 @@ interface Match {
 
 class Match {
   constructor(
-    ws1: TypedWebSocket,
+    ws1: MatchServerWS,
     uuid1: string | null = null,
     deck1: Card[] = [],
     avatar1: number,
-    ws2: TypedWebSocket | null,
+    ws2: MatchServerWS | null,
     uuid2: string | null = null,
     deck2: Card[] = [],
     avatar2: number,
@@ -94,21 +94,22 @@ class Match {
   }
 
   // Get the list of all active websockets connected to this match
-  private getActiveWsList(): TypedWebSocket[] {
+  private getActiveWsList(): MatchServerWS[] {
     return [this.ws1, this.ws2].filter((ws) => ws !== null)
   }
 
   async signalEmote(player: number, emoteNumber: number) {
+    // TODO Use emoteNumber
     if (player === 0 && this.ws2 !== null) {
-      await this.ws2.send({ type: 'emote' })
+      await this.ws2.send({ type: 'opponentEmote' })
     }
     if (player === 1 && this.ws1 !== null) {
-      await this.ws1.send({ type: 'emote' })
+      await this.ws1.send({ type: 'opponentEmote' })
     }
   }
 
   // Given ws is disconnecting
-  async doExit(disconnectingWs: TypedWebSocket) {
+  async doExit(disconnectingWs: MatchServerWS) {
     if (this.game === null || this.game.model.winner !== null) return
 
     // Null the ws that has disconnected
@@ -117,7 +118,7 @@ class Match {
 
     // Notify remaining player of the disconnect
     await Promise.all(
-      this.getActiveWsList().map((ws: TypedWebSocket) => ws.send({ type: 'dc' })),
+      this.getActiveWsList().map((ws: MatchServerWS) => ws.send({ type: 'dc' })),
     )
   }
 }
