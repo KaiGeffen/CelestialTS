@@ -4,13 +4,21 @@ RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 WORKDIR /home/node/app
 
-COPY --chown=node:node . .
+# Copy package files first
+COPY --chown=node:node package*.json ./
+COPY --chown=node:node server/package*.json ./server/
+COPY --chown=node:node shared ./shared/
 
 USER node
 
+# Install dependencies first
+RUN npm install
+
+# Then copy rest of the code
+COPY --chown=node:node . .
+
 WORKDIR /home/node/app
 
-RUN npm install
 RUN npm run build:server
 
 CMD [ "npm", "run", "start:server" ]
