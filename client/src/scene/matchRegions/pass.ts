@@ -1,5 +1,4 @@
 import 'phaser'
-import RoundRectangle from 'phaser3-rex-plugins/plugins/roundrectangle.js'
 import Button from '../../lib/buttons/button'
 import Icons from '../../lib/buttons/icons'
 import GameModel from '../../../../shared/state/gameModel'
@@ -202,24 +201,16 @@ export default class PassRegion extends Region {
 
   // For tutorial, disable the option to pass, but still show the sun
   // private oldCallback: () => void
-  tutorialDisablePass(): void {
+  disablePass(): void {
     // this.btnPass.setAlpha(0)
     this.btnPass.setText('').disable()['tutorialSimplifiedPass'] = true
 
     // Enable it, with simplified uses
     this.btnPass.enable()
-
-    // this.btnPass.setAlpha(0)
-    // this.oldCallback = this.btnPass.onClick
-    // this.btnPass.setOnClick(() => {})
-    // this.btnPass.txt.setFontSize(0)
   }
 
-  tutorialEnablePass(): void {
+  enablePass(): void {
     this.btnPass['tutorialSimplifiedPass'] = false
     this.btnPass.enable()
-    // this.btnPass.setAlpha(1)
-    // this.btnPass.setOnClick(this.oldCallback)
-    // this.btnPass.txt.setFont(Style.pass.fontSize)
   }
 }

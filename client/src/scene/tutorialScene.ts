@@ -121,7 +121,7 @@ export default class TutorialGameScene extends AdventureGameScene {
 
     // If player has won/lost, ensure pass button is enabled
     if (state.winner !== null) {
-      this.view.pass['tutorialEnablePass']()
+      this.view.pass['enablePass']()
     }
 
     let result = super.displayState(state)
@@ -242,7 +242,7 @@ export default class TutorialGameScene extends AdventureGameScene {
         this.view.theirScore.show()
         this.view.theirHand.show()['hideStacks']()
 
-        this.view.pass.show()['tutorialDisablePass']()
+        this.view.pass.show()['disablePass']()
         break
     }
   }
@@ -260,9 +260,9 @@ export default class TutorialGameScene extends AdventureGameScene {
 
     // Hide pass until a point
     if (this.progress === 0) {
-      this.view.pass['tutorialDisablePass']()
+      this.view.pass['disablePass']()
     } else if (this.progress === 7) {
-      this.view.pass['tutorialEnablePass']()
+      this.view.pass['enablePass']()
     }
 
     // Hide different elements on the screen based on progress

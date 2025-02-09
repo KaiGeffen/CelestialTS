@@ -14,6 +14,7 @@ import Regions from './matchRegions/matchRegions'
 import OverlayRegion from './matchRegions/pileOverlays'
 import GameModel from '../../../shared/state/gameModel'
 import { MechanicsSettings } from '../../../shared/settings'
+import PassRegion from './matchRegions/pass'
 
 // TODO Rename to Match
 export class GameScene extends BaseScene {
@@ -91,6 +92,11 @@ export class GameScene extends BaseScene {
 
   signalDC(): void {
     this.opponentDisconnected = true
+
+    // Disable the pass button
+    this.view.pass.disablePass()
+
+    // Launch a menu saying opponent disconnected
     this.scene.launch('MenuScene', {
       menu: 'disconnect',
       activeScene: this,
@@ -332,7 +338,7 @@ export class View {
   theirScore: Region
   decks: Region
   discardPiles: Region
-  pass: Region
+  pass: PassRegion
   scores: Region
 
   ourDeckOverlay: OverlayRegion
