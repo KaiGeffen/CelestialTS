@@ -4,12 +4,12 @@ import { v5 as uuidv5 } from 'uuid'
 import { USER_DATA_PORT } from '../../../shared/network/settings'
 import {
   TypedWebSocket,
-  createEvent,
 } from '../../../shared/network/typedWebSocket'
 
 import { db } from '../db/db'
 import { players } from '../db/schema'
 import { eq } from 'drizzle-orm'
+import { UserDataServerWS } from '../../../shared/network/userDataWS'
 
 // Add UUID namespace constant
 const UUID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // UUID v4 namespace
@@ -46,7 +46,7 @@ export default function createUserDataServer() {
        In that event, register events to 
 
       */
-      const ws = new TypedWebSocket(socket)
+      const ws: UserDataServerWS = new TypedWebSocket(socket)
 
       // Remember the user once they've signed in
       let id: string = null

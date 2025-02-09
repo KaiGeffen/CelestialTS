@@ -7,13 +7,15 @@ import UserDataServer from './userDataServer'
 import { Flags } from '../settings/settings'
 import { GameScene } from '../scene/gameScene'
 import { Mulligan } from '../../../shared/settings'
+import { MatchClientWS } from '../../../shared/network/matchWS'
+import { Match } from 'phaser3-rex-plugins/plugins/board-components'
 
 // TODO Figure out this global scene situation, smells bad
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
 var scene
 
 export class MatchWS {
-  socket: TypedWebSocket
+  socket: MatchClientWS
 
   constructor(newScene: GameScene) {
     scene = newScene
@@ -97,7 +99,7 @@ export class MatchWS {
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
   // Get the appropriate websocket for this environment
   // If user is logged in, use the existing ws instead of opening a new one
-  private getSocket(): TypedWebSocket {
+  private getSocket(): MatchClientWS {
     // Establish a websocket based on the environment
     if (Flags.local) {
       return new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)

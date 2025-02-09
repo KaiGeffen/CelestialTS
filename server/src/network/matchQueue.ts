@@ -3,7 +3,6 @@ import Card from '../../../shared/state/card'
 
 import {
   TypedWebSocket,
-  createEvent,
 } from '../../../shared/network/typedWebSocket'
 import { decodeDeck } from '../../../shared/codec'
 
@@ -13,6 +12,7 @@ import Match from './match/match'
 import pvpMatch from './match/pvpMatch'
 import TutorialMatch from './match/tutorialMatch'
 import { MechanicsSettings } from '../../../shared/settings'
+import { MatchServerWS } from '../../../shared/network/matchWS'
 
 /*
 List of ongoing games
@@ -23,7 +23,7 @@ Init includes information about the game type you're looking for
 
 // A player waiting for a game and their associated data
 interface WaitingPlayer {
-  ws: TypedWebSocket
+  ws: MatchServerWS
   uuid: string
   deck: Card[]
   avatar: number
@@ -34,10 +34,10 @@ let searchingPlayers: { [key: string]: WaitingPlayer } = {}
 
 class MatchQueue {
   static enqueue(socket) {
-    const ws = new TypedWebSocket(socket)
+    const ws: MatchServerWS = new TypedWebSocket(socket)
 
     // Register the init events
-    const initPve = createEvent('initPve', async (data) => {
+    ws.on('initPve', async (data) => {
       const match = new PveMatch(
         ws,
         data.uuid,
@@ -50,7 +50,7 @@ class MatchQueue {
       // Start the match
       await match.notifyState()
     })
-    const initPvp = createEvent('initPvp', async (data) => {
+    .on('initPvp', async (data) => {
       // Clean up stale entries first
       Object.keys(searchingPlayers).forEach(password => {
         // TODO Websocket.OPEN is 1, but remote vs local views Websocket differently
@@ -96,60 +96,38 @@ class MatchQueue {
         searchingPlayers[data.password] = waitingPlayer
       }
     })
-    // Register the init events
-    const initTutorial = createEvent('initTutorial', async (data) => {
+    .on('initTutorial', async (data) => {
       const match = new TutorialMatch(ws, data.num)
       registerEvents(ws, match, 0)
 
       // Start the match
       await match.notifyState()
     })
-
-    ;[initPve, initPvp, initTutorial].forEach(({ event, callback }) => {
-      ws.on(event, callback)
-    })
   }
 }
 
 // Register each of the events that the server receives during a match
 function registerEvents(
-  ws: TypedWebSocket,
+  ws: MatchServerWS,
   match: Match,
   playerNumber: number,
 ) {
-  const playCardEvent = createEvent('playCard', (data) => {
+  ws.on('playCard', (data) => {
     const cardNum = data.cardNum
     match.doAction(playerNumber, cardNum)
   })
-
-  const mulliganEvent = createEvent('mulligan', (data) => {
+  .on('mulligan', (data) => {
     match.doMulligan(playerNumber, data.mulligan)
   })
-
-  const passTurnEvent = createEvent('passTurn', (data) => {
+  .on('passTurn', (data) => {
     match.doAction(playerNumber, MechanicsSettings.PASS)
   })
-
-  const exitMatchEvent = createEvent('exitMatch', (data) => {
+  .on('exitMatch', (data) => {
     match.doExit(ws)
   })
-
-  const emoteEvent = createEvent('emote', (data) => {
+  .on('emote', (data) => {
     const emote = 0 // TODO
     match.signalEmote(playerNumber, emote)
-  })
-
-  const registeredEvents = [
-    playCardEvent,
-    mulliganEvent,
-    passTurnEvent,
-    exitMatchEvent,
-    emoteEvent,
-  ]
-
-  // Register each of the events
-  registeredEvents.forEach(({ event, callback }) => {
-    ws.on(event, callback)
   })
 }
 
