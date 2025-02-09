@@ -51,6 +51,7 @@ class MatchQueue {
       await match.notifyState()
     })
     const initPvp = createEvent('initPvp', async (data) => {
+      console.log('searching players are:', searchingPlayers)
       // Check if there is another player, and they are still ready
       const otherPlayer: WaitingPlayer = searchingPlayers[data.password]
       if (otherPlayer && otherPlayer.ws.ws.readyState === WebSocket.OPEN) {

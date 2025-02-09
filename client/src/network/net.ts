@@ -99,8 +99,6 @@ export class MatchWS {
   // If user is logged in, use the existing ws instead of opening a new one
   private getSocket(): TypedWebSocket {
     // Establish a websocket based on the environment
-    console.log('This is running locally?', Flags.local)
-
     if (Flags.local) {
       return new TypedWebSocket(`ws://${URL}:${MATCH_PORT}`)
     } else {

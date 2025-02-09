@@ -84,6 +84,7 @@ export class TypedWebSocket {
   ws: WebSocket
 
   constructor(url: string | WebSocket) {
+    console.log('making a ws')
     if (typeof url === 'string') {
       this.ws = new WebSocket(url)
     } else {
@@ -94,6 +95,8 @@ export class TypedWebSocket {
     this.ws.onmessage = (ev: MessageEvent): void => {
       // The type of the message
       type T = MessageTypes
+
+      console.log('Receiving a message with data:', ev.data)
 
       let message: WSMessage<T>
       try {
