@@ -33,7 +33,7 @@ interface WaitingPlayer {
 let searchingPlayers: { [key: string]: WaitingPlayer } = {}
 
 class MatchQueue {
-  static enqueue(socket: WebSocket) {
+  static enqueue(socket) {
     const ws = new TypedWebSocket(socket)
 
     // Register the init events
@@ -54,7 +54,8 @@ class MatchQueue {
       console.log('searching players are:', searchingPlayers)
       // Check if there is another player, and they are still ready
       const otherPlayer: WaitingPlayer = searchingPlayers[data.password]
-      if (otherPlayer && otherPlayer.ws.ws.readyState === WebSocket.OPEN) {
+      // TODO Websocket.OPEN is 1, but remote vs local views Websocket differently
+      if (otherPlayer && otherPlayer.ws.ws.readyState === 1) {
         // Create a PvP match
         const match = new pvpMatch(
           ws,
