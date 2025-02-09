@@ -8,7 +8,6 @@ import { Flags } from '../settings/settings'
 import { GameScene } from '../scene/gameScene'
 import { Mulligan } from '../../../shared/settings'
 import { MatchClientWS } from '../../../shared/network/matchWS'
-import { Match } from 'phaser3-rex-plugins/plugins/board-components'
 
 // TODO Figure out this global scene situation, smells bad
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)

@@ -10,6 +10,7 @@ import {
   USER_DATA_PORT,
 } from '../../../shared/network/settings'
 import type { GoogleJwtPayload } from '../types/google'
+import { UserDataClientWS } from '../../../shared/network/userDataWS'
 
 const ip = '127.0.0.1'
 const port = 5555
@@ -17,7 +18,7 @@ const port = 5555
 const code = 1000
 
 // The websocket which is open with the main server (Authentication/pack opening)
-var wsServer: TypedWebSocket = undefined
+var wsServer: UserDataClientWS = undefined
 
 export default class UserDataServer {
   // Log in with the server for user with given OAuth token
@@ -339,7 +340,7 @@ export default class UserDataServer {
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
   // Get the appropriate websocket for this environment
   // If user is logged in, use the existing ws instead of opening a new one
-  private static getSocket(): TypedWebSocket {
+  private static getSocket(): UserDataClientWS {
     // Establish a websocket based on the environment
     if (Flags.local) {
       return new TypedWebSocket(`ws://${URL}:${USER_DATA_PORT}`)
