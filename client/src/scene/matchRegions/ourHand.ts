@@ -192,7 +192,7 @@ export default class OurHandRegion extends Region {
       if (msg !== undefined) {
         this.scene.signalError(msg)
       } else {
-        this.onCardClick(i, card, this.cards, state)
+        this.onCardClick(i, card, this.cards, state)()
       }
     })
   }
