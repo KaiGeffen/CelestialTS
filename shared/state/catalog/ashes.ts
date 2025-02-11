@@ -150,7 +150,7 @@ class Cling extends Card {
     let highestCost = -1
     let highestIndex = null
 
-    for (let pileIndex = 0; pileIndex < game.pile[player].length; pileIndex++) {
+    for (let pileIndex = game.pile[player].length - 1; pileIndex >= 0; pileIndex--) {
       const card = game.pile[player][pileIndex]
 
       if (card.cost > highestCost) {
