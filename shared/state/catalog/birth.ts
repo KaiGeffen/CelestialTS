@@ -146,7 +146,7 @@ class Uprising extends Card {
     return world.story.acts.length
   }
 }
-const uprising = new Uprising({ name: 'Uprising', id: 18, cost: 6, points: 3 })
+const uprising = new Uprising({ name: 'Uprising', id: 18, cost: 6, points: 4 })
 
 // BETA
 class Lullaby extends Card {
