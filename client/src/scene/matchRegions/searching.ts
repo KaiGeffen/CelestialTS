@@ -96,6 +96,7 @@ export default class SearchingRegion extends Region {
         Color.backgroundLight,
       )
       .setOrigin(0)
+      .setInteractive()
 
     this.container.add(background)
   }
