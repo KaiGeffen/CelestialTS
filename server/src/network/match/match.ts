@@ -60,7 +60,7 @@ class Match {
         this.game.model.recentModels[player].forEach((state) =>
           ws.send({
             type: 'transmitState',
-            state: state,
+            state: getClientGameModel(state, player, false),
           }),
         )
 
