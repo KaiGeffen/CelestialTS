@@ -165,14 +165,14 @@ const lullaby = new Lullaby({
   name: 'Lullaby',
   id: 5218,
   cost: 6,
-  points: 3,
+  points: 2,
   text: 'Create a copy in hand of each card later in the 	story that costs 0.',
   beta: true,
 })
 
 class Pregnant extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
-    super.play(player, game, index, bonus + index)
+    super.play(player, game, index, bonus)
 
     const card = new Card({
       name: child.name,
