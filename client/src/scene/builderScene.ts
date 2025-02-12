@@ -60,17 +60,6 @@ export class BuilderBase extends BaseScene {
     return this
   }
 
-  // Set the deck's name to be the premade for given avatar
-  setPremade(id: number) {
-    this.deckRegion.setPremade(id)
-
-    // Animate the deck panel sliding out to be seen
-    this.deckRegion.showPanel()
-    this.catalogRegion.shiftRight()
-
-    return this
-  }
-
   // Get the deck code for player's current deck
   getDeckCode(): string {
     return this.deckRegion.getDeckCode()
@@ -158,7 +147,6 @@ export class AdventureBuilderScene extends BuilderBase {
 
 export class BuilderScene extends BuilderBase {
   lastDecklist: number
-  lastPremade: number
 
   constructor() {
     super({
@@ -188,17 +176,10 @@ export class BuilderScene extends BuilderBase {
     // Set starting deck
     if (this.lastDecklist !== undefined) {
       this.decklistsRegion.selectDeck(this.lastDecklist)
-    } else if (this.lastPremade !== undefined) {
-      this.decklistsRegion.premadeCallback()(this.lastPremade)
     }
   }
 
   addCardToDeck(card: Card): string {
-    // If a premade deck is selected, return an error string
-    if (this.decklistsRegion.savedPremadeIndex !== undefined) {
-      return `Can't add cards to a premade deck.`
-    }
-
     // If no deck is selected, make a new deck and add this card
     if (this.decklistsRegion.savedDeckIndex === undefined) {
       // If creating an empty deck failed, return an error string
@@ -247,7 +228,6 @@ export class BuilderScene extends BuilderBase {
   private rememberSettings() {
     // Remember the deck for when the builder is returned to
     this.lastDecklist = this.decklistsRegion.savedDeckIndex
-    this.lastPremade = this.decklistsRegion.savedPremadeIndex
   }
 
   private startCallback(): () => void {

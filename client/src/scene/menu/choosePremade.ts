@@ -18,7 +18,7 @@ import Menu from './menu'
 import newScrollablePanel from '../../lib/scrollablePanel'
 
 export default class ChoosePremade extends Menu {
-  selectedAvatar: number
+  selectedAvatar = 0
 
   avatarsSmall: Button[]
   avatarFull: Phaser.GameObjects.Image
@@ -45,8 +45,7 @@ export default class ChoosePremade extends Menu {
       )
       .setOrigin(0)
       .setInteractive()
-
-    this.selectedAvatar = params.selected | 0
+    
     this.avatarsSmall = []
 
     this.createContent(callback)

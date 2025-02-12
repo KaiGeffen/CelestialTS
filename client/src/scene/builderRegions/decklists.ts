@@ -16,6 +16,8 @@ import {
 } from '../../settings/settings'
 import newScrollablePanel from '../../lib/scrollablePanel'
 import { DecklistSettings } from '../../../../shared/settings'
+import avatarNames from '../../lib/avatarNames'
+import premadeDecklists from '../../catalog/premadeDecklists'
 
 const width = Space.decklistPanelWidth
 const DEFAULT_DECK_NAME = 'Deck'
@@ -31,9 +33,6 @@ export default class DecklistsRegion {
   // The index of the currently selected deck
   savedDeckIndex: number
 
-  // The index of the currently selected premade
-  savedPremadeIndex: number
-
   // Button for user to select a premade deck
   btnPremade: Button
 
@@ -42,7 +41,7 @@ export default class DecklistsRegion {
 
   // Image of the current avatar
   avatar: Phaser.GameObjects.Image
-
+ 
   // Create the are where player can manipulate their decks
   create(scene) {
     this.scene = scene
@@ -92,65 +91,57 @@ export default class DecklistsRegion {
     this.decklistBtns[this.savedDeckIndex].setText(name)
   }
 
-  // Callback for when a premade avatar is clicked on
-  premadeCallback(): (i: number) => void {
-    let that = this
-    return function (i: number) {
-      that.savedDeckIndex = undefined
-      that.savedPremadeIndex = i
-
-      // Deselect decklist buttons
-      that.decklistBtns.forEach((btn) => btn.deselect())
-
-      // Set the current deck to premade list
-      that.scene.setPremade(i)
+  // Create a deck and select it
+  private createDeck(name: string, avatar: number, deckCode: string): void {
+    // Use a default deck name if it's not specified
+    if (name === undefined || name === '') {
+      const number = this.decklistBtns.length + 1
+      name = `${DEFAULT_DECK_NAME} ${number}`
     }
-  }
 
-  // Deselect whatever deck is currently selected
-  deselect(): void {
-    this.savedDeckIndex = undefined
-
-    this.decklistBtns.forEach((b) => {
-      b.deselect()
+    // Create the deck in storage
+    UserSettings._push('decks', {
+      name: name,
+      value: '',
+      avatar: avatar === undefined ? 0 : avatar,
     })
+
+    // Create a new button
+    let newBtn = this.createDeckBtn(this.decklistBtns.length)
+    this.panel.add(newBtn)
+    this.scrollablePanel.layout()
+
+    // Select this deck
+    let index = this.decklistBtns.length - 1
+    this.decklistBtns[index].onClick()
+
+    // Scroll down to show the new deck
+    this.scrollablePanel.t = 1
+
+    // Refresh each btn based on screen position
+    this.refreshBtns()
+
+    // If a deck code was included, populate it
+    if (deckCode !== undefined) {
+      this.scene.setDeck(deckCode)
+    }
   }
 
   // Return a callback for when a deck is created
   createCallback(): (name: string, avatar: number, deckCode: string) => void {
     return (name: string, avatar: number, deckCode: string) => {
-      // Use a default deck name if it's not specified
-      if (name === undefined || name === '') {
-        const number = this.decklistBtns.length + 1
-        name = `${DEFAULT_DECK_NAME} ${number}`
-      }
+      this.createDeck(name, avatar, deckCode)
+    }
+  }
 
-      // Create the deck in storage
-      UserSettings._push('decks', {
-        name: name,
-        value: '',
-        avatar: avatar === undefined ? 0 : avatar,
-      })
+  // Callback for when a premade avatar is clicked on
+  premadeCallback(): (id: number) => void {
+    return (id: number) => {
+      // Get premade deck details from scene
+      const name = `${avatarNames[id]} Premade`
+      const deckCode = premadeDecklists[id]
 
-      // Create a new button
-      let newBtn = this.createDeckBtn(this.decklistBtns.length)
-      this.panel.add(newBtn)
-      this.scrollablePanel.layout()
-
-      // Select this deck
-      let index = this.decklistBtns.length - 1
-      this.decklistBtns[index].onClick()
-
-      // Scroll down to show the new deck
-      this.scrollablePanel.t = 1
-
-      // Refresh each btn based on screen position
-      this.refreshBtns()
-
-      // If a deck code was included, populate it
-      if (deckCode !== undefined) {
-        this.scene.setDeck(deckCode)
-      }
+      this.createDeck(name, id, deckCode)
     }
   }
 
@@ -163,6 +154,15 @@ export default class DecklistsRegion {
       this.createCallback()(undefined, undefined, undefined)
       return true
     }
+  }
+
+  // Deselect whatever deck is currently selected
+  deselect(): void {
+    this.savedDeckIndex = undefined
+
+    this.decklistBtns.forEach((b) => {
+      b.deselect()
+    })
   }
 
   // Create the full panel
@@ -247,13 +247,19 @@ export default class DecklistsRegion {
       0,
       'Premade',
       () => {
-        this.scene.setSearchVisible(false)
-        this.scene.scene.launch('MenuScene', {
-          menu: 'choosePremade',
-          selected: this.savedPremadeIndex,
-          callback: this.premadeCallback(),
-          exitCallback: () => this.scene.setSearchVisible(true),
-        })
+        // Check if at max decks
+        if (UserSettings._get('decks').length >= DecklistSettings.MAX_DECKS) {
+          this.scene.signalError(
+            `Reached max number of decks (${DecklistSettings.MAX_DECKS}).`,
+          )
+        } else {
+          this.scene.setSearchVisible(false)
+          this.scene.scene.launch('MenuScene', {
+            menu: 'choosePremade',
+            callback: this.premadeCallback(),
+            exitCallback: () => this.scene.setSearchVisible(true),
+          })
+        }
       },
       true,
     )
@@ -370,7 +376,6 @@ export default class DecklistsRegion {
       // Otherwise select this button
       else {
         that.savedDeckIndex = i
-        that.savedPremadeIndex = undefined
 
         btn.select()
 
@@ -403,7 +408,7 @@ export default class DecklistsRegion {
   // Create the "New" button which prompts user to make a new deck
   private newDeckCallback(): () => void {
     return () => {
-      // If user already has 9 decks, signal error instead
+      // If user already has max decks, signal error instead
       if (UserSettings._get('decks').length >= DecklistSettings.MAX_DECKS) {
         this.scene.signalError(
           `Reached max number of decks (${DecklistSettings.MAX_DECKS}).`,
