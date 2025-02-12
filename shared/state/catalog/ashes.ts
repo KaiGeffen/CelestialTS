@@ -338,5 +338,4 @@ export {
   goliath,
   firebug,
   immolant,
-  wildfire,
 }
