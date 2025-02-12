@@ -225,7 +225,7 @@ class Neptune extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    game.breath[player] += 3
+    game.breath[player] += 4
   }
 
   onMorning(player: number, game: GameModel, index: number) {
@@ -241,7 +241,46 @@ const neptune = new Neptune({
   name: 'Neptune',
   id: 8056,
   cost: 3,
-  text: 'Gain 3 breath.\nMorning: Gain 1 breath for each breath you ended the last round with.',
+  text: 'Gain 4 breath.\nMorning: Gain 1 breath for each breath you ended the last round with.',
+  beta: true,
+})
+
+class Dreamer extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    if (super.exhale(1, game, player)) {
+      bonus += 1
+    }
+    super.play(player, game, index, bonus)
+
+    if (game.hand[player].length === 0) {
+      super.draw(1, game, player)
+    }
+  }
+}
+const dreamer = new Dreamer({
+  name: 'Dreamer',
+  id: 8832,
+  cost: 1,
+  points: 1,
+  text: 'Exhale 1: Worth +1.\nDraw a card if your hand is empty.',
+  beta: true,
+})
+
+class Supernova extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    if (super.exhale(3, game, player)) {
+      game.score[player] *= 2
+    }
+  }
+}
+const supernova = new Supernova({
+  name: 'Supernova',
+  id: 8835,
+  cost: 4,
+  points: 4,
+  text: 'Exhale 3: Double your points.',
   beta: true,
 })
 
@@ -259,4 +298,6 @@ export {
   wish,
   possibility,
   neptune,
+  dreamer,
+  supernova,
 }
