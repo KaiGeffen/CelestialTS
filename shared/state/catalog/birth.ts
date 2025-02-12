@@ -146,7 +146,13 @@ class Uprising extends Card {
     return world.story.acts.length
   }
 }
-const uprising = new Uprising({ name: 'Uprising', id: 18, cost: 6, points: 4 })
+const uprising = new Uprising({
+  name: 'Uprising',
+  id: 18,
+  cost: 6,
+  points: 4,
+  text: 'Worth +1 for each card before this in the story.',
+})
 
 // BETA
 class Lullaby extends Card {
@@ -209,6 +215,19 @@ const passOn = new PassOn({
   beta: true,
 })
 
+class Village extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus + index)
+  }
+}
+const village = new Village({
+  name: 'Village',
+  id: 4018,
+  cost: 4,
+  beta: true,
+  text: 'Worth +1 for each card before this in the story.',
+})
+
 export {
   nascence,
   birth,
@@ -222,4 +241,5 @@ export {
   lullaby,
   pregnant,
   passOn,
+  village,
 }
