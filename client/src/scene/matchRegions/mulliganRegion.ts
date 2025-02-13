@@ -13,6 +13,7 @@ import GameModel from '../../../../shared/state/gameModel'
 import { Animation } from '../../../../shared/animation'
 import { Zone } from '../../../../shared/state/zone'
 import { GameScene } from '../gameScene'
+import { UserSettings } from '../../settings/userSettings'
 
 export default class MulliganRegion extends Region {
   // The cards in our starting hand
@@ -69,9 +70,13 @@ export default class MulliganRegion extends Region {
       Space.windowWidth / 2,
       Space.windowHeight / 2 + Space.cardHeight / 2 + Space.pad * 4,
       'Ready',
-    ).setOnClick(() => {
-      this.onButtonClick()
-    }, true)
+    ).setOnClick(
+      () => {
+        this.onButtonClick()
+      },
+      true,
+      true,
+    )
 
     this.container.add([txtTitle, txtHint, this.txtPriority])
 
@@ -101,6 +106,7 @@ export default class MulliganRegion extends Region {
         .setCost(state.hand[0][i].cost)
         .setOnClick(this.onCardClick(i))
         .setFocusOptions('Toggle')
+        .setHotkey(i)
 
       this.cards.push(card)
     }

@@ -1,6 +1,14 @@
 import 'phaser'
 import Catalog from '../../../shared/state/catalog'
-import { Color, Style, BBStyle, Time, Space, Flags } from '../settings/settings'
+import {
+  Color,
+  Style,
+  BBStyle,
+  Time,
+  Space,
+  Flags,
+  UserSettings,
+} from '../settings/settings'
 import Card from '../../../shared/state/card'
 import { KeywordPosition, ReferencePosition } from '../../../shared/state/card'
 import { StatusBar } from '../lib/status'
@@ -288,6 +296,24 @@ export class CardImage {
     if (getCount) {
       this.getCount = getCount
     }
+
+    return this
+  }
+
+  // Set the hotkey which will activate this card's callback
+  setHotkey(hotkey: number): this {
+    // Add keyboard listeners
+    const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
+    if (hotkey > numberWords.length) {
+      throw new Error(`Card hotkey must be 1 through 6, not ${hotkey}`)
+    }
+
+    this.scene.input.keyboard.on(`keydown-${numberWords[hotkey]}`, () => {
+      if (UserSettings._get('hotkeys')) {
+        console.log(`Card hotkey ${this.card.name} pressed`)
+        this.clickCallback()
+      }
+    })
 
     return this
   }
