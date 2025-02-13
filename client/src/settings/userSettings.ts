@@ -1,4 +1,4 @@
-import Server from '../network/server'
+import Server from '../network/userDataServer'
 import Catalog from '../../../shared/state/catalog'
 import { Space } from './settings'
 import { Flags } from './flags'
@@ -57,7 +57,7 @@ export class UserSettings {
   // Get the given setting
   static _get(key: string) {
     // If using cards in development, save the deck separately
-    if (key === 'decks' && Flags.devCards) {
+    if (key === 'decks' && Flags.devCardsEnabled) {
       key = 'devDecks'
     }
 
