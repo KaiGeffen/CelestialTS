@@ -168,7 +168,7 @@ export default class OurHandRegion extends Region {
     }
   }
 
-  addHotkeyListeners() {
+  private addHotkeyListeners() {
     // Add keyboard listeners
     const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
 

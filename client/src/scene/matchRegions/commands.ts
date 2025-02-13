@@ -2,10 +2,11 @@ import 'phaser'
 import Button from '../../lib/buttons/button'
 import Icons from '../../lib/buttons/icons'
 import GameModel from '../../../../shared/state/gameModel'
-import { Space, Depth, Flags } from '../../settings/settings'
+import { Space, Depth, Flags, UserSettings } from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import { GameScene } from '../gameScene'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 // Y of the buttons
 const y = Space.pad * 2 + (Space.iconSize * 3) / 2
@@ -32,12 +33,42 @@ export default class CommandsRegion extends Region {
     this.createRecap()
     this.createSkip()
 
+    this.addHotkeyListeners()
+
     return this
   }
 
   displayState(state: GameModel): void {
-    this.btnRecap.setVisible(!state.isRecap && state.maxBreath[0] > 1)
-    this.btnSkip.setVisible(state.isRecap)
+    // Recap button
+    // TODO Conditional should care about whether a recap exists not the max breath
+    if (!state.isRecap && state.maxBreath[0] > 1) {
+      this.btnRecap.enable()
+      this.btnRecap.setVisible(true)
+    } else {
+      this.btnRecap.disable()
+      this.btnRecap.setVisible(false)
+    }
+
+    // Skip button
+    if (state.isRecap) {
+      this.btnSkip.enable()
+      this.btnSkip.setVisible(true)
+    } else {
+      this.btnSkip.disable()
+      this.btnSkip.setVisible(false)
+    }
+  }
+
+  private addHotkeyListeners() {
+    this.scene.input.keyboard.on('keydown-T', () => {
+      if (UserSettings._get('hotkeys')) {
+        if (this.btnRecap.enabled) {
+          this.btnRecap.onClick()
+        } else if (this.btnSkip.enabled) {
+          this.btnSkip.onClick()
+        }
+      }
+    })
   }
 
   private createRecap(): void {

@@ -110,7 +110,6 @@ export default class MulliganRegion extends Region {
         .setCost(state.hand[0][i].cost)
         .setOnClick(this.onCardClick(i))
         .setFocusOptions('Toggle')
-        .setHotkey(i)
 
       this.cards.push(card)
     }
