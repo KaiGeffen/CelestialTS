@@ -1,4 +1,4 @@
-import UserDataServer from '../network/userDataServer'
+import Server from '../network/server'
 import Catalog from '../../../shared/state/catalog'
 import { Space } from './settings'
 import { Flags } from './flags'
@@ -57,7 +57,7 @@ export class UserSettings {
   // Get the given setting
   static _get(key: string) {
     // If using cards in development, save the deck separately
-    if (key === 'decks' && Flags.devCardsEnabled) {
+    if (key === 'decks' && Flags.devCards) {
       key = 'devDecks'
     }
 
@@ -80,13 +80,13 @@ export class UserSettings {
       // If key is in session storage then we're signed in
       // User progress and decks should be communicated to the server immediately
       if (key === 'userProgress') {
-        UserDataServer.sendUserProgress(value)
+        Server.sendUserProgress(value)
       } else if (key === 'decks') {
-        UserDataServer.sendDecks(value)
+        Server.sendDecks(value)
       } else if (key === 'inventory') {
-        UserDataServer.sendInventory(value)
+        Server.sendInventory(value)
       } else if (key === 'completedMissions') {
-        UserDataServer.sendCompletedMissions(value)
+        Server.sendCompletedMissions(value)
       }
     } else {
       localStorage.setItem(key, JSON.stringify(value))
