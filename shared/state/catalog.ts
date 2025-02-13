@@ -55,7 +55,8 @@ const allCards = [...fullCatalog, ...nonCollectibles]
 
 export default class Catalog {
   static allCards = allCards
-  static collectibleCards = fullCatalog
+  static collectibleCards = fullCatalog.filter((c) => !c.beta)
+  static betaCards = fullCatalog.filter((c) => c.beta)
   static cardback = new Card({ name: 'Cardback', id: 1000 })
 
   static getCard(s: string): Card {
