@@ -60,7 +60,6 @@ class Pet extends Card {
       cost: 2,
       points,
       basePoints: 1,
-      qualities: [Quality.FLEETING],
       text,
     })
   }

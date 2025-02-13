@@ -41,7 +41,9 @@ class Story {
       roundEndEffects.push([act.card.onRoundEndIfThisResolved, act.owner])
 
       // Put in pile or remove from game if Fleeting
-      if (!act.card.qualities.includes(Quality.FLEETING)) {
+      if (act.card.name === 'Pet') {
+        // Pet creates a new pet, so don't add to either pile
+      } else if (!act.card.qualities.includes(Quality.FLEETING)) {
         game.pile[act.owner].push(act.card)
       } else {
         game.expended[act.owner].push(act.card)
