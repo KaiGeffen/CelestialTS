@@ -206,7 +206,11 @@ export class GameScene extends BaseScene {
       }
     })
     view.pass.setShowResultsCallback(() => {
-      that.view.results.show()
+      if (!that.view.results.isVisible()) {
+        that.view.results.show()
+      } else {
+        that.view.results.hide()
+      }
     })
 
     // Piles (Show overlay when clicked)
