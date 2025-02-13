@@ -2,9 +2,7 @@ import { WebSocketServer } from 'ws'
 import { v5 as uuidv5 } from 'uuid'
 
 import { USER_DATA_PORT } from '../../../shared/network/settings'
-import {
-  TypedWebSocket,
-} from '../../../shared/network/typedWebSocket'
+import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
 
 import { db } from '../db/db'
 import { players } from '../db/schema'

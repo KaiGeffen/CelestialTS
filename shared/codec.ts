@@ -6,7 +6,7 @@ const full_state_delim = 'ª'
 
 // Get a card given by its id
 function getCard(id: string): Card {
-  return Catalog.allCards.find((card) => card.id === parseInt(id))
+  return Catalog.getCardById(parseInt(id))
 }
 
 function encodeCard(card: Card): string {
@@ -21,7 +21,7 @@ function decodeCard(s: string): Card {
 
 function encodeDeck(deck: Card[] | string): string {
   if (deck === undefined || deck === '') {
-    return ''
+    return ':'
   }
 
   let cards = []
@@ -37,7 +37,7 @@ function encodeDeck(deck: Card[] | string): string {
 }
 
 function decodeDeck(s: string): Card[] {
-  if (s === '') return []
+  if (s === ':') return []
 
   let cardStrings: string[] = s.split(delims[1])
 
