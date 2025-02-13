@@ -284,6 +284,23 @@ const supernova = new Supernova({
   beta: true,
 })
 
+class Pride extends Card {
+  onMorning(player: number, game: GameModel, index: number) {
+    if (super.exhale(2, game, player)) {
+      game.pile[player].splice(index, 1)
+      game.createInStory(player, this)
+    }
+    return true
+  }
+}
+const pride = new Pride({
+  name: 'Pride',
+  id: 8666,
+  cost: 3,
+  points: 3,
+  text: 'Morning: Exhale 2: Add this to the story.',
+})
+
 export {
   stars,
   cosmos,
@@ -300,4 +317,5 @@ export {
   neptune,
   dreamer,
   supernova,
+  pride,
 }
