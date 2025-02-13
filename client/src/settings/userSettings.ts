@@ -21,7 +21,7 @@ export class UserSettings {
       autopass: true,
 
       // Whether hotkeys are enabled
-      hotkeys: true,
+      hotkeys: false,
 
       // List of Messages that user should be shown
       // NOTE Doesn't get pushed to sql, is the result of the userProgress below
