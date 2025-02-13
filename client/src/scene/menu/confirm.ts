@@ -1,60 +1,67 @@
-import 'phaser';
-import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js';
-import Buttons from '../../lib/buttons/buttons';
-import { Color, Space, Style } from '../../settings/settings';
-import Menu from './menu';
+import 'phaser'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import Buttons from '../../lib/buttons/buttons'
+import { Color, Space, Style } from '../../settings/settings'
+import Menu from './menu'
 import MenuScene from '../menuScene'
-
 
 const width = 500
 
 export default class ConfirmMenu extends Menu {
-	constructor(scene: MenuScene, params) {
-		super(scene, width)
+  constructor(scene: MenuScene, params) {
+    super(scene, width)
 
-		this.createContent(params)
+    this.createContent(params)
 
-		this.layout()
-	}
+    this.layout()
+  }
 
-	private createContent(params) {
-		const { callback, hint, text } = params
-		
-		this.createHeader('Confirm')
+  private createContent(params) {
+    const { callback, hint, text } = params
 
-		let s = text || `Are you sure you want to ${hint}?`
-		this.createText(s)
+    this.createHeader('Confirm')
 
-		this.sizer.add(this.createButtons(this.scene, callback))
-	}
+    let s = text || `Are you sure you want to ${hint}?`
+    this.createText(s)
 
-	// Create the buttons at the bottom
-	private createButtons(scene: Phaser.Scene, callback: () => void) {
-		let sizer = scene['rexUI'].add.sizer({
-			width: width,
-			space: {
-				item: Space.pad,
-				left: Space.pad,
-				right: Space.pad,
-			}
-		})
+    this.sizer.add(this.createButtons(this.scene, callback))
+  }
 
-		sizer
-		.add(this.createCancelButton())
-		.addSpace()
-		.add(this.createOkay(scene, callback))
+  // Create the buttons at the bottom
+  private createButtons(scene: Phaser.Scene, callback: () => void) {
+    let sizer = scene['rexUI'].add.sizer({
+      width: width,
+      space: {
+        item: Space.pad,
+        left: Space.pad,
+        right: Space.pad,
+      },
+    })
 
-		return sizer
-	}
+    sizer
+      .add(this.createCancelButton())
+      .addSpace()
+      .add(this.createOkay(scene, callback))
 
-	private createOkay(scene: Phaser.Scene, callback: () => void): ContainerLite {
-		let container = new ContainerLite(scene, 0, 0, Space.buttonWidth, 50)
+    return sizer
+  }
 
-		new Buttons.Basic(container, 0, 0, 'Okay', () => {
-			callback()
-			this.close()
-		})
+  private createOkay(scene: Phaser.Scene, callback: () => void): ContainerLite {
+    let container = new ContainerLite(scene, 0, 0, Space.buttonWidth, 50)
 
-		return container
-	}
+    new Buttons.Basic(
+      container,
+      0,
+      0,
+      'Okay',
+      () => {
+        callback()
+        this.close()
+      },
+      false,
+      true,
+    )
+
+    return container
+  }
 }

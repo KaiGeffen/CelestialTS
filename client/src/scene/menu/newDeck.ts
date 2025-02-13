@@ -260,6 +260,8 @@ class AlterDeckMenu extends Menu {
         // Close this scene
         this.scene.scene.stop()
       },
+      true,
+      true,
     )
 
     return container

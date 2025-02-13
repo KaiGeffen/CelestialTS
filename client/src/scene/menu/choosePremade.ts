@@ -45,7 +45,7 @@ export default class ChoosePremade extends Menu {
       )
       .setOrigin(0)
       .setInteractive()
-    
+
     this.avatarsSmall = []
 
     this.createContent(callback)
@@ -285,6 +285,7 @@ export default class ChoosePremade extends Menu {
         callback(this.selectedAvatar)
         this.close()
       },
+      true,
       true,
     )
     panel.add(c2)
