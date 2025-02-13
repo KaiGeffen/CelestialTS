@@ -20,6 +20,9 @@ export class UserSettings {
       // Whether the player should pass automatically if there's nothing they can play
       autopass: true,
 
+      // Whether hotkeys are enabled
+      hotkeys: true,
+
       // List of Messages that user should be shown
       // NOTE Doesn't get pushed to sql, is the result of the userProgress below
       newMessages: [],

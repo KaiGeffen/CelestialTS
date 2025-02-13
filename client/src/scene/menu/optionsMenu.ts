@@ -207,13 +207,14 @@ export default class OptionsMenu extends Menu {
     sizer
       .add(this.createAutopass(), { expand: true })
       .addSpace()
+      .add(this.createHotkeys(), { expand: true })
+      .addSpace()
       .add(this.createSpeed(), { expand: true })
       .addSpace()
       .add(this.createQuit(activeScene), { expand: true })
 
     return sizer
   }
-
   private createAudioPanel() {
     let sizer = this.scene['rexUI'].add
       .sizer({
@@ -348,7 +349,7 @@ export default class OptionsMenu extends Menu {
   }
 
   private createAutopass() {
-    let sizer = this.scene['rexUI'].add.sizer({ width: this.subwidth })
+    let sizer = this.scene.rexUI.add.sizer({ width: this.subwidth })
 
     let txtHint = this.scene.add.text(0, 0, 'Autopass:', Style.basic)
     sizer.add(txtHint)
@@ -369,6 +370,35 @@ export default class OptionsMenu extends Menu {
       } else {
         btn.setText('Enabled')
         UserSettings._set('autopass', true)
+      }
+    })
+    sizer.add(container)
+
+    return sizer
+  }
+
+  private createHotkeys(): import('phaser').GameObjects.GameObject {
+    let sizer = this.scene.rexUI.add.sizer({ width: this.subwidth })
+
+    let txtHint = this.scene.add.text(0, 0, 'Hotkeys:', Style.basic)
+    sizer.add(txtHint)
+    sizer.addSpace()
+
+    const s = UserSettings._get('hotkeys') ? 'Enabled' : 'Disabled'
+    let container = new ContainerLite(
+      this.scene,
+      0,
+      0,
+      Space.buttonWidth,
+      Space.buttonHeight,
+    )
+    let btn = new Buttons.Basic(container, 0, 0, s, () => {
+      if (UserSettings._get('hotkeys')) {
+        btn.setText('Disabled')
+        UserSettings._set('hotkeys', false)
+      } else {
+        btn.setText('Enabled')
+        UserSettings._set('hotkeys', true)
       }
     })
     sizer.add(container)
