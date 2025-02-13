@@ -3,11 +3,19 @@ import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import { CardImage } from '../../lib/cardImage'
 import GameModel from '../../../../shared/state/gameModel'
-import { Depth, Space, Style, Time, Flags } from '../../settings/settings'
+import {
+  Depth,
+  Space,
+  Style,
+  Time,
+  Flags,
+  UserSettings,
+} from '../../settings/settings'
 import BaseScene from '../baseScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
 import { GameScene } from '../gameScene'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 // The y distance card moves up when hovered
 const HOVER_OFFSET = Space.cardHeight / 2
@@ -92,7 +100,22 @@ export default class OurHandRegion extends Region {
       )
     }
 
+    this.addHotkeyListeners()
+
     return this
+  }
+
+  addHotkeyListeners() {
+    // Add keyboard listeners
+    const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
+
+    for (let i = 0; i < MechanicsSettings.HAND_CAP; i++) {
+      this.scene.input.keyboard.on(`keydown-${numberWords[i]}`, () => {
+        if (UserSettings._get('hotkeys')) {
+          this.cards[i].clickCallback()
+        }
+      })
+    }
   }
 
   displayState(state: GameModel): void {
