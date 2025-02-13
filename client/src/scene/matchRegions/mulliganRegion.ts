@@ -14,6 +14,7 @@ import { Animation } from '../../../../shared/animation'
 import { Zone } from '../../../../shared/state/zone'
 import { GameScene } from '../gameScene'
 import { UserSettings } from '../../settings/userSettings'
+import Button from '../../lib/buttons/button'
 
 export default class MulliganRegion extends Region {
   // The cards in our starting hand
@@ -21,6 +22,9 @@ export default class MulliganRegion extends Region {
 
   // Text saying who starts with priority
   txtPriority: Phaser.GameObjects.Text
+
+  // The ready button
+  btnReady: Button
 
   // The player's keep/not keep choices for each card in their hand
   mulliganChoices = [false, false, false]
@@ -65,16 +69,15 @@ export default class MulliganRegion extends Region {
       )
       .setOrigin(0.5, 1)
 
-    let btn = new Buttons.Basic(
+    this.btnReady = new Buttons.Basic(
       this.container,
       Space.windowWidth / 2,
       Space.windowHeight / 2 + Space.cardHeight / 2 + Space.pad * 4,
       'Ready',
-    ).setOnClick(
       () => {
         this.onButtonClick()
       },
-      true,
+      false,
       true,
     )
 
@@ -87,6 +90,7 @@ export default class MulliganRegion extends Region {
     // If we are done with our mulligan, hide this
     if (state.mulligansComplete[0]) {
       this.hide()
+      this.btnReady.disable()
       return
     }
 
