@@ -17,6 +17,7 @@ export default function createUserDataServer() {
   const wss = new WebSocketServer({ port: USER_DATA_PORT })
 
   wss.on('connection', async (socket: WebSocket) => {
+    console.log('User-data server connected')
     try {
       /* Request user's token
        socket.send('request_token')
