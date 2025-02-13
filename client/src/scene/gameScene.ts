@@ -463,6 +463,9 @@ export class View {
     // Hide the hint, in case it's describing something now moot
     this.scene.hint.hide()
 
+    // Note whether the overlay is already visible
+    const alreadyVisible = overlay.container.visible
+
     // Hide all overlays
     this.ourDeckOverlay.hide()
     this.theirDeckOverlay.hide()
@@ -472,7 +475,9 @@ export class View {
     this.theirExpendedOverlay.hide()
 
     // Show the given overlay
-    overlay.show()
+    if (!alreadyVisible) {
+      overlay.show()
+    }
   }
 }
 
