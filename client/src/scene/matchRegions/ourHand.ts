@@ -105,19 +105,6 @@ export default class OurHandRegion extends Region {
     return this
   }
 
-  addHotkeyListeners() {
-    // Add keyboard listeners
-    const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
-
-    for (let i = 0; i < MechanicsSettings.HAND_CAP; i++) {
-      this.scene.input.keyboard.on(`keydown-${numberWords[i]}`, () => {
-        if (UserSettings._get('hotkeys')) {
-          this.cards[i].clickCallback()
-        }
-      })
-    }
-  }
-
   displayState(state: GameModel): void {
     this.deleteTemp()
 
@@ -179,6 +166,33 @@ export default class OurHandRegion extends Region {
         }
       }
     }
+  }
+
+  addHotkeyListeners() {
+    // Add keyboard listeners
+    const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
+
+    for (let i = 0; i < MechanicsSettings.HAND_CAP; i++) {
+      this.scene.input.keyboard.on(`keydown-${numberWords[i]}`, () => {
+        if (UserSettings._get('hotkeys')) {
+          this.cards[i].clickCallback()
+        }
+      })
+    }
+
+    // Deck
+    this.scene.input.keyboard.on('keydown-Q', () => {
+      if (UserSettings._get('hotkeys')) {
+        this.btnDeck.onClick()
+      }
+    })
+
+    // Discard
+    this.scene.input.keyboard.on('keydown-W', () => {
+      if (UserSettings._get('hotkeys')) {
+        this.btnDiscard.onClick()
+      }
+    })
   }
 
   setOverlayCallbacks(fDeck: () => void, fDiscard: () => void): void {

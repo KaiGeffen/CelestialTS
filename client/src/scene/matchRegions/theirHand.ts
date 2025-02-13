@@ -3,10 +3,18 @@ import { Keywords } from '../../../../shared/state/keyword'
 import Button from '../../lib/buttons/button'
 import Buttons from '../../lib/buttons/buttons'
 import GameModel from '../../../../shared/state/gameModel'
-import { Depth, Space, Style, Time, Flags } from '../../settings/settings'
+import {
+  Depth,
+  Space,
+  Style,
+  Time,
+  Flags,
+  UserSettings,
+} from '../../settings/settings'
 import { GameScene } from '../gameScene'
 import Region from './baseRegion'
 import CardLocation from './cardLocation'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 export default class TheirHandRegion extends Region {
   // Effect showing that they have priority
@@ -68,6 +76,8 @@ export default class TheirHandRegion extends Region {
       )
     }
 
+    this.addHotkeyListeners()
+
     return this
   }
 
@@ -94,6 +104,22 @@ export default class TheirHandRegion extends Region {
     // Pile sizes
     this.btnDeck.setText(`${state.deck[1].length}`)
     this.btnDiscard.setText(`${state.pile[1].length}`)
+  }
+
+  addHotkeyListeners() {
+    // Deck
+    this.scene.input.keyboard.on('keydown-E', () => {
+      if (UserSettings._get('hotkeys')) {
+        this.btnDeck.onClick()
+      }
+    })
+
+    // Discard
+    this.scene.input.keyboard.on('keydown-R', () => {
+      if (UserSettings._get('hotkeys')) {
+        this.btnDiscard.onClick()
+      }
+    })
   }
 
   setOverlayCallbacks(fDeck: () => void, fDiscard: () => void): void {
