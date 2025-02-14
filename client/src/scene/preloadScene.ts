@@ -18,6 +18,7 @@ import {
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
 import ensureMusic from '../loader/audioManager'
+import Cinematic from '../lib/cinematic'
 
 // Scene for user to select a sign in option, without loading assets
 export class SigninScene extends Phaser.Scene {
@@ -44,7 +45,7 @@ export class SigninScene extends Phaser.Scene {
     UserSettings.clearSessionStorage()
 
     // Ensure animation is displayed
-    this.ensureAnimation()
+    Cinematic.ensure()
 
     // Add buttons to sign in or play as a guest
     this.createButtons()
@@ -144,16 +145,6 @@ export class SigninScene extends Phaser.Scene {
       text: 'signin',
       width: Space.buttonWidth,
     })
-  }
-
-  private ensureAnimation(): void {
-    const animations = document.getElementsByClassName('animation')
-    if (animations.length !== 1) {
-      throw new Error('There should be exactly 1 animation on the page.')
-    }
-
-    const animation: HTMLVideoElement = <HTMLVideoElement>animations.item(0)
-    animation.style.display = ''
   }
 }
 

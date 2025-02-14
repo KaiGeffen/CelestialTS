@@ -18,6 +18,7 @@ import Loader from '../loader/loader'
 import UserDataServer from '../network/userDataServer'
 import { CardImage } from '../lib/cardImage'
 import Catalog from '../../../shared/state/catalog'
+import Cinematic from '../lib/cinematic'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const discordHeight = 150
@@ -34,7 +35,7 @@ export default class HomeScene extends BaseScene {
     document.getElementById('signin').hidden = true
 
     // Ensure animation is hidden
-    this.ensureAnimationHidden()
+    Cinematic.hide()
 
     this.createHeader()
 
@@ -490,15 +491,5 @@ export default class HomeScene extends BaseScene {
         return
       }
     }
-  }
-
-  private ensureAnimationHidden(): void {
-    const animations = document.getElementsByClassName('animation')
-    if (animations.length !== 1) {
-      throw new Error('There should be exactly 1 animation on the page.')
-    }
-
-    const animation: HTMLVideoElement = <HTMLVideoElement>animations.item(0)
-    animation.style.display = 'none'
   }
 }
