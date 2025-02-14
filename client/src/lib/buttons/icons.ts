@@ -1,13 +1,6 @@
 import 'phaser'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
-import {
-  Space,
-  Style,
-  Color,
-  Url,
-  Flags,
-  UserSettings,
-} from '../../settings/settings'
+import { Style, Url, Flags } from '../../settings/settings'
 import Button from './button'
 
 // Exported buttons
@@ -228,13 +221,6 @@ class Pass extends Button {
       callbacks: {
         click: f,
       },
-    })
-
-    // If return hotkey is enabled, add a listener for the return key
-    this.scene.input.keyboard.on('keydown-SPACE', () => {
-      if (this.enabled && UserSettings._get('hotkeys')) {
-        this.onClick()
-      }
     })
 
     // Show a hint when hovered

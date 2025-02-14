@@ -142,6 +142,12 @@ export default class MulliganRegion extends Region {
         }
       })
     }
+
+    this.scene.input.keyboard.on('keydown-SPACE', () => {
+      if (this.btnReady.enabled && UserSettings._get('hotkeys')) {
+        this.btnReady.onClick()
+      }
+    })
   }
 
   // The callback for when a card is clicked on

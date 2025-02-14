@@ -2,7 +2,15 @@ import 'phaser'
 import Button from '../../lib/buttons/button'
 import Icons from '../../lib/buttons/icons'
 import GameModel from '../../../../shared/state/gameModel'
-import { Style, Color, Space, Time, Ease, Flags } from '../../settings/settings'
+import {
+  Style,
+  Color,
+  Space,
+  Time,
+  Ease,
+  Flags,
+  UserSettings,
+} from '../../settings/settings'
 import { GameScene } from '../gameScene'
 import Region from './baseRegion'
 import { MechanicsSettings } from '../../../../shared/settings'
@@ -14,6 +22,8 @@ export default class PassRegion extends Region {
 
   // The callback once the winner has been declared
   showResultsCallback: () => void
+
+  hotkeysRegistered = false
 
   btnPass: Button
   btnMoon: Button
@@ -44,6 +54,9 @@ export default class PassRegion extends Region {
     if (state.mulligansComplete.includes(false)) {
       this.container.setVisible(false)
       return
+    } else if (!this.hotkeysRegistered) {
+      this.addHotkeys()
+      this.hotkeysRegistered = true
     }
     this.container.setVisible(true)
 
@@ -125,6 +138,15 @@ export default class PassRegion extends Region {
 
   setShowResultsCallback(callback: () => void): void {
     this.showResultsCallback = callback
+  }
+
+  private addHotkeys() {
+    this.scene.input.keyboard.removeListener('keydown-SPACE')
+    this.scene.input.keyboard.on('keydown-SPACE', () => {
+      if (this.btnPass.enabled && UserSettings._get('hotkeys')) {
+        this.btnPass.onClick()
+      }
+    })
   }
 
   private createButtons(): void {
