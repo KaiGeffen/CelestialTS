@@ -20,7 +20,6 @@ import avatarNames from '../../lib/avatarNames'
 import premadeDecklists from '../../catalog/premadeDecklists'
 
 const width = Space.decklistPanelWidth
-const DEFAULT_DECK_NAME = 'Deck'
 
 // Region of the deck builder which contains all the decklists
 export default class DecklistsRegion {
@@ -41,7 +40,7 @@ export default class DecklistsRegion {
 
   // Image of the current avatar
   avatar: Phaser.GameObjects.Image
- 
+
   // Create the are where player can manipulate their decks
   create(scene) {
     this.scene = scene
@@ -96,7 +95,7 @@ export default class DecklistsRegion {
     // Use a default deck name if it's not specified
     if (name === undefined || name === '') {
       const number = this.decklistBtns.length + 1
-      name = `${DEFAULT_DECK_NAME} ${number}`
+      name = `Deck ${number}`
     }
 
     // Create the deck in storage

@@ -256,6 +256,12 @@ export class BuilderScene extends BuilderBase {
     let that = this
 
     return function (name: string, avatar: number, deckCode: string) {
+      // Use a default deck name if it's not specified
+      if (name === undefined || name === '') {
+        const number = that.decklistsRegion.savedDeckIndex + 1
+        name = `Deck ${number}`
+      }
+
       that.updateSavedDeck(undefined, name, avatar)
 
       // Update the avatar
