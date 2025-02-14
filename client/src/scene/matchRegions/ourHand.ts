@@ -38,6 +38,9 @@ export default class OurHandRegion extends Region {
   // Whether we have already clicked on a card to play it
   cardClicked: boolean
 
+  // Whether hotkeys for the cards have been registered
+  cardHotkeysRegistered = false
+
   // Index of the card from the last state that was being hovered, if any
   hoveredCard: number
 
@@ -100,7 +103,7 @@ export default class OurHandRegion extends Region {
       )
     }
 
-    this.addHotkeyListeners()
+    this.addOverlayHotkeys()
 
     return this
   }
@@ -116,6 +119,9 @@ export default class OurHandRegion extends Region {
     if (!state.mulligansComplete[0]) {
       this.hideHand()
       return
+    } else if (!this.cardHotkeysRegistered) {
+      this.addCardHotkeys()
+      this.cardHotkeysRegistered = true
     }
 
     this.cardClicked = false
@@ -168,18 +174,7 @@ export default class OurHandRegion extends Region {
     }
   }
 
-  private addHotkeyListeners() {
-    // Add keyboard listeners
-    const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
-
-    for (let i = 0; i < MechanicsSettings.HAND_CAP; i++) {
-      this.scene.input.keyboard.on(`keydown-${numberWords[i]}`, () => {
-        if (UserSettings._get('hotkeys')) {
-          this.cards[i].clickCallback()
-        }
-      })
-    }
-
+  private addOverlayHotkeys() {
     // Deck
     this.scene.input.keyboard.on('keydown-Q', () => {
       if (UserSettings._get('hotkeys')) {
@@ -193,6 +188,18 @@ export default class OurHandRegion extends Region {
         this.btnDiscard.onClick()
       }
     })
+  }
+
+  private addCardHotkeys() {
+    const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
+
+    for (let i = 0; i < MechanicsSettings.HAND_CAP; i++) {
+      this.scene.input.keyboard.on(`keydown-${numberWords[i]}`, () => {
+        if (UserSettings._get('hotkeys')) {
+          this.cards[i].clickCallback()
+        }
+      })
+    }
   }
 
   setOverlayCallbacks(fDeck: () => void, fDiscard: () => void): void {

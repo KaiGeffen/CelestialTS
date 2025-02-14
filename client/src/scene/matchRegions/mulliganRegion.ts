@@ -15,6 +15,7 @@ import { Zone } from '../../../../shared/state/zone'
 import { GameScene } from '../gameScene'
 import { UserSettings } from '../../settings/userSettings'
 import Button from '../../lib/buttons/button'
+import { MechanicsSettings } from '../../../../shared/settings'
 
 export default class MulliganRegion extends Region {
   // The cards in our starting hand
@@ -81,6 +82,8 @@ export default class MulliganRegion extends Region {
       true,
     )
 
+    this.addHotkeyListeners()
+
     this.container.add([txtTitle, txtHint, this.txtPriority])
 
     return this
@@ -122,6 +125,19 @@ export default class MulliganRegion extends Region {
 
   setCallback(callback: () => void): void {
     this.onButtonClick = callback
+  }
+
+  private addHotkeyListeners() {
+    // Add keyboard listeners
+    const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
+
+    for (let i = 0; i < MechanicsSettings.HAND_CAP; i++) {
+      this.scene.input.keyboard.on(`keydown-${numberWords[i]}`, () => {
+        if (UserSettings._get('hotkeys')) {
+          this.cards[i].clickCallback()
+        }
+      })
+    }
   }
 
   // The callback for when a card is clicked on
