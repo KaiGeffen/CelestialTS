@@ -299,6 +299,7 @@ const pride = new Pride({
   cost: 3,
   points: 3,
   text: 'Morning: Exhale 2: Add this to the story.',
+  beta: true,
 })
 
 export {
