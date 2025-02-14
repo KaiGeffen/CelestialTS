@@ -194,9 +194,15 @@ export default class OurHandRegion extends Region {
     const numberWords = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']
 
     for (let i = 0; i < MechanicsSettings.HAND_CAP; i++) {
+      // Remove existing listeners and add new ones
+      this.scene.input.keyboard.removeListener(`keydown-${numberWords[i]}`)
       this.scene.input.keyboard.on(`keydown-${numberWords[i]}`, () => {
         if (UserSettings._get('hotkeys')) {
-          this.cards[i].clickCallback()
+          if (this.cards[i] === undefined) {
+            this.scene.signalError(`You don't have a card in slot ${i + 1}`)
+          } else {
+            this.cards[i].clickCallback()
+          }
         }
       })
     }
