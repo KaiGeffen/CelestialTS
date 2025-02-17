@@ -49,13 +49,21 @@ class Match {
     const username2 = await this.getUsername(this.uuid2)
 
     await Promise.all(
-      this.getActiveWsList().map((ws) =>
-        ws.send({
-          type: 'matchStart',
-          name1: username1,
-          name2: username2,
-        }),
-      ),
+      this.getActiveWsList().map((ws) => {
+        if (ws === this.ws1) {
+          ws.send({
+            type: 'matchStart',
+            name1: username1,
+            name2: username2,
+          })
+        } else {
+          ws.send({
+            type: 'matchStart',
+            name1: username2,
+            name2: username1,
+          })
+        }
+      }),
     )
   }
 
