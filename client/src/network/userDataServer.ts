@@ -21,6 +21,8 @@ const code = 1000
 var wsServer: UserDataClientWS = undefined
 
 export default class UserDataServer {
+  private static userUUID: string | null = null // Store UUID after successful login
+
   // Log in with the server for user with given OAuth token
   static login(
     payload: GoogleJwtPayload,
@@ -105,12 +107,18 @@ export default class UserDataServer {
           })
       })
       .on('sendUserData', (data) => {
+        // Store the UUID after successful login
+        this.userUUID = uuid
+
         that.loadUserData(data)
         callback()
       })
 
     // If the connection closes, login again with same args
     wsServer.ws.onclose = (event) => {
+      // Clear the UUID after logging out
+      this.userUUID = null
+
       // Don't attempt to login again if the server explicitly logged us out
       if (event.code !== code) {
         console.log(
@@ -130,6 +138,9 @@ export default class UserDataServer {
 
       wsServer.close(code)
       wsServer = undefined
+
+      // Clear the UUID after logging out
+      this.userUUID = null
 
       UserSettings.clearSessionStorage()
     }
@@ -242,5 +253,9 @@ export default class UserDataServer {
       const fullPath = `wss://celestialtcg.com/user_data_ws`
       return new TypedWebSocket(fullPath)
     }
+  }
+
+  static getUUID(): string | null {
+    return this.userUUID
   }
 }

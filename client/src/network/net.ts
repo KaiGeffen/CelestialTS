@@ -136,6 +136,7 @@ export class MatchPveWS extends MatchWS {
     this.socket.onOpen(() => {
       this.socket.send({
         type: 'initPve',
+        // TODO Use or remove this
         uuid: '',
         deck: encodeDeck(deck),
         avatar: avatarID,
@@ -157,7 +158,7 @@ export class MatchPvpWS extends MatchWS {
     this.socket.onOpen(() => {
       this.socket.send({
         type: 'initPvp',
-        uuid: '',
+        uuid: UserDataServer.getUUID() || '',
         deck: encodeDeck(deck),
         avatar: avatarID,
         password: password,
