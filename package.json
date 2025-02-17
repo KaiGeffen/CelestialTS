@@ -53,7 +53,7 @@
     "dotenv": "^16.3.1",
     "drizzle-kit": "^0.20.6",
     "drizzle-orm": "^0.29.1",
-    "elo-rating": "^1.0.1",
+    "elo-rank": "^1.0.4",
     "express": "^4.19.2",
     "gapi": "^0.0.3",
     "googleapis": "^110.0.0",
