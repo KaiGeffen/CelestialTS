@@ -71,6 +71,7 @@ export default function createUserDataServer() {
             decks: [],
             inventory: '1000101001011100001',
             completedmissions: '',
+            lastactive: new Date().toISOString(),
           })
           // User doesn't exist yet
           console.log('Creating new user:', email)
@@ -86,6 +87,12 @@ export default function createUserDataServer() {
             completedMissions: data.completedmissions,
             decks: data.decks,
           })
+
+          // Update last active time
+          await db
+            .update(players)
+            .set({ lastactive: new Date().toISOString() })
+            .where(eq(players.id, id))
         }
       })
         .on('sendDecks', async ({ decks }) => {

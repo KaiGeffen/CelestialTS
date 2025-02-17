@@ -45,9 +45,7 @@ export const players = pgTable(
     createdate: date('createdate')
       .notNull()
       .default(sql`now()`),
-    lastactive: date('lastactive')
-      .notNull()
-      .default(sql`now()`),
+    lastactive: date('lastactive').notNull(),
     wins: integer('wins').notNull(),
     losses: integer('losses').notNull(),
     elo: integer('elo').notNull().default(1000),
