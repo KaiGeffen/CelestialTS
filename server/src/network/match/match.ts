@@ -3,6 +3,8 @@ import Card from '../../../../shared/state/card'
 import { Mulligan } from '../../../../shared/settings'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
 import { MatchServerWS } from '../../../../shared/network/matchWS'
+import { v5 as uuidv5 } from 'uuid'
+import { UUID_NAMESPACE } from '../../../../shared/network/settings'
 
 interface Match {
   ws1: MatchServerWS | null
@@ -29,9 +31,9 @@ class Match {
     avatar2: number,
   ) {
     this.ws1 = ws1
-    this.uuid1 = uuid1
+    this.uuid1 = uuid1 ? uuidv5(uuid1, UUID_NAMESPACE) : null
     this.ws2 = ws2
-    this.uuid2 = uuid2
+    this.uuid2 = uuid2 ? uuidv5(uuid2, UUID_NAMESPACE) : null
 
     // Make a new game
     this.game = new ServerController(deck1, deck2, avatar1, avatar2)

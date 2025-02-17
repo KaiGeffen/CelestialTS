@@ -31,8 +31,6 @@ class PvpMatch extends Match {
 
   // Given ws is disconnecting
   async doExit(disconnectingWs: MatchServerWS) {
-    console.log('As we being to exit the ws are:', this.ws1, this.ws2)
-
     // Don't send disconnect message if the game has already ended
     if (this.game === null || this.game.model.winner !== null) return
 
