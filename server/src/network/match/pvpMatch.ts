@@ -71,7 +71,10 @@ class PvpMatch extends Match {
     const idWinner = winner === 0 ? this.uuid1 : this.uuid2
     const idLoser = winner === 0 ? this.uuid2 : this.uuid1
 
-    await updateMatchResult(idWinner, idLoser)
+    await updateMatchResult(idWinner, idLoser).catch((error) => {
+      console.error('Error updating match results:', error)
+      throw new Error('Failed to process match result')
+    })
   }
 }
 

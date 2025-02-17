@@ -13,6 +13,8 @@ export async function updateMatchResult(winnerId: string, loserId: string) {
     db.select().from(players).where(eq(players.id, loserId)),
   ])
 
+  console.log('The players are:', winner, loser)
+
   const result = calculate(winner[0].elo, loser[0].elo, true, K_FACTOR)
 
   console.log('result', winner, loser, result)
