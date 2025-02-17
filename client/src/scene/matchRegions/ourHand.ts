@@ -47,8 +47,6 @@ export default class OurHandRegion extends Region {
   // Avatar image
   btnAvatar: Button
 
-  username = ''
-
   create(scene: GameScene, avatarId: number): OurHandRegion {
     let that = this
     this.scene = scene
@@ -215,6 +213,19 @@ export default class OurHandRegion extends Region {
     this.btnDiscard.setOnClick(fDiscard)
   }
 
+  showUsername(username: string): void {
+    this.container.add(
+      this.scene.add
+        .text(
+          21 + Space.avatarSize / 2,
+          11 + Space.avatarSize,
+          username,
+          Style.username,
+        )
+        .setOrigin(0.5, 0),
+    )
+  }
+
   // Set the callback / error message for when card is clicked
   private setCardOnClick(card: CardImage, state: GameModel, i: number) {
     // Set whether card shows up as playable, and also whether we can click to play a card in this state
@@ -273,18 +284,6 @@ export default class OurHandRegion extends Region {
     let btn = new Buttons.Avatar(this.container, 21, 11, avatarId)
       .setOrigin(0)
       .setQuality({ emotive: true })
-
-    // Add username
-    this.container.add(
-      this.scene.add
-        .text(
-          btn.icon.x + Space.avatarSize / 2,
-          btn.icon.y + Space.avatarSize,
-          this.username,
-          Style.username,
-        )
-        .setOrigin(0.5, 0),
-    )
 
     // Sight
     this.btnSight = new Buttons.Keywords.Sight(

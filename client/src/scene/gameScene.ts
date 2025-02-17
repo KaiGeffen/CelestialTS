@@ -106,8 +106,8 @@ export class GameScene extends BaseScene {
   // Signal that a match has been found with given player names
   signalMatchFound(name1: string, name2: string): void {
     // TODO Smell, class these
-    this.view.ourHand['username'] = name1
-    this.view.theirHand['username'] = name2
+    this.view.ourHand['showUsername'](name1)
+    this.view.theirHand['showUsername'](name2)
   }
 
   // Set all of the callback functions for the regions in the view

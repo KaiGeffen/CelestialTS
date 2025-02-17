@@ -29,8 +29,6 @@ export default class TheirHandRegion extends Region {
   // Avatar image
   avatar: Button
 
-  username = ''
-
   create(scene: GameScene): TheirHandRegion {
     this.scene = scene
 
@@ -129,6 +127,19 @@ export default class TheirHandRegion extends Region {
     this.btnDiscard.setOnClick(fDiscard)
   }
 
+  showUsername(username: string): void {
+    this.container.add(
+      this.scene.add
+        .text(
+          21 + Space.avatarSize / 2,
+          14 + Space.avatarSize,
+          username,
+          Style.username,
+        )
+        .setOrigin(0.5, 0),
+    )
+  }
+
   private createBackground(): void {
     const s = `icon-${Flags.mobile ? 'MobileBottom' : 'Top'}`
     let background = this.scene.add
@@ -156,18 +167,6 @@ export default class TheirHandRegion extends Region {
     const y = Flags.mobile ? 10 : 14
     let btn = new Buttons.Avatar(this.container, x, y, 'Jules')
     btn.setOrigin(0)
-
-    // Add username
-    this.container.add(
-      this.scene.add
-        .text(
-          btn.icon.x + Space.avatarSize / 2,
-          btn.icon.y + Space.avatarSize,
-          this.username,
-          Style.username,
-        )
-        .setOrigin(0.5, 0),
-    )
 
     return btn
   }
