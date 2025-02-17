@@ -13,6 +13,9 @@ export interface UserDataClientMessages {
   sendCompletedMissions: {
     missions: string
   }
+  sendUsername: {
+    username: string
+  }
 }
 
 export interface UserDataServerMessages {
@@ -24,4 +27,4 @@ export interface UserDataServerMessages {
     completedMissions: string
     decks: string[]
   }
-} 
+}

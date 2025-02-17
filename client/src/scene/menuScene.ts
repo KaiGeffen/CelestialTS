@@ -1,104 +1,118 @@
-import "phaser"
+import 'phaser'
 
 import { BaseMenuScene } from './baseScene'
-import { Style, Color, Space, Time } from "../settings/settings"
-import { createMenu } from "./menu/menu"
-
+import { Style, Color, Space, Time } from '../settings/settings'
+import { createMenu } from './menu/menu'
 
 // The scene showing whichever menu is open, if any
 // This scene is on top of any other active open scenes
 export default class MenuScene extends BaseMenuScene {
-	// Whether the scene has started ending, to ensure it only does so once
-	sceneEnding: boolean
+  // Whether the scene has started ending, to ensure it only does so once
+  sceneEnding: boolean
 
-	constructor() {
-		super({
-			key: "MenuScene"
-		})
-	}
+  constructor() {
+    super({
+      key: 'MenuScene',
+    })
+  }
 
-	create(params): void {
-		super.create(params)
+  create(params): void {
+    super.create(params)
 
-		this.sceneEnding = false
+    this.sceneEnding = false
 
-		this.playSound('open')
+    this.playSound('open')
 
-		this.addBackground()
+    this.addBackground()
 
-		let menu = createMenu(this, params.menu, params)
+    let menu = createMenu(this, params.menu, params)
 
-		// When esc is pressed, close this scene
-		let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-		esc.on('down', () => {menu.close()})
+    // When esc is pressed, close this scene
+    let esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+    esc.on('down', () => {
+      menu.close()
+    })
 
-		this.scene.bringToTop()
+    this.scene.bringToTop()
 
-		this.transitionIn()
-	}
+    this.transitionIn()
+  }
 
-	// Play a transition as this menu opens
-	transitionIn(): void {
-		const camera = this.cameras.main
+  // Play a transition as this menu opens
+  transitionIn(): void {
+    const camera = this.cameras.main
 
-		this.tweens.add({
-			targets: camera,
-			alpha: 1,
-			duration: Time.menuTransition,
-			onStart: () => {camera.alpha = 0}
-		})
-	}
+    this.tweens.add({
+      targets: camera,
+      alpha: 1,
+      duration: Time.menuTransition,
+      onStart: () => {
+        camera.alpha = 0
+      },
+    })
+  }
 
-	private addTitle(s: string) {
-		this.add.text(
-			Space.windowWidth / 2,
-			Space.windowHeight / 2 - 150,
-			s,
-			Style.menuTitle).setOrigin(0.5)
-	}
+  private addTitle(s: string) {
+    this.add
+      .text(
+        Space.windowWidth / 2,
+        Space.windowHeight / 2 - 150,
+        s,
+        Style.menuTitle,
+      )
+      .setOrigin(0.5)
+  }
 
-	private addMessage(s: string) {
-		this.add.text(
-			Space.windowWidth / 2,
-			Space.windowHeight / 2,
-			s,
-			Style.basic).setOrigin(0.5)
-	}
+  private addMessage(s: string) {
+    this.add
+      .text(Space.windowWidth / 2, Space.windowHeight / 2, s, Style.basic)
+      .setOrigin(0.5)
+  }
 
-	private addBackground() {
-		const x = Space.windowWidth / 2
-		const y = Space.windowHeight / 2
+  private addBackground() {
+    const x = Space.windowWidth / 2
+    const y = Space.windowHeight / 2
 
-		// Invisible background rectangles, stops other containers from being clicked
-		let invisBackground = this.add.rectangle(x, y, Space.windowWidth, Space.windowHeight, 0x000000, 0.7)
-		invisBackground.setInteractive()
-		invisBackground.on('pointerdown', this.endScene())
-	}
+    // Invisible background rectangles, stops other containers from being clicked
+    let invisBackground = this.add.rectangle(
+      x,
+      y,
+      Space.windowWidth,
+      Space.windowHeight,
+      0x000000,
+      0.7,
+    )
+    invisBackground.setInteractive()
+    invisBackground.on('pointerdown', this.endScene())
+  }
 
-	
-	endScene(): () => void {
-		let that = this
-		
-		return () => {
-			// Ensures that scene will only end (Sounds etc) once
-			if (this.sceneEnding) {
-				return
-			}
-			this.sceneEnding = true
+  endScene(): () => void {
+    let that = this
 
-			// NOTE This is a fix for sizer objects not deleting properly in all cases
-			let top = this.children.getByName('top')
-			if (top !== null) {
-				top.destroy()
-			}
+    return () => {
+      // Ensures that scene will only end (Sounds etc) once
+      if (this.sceneEnding) {
+        return
+      }
+      this.sceneEnding = true
 
-			this.tweens.add({
-				targets: this.cameras.main,
-				alpha: 0,
-				duration: Time.menuTransition,
-				onStart: () => {this.playSound('close')},
-				onComplete: () => {this.scene.stop()},
-			})
-		}	
-	}
+      // NOTE This is a fix for sizer objects not deleting properly in all cases
+      let top = this.children.getByName('top')
+      if (top !== null) {
+        top.destroy()
+      }
+
+      this.tweens.add({
+        targets: this.cameras.main,
+        alpha: 0,
+        duration: Time.menuTransition,
+        onStart: () => {
+          this.playSound('close')
+        },
+        onComplete: () => {
+          this.scene.stop()
+        },
+      })
+    }
+  }
 }

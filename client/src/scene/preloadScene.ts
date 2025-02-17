@@ -53,6 +53,13 @@ export class SigninScene extends Phaser.Scene {
     if (Flags.mobile) {
       this.createLandscapeMessaging()
     }
+
+    this.scene.launch('MenuScene', {
+      menu: 'registerUsername',
+      callback: () => {
+        console.log('hello world')
+      },
+    })
   }
 
   // Create buttons for each of the signin options (Guest, OAuth)

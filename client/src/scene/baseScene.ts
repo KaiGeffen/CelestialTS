@@ -82,7 +82,12 @@ class SharedBaseScene extends Phaser.Scene {
       s += ` ${this.getRandomInRange(amt_variants[s])}`
     }
 
-    this.sound.play(s)
+    // Check if sound exists before playing
+    if (this.sound.get(s)) {
+      this.sound.play(s)
+    } else {
+      console.log(`Sound '${s}' not loaded yet`)
+    }
   }
 
   // Get a random number from 1 to max, inclusive

@@ -64,14 +64,16 @@ export default class UserDataServer {
       .on('promptUserInit', () => {
         console.log('User was prompted to send initial values')
 
-        // TODO Include username
-
-        that.sendDecks(UserSettings._get('decks'))
-        that.sendInventory(UserSettings._get('inventory'))
-        that.sendCompletedMissions(UserSettings._get('completedMissions'))
-
-        // Call callback since we already have the data in userSettings
-        callback()
+        // Open username registration menu
+        game.scene.getAt(0).scene.launch('MenuScene', {
+          menu: 'registerUsername',
+          callback: () => {
+            that.sendDecks(UserSettings._get('decks'))
+            that.sendInventory(UserSettings._get('inventory'))
+            that.sendCompletedMissions(UserSettings._get('completedMissions'))
+            callback()
+          },
+        })
       })
       .on('invalidToken', () => {
         console.log(
@@ -257,5 +259,16 @@ export default class UserDataServer {
 
   static getUUID(): string | null {
     return this.userUUID
+  }
+
+  static sendUsername(username: string): void {
+    if (wsServer === undefined) {
+      throw 'Sending username when server ws doesnt exist.'
+    } else {
+      wsServer.send({
+        type: 'sendUsername',
+        username: username,
+      })
+    }
   }
 }

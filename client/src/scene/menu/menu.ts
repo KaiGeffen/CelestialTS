@@ -160,6 +160,7 @@ import MessageMenu from './message'
 import FocusMenu from './focus'
 import SearchMenu from './search'
 import LeaderboardMenu from './leaderboard'
+import { RegisterUsernameMenu } from './registerUsername'
 
 const menus = {
   options: OptionsMenu,
@@ -177,6 +178,7 @@ const menus = {
   focus: FocusMenu,
   search: SearchMenu,
   leaderboard: LeaderboardMenu,
+  registerUsername: RegisterUsernameMenu,
 }
 
 // Function exposed for the creation of custom menus
