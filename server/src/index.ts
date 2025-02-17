@@ -1,5 +1,6 @@
 import createMatchServer from './network/matchServer'
 import createUserDataServer from './network/userDataServer'
+import createLeaderboardServer from './network/leaderboardServer'
 
 console.log('Starting server')
 
@@ -13,3 +14,4 @@ process.on('unhandledRejection', (reason, promise) => {
 // Create the websocket for individual matchs
 createMatchServer()
 createUserDataServer()
+createLeaderboardServer()
