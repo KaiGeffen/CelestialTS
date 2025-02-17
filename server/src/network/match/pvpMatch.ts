@@ -64,6 +64,12 @@ class PvpMatch extends Match {
 
   // Update the database records for this match
   private async updateMatchResult(winner: number) {
+    // If either uuid is null, don't update the database
+    if (!this.uuid1 || !this.uuid2) {
+      console.log('No uuid found, skipping updateMatchResult')
+      return
+    }
+
     const idWinner = winner === 0 ? this.uuid1 : this.uuid2
     const idLoser = winner === 0 ? this.uuid2 : this.uuid1
 
