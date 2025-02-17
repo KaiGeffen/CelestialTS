@@ -66,13 +66,11 @@ export default function createUserDataServer() {
           await db.insert(players).values({
             id: userId,
             email: email,
-            createdate: new Date().toISOString(),
             wins: 0,
             losses: 0,
             decks: [],
             inventory: '1000101001011100001',
             completedmissions: '',
-            userprogress: [],
           })
           // User doesn't exist yet
           console.log('Creating new user:', email)

@@ -20,12 +20,10 @@ import {
 //  Liveness
 createdate        | date                |           |          | now()
 lastactive        | date                |           |          | now()
-lastaction        | string              |           |          | ''
 
 // PVP Records
  wins              | integer             |           |          | 0
  losses            | integer             |           |          | 0
- ties              | integer             |           |          | 0
  elo               | integer             |           |          | 1000
 
  // Decks
@@ -41,19 +39,28 @@ lastaction        | string              |           |          | ''
  REMOVE userprogress      | character varying[] |           |          | '{}'::character varying[]
 */
 
-export const players = pgTable('players', {
-  id: uuid('id').primaryKey(),
-  email: varchar('email', { length: 255 }).notNull(),
-  createdate: date('createdate').notNull(),
-  wins: integer('wins').notNull(),
-  losses: integer('losses').notNull(),
-  decks: varchar('decks', { length: 255 }).array().notNull(),
-  inventory: varchar('inventory', { length: 1000 }).notNull(),
-  completedmissions: varchar('completedmissions', { length: 1000 }).notNull(),
-  userprogress: varchar('userprogress', { length: 255 }).array().notNull(),
-}, (table) => ({
-  emailIdx: uniqueIndex('email_idx').on(table.email)
-}))
+export const players = pgTable(
+  'players',
+  {
+    id: uuid('id').primaryKey(),
+    email: varchar('email', { length: 255 }).notNull(),
+    createdate: date('createdate')
+      .notNull()
+      .default(sql`now()`),
+    lastactive: date('lastactive')
+      .notNull()
+      .default(sql`now()`),
+    wins: integer('wins').notNull(),
+    losses: integer('losses').notNull(),
+    elo: integer('elo').notNull().default(1000),
+    decks: varchar('decks', { length: 255 }).array().notNull(),
+    inventory: varchar('inventory', { length: 1000 }).notNull(),
+    completedmissions: varchar('completedmissions', { length: 1000 }).notNull(),
+  },
+  (table) => ({
+    emailIdx: uniqueIndex('email_idx').on(table.email),
+  }),
+)
 
 // Custom lower function
 function lower(email: AnyPgColumn): SQL {
