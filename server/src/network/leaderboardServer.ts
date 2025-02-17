@@ -15,7 +15,6 @@ export default function createLeaderboardServer() {
   // GET endpoint for leaderboard data
   app.get('/leaderboard', async (req, res) => {
     try {
-      console.log('Getting the leaderboard for you....')
       const leaderboardData = await db
         .select({
           username: players.username,
@@ -27,14 +26,10 @@ export default function createLeaderboardServer() {
         .orderBy(desc(players.elo))
         .limit(100)
 
-      console.log('leaderboard data is,', leaderboardData)
-
       const rankedData = leaderboardData.map((player, index) => ({
         ...player,
         rank: index + 1,
       }))
-
-      console.log('Leaderboard data:', rankedData)
 
       res.json(rankedData)
     } catch (error) {
