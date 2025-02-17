@@ -6,6 +6,8 @@ import { players } from './schema'
 const K_FACTOR = 32 // Standard K-factor used in chess
 
 export async function updateMatchResult(winnerId: string, loserId: string) {
+  console.log('The uuid are:', winnerId, loserId)
+
   const [winner, loser] = await Promise.all([
     db.select().from(players).where(eq(players.id, winnerId)),
     db.select().from(players).where(eq(players.id, loserId)),

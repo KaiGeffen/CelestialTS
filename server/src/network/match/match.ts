@@ -3,7 +3,6 @@ import Card from '../../../../shared/state/card'
 import { Mulligan } from '../../../../shared/settings'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
 import { MatchServerWS } from '../../../../shared/network/matchWS'
-import { updateMatchResult } from '../../db/updateMatchResult'
 
 interface Match {
   ws1: MatchServerWS | null
