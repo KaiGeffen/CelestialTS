@@ -23,18 +23,10 @@ export class UserSettings {
       // Whether hotkeys are enabled
       hotkeys: false,
 
-      // List of Messages that user should be shown
-      // NOTE Doesn't get pushed to sql, is the result of the userProgress below
-      newMessages: [],
-
       // Settings tied to user's account
       decks: [],
       // List to use when playing with in development content
       devDecks: [],
-
-      // TODO Rethink this and the userprogress.ts module - they approach displaying new messages in a specific way that might not fit within the beta
-      // List of all things user has accomplished (Beat Anubis, seen Discord, etc)
-      userProgress: [],
 
       // For adventure mode, for each card, whether or not that card has been unlocked
       inventory: getStartingInventory(),
@@ -77,14 +69,11 @@ export class UserSettings {
       key = 'devDecks'
     }
 
+    // If key is in session storage then we're signed in, send the data to the server
     if (key in sessionStorage) {
       sessionStorage.setItem(key, JSON.stringify(value))
 
-      // If key is in session storage then we're signed in
-      // User progress and decks should be communicated to the server immediately
-      if (key === 'userProgress') {
-        Server.sendUserProgress(value)
-      } else if (key === 'decks') {
+      if (key === 'decks') {
         Server.sendDecks(value)
       } else if (key === 'inventory') {
         Server.sendInventory(value)

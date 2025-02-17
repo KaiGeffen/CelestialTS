@@ -3,7 +3,6 @@
 import { Flags } from './flags'
 
 import { Color } from './color'
-import { UserProgress } from './userProgress'
 import { Space } from './space'
 import { Style, BBStyle } from './style'
 import { Time } from './time'
@@ -16,7 +15,6 @@ import { Ease } from './ease'
 
 export {
   Color,
-  UserProgress,
   Space,
   Style,
   BBStyle,

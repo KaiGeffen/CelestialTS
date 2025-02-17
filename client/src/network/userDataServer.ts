@@ -140,11 +140,6 @@ export default class UserDataServer {
     return wsServer !== undefined
   }
 
-  // Send server an updated list of userProgress
-  static sendUserProgress(value): void {
-    // TODO Remove
-  }
-
   // Send server an updated list of decks
   static sendDecks(decks): void {
     if (wsServer === undefined) {

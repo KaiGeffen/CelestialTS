@@ -11,7 +11,6 @@ import {
   Style,
   BBStyle,
   Url,
-  UserProgress,
   UserSettings,
   Flags,
 } from '../settings/settings'

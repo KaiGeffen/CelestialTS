@@ -35,8 +35,6 @@ lastactive        | date                |           |          | now()
 
  // Owned assets
  // TODO Complicated, use a HATS table, and a join USER_HATS table 
-
- REMOVE userprogress      | character varying[] |           |          | '{}'::character varying[]
 */
 
 export const players = pgTable(

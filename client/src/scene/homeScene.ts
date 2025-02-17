@@ -5,7 +5,6 @@ import {
   Space,
   Time,
   Ease,
-  UserProgress,
   UserSettings,
   Url,
 } from '../settings/settings'
@@ -462,8 +461,6 @@ export default class HomeScene extends BaseScene {
   }
 
   private doDeckbuilder(): void {
-    UserProgress.addAchievement('deckMenuNotice')
-
     this.beforeExit()
     this.scene.start('BuilderScene', { isTutorial: false })
   }
