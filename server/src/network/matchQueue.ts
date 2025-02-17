@@ -64,6 +64,7 @@ class MatchQueue {
             decodeDeck(data.deck)
               .map((card) => card.name)
               .join(', '),
+            '\n',
             otherPlayer.deck.map((card) => card.name).join(', '),
           )
 
