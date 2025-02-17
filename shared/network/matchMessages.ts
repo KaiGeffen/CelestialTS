@@ -20,8 +20,8 @@ export interface MatchClientMessages {
   playCard: {
     cardNum: number
   }
-  mulligan: { 
-    mulligan: Mulligan 
+  mulligan: {
+    mulligan: Mulligan
   }
   passTurn: {}
   exitMatch: {}
@@ -29,9 +29,12 @@ export interface MatchClientMessages {
 }
 
 export interface MatchServerMessages {
-  gameStart: {}
-  transmitState: { 
-    state: GameModel 
+  matchStart: {
+    name1: string
+    name2: string
+  }
+  transmitState: {
+    state: GameModel
   }
   signalError: {}
   dc: {}

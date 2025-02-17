@@ -103,6 +103,13 @@ export class GameScene extends BaseScene {
     })
   }
 
+  // Signal that a match has been found with given player names
+  signalMatchFound(name1: string, name2: string): void {
+    // TODO Smell, class these
+    this.view.ourHand['username'] = name1
+    this.view.theirHand['username'] = name2
+  }
+
   // Set all of the callback functions for the regions in the view
   private setCallbacks(view, net: MatchWS): void {
     let that = this
@@ -490,8 +497,10 @@ export class StandardGameScene extends GameScene {
     super(args)
   }
 
-  signalMatchFound(): void {
+  signalMatchFound(name1: string, name2: string): void {
     this.view.searching.displayState(undefined)
+
+    super.signalMatchFound(name1, name2)
   }
 }
 
@@ -520,7 +529,7 @@ export class AdventureGameScene extends GameScene {
     super.queueState(state)
   }
 
-  signalMatchFound(): void {}
+  signalMatchFound(name1: string, name2: string): void {}
 
   private unlockMissionRewards(): void {
     // Set that user has completed the missions with this id

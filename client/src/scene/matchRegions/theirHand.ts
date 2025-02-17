@@ -29,6 +29,8 @@ export default class TheirHandRegion extends Region {
   // Avatar image
   avatar: Button
 
+  username = ''
+
   create(scene: GameScene): TheirHandRegion {
     this.scene = scene
 
@@ -161,7 +163,7 @@ export default class TheirHandRegion extends Region {
         .text(
           btn.icon.x + Space.avatarSize / 2,
           btn.icon.y + Space.avatarSize,
-          'USERNAME',
+          this.username,
           Style.username,
         )
         .setOrigin(0.5, 0),

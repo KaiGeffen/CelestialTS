@@ -5,6 +5,9 @@ import getClientGameModel from '../../../../shared/state/clientGameModel'
 import { MatchServerWS } from '../../../../shared/network/matchWS'
 import { v5 as uuidv5 } from 'uuid'
 import { UUID_NAMESPACE } from '../../../../shared/network/settings'
+import { db } from '../../db/db'
+import { players } from '../../db/schema'
+import { eq } from 'drizzle-orm'
 
 interface Match {
   ws1: MatchServerWS | null
@@ -42,8 +45,17 @@ class Match {
 
   // Notify all connected players that the match has started
   async notifyMatchStart() {
+    const username1 = await this.getUsername(this.uuid1)
+    const username2 = await this.getUsername(this.uuid2)
+
     await Promise.all(
-      this.getActiveWsList().map((ws) => ws.send({ type: 'gameStart' })),
+      this.getActiveWsList().map((ws) =>
+        ws.send({
+          type: 'matchStart',
+          name1: username1,
+          name2: username2,
+        }),
+      ),
     )
   }
 
@@ -111,6 +123,29 @@ class Match {
   // Given ws is disconnecting, implemented in pvpMatch
   async doExit(disconnectingWs: MatchServerWS) {
     console.log('Base Match class shouldnt received doExit message....')
+  }
+
+  // Get the name of player with given uuid
+  private async getUsername(uuid: string | null): Promise<string> {
+    if (!uuid) return ''
+
+    try {
+      const result = await db
+        .select({
+          username: players.username,
+          elo: players.elo,
+        })
+        .from(players)
+        .where(eq(players.id, uuid))
+        .limit(1)
+
+      if (result.length === 0) return ''
+
+      return `${result[0].username} (${result[0].elo})`
+    } catch (error) {
+      console.error('Error fetching username:', error)
+      return ''
+    }
   }
 }
 

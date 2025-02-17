@@ -11,7 +11,7 @@ import { MatchClientWS } from '../../../shared/network/matchWS'
 
 // TODO Figure out this global scene situation, smells bad
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
-var scene
+var scene: GameScene
 
 export class MatchWS {
   socket: MatchClientWS
@@ -24,9 +24,9 @@ export class MatchWS {
 
     // Each registered event
     socket
-      .on('gameStart', () => {
+      .on('matchStart', ({ name1, name2 }) => {
         // Signal that a match has been found
-        scene.signalMatchFound()
+        scene.signalMatchFound(name1, name2)
       })
       .on('transmitState', (data) => {
         newScene.queueState(data.state)
