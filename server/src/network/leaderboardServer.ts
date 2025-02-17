@@ -15,27 +15,26 @@ export default function createLeaderboardServer() {
   // GET endpoint for leaderboard data
   app.get('/leaderboard', async (req, res) => {
     try {
+      console.log('Getting the leaderboard for you....')
       const leaderboardData = await db
         .select({
           email: players.email,
           wins: players.wins,
           losses: players.losses,
           elo: players.elo,
-          winRate: sql<number>`CASE 
-            WHEN (${players.wins} + ${players.losses}) = 0 THEN 0 
-            ELSE ROUND(CAST(${players.wins} AS FLOAT) / (${players.wins} + ${players.losses}) * 100, 1)
-          END`,
-          gamesPlayed: sql<number>`${players.wins} + ${players.losses}`,
         })
         .from(players)
-        .where(sql`${players.wins} + ${players.losses} > 0`)
         .orderBy(desc(players.elo))
         .limit(100)
+
+      console.log('leaderboard data is,', leaderboardData)
 
       const rankedData = leaderboardData.map((player, index) => ({
         ...player,
         rank: index + 1,
       }))
+
+      console.log('Leaderboard data:', rankedData)
 
       res.json(rankedData)
     } catch (error) {
