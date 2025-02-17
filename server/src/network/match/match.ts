@@ -72,14 +72,6 @@ class Match {
         })
       }),
     )
-
-    // If there is a winner, update wins/losses/elo accordingly
-    if (this.game.model.winner !== null) {
-      const winner = this.game.model.winner === 0 ? this.uuid1 : this.uuid2
-      const loser = this.game.model.winner === 0 ? this.uuid2 : this.uuid1
-
-      await updateMatchResult(winner, loser)
-    }
   }
 
   async doMulligan(player: number, mulligan: Mulligan) {
@@ -101,7 +93,7 @@ class Match {
   }
 
   // Get the list of all active websockets connected to this match
-  private getActiveWsList(): MatchServerWS[] {
+  protected getActiveWsList(): MatchServerWS[] {
     return [this.ws1, this.ws2].filter((ws) => ws !== null)
   }
 
@@ -115,20 +107,9 @@ class Match {
     }
   }
 
-  // Given ws is disconnecting
+  // Given ws is disconnecting, implemented in pvpMatch
   async doExit(disconnectingWs: MatchServerWS) {
-    if (this.game === null || this.game.model.winner !== null) return
-
-    // Null the ws that has disconnected
-    if (this.ws1 === disconnectingWs) this.ws1 = null
-    else if (this.ws2 === disconnectingWs) this.ws2 = null
-
-    // Notify remaining player of the disconnect
-    await Promise.all(
-      this.getActiveWsList().map((ws: MatchServerWS) =>
-        ws.send({ type: 'dc' }),
-      ),
-    )
+    console.log('Base Match class shouldnt received doExit message....')
   }
 }
 
