@@ -87,6 +87,9 @@ class MatchQueue {
           registerEvents(ws, match, 0)
           registerEvents(otherPlayer.ws, match, 1)
 
+          // Inform players that match started TODO That it's pvp specifically
+          await match.notifyMatchStart()
+
           // Notify both players that they are connected
           await match.notifyState()
         } else {
