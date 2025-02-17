@@ -1,32 +1,37 @@
-import { eq, sql } from 'drizzle-orm'
+import { calculate } from 'elo-rating'
+import { eq } from 'drizzle-orm'
 import { db } from './db'
 import { players } from './schema'
 
-export async function updateMatchResult(
-  winnerID: string | null,
-  loserID: string | null,
-) {
-  return
+const K_FACTOR = 32 // Standard K-factor used in chess
 
-  // Update the winner
-  if (winnerID !== null) {
-    await db
+export async function updateMatchResult(winnerId: string, loserId: string) {
+  const [winner, loser] = await Promise.all([
+    db.select().from(players).where(eq(players.id, winnerId)),
+    db.select().from(players).where(eq(players.id, loserId)),
+  ])
+
+  const result = calculate(winner[0].elo, loser[0].elo, true, K_FACTOR)
+
+  console.log('result', winner, loser, result)
+
+  await Promise.all([
+    db
       .update(players)
       .set({
-        wins: sql`${players.wins} + 1`,
+        elo: result.playerRating,
+        wins: winner[0].wins + 1,
+        lastactive: new Date().toISOString(),
       })
-      .where(eq(players.id, winnerID))
-  }
+      .where(eq(players.id, winnerId)),
 
-  // Update the loser
-  if (loserID !== null) {
-    await db
+    db
       .update(players)
       .set({
-        losses: sql`${players.losses} + 1`,
+        elo: result.opponentRating,
+        losses: loser[0].losses + 1,
+        lastactive: new Date().toISOString(),
       })
-      .where(eq(players.id, loserID))
-  }
-
-  // TODO update respective elo
+      .where(eq(players.id, loserId)),
+  ])
 }

@@ -3,6 +3,7 @@ import Card from '../../../../shared/state/card'
 import { Mulligan } from '../../../../shared/settings'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
 import { MatchServerWS } from '../../../../shared/network/matchWS'
+import { updateMatchResult } from '../../db/updateMatchResult'
 
 interface Match {
   ws1: MatchServerWS | null
@@ -72,7 +73,13 @@ class Match {
       }),
     )
 
-    // TODO If there is a winner, update wins/losses/elo accordingly
+    // If there is a winner, update wins/losses/elo accordingly
+    if (this.game.model.winner !== null) {
+      const winner = this.game.model.winner === 0 ? this.uuid1 : this.uuid2
+      const loser = this.game.model.winner === 0 ? this.uuid2 : this.uuid1
+
+      await updateMatchResult(winner, loser)
+    }
   }
 
   async doMulligan(player: number, mulligan: Mulligan) {
@@ -118,7 +125,9 @@ class Match {
 
     // Notify remaining player of the disconnect
     await Promise.all(
-      this.getActiveWsList().map((ws: MatchServerWS) => ws.send({ type: 'dc' })),
+      this.getActiveWsList().map((ws: MatchServerWS) =>
+        ws.send({ type: 'dc' }),
+      ),
     )
   }
 }

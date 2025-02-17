@@ -68,6 +68,7 @@ export default function createUserDataServer() {
             email: email,
             wins: 0,
             losses: 0,
+            elo: 1000,
             decks: [],
             inventory: '1000101001011100001',
             completedmissions: '',

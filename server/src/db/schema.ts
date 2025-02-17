@@ -32,9 +32,6 @@ lastactive        | date                |           |          | now()
  // Single player
  inventory         | bit varying(1000)   |           |          | '1000101001011100001'::bit varying
  completedmissions | bit varying(1000)   |           |          | ''::bit varying
-
- // Owned assets
- // TODO Complicated, use a HATS table, and a join USER_HATS table 
 */
 
 export const players = pgTable(
@@ -48,7 +45,7 @@ export const players = pgTable(
     lastactive: date('lastactive').notNull(),
     wins: integer('wins').notNull(),
     losses: integer('losses').notNull(),
-    elo: integer('elo').notNull().default(1000),
+    elo: integer('elo').notNull(),
     decks: varchar('decks', { length: 255 }).array().notNull(),
     inventory: varchar('inventory', { length: 1000 }).notNull(),
     completedmissions: varchar('completedmissions', { length: 1000 }).notNull(),
