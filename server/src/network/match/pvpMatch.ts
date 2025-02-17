@@ -54,7 +54,6 @@ class PvpMatch extends Match {
     await super.notifyState()
 
     // If there is a winner, update wins/losses/elo accordingly
-    console.log('This game has a winner:', this.game.model.winner)
     if (this.game.model.winner !== null) {
       await this.updateMatchResult(this.game.model.winner)
     }
@@ -63,10 +62,7 @@ class PvpMatch extends Match {
   // Update the database records for this match
   private async updateMatchResult(winner: number) {
     // If either uuid is null, don't update the database
-    if (!this.uuid1 || !this.uuid2) {
-      console.log('No uuid found, skipping updateMatchResult')
-      return
-    }
+    if (!this.uuid1 || !this.uuid2) return
 
     const idWinner = winner === 0 ? this.uuid1 : this.uuid2
     const idLoser = winner === 0 ? this.uuid2 : this.uuid1

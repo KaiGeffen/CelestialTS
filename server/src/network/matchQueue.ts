@@ -61,8 +61,10 @@ class MatchQueue {
         if (otherPlayer) {
           console.log(
             'Match starting between players with decks:',
-            decodeDeck(data.deck),
-            otherPlayer.deck,
+            decodeDeck(data.deck)
+              .map((card) => card.name)
+              .join(', '),
+            otherPlayer.deck.map((card) => card.name).join(', '),
           )
 
           // Create a PvP match
