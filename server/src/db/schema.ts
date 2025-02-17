@@ -16,6 +16,7 @@ import {
 -------------------+---------------------+-----------+----------+------------------------------------
  id                | uuid                |           |          | 
  email             | character varying   |           |          | 
+ username          | character varying   |           |          | 
 
 //  Liveness
 createdate        | date                |           |          | now()
@@ -39,6 +40,7 @@ export const players = pgTable(
   {
     id: uuid('id').primaryKey(),
     email: varchar('email', { length: 255 }).notNull(),
+    username: varchar('username', { length: 255 }).notNull(),
     createdate: date('createdate')
       .notNull()
       .default(sql`now()`),

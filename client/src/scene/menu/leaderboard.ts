@@ -11,7 +11,7 @@ const RESULTS_PER_PAGE = 10
 
 interface LeaderboardEntry {
   rank: number
-  email: string
+  username: string
   elo: number
   wins: number
   losses: number
@@ -115,7 +115,7 @@ export default class LeaderboardMenu extends Menu {
 
     // Add each text object
     let rankText = this.scene.add.text(0, 0, `\t${entry.rank}`, Style.basic)
-    let usernameText = this.scene.add.text(0, 0, entry.email, Style.basic)
+    let usernameText = this.scene.add.text(0, 0, entry.username, Style.basic)
     let winsText = this.scene.add.text(0, 0, entry.wins.toString(), Style.basic)
     let lossesText = this.scene.add.text(
       0,

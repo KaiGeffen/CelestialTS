@@ -66,6 +66,7 @@ export default function createUserDataServer() {
           await db.insert(players).values({
             id: userId,
             email: email,
+            username: 'GIVE_USERNAME',
             wins: 0,
             losses: 0,
             elo: 1000,

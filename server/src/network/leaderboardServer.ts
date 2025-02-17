@@ -18,7 +18,7 @@ export default function createLeaderboardServer() {
       console.log('Getting the leaderboard for you....')
       const leaderboardData = await db
         .select({
-          email: players.email,
+          username: players.username,
           wins: players.wins,
           losses: players.losses,
           elo: players.elo,
