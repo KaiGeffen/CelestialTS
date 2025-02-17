@@ -112,6 +112,10 @@ export default function createUserDataServer() {
             .set({ completedmissions: missions })
             .where(eq(players.id, id))
         })
+        .on('sendUsername', async ({ username }) => {
+          if (!id) return
+          await db.update(players).set({ username }).where(eq(players.id, id))
+        })
     } catch (e) {
       console.error('Error in match queue:', e)
     }
