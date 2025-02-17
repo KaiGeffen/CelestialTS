@@ -16,6 +16,8 @@
     "dotenv": "^16.4.7",
     "drizzle-kit": "^0.20.6",
     "drizzle-orm": "^0.29.1",
+    "elo-rank": "^1.0.4",
+    "elo-rating": "^1.0.1",
     "nodemon": "^3.1.9",
     "pg": "^8.11.3",
     "ts-loader": "^8.0.17",
