@@ -215,6 +215,24 @@ const unnamed = new Unnamed({
   beta: true,
 })
 
+// A pearl? Some crystal jewelery
+class Precious extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+    const length = game.hand[player].length
+    this.discard(length, game, player)
+    game.draw(player, length)
+  }
+}
+const precious = new Precious({
+  name: 'Precious',
+  id: 7210,
+  cost: 2,
+  points: 2,
+  text: 'Discard your hand, draw that many cards.',
+  beta: true,
+})
+
 export {
   mercy,
   excess,
@@ -228,4 +246,5 @@ export {
   overflow,
   fish,
   unnamed,
+  precious,
 }
