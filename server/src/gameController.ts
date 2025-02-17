@@ -107,11 +107,16 @@ class ServerController {
   }
 
   play(player: number, cardNum: number): void {
-    const card = this.model.hand[player].splice(cardNum, 1)[0]
-    this.model.breath[player] -= this.model.getCost(card, player)
+    // Get the cost first, since some cards change their cost when a card leaves hand
+    const cost = this.model.getCost(this.model.hand[player][cardNum], player)
+    this.model.breath[player] -= cost
 
+    const card = this.model.hand[player].splice(cardNum, 1)[0]
+
+    // Trigger on-play effects
     card.onPlay(player, this.model)
 
+    // Add the card to the story
     this.model.story.addAct(card, player)
   }
 

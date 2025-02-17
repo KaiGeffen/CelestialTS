@@ -1,3 +1,4 @@
+import { MechanicsSettings } from '../../settings'
 import Card from '../card'
 import { Status, Quality } from '../effects'
 import GameModel from '../gameModel'
@@ -161,8 +162,8 @@ class Overflow extends Card {
 const overflow = new Overflow({
   name: 'Overflow',
   id: 201,
-  cost: 4,
-  points: 1,
+  cost: 3,
+  points: -1,
   text: 'Refresh.\nWorth +1 for each card in your hand.',
   beta: true,
 })
@@ -190,7 +191,7 @@ const fish = new Fish({
 
 class Unnamed extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
-    super.play(player, game, index, bonus + game.hand[player].length)
+    super.play(player, game, index, bonus)
 
     if (super.exhale(2, game, player)) {
       super.draw(3, game, player)
