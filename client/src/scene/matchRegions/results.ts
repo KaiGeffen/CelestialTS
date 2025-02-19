@@ -166,7 +166,12 @@ export default class ResultsRegion extends Region {
       )
       .setInteractive()
 
-    this.container.add([this.txtResult, this.ourAvatar, this.theirAvatar, this.panel])
+    this.container.add([
+      this.txtResult,
+      this.ourAvatar,
+      this.theirAvatar,
+      this.panel,
+    ])
   }
 
   private createResultsPanel() {
@@ -235,10 +240,12 @@ export default class ResultsRegion extends Region {
       })
       .addBackground(background)
 
-    let txt = this.scene.add.rexBBCodeText(0, 0, 'Results:', {
-      ...BBStyle.basic,
-      fontSize: '30px',
-    }).setOrigin(0.5)
+    let txt = this.scene.add
+      .rexBBCodeText(0, 0, 'Results:', {
+        ...BBStyle.basic,
+        fontSize: '30px',
+      })
+      .setOrigin(0.5)
 
     sizer.add(txt)
 
@@ -301,12 +308,9 @@ export default class ResultsRegion extends Region {
       const ours = state.roundResults[0][i]
       const theirs = state.roundResults[1][i]
       const s = `Round ${round}\n${ours} - ${theirs}`
-      let txt = this.scene.add.rexBBCodeText(
-        0,
-        0,
-        s,
-        BBStyle.basic,
-      ).setDepth(Depth.results)
+      let txt = this.scene.add
+        .rexBBCodeText(0, 0, s, BBStyle.basic)
+        .setDepth(Depth.results)
 
       // Visual to show who is the winner
       let background
@@ -353,9 +357,9 @@ export default class ResultsRegion extends Region {
   }
 }
 
-import intro from '../../adventures/intro.json'
 import { GameScene } from '../gameScene'
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
+import { TUTORIAL_LENGTH } from '../../../../shared/settings'
 
 export class ResultsRegionTutorial extends ResultsRegion {
   missionID: number
@@ -375,7 +379,7 @@ export class ResultsRegionTutorial extends ResultsRegion {
   private continueCallback(): () => void {
     return () => {
       // If we are done with tutorials,
-      if (this.missionID >= intro.length) {
+      if (this.missionID >= TUTORIAL_LENGTH) {
         this.scene.scene.start('AdventureScene', { stillframe: 4 })
       } else {
         this.scene.scene.start('TutorialGameScene', {

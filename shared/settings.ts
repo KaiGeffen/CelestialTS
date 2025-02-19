@@ -22,3 +22,5 @@ export class DecklistSettings {
 }
 
 export type Mulligan = [boolean, boolean, boolean]
+
+export const TUTORIAL_LENGTH = 3

@@ -12,12 +12,12 @@ import BaseScene from './baseScene'
 import Button from '../lib/buttons/button'
 import Buttons from '../lib/buttons/buttons'
 import Icons from '../lib/buttons/icons'
-import intro from '../adventures/intro.json'
 import Loader from '../loader/loader'
 import UserDataServer from '../network/userDataServer'
 import { CardImage } from '../lib/cardImage'
 import Catalog from '../../../shared/state/catalog'
 import Cinematic from '../lib/cinematic'
+import { TUTORIAL_LENGTH } from '../../../shared/settings'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const discordHeight = 150
@@ -102,7 +102,7 @@ export default class HomeScene extends BaseScene {
 
     // If tutorial complete, show normal buttons, otherwise show tutorial button
     const missions = UserSettings._get('completedMissions')
-    if (missions[intro.length - 1]) {
+    if (missions[TUTORIAL_LENGTH - 1]) {
       this.createAdventureButton(width, height)
       this.createDeckbuilderButton(width, height)
     } else {
@@ -476,7 +476,7 @@ export default class HomeScene extends BaseScene {
     this.beforeExit()
 
     const missions = UserSettings._get('completedMissions')
-    for (let i = 0; i < intro.length; i++) {
+    for (let i = 0; i < TUTORIAL_LENGTH; i++) {
       // If this tutorial mission hasn't been completed, jump to that mission
       if (!missions[i]) {
         this.scene.start('TutorialGameScene', {

@@ -21,7 +21,7 @@ import MenuScene from '../menuScene'
 import { rulebookString } from '../../catalog/rulebook'
 import { creditsString } from '../../catalog/credits'
 import Icons from '../../lib/buttons/icons'
-import intro from '../../adventures/intro.json'
+import { TUTORIAL_LENGTH } from '../../../../shared/settings'
 
 // TODO Use a non-mock color for the menu background
 const COLOR = Color.backgroundLight
@@ -198,7 +198,7 @@ export default class OptionsMenu extends Menu {
 
     // Allow user to skip Tutorial, if they haven't completed it
     const missions = UserSettings._get('completedMissions')
-    if (!missions[intro.length - 1]) {
+    if (!missions[TUTORIAL_LENGTH - 1]) {
       sizer
         .add(this.createSkipTutorial(activeScene), { expand: true })
         .addSpace()
@@ -329,7 +329,7 @@ export default class OptionsMenu extends Menu {
         menu: 'confirm',
         callback: () => {
           // Complete each mission in the intro
-          for (let i = 0; i < intro.length; i++) {
+          for (let i = 0; i < TUTORIAL_LENGTH; i++) {
             UserSettings._setIndex('completedMissions', i, true)
           }
 
