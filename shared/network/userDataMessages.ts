@@ -13,8 +13,12 @@ export interface UserDataClientMessages {
   sendCompletedMissions: {
     missions: string
   }
-  sendUsername: {
+  // TODO change from sendUsername
+  sendInitialUserData: {
     username: string
+    decks: string[]
+    inventory: string
+    missions: string
   }
 }
 

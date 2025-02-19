@@ -49,11 +49,13 @@ export default function createUserDataServer() {
 
       // Remember the user once they've signed in
       let id: string = null
+      let potentialEmail: string = null
 
       ws.on('sendToken', async ({ email, uuid, jti }) => {
         // Generate UUID v5 from Google's user ID
         const userId = uuidv5(uuid, UUID_NAMESPACE)
         id = userId
+        potentialEmail = email
 
         // Check if user exists in database
         const result = await db
@@ -62,22 +64,6 @@ export default function createUserDataServer() {
           .where(eq(players.id, userId))
 
         if (result.length === 0) {
-          // Create new user entry in database
-          await db.insert(players).values({
-            id: userId,
-            email: email,
-            username: 'GIVE_USERNAME',
-            wins: 0,
-            losses: 0,
-            elo: 1000,
-            decks: [],
-            inventory: '1000101001011100001',
-            completedmissions: '',
-            lastactive: new Date().toISOString(),
-          })
-          // User doesn't exist yet
-          console.log('Creating new user:', email)
-
           ws.send({ type: 'promptUserInit' })
         } else if (result.length === 1) {
           // Send user their data
@@ -112,10 +98,28 @@ export default function createUserDataServer() {
             .set({ completedmissions: missions })
             .where(eq(players.id, id))
         })
-        .on('sendUsername', async ({ username }) => {
-          if (!id) return
-          await db.update(players).set({ username }).where(eq(players.id, id))
-        })
+        .on(
+          'sendInitialUserData',
+          async ({ username, decks, inventory, missions }) => {
+            if (!id) {
+              throw new Error('User sent initial user data before signing in')
+            }
+
+            // Create new user entry in database
+            await db.insert(players).values({
+              id: id,
+              email: potentialEmail,
+              username: username,
+              wins: 0,
+              losses: 0,
+              elo: 1000,
+              decks: decks,
+              inventory: inventory,
+              completedmissions: missions,
+              lastactive: new Date().toISOString(),
+            })
+          },
+        )
     } catch (e) {
       console.error('Error in match queue:', e)
     }

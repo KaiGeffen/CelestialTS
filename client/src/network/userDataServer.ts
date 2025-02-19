@@ -68,9 +68,6 @@ export default class UserDataServer {
         game.scene.getAt(0).scene.launch('MenuScene', {
           menu: 'registerUsername',
           callback: () => {
-            that.sendDecks(UserSettings._get('decks'))
-            that.sendInventory(UserSettings._get('inventory'))
-            that.sendCompletedMissions(UserSettings._get('completedMissions'))
             callback()
           },
         })
@@ -153,58 +150,66 @@ export default class UserDataServer {
     return wsServer !== undefined
   }
 
+  private static encodeDecks(decks): string[] {
+    return decks.map((deck) =>
+      [deck['name'], deck['value'], deck['avatar']].toString(),
+    )
+  }
+
+  private static convertBoolArrayToBitString(array: boolean[]): string {
+    return array.map((value) => (value ? '1' : '0')).join('')
+  }
+
   // Send server an updated list of decks
   static sendDecks(decks): void {
     if (wsServer === undefined) {
       throw 'Sending decks when server ws doesnt exist.'
-    } else {
-      // On database, decks are stored as a pair of strings, convert before sending
-      let decksAsList = []
-
-      decks.forEach((deck) => {
-        let tuple = [deck['name'], deck['value'], deck['avatar']]
-        decksAsList.push(tuple)
-      })
-
-      wsServer.send({
-        type: 'sendDecks',
-        decks: decksAsList,
-      })
     }
+    wsServer.send({
+      type: 'sendDecks',
+      decks: this.encodeDecks(decks),
+    })
   }
 
   // Send server user's inventory of unlocked cards
-  static sendInventory(ary): void {
+  static sendInventory(inventory: boolean[]): void {
     if (wsServer === undefined) {
       throw 'Sending inventory when server ws doesnt exist.'
-    } else {
-      let result = ''
-      for (let i = 0; i < ary.length; i++) {
-        result += ary[i] ? '1' : '0'
-      }
-
-      wsServer.send({
-        type: 'sendInventory',
-        inventory: result,
-      })
     }
+    wsServer.send({
+      type: 'sendInventory',
+      inventory: this.convertBoolArrayToBitString(inventory),
+    })
   }
 
   // Send server user's list of completed missions
-  static sendCompletedMissions(ary): void {
+  static sendCompletedMissions(missions: boolean[]): void {
     if (wsServer === undefined) {
       throw 'Sending completed missions when server ws doesnt exist.'
-    } else {
-      let result = ''
-      for (let i = 0; i < ary.length; i++) {
-        result += ary[i] ? '1' : '0'
-      }
-
-      wsServer.send({
-        type: 'sendCompletedMissions',
-        missions: result,
-      })
     }
+    wsServer.send({
+      type: 'sendCompletedMissions',
+      missions: this.convertBoolArrayToBitString(missions),
+    })
+  }
+
+  // Send all data necessary to initialize a user
+  static sendInitialUserData(username: string): void {
+    if (wsServer === undefined) {
+      throw 'Sending initial user data when server ws doesnt exist.'
+    }
+
+    wsServer.send({
+      type: 'sendInitialUserData',
+      username: username,
+      decks: this.encodeDecks(UserSettings._get('decks')),
+      inventory: this.convertBoolArrayToBitString(
+        UserSettings._get('inventory'),
+      ),
+      missions: this.convertBoolArrayToBitString(
+        UserSettings._get('completedMissions'),
+      ),
+    })
   }
 
   // Load user data that was sent from server into session storage
@@ -259,16 +264,5 @@ export default class UserDataServer {
 
   static getUUID(): string | null {
     return this.userUUID
-  }
-
-  static sendUsername(username: string): void {
-    if (wsServer === undefined) {
-      throw 'Sending username when server ws doesnt exist.'
-    } else {
-      wsServer.send({
-        type: 'sendUsername',
-        username: username,
-      })
-    }
   }
 }

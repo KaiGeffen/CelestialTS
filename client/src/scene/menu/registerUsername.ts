@@ -99,7 +99,7 @@ export class RegisterUsernameMenu extends Menu {
       'Confirm',
       () => {
         // Send username to server
-        UserDataServer.sendUsername(this.username)
+        UserDataServer.sendInitialUserData(this.username)
 
         // Call the callback
         this.callback()
