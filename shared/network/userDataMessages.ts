@@ -13,7 +13,6 @@ export interface UserDataClientMessages {
   sendCompletedMissions: {
     missions: string
   }
-  // TODO change from sendUsername
   sendInitialUserData: {
     username: string
     decks: string[]
