@@ -61,15 +61,12 @@ class PvpMatch extends Match {
 
   // Update the database records for this match
   private async updateMatchResult(winner: number) {
-    // If either uuid is null, don't update the database
-    if (!this.uuid1 || !this.uuid2) return
-
     const idWinner = winner === 0 ? this.uuid1 : this.uuid2
     const idLoser = winner === 0 ? this.uuid2 : this.uuid1
 
     await updateMatchResult(idWinner, idLoser).catch((error) => {
       console.error('Error updating match results:', error)
-      throw new Error('Failed to process match result')
+      // throw new Error('Failed to process match result')
     })
   }
 }

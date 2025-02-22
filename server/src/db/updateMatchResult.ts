@@ -1,45 +1,61 @@
 import EloRank from 'elo-rank'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import { db } from './db'
 import { players } from './schema'
 
 const K_FACTOR = 32 // Standard K-factor used in chess
 const elo = new EloRank(K_FACTOR)
+const BASE_ELO = 1000
 
-export async function updateMatchResult(winnerId: string, loserId: string) {
-  const [winner, loser] = await Promise.all([
-    db.select().from(players).where(eq(players.id, winnerId)),
-    db.select().from(players).where(eq(players.id, loserId)),
-  ])
+export async function updateMatchResult(
+  winnerId: string | null,
+  loserId: string | null,
+) {
+  const winnerElo =
+    winnerId === null
+      ? BASE_ELO
+      : await db
+          .select()
+          .from(players)
+          .where(eq(players.id, winnerId))
+          .limit(1)
+          .then((result) => (result.length ? result[0].elo : BASE_ELO))
 
-  const winnerRating = winner[0].elo
-  const loserRating = loser[0].elo
+  const loserElo =
+    loserId === null
+      ? BASE_ELO
+      : await db
+          .select()
+          .from(players)
+          .where(eq(players.id, loserId))
+          .limit(1)
+          .then((result) => (result.length ? result[0].elo : BASE_ELO))
 
   // Calculate expected scores
-  const expectedScoreWinner = elo.getExpected(winnerRating, loserRating)
-  const expectedScoreLoser = elo.getExpected(loserRating, winnerRating)
+  const expectedScoreWinner = elo.getExpected(winnerElo, loserElo)
+  const expectedScoreLoser = elo.getExpected(loserElo, winnerElo)
 
   // Update ratings (1 for win, 0 for loss)
-  const newWinnerRating = elo.updateRating(expectedScoreWinner, 1, winnerRating)
-  const newLoserRating = elo.updateRating(expectedScoreLoser, 0, loserRating)
+  const newWinnerRating = elo.updateRating(expectedScoreWinner, 1, winnerElo)
+  const newLoserRating = elo.updateRating(expectedScoreLoser, 0, loserElo)
 
   await Promise.all([
-    db
-      .update(players)
-      .set({
-        elo: newWinnerRating,
-        wins: winner[0].wins + 1,
-        lastactive: new Date().toISOString(),
-      })
-      .where(eq(players.id, winnerId)),
+    winnerId !== null &&
+      db
+        .update(players)
+        .set({
+          elo: newWinnerRating,
+          wins: sql`${players.wins} + 1`,
+        })
+        .where(eq(players.id, winnerId)),
 
-    db
-      .update(players)
-      .set({
-        elo: newLoserRating,
-        losses: loser[0].losses + 1,
-        lastactive: new Date().toISOString(),
-      })
-      .where(eq(players.id, loserId)),
+    loserId !== null &&
+      db
+        .update(players)
+        .set({
+          elo: newLoserRating,
+          losses: sql`${players.losses} + 1`,
+        })
+        .where(eq(players.id, loserId)),
   ])
 }
