@@ -150,7 +150,11 @@ class Cling extends Card {
     let highestCost = -1
     let highestIndex = null
 
-    for (let pileIndex = game.pile[player].length - 1; pileIndex >= 0; pileIndex--) {
+    for (
+      let pileIndex = game.pile[player].length - 1;
+      pileIndex >= 0;
+      pileIndex--
+    ) {
       const card = game.pile[player][pileIndex]
 
       if (card.cost > highestCost) {
@@ -306,23 +310,23 @@ const immolant = new Immolant({
   beta: true,
 })
 
-// class Pyre extends Card {
-//   onPlay(player: number, game: GameModel): void {
-//     game.hand[player] = Array(game.hand[player].length).fill(ashes)
-//   }
+class WordOfRuin extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
 
-//   // TODO This displays correctly but then takes 1 more breath because at that point it's not in hand
-//   getCost(player: number, game: GameModel): number {
-//     return Math.max(0, this.cost - game.hand[player].length + 1)
-//   }
-// }
-// const pyre = new Pyre({
-//   name: 'Pyre',
-//   id: 166,
-//   cost: 5,
-//   points: 3,
-//   text: 'Costs 1 less for each other card in your hand.\nWhen played, transform cards in your hand into ashes.',
-// })
+    if (super.exhale(2, game, player)) {
+      game.removeAct(0)
+    }
+  }
+}
+const wordOfRuin = new WordOfRuin({
+  name: 'Word of Ruin',
+  id: 1069,
+  cost: 3,
+  points: 3,
+  text: 'Exhale 2: Discard the next card in the story.',
+  beta: true,
+})
 
 export {
   dash,
@@ -338,4 +342,5 @@ export {
   goliath,
   firebug,
   immolant,
+  wordOfRuin,
 }
