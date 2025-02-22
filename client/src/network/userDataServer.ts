@@ -237,10 +237,13 @@ export default class UserDataServer {
     // Decks must be translated from string, string to dictionary
     let decks = []
     data.decks.forEach((pair) => {
-      let name = pair[0]
-      let deckCode = pair[1]
-      // TODO Decks must have an avatar
-      let avatar = pair[2] | 0
+      // TODO Use better encoding to prevent this
+      if (pair.count(',') !== 2) {
+        throw 'Invalid deck encoding'
+      }
+
+      // Split the pair into name, deckCode, avatar
+      const [name, deckCode, avatar] = pair.split(',')
 
       decks.push({ name: name, value: deckCode, avatar: avatar })
     })
