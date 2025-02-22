@@ -74,17 +74,10 @@ export class MatchWS {
 
   // Signal to server that we are exiting this match
   exitMatch() {
-    // If user is logged in, send a message but keep the ws
-    if (UserDataServer.isLoggedIn()) {
-      this.socket.send({
-        type: 'exitMatch',
-      })
-    }
-    // TODO Remove if UserSessionWS is separate from this
-    // If user is anon, close socket
-    else {
-      this.socket.close(1000)
-    }
+    this.socket.send({
+      type: 'exitMatch',
+    })
+    this.socket.close(1000)
   }
 
   // Signal to the server that we have emoted

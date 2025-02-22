@@ -31,8 +31,6 @@ export async function updateMatchResult(
           .limit(1)
           .then((result) => (result.length ? result[0].elo : BASE_ELO))
 
-  console.log('Winner and loser elo:', winnerElo, loserElo)
-
   // Calculate expected scores
   const expectedScoreWinner = elo.getExpected(winnerElo, loserElo)
   const expectedScoreLoser = elo.getExpected(loserElo, winnerElo)
@@ -40,8 +38,6 @@ export async function updateMatchResult(
   // Update ratings (1 for win, 0 for loss)
   const newWinnerRating = elo.updateRating(expectedScoreWinner, 1, winnerElo)
   const newLoserRating = elo.updateRating(expectedScoreLoser, 0, loserElo)
-
-  console.log('New winner and loser elo:', newWinnerRating, newLoserRating)
 
   if (winnerId !== null) {
     await db
