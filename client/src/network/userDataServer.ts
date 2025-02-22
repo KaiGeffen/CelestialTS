@@ -213,7 +213,11 @@ export default class UserDataServer {
   }
 
   // Load user data that was sent from server into session storage
-  private static loadUserData(data): void {
+  private static loadUserData(data: {
+    inventory: string
+    completedMissions: string
+    decks: string[]
+  }): void {
     // Map from binary string to bool array
     sessionStorage.setItem(
       'inventory',
@@ -238,8 +242,8 @@ export default class UserDataServer {
     let decks = []
     data.decks.forEach((pair) => {
       // TODO Use better encoding to prevent this
-      if (pair.count(',') !== 2) {
-        throw 'Invalid deck encoding'
+      if ((pair.match(/,/g) || []).length > 2) {
+        console.log('Invalid deck format: too many commas')
       }
 
       // Split the pair into name, deckCode, avatar
