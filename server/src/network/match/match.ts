@@ -129,9 +129,7 @@ class Match {
   }
 
   // Given ws is disconnecting, implemented in pvpMatch
-  async doExit(disconnectingWs: MatchServerWS) {
-    console.log('Base Match class shouldnt received doExit message....')
-  }
+  async doExit(disconnectingWs: MatchServerWS) {}
 
   // Get the name of player with given uuid
   private async getUsername(uuid: string | null): Promise<string> {
