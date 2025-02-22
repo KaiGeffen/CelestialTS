@@ -35,6 +35,9 @@ class PvpMatch extends Match {
     if (this.game === null || this.game.model.winner !== null) return
 
     // Update match result, counting the disconnecting player as the loser
+    console.log('Disconnecting ws:', disconnectingWs)
+    console.log('ws1:', this.ws1)
+    console.log('ws2:', this.ws2)
     const winner = this.ws1 === disconnectingWs ? 1 : 0
     await this.updateMatchResult(winner)
 

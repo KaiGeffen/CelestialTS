@@ -41,7 +41,7 @@ export async function updateMatchResult(
   const newWinnerRating = elo.updateRating(expectedScoreWinner, 1, winnerElo)
   const newLoserRating = elo.updateRating(expectedScoreLoser, 0, loserElo)
 
-  console.log('New winner and loser elo:', winnerElo, loserElo)
+  console.log('New winner and loser elo:', newWinnerRating, newLoserRating)
 
   if (winnerId !== null) {
     await db
