@@ -4,9 +4,9 @@
   "description": "The client-side of Celestial",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --mode production",
-    "start": "webpack --mode production --watch & live-server --port=8083",
-    "dev": "webpack --mode development --watch & live-server --port=4949"
+    "build": "webpack",
+    "start": "webpack --watch & live-server --port=8083",
+    "dev": "webpack --watch & live-server --port=4949"
   },
   "repository": {
     "type": "git",

@@ -46,6 +46,12 @@ module.exports = (_, argv) => {
             minSize: 20000,
             maxSize: 244000,
             cacheGroups: {
+              phaser: {
+                test: /[\\/]node_modules[\\/](phaser|phaser3-rex-plugins)[\\/]/,
+                name: 'phaser',
+                chunks: 'all',
+                priority: 10,
+              },
               vendor: {
                 test: /[\\/]node_modules[\\/]/,
                 name(module) {
