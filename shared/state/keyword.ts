@@ -40,7 +40,7 @@ export class Keywords {
   )
   static sight = new Keyword(
     'Sight',
-    '[img=kw-Sight X] - The first X cards in the story are visible to you this round.',
+    '[img=kw-Sight X] - Increase your Sight by X. Sight N makes the first N cards in the story visible to you, and is removed at end of round.',
     true,
   )
   static inspire = new Keyword(
