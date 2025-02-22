@@ -137,22 +137,6 @@ const sunflower = new Sunflower({
 })
 
 // Beta
-class Aspirant extends Card {
-  play(player: number, game: GameModel, index: number, bonus: number) {
-    if (super.exhale(3, game, player)) {
-      bonus += 3
-    }
-    super.play(player, game, index, bonus)
-  }
-}
-const aspirant = new Aspirant({
-  name: 'Aspirant',
-  id: 360,
-  cost: 2,
-  points: 2,
-  text: 'Exhale 3: Worth +3.',
-  beta: true,
-})
 class Fates extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
@@ -266,24 +250,6 @@ const dreamer = new Dreamer({
   beta: true,
 })
 
-class Supernova extends Card {
-  play(player: number, game: GameModel, index: number, bonus: number) {
-    super.play(player, game, index, bonus)
-
-    if (super.exhale(4, game, player)) {
-      game.score[player] *= 2
-    }
-  }
-}
-const supernova = new Supernova({
-  name: 'Supernova',
-  id: 8835,
-  cost: 4,
-  points: 4,
-  text: 'Exhale 4: Double your points.',
-  beta: true,
-})
-
 class Pride extends Card {
   onMorning(player: number, game: GameModel, index: number) {
     if (super.exhale(2, game, player)) {
@@ -311,12 +277,10 @@ export {
   moon,
   sunflower,
   // BETA
-  aspirant,
   fates,
   wish,
   possibility,
   neptune,
   dreamer,
-  supernova,
   pride,
 }

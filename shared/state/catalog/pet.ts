@@ -251,6 +251,24 @@ const celebration = new Celebration({
   beta: true,
 })
 
+class Supernova extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    if (super.exhale(4, game, player)) {
+      game.score[player] *= 2
+    }
+  }
+}
+const supernova = new Supernova({
+  name: 'Supernova',
+  id: 4835,
+  cost: 4,
+  points: 4,
+  text: 'Exhale 4: Double your points.',
+  beta: true,
+})
+
 export {
   fruit,
   oak,
@@ -264,4 +282,5 @@ export {
   abundance,
   rose,
   celebration,
+  supernova,
 }

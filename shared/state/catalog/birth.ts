@@ -228,6 +228,23 @@ const village = new Village({
   text: 'Worth +1 for each card before this in the story.',
 })
 
+class Aspirant extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    if (super.exhale(3, game, player)) {
+      bonus += 3
+    }
+    super.play(player, game, index, bonus)
+  }
+}
+const aspirant = new Aspirant({
+  name: 'Aspirant',
+  id: 360,
+  cost: 2,
+  points: 2,
+  text: 'Exhale 3: Worth +3.',
+  beta: true,
+})
+
 export {
   nascence,
   birth,
@@ -242,4 +259,5 @@ export {
   pregnant,
   passOn,
   village,
+  aspirant,
 }

@@ -263,6 +263,30 @@ const crab = new Crab({
   beta: true,
 })
 
+class Unfolding extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    if (super.exhale(2, game, player)) {
+      super.draw(3, game, player)
+    }
+  }
+
+  onPlay(player: number, game: GameModel): void {
+    if (game.hand[player].length > 0) {
+      const card = game.hand[player].shift()
+      game.deck[player].unshift(card)
+      game.draw(player, 1)
+    }
+  }
+}
+const unfolding = new Unfolding({
+  name: 'Unfolding',
+  id: 7210,
+  text: 'Exhale 4: Worth +1 for each card later in the story.\nExhale 1: Draw a card.',
+  beta: true,
+})
+
 export {
   mercy,
   excess,
