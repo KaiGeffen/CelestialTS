@@ -122,7 +122,7 @@ class Story {
 
     this.resolvedActs.forEach((act) => {
       // Add to the list of resolved acts
-      copy.resolvedActs.push(act)
+      copy.resolvedActs.push({ ...act })
     })
 
     return copy
@@ -137,7 +137,7 @@ function addRecentModels(model): void {
   model0.isRecap = true
   model.recentModels[0].push(model0)
 
-  const model1 = getClientGameModel(model, 0, true)
+  const model1 = getClientGameModel(model, 1, true)
   model1.recentModels = [[], []]
   model1.isRecap = true
   model.recentModels[1].push(model1)

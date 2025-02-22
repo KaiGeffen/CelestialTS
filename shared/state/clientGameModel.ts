@@ -76,13 +76,6 @@ function reverseAttributes(model: GameModel): void {
   }
 }
 
-function setClientSideInformation(model: GameModel): void {
-  // Set costs of cards
-  for (let i = 0; i < model.hand[0].length; i++) {
-    model.cardCosts[i] = model.hand[0][i].getCost(0, model)
-  }
-}
-
 function hideHiddenInformation(model: GameModel) {
   const hiddenCard = new Card({ name: 'Cardback', id: 1000 })
 

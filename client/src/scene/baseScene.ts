@@ -83,10 +83,9 @@ class SharedBaseScene extends Phaser.Scene {
     }
 
     // Check if sound exists before playing
-    console.log('Playing sound:', this.sound.get(s))
-    if (this.sound.get(s)) {
+    try {
       this.sound.play(s)
-    } else {
+    } catch (e) {
       console.log(`Sound '${s}' not loaded yet`)
     }
   }
