@@ -90,13 +90,15 @@ export default class GameModel {
     this.status = [[], []]
     this.story = new Story()
     this.passes = 0
-    this.priority = 0
     this.vision = [0, 0]
     this.mulligansComplete = [false, false]
     this.amtPasses = [0, 0]
     this.amtDrawn = [0, 0]
     this.avatars = [avatar1, avatar2]
     this.lastPlayerWhoPlayed = 0
+
+    // Starting priority is random
+    this.priority = Math.floor(Math.random() * 2)
   }
 
   versionIncr() {
