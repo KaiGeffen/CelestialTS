@@ -31,6 +31,8 @@ export async function updateMatchResult(
           .limit(1)
           .then((result) => (result.length ? result[0].elo : BASE_ELO))
 
+  console.log('Winner and loser elo:', winnerElo, loserElo)
+
   // Calculate expected scores
   const expectedScoreWinner = elo.getExpected(winnerElo, loserElo)
   const expectedScoreLoser = elo.getExpected(loserElo, winnerElo)
@@ -39,23 +41,24 @@ export async function updateMatchResult(
   const newWinnerRating = elo.updateRating(expectedScoreWinner, 1, winnerElo)
   const newLoserRating = elo.updateRating(expectedScoreLoser, 0, loserElo)
 
-  await Promise.all([
-    winnerId !== null &&
-      db
-        .update(players)
-        .set({
-          elo: newWinnerRating,
-          wins: sql`${players.wins} + 1`,
-        })
-        .where(eq(players.id, winnerId)),
+  console.log('New winner and loser elo:', winnerElo, loserElo)
 
-    loserId !== null &&
-      db
-        .update(players)
-        .set({
-          elo: newLoserRating,
-          losses: sql`${players.losses} + 1`,
-        })
-        .where(eq(players.id, loserId)),
-  ])
+  if (winnerId !== null) {
+    await db
+      .update(players)
+      .set({
+        elo: newWinnerRating,
+        wins: sql`${players.wins} + 1`,
+      })
+      .where(eq(players.id, winnerId))
+  }
+  if (loserId !== null) {
+    await db
+      .update(players)
+      .set({
+        elo: newLoserRating,
+        losses: sql`${players.losses} + 1`,
+      })
+      .where(eq(players.id, loserId))
+  }
 }
