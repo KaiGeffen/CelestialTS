@@ -233,6 +233,36 @@ const precious = new Precious({
   beta: true,
 })
 
+class Crab extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    // Draw for each card earlier in the story
+    for (let p of [0, 1]) {
+      const earlierCards = game.story.resolvedActs.filter(
+        (c) => c.owner === p,
+      ).length
+
+      console.log('Earlier cards:', earlierCards)
+      game.draw(p, earlierCards)
+    }
+
+    // Discard for each card later in the story
+    for (let p of [0, 1]) {
+      const laterCards = game.story.acts.filter((c) => c.owner === p).length
+
+      console.log('Later cards:', laterCards)
+      this.discard(laterCards, game, p)
+    }
+  }
+}
+const crab = new Crab({
+  name: 'Crab',
+  id: 7220,
+  text: 'Each player draws a card for each of their cards earlier in the story, then discards a card for each of their cards later in the story.',
+  beta: true,
+})
+
 export {
   mercy,
   excess,
@@ -247,4 +277,5 @@ export {
   fish,
   unnamed,
   precious,
+  crab,
 }

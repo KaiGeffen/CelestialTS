@@ -6,7 +6,10 @@ import birth from './birth.json'
 import vision from './vision.json'
 import water from './water.json'
 
+import intro from './intro.json'
+
 export const adventureData: Adventure[] = [
+  ...intro,
   ...birds,
   ...ashes,
   ...shadow,

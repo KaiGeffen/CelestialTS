@@ -270,7 +270,7 @@ class Supernova extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    if (super.exhale(3, game, player)) {
+    if (super.exhale(4, game, player)) {
       game.score[player] *= 2
     }
   }
@@ -280,7 +280,7 @@ const supernova = new Supernova({
   id: 8835,
   cost: 4,
   points: 4,
-  text: 'Exhale 3: Double your points.',
+  text: 'Exhale 4: Double your points.',
   beta: true,
 })
 

@@ -196,8 +196,6 @@ class Riddle extends Card {
 const riddle = new Riddle({
   name: 'Riddle',
   id: 6852,
-  cost: 1,
-  points: 1,
   qualities: [Quality.VISIBLE],
   text: 'Visible.\nAdd the first card in your hand to the story after this if it has the same cost as the card after this.',
   beta: true,
@@ -226,6 +224,25 @@ const bull = new Bull({
   beta: true,
 })
 
+class Lantern extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    super.play(player, game, index, bonus)
+
+    const card = game.hand[player].splice(0, 1)[0]
+    if (card !== undefined) {
+      game.hand[player].unshift(lantern)
+    }
+  }
+}
+const lantern = new Lantern({
+  name: 'Lantern',
+  id: 6083,
+  cost: 5,
+  points: 5,
+  text: 'Transform a card in your hand into Lantern.',
+  beta: true,
+})
+
 export {
   dawn,
   nectar,
@@ -239,4 +256,5 @@ export {
   balance,
   riddle,
   bull,
+  lantern,
 }

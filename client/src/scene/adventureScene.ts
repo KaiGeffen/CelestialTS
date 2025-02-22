@@ -63,8 +63,11 @@ export default class AdventureScene extends BaseScene {
     }
 
     // Make up pop-up for the card you just received, if there is one
+    console.log(params)
     if (params.card) {
       this.createCardPopup(params)
+    } else if (params.txt) {
+      this.createTipPopup(params)
     }
 
     // Scroll to the given position
@@ -138,6 +141,19 @@ export default class AdventureScene extends BaseScene {
       title: 'Card Unlocked!',
       s: params.txt,
       card: params.card,
+    })
+
+    // Clear params
+    params.txt = ''
+    params.card = undefined
+  }
+
+  // Create a popup for the tip
+  private createTipPopup(params): void {
+    this.scene.launch('MenuScene', {
+      menu: 'message',
+      title: 'Tip',
+      s: params.txt,
     })
 
     // Clear params
@@ -353,6 +369,10 @@ export default class AdventureScene extends BaseScene {
         }
 
         this.scene.start('AdventureScene', params)
+      }
+    } else if (mission.type === 'tip') {
+      return () => {
+        this.scene.start('AdventureScene', { txt: mission.text })
       }
     }
   }

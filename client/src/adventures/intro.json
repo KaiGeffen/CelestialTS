@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Tip 1",
+    "id": 80,
+    "x": 4920,
+    "y": 764,
+    "prereq": [[]],
+    "type": "tip",
+    "text": "Welcome to the game!\nTo begin playing, click on any node to compete in a mission. You can make ur deck, some cards are required, etc, etc.\nTo replay the tutorial, click the node at right."
+  },
+  {
+    "name": "Tip 2",
+    "id": 83,
+    "x": 5062,
+    "y": 760,
+    "prereq": [[]],
+    "type": "tip",
+    "text": "Make this a way to replay the tutorial"
+  }
+]
