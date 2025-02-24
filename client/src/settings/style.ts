@@ -80,13 +80,6 @@ export const Style: Record<string, Phaser.Types.GameObjects.Text.TextStyle> = {
     fontFamily: altFont,
     fontSize: Flags.mobile ? FontSettings.large.size : FontSettings.huge.size,
     color: Color.blackS,
-    // stroke: Color.basicText,
-    // strokeThickness: 4,
-
-    // NOTE This is set when the object is created so that
-    // window resizing / rotation doesn't cause the width to be
-    // smaller than it should be
-    // wordWrap: { width: Space.stillframeTextWidth },
   },
 
   basic: {

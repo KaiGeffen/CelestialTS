@@ -252,6 +252,9 @@ export class SearchingRegionTutorial extends Region {
           top: Space.pad,
           bottom: Space.pad,
         },
+        page: {
+          maxLines: 0, // 0 = unlimited lines
+        },
       })
       .start(s, 50)
       .setOrigin(0)
