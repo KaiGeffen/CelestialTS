@@ -116,7 +116,7 @@ const rebirth = new Rebirth({
   id: 55,
   cost: 1,
   qualities: [Quality.FLEETING],
-  text: 'Fleeting\nTransform each of your cards later in the story into an 0:X Fleeting Child, where X is its cost.',
+  text: 'Fleeting\nTransform each of your cards later in the story into a 0:X Fleeting Child, where X is its cost.',
   keywords: [{ name: Keywords.fleeting, x: 0, y: 39 }],
   references: [{ card: child, x: 53, y: 112 }],
 })
