@@ -121,33 +121,32 @@ export class SigninScene extends Phaser.Scene {
       log_level: 'debug',
       ux_mode: 'popup',
       auto_select: true,
-      cancel_on_tap_outside: false,
       callback: (token: CredentialResponse) => {
+        // Store the token for next time
+        localStorage.setItem('gsi_token', token.credential)
+
         const payload = jwt_decode<GoogleJwtPayload>(token.credential)
 
-        // Send the jti to confirm a connection
-        // After server responds, complete login
+        // Send jti to confirm connection. After server responds, complete login
         UserDataServer.login(payload, this.game, () => this.onOptionClick())
       },
     })
 
-    // Try One Tap first
-    google.accounts.id.prompt((notification) => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        console.log(
-          'One Tap not displayed/skipped:',
-          notification.getNotDisplayedReason(),
-        )
-        // Only render the button if One Tap fails
-        google.accounts.id.renderButton(document.getElementById('signin'), {
-          theme: 'filled_black',
-          size: 'large',
-          shape: 'rectangular',
-          text: 'signin',
-          width: Space.buttonWidth,
-        })
-      }
+    // Render Sign In button
+    google.accounts.id.renderButton(document.getElementById('signin'), {
+      theme: 'filled_black',
+      size: 'large',
+      shape: 'rectangular',
+      text: 'signin',
+      width: Space.buttonWidth,
     })
+
+    // User was previously signed in, try to auto-login
+    const storedToken = localStorage.getItem('gsi_token')
+    if (storedToken) {
+      const payload = jwt_decode<GoogleJwtPayload>(storedToken)
+      UserDataServer.login(payload, this.game, () => this.onOptionClick())
+    }
   }
 }
 
