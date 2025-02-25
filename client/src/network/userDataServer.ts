@@ -98,7 +98,7 @@ export default class UserDataServer {
         // TODO Make this a part of the static logout method
         game.scene
           .getScenes(true)[0]
-          .scene.start('SigninScene', { autoSelect: false })
+          .scene.start('SigninScene')
           .launch('MenuScene', {
             menu: 'message',
             title: 'ERROR',

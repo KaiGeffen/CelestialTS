@@ -24,17 +24,11 @@ export class SigninScene extends Phaser.Scene {
   // True when user is signed or chose to be a guest
   signedInOrGuest: boolean = false
   guestButton: Button
-  // Whether the gsi element should automatically login
-  autoSelect: boolean
 
   constructor(args) {
     super({
       key: args === undefined ? 'SigninScene' : args.key,
     })
-  }
-
-  init(params = { autoSelect: true }) {
-    this.autoSelect = params.autoSelect
   }
 
   create(): void {
@@ -126,7 +120,8 @@ export class SigninScene extends Phaser.Scene {
       client_id: Url.oauth,
       log_level: 'debug',
       ux_mode: 'popup',
-
+      auto_select: true,
+      cancel_on_tap_outside: false,
       callback: (token: CredentialResponse) => {
         const payload = jwt_decode<GoogleJwtPayload>(token.credential)
 
@@ -136,13 +131,22 @@ export class SigninScene extends Phaser.Scene {
       },
     })
 
-    // Render the button
-    google.accounts.id.renderButton(document.getElementById('signin'), {
-      theme: 'filled_black',
-      size: 'large',
-      shape: 'rectangular',
-      text: 'signin',
-      width: Space.buttonWidth,
+    // Try One Tap first
+    google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        console.log(
+          'One Tap not displayed/skipped:',
+          notification.getNotDisplayedReason(),
+        )
+        // Only render the button if One Tap fails
+        google.accounts.id.renderButton(document.getElementById('signin'), {
+          theme: 'filled_black',
+          size: 'large',
+          shape: 'rectangular',
+          text: 'signin',
+          width: Space.buttonWidth,
+        })
+      }
     })
   }
 }

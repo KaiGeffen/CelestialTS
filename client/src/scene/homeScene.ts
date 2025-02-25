@@ -65,7 +65,7 @@ export default class HomeScene extends BaseScene {
       () => {
         // If we aren't logged in, go to login scene
         if (!UserDataServer.isLoggedIn()) {
-          this.scene.start('SigninScene', { autoSelect: true })
+          this.scene.start('SigninScene')
           return
         }
 
@@ -75,7 +75,7 @@ export default class HomeScene extends BaseScene {
           callback: () => {
             UserDataServer.logout()
 
-            this.scene.start('SigninScene', { autoSelect: false })
+            this.scene.start('SigninScene')
           },
           hint: 'logout',
         })
