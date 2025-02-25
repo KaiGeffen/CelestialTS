@@ -1,4 +1,7 @@
-export class TypedWebSocket<Received extends Record<string, any>, Sent extends Record<string, any>> {
+export class TypedWebSocket<
+  Received extends Record<string, any>,
+  Sent extends Record<string, any>,
+> {
   private listeners: {
     [T in keyof Received]?: Array<(data: Received[T]) => void>
   } = {}
@@ -18,11 +21,12 @@ export class TypedWebSocket<Received extends Record<string, any>, Sent extends R
       try {
         message = JSON.parse(ev.data)
       } catch (error) {
-        console.error('Failed to parse WebSocket message:', error)
+        console.log('Failed to parse WebSocket message:', error)
         return
       }
 
-      const listeners: Array<(data: Received[T]) => void> = this.listeners[message.type]
+      const listeners: Array<(data: Received[T]) => void> =
+        this.listeners[message.type]
       if (listeners) {
         listeners.forEach((callback) => callback(message))
       }
