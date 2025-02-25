@@ -277,6 +277,8 @@ export default class OurHandRegion extends Region {
   }
 
   private createAvatar(avatarId: number): Button {
+    console.log('createAvatar called with ID:', avatarId)
+
     if (Flags.mobile) {
       return this.createAvatarMobile(avatarId)
     }
