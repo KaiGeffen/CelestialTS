@@ -6,11 +6,13 @@ import {
   varchar,
   date,
   uniqueIndex,
-  AnyPgColumn,
+  timestamp,
+  index,
+  boolean,
+  serial,
 } from 'drizzle-orm/pg-core'
 
 /*
-
                                        Table "public.players"
       Column       |        Type         | Collation | Nullable |              Default               
 -------------------+---------------------+-----------+----------+------------------------------------
@@ -48,7 +50,7 @@ export const players = pgTable(
     wins: integer('wins').notNull(),
     losses: integer('losses').notNull(),
     elo: integer('elo').notNull(),
-    decks: varchar('decks', { length: 255 }).array().notNull(),
+    decks: varchar('decks', { length: 1000 }).array().notNull(),
     inventory: varchar('inventory', { length: 1000 }).notNull(),
     completedmissions: varchar('completedmissions', { length: 1000 }).notNull(),
   },
@@ -57,7 +59,46 @@ export const players = pgTable(
   }),
 )
 
-// Custom lower function
-function lower(email: AnyPgColumn): SQL {
-  return sql`lower(${email})`
-}
+export const matchHistory = pgTable(
+  'match_history',
+  {
+    // Match identifiers
+    id: serial('id').primaryKey(),
+    player1_id: uuid('player1_id')
+      .notNull()
+      .references(() => players.id),
+    player2_id: uuid('player2_id')
+      .notNull()
+      .references(() => players.id),
+
+    // Player info at time of match
+    player1_username: varchar('player1_username', { length: 255 }).notNull(),
+    player2_username: varchar('player2_username', { length: 255 }).notNull(),
+    player1_elo: integer('player1_elo').notNull(),
+    player2_elo: integer('player2_elo').notNull(),
+
+    // Match details
+    match_date: timestamp('match_date').notNull().defaultNow(),
+    player1_deck: varchar('player1_deck_contents', {
+      length: 1000,
+    }).notNull(),
+    player2_deck: varchar('player2_deck_contents', {
+      length: 1000,
+    }).notNull(),
+
+    // Round results
+    rounds_won: integer('rounds_won').notNull(),
+    rounds_lost: integer('rounds_lost').notNull(),
+    rounds_tied: integer('rounds_tied').notNull(),
+
+    // Match result (true if player1 won)
+    player1_won: boolean('player1_won').notNull(),
+  },
+  (table) => ({
+    // Index for querying a player's match history
+    player1Idx: index('player1_idx').on(table.player1_id),
+    player2Idx: index('player2_idx').on(table.player2_id),
+    // Index for querying by date
+    dateIdx: index('date_idx').on(table.match_date),
+  }),
+)
