@@ -15,6 +15,7 @@ import OverlayRegion from './matchRegions/pileOverlays'
 import GameModel from '../../../shared/state/gameModel'
 import { MechanicsSettings } from '../../../shared/settings'
 import PassRegion from './matchRegions/pass'
+import { Deck } from '../../../shared/types/deck'
 
 // TODO Rename to Match
 export class GameScene extends BaseScene {
@@ -39,7 +40,13 @@ export class GameScene extends BaseScene {
   opponentDisconnected = false
 
   // TODO Type params
-  init(params: any) {
+  init(params: {
+    deck?: Deck
+    missionID?: number
+    isPvp?: boolean
+    password?: string
+    aiDeck?: Deck
+  }) {
     this.params = params
     // Reset variables
     this.queuedStates = {}
@@ -49,18 +56,13 @@ export class GameScene extends BaseScene {
     if (this.isTutorial) {
       this.net = new MatchTutorialWS(this, params.missionID)
     } else if (params.isPvp) {
-      this.net = new MatchPvpWS(
-        this,
-        params.deck,
-        params.avatar,
-        params.password,
-      )
+      this.net = new MatchPvpWS(this, params.deck, params.password)
     } else {
-      this.net = new MatchPveWS(this, params.deck, params.avatar, params.aiDeck)
+      this.net = new MatchPveWS(this, params.deck, params.aiDeck)
     }
 
     // Create the view
-    this.view = new View(this, this.params.avatar || 0)
+    this.view = new View(this, this.params.deck.cosmetics.avatar || 0)
 
     this.paused = false
 
@@ -68,7 +70,7 @@ export class GameScene extends BaseScene {
   }
 
   restart(): void {
-    this.view = new View(this, this.params.avatar || 0)
+    this.view = new View(this, this.params.deck.cosmetics.avatar || 0)
   }
 
   beforeExit() {
@@ -518,7 +520,7 @@ export class AdventureGameScene extends GameScene {
   create() {
     super.create()
 
-    // Must be reset each time it this scene is run
+    // Must be reset each time this scene is run
     this.winSeen = false
   }
 

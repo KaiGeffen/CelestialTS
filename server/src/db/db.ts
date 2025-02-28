@@ -1,14 +1,14 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
 import * as schema from './schema'
-import type { players } from './schema'
+import type { players, matchHistory } from './schema'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-// Define schema type if needed
 type Schema = {
   players: typeof players
+  matchHistory: typeof matchHistory
 }
 
 if (!process.env.DATABASE_URL) {

@@ -8,6 +8,7 @@ import { Flags } from '../settings/settings'
 import { GameScene } from '../scene/gameScene'
 import { Mulligan } from '../../../shared/settings'
 import { MatchClientWS } from '../../../shared/network/matchWS'
+import { Deck } from '../../../shared/types/deck'
 
 // TODO Figure out this global scene situation, smells bad
 // NOTE Need this because could be normal game scene or tutorial scene (They are different)
@@ -118,34 +119,22 @@ export class MatchTutorialWS extends MatchWS {
 }
 
 export class MatchPveWS extends MatchWS {
-  constructor(
-    newScene: GameScene,
-    deck: string,
-    avatarID: number,
-    aiDeck: string,
-  ) {
+  constructor(newScene: GameScene, deck: Deck, aiDeck: Deck) {
     super(newScene)
 
     this.socket.onOpen(() => {
       this.socket.send({
         type: 'initPve',
-        // TODO Use or remove this
         uuid: '',
-        deck: encodeDeck(deck),
-        avatar: avatarID,
-        aiDeck: encodeDeck(aiDeck),
+        deck: deck,
+        aiDeck: aiDeck,
       })
     })
   }
 }
 
 export class MatchPvpWS extends MatchWS {
-  constructor(
-    newScene: GameScene,
-    deck: string,
-    avatarID: number,
-    password: string,
-  ) {
+  constructor(newScene: GameScene, deck: Deck, password: string) {
     super(newScene)
 
     this.socket.onOpen(() => {
@@ -153,8 +142,7 @@ export class MatchPvpWS extends MatchWS {
       this.socket.send({
         type: 'initPvp',
         uuid: UserDataServer.getUUID() || '',
-        deck: encodeDeck(deck),
-        avatar: avatarID,
+        deck: deck,
         password: password,
       })
     })

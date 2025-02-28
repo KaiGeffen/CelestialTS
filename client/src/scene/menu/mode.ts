@@ -6,6 +6,7 @@ import { Color, Space, Style } from '../../settings/settings'
 import Menu from './menu'
 import MenuScene from '../menuScene'
 import getRandomAiDeck from '../../catalog/aiDecks'
+import { Deck } from '../../../../shared/types/deck'
 
 const width = 550
 
@@ -13,15 +14,11 @@ export default class ModeMenu extends Menu {
   password: string
   inputText
 
-  avatar: number
-
   // Password button
   btnPwd: Button
 
   constructor(scene: MenuScene, params) {
     super(scene, width)
-
-    this.avatar = params.avatar
 
     // The non-menu scene which is active, used for changing scenes
     let activeScene = params.activeScene
@@ -33,7 +30,7 @@ export default class ModeMenu extends Menu {
     this.reskinInputText()
   }
 
-  private createContent(activeScene: Phaser.Scene, deck: string) {
+  private createContent(activeScene: Phaser.Scene, deck: Deck) {
     this.createHeader('Game Mode')
     this.sizer
       .add(this.createPVE(activeScene, deck))
@@ -80,7 +77,7 @@ export default class ModeMenu extends Menu {
     return this.inputText
   }
 
-  private createPVE(activeScene: Phaser.Scene, deck: string) {
+  private createPVE(activeScene: Phaser.Scene, deck: Deck) {
     let sizer = this.scene['rexUI'].add.sizer({ width: width - Space.pad * 2 })
 
     const txt = this.scene.add.text(
@@ -97,19 +94,15 @@ export default class ModeMenu extends Menu {
       this.scene.scene.start('StandardGameScene', {
         isPvp: false,
         deck: deck,
-        avatar: this.avatar,
-        // TODO ai deck
         aiDeck: getRandomAiDeck(),
       })
     })
 
-    // Add the objects with correct spacing
     sizer.add(txt).addSpace().add(container)
-
     return sizer
   }
 
-  private createPVP(activeScene: Phaser.Scene, deck: string) {
+  private createPVP(activeScene: Phaser.Scene, deck: Deck) {
     let sizer = this.scene['rexUI'].add.sizer({ width: width - Space.pad * 2 })
 
     const txt = this.scene.add.text(0, 0, 'Versus human opponent', Style.basic)
@@ -121,18 +114,15 @@ export default class ModeMenu extends Menu {
       this.scene.scene.start('StandardGameScene', {
         isPvp: true,
         deck: deck,
-        avatar: this.avatar,
         password: '',
       })
     })
 
-    // Add the objects with correct spacing
     sizer.add(txt).addSpace().add(container)
-
     return sizer
   }
 
-  private createPWD(activeScene: Phaser.Scene, deck: string) {
+  private createPWD(activeScene: Phaser.Scene, deck: Deck) {
     let sizer = this.scene['rexUI'].add.sizer({ width: width - Space.pad * 2 })
 
     const txt = this.scene.add.text(0, 0, 'Versus same password', Style.basic)
@@ -144,14 +134,11 @@ export default class ModeMenu extends Menu {
       this.scene.scene.start('StandardGameScene', {
         isPvp: true,
         deck: deck,
-        avatar: this.avatar,
         password: this.password,
       })
     }).disable()
 
-    // Add the objects with correct spacing
     sizer.add(txt).addSpace().add(container)
-
     return sizer
   }
 

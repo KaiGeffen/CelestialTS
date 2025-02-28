@@ -22,6 +22,7 @@ import {
 import { BuilderScene } from '../builderScene'
 import newScrollablePanel from '../../lib/scrollablePanel'
 import { MechanicsSettings } from '../../../../shared/settings'
+import { Deck } from '../../../../shared/types/deck'
 
 const width = Space.deckPanelWidth // + Space.pad * 2
 
@@ -320,6 +321,16 @@ export default class DeckRegion {
     return
   }
 
+  getDeck(): Deck {
+    return {
+      name: this.txtDeckName.text,
+      cards: this.deck.map((cutout) => cutout.card.id),
+      cosmetics: {
+        avatar: this.avatarNumber,
+      },
+    }
+  }
+
   // Set the current deck, and return whether the given deck was valid
   setDeck(deckCode: string | Card[], panel = this.panel): boolean {
     // Enable the edit and share icons
@@ -400,6 +411,7 @@ export default class DeckRegion {
     return this
   }
 
+  // TODO Deprecate this
   // Get the deck code for player's current deck
   getDeckCode(): string {
     let txt = ''

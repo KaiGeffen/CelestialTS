@@ -1,6 +1,5 @@
 import 'phaser'
-import { Space, refreshSpace } from "../settings/space"
-
+import { Space, refreshSpace } from '../settings/space'
 
 var timeout: NodeJS.Timeout = undefined
 const DELAY = 200
@@ -13,25 +12,8 @@ export default function addResizeHandler(game: Phaser.Game) {
 
     timeout = setTimeout(() => {
       refreshSpace()
-      
-      game.scale.setGameSize(Space.windowWidth, Space.windowHeight)
-      .refresh()
-      // game.scale.displaySize.setAspectRatio(Space.windowWidth / Space.windowHeight)
-      // game.scale.refresh()
 
-      // If in a match, don't reload
-      // TODO Do reload, but better handle disconnects/reconnects
-      // if (game.scene.getScene('StandardGameScene').scene.isActive()
-      //   || game.scene.getScene('AdventureGameScene').scene.isActive()) {
-      //   return
-      // }
-
-      // // If not in a match, reload the scene
-      // game.scene.scenes.forEach(scene => {
-      //   if (game.scene.isActive(scene)) {
-      //     scene.scene.restart()
-      //   }
-      // })
+      game.scale.setGameSize(Space.windowWidth, Space.windowHeight).refresh()
     }, DELAY)
   }
 }

@@ -1,6 +1,7 @@
 import 'phaser'
 import Card from '../../../shared/state/card'
 import BaseScene from './baseScene'
+import { Deck } from '../../../shared/types/deck'
 
 import CatalogRegion from './builderRegions/catalog'
 import DeckRegion from './builderRegions/deck'
@@ -122,15 +123,20 @@ export class AdventureBuilderScene extends BuilderBase {
     let that = this
 
     return function () {
-      // TODO Not just the 100s digit number
-      const avatar = (Math.floor(that.params.id / 100) - 1) % 6
+      // Create a proper deck object using the new type
+      const aiDeck: Deck = {
+        name: 'AI Deck',
+        cards: that.params.opponentDeck.split(':').map(Number),
+        cosmetics: {
+          avatar: 0,
+        },
+      }
 
       // Start a match against an ai opponent with the specified deck
       that.scene.start('AdventureGameScene', {
-        deck: that.getDeckCode(),
-        aiDeck: that.params.opponent,
+        deck: that.deckRegion.getDeck(),
+        aiDeck: aiDeck,
         missionID: that.params.id,
-        avatar: avatar,
       })
     }
   }
@@ -241,7 +247,7 @@ export class BuilderScene extends BuilderBase {
       that.scene.launch('MenuScene', {
         menu: 'mode',
         activeScene: that,
-        deck: that.getDeckCode(),
+        deck: that.deckRegion.getDeck(),
         avatar: that.deckRegion.avatarNumber,
       })
     }

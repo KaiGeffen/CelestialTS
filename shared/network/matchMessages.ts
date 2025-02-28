@@ -1,18 +1,17 @@
 import GameModel from '../state/gameModel'
 import { Mulligan } from '../settings'
+import { Deck } from '../types/deck'
 
 export interface MatchClientMessages {
   initPvp: {
     password: string
     uuid: string
-    deck: string
-    avatar: number
+    deck: Deck
   }
   initPve: {
-    aiDeck: string
+    aiDeck: Deck
     uuid: string
-    deck: string
-    avatar: number
+    deck: Deck
   }
   initTutorial: {
     num: number
