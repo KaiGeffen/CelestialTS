@@ -9,7 +9,6 @@ class Dove extends Card {
     super.play(player, game, index, bonus)
   }
 }
-
 const dove = new Dove({
   name: 'Dove',
   id: 4,
@@ -40,7 +39,6 @@ class Starling extends Card {
     return value
   }
 }
-
 const starling = new Starling({
   name: 'Starling',
   id: 7,
@@ -67,7 +65,6 @@ class SecretaryBird extends Card {
     this.oust(amt, game, player)
   }
 }
-
 const secretaryBird = new SecretaryBird({
   name: 'Secretary Bird',
   id: 40,
@@ -105,7 +102,6 @@ class Phoenix extends Card {
     })
   }
 }
-
 const phoenix = new Phoenix({
   name: 'Phoenix',
   id: 51,
@@ -135,7 +131,6 @@ class Heron extends Card {
     return this.rateReset(world)
   }
 }
-
 const heron = new Heron({
   name: 'Heron',
   id: 65,
@@ -166,7 +161,6 @@ const fledgling = new Fledgling({
   name: 'Fledgling',
   id: 111,
   cost: 1,
-  points: 1,
   text: 'Morning: Worth +1 point permanently.',
   beta: true,
 })
@@ -287,6 +281,32 @@ const caladrius = new Caladrius({
   beta: true,
 })
 
+class Release extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number): void {
+    super.play(player, game, index, bonus)
+
+    const deck = game.deck[player]
+    // Remove the top 4 cards from the deck
+    const top4 = deck.splice(deck.length - 4, 4)
+
+    // Add back any without Fleeting and RFG the others
+    for (let card of top4) {
+      if (card.qualities.includes(Quality.FLEETING)) {
+        game.expended[player].push(card)
+      } else {
+        deck.push(card)
+      }
+    }
+  }
+}
+const release = new Release({
+  name: 'Release',
+  id: 1032,
+  qualities: [Quality.VISIBLE, Quality.FLEETING],
+  text: 'Visible.\nFleeting.\nRemove from the game all cards in the top 4 of your deck with Fleeting.',
+  beta: true,
+})
+
 export {
   dove,
   starling,
@@ -299,6 +319,9 @@ export {
   truth,
   defiance,
   bare,
-  cloud,
   caladrius,
+  release,
+
+  // EH
+  cloud,
 }

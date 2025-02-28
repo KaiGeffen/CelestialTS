@@ -144,7 +144,7 @@ export default class Loader {
         let filepath = `${assetType.fp}${name}.${EXTENSION}`
 
         if (assetType.sheet === undefined) {
-          let load = scene.load.image(key, filepath)
+          scene.load.image(key, filepath)
         } else {
           scene.load.spritesheet(key, filepath, {
             frameWidth: assetType.sheet.width,
