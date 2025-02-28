@@ -44,4 +44,4 @@ function decodeShareableDeckCode(s: string): string {
   }
 }
 
-export { encodeShareableDeckCode, decodeShareableDeckCode }
+export { decodeCard, encodeShareableDeckCode, decodeShareableDeckCode }
