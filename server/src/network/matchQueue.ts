@@ -1,8 +1,6 @@
-import { parse } from 'url'
 import Card from '../../../shared/state/card'
 
 import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
-import { decodeDeck } from '../../../shared/codec'
 
 import PveMatch from './match/pveMatch'
 import PvpMatch from './match/pvpMatch'
@@ -10,6 +8,7 @@ import Match from './match/match'
 import TutorialMatch from './match/tutorialMatch'
 import { MechanicsSettings } from '../../../shared/settings'
 import { MatchServerWS } from '../../../shared/network/matchWS'
+import Catalog from '../../../shared/state/catalog'
 
 /*
 List of ongoing games
@@ -38,9 +37,9 @@ class MatchQueue {
       const match = new PveMatch(
         ws,
         data.uuid,
-        decodeDeck(data.deck),
-        data.avatar,
-        decodeDeck(data.aiDeck),
+        data.deck.cards.map((cardId) => Catalog.getCardById(cardId)),
+        data.deck.cosmetics.avatar,
+        data.aiDeck.cards.map((cardId) => Catalog.getCardById(cardId)),
       )
       registerEvents(ws, match, 0)
 
@@ -61,8 +60,8 @@ class MatchQueue {
         if (otherPlayer) {
           console.log(
             'Match starting between players with decks:',
-            decodeDeck(data.deck)
-              .map((card) => card.name)
+            data.deck.cards
+              .map((cardId) => Catalog.getCardById(cardId).name)
               .join(', '),
             '\n',
             otherPlayer.deck.map((card) => card.name).join(', '),
@@ -72,8 +71,8 @@ class MatchQueue {
           const match = new PvpMatch(
             ws,
             data.uuid,
-            decodeDeck(data.deck),
-            data.avatar,
+            data.deck.cards.map((cardId) => Catalog.getCardById(cardId)),
+            data.deck.cosmetics.avatar,
             otherPlayer.ws,
             otherPlayer.uuid,
             otherPlayer.deck,
@@ -97,8 +96,8 @@ class MatchQueue {
           const waitingPlayer = {
             ws: ws,
             uuid: data.uuid,
-            deck: decodeDeck(data.deck),
-            avatar: data.avatar,
+            deck: data.deck.cards.map((cardId) => Catalog.getCardById(cardId)),
+            avatar: data.deck.cosmetics.avatar,
           }
           searchingPlayers[data.password] = waitingPlayer
         }

@@ -4,6 +4,8 @@ import Card from './state/card'
 const delims = ['¡', '™', '£']
 const full_state_delim = 'ª'
 
+// TODO Deprecate this
+
 // Get a card given by its id
 function getCard(id: string): Card {
   return Catalog.getCardById(parseInt(id))
@@ -17,37 +19,6 @@ function decodeCard(s: string): Card {
   let sections = s.split(delims[2])
 
   return getCard(sections[0])
-}
-
-function encodeDeck(deck: Card[] | string): string {
-  if (deck === undefined || deck === '') {
-    return ':'
-  }
-
-  let cards = []
-  if (typeof deck === 'string') {
-    cards = deck.split(':').map((id) => {
-      return getCard(id)
-    })
-  } else {
-    cards = deck
-  }
-
-  return cards.map(encodeCard).join(delims[1])
-}
-
-function decodeDeck(s: string): Card[] {
-  if (s === ':') return []
-
-  let cardStrings: string[] = s.split(delims[1])
-
-  let result = cardStrings.map(decodeCard)
-
-  if (result.includes(undefined)) {
-    result = undefined
-  }
-
-  return result
 }
 
 // Encode / decode a string for deck's code such that user can copy / paste it
@@ -73,11 +44,4 @@ function decodeShareableDeckCode(s: string): string {
   }
 }
 
-export {
-  encodeCard,
-  decodeCard,
-  encodeDeck,
-  decodeDeck,
-  encodeShareableDeckCode,
-  decodeShareableDeckCode,
-}
+export { encodeShareableDeckCode, decodeShareableDeckCode }

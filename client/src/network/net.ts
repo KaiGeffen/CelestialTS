@@ -1,7 +1,6 @@
 import { URL, MATCH_PORT } from '../../../shared/network/settings'
 import { TypedWebSocket } from '../../../shared/network/typedWebSocket'
 
-import { encodeDeck } from '../../../shared/codec'
 import UserDataServer from './userDataServer'
 
 import { Flags } from '../settings/settings'
