@@ -233,6 +233,25 @@ const craving = new Craving({
   beta: true,
 })
 
+class Spite extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    bonus -= game.score[player ^ 1]
+    super.play(player, game, index, bonus)
+  }
+
+  getCost(player: number, game: GameModel): number {
+    return Math.max(0, this.cost - game.story.acts.length)
+  }
+}
+const spite = new Spite({
+  name: 'Spite',
+  id: 413,
+  cost: 6,
+  points: 6,
+  text: "Worth -X where X is your opponent's points.\nCosts 1 less for each card in the story.",
+  beta: true,
+})
+
 export {
   dagger,
   shadow,
@@ -247,4 +266,5 @@ export {
   victim,
   rupture,
   craving,
+  spite,
 }
