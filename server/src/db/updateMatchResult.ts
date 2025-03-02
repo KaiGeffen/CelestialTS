@@ -41,13 +41,13 @@ export async function updateMatchResult(
     .from(players)
     .where(eq(players.id, winnerId))
     .limit(1)
-    .then((result) => (result.length ? result[0].username : null))
+    .then((result) => (result.length ? result[0].username : ''))
   const username2 = await db
     .select()
     .from(players)
     .where(eq(players.id, loserId))
     .limit(1)
-    .then((result) => (result.length ? result[0].username : null))
+    .then((result) => (result.length ? result[0].username : ''))
 
   await db.insert(matchHistory).values({
     player1_id: winnerId,
