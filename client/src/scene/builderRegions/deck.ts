@@ -324,7 +324,9 @@ export default class DeckRegion {
   getDeck(): Deck {
     return {
       name: this.txtDeckName.text,
-      cards: this.deck.map((cutout) => cutout.card.id),
+      cards: this.deck.reduce((acc, cutout) => {
+        return [...acc, ...Array(cutout.count).fill(cutout.card.id)]
+      }, [] as number[]),
       cosmetics: {
         avatar: this.avatarNumber,
       },

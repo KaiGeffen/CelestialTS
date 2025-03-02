@@ -290,7 +290,9 @@ export default class DeckRegion {
   getDeck(): Deck {
     return {
       name: 'Journey Deck',
-      cards: this.deck.map((cutout) => cutout.card.id),
+      cards: this.deck.reduce((acc, cutout) => {
+        return [...acc, ...Array(cutout.count).fill(cutout.card.id)]
+      }, [] as number[]),
       cosmetics: {
         avatar: this.avatarID,
       },
