@@ -9,6 +9,7 @@ import TutorialMatch from './match/tutorialMatch'
 import { MechanicsSettings } from '../../../shared/settings'
 import { MatchServerWS } from '../../../shared/network/matchWS'
 import Catalog from '../../../shared/state/catalog'
+import { Deck } from '../../../shared/types/deck'
 
 /*
 List of ongoing games
@@ -21,8 +22,7 @@ Init includes information about the game type you're looking for
 interface WaitingPlayer {
   ws: MatchServerWS
   uuid: string
-  deck: Card[]
-  avatar: number
+  deck: Deck
 }
 
 // Players searching for a match with password as key
@@ -35,14 +35,7 @@ class MatchQueue {
     // Register the init events
     ws.on('initPve', async (data) => {
       console.log('initPve', data)
-      const match = new PveMatch(
-        ws,
-        data.uuid,
-        data.deck.cards.map((cardId) => Catalog.getCardById(cardId)),
-        data.deck.cosmetics.avatar,
-        data.aiDeck.cards.map((cardId) => Catalog.getCardById(cardId)),
-        data.aiDeck.cosmetics.avatar,
-      )
+      const match = new PveMatch(ws, data.uuid, data.deck, data.aiDeck)
       registerEvents(ws, match, 0)
 
       // Start the match
@@ -66,19 +59,19 @@ class MatchQueue {
               .map((cardId) => Catalog.getCardById(cardId).name)
               .join(', '),
             '\n',
-            otherPlayer.deck.map((card) => card.name).join(', '),
+            otherPlayer.deck.cards
+              .map((cardId) => Catalog.getCardById(cardId).name)
+              .join(', '),
           )
 
           // Create a PvP match
           const match = new PvpMatch(
             ws,
             data.uuid,
-            data.deck.cards.map((cardId) => Catalog.getCardById(cardId)),
-            data.deck.cosmetics.avatar,
+            data.deck,
             otherPlayer.ws,
             otherPlayer.uuid,
             otherPlayer.deck,
-            otherPlayer.avatar,
           )
 
           // registerEvents(socket, match, playerNumber)
@@ -98,8 +91,7 @@ class MatchQueue {
           const waitingPlayer = {
             ws: ws,
             uuid: data.uuid,
-            deck: data.deck.cards.map((cardId) => Catalog.getCardById(cardId)),
-            avatar: data.deck.cosmetics.avatar,
+            deck: data.deck,
           }
           searchingPlayers[data.password] = waitingPlayer
         }

@@ -1,5 +1,4 @@
 import { ServerController } from '../../gameController'
-import Card from '../../../../shared/state/card'
 import { Mulligan } from '../../../../shared/settings'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
 import { MatchServerWS } from '../../../../shared/network/matchWS'
@@ -8,38 +7,46 @@ import { UUID_NAMESPACE } from '../../../../shared/network/settings'
 import { db } from '../../db/db'
 import { players } from '../../db/schema'
 import { eq } from 'drizzle-orm'
+import { Deck } from '../../../../shared/types/deck'
+import Catalog from '../../../../shared/state/catalog'
 
 interface Match {
   ws1: MatchServerWS | null
   ws2: MatchServerWS | null
+
   uuid1: string | null
   uuid2: string | null
 
-  storedDeck: Card[]
-  storedAvatar: any
+  deck1: Deck
+  deck2: Deck
 
   game: ServerController
-  lock: any
 }
 
-class Match {
+class Match implements Match {
   constructor(
     ws1: MatchServerWS,
     uuid1: string | null = null,
-    deck1: Card[] = [],
-    avatar1: number,
+    deck1: Deck,
     ws2: MatchServerWS | null,
     uuid2: string | null = null,
-    deck2: Card[] = [],
-    avatar2: number,
+    deck2: Deck,
   ) {
     this.ws1 = ws1
     this.uuid1 = uuid1 ? uuidv5(uuid1, UUID_NAMESPACE) : null
     this.ws2 = ws2
     this.uuid2 = uuid2 ? uuidv5(uuid2, UUID_NAMESPACE) : null
 
+    this.deck1 = deck1
+    this.deck2 = deck2
+
     // Make a new game
-    this.game = new ServerController(deck1, deck2, avatar1, avatar2)
+    this.game = new ServerController(
+      deck1.cards.map((cardId) => Catalog.getCardById(cardId)),
+      deck2.cards.map((cardId) => Catalog.getCardById(cardId)),
+      deck1.cosmetics.avatar,
+      deck2.cosmetics.avatar,
+    )
     this.game.start()
   }
 

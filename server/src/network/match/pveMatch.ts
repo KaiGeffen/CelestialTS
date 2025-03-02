@@ -1,19 +1,12 @@
 import Match from './match'
-import Card from '../../../../shared/state/card'
 import { getAction } from '../../ai'
 import getClientGameModel from '../../../../shared/state/clientGameModel'
 import { MatchServerWS } from '../../../../shared/network/matchWS'
+import { Deck } from '../../../../shared/types/deck'
 
 class PveMatch extends Match {
-  constructor(
-    ws: MatchServerWS,
-    uuid: string,
-    deck: Card[],
-    avatar: number,
-    aiDeck: Card[],
-    aiAvatar: number,
-  ) {
-    super(ws, uuid, deck, avatar, null, null, aiDeck, aiAvatar)
+  constructor(ws: MatchServerWS, uuid: string, deck: Deck, aiDeck: Deck) {
+    super(ws, uuid, deck, null, null, aiDeck)
   }
 
   async notifyState() {

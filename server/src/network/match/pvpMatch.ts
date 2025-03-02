@@ -1,20 +1,18 @@
 import Match from './match'
-import Card from '../../../../shared/state/card'
 import { MatchServerWS } from '../../../../shared/network/matchWS'
 import { updateMatchResult } from '../../db/updateMatchResult'
+import { Deck } from '../../../../shared/types/deck'
 
 class PvpMatch extends Match {
   constructor(
     ws1: MatchServerWS,
     uuid1: string,
-    deck1: Card[],
-    avatar1: number,
+    deck1: Deck,
     ws2: MatchServerWS,
     uuid2: string,
-    deck2: Card[],
-    avatar2: number,
+    deck2: Deck,
   ) {
-    super(ws1, uuid1, deck1, avatar1, ws2, uuid2, deck2, avatar2)
+    super(ws1, uuid1, deck1, ws2, uuid2, deck2)
 
     // Add close handlers for both websockets
     ws1.onClose(() => {
@@ -71,7 +69,6 @@ class PvpMatch extends Match {
 
     await updateMatchResult(idWinner, idLoser).catch((error) => {
       console.error('Error updating match results:', error)
-      // throw new Error('Failed to process match result')
     })
   }
 }
