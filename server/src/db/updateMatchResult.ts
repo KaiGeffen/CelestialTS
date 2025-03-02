@@ -36,15 +36,28 @@ export async function updateMatchResult(
           .then((result) => (result.length ? result[0].elo : BASE_ELO))
 
   // Update the match history database
+  const username1 = await db
+    .select()
+    .from(players)
+    .where(eq(players.id, winnerId))
+    .limit(1)
+    .then((result) => (result.length ? result[0].username : null))
+  const username2 = await db
+    .select()
+    .from(players)
+    .where(eq(players.id, loserId))
+    .limit(1)
+    .then((result) => (result.length ? result[0].username : null))
+
   await db.insert(matchHistory).values({
     player1_id: winnerId,
     player2_id: loserId,
-    player1_username: winnerDeck.name,
-    player2_username: loserDeck.name,
+    player1_username: username1,
+    player2_username: username2,
     player1_elo: winnerElo,
     player2_elo: loserElo,
-    player1_deck: winnerDeck.name,
-    player2_deck: loserDeck.name,
+    player1_deck: JSON.stringify(winnerDeck),
+    player2_deck: JSON.stringify(loserDeck),
     player1_avatar: winnerDeck.cosmetics.avatar,
     player2_avatar: loserDeck.cosmetics.avatar,
     rounds_won: roundsWLT[0],
