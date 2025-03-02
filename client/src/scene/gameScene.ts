@@ -61,7 +61,7 @@ export class GameScene extends BaseScene {
     }
 
     // Create the view
-    this.view = new View(this, this.params.deck.cosmetics.avatar || 0)
+    this.view = new View(this, this.params.deck?.cosmetics?.avatar ?? 0)
 
     this.paused = false
 
@@ -69,7 +69,7 @@ export class GameScene extends BaseScene {
   }
 
   restart(): void {
-    this.view = new View(this, this.params.deck.cosmetics.avatar || 0)
+    this.view = new View(this, this.params.deck?.cosmetics?.avatar ?? 0)
   }
 
   beforeExit() {
