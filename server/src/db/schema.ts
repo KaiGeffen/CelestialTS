@@ -85,14 +85,13 @@ export const matchHistory = pgTable(
     player2_deck: varchar('player2_deck_contents', {
       length: 1000,
     }).notNull(),
+    player1_avatar: integer('player1_avatar').notNull(),
+    player2_avatar: integer('player2_avatar').notNull(),
 
     // Round results
     rounds_won: integer('rounds_won').notNull(),
     rounds_lost: integer('rounds_lost').notNull(),
     rounds_tied: integer('rounds_tied').notNull(),
-
-    // Match result (true if player1 won)
-    player1_won: boolean('player1_won').notNull(),
   },
   (table) => ({
     // Index for querying a player's match history

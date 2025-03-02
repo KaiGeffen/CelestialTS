@@ -67,7 +67,23 @@ class PvpMatch extends Match {
     const idWinner = winner === 0 ? this.uuid1 : this.uuid2
     const idLoser = winner === 0 ? this.uuid2 : this.uuid1
 
-    await updateMatchResult(idWinner, idLoser).catch((error) => {
+    const winnerDeck = winner === 0 ? this.deck1 : this.deck2
+    const loserDeck = winner === 0 ? this.deck2 : this.deck1
+
+    // How many rounds won/lost/tied
+    const roundsWLT: [number, number, number] = [
+      this.game.model.score[0],
+      this.game.model.score[1],
+      0, // TODO: Get tied rounds
+    ]
+
+    await updateMatchResult(
+      idWinner,
+      idLoser,
+      winnerDeck,
+      loserDeck,
+      roundsWLT,
+    ).catch((error) => {
       console.error('Error updating match results:', error)
     })
   }
