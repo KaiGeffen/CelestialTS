@@ -2,8 +2,6 @@ import Card from '../../shared/state/card'
 
 import { SoundEffect } from './soundEffect'
 import { Quality } from './effects'
-import GameModel from './gameModel'
-import getClientGameModel from './clientGameModel'
 import Act from './act'
 
 class Story {
@@ -21,14 +19,14 @@ class Story {
   }
 
   // Run the current story
-  run(game: GameModel) {
+  run(game: any) {
     game.score = [0, 0]
     game.recentModels = [[], []]
     this.resolvedActs = []
 
     // Add a model at the start
     game.versionIncr()
-    addRecentModels(game)
+    game.addRecentModels()
 
     let index = 0
     const roundEndEffects: [Function, number][] = []
@@ -53,7 +51,7 @@ class Story {
       this.resolvedActs.push(act)
 
       index++
-      addRecentModels(game)
+      game.addRecentModels()
     }
 
     // Do all round end effects
@@ -62,8 +60,8 @@ class Story {
     }
   }
 
-  saveEndState(game: GameModel) {
-    addRecentModels(game)
+  saveEndState(game: any) {
+    game.addRecentModels()
 
     this.resolvedActs = []
 
@@ -91,24 +89,25 @@ class Story {
     this.resolvedActs = []
   }
 
-  getLength() {
-    return this.acts.length
-  }
-
-  isEmpty() {
-    return this.acts.length === 0
-  }
-
-  removeAct(index: number) {
+  // Remove the act at the given index
+  removeAct(index: number): Act {
     if (this.acts.length <= index) {
       throw new Error(
         `Tried to remove act ${index} in a story with only ${this.acts.length} acts.`,
       )
     }
+
     return this.acts.splice(index, 1)[0]
   }
 
+  // Replace the act at the given index with the given act
   replaceAct(index: number, act: Act) {
+    if (this.acts.length <= index) {
+      throw new Error(
+        `Tried to replace act ${index} in a story with only ${this.acts.length} acts.`,
+      )
+    }
+
     this.acts[index] = act
   }
 
@@ -116,34 +115,16 @@ class Story {
   getDeepCopy(): Story {
     let copy = new Story()
 
-    this.acts.forEach((element) => {
-      copy.addAct(element.card, element.owner)
+    this.acts.forEach((act) => {
+      copy.acts.push({ ...act })
     })
 
     this.resolvedActs.forEach((act) => {
-      // Add to the list of resolved acts
       copy.resolvedActs.push({ ...act })
     })
 
     return copy
   }
-}
-
-// Add the current state to list of remembered recent states
-function addRecentModels(model): void {
-  // Get a recent model for each and add for that player
-  const model0 = getClientGameModel(model, 0, true)
-  model0.recentModels = [[], []]
-  model0.isRecap = true
-  model.recentModels[0].push(model0)
-
-  const model1 = getClientGameModel(model, 1, true)
-  model1.recentModels = [[], []]
-  model1.isRecap = true
-  model.recentModels[1].push(model1)
-
-  // Increment the version
-  model.versionIncr()
 }
 
 export { Act, Story }

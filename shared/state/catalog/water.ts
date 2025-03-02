@@ -25,11 +25,9 @@ class Excess extends Card {
   getCost(player: number, game: GameModel) {
     let amt = 0
 
-    if (!game.story.isEmpty()) {
-      for (const act of game.story.acts) {
-        if (act.owner === player) {
-          amt += 1
-        }
+    for (const act of game.story.acts) {
+      if (act.owner === player) {
+        amt += 1
       }
     }
 

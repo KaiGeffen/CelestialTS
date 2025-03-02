@@ -350,9 +350,8 @@ export default class GameModel {
   }
 
   returnActToHand(i: number) {
-    const act = this.story.acts[i]
+    const act = this.story.removeAct(i)
     this.createCard(act.owner, act.card)
-    this.story.removeAct(i)
 
     this.animations[act.owner].push(
       new Animation({

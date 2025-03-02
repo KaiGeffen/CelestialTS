@@ -33,7 +33,7 @@ const birth = new Birth({
 
 class Ancestry extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
-    const amt = game.story.getLength()
+    const amt = game.story.acts.length
     super.play(player, game, index, bonus)
     if (amt >= 1) {
       this.birth(amt, game, player)

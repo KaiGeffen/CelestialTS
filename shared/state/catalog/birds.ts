@@ -25,7 +25,7 @@ const dove = new Dove({
 
 class Starling extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
-    if (!game.story.isEmpty()) {
+    if (game.story.acts.length > 0) {
       if (game.story.acts[0].card.cost === 1) {
         bonus += 1
       }
