@@ -34,6 +34,7 @@ class MatchQueue {
 
     // Register the init events
     ws.on('initPve', async (data) => {
+      console.log('initPve', data)
       const match = new PveMatch(
         ws,
         data.uuid,

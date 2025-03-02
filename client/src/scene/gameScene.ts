@@ -39,7 +39,6 @@ export class GameScene extends BaseScene {
   // Whether the opponent has disconnected
   opponentDisconnected = false
 
-  // TODO Type params
   init(params: {
     deck?: Deck
     missionID?: number
