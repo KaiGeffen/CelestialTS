@@ -11,17 +11,9 @@ class PveMatch extends Match {
     deck: Card[],
     avatar: number,
     aiDeck: Card[],
+    aiAvatar: number,
   ) {
-    super(
-      ws,
-      uuid,
-      deck,
-      avatar,
-      null,
-      null,
-      aiDeck,
-      0, // TODO ai avatar choice
-    )
+    super(ws, uuid, deck, avatar, null, null, aiDeck, aiAvatar)
   }
 
   async notifyState() {
@@ -43,8 +35,7 @@ class PveMatch extends Match {
     const action = getAction(model)
     if (this.game.onPlayerInput(1, action)) {
       await this.notifyState()
-    }
-    else {
+    } else {
       console.error('Computer opponent chose invalid action')
     }
 

@@ -41,6 +41,7 @@ class MatchQueue {
         data.deck.cards.map((cardId) => Catalog.getCardById(cardId)),
         data.deck.cosmetics.avatar,
         data.aiDeck.cards.map((cardId) => Catalog.getCardById(cardId)),
+        data.aiDeck.cosmetics.avatar,
       )
       registerEvents(ws, match, 0)
 
