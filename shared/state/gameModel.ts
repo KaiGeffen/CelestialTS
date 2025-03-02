@@ -36,6 +36,7 @@ export default class GameModel {
   // Particular phase / time of game
   versionNo: number = 0
   mulligansComplete: boolean[] = [false, false]
+  roundCount: number = 0
 
   // Effects
   sound: any = null
@@ -420,6 +421,7 @@ export default class GameModel {
     copy.amtPasses = [...this.amtPasses]
     copy.amtDrawn = [...this.amtDrawn]
     copy.avatars = [...this.avatars]
+    copy.roundCount = this.roundCount
 
     return copy
   }

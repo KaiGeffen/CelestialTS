@@ -286,6 +286,8 @@ class ServerController {
     this.model.roundResults[0].push(this.model.score[0])
     this.model.roundResults[1].push(this.model.score[1])
 
+    this.model.roundCount += 1
+
     this.model.story.saveEndState(this.model)
     this.model.story.clear()
 
