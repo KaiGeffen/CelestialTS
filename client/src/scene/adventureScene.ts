@@ -63,7 +63,6 @@ export default class AdventureScene extends BaseScene {
     }
 
     // Make up pop-up for the card you just received, if there is one
-    console.log(params)
     if (params.card) {
       this.createCardPopup(params)
     } else if (params.txt) {

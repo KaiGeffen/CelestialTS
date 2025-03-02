@@ -12,6 +12,7 @@ import { decodeCard } from '../../../../shared/codec'
 import { Color, Space, Style, Flags } from '../../settings/settings'
 import newScrollablePanel from '../../lib/scrollablePanel'
 import { MechanicsSettings } from '../../../../shared/settings'
+import { Deck } from '../../../../shared/types/deck'
 
 const width = Space.deckPanelWidth // + Space.pad * 2
 
@@ -31,7 +32,8 @@ export default class DeckRegion {
   private deck: Cutout[] = []
 
   // The avatar button
-  private avatar: Button
+  private btnAvatar: Button
+  private avatarID: number
 
   private txtChoice: Phaser.GameObjects.Text
 
@@ -66,6 +68,8 @@ export default class DeckRegion {
         top: Space.filterBarHeight,
       },
     })
+
+    this.avatarID = avatarID
 
     return this
   }
@@ -154,7 +158,7 @@ export default class DeckRegion {
       Space.avatarSize,
       Space.avatarSize,
     )
-    this.avatar = new Buttons.Avatar(
+    this.btnAvatar = new Buttons.Avatar(
       containerAvatar,
       0,
       0,
@@ -163,7 +167,7 @@ export default class DeckRegion {
 
     // If this mission has text, show that when avatar is clicked
     if (storyText !== undefined) {
-      this.avatar.setOnClick(
+      this.btnAvatar.setOnClick(
         () => {
           this.scene.scene.launch('MenuScene', {
             menu: 'message',
@@ -264,6 +268,7 @@ export default class DeckRegion {
     }
   }
 
+  // TODO Deprecate this
   // Get the deck code for player's current deck
   getDeckCode(): string {
     let txt = ''
@@ -280,6 +285,16 @@ export default class DeckRegion {
     txt = txt.slice(0, -1)
 
     return txt
+  }
+
+  getDeck(): Deck {
+    return {
+      name: 'Journey Deck',
+      cards: this.deck.map((cutout) => cutout.card.id),
+      cosmetics: {
+        avatar: this.avatarID,
+      },
+    }
   }
 
   // Add cards to the deck that must be in the deck

@@ -126,7 +126,7 @@ export class AdventureBuilderScene extends BuilderBase {
       // Create a proper deck object using the new type
       const aiDeck: Deck = {
         name: 'AI Deck',
-        cards: that.params.opponentDeck.split(':').map(Number),
+        cards: that.params.opponent.split(':').map(Number),
         cosmetics: {
           avatar: 0,
         },
@@ -134,7 +134,7 @@ export class AdventureBuilderScene extends BuilderBase {
 
       // Start a match against an ai opponent with the specified deck
       that.scene.start('AdventureGameScene', {
-        deck: that.deckRegion.getDeck(),
+        deck: that.journeyRegion.getDeck(),
         aiDeck: aiDeck,
         missionID: that.params.id,
       })
