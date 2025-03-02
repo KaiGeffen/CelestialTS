@@ -72,11 +72,11 @@ class PvpMatch extends Match {
 
     // How many rounds won/lost/tied
     const roundsWLT: [number, number, number] = [
-      this.game.model.score[0],
-      this.game.model.score[1],
+      this.game.model.wins[winner],
+      this.game.model.wins[winner ^ 1],
       this.game.model.roundCount -
-        this.game.model.score[0] -
-        this.game.model.score[1],
+        this.game.model.wins[winner] -
+        this.game.model.wins[winner ^ 1],
     ]
 
     await updateMatchResult(

@@ -79,14 +79,12 @@ export const matchHistory = pgTable(
 
     // Match details
     match_date: timestamp('match_date').notNull().defaultNow(),
-    player1_deck: varchar('player1_deck_contents', {
+    player1_deck: varchar('player1_deck', {
       length: 1000,
     }).notNull(),
-    player2_deck: varchar('player2_deck_contents', {
+    player2_deck: varchar('player2_deck', {
       length: 1000,
     }).notNull(),
-    player1_avatar: integer('player1_avatar').notNull(),
-    player2_avatar: integer('player2_avatar').notNull(),
 
     // Round results
     rounds_won: integer('rounds_won').notNull(),

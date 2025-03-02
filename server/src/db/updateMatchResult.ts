@@ -58,8 +58,6 @@ export async function updateMatchResult(
     player2_elo: loserElo,
     player1_deck: JSON.stringify(winnerDeck),
     player2_deck: JSON.stringify(loserDeck),
-    player1_avatar: winnerDeck.cosmetics.avatar,
-    player2_avatar: loserDeck.cosmetics.avatar,
     rounds_won: roundsWLT[0],
     rounds_lost: roundsWLT[1],
     rounds_tied: roundsWLT[2],
