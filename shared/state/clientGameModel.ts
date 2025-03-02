@@ -1,13 +1,11 @@
 import Card from './card'
-import GameModel from './gameModel'
-
-class ClientGameModel extends GameModel {}
+import type GameModel from './gameModel'
 
 export default function getClientGameModel(
   orig: GameModel,
   player: number,
   isRecap: boolean,
-): ClientGameModel {
+): GameModel {
   // Get the costs before copying this as json
   orig.cardCosts = orig.hand[player].map((card) => orig.getCost(card, player))
 

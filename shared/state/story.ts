@@ -2,6 +2,8 @@ import Card from '../../shared/state/card'
 
 import { SoundEffect } from './soundEffect'
 import { Quality } from './effects'
+import type GameModel from './gameModel'
+import getClientGameModel from './clientGameModel'
 import Act from './act'
 
 class Story {
@@ -19,14 +21,14 @@ class Story {
   }
 
   // Run the current story
-  run(game: any) {
+  run(game: GameModel) {
     game.score = [0, 0]
     game.recentModels = [[], []]
     this.resolvedActs = []
 
     // Add a model at the start
     game.versionIncr()
-    game.addRecentModels()
+    addRecentModels(game)
 
     let index = 0
     const roundEndEffects: [Function, number][] = []
@@ -51,7 +53,7 @@ class Story {
       this.resolvedActs.push(act)
 
       index++
-      game.addRecentModels()
+      addRecentModels(game)
     }
 
     // Do all round end effects
@@ -60,8 +62,8 @@ class Story {
     }
   }
 
-  saveEndState(game: any) {
-    game.addRecentModels()
+  saveEndState(game: GameModel) {
+    addRecentModels(game)
 
     this.resolvedActs = []
 
@@ -125,6 +127,23 @@ class Story {
 
     return copy
   }
+}
+
+// Add the current state to list of remembered recent states
+function addRecentModels(model: GameModel): void {
+  // Get a recent model for each and add for that player
+  const model0 = getClientGameModel(model, 0, true)
+  model0.recentModels = [[], []]
+  model0.isRecap = true
+  model.recentModels[0].push(model0)
+
+  const model1 = getClientGameModel(model, 1, true)
+  model1.recentModels = [[], []]
+  model1.isRecap = true
+  model.recentModels[1].push(model1)
+
+  // Increment the version
+  model.versionIncr()
 }
 
 export { Act, Story }
