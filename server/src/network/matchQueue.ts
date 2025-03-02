@@ -34,7 +34,12 @@ class MatchQueue {
 
     // Register the init events
     ws.on('initPve', async (data) => {
-      console.log('initPve', data)
+      console.log(
+        'New PvE match with deck:',
+        data.deck.cards
+          .map((cardId) => Catalog.getCardById(cardId).name)
+          .join(', '),
+      )
       const match = new PveMatch(ws, data.uuid, data.deck, data.aiDeck)
       registerEvents(ws, match, 0)
 
