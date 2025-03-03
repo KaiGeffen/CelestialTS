@@ -3,6 +3,7 @@ import { Style, Color, Space, UserSettings, Flags } from '../settings/settings'
 import BaseScene from './baseScene'
 import UserDataServer from '../network/userDataServer'
 import { MATCH_HISTORY_PORT, URL } from '../../../shared/network/settings'
+import Buttons from '../lib/buttons/buttons'
 
 interface MatchHistoryEntry {
   opponent_username: string
@@ -46,14 +47,16 @@ export default class MatchHistoryScene extends BaseScene {
     })
 
     // Create back button
-    let btnBack = this.add
-      .text(Space.pad * 2, headerHeight / 2, '← Back', Style.basic)
-      .setOrigin(0, 0.5)
-      .setInteractive()
-      .on('pointerdown', () => {
+    new Buttons.Basic(
+      this,
+      Space.pad + Space.buttonWidth / 2,
+      headerHeight / 2,
+      'Back',
+      () => {
         this.sound.play('click')
         this.scene.start('HomeScene')
-      })
+      },
+    )
 
     // Create title
     this.add
