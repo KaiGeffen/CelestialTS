@@ -317,7 +317,7 @@ export default class HomeScene extends BaseScene {
       .rectangle(
         Space.windowWidth / 2,
         Space.windowHeight - Space.pad,
-        Space.windowWidth - Space.pad * 2,
+        Space.windowWidth - Space.pad * 4 - discordHeight * 2,
         discordHeight,
         0xfabd5d,
         1,
