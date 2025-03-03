@@ -455,14 +455,10 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   private createRow(entry: MatchHistoryEntry) {
-    const rowHeight = 40
-    const avatarSize = rowHeight - 5
-    const textPadding = 10 // Padding between avatar and text
-
     let rowSizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
       width: width,
-      height: rowHeight,
+      height: Space.avatarSize,
     })
 
     // Time text
@@ -474,12 +470,7 @@ export default class MatchHistoryScene extends BaseScene {
 
     // Opponent Info
     const oppContainer = new ContainerLite(this, 0, 0).setOrigin(0)
-    const oppAvatar = new Buttons.Avatar(
-      oppContainer,
-      0,
-      rowHeight / 2,
-      entry.opponentDeck.cosmetics.avatar,
-    )
+    new Buttons.Avatar(oppContainer, 0, 0, entry.opponentDeck.cosmetics.avatar)
     const oppText = this.add
       .text(
         0,
@@ -496,12 +487,7 @@ export default class MatchHistoryScene extends BaseScene {
 
     // User Info
     const userContainer = new ContainerLite(this, 0, 0).setOrigin(0)
-    new Buttons.Avatar(
-      userContainer,
-      0,
-      rowHeight / 2,
-      entry.deck.cosmetics.avatar,
-    )
+    new Buttons.Avatar(userContainer, 0, 0, entry.deck.cosmetics.avatar)
     const userText = this.add
       .text(0, 0, `${entry.deck.name}(${entry.elo})`, Style.basic)
       .setOrigin(0, 0.5)
