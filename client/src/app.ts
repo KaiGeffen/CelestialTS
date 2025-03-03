@@ -6,6 +6,7 @@ import HomeScene from './scene/homeScene'
 import { StandardGameScene, AdventureGameScene } from './scene/gameScene'
 import TutorialGameScene from './scene/tutorialScene'
 import { BuilderScene, AdventureBuilderScene } from './scene/builderScene'
+import MatchHistoryScene from './scene/matchHistoryScene'
 
 import AdventureScene from './scene/adventureScene'
 import PlaceholderScene from './scene/placeholderScene'
@@ -50,6 +51,7 @@ const config: Phaser.Types.Core.GameConfig = {
     PlaceholderScene,
     BuilderScene,
     AdventureScene,
+    MatchHistoryScene,
   ],
   plugins: {
     scene: [

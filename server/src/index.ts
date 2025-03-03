@@ -1,6 +1,7 @@
 import createMatchServer from './network/matchServer'
 import createUserDataServer from './network/userDataServer'
 import createLeaderboardServer from './network/leaderboardServer'
+import createMatchHistoryServer from './network/matchHistoryServer'
 
 console.log('Starting server')
 
@@ -15,3 +16,4 @@ process.on('unhandledRejection', (reason, promise) => {
 createMatchServer()
 createUserDataServer()
 createLeaderboardServer()
+createMatchHistoryServer()
