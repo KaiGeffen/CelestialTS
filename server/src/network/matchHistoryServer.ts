@@ -8,6 +8,7 @@ import {
 } from '../../../shared/network/settings'
 import { db } from '../db/db'
 import { matchHistory } from '../db/schema'
+import { MatchHistoryEntry } from '../../../shared/types/matchHistory'
 
 export default function createMatchHistoryServer() {
   const app = express()
@@ -37,10 +38,10 @@ export default function createMatchHistoryServer() {
         .limit(50)
 
       // Transform the data to match our frontend expectations
-      const transformedMatches = matches.map((match) => {
+      const transformedMatches: MatchHistoryEntry[] = matches.map((match) => {
         const isPlayer1 = match.player1_id === uuid
-        return {
-          match_date: match.match_date,
+        const result: MatchHistoryEntry = {
+          match_date: match.match_date.toISOString(),
           opponent_username: isPlayer1
             ? match.player2_username
             : match.player1_username,
@@ -51,6 +52,8 @@ export default function createMatchHistoryServer() {
           deck_name: isPlayer1 ? match.player1_deck : match.player2_deck,
           opponent_deck: isPlayer1 ? match.player2_deck : match.player1_deck,
         }
+
+        return result
       })
 
       res.json(transformedMatches)

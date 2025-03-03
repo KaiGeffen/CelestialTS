@@ -12,17 +12,7 @@ import UserDataServer from '../network/userDataServer'
 import { MATCH_HISTORY_PORT, URL } from '../../../shared/network/settings'
 import Buttons from '../lib/buttons/buttons'
 import newScrollablePanel from '../lib/scrollablePanel'
-
-interface MatchHistoryEntry {
-  opponent_username: string
-  opponent_elo: number
-  rounds_won: number
-  rounds_lost: number
-  rounds_tied: number
-  deck_name: string
-  opponent_deck: string
-  match_date: string
-}
+import { MatchHistoryEntry } from '../../../shared/types/matchHistory'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const width = 1000
