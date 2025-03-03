@@ -11,7 +11,6 @@ import {
   Space,
   Style,
   UserSettings,
-  Scroll,
   Flags,
 } from '../../settings/settings'
 import newScrollablePanel from '../../lib/scrollablePanel'

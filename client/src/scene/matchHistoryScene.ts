@@ -534,8 +534,11 @@ export default class MatchHistoryScene extends BaseScene {
     let headerSizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
       width: width,
+      space: {
+        top: Space.pad,
+        bottom: Space.pad,
+      },
     })
-
     let timeText = this.add.text(0, 0, 'Time', Style.basic)
     let opponentText = this.add.text(0, 0, 'Opponent', Style.basic)
     let resultsText = this.add.text(0, 0, 'Results', Style.basic)
@@ -554,9 +557,8 @@ export default class MatchHistoryScene extends BaseScene {
     this.basePanel = this.rexUI.add
       .scrollablePanel({
         x: Space.windowWidth / 2,
-        y: (Space.windowHeight + headerHeight) / 2,
-        width: width,
-        height: Space.windowHeight - headerHeight - Space.pad * 3,
+        y: headerHeight,
+        height: Space.windowHeight - headerHeight,
 
         header: headerSizer,
 
@@ -564,28 +566,9 @@ export default class MatchHistoryScene extends BaseScene {
           child: this.createMatchRows(),
         },
 
-        slider: {
-          track: this.add.rectangle(0, 0, 20, 10, Color.backgroundLight),
-          thumb: this.add.rectangle(0, 0, 20, 50, Color.backgroundLight),
-        },
-
-        mouseWheelScroller: {
-          speed: 0.5,
-        },
-
-        space: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          header: Space.pad,
-          panel: 0,
-        },
-
-        expand: {
-          header: true,
-        },
+        slider: Scroll(this),
       })
+      .setOrigin(0.5, 0)
       .layout()
 
     // Update the mousewheel handler bounds check
