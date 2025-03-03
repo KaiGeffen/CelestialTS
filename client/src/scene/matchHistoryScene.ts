@@ -19,6 +19,7 @@ import Catalog from '../../../shared/state/catalog'
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
 import Icons from '../lib/buttons/icons'
 import Sizer from 'phaser3-rex-plugins/templates/ui/sizer/Sizer'
+import { encodeShareableDeckCode } from '../../../shared/codec'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const width = Space.windowWidth - Space.sliderWidth
@@ -91,7 +92,7 @@ export default class MatchHistoryScene extends BaseScene {
         deck: {
           name: 'Fire Dragons',
           cosmetics: { avatar: 3 },
-          cards: [12, 15, 22, 33, 45, 12, 15, 22, 33, 45, 2, 8, 19, 27, 38],
+          cards: [12, 15, 22, 33, 45, 12, 15, 22, 33, 45, 2, 8, 19, 27, 2],
         },
         opponentDeck: {
           name: 'Dragon Fury',
@@ -496,7 +497,7 @@ export default class MatchHistoryScene extends BaseScene {
         opponentDeck: {
           name: 'Shadow Warriors',
           cosmetics: { avatar: 0 },
-          cards: [5, 14, 26, 38, 48, 5, 14, 26, 38, 48, 1, 10, 20, 33, 49],
+          cards: [5, 14, 26, 2, 48, 5, 14, 26, 2, 48, 1, 10, 20, 33, 49],
         },
       },
     ]
@@ -782,9 +783,21 @@ export default class MatchHistoryScene extends BaseScene {
       Space.iconSize,
       Space.iconSize,
     )
-    new Icons.Share(container, 0, 0, () => {
-      console.log('share')
-    })
+    new Icons.Share(container, 0, 0, this.shareCallback(cards))
     return container
+  }
+
+  // TODO Dry with deck region of deckBuilder
+  private shareCallback(cards: number[]): () => void {
+    const s = cards.join(':')
+
+    return () => {
+      // Copy the deck's code to clipboard
+      const encodedDeck = encodeShareableDeckCode(s)
+      navigator.clipboard.writeText(encodedDeck)
+
+      // Inform user deck code was copied
+      this.showMessage('Deck code copied to clipboard.')
+    }
   }
 }
