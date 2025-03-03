@@ -1,17 +1,8 @@
 import 'phaser'
-import {
-  Style,
-  Color,
-  Space,
-  UserSettings,
-  Flags,
-  Scroll,
-} from '../settings/settings'
+import { Style, Color, Space, Flags, Scroll } from '../settings/settings'
 import BaseScene from './baseScene'
 import UserDataServer from '../network/userDataServer'
-import { MATCH_HISTORY_PORT, URL } from '../../../shared/network/settings'
 import Buttons from '../lib/buttons/buttons'
-import newScrollablePanel from '../lib/scrollablePanel'
 import { MatchHistoryEntry } from '../../../shared/types/matchHistory'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Cutout from '../lib/buttons/cutout'
@@ -663,15 +654,7 @@ export default class MatchHistoryScene extends BaseScene {
     userContainer.add(userText)
 
     // Create expand button with arrow and make sure it's interactive
-    let expandText = this.add
-      .text(0, 0, '▼', Style.basic)
-      .setInteractive({ useHandCursor: true }) // Add explicit cursor change
-      .on('pointerover', () => {
-        expandText.setAlpha(0.7) // Optional: visual feedback
-      })
-      .on('pointerout', () => {
-        expandText.setAlpha(1)
-      })
+    let expandText = this.add.text(0, 0, '▼', Style.basic).setInteractive()
 
     // Create expandable content (hidden by default)
     const expandedContent = this.getExpandedContent(entry)
@@ -687,9 +670,6 @@ export default class MatchHistoryScene extends BaseScene {
       // Refresh the panel layout to accommodate the expanded content
       this.basePanel.layout()
     })
-
-    // Make sure the text is on top of other elements
-    expandText.setDepth(1)
 
     collapsedSizer
       .addBackground(background)
@@ -731,8 +711,7 @@ export default class MatchHistoryScene extends BaseScene {
         align: 'top',
       })
 
-    // TODO
-    // sizer.setScale(0.000001)
+    sizer.setScale(0.000001)
     return sizer
   }
 
