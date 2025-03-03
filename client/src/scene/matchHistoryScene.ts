@@ -17,6 +17,7 @@ import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Cutout from '../lib/buttons/cutout'
 import Catalog from '../../../shared/state/catalog'
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
+import Icons from '../lib/buttons/icons'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const width = Space.windowWidth - Space.sliderWidth
@@ -707,18 +708,48 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   private getExpandedContent(entry: MatchHistoryEntry) {
+    let sizer = this.rexUI.add.sizer({
+      orientation: 'horizontal',
+      width: width,
+    })
+
+    const theirList = this.getCardList(entry.opponentDeck.cards || [])
+    const ourList = this.getCardList(entry.deck.cards || [])
+
+    sizer
+      .add(this.add.text(0, 0, '', Style.basic), {
+        proportion: 1.5,
+        align: 'top',
+      })
+      .add(theirList, { proportion: 2, align: 'top' })
+      .add(this.add.text(0, 0, '', Style.basic), {
+        proportion: 1.5,
+        align: 'top',
+      })
+      .add(ourList, { proportion: 2, align: 'top' })
+      .add(this.add.text(0, 0, '', Style.basic), {
+        proportion: 0.5,
+        align: 'top',
+      })
+
+    sizer.setScale(0.000001)
+    return sizer
+  }
+
+  private getCardList(cards: number[]) {
     const panel = this.rexUI.add.fixWidthSizer({
       width: Space.deckPanelWidth,
     })
 
-    const cards: { [key: number]: Cutout } = {}
-    for (const cardId of entry.deck.cards || []) {
+    const cutouts: { [key: number]: Cutout } = {}
+    for (const cardId of cards) {
       // If cutout present, increment it
-      if (cards[cardId]) {
-        cards[cardId].increment()
+      if (cutouts[cardId]) {
+        cutouts[cardId].increment()
       } else {
         // If it isn't, create a new cutout
         const card = Catalog.getCardById(cardId)
+        // TODO Error here, shouldn't happen
         if (!card) {
           continue
         }
@@ -732,28 +763,9 @@ export default class MatchHistoryScene extends BaseScene {
         )
         const cutout = new Cutout(container, card)
         panel.add(container)
-        cards[cardId] = cutout
+        cutouts[cardId] = cutout
       }
     }
-
-    panel.setScale(0.001)
-
     return panel
-
-    // const scrollablePanel = newScrollablePanel(this, {
-    //   x: 0,
-    //   y: 0,
-    //   width: width,
-    //   height: Space.windowHeight,
-
-    //   panel: {
-    //     child: panel,
-    //   },
-    //   background: background,
-    // })
-
-    // scrollablePanel.setScale(0.1)
-
-    // return scrollablePanel
   }
 }
