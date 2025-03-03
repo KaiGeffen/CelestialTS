@@ -866,7 +866,6 @@ export default class MatchHistoryScene extends BaseScene {
       this.filteredMatchHistoryData = this.matchHistoryData.filter(
         (entry) =>
           entry.opponentUsername.toLowerCase().includes(searchTerm) ||
-          entry.opponentDeck.name.toLowerCase().includes(searchTerm) ||
           entry.deck.name.toLowerCase().includes(searchTerm),
       )
     }
