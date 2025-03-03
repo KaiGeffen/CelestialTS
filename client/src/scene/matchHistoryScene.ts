@@ -17,6 +17,9 @@ const width = Space.windowWidth - Space.sliderWidth
 
 export default class MatchHistoryScene extends BaseScene {
   private matchHistoryData: MatchHistoryEntry[] = []
+  private filteredMatchHistoryData: MatchHistoryEntry[] = []
+  private searchText: string = ''
+  private searchObj
 
   basePanel: ScrollablePanel
 
@@ -57,15 +60,78 @@ export default class MatchHistoryScene extends BaseScene {
       },
     )
 
-    // Create title
+    // Create search box
+    this.searchObj = this.add['rexInputText'](
+      Space.windowWidth / 2,
+      headerHeight / 2,
+      Space.textboxWidth,
+      Space.textboxHeight,
+      {
+        type: 'text',
+        text: this.searchText,
+        align: 'center',
+        placeholder: 'Search decks...',
+        tooltip: 'Search for matches by deck names',
+        fontFamily: 'Mulish',
+        fontSize: '24px',
+        color: Color.textboxText,
+        maxLength: 40,
+        selectAll: true,
+        id: 'search-field',
+      },
+    )
+      .on(
+        'textchange',
+        function (inputText) {
+          this.searchText = inputText.text
+          this.filterAndRefreshContent()
+        },
+        this,
+      )
+      .removeInteractive()
+
+    // Add search box background
+    let searchIcon = this.add.image(
+      this.searchObj.x,
+      this.searchObj.y,
+      'icon-InputText',
+    )
+
+    // Create title (moved to left of search box)
     this.add
       .text(
-        Space.windowWidth / 2,
+        Space.windowWidth / 4,
         headerHeight / 2,
         'Match History',
         Style.homeTitle,
       )
       .setOrigin(0.5)
+  }
+
+  private filterAndRefreshContent() {
+    // Filter match history data based on search text
+    const searchQuery = this.searchText.toLowerCase()
+    this.filteredMatchHistoryData = this.matchHistoryData.filter((entry) => {
+      const ourDeckName = entry.deck.name.toLowerCase()
+      const theirDeckName = entry.opponentDeck.name.toLowerCase()
+      const opponentName = entry.opponentUsername.toLowerCase()
+
+      return (
+        ourDeckName.includes(searchQuery) ||
+        theirDeckName.includes(searchQuery) ||
+        opponentName.includes(searchQuery)
+      )
+    })
+
+    // Update the existing panel's content
+    if (this.basePanel) {
+      const newContent = this.createMatchRows()
+      this.basePanel.setChildOY(0) // Reset scroll position
+      this.basePanel.getElement('panel').setChildrenInteractive(false)
+      this.basePanel.getElement('panel').removeAll(true)
+      this.basePanel.getElement('panel').add(newContent)
+      this.basePanel.layout()
+    }
   }
 
   private async fetchMatchHistoryData() {
@@ -495,6 +561,7 @@ export default class MatchHistoryScene extends BaseScene {
 
     if (Flags.local) {
       this.matchHistoryData = mockData as MatchHistoryEntry[]
+      this.filteredMatchHistoryData = this.matchHistoryData
       this.createContent()
       return
     }
@@ -513,6 +580,7 @@ export default class MatchHistoryScene extends BaseScene {
         throw new Error('Failed to fetch match history data')
       }
       this.matchHistoryData = await response.json()
+      this.filteredMatchHistoryData = this.matchHistoryData
       console.log('Match history data', this.matchHistoryData)
       this.createContent()
     } catch (error) {
@@ -546,32 +614,34 @@ export default class MatchHistoryScene extends BaseScene {
       .layout()
 
     // Create scrollable panel with header
-    this.basePanel = this.rexUI.add
-      .scrollablePanel({
-        x: Space.windowWidth / 2,
-        y: headerHeight,
-        height: Space.windowHeight - headerHeight,
+    if (!this.basePanel) {
+      this.basePanel = this.rexUI.add
+        .scrollablePanel({
+          x: Space.windowWidth / 2,
+          y: headerHeight,
+          height: Space.windowHeight - headerHeight,
 
-        header: headerSizer,
+          header: headerSizer,
 
-        panel: {
-          child: this.createMatchRows(),
+          panel: {
+            child: this.createMatchRows(),
+          },
+
+          slider: Scroll(this),
+        })
+        .setOrigin(0.5, 0)
+        .layout()
+
+      // Update the mousewheel handler bounds check
+      this.input.on(
+        'wheel',
+        (pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) => {
+          this.basePanel.childOY -= dy
+          this.basePanel.t = Math.max(0, this.basePanel.t)
+          this.basePanel.t = Math.min(0.999999, this.basePanel.t)
         },
-
-        slider: Scroll(this),
-      })
-      .setOrigin(0.5, 0)
-      .layout()
-
-    // Update the mousewheel handler bounds check
-    this.input.on(
-      'wheel',
-      (pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) => {
-        this.basePanel.childOY -= dy
-        this.basePanel.t = Math.max(0, this.basePanel.t)
-        this.basePanel.t = Math.min(0.999999, this.basePanel.t)
-      },
-    )
+      )
+    }
   }
 
   private createMatchRows() {
@@ -580,7 +650,13 @@ export default class MatchHistoryScene extends BaseScene {
       width: width,
     })
 
-    this.matchHistoryData.forEach((entry) => {
+    // Use filteredMatchHistoryData instead of matchHistoryData
+    const dataToUse =
+      this.filteredMatchHistoryData.length > 0 || this.searchText
+        ? this.filteredMatchHistoryData
+        : this.matchHistoryData
+
+    dataToUse.forEach((entry) => {
       let rowContainer = this.createRow(entry)
       entriesSizer.add(rowContainer)
     })
