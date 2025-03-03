@@ -1,3 +1,5 @@
+import { Flags } from '../settings/flags'
+
 /**
  * Utility class for managing the cinematic animation element
  */
@@ -14,6 +16,9 @@ export default class Cinematic {
 
     const animation: HTMLVideoElement = <HTMLVideoElement>animations.item(0)
     animation.style.display = ''
+    if (!Flags.local) {
+      animation.src = 'assets/animation/Jules.mp4'
+    }
   }
 
   /**
