@@ -731,7 +731,8 @@ export default class MatchHistoryScene extends BaseScene {
         align: 'top',
       })
 
-    sizer.setScale(0.000001)
+    // TODO
+    // sizer.setScale(0.000001)
     return sizer
   }
 
