@@ -12,7 +12,9 @@ export default function createMatchHistoryServer() {
   app.use(cors())
 
   // GET endpoint for match history data
-  app.get('/:uuid', async (req, res) => {
+  app.get('/match_history/:uuid', async (req, res) => {
+    console.log('Fetching match history for user:', req.params.uuid)
+
     try {
       const userUUID = req.params.uuid
       const matches = await db

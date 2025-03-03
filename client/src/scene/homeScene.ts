@@ -398,7 +398,7 @@ export default class HomeScene extends BaseScene {
     const l = discordHeight
 
     let rect = this.add.rectangle(
-      Space.windowWidth - Space.pad - l * 1.75, // Position it next to leaderboard
+      Space.pad + l / 2, // Changed to position on far left
       Space.windowHeight - Space.pad - l / 2,
       l,
       l,
