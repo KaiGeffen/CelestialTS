@@ -14,6 +14,8 @@ import Buttons from '../lib/buttons/buttons'
 import newScrollablePanel from '../lib/scrollablePanel'
 import { MatchHistoryEntry } from '../../../shared/types/matchHistory'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
+import Cutout from '../lib/buttons/cutout'
+import Catalog from '../../../shared/state/catalog'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const width = Space.windowWidth - Space.sliderWidth
@@ -81,10 +83,15 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 1,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Fire Dragons', cosmetics: { avatar: 3 } },
+        deck: {
+          name: 'Fire Dragons',
+          cosmetics: { avatar: 3 },
+          cards: [12, 15, 22, 33, 45, 12, 15, 22, 33, 45, 2, 8, 19, 27, 38],
+        },
         opponentDeck: {
           name: 'Dragon Fury',
           cosmetics: { avatar: 1 },
+          cards: [5, 18, 29, 41, 47, 5, 18, 29, 41, 47, 1, 9, 16, 25, 35],
         },
       },
       {
@@ -96,10 +103,15 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 2,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Control Mage', cosmetics: { avatar: 4 } },
+        deck: {
+          name: 'Control Mage',
+          cosmetics: { avatar: 4 },
+          cards: [3, 7, 14, 28, 39, 3, 7, 14, 28, 39, 11, 20, 31, 42, 48],
+        },
         opponentDeck: {
           name: 'Arcane Masters',
           cosmetics: { avatar: 2 },
+          cards: [6, 13, 24, 36, 49, 6, 13, 24, 36, 49, 4, 10, 17, 30, 44],
         },
       },
       {
@@ -111,10 +123,15 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 1,
         roundsTied: 1,
         wasWin: false,
-        deck: { name: 'Forest Spirits', cosmetics: { avatar: 0 } },
+        deck: {
+          name: 'Forest Spirits',
+          cosmetics: { avatar: 0 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
         opponentDeck: {
           name: "Nature's Wrath",
           cosmetics: { avatar: 5 },
+          cards: [7, 15, 23, 34, 45, 7, 15, 23, 34, 45, 2, 9, 19, 28, 40],
         },
       },
       {
@@ -339,8 +356,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 2,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Dark Empire', cosmetics: { avatar: 3 } },
-        opponentDeck: { name: 'Shadow Warriors', cosmetics: { avatar: 0 } },
+        deck: {
+          name: 'Dark Empire',
+          cosmetics: { avatar: 3 },
+          cards: [4, 12, 22, 31, 44, 4, 12, 22, 31, 44, 6, 13, 24, 35, 47],
+        },
+        opponentDeck: {
+          name: 'Shadow Warriors',
+          cosmetics: { avatar: 0 },
+          cards: [5, 14, 26, 38, 48, 5, 14, 26, 38, 48, 1, 10, 20, 33, 49],
+        },
       },
     ]
 
@@ -461,7 +486,8 @@ export default class MatchHistoryScene extends BaseScene {
       width: width,
     })
 
-    let rowSizer = this.rexUI.add.sizer({
+    // The sizer when row is collapsed
+    let collapsedSizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
       width: width,
       height: Space.avatarSize,
@@ -523,13 +549,8 @@ export default class MatchHistoryScene extends BaseScene {
     let expandText = this.add.text(0, 0, '▼', Style.basic).setInteractive()
 
     // Create expandable content (hidden by default)
-    const s = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.`
-    const expandedContent = this.add
-      .text(Space.pad, Space.avatarSize, s, {
-        ...Style.basic,
-        wordWrap: { width: width - Space.pad * 2 },
-      })
-      .setScale(0)
+    const expandedContent = this.getExpandedContent(entry)
+    console.log('got here')
 
     // Add click handler for expand button
     let isExpanded = false
@@ -546,7 +567,7 @@ export default class MatchHistoryScene extends BaseScene {
       }
     })
 
-    rowSizer
+    collapsedSizer
       .addBackground(background)
       .add(timeText, { proportion: 1.5 })
       .add(oppContainer, { proportion: 2 })
@@ -554,8 +575,59 @@ export default class MatchHistoryScene extends BaseScene {
       .add(userContainer, { proportion: 2 })
       .add(expandText, { proportion: 0.5 })
 
-    sizer.add(rowSizer).add(expandedContent).addBackground(background)
+    sizer.add(collapsedSizer).add(expandedContent).addBackground(background)
 
     return sizer
+  }
+
+  private getExpandedContent(entry: MatchHistoryEntry) {
+    const panel = this.rexUI.add.fixWidthSizer({
+      width: Space.deckPanelWidth,
+    })
+
+    const cards: { [key: number]: Cutout } = {}
+    for (const cardId of entry.deck.cards || []) {
+      // If cutout present, increment it
+      if (cards[cardId]) {
+        cards[cardId].increment()
+      } else {
+        // If it isn't, create a new cutout
+        const card = Catalog.getCardById(cardId)
+        if (!card) {
+          continue
+        }
+
+        const container = new ContainerLite(
+          this,
+          0,
+          0,
+          Space.deckPanelWidth,
+          Space.cutoutHeight,
+        )
+        const cutout = new Cutout(container, card)
+        panel.add(container)
+        cards[cardId] = cutout
+      }
+    }
+
+    panel.setScale(0)
+
+    return panel
+
+    // const scrollablePanel = newScrollablePanel(this, {
+    //   x: 0,
+    //   y: 0,
+    //   width: width,
+    //   height: Space.windowHeight,
+
+    //   panel: {
+    //     child: panel,
+    //   },
+    //   background: background,
+    // })
+
+    // scrollablePanel.setScale(0.1)
+
+    // return scrollablePanel
   }
 }
