@@ -16,12 +16,15 @@ import { MatchHistoryEntry } from '../../../shared/types/matchHistory'
 import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 import Cutout from '../lib/buttons/cutout'
 import Catalog from '../../../shared/state/catalog'
+import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const width = Space.windowWidth - Space.sliderWidth
 
 export default class MatchHistoryScene extends BaseScene {
   private matchHistoryData: MatchHistoryEntry[] = []
+
+  basePanel: ScrollablePanel
 
   constructor() {
     super({
@@ -143,10 +146,15 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 0,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Dark Arts', cosmetics: { avatar: 2 } },
+        deck: {
+          name: 'Dark Arts',
+          cosmetics: { avatar: 2 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
         opponentDeck: {
           name: 'Shadow Legion',
           cosmetics: { avatar: 3 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
         },
       },
       {
@@ -158,10 +166,15 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 2,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Holy Knights', cosmetics: { avatar: 5 } },
+        deck: {
+          name: 'Holy Knights',
+          cosmetics: { avatar: 5 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
         opponentDeck: {
           name: 'Divine Order',
           cosmetics: { avatar: 4 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
         },
       },
       {
@@ -173,10 +186,15 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 1,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Thunder Lords', cosmetics: { avatar: 1 } },
+        deck: {
+          name: 'Thunder Lords',
+          cosmetics: { avatar: 1 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
         opponentDeck: {
           name: 'Lightning Strike',
           cosmetics: { avatar: 0 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
         },
       },
       {
@@ -188,8 +206,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 5,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Ice Kingdom', cosmetics: { avatar: 2 } },
-        opponentDeck: { name: 'Frozen Throne', cosmetics: { avatar: 4 } },
+        deck: {
+          name: 'Ice Kingdom',
+          cosmetics: { avatar: 2 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Frozen Throne',
+          cosmetics: { avatar: 4 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-14T13:15:00'),
@@ -200,8 +226,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 2,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Inferno', cosmetics: { avatar: 3 } },
-        opponentDeck: { name: 'Flame Legion', cosmetics: { avatar: 1 } },
+        deck: {
+          name: 'Inferno',
+          cosmetics: { avatar: 3 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Flame Legion',
+          cosmetics: { avatar: 1 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-14T12:00:00'),
@@ -212,8 +246,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 5,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Stone Guard', cosmetics: { avatar: 5 } },
-        opponentDeck: { name: 'Mountain Kings', cosmetics: { avatar: 2 } },
+        deck: {
+          name: 'Stone Guard',
+          cosmetics: { avatar: 5 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Mountain Kings',
+          cosmetics: { avatar: 2 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-14T11:30:00'),
@@ -224,8 +266,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 3,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Storm Riders', cosmetics: { avatar: 0 } },
-        opponentDeck: { name: 'Aerial Force', cosmetics: { avatar: 3 } },
+        deck: {
+          name: 'Storm Riders',
+          cosmetics: { avatar: 0 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Aerial Force',
+          cosmetics: { avatar: 3 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-14T10:15:00'),
@@ -236,8 +286,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 5,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Dark Matter', cosmetics: { avatar: 4 } },
-        opponentDeck: { name: 'Void Walkers', cosmetics: { avatar: 1 } },
+        deck: {
+          name: 'Dark Matter',
+          cosmetics: { avatar: 4 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Void Walkers',
+          cosmetics: { avatar: 1 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-14T09:00:00'),
@@ -248,8 +306,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 1,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Chronos', cosmetics: { avatar: 2 } },
-        opponentDeck: { name: 'Time Weavers', cosmetics: { avatar: 5 } },
+        deck: {
+          name: 'Chronos',
+          cosmetics: { avatar: 2 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Time Weavers',
+          cosmetics: { avatar: 5 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T20:45:00'),
@@ -260,8 +326,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 4,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Psychic Force', cosmetics: { avatar: 1 } },
-        opponentDeck: { name: 'Mind Flayers', cosmetics: { avatar: 3 } },
+        deck: {
+          name: 'Psychic Force',
+          cosmetics: { avatar: 1 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Mind Flayers',
+          cosmetics: { avatar: 3 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T19:30:00'),
@@ -272,8 +346,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 5,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Wild Pack', cosmetics: { avatar: 4 } },
-        opponentDeck: { name: 'Feral Kings', cosmetics: { avatar: 2 } },
+        deck: {
+          name: 'Wild Pack',
+          cosmetics: { avatar: 4 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Feral Kings',
+          cosmetics: { avatar: 2 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T18:15:00'),
@@ -284,8 +366,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 2,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Spirit Guard', cosmetics: { avatar: 3 } },
-        opponentDeck: { name: 'Soul Collectors', cosmetics: { avatar: 0 } },
+        deck: {
+          name: 'Spirit Guard',
+          cosmetics: { avatar: 3 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Soul Collectors',
+          cosmetics: { avatar: 0 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T17:00:00'),
@@ -296,8 +386,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 5,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Crimson Order', cosmetics: { avatar: 5 } },
-        opponentDeck: { name: 'Blood Legion', cosmetics: { avatar: 4 } },
+        deck: {
+          name: 'Crimson Order',
+          cosmetics: { avatar: 5 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Blood Legion',
+          cosmetics: { avatar: 4 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T16:45:00'),
@@ -308,8 +406,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 3,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Celestial Guard', cosmetics: { avatar: 2 } },
-        opponentDeck: { name: 'Star Walkers', cosmetics: { avatar: 1 } },
+        deck: {
+          name: 'Celestial Guard',
+          cosmetics: { avatar: 2 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Star Walkers',
+          cosmetics: { avatar: 1 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T15:30:00'),
@@ -320,8 +426,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 5,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Dream Warriors', cosmetics: { avatar: 0 } },
-        opponentDeck: { name: 'Nightmare Legion', cosmetics: { avatar: 3 } },
+        deck: {
+          name: 'Dream Warriors',
+          cosmetics: { avatar: 0 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Nightmare Legion',
+          cosmetics: { avatar: 3 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T14:15:00'),
@@ -332,8 +446,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 4,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Thunder Guard', cosmetics: { avatar: 4 } },
-        opponentDeck: { name: 'Lightning Lords', cosmetics: { avatar: 2 } },
+        deck: {
+          name: 'Thunder Guard',
+          cosmetics: { avatar: 4 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Lightning Lords',
+          cosmetics: { avatar: 2 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T13:00:00'),
@@ -344,8 +466,16 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 5,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Ice Maidens', cosmetics: { avatar: 1 } },
-        opponentDeck: { name: 'Frozen Guard', cosmetics: { avatar: 5 } },
+        deck: {
+          name: 'Ice Maidens',
+          cosmetics: { avatar: 1 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
+        opponentDeck: {
+          name: 'Frozen Guard',
+          cosmetics: { avatar: 5 },
+          cards: [8, 16, 25, 37, 46, 8, 16, 25, 37, 46, 3, 11, 21, 32, 43],
+        },
       },
       {
         time: new Date('2024-03-13T11:45:00'),
@@ -418,7 +548,7 @@ export default class MatchHistoryScene extends BaseScene {
       .layout()
 
     // Create scrollable panel with header
-    let scrollablePanel = this.rexUI.add
+    this.basePanel = this.rexUI.add
       .scrollablePanel({
         x: Space.windowWidth / 2,
         y: (Space.windowHeight + headerHeight) / 2,
@@ -458,10 +588,10 @@ export default class MatchHistoryScene extends BaseScene {
     // Update the mousewheel handler bounds check
     this.input.on(
       'wheel',
-      function (pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
-        scrollablePanel.childOY -= dy
-        scrollablePanel.t = Math.max(0, scrollablePanel.t)
-        scrollablePanel.t = Math.min(0.999999, scrollablePanel.t)
+      (pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) => {
+        this.basePanel.childOY -= dy
+        this.basePanel.t = Math.max(0, this.basePanel.t)
+        this.basePanel.t = Math.min(0.999999, this.basePanel.t)
       },
     )
   }
@@ -550,7 +680,6 @@ export default class MatchHistoryScene extends BaseScene {
 
     // Create expandable content (hidden by default)
     const expandedContent = this.getExpandedContent(entry)
-    console.log('got here')
 
     // Add click handler for expand button
     let isExpanded = false
@@ -558,13 +687,10 @@ export default class MatchHistoryScene extends BaseScene {
       this.sound.play('click')
       isExpanded = !isExpanded
       expandText.setText(isExpanded ? '▲' : '▼')
-      expandedContent.setScale(isExpanded ? 1 : 0)
+      expandedContent.setScale(isExpanded ? 1 : 0.001)
 
       // Refresh the panel layout to accommodate the expanded content
-      const panel = this.rexUI.getParentSizer(sizer)
-      if (panel) {
-        panel.layout()
-      }
+      this.basePanel.layout()
     })
 
     collapsedSizer
@@ -610,7 +736,7 @@ export default class MatchHistoryScene extends BaseScene {
       }
     }
 
-    panel.setScale(0)
+    panel.setScale(0.001)
 
     return panel
 
