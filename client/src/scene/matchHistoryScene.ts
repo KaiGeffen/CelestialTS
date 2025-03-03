@@ -719,11 +719,9 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   private getCardList(cards: number[]) {
-    const sizer = this.rexUI.add
-      .fixWidthSizer({
-        width: Space.deckPanelWidth,
-      })
-      .setDepth(1)
+    const sizer = this.rexUI.add.fixWidthSizer({
+      width: Space.deckPanelWidth,
+    })
 
     // Sort cards before adding to the list
     cards.sort((id1, id2) => {
@@ -775,6 +773,7 @@ export default class MatchHistoryScene extends BaseScene {
           Space.cutoutHeight,
         )
         const cutout = new Cutout(container, card)
+        cutout.setDepth(1)
         sizer.add(container)
         cutouts[cardId] = cutout
       }
@@ -792,7 +791,7 @@ export default class MatchHistoryScene extends BaseScene {
       Space.iconSize,
       Space.iconSize,
     )
-    new Icons.Share(container, 0, 0, this.shareCallback(cards))
+    new Icons.Share(container, 0, 0, this.shareCallback(cards)).setDepth(1)
     return container
   }
 
