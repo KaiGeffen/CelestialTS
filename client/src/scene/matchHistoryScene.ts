@@ -13,8 +13,10 @@ import { MATCH_HISTORY_PORT, URL } from '../../../shared/network/settings'
 import Buttons from '../lib/buttons/buttons'
 import newScrollablePanel from '../lib/scrollablePanel'
 import { MatchHistoryEntry } from '../../../shared/types/matchHistory'
+import ContainerLite from 'phaser3-rex-plugins/plugins/containerlite.js'
 
 const headerHeight = Space.iconSize + Space.pad * 2
+const width = Space.windowWidth - Space.sliderWidth
 
 export default class MatchHistoryScene extends BaseScene {
   private matchHistoryData: MatchHistoryEntry[] = []
@@ -78,7 +80,11 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 1,
         roundsTied: 0,
         wasWin: true,
-        deck: { name: 'Fire Dragons' },
+        deck: { name: 'Fire Dragons', cosmetics: { avatar: 3 } },
+        opponentDeck: {
+          name: 'Dragon Fury',
+          cosmetics: { avatar: 1 },
+        },
       },
       {
         time: new Date('2024-03-15T13:15:00'),
@@ -88,197 +94,11 @@ export default class MatchHistoryScene extends BaseScene {
         roundsLost: 2,
         roundsTied: 0,
         wasWin: false,
-        deck: { name: 'Control Mage' },
-      },
-      {
-        time: new Date('2024-03-14T19:45:00'),
-        opponentUsername: 'NatureCaller',
-        opponentElo: 1920,
-        roundsWon: 1,
-        roundsLost: 1,
-        roundsTied: 1,
-        wasWin: false,
-        deck: { name: 'Forest Spirits' },
-      },
-      {
-        time: new Date('2024-03-15T14:30:00'),
-        opponentUsername: 'DragonMaster',
-        opponentElo: 1850,
-        roundsWon: 2,
-        roundsLost: 1,
-        roundsTied: 0,
-        wasWin: true,
-        deck: { name: 'Fire Dragons' },
-      },
-      {
-        time: new Date('2024-03-15T13:15:00'),
-        opponentUsername: 'SpellWeaver',
-        opponentElo: 1750,
-        roundsWon: 0,
-        roundsLost: 2,
-        roundsTied: 0,
-        wasWin: false,
-        deck: { name: 'Control Mage' },
-      },
-      {
-        time: new Date('2024-03-14T19:45:00'),
-        opponentUsername: 'NatureCaller',
-        opponentElo: 1920,
-        roundsWon: 1,
-        roundsLost: 1,
-        roundsTied: 1,
-        wasWin: false,
-        deck: { name: 'Forest Spirits' },
-      },
-      {
-        time: new Date('2024-03-15T14:30:00'),
-        opponentUsername: 'DragonMaster',
-        opponentElo: 1850,
-        roundsWon: 2,
-        roundsLost: 1,
-        roundsTied: 0,
-        wasWin: true,
-        deck: { name: 'Fire Dragons' },
-      },
-      {
-        time: new Date('2024-03-15T13:15:00'),
-        opponentUsername: 'SpellWeaver',
-        opponentElo: 1750,
-        roundsWon: 0,
-        roundsLost: 2,
-        roundsTied: 0,
-        wasWin: false,
-        deck: { name: 'Control Mage' },
-      },
-      {
-        time: new Date('2024-03-14T19:45:00'),
-        opponentUsername: 'NatureCaller',
-        opponentElo: 1920,
-        roundsWon: 1,
-        roundsLost: 1,
-        roundsTied: 1,
-        wasWin: false,
-        deck: { name: 'Forest Spirits' },
-      },
-      {
-        time: new Date('2024-03-15T14:30:00'),
-        opponentUsername: 'DragonMaster',
-        opponentElo: 1850,
-        roundsWon: 2,
-        roundsLost: 1,
-        roundsTied: 0,
-        wasWin: true,
-        deck: { name: 'Fire Dragons' },
-      },
-      {
-        time: new Date('2024-03-15T13:15:00'),
-        opponentUsername: 'SpellWeaver',
-        opponentElo: 1750,
-        roundsWon: 0,
-        roundsLost: 2,
-        roundsTied: 0,
-        wasWin: false,
-        deck: { name: 'Control Mage' },
-      },
-      {
-        time: new Date('2024-03-14T19:45:00'),
-        opponentUsername: 'NatureCaller',
-        opponentElo: 1920,
-        roundsWon: 1,
-        roundsLost: 1,
-        roundsTied: 1,
-        wasWin: false,
-        deck: { name: 'Forest Spirits' },
-      },
-      {
-        time: new Date('2024-03-15T14:30:00'),
-        opponentUsername: 'DragonMaster',
-        opponentElo: 1850,
-        roundsWon: 2,
-        roundsLost: 1,
-        roundsTied: 0,
-        wasWin: true,
-        deck: { name: 'Fire Dragons' },
-      },
-      {
-        time: new Date('2024-03-15T13:15:00'),
-        opponentUsername: 'SpellWeaver',
-        opponentElo: 1750,
-        roundsWon: 0,
-        roundsLost: 2,
-        roundsTied: 0,
-        wasWin: false,
-        deck: { name: 'Control Mage' },
-      },
-      {
-        time: new Date('2024-03-14T19:45:00'),
-        opponentUsername: 'NatureCaller',
-        opponentElo: 1920,
-        roundsWon: 1,
-        roundsLost: 1,
-        roundsTied: 1,
-        wasWin: false,
-        deck: { name: 'Forest Spirits' },
-      },
-      {
-        time: new Date('2024-03-15T14:30:00'),
-        opponentUsername: 'DragonMaster',
-        opponentElo: 1850,
-        roundsWon: 2,
-        roundsLost: 1,
-        roundsTied: 0,
-        wasWin: true,
-        deck: { name: 'Fire Dragons' },
-      },
-      {
-        time: new Date('2024-03-15T13:15:00'),
-        opponentUsername: 'SpellWeaver',
-        opponentElo: 1750,
-        roundsWon: 0,
-        roundsLost: 2,
-        roundsTied: 0,
-        wasWin: false,
-        deck: { name: 'Control Mage' },
-      },
-      {
-        time: new Date('2024-03-14T19:45:00'),
-        opponentUsername: 'NatureCaller',
-        opponentElo: 1920,
-        roundsWon: 1,
-        roundsLost: 1,
-        roundsTied: 1,
-        wasWin: false,
-        deck: { name: 'Forest Spirits' },
-      },
-      {
-        time: new Date('2024-03-15T14:30:00'),
-        opponentUsername: 'DragonMaster',
-        opponentElo: 1850,
-        roundsWon: 2,
-        roundsLost: 1,
-        roundsTied: 0,
-        wasWin: true,
-        deck: { name: 'Fire Dragons' },
-      },
-      {
-        time: new Date('2024-03-15T13:15:00'),
-        opponentUsername: 'SpellWeaver',
-        opponentElo: 1750,
-        roundsWon: 0,
-        roundsLost: 2,
-        roundsTied: 0,
-        wasWin: false,
-        deck: { name: 'Control Mage' },
-      },
-      {
-        time: new Date('2024-03-14T19:45:00'),
-        opponentUsername: 'NatureCaller',
-        opponentElo: 1920,
-        roundsWon: 1,
-        roundsLost: 1,
-        roundsTied: 1,
-        wasWin: false,
-        deck: { name: 'Forest Spirits' },
+        deck: { name: 'Control Mage', cosmetics: { avatar: 4 } },
+        opponentDeck: {
+          name: 'Arcane Masters',
+          cosmetics: { avatar: 2 },
+        },
       },
     ]
 
@@ -315,7 +135,7 @@ export default class MatchHistoryScene extends BaseScene {
     // Create header content
     let headerSizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
-      width: Space.windowWidth,
+      width: width,
     })
 
     let timeText = this.add.text(0, 0, '\tTime', Style.basic)
@@ -335,7 +155,7 @@ export default class MatchHistoryScene extends BaseScene {
       .scrollablePanel({
         x: Space.windowWidth / 2,
         y: (Space.windowHeight + headerHeight) / 2,
-        width: Space.windowWidth,
+        width: width,
         height: Space.windowHeight - headerHeight - Space.pad * 3,
 
         header: headerSizer,
@@ -382,7 +202,7 @@ export default class MatchHistoryScene extends BaseScene {
   private createMatchRows() {
     let entriesSizer = this.rexUI.add.sizer({
       orientation: 'vertical',
-      width: Space.windowWidth,
+      width: width,
     })
 
     this.matchHistoryData.forEach((entry) => {
@@ -396,26 +216,42 @@ export default class MatchHistoryScene extends BaseScene {
   private createRow(entry: MatchHistoryEntry) {
     let rowSizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
-      width: Space.windowWidth,
+      width: width,
       height: 40,
     })
 
+    // Time text
     const time = entry.time
     const timeS = `${time.getMonth() + 1}/${time.getDate()}\n${time.getHours()}:${String(
       time.getMinutes(),
     ).padStart(2, '0')}`
+    const timeText = this.add.text(0, 0, `\t${timeS}`, Style.basic)
 
-    // Format results as W-L-T
+    // Opponent Info
+    const oppContainer = new ContainerLite(this, 0, 0)
+    new Buttons.Avatar(oppContainer, 0, 0, entry.opponentDeck.cosmetics.avatar)
+    const oppText = this.add.text(
+      0,
+      0,
+      `${entry.opponentUsername}(${entry.opponentElo})`,
+      Style.basic,
+    )
+    oppContainer.add(oppText)
+
+    // Results text
     const resultS = `${entry.roundsWon}-${entry.roundsLost}-${entry.roundsTied}`
-
-    // Add opponent's ELO in parentheses
-    const opponentS = `${entry.opponentUsername}(${entry.opponentElo})`
-
-    // Add text objects
-    let timeText = this.add.text(0, 0, `\t${timeS}`, Style.basic)
-    let oppText = this.add.text(0, 0, opponentS, Style.basic)
     let resultsText = this.add.text(0, 0, resultS, Style.basic)
-    let deckText = this.add.text(0, 0, entry.deck.name, Style.basic)
+
+    // User Info
+    const userContainer = new ContainerLite(this, 0, 0)
+    new Buttons.Avatar(userContainer, 0, 0, entry.deck.cosmetics.avatar)
+    const userText = this.add.text(
+      0,
+      0,
+      `${entry.deck.name}(${entry.elo})`,
+      Style.basic,
+    )
+    userContainer.add(userText)
 
     // Add background color based on win/loss
     const background = this.add.rectangle(
@@ -430,9 +266,9 @@ export default class MatchHistoryScene extends BaseScene {
     rowSizer
       .addBackground(background)
       .add(timeText, { proportion: 1 })
-      .add(oppText, { proportion: 2 })
+      .add(oppContainer, { proportion: 2 })
       .add(resultsText, { proportion: 1 })
-      .add(deckText, { proportion: 2 })
+      .add(userContainer, { proportion: 2 })
 
     return rowSizer
   }
