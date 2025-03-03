@@ -379,7 +379,7 @@ export default class MatchHistoryScene extends BaseScene {
       width: width,
     })
 
-    let timeText = this.add.text(0, 0, '\tTime', Style.basic)
+    let timeText = this.add.text(0, 0, 'Time', Style.basic)
     let opponentText = this.add.text(0, 0, 'Opponent', Style.basic)
     let resultsText = this.add.text(0, 0, 'Results', Style.basic)
     let deckText = this.add.text(0, 0, 'Deck Name', Style.basic)
