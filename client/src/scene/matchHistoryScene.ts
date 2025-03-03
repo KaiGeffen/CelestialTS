@@ -385,9 +385,9 @@ export default class MatchHistoryScene extends BaseScene {
     let deckText = this.add.text(0, 0, 'Deck Name', Style.basic)
 
     headerSizer
-      .add(timeText, { proportion: 1 })
+      .add(timeText, { proportion: 1.5 })
       .add(opponentText, { proportion: 2 })
-      .add(resultsText, { proportion: 1 })
+      .add(resultsText, { proportion: 1.5 })
       .add(deckText, { proportion: 2 })
       .layout()
 
@@ -461,38 +461,6 @@ export default class MatchHistoryScene extends BaseScene {
       height: Space.avatarSize,
     })
 
-    // Time text
-    const time = entry.time
-    const timeS = `${time.getMonth() + 1}/${time.getDate()}\n${time.getHours()}:${String(
-      time.getMinutes(),
-    ).padStart(2, '0')}`
-    const timeText = this.add.text(0, 0, `\t${timeS}`, Style.basic)
-
-    // Opponent Info
-    const oppContainer = new ContainerLite(this, 0, 0).setOrigin(0)
-    new Buttons.Avatar(oppContainer, 0, 0, entry.opponentDeck.cosmetics.avatar)
-    const oppText = this.add
-      .text(
-        0,
-        0,
-        `${entry.opponentUsername}(${entry.opponentElo})`,
-        Style.basic,
-      )
-      .setOrigin(0, 0.5)
-    oppContainer.add(oppText)
-
-    // Results text
-    const resultS = `${entry.roundsWon}-${entry.roundsLost}-${entry.roundsTied}`
-    let resultsText = this.add.text(0, 0, resultS, Style.basic)
-
-    // User Info
-    const userContainer = new ContainerLite(this, 0, 0).setOrigin(0)
-    new Buttons.Avatar(userContainer, 0, 0, entry.deck.cosmetics.avatar)
-    const userText = this.add
-      .text(0, 0, `${entry.deck.name}(${entry.elo})`, Style.basic)
-      .setOrigin(0, 0.5)
-    userContainer.add(userText)
-
     // Add background color based on win/loss
     const background = this.add.rectangle(
       0,
@@ -503,12 +471,54 @@ export default class MatchHistoryScene extends BaseScene {
       0.2,
     )
 
+    // Time text
+    const time = entry.time
+    const timeS = `${time.getMonth() + 1}/${time.getDate()}\n${time.getHours()}:${String(
+      time.getMinutes(),
+    ).padStart(2, '0')}`
+    const timeText = this.add.text(0, 0, `\t${timeS}`, Style.basic)
+
+    // Opponent Info
+    const oppContainer = new ContainerLite(this).setOrigin(0)
+    new Buttons.Avatar(
+      oppContainer,
+      0,
+      0,
+      entry.opponentDeck.cosmetics.avatar,
+    ).icon.setOrigin(1, 0.5)
+    const oppText = this.add
+      .text(
+        0,
+        0,
+        ` ${entry.opponentUsername}(${entry.opponentElo})`,
+        Style.basic,
+      )
+      .setOrigin(0, 0.5)
+    oppContainer.add(oppText)
+
+    // Results text
+    const resultS = `${entry.roundsWon}-${entry.roundsLost}-${entry.roundsTied}`
+    let resultsText = this.add.text(0, 0, resultS, Style.basic)
+
+    // User Info
+    const userContainer = new ContainerLite(this).setOrigin(0)
+    new Buttons.Avatar(
+      userContainer,
+      0,
+      0,
+      entry.deck.cosmetics.avatar,
+    ).icon.setOrigin(1, 0.5)
+    const userText = this.add
+      .text(0, 0, ` ${entry.deck.name}(${entry.elo})`, Style.basic)
+      .setOrigin(0, 0.5)
+    userContainer.add(userText)
+
     rowSizer
       .addBackground(background)
-      .add(timeText, { proportion: 1 })
-      .add(oppContainer, { proportion: 2, align: 'left' })
-      .add(resultsText, { proportion: 1 })
-      .add(userContainer, { proportion: 2, align: 'left' })
+      .add(timeText, { proportion: 1.5 })
+      .add(oppContainer, { proportion: 2 })
+      .add(resultsText, { proportion: 1.5 })
+      .add(userContainer, { proportion: 2 })
 
     return rowSizer
   }
