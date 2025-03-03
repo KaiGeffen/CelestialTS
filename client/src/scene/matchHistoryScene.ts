@@ -645,7 +645,7 @@ export default class MatchHistoryScene extends BaseScene {
     oppContainer.add(oppText)
 
     // Results text
-    const resultS = `   ${entry.roundsWon}-${entry.roundsLost}-${entry.roundsTied}`
+    const resultS = `   ${entry.roundsWon}-${entry.roundsTied}-${entry.roundsLost}`
     let resultsText = this.add.text(0, 0, resultS, Style.basic)
 
     // User Info
