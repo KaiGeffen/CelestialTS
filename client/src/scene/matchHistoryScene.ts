@@ -654,7 +654,10 @@ export default class MatchHistoryScene extends BaseScene {
     userContainer.add(userText)
 
     // Create expand button with arrow and make sure it's interactive
-    let expandText = this.add.text(0, 0, '▼', Style.basic).setInteractive()
+    let expandText = this.add
+      .text(0, 0, '▼', Style.basic)
+      .setInteractive()
+      .setDepth(1)
 
     // Create expandable content (hidden by default)
     const expandedContent = this.getExpandedContent(entry)
@@ -716,11 +719,11 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   private getCardList(cards: number[]) {
-    console.log('Getting cards', cards)
-
-    const sizer = this.rexUI.add.fixWidthSizer({
-      width: Space.deckPanelWidth,
-    })
+    const sizer = this.rexUI.add
+      .fixWidthSizer({
+        width: Space.deckPanelWidth,
+      })
+      .setDepth(1)
 
     // Sort cards before adding to the list
     cards.sort((id1, id2) => {
