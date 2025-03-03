@@ -59,8 +59,6 @@ export default function createMatchHistoryServer() {
           wasWin: isPlayer1,
         }
 
-        console.log('result is', result)
-
         return result
       })
 

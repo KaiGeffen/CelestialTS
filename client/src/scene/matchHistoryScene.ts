@@ -16,8 +16,8 @@ const headerHeight = Space.iconSize + Space.pad * 2
 const width = Space.windowWidth - Space.sliderWidth
 
 export default class MatchHistoryScene extends BaseScene {
-  private matchHistoryData: MatchHistoryEntry[] = []
-  private filteredMatchHistoryData: MatchHistoryEntry[] = []
+  private matchHistoryData: MatchHistoryEntry[]
+  private filteredMatchHistoryData: MatchHistoryEntry[]
   private searchText: string = ''
   private searchObj
 
@@ -31,6 +31,11 @@ export default class MatchHistoryScene extends BaseScene {
 
   create(): void {
     super.create()
+
+    // Reset scene state when creating
+    this.matchHistoryData = []
+    this.filteredMatchHistoryData = []
+    this.searchText = ''
 
     this.createHeader()
     this.fetchMatchHistoryData()
@@ -527,6 +532,12 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   private createContent() {
+    // If panel exists, destroy it first
+    if (this.basePanel) {
+      this.basePanel.destroy()
+      this.basePanel = null
+    }
+
     // Create header content
     let headerSizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
@@ -776,7 +787,6 @@ export default class MatchHistoryScene extends BaseScene {
 
       // TODO In prod shouldn't happen
       if (!card1 || !card2) {
-        console.log('Card not found', card1, card2)
         return 0
       }
 
