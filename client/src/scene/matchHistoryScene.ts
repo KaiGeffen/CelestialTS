@@ -382,12 +382,14 @@ export default class MatchHistoryScene extends BaseScene {
     let opponentText = this.add.text(0, 0, 'Opponent', Style.basic)
     let resultsText = this.add.text(0, 0, 'Results', Style.basic)
     let deckText = this.add.text(0, 0, 'Deck Name', Style.basic)
+    let expandText = this.add.text(0, 0, '', Style.basic)
 
     headerSizer
       .add(timeText, { proportion: 1.5 })
       .add(opponentText, { proportion: 2 })
       .add(resultsText, { proportion: 1.5 })
       .add(deckText, { proportion: 2 })
+      .add(expandText, { proportion: 0.5 })
       .layout()
 
     // Create scrollable panel with header
@@ -446,14 +448,19 @@ export default class MatchHistoryScene extends BaseScene {
     })
 
     this.matchHistoryData.forEach((entry) => {
-      let rowSizer = this.createRow(entry)
-      entriesSizer.add(rowSizer)
+      let rowContainer = this.createRow(entry)
+      entriesSizer.add(rowContainer)
     })
 
     return entriesSizer
   }
 
   private createRow(entry: MatchHistoryEntry) {
+    let sizer = this.rexUI.add.sizer({
+      orientation: 'vertical',
+      width: width,
+    })
+
     let rowSizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
       width: width,
@@ -464,8 +471,8 @@ export default class MatchHistoryScene extends BaseScene {
     const background = this.add.rectangle(
       0,
       0,
-      Space.windowWidth,
-      35,
+      1,
+      1,
       entry.wasWin ? 0x00ff00 : 0xff0000,
       0.2,
     )
@@ -512,13 +519,43 @@ export default class MatchHistoryScene extends BaseScene {
       .setOrigin(0, 0.5)
     userContainer.add(userText)
 
+    // Create expand button with arrow
+    let expandText = this.add.text(0, 0, '▼', Style.basic).setInteractive()
+
+    // Create expandable content (hidden by default)
+    const s = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.`
+    const expandedContent = this.add
+      .text(Space.pad, Space.avatarSize, s, {
+        ...Style.basic,
+        wordWrap: { width: width - Space.pad * 2 },
+      })
+      .setScale(0)
+
+    // Add click handler for expand button
+    let isExpanded = false
+    expandText.on('pointerdown', () => {
+      this.sound.play('click')
+      isExpanded = !isExpanded
+      expandText.setText(isExpanded ? '▲' : '▼')
+      expandedContent.setScale(isExpanded ? 1 : 0)
+
+      // Refresh the panel layout to accommodate the expanded content
+      const panel = this.rexUI.getParentSizer(sizer)
+      if (panel) {
+        panel.layout()
+      }
+    })
+
     rowSizer
       .addBackground(background)
       .add(timeText, { proportion: 1.5 })
       .add(oppContainer, { proportion: 2 })
       .add(resultsText, { proportion: 1.5 })
       .add(userContainer, { proportion: 2 })
+      .add(expandText, { proportion: 0.5 })
 
-    return rowSizer
+    sizer.add(rowSizer).add(expandedContent).addBackground(background)
+
+    return sizer
   }
 }
