@@ -76,7 +76,7 @@ export default class MatchHistoryScene extends BaseScene {
       const baseUrl = Flags.local
         ? `http://${URL}:${MATCH_HISTORY_PORT}`
         : 'https://celestialtcg.com'
-      const response = await fetch(`${baseUrl}/match-history/${uuid}`)
+      const response = await fetch(`${baseUrl}/match_history/${uuid}`)
       if (!response.ok) {
         throw new Error('Failed to fetch match history data')
       }
