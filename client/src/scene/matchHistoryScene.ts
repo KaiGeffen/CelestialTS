@@ -1,9 +1,17 @@
 import 'phaser'
-import { Style, Color, Space, UserSettings, Flags } from '../settings/settings'
+import {
+  Style,
+  Color,
+  Space,
+  UserSettings,
+  Flags,
+  Scroll,
+} from '../settings/settings'
 import BaseScene from './baseScene'
 import UserDataServer from '../network/userDataServer'
 import { MATCH_HISTORY_PORT, URL } from '../../../shared/network/settings'
 import Buttons from '../lib/buttons/buttons'
+import newScrollablePanel from '../lib/scrollablePanel'
 
 interface MatchHistoryEntry {
   opponent_username: string
@@ -29,9 +37,10 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   create(): void {
+    super.create()
+
     this.createHeader()
     this.fetchMatchHistoryData()
-    super.create()
   }
 
   private createHeader(): void {
@@ -73,7 +82,8 @@ export default class MatchHistoryScene extends BaseScene {
     try {
       const uuid = UserDataServer.getUUID()
       if (!uuid) {
-        throw new Error('User not logged in')
+        this.signalError('Please log in to view match history')
+        return
       }
 
       const baseUrl = Flags.local
@@ -123,39 +133,38 @@ export default class MatchHistoryScene extends BaseScene {
     )
 
     // Create scrollable panel for match history
-    let scrollablePanel = this.rexUI.add
-      .scrollablePanel({
-        x: Space.windowWidth / 2,
-        y: (Space.windowHeight + headerHeight) / 2,
-        width: width,
-        height: Space.windowHeight - headerHeight - Space.pad * 3,
-        scrollMode: 0,
-        panel: {
-          child: this.createMatchRows(),
-        },
-        slider: {
-          track: this.rexUI.add.roundRectangle(
-            0,
-            0,
-            20,
-            10,
-            10,
-            Color.backgroundLight,
-          ),
-          thumb: this.rexUI.add.roundRectangle(
-            0,
-            0,
-            20,
-            0,
-            10,
-            Color.backgroundDark,
-          ),
-        },
-        mouseWheelScroller: {
-          speed: 0.5,
-        },
-      })
-      .layout()
+    let scrollablePanel = newScrollablePanel(this, {
+      x: Space.windowWidth / 2,
+      y: (Space.windowHeight + headerHeight) / 2,
+      width: width,
+      height: Space.windowHeight - headerHeight - Space.pad * 3,
+      scrollMode: 0,
+      panel: {
+        child: this.createMatchRows(),
+      },
+      slider: Flags.mobile ? undefined : Scroll(this),
+      mouseWheelScroller: {
+        speed: 0.5,
+      },
+    }).layout()
+
+    // Add mousewheel handler
+    this.input.on(
+      'wheel',
+      function (pointer: Phaser.Input.Pointer, gameObject, dx, dy, dz, event) {
+        // Return if the pointer is outside of the panel
+        if (Math.abs(pointer.x - Space.windowWidth / 2) > width / 2) {
+          return
+        }
+
+        // Scroll panel down by amount wheel moved
+        scrollablePanel.childOY -= dy
+
+        // Ensure that panel isn't out bounds (Below 0% or above 100% scroll)
+        scrollablePanel.t = Math.max(0, scrollablePanel.t)
+        scrollablePanel.t = Math.min(0.999999, scrollablePanel.t)
+      },
+    )
   }
 
   private createMatchRows() {
