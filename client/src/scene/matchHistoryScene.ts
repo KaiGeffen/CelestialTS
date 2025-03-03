@@ -60,78 +60,15 @@ export default class MatchHistoryScene extends BaseScene {
       },
     )
 
-    // Create search box
-    this.searchObj = this.add['rexInputText'](
-      Space.windowWidth / 2,
-      headerHeight / 2,
-      Space.textboxWidth,
-      Space.textboxHeight,
-      {
-        type: 'text',
-        text: this.searchText,
-        align: 'center',
-        placeholder: 'Search decks...',
-        tooltip: 'Search for matches by deck names',
-        fontFamily: 'Mulish',
-        fontSize: '24px',
-        color: Color.textboxText,
-        maxLength: 40,
-        selectAll: true,
-        id: 'search-field',
-      },
-    )
-      .on(
-        'textchange',
-        function (inputText) {
-          this.searchText = inputText.text
-          this.filterAndRefreshContent()
-        },
-        this,
-      )
-      .removeInteractive()
-
-    // Add search box background
-    let searchIcon = this.add.image(
-      this.searchObj.x,
-      this.searchObj.y,
-      'icon-InputText',
-    )
-
-    // Create title (moved to left of search box)
+    // Create title back in center
     this.add
       .text(
-        Space.windowWidth / 4,
+        Space.windowWidth / 2,
         headerHeight / 2,
         'Match History',
         Style.homeTitle,
       )
       .setOrigin(0.5)
-  }
-
-  private filterAndRefreshContent() {
-    // Filter match history data based on search text
-    const searchQuery = this.searchText.toLowerCase()
-    this.filteredMatchHistoryData = this.matchHistoryData.filter((entry) => {
-      const ourDeckName = entry.deck.name.toLowerCase()
-      const theirDeckName = entry.opponentDeck.name.toLowerCase()
-      const opponentName = entry.opponentUsername.toLowerCase()
-
-      return (
-        ourDeckName.includes(searchQuery) ||
-        theirDeckName.includes(searchQuery) ||
-        opponentName.includes(searchQuery)
-      )
-    })
-
-    // Update the existing panel's content
-    if (this.basePanel) {
-      const newContent = this.createMatchRows()
-      this.basePanel.setChildOY(0) // Reset scroll position
-      this.basePanel.getElement('panel').setChildrenInteractive(false)
-      this.basePanel.getElement('panel').removeAll(true)
-      this.basePanel.getElement('panel').add(newContent)
-      this.basePanel.layout()
-    }
   }
 
   private async fetchMatchHistoryData() {
@@ -603,14 +540,48 @@ export default class MatchHistoryScene extends BaseScene {
     let opponentText = this.add.text(0, 0, 'Opponent', Style.basic)
     let resultsText = this.add.text(0, 0, 'Results', Style.basic)
     let deckText = this.add.text(0, 0, 'Deck Name', Style.basic)
-    let expandText = this.add.text(0, 0, '', Style.basic)
+
+    // Create search container to hold both text and background
+    const searchContainer = new ContainerLite(this, 0, 0)
+
+    // Add search box
+    this.searchObj = this.add
+      .rexInputText(0, 0, Space.textboxWidth, Space.textboxHeight, {
+        type: 'text',
+        text: this.searchText,
+        align: 'center',
+        placeholder: 'Search...',
+        tooltip: 'Search decks and opponents',
+        fontFamily: 'Mulish',
+        fontSize: '24px',
+        color: Color.textboxText,
+        maxLength: 40,
+        selectAll: true,
+        id: 'search-field',
+      })
+      .on(
+        'textchange',
+        function (inputText) {
+          this.searchText = inputText.text
+          this.filterAndRefreshContent()
+        },
+        this,
+      )
+      .removeInteractive()
+      .setOrigin(1, 0.5)
+
+    // Add search box background
+    let searchIcon = this.add.image(0, 0, 'icon-InputText')
+    searchIcon.setOrigin(1, 0.5)
+
+    searchContainer.add([searchIcon, this.searchObj])
 
     headerSizer
       .add(timeText, { proportion: 1.5 })
       .add(opponentText, { proportion: 2 })
       .add(resultsText, { proportion: 1.5 })
       .add(deckText, { proportion: 2 })
-      .add(expandText, { proportion: 0.5 })
+      .add(searchContainer, { proportion: 0.5 })
       .layout()
 
     // Create scrollable panel with header
