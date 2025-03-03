@@ -728,6 +728,35 @@ export default class MatchHistoryScene extends BaseScene {
       width: Space.deckPanelWidth,
     })
 
+    // Sort cards before adding to the list
+    cards.sort((id1, id2) => {
+      const card1 = Catalog.getCardById(id1)
+      const card2 = Catalog.getCardById(id2)
+
+      // TODO In prod shouldn't happen
+      if (!card1 || !card2) {
+        console.log('Card not found', card1, card2)
+        return 0
+      }
+
+      // Sort by cost
+      if (card1.cost > card2.cost) {
+        return 1
+      }
+      if (card1.cost < card2.cost) {
+        return -1
+      }
+
+      // Sort by name
+      if (card1.name > card2.name) {
+        return 1
+      }
+      if (card1.name < card2.name) {
+        return -1
+      }
+
+      return 0
+    })
     const cutouts: { [key: number]: Cutout } = {}
     for (const cardId of cards) {
       // If cutout present, increment it
