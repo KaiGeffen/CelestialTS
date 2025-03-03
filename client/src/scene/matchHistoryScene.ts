@@ -662,8 +662,16 @@ export default class MatchHistoryScene extends BaseScene {
       .setOrigin(0, 0.5)
     userContainer.add(userText)
 
-    // Create expand button with arrow
-    let expandText = this.add.text(0, 0, '▼', Style.basic).setInteractive()
+    // Create expand button with arrow and make sure it's interactive
+    let expandText = this.add
+      .text(0, 0, '▼', Style.basic)
+      .setInteractive({ useHandCursor: true }) // Add explicit cursor change
+      .on('pointerover', () => {
+        expandText.setAlpha(0.7) // Optional: visual feedback
+      })
+      .on('pointerout', () => {
+        expandText.setAlpha(1)
+      })
 
     // Create expandable content (hidden by default)
     const expandedContent = this.getExpandedContent(entry)
@@ -679,6 +687,9 @@ export default class MatchHistoryScene extends BaseScene {
       // Refresh the panel layout to accommodate the expanded content
       this.basePanel.layout()
     })
+
+    // Make sure the text is on top of other elements
+    expandText.setDepth(1)
 
     collapsedSizer
       .addBackground(background)
