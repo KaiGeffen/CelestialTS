@@ -360,11 +360,11 @@ export default class MatchHistoryScene extends BaseScene {
       const response = await fetch(
         `https://celestialtcg.com/match_history/${uuid}`,
       )
-      console.log('response was', response)
       if (!response.ok) {
         throw new Error('Failed to fetch match history data')
       }
       this.matchHistoryData = await response.json()
+      console.log('Response was', this.matchHistoryData)
       this.createContent()
     } catch (error) {
       console.error('Error fetching match history data:', error)
@@ -472,7 +472,8 @@ export default class MatchHistoryScene extends BaseScene {
     )
 
     // Time text
-    const time = entry.time
+    const time: Date = entry.time
+    console.log('time is', time)
     const timeS = `${time.getMonth() + 1}/${time.getDate()}\n${time.getHours()}:${String(
       time.getMinutes(),
     ).padStart(2, '0')}`
