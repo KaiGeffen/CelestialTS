@@ -561,14 +561,13 @@ export default class MatchHistoryScene extends BaseScene {
       })
       .on(
         'textchange',
-        function (inputText) {
+        (inputText) => {
           this.searchText = inputText.text
           this.filterAndRefreshContent()
         },
         this,
       )
-      .removeInteractive()
-      .setOrigin(1, 0.5)
+    this.searchObj.setOrigin(1, 0.5)
 
     // Add search box background
     let searchIcon = this.add.image(0, 0, 'icon-InputText')
@@ -615,7 +614,7 @@ export default class MatchHistoryScene extends BaseScene {
     }
   }
 
-  private createMatchRows() {
+  private createMatchRows(): Sizer {
     let entriesSizer = this.rexUI.add.sizer({
       orientation: 'vertical',
       width: width,
@@ -853,6 +852,34 @@ export default class MatchHistoryScene extends BaseScene {
 
       // Inform user deck code was copied
       this.showMessage('Deck code copied to clipboard.')
+    }
+  }
+
+  private filterAndRefreshContent(): void {
+    const searchTerm = this.searchText.toLowerCase()
+
+    // If search is empty, show all entries
+    if (!searchTerm) {
+      this.filteredMatchHistoryData = this.matchHistoryData
+    } else {
+      // Filter based on opponent name or deck names
+      this.filteredMatchHistoryData = this.matchHistoryData.filter(
+        (entry) =>
+          entry.opponentUsername.toLowerCase().includes(searchTerm) ||
+          entry.opponentDeck.name.toLowerCase().includes(searchTerm) ||
+          entry.deck.name.toLowerCase().includes(searchTerm),
+      )
+    }
+
+    // Update the panel content
+    if (this.basePanel) {
+      // Only update the panel's content, not the header
+      const panel = this.basePanel.getElement('panel') as Sizer
+      panel.removeAll(true)
+      panel.add(this.createMatchRows())
+
+      // Refresh the layout
+      this.basePanel.layout()
     }
   }
 }
