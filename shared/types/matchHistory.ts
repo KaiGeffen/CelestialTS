@@ -1,10 +1,18 @@
+import { Deck } from './deck'
+
 export interface MatchHistoryEntry {
-  opponent_username: string
-  opponent_elo: number
-  rounds_won: number
-  rounds_lost: number
-  rounds_tied: number
-  deck_name: string
-  opponent_deck: string
-  match_date: string
+  time: Date
+
+  elo: number
+  deck: Deck
+
+  opponentUsername: string
+  opponentElo: number
+  opponentDeck: Deck
+
+  roundsWon: number
+  roundsLost: number
+  roundsTied: number
+
+  wasWin: boolean
 }
