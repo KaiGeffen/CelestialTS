@@ -1,7 +1,11 @@
 import express from 'express'
 import cors from 'cors'
 import { and, desc, eq, or } from 'drizzle-orm'
-import { MATCH_HISTORY_PORT } from '../../../shared/network/settings'
+import { v5 as uuidv5 } from 'uuid'
+import {
+  MATCH_HISTORY_PORT,
+  UUID_NAMESPACE,
+} from '../../../shared/network/settings'
 import { db } from '../db/db'
 import { matchHistory } from '../db/schema'
 
@@ -13,17 +17,20 @@ export default function createMatchHistoryServer() {
 
   // GET endpoint for match history data
   app.get('/match_history/:uuid', async (req, res) => {
-    console.log('Fetching match history for user:', req.params.uuid)
+    const uuid = req.params.uuid
+      ? uuidv5(req.params.uuid, UUID_NAMESPACE)
+      : null
+
+    console.log('Fetching match history for user:', uuid)
 
     try {
-      const userUUID = req.params.uuid
       const matches = await db
         .select()
         .from(matchHistory)
         .where(
           or(
-            eq(matchHistory.player1_id, userUUID),
-            eq(matchHistory.player2_id, userUUID),
+            eq(matchHistory.player1_id, uuid),
+            eq(matchHistory.player2_id, uuid),
           ),
         )
         .orderBy(desc(matchHistory.match_date))
@@ -31,7 +38,7 @@ export default function createMatchHistoryServer() {
 
       // Transform the data to match our frontend expectations
       const transformedMatches = matches.map((match) => {
-        const isPlayer1 = match.player1_id === userUUID
+        const isPlayer1 = match.player1_id === uuid
         return {
           match_date: match.match_date,
           opponent_username: isPlayer1
