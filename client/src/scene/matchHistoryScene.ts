@@ -364,7 +364,6 @@ export default class MatchHistoryScene extends BaseScene {
         throw new Error('Failed to fetch match history data')
       }
       this.matchHistoryData = await response.json()
-      console.log('Response was', this.matchHistoryData)
       this.createContent()
     } catch (error) {
       console.error('Error fetching match history data:', error)
@@ -472,8 +471,7 @@ export default class MatchHistoryScene extends BaseScene {
     )
 
     // Time text
-    const time: Date = entry.time
-    console.log('time is', time)
+    const time = new Date(entry.time)
     const timeS = `${time.getMonth() + 1}/${time.getDate()}\n${time.getHours()}:${String(
       time.getMinutes(),
     ).padStart(2, '0')}`
@@ -498,7 +496,7 @@ export default class MatchHistoryScene extends BaseScene {
     oppContainer.add(oppText)
 
     // Results text
-    const resultS = `${entry.roundsWon}-${entry.roundsLost}-${entry.roundsTied}`
+    const resultS = `   ${entry.roundsWon}-${entry.roundsLost}-${entry.roundsTied}`
     let resultsText = this.add.text(0, 0, resultS, Style.basic)
 
     // User Info

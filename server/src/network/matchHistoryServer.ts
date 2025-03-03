@@ -41,7 +41,7 @@ export default function createMatchHistoryServer() {
       const transformedMatches: MatchHistoryEntry[] = matches.map((match) => {
         const isPlayer1 = match.player1_id === uuid
         const result: MatchHistoryEntry = {
-          time: new Date(match.match_date),
+          time: match.match_date,
           elo: isPlayer1 ? match.player1_elo : match.player2_elo,
           deck: isPlayer1
             ? JSON.parse(match.player1_deck)
