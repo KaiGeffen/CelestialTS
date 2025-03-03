@@ -522,6 +522,7 @@ export default class MatchHistoryScene extends BaseScene {
         throw new Error('Failed to fetch match history data')
       }
       this.matchHistoryData = await response.json()
+      console.log('Match history data', this.matchHistoryData)
       this.createContent()
     } catch (error) {
       console.error('Error fetching match history data:', error)
@@ -724,6 +725,8 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   private getCardList(cards: number[]) {
+    console.log('Getting cards', cards)
+
     const sizer = this.rexUI.add.fixWidthSizer({
       width: Space.deckPanelWidth,
     })
