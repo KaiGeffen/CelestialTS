@@ -75,6 +75,7 @@ export default class MatchHistoryScene extends BaseScene {
       {
         time: new Date('2024-03-15T14:30:00'),
         opponentUsername: 'DragonMaster',
+        elo: 1820,
         opponentElo: 1850,
         roundsWon: 2,
         roundsLost: 1,
@@ -89,6 +90,7 @@ export default class MatchHistoryScene extends BaseScene {
       {
         time: new Date('2024-03-15T13:15:00'),
         opponentUsername: 'SpellWeaver',
+        elo: 1780,
         opponentElo: 1750,
         roundsWon: 0,
         roundsLost: 2,
@@ -102,8 +104,7 @@ export default class MatchHistoryScene extends BaseScene {
       },
     ]
 
-    // Use mock data if USE_MOCK flag is true
-    if (Flags.local && true) {
+    if (Flags.local) {
       this.matchHistoryData = mockData as MatchHistoryEntry[]
       this.createContent()
       return
@@ -116,10 +117,9 @@ export default class MatchHistoryScene extends BaseScene {
         return
       }
 
-      const baseUrl = Flags.local
-        ? `http://${URL}:${MATCH_HISTORY_PORT}`
-        : 'https://celestialtcg.com'
-      const response = await fetch(`${baseUrl}/match_history/${uuid}`)
+      const response = await fetch(
+        `https://celestialtcg.com/match_history/${uuid}`,
+      )
       if (!response.ok) {
         throw new Error('Failed to fetch match history data')
       }
@@ -229,7 +229,12 @@ export default class MatchHistoryScene extends BaseScene {
 
     // Opponent Info
     const oppContainer = new ContainerLite(this, 0, 0)
-    new Buttons.Avatar(oppContainer, 0, 0, entry.opponentDeck.cosmetics.avatar)
+    const oppAvatar = new Buttons.Avatar(
+      oppContainer,
+      0,
+      0,
+      entry.opponentDeck.cosmetics.avatar,
+    )
     const oppText = this.add.text(
       0,
       0,
