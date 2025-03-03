@@ -18,6 +18,7 @@ import Cutout from '../lib/buttons/cutout'
 import Catalog from '../../../shared/state/catalog'
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel'
 import Icons from '../lib/buttons/icons'
+import Sizer from 'phaser3-rex-plugins/templates/ui/sizer/Sizer'
 
 const headerHeight = Space.iconSize + Space.pad * 2
 const width = Space.windowWidth - Space.sliderWidth
@@ -688,7 +689,7 @@ export default class MatchHistoryScene extends BaseScene {
       this.sound.play('click')
       isExpanded = !isExpanded
       expandText.setText(isExpanded ? '▲' : '▼')
-      expandedContent.setScale(isExpanded ? 1 : 0.001)
+      expandedContent.setScale(isExpanded ? 1 : 0.000001)
 
       // Refresh the panel layout to accommodate the expanded content
       this.basePanel.layout()
@@ -707,24 +708,26 @@ export default class MatchHistoryScene extends BaseScene {
     return sizer
   }
 
-  private getExpandedContent(entry: MatchHistoryEntry) {
+  private getExpandedContent(entry: MatchHistoryEntry): Sizer {
     let sizer = this.rexUI.add.sizer({
       orientation: 'horizontal',
       width: width,
     })
 
+    const theirShare = this.getShareButton(entry.opponentDeck.cards || [])
     const theirList = this.getCardList(entry.opponentDeck.cards || [])
+    const ourShare = this.getShareButton(entry.deck.cards || [])
     const ourList = this.getCardList(entry.deck.cards || [])
 
     sizer
-      .add(this.add.text(0, 0, '', Style.basic), {
+      .add(theirShare, {
         proportion: 1.5,
-        align: 'top',
+        align: 'right-top',
       })
       .add(theirList, { proportion: 2, align: 'top' })
-      .add(this.add.text(0, 0, '', Style.basic), {
+      .add(ourShare, {
         proportion: 1.5,
-        align: 'top',
+        align: 'right-top',
       })
       .add(ourList, { proportion: 2, align: 'top' })
       .add(this.add.text(0, 0, '', Style.basic), {
@@ -737,7 +740,7 @@ export default class MatchHistoryScene extends BaseScene {
   }
 
   private getCardList(cards: number[]) {
-    const panel = this.rexUI.add.fixWidthSizer({
+    const sizer = this.rexUI.add.fixWidthSizer({
       width: Space.deckPanelWidth,
     })
 
@@ -762,10 +765,26 @@ export default class MatchHistoryScene extends BaseScene {
           Space.cutoutHeight,
         )
         const cutout = new Cutout(container, card)
-        panel.add(container)
+        sizer.add(container)
         cutouts[cardId] = cutout
       }
     }
-    return panel
+
+    return sizer
+  }
+
+  private getShareButton(cards: number[]): ContainerLite {
+    // Add the copy button
+    const container = new ContainerLite(
+      this,
+      0,
+      0,
+      Space.iconSize,
+      Space.iconSize,
+    )
+    new Icons.Share(container, 0, 0, () => {
+      console.log('share')
+    })
+    return container
   }
 }
