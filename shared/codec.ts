@@ -22,11 +22,10 @@ function decodeCard(s: string): Card {
 }
 
 // Encode / decode a string for deck's code such that user can copy / paste it
-function encodeShareableDeckCode(s: string): string {
-  return s
-    .split(':')
-    .map((cardId) => {
-      let hexString = parseInt(cardId).toString(16).toUpperCase()
+function encodeShareableDeckCode(deck: number[]): string {
+  return deck
+    .map((id) => {
+      let hexString = id.toString(16).toUpperCase()
       let padded = hexString.padStart(3, '0')
       return padded
     })

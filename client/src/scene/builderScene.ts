@@ -62,7 +62,7 @@ export class BuilderBase extends BaseScene {
   }
 
   // Get the deck code for player's current deck
-  getDeckCode(): string {
+  getDeckCode(): number[] {
     return this.deckRegion.getDeckCode()
   }
 
@@ -113,7 +113,7 @@ export class AdventureBuilderScene extends BuilderBase {
     return this.journeyRegion.addCardToDeck(card)
   }
 
-  getDeckCode(): string {
+  getDeckCode(): number[] {
     return this.journeyRegion.getDeckCode()
   }
 

@@ -413,23 +413,15 @@ export default class DeckRegion {
     return this
   }
 
-  // TODO Deprecate this
   // Get the deck code for player's current deck
-  getDeckCode(): string {
-    let txt = ''
-    for (let i = 0; i < this.deck.length; i++) {
-      let count = this.deck[i].count
-
-      for (let j = 0; j < count; j++) {
-        let s = this.deck[i].id
-        txt += `${s}:`
+  getDeckCode(): number[] {
+    let result = []
+    this.deck.forEach((cutout) => {
+      for (let i = 0; i < cutout.count; i++) {
+        result.push(cutout.card.id)
       }
-    }
-
-    // Remove the last :
-    txt = txt.slice(0, -1)
-
-    return txt
+    })
+    return result
   }
 
   // Remove the card from deck which has given index, or add another if right-click

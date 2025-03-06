@@ -853,11 +853,9 @@ export default class MatchHistoryScene extends BaseScene {
 
   // TODO Dry with deck region of deckBuilder
   private shareCallback(cards: number[]): () => void {
-    const s = cards.join(':')
-
     return () => {
       // Copy the deck's code to clipboard
-      const encodedDeck = encodeShareableDeckCode(s)
+      const encodedDeck = encodeShareableDeckCode(cards)
       navigator.clipboard.writeText(encodedDeck)
 
       // Inform user deck code was copied

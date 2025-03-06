@@ -106,13 +106,20 @@ export default class UserDataServer {
             s: 'The selected account is already logged in on another device or tab. Please select another account option.',
           })
       })
-      .on('sendUserData', (data) => {
-        // Store the UUID after successful login
-        this.userUUID = uuid
+      .on(
+        'sendUserData',
+        (data: {
+          inventory: string
+          completedMissions: string
+          decks: Deck[]
+        }) => {
+          // Store the UUID after successful login
+          this.userUUID = uuid
 
-        that.loadUserData(data)
-        callback()
-      })
+          that.loadUserData(data)
+          callback()
+        },
+      )
 
     // If the connection closes, login again with same args
     wsServer.ws.onclose = (event) => {
