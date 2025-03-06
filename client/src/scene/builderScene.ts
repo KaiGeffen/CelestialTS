@@ -127,7 +127,7 @@ export class AdventureBuilderScene extends BuilderBase {
       // Create a proper deck object using the new type
       const aiDeck: Deck = {
         name: 'AI Deck',
-        cards: that.params.opponent.split(':').map(Number),
+        cards: that.params.opponent,
         cosmetics: {
           avatar: 0,
         },

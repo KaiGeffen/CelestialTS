@@ -331,7 +331,10 @@ export default class DeckRegion {
     // Create the sizer that contains the cards
     let sizer = this.scene['rexUI'].add.fixWidthSizer()
 
-    this.setDeck(cards, sizer)
+    this.setDeck(
+      cards.map((id) => Catalog.allCards.find((card) => card.id === id)),
+      sizer,
+    )
 
     this.deck.forEach((cutout) => {
       cutout.setRequired()
