@@ -17,6 +17,7 @@ import newScrollablePanel from '../../lib/scrollablePanel'
 import { DecklistSettings } from '../../../../shared/settings'
 import avatarNames from '../../lib/avatarNames'
 import premadeDecklists from '../../catalog/premadeDecklists'
+import { Deck } from '../../../../shared/types/deck'
 
 const width = Space.decklistPanelWidth
 
@@ -53,23 +54,21 @@ export default class DecklistsRegion {
   }
 
   // Update the currently selected deck
-  updateSavedDeck(
-    deckCode?: string,
-    deckName?: string,
-    deckAvatar?: number,
-  ): void {
+  updateSavedDeck(cards?: number[], name?: string, avatar?: number): void {
     let index = this.savedDeckIndex
     if (index !== undefined) {
-      let deck = UserSettings._get('decks')[index]
+      let deck: Deck = UserSettings._get('decks')[index]
 
-      const value = deckCode === undefined ? deck['value'] : deckCode
-      const name = deckName === undefined ? deck['name'] : deckName
-      const avatar = deckAvatar === undefined ? deck['avatar'] : deckAvatar
+      cards = cards === undefined ? deck.cards : cards
+      name = name === undefined ? deck.name : name
+      avatar = avatar === undefined ? deck.cosmetics.avatar : avatar
 
-      let newDeck = {
+      let newDeck: Deck = {
         name: name,
-        value: value,
-        avatar: avatar,
+        cards: cards,
+        cosmetics: {
+          avatar: avatar,
+        },
       }
 
       UserSettings._setIndex('decks', index, newDeck)

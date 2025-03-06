@@ -1,3 +1,5 @@
+import { Deck } from '../types/deck'
+
 export interface UserDataClientMessages {
   sendToken: {
     email: string
@@ -5,7 +7,7 @@ export interface UserDataClientMessages {
     jti: string
   }
   sendDecks: {
-    decks: string[]
+    decks: Deck[]
   }
   sendInventory: {
     inventory: string
@@ -15,7 +17,7 @@ export interface UserDataClientMessages {
   }
   sendInitialUserData: {
     username: string
-    decks: string[]
+    decks: Deck[]
     inventory: string
     missions: string
   }
@@ -28,6 +30,6 @@ export interface UserDataServerMessages {
   sendUserData: {
     inventory: string
     completedMissions: string
-    decks: string[]
+    decks: Deck[]
   }
 }

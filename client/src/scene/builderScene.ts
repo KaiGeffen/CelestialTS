@@ -203,7 +203,7 @@ export class BuilderScene extends BuilderBase {
     return result
   }
 
-  updateSavedDeck(deck?: string, name?: string, avatar?: number): void {
+  updateSavedDeck(deck?: number[], name?: string, avatar?: number): void {
     this.decklistsRegion.updateSavedDeck(deck, name, avatar)
   }
 

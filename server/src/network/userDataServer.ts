@@ -11,6 +11,7 @@ import { db } from '../db/db'
 import { players } from '../db/schema'
 import { eq } from 'drizzle-orm'
 import { UserDataServerWS } from '../../../shared/network/userDataWS'
+import { Deck } from '../../../shared/types/deck'
 
 // Create the websocket server
 export default function createUserDataServer() {
@@ -68,11 +69,18 @@ export default function createUserDataServer() {
           // Send user their data
           const data = result[0]
 
+          let decks: Deck[] = []
+          try {
+            decks = data.decks.map((deck) => JSON.parse(deck))
+          } catch (e) {
+            console.error('Error parsing decks:', e)
+          }
+
           ws.send({
             type: 'sendUserData',
             inventory: data.inventory,
             completedMissions: data.completedmissions,
-            decks: data.decks,
+            decks,
           })
 
           // Update last active time
@@ -84,7 +92,10 @@ export default function createUserDataServer() {
       })
         .on('sendDecks', async ({ decks }) => {
           if (!id) return
-          await db.update(players).set({ decks }).where(eq(players.id, id))
+          await db
+            .update(players)
+            .set({ decks: decks.map((deck) => JSON.stringify(deck)) })
+            .where(eq(players.id, id))
         })
         .on('sendInventory', async ({ inventory }) => {
           if (!id) return
@@ -112,7 +123,7 @@ export default function createUserDataServer() {
               wins: 0,
               losses: 0,
               elo: 1000,
-              decks: decks,
+              decks: decks.map((deck) => JSON.stringify(deck)),
               inventory: inventory,
               completedmissions: missions,
               lastactive: new Date().toISOString(),

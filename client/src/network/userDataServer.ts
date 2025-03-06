@@ -11,6 +11,7 @@ import {
 } from '../../../shared/network/settings'
 import type { GoogleJwtPayload } from '../types/google'
 import { UserDataClientWS } from '../../../shared/network/userDataWS'
+import { Deck } from '../../../shared/types/deck'
 
 const ip = '127.0.0.1'
 const port = 5555
@@ -150,24 +151,18 @@ export default class UserDataServer {
     return wsServer !== undefined
   }
 
-  private static encodeDecks(decks): string[] {
-    return decks.map((deck) =>
-      [deck['name'], deck['value'], deck['avatar']].toString(),
-    )
-  }
-
   private static convertBoolArrayToBitString(array: boolean[]): string {
     return array.map((value) => (value ? '1' : '0')).join('')
   }
 
   // Send server an updated list of decks
-  static sendDecks(decks): void {
+  static sendDecks(decks: Deck[]): void {
     if (wsServer === undefined) {
       throw 'Sending decks when server ws doesnt exist.'
     }
     wsServer.send({
       type: 'sendDecks',
-      decks: this.encodeDecks(decks),
+      decks: decks,
     })
   }
 
@@ -202,7 +197,7 @@ export default class UserDataServer {
     wsServer.send({
       type: 'sendInitialUserData',
       username: username,
-      decks: this.encodeDecks(UserSettings._get('decks')),
+      decks: UserSettings._get('decks'),
       inventory: this.convertBoolArrayToBitString(
         UserSettings._get('inventory'),
       ),
@@ -216,7 +211,7 @@ export default class UserDataServer {
   private static loadUserData(data: {
     inventory: string
     completedMissions: string
-    decks: string[]
+    decks: Deck[]
   }): void {
     // Map from binary string to bool array
     sessionStorage.setItem(
@@ -238,20 +233,7 @@ export default class UserDataServer {
       ),
     )
 
-    // Decks must be translated from string, string to dictionary
-    let decks = []
-    data.decks.forEach((pair) => {
-      // TODO Use better encoding to prevent this
-      if ((pair.match(/,/g) || []).length > 2) {
-        console.log('Invalid deck format: too many commas')
-      }
-
-      // Split the pair into name, deckCode, avatar
-      const [name, deckCode, avatar] = pair.split(',')
-
-      decks.push({ name: name, value: deckCode, avatar: avatar })
-    })
-    sessionStorage.setItem('decks', JSON.stringify(decks))
+    sessionStorage.setItem('decks', JSON.stringify(data.decks))
   }
 
   // TODO Clarify if we reuse a UserSessionWS or create a new ws even for signed in users
