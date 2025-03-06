@@ -380,8 +380,6 @@ export default class DecklistsRegion {
 
         let deck: Deck = UserSettings._get('decks')[i]
 
-        console.log(UserSettings._get('decks'))
-
         this.scene.setDeck(deck.cards.map((id) => Catalog.getCardById(id)))
 
         // Set the displayed avatar to this deck's avatar

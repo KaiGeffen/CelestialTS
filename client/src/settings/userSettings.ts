@@ -26,7 +26,7 @@ export class UserSettings {
       // Settings tied to user's account
       decks: [],
       // List to use when playing with in development content
-      devDecks: [],
+      // devDecks: [],
 
       // For adventure mode, for each card, whether or not that card has been unlocked
       inventory: getStartingInventory(),

@@ -34,7 +34,10 @@ const imagePrefixMap: PrefixEntry[] = [
   {
     fp: `cards/${Flags.mobile ? 'mobile/' : ''}`,
     prefix: '',
-    list: [...Catalog.allCards, Catalog.cardback].map((card) => card.name),
+    list: [
+      ...Catalog.allCards.filter((card) => !card.beta),
+      Catalog.cardback,
+    ].map((card) => card.name),
   },
   {
     fp: 'cutouts/',
