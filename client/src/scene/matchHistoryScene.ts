@@ -884,6 +884,8 @@ export default class MatchHistoryScene extends BaseScene {
     if (this.basePanel) {
       // Only update the panel's content, not the header
       const panel = this.basePanel.getElement('panel') as Sizer
+
+      // TODO Just remove ones that don't match, to enable toggle to persist
       panel.removeAll(true)
       panel.add(this.createMatchRows())
 

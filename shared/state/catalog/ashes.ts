@@ -314,7 +314,7 @@ class WordOfRuin extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    if (super.exhale(2, game, player)) {
+    if (super.exhale(3, game, player)) {
       game.removeAct(0)
     }
   }
@@ -322,9 +322,9 @@ class WordOfRuin extends Card {
 const wordOfRuin = new WordOfRuin({
   name: 'Word of Ruin',
   id: 1069,
-  cost: 3,
-  points: 3,
-  text: 'Exhale 2: Discard the next card in the story.',
+  cost: 2,
+  points: 2,
+  text: 'Exhale 3: Discard the next card in the story.',
   beta: true,
 })
 

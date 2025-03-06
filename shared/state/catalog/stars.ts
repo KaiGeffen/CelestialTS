@@ -268,6 +268,21 @@ const pride = new Pride({
   beta: true,
 })
 
+class NightSky extends Card {
+  play(player: number, game: GameModel, index: number, bonus: number) {
+    bonus += game.breath[player]
+    super.play(player, game, index, bonus)
+  }
+}
+const nightSky = new NightSky({
+  name: 'Night Sky',
+  id: 8667,
+  cost: 3,
+  points: 3,
+  text: 'Worth +X where X is your breath.',
+  beta: true,
+})
+
 export {
   stars,
   cosmos,
@@ -283,4 +298,5 @@ export {
   neptune,
   dreamer,
   pride,
+  nightSky,
 }
