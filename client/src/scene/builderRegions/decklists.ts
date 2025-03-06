@@ -89,7 +89,7 @@ export default class DecklistsRegion {
   }
 
   // Create a deck and select it
-  private createDeck(name: string, avatar: number, deckCode: string): void {
+  private createDeck(name: string, avatar: number, deck: number[]): void {
     // Use a default deck name if it's not specified
     if (name === undefined || name === '') {
       const number = this.decklistBtns.length + 1
@@ -99,8 +99,10 @@ export default class DecklistsRegion {
     // Create the deck in storage
     UserSettings._push('decks', {
       name: name,
-      value: '',
-      avatar: avatar === undefined ? 0 : avatar,
+      cards: deck,
+      cosmetics: {
+        avatar: avatar === undefined ? 0 : avatar,
+      },
     })
 
     // Create a new button
@@ -119,15 +121,15 @@ export default class DecklistsRegion {
     this.refreshBtns()
 
     // If a deck code was included, populate it
-    if (deckCode !== undefined) {
-      this.scene.setDeck(deckCode)
+    if (deck !== undefined) {
+      this.scene.setDeck(deck)
     }
   }
 
   // Return a callback for when a deck is created
-  createCallback(): (name: string, avatar: number, deckCode: string) => void {
-    return (name: string, avatar: number, deckCode: string) => {
-      this.createDeck(name, avatar, deckCode)
+  createCallback(): (name: string, avatar: number, deck: number[]) => void {
+    return (name: string, avatar: number, deck: number[]) => {
+      this.createDeck(name, avatar, deck)
     }
   }
 
@@ -136,9 +138,9 @@ export default class DecklistsRegion {
     return (id: number) => {
       // Get premade deck details from scene
       const name = `${avatarNames[id]} Premade`
-      const deckCode = premadeDecklists[id]
+      const deck = premadeDecklists[id]
 
-      this.createDeck(name, id, deckCode)
+      this.createDeck(name, id, deck)
     }
   }
 
@@ -376,9 +378,9 @@ export default class DecklistsRegion {
 
         btn.select()
 
-        let deck = UserSettings._get('decks')[i]
+        let deck: Deck = UserSettings._get('decks')[i]
 
-        that.scene.setDeck(deck['value'])
+        that.scene.setDeck(deck.cards)
 
         // Set the displayed avatar to this deck's avatar
         that.scene.setAvatar(deck['avatar']).setName(deck['name'])

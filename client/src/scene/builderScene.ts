@@ -41,7 +41,7 @@ export class BuilderBase extends BaseScene {
   }
 
   // Set the current deck, returns true if deck was valid
-  setDeck(deckCode: string | Card[]): boolean {
+  setDeck(deckCode: number[] | Card[]): boolean {
     return this.deckRegion.setDeck(deckCode)
   }
 
@@ -211,7 +211,7 @@ export class BuilderScene extends BuilderBase {
     this.rememberSettings()
   }
 
-  setDeck(deckCode: string | Card[]): boolean {
+  setDeck(deckCode: number[] | Card[]): boolean {
     // Animate the deck panel sliding out to be seen
     this.deckRegion.showPanel()
     this.catalogRegion.shiftRight()
@@ -257,11 +257,11 @@ export class BuilderScene extends BuilderBase {
   private updateDeckCallback(): (
     name: string,
     avatar: number,
-    deckCode: string,
+    deckCode: number[],
   ) => void {
     let that = this
 
-    return function (name: string, avatar: number, deckCode: string) {
+    return function (name: string, avatar: number, deckCode: number[]) {
       // Use a default deck name if it's not specified
       if (name === undefined || name === '') {
         const number = that.decklistsRegion.savedDeckIndex + 1

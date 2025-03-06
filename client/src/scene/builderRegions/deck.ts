@@ -23,6 +23,7 @@ import { BuilderScene } from '../builderScene'
 import newScrollablePanel from '../../lib/scrollablePanel'
 import { MechanicsSettings } from '../../../../shared/settings'
 import { Deck } from '../../../../shared/types/deck'
+import Catalog from '../../../../shared/state/catalog'
 
 const width = Space.deckPanelWidth // + Space.pad * 2
 
@@ -35,7 +36,7 @@ export default class DeckRegion {
   private scene: BuilderScene
 
   // Callback for when the deck's avatar or name is edited
-  editCallback: (name: string, avatar: number, deckCode: string) => void
+  editCallback: (name: string, avatar: number, deckCode: number[]) => void
 
   // The panel within which all of the cards are
   private scrollablePanel: ScrollablePanel
@@ -59,7 +60,7 @@ export default class DeckRegion {
   create(
     scene: BuilderScene,
     startCallback: () => void,
-    editCallback?: (name: string, avatar: number, deckCode: string) => void,
+    editCallback?: (name: string, avatar: number, deckCode: number[]) => void,
   ) {
     this.scene = scene
 
@@ -334,23 +335,19 @@ export default class DeckRegion {
   }
 
   // Set the current deck, and return whether the given deck was valid
-  setDeck(deckCode: string | Card[], panel = this.panel): boolean {
+  setDeck(deckCode: number[] | Card[], panel = this.panel): boolean {
     // Enable the edit and share icons
     this.btnEdit.enable()
     this.btnShare.enable()
 
     let deck: Card[]
-    if (typeof deckCode === 'string') {
-      // Get the deck from this code
-      let cardCodes: string[] = deckCode.split(':')
-
-      deck = cardCodes.map((cardCode) => decodeCard(cardCode))
-
-      if (deckCode === '') {
-        deck = []
-      }
+    if (
+      Array.isArray(deckCode) &&
+      deckCode.every((x) => typeof x === 'number')
+    ) {
+      deck = deckCode.map((id) => Catalog.getCardById(id))
     } else {
-      deck = deckCode
+      deck = deckCode as Card[]
     }
 
     // Check if the deck is valid, then create it if so

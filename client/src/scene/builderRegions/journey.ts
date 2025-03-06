@@ -13,6 +13,7 @@ import { Color, Space, Style, Flags } from '../../settings/settings'
 import newScrollablePanel from '../../lib/scrollablePanel'
 import { MechanicsSettings } from '../../../../shared/settings'
 import { Deck } from '../../../../shared/types/deck'
+import Catalog from '../../../../shared/state/catalog'
 
 const width = Space.deckPanelWidth // + Space.pad * 2
 
@@ -231,19 +232,15 @@ export default class DeckRegion {
   }
 
   // Set the current deck, and return whether the given deck was valid
-  setDeck(deckCode: string | Card[], panel = this.panel): boolean {
+  setDeck(deckCode: number[] | Card[], panel = this.panel): boolean {
     let deck: Card[]
-    if (typeof deckCode === 'string') {
-      // Get the deck from this code
-      let cardCodes: string[] = deckCode.split(':')
-
-      deck = cardCodes.map((cardCode) => decodeCard(cardCode))
-
-      if (deckCode === '') {
-        deck = []
-      }
+    if (
+      Array.isArray(deckCode) &&
+      deckCode.every((x) => typeof x === 'number')
+    ) {
+      deck = deckCode.map((id) => Catalog.getCardById(id))
     } else {
-      deck = deckCode
+      deck = deckCode as Card[]
     }
 
     // Check if the deck is valid, then create it if so
@@ -292,8 +289,8 @@ export default class DeckRegion {
   }
 
   // Add cards to the deck that must be in the deck
-  addRequiredCards(cards: string): void {
-    const amt = cards.match(/\:/g).length + 1
+  addRequiredCards(cards: number[]): void {
+    const amt = cards.length
 
     // Hint for the cards user's can choose to complete the deck
     this.txtChoice = this.scene.add
@@ -345,7 +342,7 @@ export default class DeckRegion {
   }
 
   // Create a scrollable panel with all of the given required cards
-  private createRequiredCardList(cards: string) {
+  private createRequiredCardList(cards: number[]) {
     // Create the sizer that contains the cards
     let sizer = this.scene['rexUI'].add.fixWidthSizer()
 

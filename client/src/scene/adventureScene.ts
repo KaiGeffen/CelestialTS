@@ -17,7 +17,7 @@ import { CardImage } from '../lib/cardImage'
 import Catalog from '../../../shared/state/catalog'
 // import adventureData from "../adventure.json"
 // adventureData.reverse()
-import { adventureData } from '../adventures/adventure'
+import { Adventure, adventureData } from '../adventures/adventure'
 
 // TODO Remove the arrow images because drag is now default
 
@@ -307,39 +307,31 @@ export default class AdventureScene extends BaseScene {
 
     // Add each of the adventures as its own line
     this.animatedBtns = []
-    unlockedMissions
-      .filter((mission) => {
-        if (mission.type === 'tutorial') {
-          return false
-        }
+    unlockedMissions.forEach((mission: Adventure) => {
+      // Get the string for this adventure
+      let id = mission.id
 
-        return true
-      })
-      .forEach((mission) => {
-        // Get the string for this adventure
-        let id = mission.id
+      // For now, it's all either the waving figure or ? icon
+      const nodeType = mission.type === 'mission' ? 'Mission' : 'QuestionMark'
+      let btn = new Buttons.Mission(
+        that,
+        mission.x,
+        mission.y,
+        that.missionOnClick(mission),
+        nodeType,
+      )
 
-        // For now, it's all either the waving figure or ? icon
-        const nodeType = mission.type === 'mission' ? 'Mission' : 'QuestionMark'
-        let btn = new Buttons.Mission(
-          that,
-          mission.x,
-          mission.y,
-          that.missionOnClick(mission),
-          nodeType,
-        )
-
-        // If user hasn't completed this mission, animate it
-        if (!completed[mission.id]) {
-          this.animatedBtns.push(btn)
-        } else {
-          btn.setAlpha(0.5)
-        }
-      })
+      // If user hasn't completed this mission, animate it
+      if (!completed[mission.id]) {
+        this.animatedBtns.push(btn)
+      } else {
+        btn.setAlpha(0.5)
+      }
+    })
   }
 
   // Return the function for what happens when the given mission node is clicked on
-  private missionOnClick(mission): () => void {
+  private missionOnClick(mission: Adventure): () => void {
     // if (mission.type === 'tutorial') {
     // 	return this.doTutorial(mission)
     // }

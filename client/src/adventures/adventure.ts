@@ -19,6 +19,7 @@ export const adventureData: Adventure[] = [
   ...water,
 ]
 
+// TODO Clean this up by breaking it into the node types and having adventure be the union of all those
 export interface Adventure {
   name: string
   x: number
@@ -29,8 +30,11 @@ export interface Adventure {
 
   card?: number
 
-  deck?: string
+  deck?: number[]
   opponentDeck?: string
+
+  // Tips have just text
+  text?: string
 
   // This mission's story, if any
   storyTitle?: string
