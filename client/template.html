@@ -17,28 +17,49 @@
   <!-- Splash Image -->
   <meta property="og:image" content="https://celestialtcg.com/assets/splash.webp">
 
-  <!-- Related to Google sign-in -->
+  <!-- Optimize Google Sign-in loading -->
   <meta name="google-signin-client_id" content="574352055172-n1nqdc2nvu3172levk2kl5jf7pbkp4ig.apps.googleusercontent.com">
-  <script src="https://accounts.google.com/gsi/client" async></script>
+  <script>
+    // Load Google Sign-in only when needed
+    function loadGoogleSignIn() {
+      const script1 = document.createElement('script');
+      script1.src = 'https://accounts.google.com/gsi/client';
+      script1.async = true;
+      document.body.appendChild(script1);
 
+      const script2 = document.createElement('script');
+      script2.src = 'https://apis.google.com/js/platform.js';
+      script2.async = true;
+      document.body.appendChild(script2);
+    }
+    // Load when document is ready
+    document.addEventListener('DOMContentLoaded', loadGoogleSignIn);
+  </script>
 
-  <script defer src="https://apis.google.com/js/platform.js" async></script>
-  <link defer rel="preconnect" href="https://fonts.googleapis.com">
-  <link defer rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link defer href="https://fonts.googleapis.com/css2?family=Mulish:wght@300&display=swap" rel="stylesheet"> 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300&display=swap" rel="stylesheet"> 
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7E0LP0X7Y9"></script>
+  <!-- Optimize Google Analytics loading -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-7E0LP0X7Y9');
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E0LP0X7Y9';
+        script.async = true;
+        document.body.appendChild(script);
+        
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-7E0LP0X7Y9');
+      }, 2000); // Delay by 2 seconds after page load
+    });
   </script>
 </head>
 <body>
