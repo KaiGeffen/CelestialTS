@@ -26,7 +26,7 @@ export class UserSettings {
       // Settings tied to user's account
       decks: [],
       // List to use when playing with in development content
-      // devDecks: [],
+      devDecks: [],
 
       // For adventure mode, for each card, whether or not that card has been unlocked
       inventory: getStartingInventory(),
@@ -87,6 +87,10 @@ export class UserSettings {
 
   // Set the nth index of the given array
   static _setIndex(key: string, index: number, value: any) {
+    if (key === 'decks' && Flags.devCardsEnabled) {
+      key = 'devDecks'
+    }
+
     let ary = this._get(key)
 
     ary[index] = value
@@ -95,6 +99,10 @@ export class UserSettings {
   }
 
   static _push(key: string, value: any) {
+    if (key === 'decks' && Flags.devCardsEnabled) {
+      key = 'devDecks'
+    }
+
     let ary = this._get(key)
 
     ary.push(value)
@@ -103,6 +111,10 @@ export class UserSettings {
   }
 
   static _pop(key: string, index: number): any {
+    if (key === 'decks' && Flags.devCardsEnabled) {
+      key = 'devDecks'
+    }
+
     let ary = this._get(key)
 
     let result = ary[index]
