@@ -27,7 +27,8 @@ class AlterDeckMenu extends Menu {
   selectedAvatar: number
 
   // The deck code for this deck, if any
-  deckCode = ''
+  deckCode: number[] = []
+  encodedDeckCode: string = ''
   deckCodeInputText
 
   // The names for different elements, which differ in different menus
@@ -63,7 +64,7 @@ class AlterDeckMenu extends Menu {
   }
 
   private createContent(
-    createCallback: (name: string, avatar: number, deckCode: string) => void,
+    createCallback: (name: string, avatar: number, deckCode: number[]) => void,
   ) {
     this.createHeader(this.titleString, width)
 
@@ -94,15 +95,6 @@ class AlterDeckMenu extends Menu {
         .addNewLine()
         .add(this.createButtons(createCallback))
     }
-  }
-
-  private createTitle() {
-    let sizer = this.scene.rexUI.add.sizer({ width: width })
-
-    let txt = this.scene.add.text(0, 0, this.titleString, Style.announcement)
-    sizer.addSpace().add(txt).addSpace()
-
-    return sizer
   }
 
   private createName() {
@@ -187,7 +179,7 @@ class AlterDeckMenu extends Menu {
     this.deckCodeInputText = this.scene.add
       .rexInputText(0, 0, inputTextWidth, 50, {
         type: 'text',
-        text: this.deckCode,
+        text: '',
         align: 'center',
         placeholder: 'Import deck code',
         tooltip: 'Import a deck from clipboard.',
@@ -200,12 +192,13 @@ class AlterDeckMenu extends Menu {
       })
       .on('textchange', (inputText) => {
         const trimmedCode = inputText.text.trim()
-        const result = decodeShareableDeckCode(trimmedCode)
-        if (result === undefined) {
+        const deckCode: number[] = decodeShareableDeckCode(trimmedCode)
+
+        if (deckCode === undefined) {
           this.scene.signalError('Invalid deck code.')
-          this.deckCode = ''
+          this.encodedDeckCode = ''
         } else {
-          this.deckCode = result
+          this.deckCode = deckCode
         }
       })
 
@@ -224,7 +217,7 @@ class AlterDeckMenu extends Menu {
 
   // Create the buttons at the bottom which navigate to other scenes/menus
   private createButtons(
-    createCallback: (name: string, avatar: number, deckCode: string) => void,
+    createCallback: (name: string, avatar: number, deckCode: number[]) => void,
   ) {
     let sizer = this.scene.rexUI.add.sizer({
       width: width - Space.pad * 2,
@@ -239,7 +232,7 @@ class AlterDeckMenu extends Menu {
   }
 
   private createConfirm(
-    createCallback: (name: string, avatar: number, deckCode: string) => void,
+    createCallback: (name: string, avatar: number, deckCode: number[]) => void,
   ) {
     let container = new ContainerLite(
       this.scene,

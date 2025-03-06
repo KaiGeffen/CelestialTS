@@ -274,7 +274,6 @@ export default class DeckRegion {
 
   // Add the given card and return the created cardImage
   addCardToDeck(card: Card, panel = this.panel): string {
-    console.log('addCardToDeck', card)
     let totalCount = 0
     this.deck.forEach((cutout) => {
       totalCount += cutout.count

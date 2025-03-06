@@ -19,6 +19,7 @@ import avatarNames from '../../lib/avatarNames'
 import premadeDecklists from '../../catalog/premadeDecklists'
 import { Deck } from '../../../../shared/types/deck'
 import Catalog from '../../../../shared/state/catalog'
+import { BuilderBase } from '../builderScene'
 
 const width = Space.decklistPanelWidth
 
@@ -151,7 +152,7 @@ export default class DecklistsRegion {
     if (UserSettings._get('decks').length >= DecklistSettings.MAX_DECKS) {
       return false
     } else {
-      this.createCallback()(undefined, undefined, undefined)
+      this.createCallback()(undefined, undefined, [])
       return true
     }
   }
@@ -356,35 +357,35 @@ export default class DecklistsRegion {
   }
 
   private decklistOnClick(i: number) {
-    let that = this
-
     // Set btn as active, select self and deselect other buttons, set the deck
-    return function () {
-      let btn = that.decklistBtns[i]
+    return () => {
+      let btn = this.decklistBtns[i]
 
       // Deselect all other buttons
-      for (let j = 0; j < that.decklistBtns.length; j++) {
+      for (let j = 0; j < this.decklistBtns.length; j++) {
         if (i !== j) {
-          that.decklistBtns[j].deselect()
+          this.decklistBtns[j].deselect()
         }
       }
 
       // If it's already selected, deselect it
       if (btn.selected) {
-        that.scene.deselect()
+        this.scene.deselect()
       }
       // Otherwise select this button
       else {
-        that.savedDeckIndex = i
+        this.savedDeckIndex = i
 
         btn.select()
 
         let deck: Deck = UserSettings._get('decks')[i]
 
-        that.scene.setDeck(deck.cards)
+        console.log(UserSettings._get('decks'))
+
+        this.scene.setDeck(deck.cards.map((id) => Catalog.getCardById(id)))
 
         // Set the displayed avatar to this deck's avatar
-        that.scene.setAvatar(deck['avatar']).setName(deck['name'])
+        this.scene.setAvatar(deck.cosmetics.avatar).setName(deck.name)
       }
     }
   }

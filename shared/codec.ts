@@ -31,13 +31,19 @@ function encodeShareableDeckCode(deck: number[]): string {
     })
     .join('')
 }
-function decodeShareableDeckCode(s: string): string {
+function decodeShareableDeckCode(s: string): number[] {
+  if (!s) return []
   try {
-    return (s.match(/.{1,3}/g) ?? [])
-      .map((charTuple) => {
-        return encodeCard(getCard(parseInt(charTuple, 16).toString()))
-      })
-      .join(':')
+    return (s.match(/.{1,3}/g) ?? []).map((charTuple) => {
+      const id = parseInt(charTuple, 16)
+
+      // Check if each card id is valid
+      if (Catalog.getCardById(id) === undefined) {
+        throw new Error('Invalid card id')
+      }
+
+      return id
+    })
   } catch (error) {
     return undefined
   }
