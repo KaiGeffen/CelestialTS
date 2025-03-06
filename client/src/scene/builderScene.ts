@@ -10,6 +10,7 @@ import FilterRegion from './builderRegions/filter'
 import JourneyRegion from './builderRegions/journey'
 import { Space } from '../settings/settings'
 import { DecklistSettings } from '../../../shared/settings'
+import Catalog from '../../../shared/state/catalog'
 
 // Features common between all builders
 export class BuilderBase extends BaseScene {
@@ -41,8 +42,8 @@ export class BuilderBase extends BaseScene {
   }
 
   // Set the current deck, returns true if deck was valid
-  setDeck(deckCode: number[] | Card[]): boolean {
-    return this.deckRegion.setDeck(deckCode)
+  setDeck(deck: Card[]): boolean {
+    return this.deckRegion.setDeck(deck)
   }
 
   // Change the displayed avatar to the given avatar
@@ -211,7 +212,7 @@ export class BuilderScene extends BuilderBase {
     this.rememberSettings()
   }
 
-  setDeck(deckCode: number[] | Card[]): boolean {
+  setDeck(deckCode: Card[]): boolean {
     // Animate the deck panel sliding out to be seen
     this.deckRegion.showPanel()
     this.catalogRegion.shiftRight()
@@ -278,7 +279,7 @@ export class BuilderScene extends BuilderBase {
 
       if (deckCode) {
         // Update the cards in the deck
-        that.setDeck(deckCode)
+        that.setDeck(deckCode.map((id) => Catalog.getCardById(id)))
       }
     }
   }

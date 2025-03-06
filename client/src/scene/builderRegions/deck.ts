@@ -274,6 +274,7 @@ export default class DeckRegion {
 
   // Add the given card and return the created cardImage
   addCardToDeck(card: Card, panel = this.panel): string {
+    console.log('addCardToDeck', card)
     let totalCount = 0
     this.deck.forEach((cutout) => {
       totalCount += cutout.count
@@ -335,45 +336,30 @@ export default class DeckRegion {
   }
 
   // Set the current deck, and return whether the given deck was valid
-  setDeck(deckCode: number[] | Card[], panel = this.panel): boolean {
+  setDeck(deck: Card[], panel = this.panel): boolean {
     // Enable the edit and share icons
     this.btnEdit.enable()
     this.btnShare.enable()
 
-    let deck: Card[]
-    if (
-      Array.isArray(deckCode) &&
-      deckCode.every((x) => typeof x === 'number')
-    ) {
-      deck = deckCode.map((id) => Catalog.getCardById(id))
-    } else {
-      deck = deckCode as Card[]
+    // Remove the current deck
+    this.deck.forEach((cutout) => cutout.destroy())
+    this.deck = []
+    this.updateText()
+
+    // Add the new deck
+    for (let i = 0; i < deck.length; i++) {
+      let card = deck[i]
+      this.addCardToDeck(card, panel)
     }
 
-    // Check if the deck is valid, then create it if so
-    if (deck.includes(undefined)) {
-      return false
-    } else {
-      // Remove the current deck
-      this.deck.forEach((cutout) => cutout.destroy())
-      this.deck = []
-      this.updateText()
+    // TODO Decouple this from cutout
+    // Stop cutouts from flashing
+    this.deck.forEach((cutout) => cutout.stopFlash())
 
-      // Add the new deck
-      for (let i = 0; i < deck.length; i++) {
-        let card = deck[i]
-        this.addCardToDeck(card, panel)
-      }
+    // Scroll to the top of the page
+    this.scrollablePanel.t = 0
 
-      // TODO Decouple this from cutout
-      // Stop cutouts from flashing
-      this.deck.forEach((cutout) => cutout.stopFlash())
-
-      // Scroll to the top of the page
-      this.scrollablePanel.t = 0
-
-      return true
-    }
+    return true
   }
 
   setAvatar(id: number): DeckRegion {
@@ -397,7 +383,7 @@ export default class DeckRegion {
   setPremade(id: number): DeckRegion {
     this.txtDeckName.setText(`${avatarNames[id]} Premade`)
     this.setAvatar(id)
-    this.setDeck(premadeDecklists[id])
+    this.setDeck(premadeDecklists[id].map((id) => Catalog.getCardById(id)))
 
     // Disable cards from being removed from the deck
     this.deck.forEach((cutout) => {

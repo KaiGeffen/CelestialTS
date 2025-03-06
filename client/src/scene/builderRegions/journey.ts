@@ -232,37 +232,22 @@ export default class DeckRegion {
   }
 
   // Set the current deck, and return whether the given deck was valid
-  setDeck(deckCode: number[] | Card[], panel = this.panel): boolean {
-    let deck: Card[]
-    if (
-      Array.isArray(deckCode) &&
-      deckCode.every((x) => typeof x === 'number')
-    ) {
-      deck = deckCode.map((id) => Catalog.getCardById(id))
-    } else {
-      deck = deckCode as Card[]
+  setDeck(deck: Card[], panel = this.panel): boolean {
+    // Remove the current deck
+    this.deck.forEach((cutout) => cutout.destroy())
+    this.deck = []
+    this.updateText()
+
+    // Add the new deck
+    for (let i = 0; i < deck.length; i++) {
+      let card = deck[i]
+      this.addCardToDeck(card, panel)
     }
 
-    // Check if the deck is valid, then create it if so
-    if (deck.includes(undefined)) {
-      return false
-    } else {
-      // Remove the current deck
-      this.deck.forEach((cutout) => cutout.destroy())
-      this.deck = []
-      this.updateText()
+    // Scroll to the top of the page
+    this.scrollablePanel.t = 0
 
-      // Add the new deck
-      for (let i = 0; i < deck.length; i++) {
-        let card = deck[i]
-        this.addCardToDeck(card, panel)
-      }
-
-      // Scroll to the top of the page
-      this.scrollablePanel.t = 0
-
-      return true
-    }
+    return true
   }
 
   // Get the deck code for player's current deck

@@ -18,6 +18,7 @@ import { DecklistSettings } from '../../../../shared/settings'
 import avatarNames from '../../lib/avatarNames'
 import premadeDecklists from '../../catalog/premadeDecklists'
 import { Deck } from '../../../../shared/types/deck'
+import Catalog from '../../../../shared/state/catalog'
 
 const width = Space.decklistPanelWidth
 
@@ -89,7 +90,7 @@ export default class DecklistsRegion {
   }
 
   // Create a deck and select it
-  private createDeck(name: string, avatar: number, deck: number[]): void {
+  private createDeck(name: string, avatar: number, deckCode: number[]): void {
     // Use a default deck name if it's not specified
     if (name === undefined || name === '') {
       const number = this.decklistBtns.length + 1
@@ -99,7 +100,7 @@ export default class DecklistsRegion {
     // Create the deck in storage
     UserSettings._push('decks', {
       name: name,
-      cards: deck,
+      cards: deckCode,
       cosmetics: {
         avatar: avatar === undefined ? 0 : avatar,
       },
@@ -121,8 +122,8 @@ export default class DecklistsRegion {
     this.refreshBtns()
 
     // If a deck code was included, populate it
-    if (deck !== undefined) {
-      this.scene.setDeck(deck)
+    if (deckCode !== undefined) {
+      this.scene.setDeck(deckCode.map((id) => Catalog.getCardById(id)))
     }
   }
 
