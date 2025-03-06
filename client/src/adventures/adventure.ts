@@ -8,7 +8,7 @@ import water from './water.json'
 
 import intro from './intro.json'
 
-export const adventureData: Adventure[] = [
+export const adventureData: adventureNode[] = [
   ...intro,
   ...birds,
   ...ashes,
@@ -19,24 +19,29 @@ export const adventureData: Adventure[] = [
   ...water,
 ]
 
-// TODO Clean this up by breaking it into the node types and having adventure be the union of all those
-export interface Adventure {
+// Base interface with common properties
+interface AdventureBase {
   name: string
   x: number
   y: number
   id: number
   prereq: number[][]
-  type: string
+}
 
-  card?: number
-
-  deck?: number[]
-  opponentDeck?: string
-
-  // Tips have just text
-  text?: string
-
-  // This mission's story, if any
+interface MissionNode extends AdventureBase {
+  deck: number[]
+  opponent: number[]
   storyTitle?: string
   storyText?: string
 }
+
+interface CardNode extends AdventureBase {
+  card: number
+}
+
+interface TipNode extends AdventureBase {
+  tip: string
+}
+
+// Adventure is the union of all node types
+export type adventureNode = MissionNode | CardNode | TipNode

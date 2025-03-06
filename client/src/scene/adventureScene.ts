@@ -6,18 +6,15 @@ import {
   Color,
   UserSettings,
   Time,
-  BBStyle,
   Ease,
 } from '../settings/settings'
 import Buttons from '../lib/buttons/buttons'
 import Button from '../lib/buttons/button'
-import Icons from '../lib/buttons/icons'
-import { CardImage } from '../lib/cardImage'
 
 import Catalog from '../../../shared/state/catalog'
 // import adventureData from "../adventure.json"
 // adventureData.reverse()
-import { Adventure, adventureData } from '../adventures/adventure'
+import { adventureNode, adventureData } from '../adventures/adventure'
 
 // TODO Remove the arrow images because drag is now default
 
@@ -307,12 +304,9 @@ export default class AdventureScene extends BaseScene {
 
     // Add each of the adventures as its own line
     this.animatedBtns = []
-    unlockedMissions.forEach((mission: Adventure) => {
-      // Get the string for this adventure
-      let id = mission.id
-
+    unlockedMissions.forEach((mission: adventureNode) => {
       // For now, it's all either the waving figure or ? icon
-      const nodeType = mission.type === 'mission' ? 'Mission' : 'QuestionMark'
+      const nodeType = 'deck' in mission ? 'Mission' : 'QuestionMark'
       let btn = new Buttons.Mission(
         that,
         mission.x,
@@ -331,16 +325,12 @@ export default class AdventureScene extends BaseScene {
   }
 
   // Return the function for what happens when the given mission node is clicked on
-  private missionOnClick(mission: Adventure): () => void {
-    // if (mission.type === 'tutorial') {
-    // 	return this.doTutorial(mission)
-    // }
-    // else
-    if (mission.type === 'mission') {
+  private missionOnClick(mission: adventureNode): () => void {
+    if ('deck' in mission) {
       return () => {
         this.scene.start('AdventureBuilderScene', mission)
       }
-    } else if (mission.type === 'card') {
+    } else if ('card' in mission) {
       return () => {
         UserSettings._setIndex('inventory', mission.card, true)
 
@@ -361,9 +351,9 @@ export default class AdventureScene extends BaseScene {
 
         this.scene.start('AdventureScene', params)
       }
-    } else if (mission.type === 'tip') {
+    } else if ('tip' in mission) {
       return () => {
-        this.scene.start('AdventureScene', { txt: mission.text })
+        this.scene.start('AdventureScene', { txt: mission.tip })
       }
     }
   }
