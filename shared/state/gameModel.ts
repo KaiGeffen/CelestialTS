@@ -83,6 +83,57 @@ export default class GameModel {
     this.animations = [[], []]
   }
 
+  switchPriority() {
+    this.priority = this.priority ^ 1
+  }
+
+  // Get the cost of given player playing the given card
+  getCost(card: Card, player: number): number {
+    if (this.status[player].includes(Status.UNLOCKED)) {
+      return 0
+    } else {
+      return card.getCost(player, this)
+    }
+  }
+
+  // Return a full deepcopy of this object
+  getDeepCopy(): GameModel {
+    const copy = new GameModel([], [], this.avatars[0], this.avatars[1], false)
+
+    copy.hand = this.hand.map((hand) => [...hand])
+    copy.deck = this.deck.map((deck) => [...deck])
+    copy.pile = this.pile.map((pile) => [...pile])
+    copy.expended = this.expended.map((expended) => [...expended])
+    copy.story = this.story.getDeepCopy()
+    copy.breath = [...this.breath]
+    copy.maxBreath = [...this.maxBreath]
+    copy.status = this.status.map((status) => [...status])
+    copy.vision = [...this.vision]
+    copy.score = [...this.score]
+    copy.recentModels = this.recentModels.map((models) =>
+      models.map((model) => model.getDeepCopy()),
+    )
+    copy.isRecap = this.isRecap
+    copy.versionNo = this.versionNo
+    copy.mulligansComplete = [...this.mulligansComplete]
+    copy.sound = structuredClone(this.sound)
+    copy.animations = this.animations.map((animations) => [...animations])
+    copy.lastShuffle = this.lastShuffle.map((shuffle) => [...shuffle])
+    copy.winner = this.winner
+    copy.roundResults = [[...this.roundResults[0]], [...this.roundResults[1]]]
+    copy.wins = [...this.wins]
+    copy.passes = this.passes
+    copy.priority = this.priority
+    copy.lastPlayerWhoPlayed = this.lastPlayerWhoPlayed
+    copy.cardCosts = [...this.cardCosts]
+    copy.amtPasses = [...this.amtPasses]
+    copy.amtDrawn = [...this.amtDrawn]
+    copy.avatars = [...this.avatars]
+    copy.roundCount = this.roundCount
+
+    return copy
+  }
+
   draw(player: number, amt = 1, isSetup = false) {
     let card: Card = null
     while (amt > 0 && this.hand[player].length < MechanicsSettings.HAND_CAP) {
@@ -312,66 +363,5 @@ export default class GameModel {
         index2: this.hand[act.owner].length - 1,
       }),
     )
-  }
-
-  getHighestCardInHand(player: number) {
-    let result = null
-    for (const card of this.hand[player]) {
-      if (result === null || card.cost > result.cost) {
-        result = card
-      }
-    }
-    return result
-  }
-
-  switchPriority() {
-    this.priority = (this.priority + 1) % 2
-  }
-
-  // Get the cost of given player playing the given card
-  getCost(card: Card, player: number): number {
-    if (this.status[player].includes(Status.UNLOCKED)) {
-      return 0
-    } else {
-      return card.getCost(player, this)
-    }
-  }
-
-  // Return a full deepcopy of this object
-  getDeepCopy(): GameModel {
-    const copy = new GameModel([], [], this.avatars[0], this.avatars[1], false)
-
-    copy.hand = this.hand.map((hand) => [...hand])
-    copy.deck = this.deck.map((deck) => [...deck])
-    copy.pile = this.pile.map((pile) => [...pile])
-    copy.expended = this.expended.map((expended) => [...expended])
-    copy.story = this.story.getDeepCopy()
-    copy.breath = [...this.breath]
-    copy.maxBreath = [...this.maxBreath]
-    copy.status = this.status.map((status) => [...status])
-    copy.vision = [...this.vision]
-    copy.score = [...this.score]
-    copy.recentModels = this.recentModels.map((models) =>
-      models.map((model) => model.getDeepCopy()),
-    )
-    copy.isRecap = this.isRecap
-    copy.versionNo = this.versionNo
-    copy.mulligansComplete = [...this.mulligansComplete]
-    copy.sound = structuredClone(this.sound)
-    copy.animations = this.animations.map((animations) => [...animations])
-    copy.lastShuffle = this.lastShuffle.map((shuffle) => [...shuffle])
-    copy.winner = this.winner
-    copy.roundResults = [[...this.roundResults[0]], [...this.roundResults[1]]]
-    copy.wins = [...this.wins]
-    copy.passes = this.passes
-    copy.priority = this.priority
-    copy.lastPlayerWhoPlayed = this.lastPlayerWhoPlayed
-    copy.cardCosts = [...this.cardCosts]
-    copy.amtPasses = [...this.amtPasses]
-    copy.amtDrawn = [...this.amtDrawn]
-    copy.avatars = [...this.avatars]
-    copy.roundCount = this.roundCount
-
-    return copy
   }
 }
