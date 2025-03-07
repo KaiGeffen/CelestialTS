@@ -12,12 +12,16 @@ export default function createUsernameAvailabilityServer() {
 
   app.get('/check_username_availability/:username', async (req, res) => {
     try {
+      console.log('Checking username:')
+      console.log(req.params.username)
       const username = req.params.username
       const existingUser = await db
         .select({ username: players.username })
         .from(players)
         .where(eq(players.username, username))
         .limit(1)
+
+      console.log('Number of users with that is', existingUser.length)
 
       res.json({ exists: existingUser.length > 0 })
     } catch (error) {
