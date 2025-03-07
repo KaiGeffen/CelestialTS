@@ -157,7 +157,7 @@ const uprising = new Uprising({
 // BETA
 class Lullaby extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
-    super.play(player, game, index, bonus + index)
+    super.play(player, game, index, bonus)
 
     // Create a copy in hand of each card later in the 	story that costs 0.
     for (const act of game.story.acts) {
