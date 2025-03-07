@@ -106,11 +106,10 @@ export default class Card {
     }
   }
 
-  birth(amt: number, game: GameModel, player: number): string {
+  birth(amt: number, game: GameModel, player: number) {
     for (const card of game.hand[player]) {
       if (card.name === 'Child') {
         card.points += amt
-        return `\nBuild +${amt}`
       }
     }
     const card = new Card({
@@ -120,14 +119,10 @@ export default class Card {
       basePoints: 0,
       qualities: [Quality.FLEETING],
     })
-    if (game.create(player, card)) {
-      return `\nBuild ${amt}`
-    } else {
-      return ''
-    }
+    game.create(player, card)
   }
 
-  transform(index: number, card: Card, game: GameModel): void {
+  transform(index: number, card: Card, game: GameModel) {
     if (index + 1 <= game.story.acts.length) {
       const act = game.story.acts[index]
       const oldCard = act.card
@@ -160,52 +155,42 @@ export default class Card {
 
   onRoundEndIfThisResolved(player: number, game: GameModel): void {}
 
-  // Triggers when this card is drawn
   onDraw(player: number, game: GameModel): void {}
 
   /* Common functions */
-  reset(game: GameModel): string {
+  reset(game: GameModel) {
     game.score = [0, 0]
-    return '\nReset'
   }
 
-  addBreath(amt: number, game: GameModel, player: number): string {
+  addBreath(amt: number, game: GameModel, player: number) {
     game.breath[player] += amt
     for (let i = 0; i < amt; i++) {
       game.status[player].push(Status.INSPIRED)
     }
-    return amt > 0 ? `\n+${amt} breath` : ''
   }
 
-  addStatus(
-    amt: number,
-    game: GameModel,
-    player: number,
-    stat: Status,
-  ): string {
-    let recap = `\n${stat} ${amt}`
-    if (amt <= 0) recap = ''
-
+  addStatus(amt: number, game: GameModel, player: number, stat: Status) {
     for (let i = 0; i < amt; i++) {
-      if (
-        stat === Status.NOURISH &&
-        game.status[player].includes(Status.STARVE)
-      ) {
-        game.status[player] = game.status[player].filter(
-          (status: Status) => status !== Status.STARVE,
-        )
-      } else if (
-        stat === Status.STARVE &&
-        game.status[player].includes(Status.NOURISH)
-      ) {
-        game.status[player] = game.status[player].filter(
-          (status: Status) => status !== Status.NOURISH,
-        )
+      if (stat === Status.NOURISH) {
+        const starveIndex = game.status[player].indexOf(Status.STARVE)
+        if (starveIndex !== -1) {
+          // Remove just one STARVE status
+          game.status[player].splice(starveIndex, 1)
+        } else {
+          game.status[player].push(stat)
+        }
+      } else if (stat === Status.STARVE) {
+        const nourishIndex = game.status[player].indexOf(Status.NOURISH)
+        if (nourishIndex !== -1) {
+          // Remove just one NOURISH status
+          game.status[player].splice(nourishIndex, 1)
+        } else {
+          game.status[player].push(stat)
+        }
       } else {
         game.status[player].push(stat)
       }
     }
-    return recap
   }
 
   inspire(amt: number, game: GameModel, player: number): string {

@@ -146,7 +146,7 @@ export default class GameModel {
         }
       }
 
-      // Get the top card, add it to deck
+      // Get the top card of deck, add it to hand
       card = this.deck[player].pop()
       this.hand[player].push(card)
 
