@@ -115,15 +115,16 @@ export default function createUserDataServer() {
               throw new Error('User sent initial user data before signing in')
             }
 
-            // If username already exists, prompt user to choose another
+            // If username already exists, error (Currently client sees error on their side, so this shouldn't happen. But if it does, don't create the row)
             const result = await db
               .select()
               .from(players)
               .where(eq(players.username, username))
               .limit(1)
             if (result.length > 0) {
-              ws.send({ type: 'promptUserInit' })
-              return
+              throw new Error(
+                'Attemping to register a username that already exists',
+              )
             }
 
             // Create new user entry in database
