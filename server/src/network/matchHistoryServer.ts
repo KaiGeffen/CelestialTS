@@ -22,8 +22,6 @@ export default function createMatchHistoryServer() {
       ? uuidv5(req.params.uuid, UUID_NAMESPACE)
       : null
 
-    console.log('Fetching match history for user:', uuid)
-
     try {
       const matches = await db
         .select()

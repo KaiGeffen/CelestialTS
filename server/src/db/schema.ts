@@ -64,12 +64,8 @@ export const matchHistory = pgTable(
   {
     // Match identifiers
     id: serial('id').primaryKey(),
-    player1_id: uuid('player1_id')
-      .notNull()
-      .references(() => players.id),
-    player2_id: uuid('player2_id')
-      .notNull()
-      .references(() => players.id),
+    player1_id: uuid('player1_id').references(() => players.id),
+    player2_id: uuid('player2_id').references(() => players.id),
 
     // Player info at time of match
     player1_username: varchar('player1_username', { length: 255 }).notNull(),
