@@ -277,12 +277,6 @@ export default class GameModel {
     }
   }
 
-  createCard(player: number, card: any) {
-    if (this.hand[player].length < MechanicsSettings.HAND_CAP) {
-      this.hand[player].push(card)
-    }
-  }
-
   removeAct(index: number): any {
     if (index >= this.story.acts.length) {
       return
@@ -306,7 +300,7 @@ export default class GameModel {
 
   returnActToHand(i: number) {
     const act = this.story.removeAct(i)
-    this.createCard(act.owner, act.card)
+    this.create(act.owner, act.card)
 
     this.animations[act.owner].push(
       new Animation({
