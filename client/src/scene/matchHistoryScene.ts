@@ -511,7 +511,7 @@ export default class MatchHistoryScene extends BaseScene {
     try {
       const uuid = UserDataServer.getUUID()
       if (!uuid) {
-        this.signalError('Please log in to view match history')
+        this.signalError('Log in to view your match history')
         return
       }
 
