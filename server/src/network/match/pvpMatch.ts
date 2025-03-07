@@ -13,18 +13,6 @@ class PvpMatch extends Match {
     deck2: Deck,
   ) {
     super(ws1, uuid1, deck1, ws2, uuid2, deck2)
-
-    // Add close handlers for both websockets
-    ws1.onClose(() => {
-      if (this.ws2?.ws.readyState === 1) {
-        this.ws2.send({ type: 'dc' })
-      }
-    })
-    ws2.onClose(() => {
-      if (this.ws1?.ws.readyState === 1) {
-        this.ws1.send({ type: 'dc' })
-      }
-    })
   }
 
   // Given ws is disconnecting
