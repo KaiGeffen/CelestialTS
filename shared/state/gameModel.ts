@@ -7,6 +7,7 @@ import { Zone } from './zone'
 // import { CardCodec } from '../cardCodec'
 import { Quality, Status } from './effects'
 import { MechanicsSettings } from '../settings'
+import { SoundEffect } from './soundEffect'
 export default class GameModel {
   // Zones
   hand: Card[][] = [[], []]
@@ -34,11 +35,11 @@ export default class GameModel {
   roundCount: number = 0
 
   // Effects
-  sound: any = null
+  sound: SoundEffect | null = null
   animations: Animation[][] = [[], []]
 
   // Other
-  lastShuffle: any[][] = [[], []]
+  lastShuffle: Card[][] = [[], []]
   winner: number = null
   // The points each player got each round
   roundResults: [number[], number[]] = [[], []]
@@ -78,7 +79,7 @@ export default class GameModel {
   }
 
   versionIncr() {
-    this.versionNo += 1
+    this.versionNo++
     this.animations = [[], []]
   }
 
@@ -176,7 +177,7 @@ export default class GameModel {
     return null
   }
 
-  create(player: number, card: any) {
+  create(player: number, card: Card) {
     if (this.hand[player].length < MechanicsSettings.HAND_CAP) {
       this.hand[player].push(card)
       this.animations[player].push(
@@ -192,7 +193,7 @@ export default class GameModel {
     return null
   }
 
-  createInPile(player: number, card: any) {
+  createInPile(player: number, card: Card) {
     this.animations[player].push(
       new Animation({
         from: Zone.Gone,
@@ -204,7 +205,7 @@ export default class GameModel {
     this.pile[player].push(card)
   }
 
-  createInDeck(player: number, card: any) {
+  createInDeck(player: number, card: Card) {
     this.animations[player].push(
       new Animation({
         from: Zone.Gone,
@@ -277,7 +278,7 @@ export default class GameModel {
     }
   }
 
-  removeAct(index: number): any {
+  removeAct(index: number) {
     if (index >= this.story.acts.length) {
       return
     }
