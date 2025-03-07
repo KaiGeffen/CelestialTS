@@ -7,14 +7,15 @@ import GameModel from '../gameModel'
 
 class Dawn extends SightCard {
   onMorning(player: number, game: GameModel, index: number): boolean {
-    game.vision[player] += 1
+    game.pile[player].splice(index, 1)
+    game.create(player, this)
     return true
   }
 }
 const dawn = new Dawn(4, {
   name: 'Dawn',
   id: 50,
-  text: 'When played, gain Sight 4.\nMorning: gain Sight 1.',
+  text: 'When played, gain Sight 4.\nMorning: Return this to hand.',
   keywords: [
     { name: Keywords.sight, x: 0, y: 74, value: 4 },
     { name: Keywords.morning, x: -22, y: 104 },

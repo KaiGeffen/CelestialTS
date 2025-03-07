@@ -309,16 +309,17 @@ export default class DeckRegion {
       }
 
       // Add the container in the right position in the panel
-      let index = this.addToPanelSorted(container, card, panel)
+      // let index = this.addToPanelSorted(container, card, panel)
 
-      this.scrollablePanel.layout()
+      // this.scrollablePanel.layout()
 
-      this.deck.splice(index, 0, cutout)
+      // this.deck.splice(index, 0, cutout)
     }
 
     // Update start button to reflect new amount of cards in deck
     this.updateText()
 
+    // TODO Why does this return a string?
     return
   }
 

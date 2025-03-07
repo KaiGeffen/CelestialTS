@@ -164,31 +164,6 @@ const fates = new Fates({
   beta: true,
 })
 
-class Wish extends Card {
-  play(player: number, game: GameModel, index: number, bonus: number) {
-    super.play(player, game, index, bonus)
-
-    // Inspire 1
-    super.inspire(1, game, player)
-
-    // Find the highest cost in the deck
-    const highestCost = game.deck[player].reduce((max, card) => {
-      return card.cost > max.cost ? card : max
-    }, game.deck[player][0]).cost
-
-    if (highestCost !== undefined) {
-      game.tutor(player, highestCost)
-    }
-  }
-}
-const wish = new Wish({
-  name: 'Wish',
-  id: 828,
-  cost: 2,
-  text: 'Inspire 1.\nDraw the highest base cost card from your deck.',
-  beta: true,
-})
-
 class Possibility extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
@@ -255,6 +230,7 @@ class Pride extends Card {
     if (super.exhale(2, game, player)) {
       game.pile[player].splice(index, 1)
       game.createInStory(player, this)
+      game.discard(player)
     }
     return true
   }
@@ -264,22 +240,7 @@ const pride = new Pride({
   id: 8666,
   cost: 3,
   points: 3,
-  text: 'Morning: Exhale 2: Add this to the story.',
-  beta: true,
-})
-
-class NightSky extends Card {
-  play(player: number, game: GameModel, index: number, bonus: number) {
-    bonus += game.breath[player]
-    super.play(player, game, index, bonus)
-  }
-}
-const nightSky = new NightSky({
-  name: 'Night Sky',
-  id: 8667,
-  cost: 3,
-  points: 3,
-  text: 'Worth +X where X is your breath.',
+  text: 'Morning: Exhale 2: Add this to the story. Discard a card.',
   beta: true,
 })
 
@@ -293,10 +254,8 @@ export {
   sunflower,
   // BETA
   fates,
-  wish,
   possibility,
   neptune,
   dreamer,
   pride,
-  nightSky,
 }

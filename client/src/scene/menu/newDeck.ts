@@ -48,7 +48,9 @@ class AlterDeckMenu extends Menu {
 
     this.name = params.deckName
     this.selectedAvatar =
-      params.selectedAvatar === undefined ? 0 : params.selectedAvatar
+      params.selectedAvatar === undefined
+        ? Math.floor(Math.random() * 6)
+        : params.selectedAvatar
     this.titleString = titleString
     this.confirmString = confirmString
 

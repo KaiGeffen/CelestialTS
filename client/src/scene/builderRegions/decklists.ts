@@ -103,7 +103,7 @@ export default class DecklistsRegion {
       name: name,
       cards: deckCode,
       cosmetics: {
-        avatar: avatar === undefined ? 0 : avatar,
+        avatar: avatar === undefined ? Math.floor(Math.random() * 6) : avatar,
       },
     })
 
