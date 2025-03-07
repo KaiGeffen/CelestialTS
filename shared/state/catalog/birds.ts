@@ -1,5 +1,5 @@
 import Card from '../card'
-import { Status, Quality } from '../effects'
+import { Quality } from '../effects'
 import GameModel from '../gameModel'
 import { Keywords } from '../keyword'
 

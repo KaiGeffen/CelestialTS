@@ -1,5 +1,4 @@
 import Card from '../card'
-import { SightCard } from '../card'
 import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
 import { Animation } from '../../animation'

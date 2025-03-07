@@ -1,8 +1,6 @@
 import Card from '../card'
 import { Status, Quality } from '../effects'
 import { Keywords } from '../keyword'
-import { Animation } from '../../animation'
-import { Zone } from '../zone'
 import GameModel from '../gameModel'
 import { wound } from './tokens'
 
