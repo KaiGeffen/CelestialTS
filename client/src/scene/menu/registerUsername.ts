@@ -34,7 +34,7 @@ export class RegisterUsernameMenu extends Menu {
   private async checkUsername(username: string) {
     try {
       const response = await fetch(
-        `https://localhost:${USERNAME_AVAILABILITY_PORT}/check_username_availability/${username}`,
+        `https://celestialtcg.com/check_username_availability/${username}`,
       )
 
       if (!response.ok) {
@@ -71,7 +71,7 @@ export class RegisterUsernameMenu extends Menu {
   }
 
   private createErrorText() {
-    this.errorText = this.scene.add.text(0, 0, '', Style.error)
+    this.errorText = this.scene.add.text(0, 0, '', Style.error).setOrigin(0.5)
     this.errorText.setVisible(false)
 
     let sizer = this.scene.rexUI.add.sizer()
