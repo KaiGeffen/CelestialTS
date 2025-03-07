@@ -41,13 +41,13 @@ export async function updateMatchResult(
     .from(players)
     .where(eq(players.id, winnerId))
     .limit(1)
-    .then((result) => (result.length ? result[0].username : ''))
+    .then((result) => (result.length ? result[0].username : 'Guest'))
   const username2 = await db
     .select()
     .from(players)
     .where(eq(players.id, loserId))
     .limit(1)
-    .then((result) => (result.length ? result[0].username : ''))
+    .then((result) => (result.length ? result[0].username : 'Guest'))
 
   // Convert avatar to number before stringifying
   winnerDeck.cosmetics.avatar = Number(winnerDeck.cosmetics.avatar)
