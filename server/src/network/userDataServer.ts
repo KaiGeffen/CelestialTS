@@ -115,6 +115,17 @@ export default function createUserDataServer() {
               throw new Error('User sent initial user data before signing in')
             }
 
+            // If username already exists, prompt user to choose another
+            const result = await db
+              .select()
+              .from(players)
+              .where(eq(players.username, username))
+              .limit(1)
+            if (result.length > 0) {
+              ws.send({ type: 'promptUserInit' })
+              return
+            }
+
             // Create new user entry in database
             await db.insert(players).values({
               id: id,
@@ -131,7 +142,7 @@ export default function createUserDataServer() {
           },
         )
     } catch (e) {
-      console.error('Error in match queue:', e)
+      console.error('Error in user data server:', e)
     }
   })
 
