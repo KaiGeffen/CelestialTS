@@ -288,8 +288,7 @@ class ServerController {
 
     this.model.roundCount += 1
 
-    this.model.story.saveEndState(this.model)
-    this.model.story.clear()
+    this.model.story.saveFinalStateAndClear(this.model)
 
     this.model.sound = null
   }

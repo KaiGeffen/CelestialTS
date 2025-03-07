@@ -37,7 +37,7 @@ class Story {
 
       game.sound = SoundEffect.Resolve
 
-      act.card.play(act.owner, game, index, act.bonus)
+      act.card.play(act.owner, game, index, 0)
       roundEndEffects.push([act.card.onRoundEndIfThisResolved, act.owner])
 
       // Put in pile or remove from game if Fleeting
@@ -62,7 +62,8 @@ class Story {
     }
   }
 
-  saveEndState(game: GameModel) {
+  // Save the final state of the story resolving, and clear the story
+  saveFinalStateAndClear(game: GameModel) {
     addRecentModels(game)
 
     this.resolvedActs = []
@@ -84,9 +85,8 @@ class Story {
       game.recentModels[1][game.recentModels[1].length - 1].sound =
         SoundEffect.Tie
     }
-  }
 
-  clear() {
+    // Clear the story
     this.acts = []
     this.resolvedActs = []
   }
