@@ -1,6 +1,6 @@
 import Card from '../card'
 import { child, heirloom } from './tokens'
-import { Quality } from '../effects'
+import { Quality } from '../quality'
 import { Keywords } from '../keyword'
 import GameModel from '../gameModel'
 

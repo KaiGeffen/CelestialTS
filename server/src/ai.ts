@@ -1,5 +1,6 @@
 import { MechanicsSettings } from '../../shared/settings'
-import { Status, Quality } from '../../shared/state/effects'
+import { Status } from '../../shared/state/status'
+import { Quality } from '../../shared/state/quality'
 import GameModel from '../../shared/state/gameModel'
 
 const TIME_PAUSE = 0

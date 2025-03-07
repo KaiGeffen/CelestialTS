@@ -1,7 +1,7 @@
 import Card from '../../shared/state/card'
 
 import { SoundEffect } from './soundEffect'
-import { Quality } from './effects'
+import { Quality } from './quality'
 import type GameModel from './gameModel'
 import getClientGameModel from './clientGameModel'
 import Act from './act'

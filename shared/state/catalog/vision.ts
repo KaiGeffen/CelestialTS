@@ -1,7 +1,8 @@
 import Card from '../card'
 import { SightCard } from '../card'
 import { seen, predator } from './tokens'
-import { Status, Quality } from '../effects'
+import { Status } from '../status'
+import { Quality } from '../quality'
 import { Keywords } from '../keyword'
 import GameModel from '../gameModel'
 

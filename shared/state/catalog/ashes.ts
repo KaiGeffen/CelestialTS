@@ -1,6 +1,7 @@
 import Card from '../card'
 import { ashes } from './tokens'
-import { Status, Quality } from '../effects'
+import { Status } from '../status'
+import { Quality } from '../quality'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
 import { Keywords } from '../keyword'

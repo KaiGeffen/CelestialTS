@@ -1,5 +1,6 @@
 import Card from '../card'
-import { Status, Quality } from '../effects'
+import { Status } from '../status'
+import { Quality } from '../quality'
 import { Keywords } from '../keyword'
 import { Animation } from '../../animation'
 import { Zone } from '../zone'
