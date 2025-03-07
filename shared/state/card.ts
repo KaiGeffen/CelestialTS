@@ -110,8 +110,11 @@ export default class Card {
     for (const card of game.hand[player]) {
       if (card.name === 'Child') {
         card.points += amt
+        return
       }
     }
+
+    // If no Child card, create one
     const card = new Card({
       name: 'Child',
       id: 1003,
