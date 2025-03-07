@@ -7,6 +7,9 @@
 # Modules #
 node_modules/
 
+# Scripts #
+scripts/
+
 # dist #
 dist/
 

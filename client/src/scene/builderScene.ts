@@ -277,7 +277,7 @@ export class BuilderScene extends BuilderBase {
       // Update the name
       that.setName(name)
 
-      if (deckCode) {
+      if (deckCode.length > 0) {
         // Update the cards in the deck
         that.setDeck(deckCode.map((id) => Catalog.getCardById(id)))
       }
