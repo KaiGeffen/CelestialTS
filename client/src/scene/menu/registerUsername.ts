@@ -5,6 +5,8 @@ import { Color, Space, Style } from '../../settings/settings'
 import Menu from './menu'
 import MenuScene from '../menuScene'
 import UserDataServer from '../../network/userDataServer'
+import Button from '../../lib/buttons/button'
+import { USERNAME_AVAILABILITY_PORT } from '../../../../shared/network/settings'
 
 const width = 500
 const inputTextWidth = 200
@@ -13,6 +15,8 @@ export class RegisterUsernameMenu extends Menu {
   private username: string = ''
   private usernameInputText
   private callback: () => void
+  private confirmButton: Button
+  private errorText: Phaser.GameObjects.Text
 
   constructor(scene: MenuScene, params: { callback: () => void }) {
     super(scene, width)
@@ -27,14 +31,43 @@ export class RegisterUsernameMenu extends Menu {
     this.reskinInputText()
   }
 
+  private async checkUsername(username: string) {
+    try {
+      const response = await fetch(
+        `http://localhost:${USERNAME_AVAILABILITY_PORT}/check-username-availability/${username}`,
+      )
+      const data = await response.json()
+
+      if (data.exists) {
+        this.errorText.setText('Username already taken').setVisible(true)
+        this.confirmButton.disable()
+      } else {
+        this.errorText.setVisible(false)
+        this.confirmButton.enable()
+      }
+    } catch (error) {
+      console.error('Error checking username:', error)
+    }
+  }
+
   private createContent() {
     this.createHeader('Choose Username')
 
     this.sizer
       .add(this.createUsernameInput())
       .addNewLine()
+      .add(this.createErrorText())
       .addNewLine()
       .add(this.createButtons())
+  }
+
+  private createErrorText() {
+    this.errorText = this.scene.add.text(0, 0, '', Style.error)
+    this.errorText.setVisible(false)
+
+    let sizer = this.scene.rexUI.add.sizer()
+    sizer.addSpace().add(this.errorText).addSpace()
+    return sizer
   }
 
   private createUsernameInput() {
@@ -55,6 +88,12 @@ export class RegisterUsernameMenu extends Menu {
       })
       .on('textchange', (inputText) => {
         this.username = inputText.text
+        if (this.username.length > 0) {
+          this.checkUsername(this.username)
+        } else {
+          this.errorText.setVisible(false)
+          this.confirmButton.disable()
+        }
       })
 
     let container = new ContainerLite(
@@ -92,7 +131,7 @@ export class RegisterUsernameMenu extends Menu {
       Space.buttonHeight,
     )
 
-    new Buttons.Basic(
+    this.confirmButton = new Buttons.Basic(
       container,
       0,
       0,
@@ -108,8 +147,8 @@ export class RegisterUsernameMenu extends Menu {
         this.scene.scene.stop()
       },
       true,
-      true,
-    )
+      false, // Start disabled until valid username is entered
+    ).disable()
 
     return container
   }

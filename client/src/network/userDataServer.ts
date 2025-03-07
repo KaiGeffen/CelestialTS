@@ -63,8 +63,6 @@ export default class UserDataServer {
     const that = this
     wsServer
       .on('promptUserInit', () => {
-        console.log('User was prompted to send initial values')
-
         // Open username registration menu
         game.scene.getAt(0).scene.launch('MenuScene', {
           menu: 'registerUsername',
