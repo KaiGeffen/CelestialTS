@@ -193,27 +193,27 @@ export default class Card {
     }
   }
 
-  inspire(amt: number, game: GameModel, player: number): string {
+  inspire(amt: number, game: GameModel, player: number) {
     game.animations[player].push(
       new Animation({
         from: Zone.Status,
         status: 0,
       }),
     )
-    return this.addStatus(amt, game, player, Status.INSPIRE)
+    this.addStatus(amt, game, player, Status.INSPIRE)
   }
 
-  nourish(amt: number, game: GameModel, player: number): string {
+  nourish(amt: number, game: GameModel, player: number) {
     game.animations[player].push(
       new Animation({
         from: Zone.Status,
         status: 2,
       }),
     )
-    return this.addStatus(amt, game, player, Status.NOURISH)
+    this.addStatus(amt, game, player, Status.NOURISH)
   }
 
-  starve(amt: number, game: GameModel, player: number): string {
+  starve(amt: number, game: GameModel, player: number) {
     game.animations[player].push(
       new Animation({
         from: Zone.Status,
@@ -221,43 +221,10 @@ export default class Card {
         status: 3,
       }),
     )
-    return this.addStatus(amt, game, player, Status.STARVE)
+    this.addStatus(amt, game, player, Status.STARVE)
   }
 
   /* Cards moving from zone to zone */
-  draw(amt: number, game: GameModel, player: number): string {
-    let recap = ''
-    let numDrawn = 0
-    for (let i = 0; i < amt; i++) {
-      const card = game.draw(player)
-      if (card) numDrawn++
-    }
-    if (numDrawn > 0) recap = `\nDraw ${numDrawn}`
-    return recap
-  }
-
-  create(card: Card, game: GameModel, player: number): void {
-    game.create(player, card)
-  }
-
-  tutor(cost: number, game: GameModel, player: number): string {
-    const card = game.tutor(player, cost)
-    return card ? `\nTutor ${cost}` : ''
-  }
-
-  // TODO Remove this and call game.discard
-  discard(
-    amt: number,
-    game: GameModel,
-    player: number,
-    index: number = 0,
-  ): string {
-    for (let i = 0; i < amt; i++) {
-      game.discard(player, 1, index)
-    }
-    return 'TODO Remove string return for this method'
-  }
-
   bottom(amt: number, game: GameModel, player: number): string {
     let recap = '\nBottom'
     let anySeen = false

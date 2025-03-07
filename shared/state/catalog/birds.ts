@@ -257,25 +257,6 @@ const bare = new Bare({
   beta: true,
 })
 
-class Cloud extends Card {
-  play(player: number, game: GameModel, index: number, bonus: number) {
-    super.play(player, game, index, bonus)
-
-    while (game.breath[player] > 0) {
-      if (this.exhale(1, game, player)) {
-        this.draw(1, game, player)
-      }
-    }
-  }
-}
-const cloud = new Cloud({
-  name: 'Cloud',
-  id: 169,
-  qualities: [Quality.FLEETING],
-  text: 'Fleeting\nExhale X: Draw X cards.',
-  beta: true,
-})
-
 class Caladrius extends Card {
   onPlay(player: number, game: GameModel): void {
     this.starve(3, game, player)
@@ -331,7 +312,4 @@ export {
   bare,
   caladrius,
   release,
-
-  // EH
-  cloud,
 }

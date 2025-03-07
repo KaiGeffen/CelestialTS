@@ -192,7 +192,7 @@ class Unnamed extends Card {
     super.play(player, game, index, bonus)
 
     if (super.exhale(2, game, player)) {
-      super.draw(3, game, player)
+      game.draw(3, player)
     }
   }
 
@@ -218,7 +218,7 @@ class Precious extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
     const length = game.hand[player].length
-    this.discard(length, game, player)
+    game.discard(player, length)
     game.draw(player, length)
   }
 }
@@ -250,7 +250,7 @@ class Crab extends Card {
       const laterCards = game.story.acts.filter((c) => c.owner === p).length
 
       console.log('Later cards:', laterCards)
-      this.discard(laterCards, game, p)
+      game.discard(p, laterCards)
     }
   }
 }
@@ -266,7 +266,7 @@ class Unfolding extends Card {
     super.play(player, game, index, bonus)
 
     if (super.exhale(2, game, player)) {
-      super.draw(3, game, player)
+      game.draw(3, player)
     }
   }
 

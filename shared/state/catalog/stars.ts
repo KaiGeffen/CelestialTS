@@ -237,7 +237,7 @@ class Dreamer extends Card {
     super.play(player, game, index, bonus)
 
     if (game.hand[player].length === 0) {
-      super.draw(1, game, player)
+      game.draw(1, player)
     }
   }
 }

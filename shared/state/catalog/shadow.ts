@@ -149,7 +149,7 @@ class WingClipping extends Card {
     super.play(player, game, index, bonus)
 
     // The opponent discards 2 cards
-    super.discard(2, game, player ^ 1)
+    game.discard(player ^ 1, 2)
   }
 }
 const wingClipping = new WingClipping({
@@ -220,7 +220,7 @@ class Craving extends Card {
     if (
       !game.story.acts.some((act) => act.owner === player && act.card.cost >= 6)
     ) {
-      super.discard(10, game, player)
+      game.discard(10, player)
     }
   }
 }
