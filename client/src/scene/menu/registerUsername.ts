@@ -155,8 +155,8 @@ export class RegisterUsernameMenu extends Menu {
         // Close this scene
         this.scene.scene.stop()
       },
+      false,
       true,
-      false, // Start disabled until valid username is entered
     ).disable()
 
     return container
