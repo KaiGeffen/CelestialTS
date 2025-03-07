@@ -13,6 +13,8 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason)
 })
 
+console.log('sanity')
+
 // Create the websocket for individual matchs
 createMatchServer()
 createUserDataServer()
