@@ -224,27 +224,6 @@ export default class Card {
     this.addStatus(amt, game, player, Status.STARVE)
   }
 
-  /* Cards moving from zone to zone */
-  bottom(amt: number, game: GameModel, player: number): string {
-    let recap = '\nBottom'
-    let anySeen = false
-    for (let i = 0; i < amt; i++) {
-      const card = game.bottom(player)
-      if (card) {
-        anySeen = true
-        recap += `\n${card.name}`
-      }
-    }
-    return anySeen ? recap : ''
-  }
-
-  mill(amt: number, game: GameModel, player: number): string {
-    for (let i = 0; i < amt; i++) {
-      const card = game.mill(player)
-    }
-    return 'TODO Remove this method'
-  }
-
   /* AI heuristics */
   ratePlay(world: any): number {
     return Math.max(1, this.cost)

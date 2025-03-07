@@ -62,7 +62,7 @@ const fishingBoat = new FishingBoat({
 class Drown extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
-    this.mill(3, game, player)
+    game.mill(player, 3)
   }
 }
 const drown = new Drown({

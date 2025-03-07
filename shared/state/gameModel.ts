@@ -294,20 +294,22 @@ export default class GameModel {
     }
   }
 
-  mill(player: number) {
-    if (this.deck[player].length > 0) {
-      const card = this.deck[player].pop()
-      this.pile[player].push(card)
-      this.animations[player].push(
-        new Animation({
-          from: Zone.Deck,
-          to: Zone.Discard,
-          card: card,
-        }),
-      )
+  mill(player: number, amt: number) {
+    for (let i = 0; i < amt; i++) {
+      if (this.deck[player].length > 0) {
+        const card = this.deck[player].pop()
+        this.pile[player].push(card)
+        this.animations[player].push(
+          new Animation({
+            from: Zone.Deck,
+            to: Zone.Discard,
+            card: card,
+          }),
+        )
 
-      // Trigger its on discard effects
-      card.onDiscard(player, this, this.pile[player].length - 1)
+        // Trigger its on discard effects
+        card.onDiscard(player, this, this.pile[player].length - 1)
+      }
     }
   }
 

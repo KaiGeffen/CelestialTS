@@ -260,7 +260,7 @@ class Goliath extends Card {
     super.play(player, game, index, bonus)
 
     game.removeAct(0)
-    this.mill(2, game, player)
+    game.mill(player, 2)
   }
 }
 const goliath = new Goliath({
