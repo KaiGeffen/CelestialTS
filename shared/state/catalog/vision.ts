@@ -19,7 +19,7 @@ const dawn = new Dawn(4, {
   keywords: [
     { name: Keywords.sight, x: 0, y: 74, value: 4 },
     { name: Keywords.morning, x: -22, y: 104 },
-    { name: Keywords.sight, x: 0, y: 130, value: 1 },
+    // { name: Keywords.sight, x: 0, y: 130, value: 1 },
   ],
 })
 
@@ -229,9 +229,18 @@ class Lantern extends Card {
   play(player: number, game: GameModel, index: number, bonus: number) {
     super.play(player, game, index, bonus)
 
-    const card = game.hand[player].splice(0, 1)[0]
-    if (card !== undefined) {
-      game.hand[player].unshift(lantern)
+    if (game.story.acts.length === 0) {
+      const card = game.hand[player].splice(0, 1)[0]
+      if (card !== undefined) {
+        // Create a new copy of the card, but with 1 more point
+        const copy = Object.create(
+          Object.getPrototypeOf(this),
+          Object.getOwnPropertyDescriptors(this),
+        )
+        copy.points += 2
+
+        game.hand[player].unshift(copy)
+      }
     }
   }
 }
@@ -240,7 +249,8 @@ const lantern = new Lantern({
   id: 6083,
   cost: 5,
   points: 5,
-  text: 'Transform a card in your hand into Lantern.',
+  qualities: [Quality.FLEETING],
+  text: 'Fleeting.\nIf this is the last card in the story, transform a card in hand into a copy of this with +2 points.',
   beta: true,
 })
 
@@ -258,4 +268,5 @@ export {
   riddle,
   bull,
   lantern,
+  // TODO 1
 }
