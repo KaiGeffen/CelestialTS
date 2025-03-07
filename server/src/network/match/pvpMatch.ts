@@ -20,8 +20,6 @@ class PvpMatch extends Match {
     // Don't send disconnect message if the game has already ended
     if (this.game === null || this.game.model.winner !== null) return
 
-    // TODO Even if game ends before user disconnects, the disconnect message is still appearing
-
     // This game is over now
     this.game === null
 

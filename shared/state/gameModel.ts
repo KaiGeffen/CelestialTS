@@ -8,21 +8,16 @@ import { Zone } from './zone'
 import { Quality, Status } from './effects'
 import { MechanicsSettings } from '../settings'
 export default class GameModel {
-  // TODO consistent hierarchy of arguments
-  createInStory(player: number, card: Card) {
-    this.story.addAct(card, player)
-  }
-
   // Zones
   hand: Card[][] = [[], []]
-  deck: Card[][] = [[], []]
+  deck: Card[][]
   pile: Card[][] = [[], []]
   expended: Card[][] = [[], []]
   story: Story = new Story()
 
   // Player qualities
-  breath: number[] = [0, 0]
-  maxBreath: number[] = [0, 0]
+  breath: number[] = [1, 1]
+  maxBreath: number[] = [1, 1]
   status: Status[][] = [[], []]
   vision: number[] = [0, 0]
 
@@ -51,7 +46,7 @@ export default class GameModel {
   // Game tracking
   wins: number[] = [0, 0]
   passes: number = 0
-  priority: number = 0
+  priority: number
   lastPlayerWhoPlayed: number = 0
 
   // For client side visualization
@@ -60,7 +55,7 @@ export default class GameModel {
   // Other (For weird cards)
   amtPasses: number[] = [0, 0]
   amtDrawn: number[] = [0, 0]
-  avatars: Avatar[] = []
+  avatars: Avatar[]
 
   constructor(
     deck1: Card[],
@@ -70,33 +65,13 @@ export default class GameModel {
     // Shuffle the deck
     shuffle = true,
   ) {
-    // TODO Most of this is redundant
-    this.versionNo = 0
-    this.sound = null
-    this.animations = [[], []]
-    this.hand = [[], []]
     this.deck = [deck1, deck2]
-    this.pile = [[], []]
     if (shuffle) {
       for (let p = 0; p < 2; p++) {
         this.shuffle(p, false)
       }
     }
-    this.lastShuffle = [[], []]
-    this.expended = [[], []]
-    this.score = [0, 0]
-    this.wins = [0, 0]
-    this.maxBreath = [1, 1]
-    this.breath = [1, 1]
-    this.status = [[], []]
-    this.story = new Story()
-    this.passes = 0
-    this.vision = [0, 0]
-    this.mulligansComplete = [false, false]
-    this.amtPasses = [0, 0]
-    this.amtDrawn = [0, 0]
     this.avatars = [avatar1, avatar2]
-    this.lastPlayerWhoPlayed = 0
 
     // Starting priority is random
     this.priority = Math.floor(Math.random() * 2)
@@ -247,29 +222,8 @@ export default class GameModel {
     )
   }
 
-  // TODO This is just secretary bird, and it appears to oust the entire hand
-  oust(player: number) {
-    let cost = 0
-    while (this.hand[player].length > 0) {
-      for (let i = 0; i < this.hand[player].length; i++) {
-        if (this.hand[player][i].cost === cost) {
-          const card = this.hand[player][i]
-          this.animations[player].push(
-            new Animation({
-              from: Zone.Hand,
-              to: Zone.Gone,
-              card: card,
-              index: i,
-            }),
-          )
-          this.expended[player].push(card)
-          this.hand[player].splice(i, 1)
-          return card
-        }
-      }
-      cost += 1
-    }
-    return null
+  createInStory(player: number, card: Card) {
+    this.story.addAct(card, player)
   }
 
   dig(player: number, amt: number) {

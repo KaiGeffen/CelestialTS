@@ -22,7 +22,6 @@ class PveMatch extends Match {
     }
   }
 
-  // TODO Implement ai opponent, for now just pass
   protected async opponentActs() {
     const model = getClientGameModel(this.game.model, 1, false)
     const action = getAction(model)
@@ -31,14 +30,6 @@ class PveMatch extends Match {
     } else {
       console.error('Computer opponent chose invalid action')
     }
-
-    // await this.lock
-    // const opponentModel = new ClientModel(this.game.get_client_model(1))
-    // const opponentAction = AI.get_action(opponentModel)
-
-    // const valid = this.game.on_player_input(1, opponentAction)
-
-    // if (valid) await this.notifyState()
   }
 
   async doMulligan(player, mulligan) {

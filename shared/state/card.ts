@@ -286,19 +286,6 @@ export default class Card {
     return anySeen ? recap : ''
   }
 
-  oust(amt: number, game: GameModel, player: number): string {
-    let recap = '\nOust:'
-    let anySeen = false
-    for (let i = 0; i < amt; i++) {
-      const card = game.oust(player)
-      if (card) {
-        anySeen = true
-        recap += `\n${card.name}`
-      }
-    }
-    return anySeen ? recap : ''
-  }
-
   mill(amt: number, game: GameModel, player: number): string {
     for (let i = 0; i < amt; i++) {
       const card = game.mill(player)

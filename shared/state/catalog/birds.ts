@@ -62,7 +62,17 @@ class SecretaryBird extends Card {
       }
     }
     super.play(player, game, index, bonus + amt)
-    this.oust(amt, game, player)
+
+    // Remove each card in the player's hand with base cost 0 or 1
+    for (let i = 0; i < game.hand[player].length; ) {
+      if (game.hand[player][i].cost <= 1) {
+        const card = game.hand[player][i]
+        game.hand[player].splice(i, 1)
+        game.expended[player].push(card)
+      } else {
+        i++
+      }
+    }
   }
 }
 const secretaryBird = new SecretaryBird({
