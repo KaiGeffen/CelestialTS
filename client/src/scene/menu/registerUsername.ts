@@ -34,7 +34,7 @@ export class RegisterUsernameMenu extends Menu {
   private async checkUsername(username: string) {
     try {
       const response = await fetch(
-        `http://localhost:${USERNAME_AVAILABILITY_PORT}/check-username-availability/${username}`,
+        `http://localhost:${USERNAME_AVAILABILITY_PORT}/check_username_availability/${username}`,
       )
       const data = await response.json()
 

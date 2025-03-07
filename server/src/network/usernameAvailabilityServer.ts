@@ -10,7 +10,7 @@ export default function createUsernameAvailabilityServer() {
   const app = express()
   app.use(cors())
 
-  app.get('/check-username-availability/:username', async (req, res) => {
+  app.get('/check_username_availability/:username', async (req, res) => {
     try {
       const username = req.params.username
       const existingUser = await db
