@@ -36,6 +36,13 @@ export class RegisterUsernameMenu extends Menu {
       const response = await fetch(
         `http://localhost:${USERNAME_AVAILABILITY_PORT}/check_username_availability/${username}`,
       )
+
+      if (!response.ok) {
+        this.errorText.setText('Error checking username').setVisible(true)
+        this.confirmButton.disable()
+        return
+      }
+
       const data = await response.json()
 
       if (data.exists) {
@@ -47,6 +54,8 @@ export class RegisterUsernameMenu extends Menu {
       }
     } catch (error) {
       console.error('Error checking username:', error)
+      this.errorText.setText('Error checking username').setVisible(true)
+      this.confirmButton.disable()
     }
   }
 
