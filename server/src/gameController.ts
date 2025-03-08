@@ -4,7 +4,6 @@ import Card from '../../shared/state/card'
 import { Status } from '../../shared/state/status'
 import { SoundEffect } from '../../shared/state/soundEffect'
 import { Animation } from '../../shared/animation'
-import getClientGameModel from '../../shared/state/clientGameModel'
 import { Zone } from '../../shared/state/zone'
 import { MechanicsSettings, Mulligan } from '../../shared/settings'
 

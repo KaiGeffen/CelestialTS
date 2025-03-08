@@ -4,10 +4,10 @@ import { Avatar } from './avatar'
 
 import { Animation } from '../animation'
 import { Zone } from './zone'
-// import { CardCodec } from '../cardCodec'
 import { Status } from './status'
 import { MechanicsSettings } from '../settings'
 import { SoundEffect } from './soundEffect'
+
 export default class GameModel {
   // Zones
   hand: Card[][] = [[], []]

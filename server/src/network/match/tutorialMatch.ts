@@ -1,6 +1,6 @@
 import { TypedWebSocket } from '../../../../shared/network/typedWebSocket'
 import { MechanicsSettings } from '../../../../shared/settings'
-import { TutorialController } from '../../logic/tutorialController'
+import { TutorialController } from '../../tutorialController'
 import PveMatch from './pveMatch'
 
 class TutorialMatch extends PveMatch {
